@@ -3,6 +3,7 @@
 Uses an adjacency-list graph to model service dependencies and shortest unweighted paths across a small platform topology.
 
 ## Files
+- `EXPLANATION.md`
 - `graph.js`
 - `app.js`
 - `README.md`

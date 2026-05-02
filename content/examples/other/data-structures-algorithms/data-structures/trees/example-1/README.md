@@ -3,6 +3,7 @@
 Builds a small tree-backed content taxonomy to show parent-child hierarchies, recursive traversal, and subtree aggregation.
 
 ## Files
+- `EXPLANATION.md`
 - `tree.js`
 - `app.js`
 - `README.md`

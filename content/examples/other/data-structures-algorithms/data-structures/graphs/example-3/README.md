@@ -3,6 +3,7 @@
 Covers disconnected components and cycle detection so graph handling is not limited to a single connected happy path.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

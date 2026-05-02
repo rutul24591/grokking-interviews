@@ -3,6 +3,7 @@
 Implements a singly linked list to model an append-heavy event stream where traversal is sequential and inserts at the tail dominate.
 
 ## Files
+- `EXPLANATION.md`
 - `list.js`
 - `app.js`
 - `README.md`

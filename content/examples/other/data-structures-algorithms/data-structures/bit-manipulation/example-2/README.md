@@ -3,6 +3,7 @@
 Counts enabled bits to answer questions like 'how many capabilities are active' without materializing a full boolean array.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

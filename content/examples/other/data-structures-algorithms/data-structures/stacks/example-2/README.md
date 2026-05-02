@@ -3,6 +3,7 @@
 Uses a stack for bracket validation because interviewers often ask for a secondary scenario beyond undo and call stacks.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

@@ -3,6 +3,7 @@
 Demonstrates Floyd’s fast-and-slow pointer technique on a singly linked list because cycle bugs are a common follow-up discussion.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

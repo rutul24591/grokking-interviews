@@ -3,6 +3,7 @@
 Implements a doubly linked list for a tab manager where efficient removal and bidirectional traversal both matter.
 
 ## Files
+- `EXPLANATION.md`
 - `list.js`
 - `app.js`
 - `README.md`

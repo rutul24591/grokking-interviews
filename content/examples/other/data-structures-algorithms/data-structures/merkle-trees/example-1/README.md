@@ -3,6 +3,7 @@
 Builds a Merkle tree over file chunks so integrity can be validated from a single root hash.
 
 ## Files
+- `EXPLANATION.md`
 - `merkle.js`
 - `app.js`
 - `README.md`

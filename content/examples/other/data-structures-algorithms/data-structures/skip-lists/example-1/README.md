@@ -3,6 +3,7 @@
 Implements a compact skip list to index leaderboard scores with probabilistic levels and ordered traversal.
 
 ## Files
+- `EXPLANATION.md`
 - `skip-list.js`
 - `app.js`
 - `README.md`

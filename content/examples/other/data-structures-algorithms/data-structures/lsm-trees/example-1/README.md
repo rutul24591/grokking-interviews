@@ -3,6 +3,7 @@
 Models an LSM-style store with a mutable memtable and immutable SSTable snapshots to show why writes stay fast.
 
 ## Files
+- `EXPLANATION.md`
 - `lsm-store.js`
 - `app.js`
 - `README.md`

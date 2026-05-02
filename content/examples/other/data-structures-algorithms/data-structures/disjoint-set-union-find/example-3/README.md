@@ -3,6 +3,7 @@
 Covers repeated unions and invalid references so the structure behaves predictably in operational code paths.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

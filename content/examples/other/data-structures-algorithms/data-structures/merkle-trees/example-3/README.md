@@ -3,6 +3,7 @@
 Covers odd leaf counts and partial updates because those operational details are easy to skip but matter in practice.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

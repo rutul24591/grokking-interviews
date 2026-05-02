@@ -3,6 +3,7 @@
 Uses array indexing for a moving latency window and shows why arrays are strong when reads are dense and positional access matters.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

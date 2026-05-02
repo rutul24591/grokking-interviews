@@ -3,6 +3,7 @@
 Adds a practical follow-up by scanning log lines for repeated markers, which connects string handling to real diagnostics work.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

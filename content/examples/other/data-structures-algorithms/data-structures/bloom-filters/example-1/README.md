@@ -3,6 +3,7 @@
 Implements a Bloom filter to precheck probable membership before hitting a slower backing store.
 
 ## Files
+- `EXPLANATION.md`
 - `bloom-filter.js`
 - `app.js`
 - `README.md`

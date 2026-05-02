@@ -3,6 +3,7 @@
 Uses a bounded heap for top-k ranking, which is the usual follow-up when interviewers pivot from scheduling to streaming analytics.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

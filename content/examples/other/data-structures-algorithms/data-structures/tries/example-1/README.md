@@ -3,6 +3,7 @@
 Implements a trie to back prefix-based autocomplete over a small dictionary of search suggestions.
 
 ## Files
+- `EXPLANATION.md`
 - `trie.js`
 - `app.js`
 - `README.md`

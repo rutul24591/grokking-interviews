@@ -3,6 +3,7 @@
 Checks the operational edges around absent keys and updates because the table must behave predictably even when reads miss.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

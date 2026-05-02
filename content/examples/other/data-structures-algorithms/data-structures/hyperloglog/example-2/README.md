@@ -3,6 +3,7 @@
 Shows the follow-up property that makes HyperLogLog operationally useful: independent sketches can be merged register-wise.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

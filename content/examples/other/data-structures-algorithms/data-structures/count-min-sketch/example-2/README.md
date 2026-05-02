@@ -3,6 +3,7 @@
 Uses sketch estimates to rank likely heavy hitters, which is the natural follow-up after the basic counting workflow.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

@@ -3,6 +3,7 @@
 Adds a compaction pass because merge and cleanup behavior is the essential follow-up for LSM discussions.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

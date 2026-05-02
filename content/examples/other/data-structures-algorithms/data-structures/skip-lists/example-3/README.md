@@ -3,6 +3,7 @@
 Covers duplicate values and deterministic level assignment so edge cases stay visible in a simplified teaching implementation.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

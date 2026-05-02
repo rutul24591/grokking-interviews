@@ -3,6 +3,7 @@
 Contrasts breadth-first and depth-first traversal so the follow-up covers how tree shape influences query and rendering behavior.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

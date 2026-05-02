@@ -3,6 +3,7 @@
 Uses union-find to merge accounts and clusters, which is one of the most common follow-up applications after basic connectivity.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

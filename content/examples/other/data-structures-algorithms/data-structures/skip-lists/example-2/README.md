@@ -3,6 +3,7 @@
 Demonstrates ordered range scans, which are where skip lists often compete directly with balanced trees.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

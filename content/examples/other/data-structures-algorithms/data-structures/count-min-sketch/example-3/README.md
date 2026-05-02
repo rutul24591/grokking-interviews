@@ -3,6 +3,7 @@
 Makes the overestimation property explicit so edge cases do not get mistaken for exact counting semantics.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

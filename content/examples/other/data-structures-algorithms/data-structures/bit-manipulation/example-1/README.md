@@ -3,6 +3,7 @@
 Represents feature and permission flags as bit masks so multiple booleans fit in one compact integer.
 
 ## Files
+- `EXPLANATION.md`
 - `flags.js`
 - `app.js`
 - `README.md`

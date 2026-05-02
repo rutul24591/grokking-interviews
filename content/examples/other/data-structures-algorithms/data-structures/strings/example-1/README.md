@@ -3,6 +3,7 @@
 Builds a small string-processing pipeline for search queries, covering trimming, normalization, tokenization, and canonical formatting.
 
 ## Files
+- `EXPLANATION.md`
 - `pipeline.js`
 - `app.js`
 - `README.md`

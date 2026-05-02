@@ -3,6 +3,7 @@
 Implements a compact hash table with separate chaining and uses it as an in-memory session store.
 
 ## Files
+- `EXPLANATION.md`
 - `hash-table.js`
 - `app.js`
 - `README.md`

@@ -3,6 +3,7 @@
 Implements a count-min sketch to approximate event frequencies in a memory-bounded streaming workload.
 
 ## Files
+- `EXPLANATION.md`
 - `count-min-sketch.js`
 - `app.js`
 - `README.md`

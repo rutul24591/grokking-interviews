@@ -3,6 +3,7 @@
 Builds a small product catalog workbench on top of a custom dynamic array implementation and exercises append, insert, delete, update, and resize behavior.
 
 ## Files
+- `EXPLANATION.md`
 - `dynamic-array.js`
 - `app.js`
 - `README.md`

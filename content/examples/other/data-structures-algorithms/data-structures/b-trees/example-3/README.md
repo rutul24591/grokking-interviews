@@ -3,6 +3,7 @@
 Validates edge conditions around repeated inserts and shallow trees so correctness is not assumed only for balanced happy paths.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

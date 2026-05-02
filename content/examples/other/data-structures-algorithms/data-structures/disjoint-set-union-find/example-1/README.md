@@ -3,6 +3,7 @@
 Implements union-find with path compression and union by rank to track connectivity between network zones.
 
 ## Files
+- `EXPLANATION.md`
 - `union-find.js`
 - `app.js`
 - `README.md`

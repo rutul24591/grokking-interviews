@@ -3,6 +3,7 @@
 Implements a circular-buffer queue to model a worker dispatcher where enqueue and dequeue happen continuously under load.
 
 ## Files
+- `EXPLANATION.md`
 - `queue.js`
 - `app.js`
 - `README.md`

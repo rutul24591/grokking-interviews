@@ -3,6 +3,7 @@
 Shows how false positives appear once the bitset becomes crowded, which is the core operational trade-off of Bloom filters.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

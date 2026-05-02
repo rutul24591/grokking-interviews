@@ -3,6 +3,7 @@
 Covers signed shifts and mask width assumptions so the examples do not silently teach unsafe bit-level habits.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

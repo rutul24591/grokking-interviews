@@ -3,6 +3,7 @@
 Highlights edge conditions like skewed trees and missing children because interviews often pivot into worst-case shape analysis.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

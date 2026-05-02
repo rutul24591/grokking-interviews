@@ -3,6 +3,7 @@
 Covers the fragile transitions around empty lists, single-node lists, and tail deletion where pointer bugs usually appear first.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

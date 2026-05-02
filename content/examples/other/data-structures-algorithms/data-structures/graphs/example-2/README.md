@@ -3,6 +3,7 @@
 Demonstrates dependency ordering for build or deploy graphs, which is a common follow-up after basic traversal.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

@@ -3,6 +3,7 @@
 Forces collisions so the follow-up makes the bucket-chain trade-off visible instead of assuming a perfect hash.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

@@ -3,6 +3,7 @@
 Exercises duplicate inserts and empty-prefix behavior because these are common edge conditions in autocomplete services.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

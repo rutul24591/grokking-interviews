@@ -3,6 +3,7 @@
 Shows a multi-queue follow-up where urgent work bypasses standard work without abandoning FIFO guarantees inside each lane.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

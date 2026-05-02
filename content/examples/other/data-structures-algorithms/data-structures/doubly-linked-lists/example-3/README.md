@@ -3,6 +3,7 @@
 Validates the pointer transitions that usually break first: removing the only node, removing the head, and removing the tail.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

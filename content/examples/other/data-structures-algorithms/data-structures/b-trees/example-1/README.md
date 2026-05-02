@@ -3,6 +3,7 @@
 Implements a small B-tree insertion flow to demonstrate page-friendly multi-key nodes and split behavior.
 
 ## Files
+- `EXPLANATION.md`
 - `btree.js`
 - `app.js`
 - `README.md`

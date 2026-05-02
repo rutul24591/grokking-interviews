@@ -3,6 +3,7 @@
 Covers duplicate priorities and empty-heap extraction so behavior is explicit under real operational conditions.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

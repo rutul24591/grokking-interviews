@@ -3,6 +3,7 @@
 Explains the follow-up use case of inclusion proofs, where a client verifies one leaf without downloading every chunk.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

@@ -3,6 +3,7 @@
 Highlights the gap between code units and user-visible characters so edge cases are not ignored in multilingual systems.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

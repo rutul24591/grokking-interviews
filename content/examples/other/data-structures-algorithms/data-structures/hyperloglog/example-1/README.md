@@ -3,6 +3,7 @@
 Implements a compact HyperLogLog-style estimator to approximate unique visitor counts with fixed memory.
 
 ## Files
+- `EXPLANATION.md`
 - `hyperloglog.js`
 - `app.js`
 - `README.md`

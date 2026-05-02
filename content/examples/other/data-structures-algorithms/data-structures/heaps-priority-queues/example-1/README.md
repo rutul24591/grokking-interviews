@@ -3,6 +3,7 @@
 Implements a binary min-heap to schedule incident response work by severity and deadline.
 
 ## Files
+- `EXPLANATION.md`
 - `heap.js`
 - `app.js`
 - `README.md`

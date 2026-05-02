@@ -3,6 +3,7 @@
 Covers deletes and stale segments because these are where LSM correctness bugs usually become visible.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

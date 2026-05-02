@@ -3,6 +3,7 @@
 Exercises wraparound, overflow, and underflow behavior because queue pointer bugs usually appear only after many cycles.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

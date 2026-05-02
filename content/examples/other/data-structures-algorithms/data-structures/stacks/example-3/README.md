@@ -3,6 +3,7 @@
 Covers stack underflow and a min-stack extension so correctness checks are not limited to the happy path.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

@@ -3,6 +3,7 @@
 Calls out the edge-case limitation that plain Bloom filters do not support safe deletion without a counting variant.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

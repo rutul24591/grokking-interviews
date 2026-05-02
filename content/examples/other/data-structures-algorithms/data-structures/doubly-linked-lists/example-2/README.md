@@ -3,6 +3,7 @@
 Shows the canonical follow-up pattern where a doubly linked list is paired with a hash map to support O(1) recency updates.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

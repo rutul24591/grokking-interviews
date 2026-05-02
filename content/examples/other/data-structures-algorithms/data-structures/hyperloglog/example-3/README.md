@@ -3,6 +3,7 @@
 Calls out the small-range weakness where approximate estimators are least comfortable and exact sets may be cheaper.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

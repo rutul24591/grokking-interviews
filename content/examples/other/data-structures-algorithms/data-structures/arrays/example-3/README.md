@@ -3,6 +3,7 @@
 Exercises empty-array, bounds, and resize edge cases so failures are explicit instead of silently corrupting contiguous storage.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

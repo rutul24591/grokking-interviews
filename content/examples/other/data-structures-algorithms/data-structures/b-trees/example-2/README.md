@@ -3,6 +3,7 @@
 Focuses on node overflow and promotion because that is the critical follow-up discussion for B-tree design.
 
 ## Files
+- `EXPLANATION.md`
 - `demo.js`
 - `README.md`
 

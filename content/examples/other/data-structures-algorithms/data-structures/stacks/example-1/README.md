@@ -3,6 +3,7 @@
 Uses two stacks to back an editor-style undo and redo workflow, which is the production pattern most engineers recognize immediately.
 
 ## Files
+- `EXPLANATION.md`
 - `stack.js`
 - `app.js`
 - `README.md`
