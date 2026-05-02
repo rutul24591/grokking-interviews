@@ -584,6 +584,13 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Deep dive into Real-time Validation covering debouncing strategies, async validation patterns, UX considerations, performance optimization, and production-scale implementation approaches."
     }
   ],
+  "system-design-concepts/frontend-concepts/high-level-design": [
+    {
+      "slug": "social-media-news-feed-frontend",
+      "title": "Design the Frontend for a Social Media News Feed",
+      "description": "A deep dive into designing a scalable, high-performance frontend for a social media news feed, focusing on virtualization, state normalization, and real-time updates."
+    }
+  ],
   "system-design-concepts/frontend-concepts/internationalization-i18n-localization-l10n": [
     {
       "slug": "currency-formatting",
@@ -4688,6 +4695,11 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Backtracking — choose-explore-unchoose template, state-space tree, pruning strategies (constraint propagation, bound, symmetry, MRV), and patterns for combinatorial search."
     },
     {
+      "slug": "bfs",
+      "title": "Breadth-First Search (BFS)",
+      "description": "BFS — layer-by-layer graph traversal, shortest paths in unweighted graphs, multi-source / 0-1 / bidirectional variants, and direction-optimizing scaling to billion-vertex graphs."
+    },
+    {
       "slug": "binary-search",
       "title": "Binary Search",
       "description": "Binary Search — O(log n) divide-and-conquer search over sorted data. The lower_bound / upper_bound / parametric-search template behind databases, compilers, and rate limiters."
@@ -4716,6 +4728,11 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "counting-sort",
       "title": "Counting Sort",
       "description": "Counting Sort — non-comparative linear-time sorting for small integer ranges. The stable workhorse inside radix sort and histogram-based sorts."
+    },
+    {
+      "slug": "dfs",
+      "title": "Depth-First Search (DFS)",
+      "description": "DFS — recursive and iterative graph traversal, edge classification, three-color cycle detection, and applications in topological sort, SCC, articulation points, and backtracking."
     },
     {
       "slug": "divide-and-conquer",

@@ -1,0 +1,55 @@
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- API / Server -->
+  <rect x="50" y="50" width="120" height="400" rx="10" fill="#f1f5f9" stroke="#475569" stroke-width="2" />
+  <text x="65" y="75" font-family="Arial" font-size="14" font-weight="bold" fill="#1e293b">Backend</text>
+
+  <!-- Data fetching -->
+  <rect x="220" y="50" width="140" height="60" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" />
+  <text x="235" y="75" font-family="Arial" font-size="12" font-weight="bold" fill="#1d4ed8">Fetch Hook / SWR</text>
+  <text x="235" y="95" font-family="Arial" font-size="11" fill="#1e40af">Paginated API call</text>
+
+  <!-- Normalization -->
+  <rect x="420" y="50" width="140" height="60" rx="5" fill="#f0fdf4" stroke="#10b981" stroke-width="2" />
+  <text x="435" y="75" font-family="Arial" font-size="12" font-weight="bold" fill="#047857">Normalization</text>
+  <text x="435" y="95" font-family="Arial" font-size="11" fill="#065f46">Post -> User / Media</text>
+
+  <!-- Central Store -->
+  <rect x="420" y="200" width="300" height="200" rx="10" fill="#ffffff" stroke="#10b981" stroke-width="2" />
+  <text x="510" y="225" font-family="Arial" font-size="14" font-weight="bold" fill="#047857">Central Redux / Zustand Store</text>
+
+  <rect x="440" y="240" width="120" height="60" rx="5" fill="#f8fafc" stroke="#94a3b8" />
+  <text x="450" y="260" font-family="Arial" font-size="11" font-weight="bold" fill="#475569">entities.posts</text>
+  <text x="450" y="275" font-family="Arial" font-size="10" fill="#64748b">{ id: { ...post } }</text>
+
+  <rect x="580" y="240" width="120" height="60" rx="5" fill="#f8fafc" stroke="#94a3b8" />
+  <text x="590" y="260" font-family="Arial" font-size="11" font-weight="bold" fill="#475569">entities.users</text>
+  <text x="590" y="275" font-family="Arial" font-size="10" fill="#64748b">{ id: { ...user } }</text>
+
+  <rect x="440" y="320" width="260" height="60" rx="5" fill="#f8fafc" stroke="#94a3b8" />
+  <text x="450" y="340" font-family="Arial" font-size="11" font-weight="bold" fill="#475569">feed.results</text>
+  <text x="450" y="355" font-family="Arial" font-size="10" fill="#64748b">[id1, id2, id3, ...]</text>
+
+  <!-- UI Components -->
+  <rect x="220" y="250" width="140" height="100" rx="5" fill="#fdf2f8" stroke="#ec4899" stroke-width="2" />
+  <text x="240" y="275" font-family="Arial" font-size="12" font-weight="bold" fill="#9d174d">Components</text>
+  <text x="240" y="295" font-family="Arial" font-size="11" fill="#be185d">Selector(postId)</text>
+  <text x="240" y="315" font-family="Arial" font-size="11" fill="#be185d">Render Post</text>
+
+  <!-- Flow Arrows -->
+  <path d="M 170 80 L 220 80" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow-blue)" />
+  <path d="M 360 80 L 420 80" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow-blue)" />
+  <path d="M 490 110 L 490 200" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow-green)" />
+  <path d="M 420 300 L 360 300" stroke="#ec4899" stroke-width="2" fill="none" marker-end="url(#arrow-pink)" />
+
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6" />
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
+    </marker>
+    <marker id="arrow-pink" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ec4899" />
+    </marker>
+  </defs>
+</svg>

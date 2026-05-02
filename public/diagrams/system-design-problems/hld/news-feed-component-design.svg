@@ -1,0 +1,40 @@
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- News Feed Component Container -->
+  <rect x="50" y="20" width="700" height="460" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" />
+  <text x="340" y="45" font-family="Arial" font-size="16" font-weight="bold" fill="#1e40af">Feed Component</text>
+
+  <!-- Post Component 1 -->
+  <rect x="80" y="70" width="640" height="150" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1" />
+
+  <!-- Post Header -->
+  <circle cx="110" cy="100" r="15" fill="#e2e8f0" />
+  <rect x="135" y="90" width="120" height="10" rx="2" fill="#cbd5e1" />
+  <rect x="135" y="105" width="80" height="8" rx="2" fill="#e2e8f0" />
+
+  <!-- Post Body -->
+  <rect x="100" y="130" width="600" height="10" rx="2" fill="#f1f5f9" />
+  <rect x="100" y="145" width="500" height="10" rx="2" fill="#f1f5f9" />
+
+  <!-- Post Media -->
+  <rect x="100" y="165" width="100" height="40" rx="2" fill="#dbeafe" stroke="#bfdbfe" />
+  <text x="110" y="190" font-family="Arial" font-size="10" fill="#2563eb">Media Component</text>
+
+  <!-- Post Actions -->
+  <rect x="500" y="185" width="200" height="25" rx="4" fill="#f8fafc" stroke="#e2e8f0" />
+  <text x="510" y="202" font-family="Arial" font-size="10" fill="#64748b">Like | Comment | Share</text>
+
+  <!-- Post Component 2 (Partial) -->
+  <rect x="80" y="240" width="640" height="150" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1" />
+  <text x="350" y="320" font-family="Arial" font-size="12" fill="#94a3b8">Post Component (Repeat)</text>
+
+  <!-- Interaction Logic (Flyout) -->
+  <rect x="400" y="350" width="320" height="110" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2" />
+  <text x="410" y="375" font-family="Arial" font-size="14" font-weight="bold" fill="#92400e">Component Responsibilities</text>
+  <text x="415" y="395" font-family="Arial" font-size="12" fill="#b45309">• Post: Local state for "More" expansion</text>
+  <text x="415" y="415" font-family="Arial" font-size="12" fill="#b45309">• Media: Lazy loading, Intersection Observer</text>
+  <text x="415" y="435" font-family="Arial" font-size="12" fill="#b45309">• Actions: Debounced optimistic updates</text>
+
+  <!-- Virtualization Hint -->
+  <line x1="40" y1="420" x2="760" y2="420" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 5" />
+  <text x="60" y="440" font-family="Arial" font-size="12" font-weight="bold" fill="#ef4444">Virtual Scroll Viewport Boundary</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Viewport -->
+  <rect x="250" y="50" width="300" height="400" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="3" />
+  <text x="320" y="40" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Browser Viewport</text>
+
+  <!-- Virtual List Container -->
+  <rect x="260" y="60" width="280" height="1000" fill="none" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5 5" />
+
+  <!-- Buffer Top -->
+  <rect x="270" y="-100" width="260" height="140" rx="4" fill="#f1f5f9" stroke="#cbd5e1" opacity="0.5" />
+  <text x="350" y="-30" font-family="Arial" font-size="12" fill="#64748b">Buffer (Unrendered)</text>
+
+  <!-- Rendered Items -->
+  <rect x="270" y="70" width="260" height="80" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+  <text x="350" y="115" font-family="Arial" font-size="12" fill="#1d4ed8">Rendered Post 1</text>
+
+  <rect x="270" y="160" width="260" height="120" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+  <text x="350" y="225" font-family="Arial" font-size="12" fill="#1d4ed8">Rendered Post 2</text>
+
+  <rect x="270" y="290" width="260" height="100" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+  <text x="350" y="345" font-family="Arial" font-size="12" fill="#1d4ed8">Rendered Post 3</text>
+
+  <!-- Buffer Bottom -->
+  <rect x="270" y="410" width="260" height="140" rx="4" fill="#f1f5f9" stroke="#cbd5e1" opacity="0.8" />
+  <text x="350" y="435" font-family="Arial" font-size="12" fill="#64748b">Buffer (Rendered but hidden)</text>
+
+  <!-- Logic Overlay -->
+  <rect x="20" y="150" width="210" height="150" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2" />
+  <text x="30" y="175" font-family="Arial" font-size="14" font-weight="bold" fill="#047857">Windowing Logic</text>
+  <text x="35" y="200" font-family="Arial" font-size="11" fill="#065f46">• Calculate offsets</text>
+  <text x="35" y="220" font-family="Arial" font-size="11" fill="#065f46">• Recycle DOM nodes</text>
+  <text x="35" y="240" font-family="Arial" font-size="11" fill="#065f46">• Maintain scroll pos</text>
+  <text x="35" y="260" font-family="Arial" font-size="11" fill="#065f46">• Placeholder for unknown H</text>
+
+  <!-- Interaction Logic -->
+  <rect x="570" y="150" width="210" height="150" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="2" />
+  <text x="580" y="175" font-family="Arial" font-size="14" font-weight="bold" fill="#92400e">Intersection Observer</text>
+  <text x="585" y="200" font-family="Arial" font-size="11" fill="#b45309">• Trigger infinite scroll</text>
+  <text x="585" y="220" font-family="Arial" font-size="11" fill="#b45309">• Lazy load images/video</text>
+  <text x="585" y="240" font-family="Arial" font-size="11" fill="#b45309">• Pause video off-screen</text>
+  <text x="585" y="260" font-family="Arial" font-size="11" fill="#b45309">• Track impressions (Ads)</text>
+</svg>
