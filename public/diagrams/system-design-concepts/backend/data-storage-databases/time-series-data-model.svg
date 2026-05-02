@@ -53,7 +53,7 @@
   
   <text x="657" y="265" text-anchor="middle" font-size="8" font-weight="700" fill="#059669">✓ Each series stored contiguously on disk</text>
   
-  <!-- Downsampling & Retention (Bottom) -->
+  <!-- Downsampling &amp; Retention (Bottom) -->
   <rect x="50" y="275" width="800" height="260" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
   <text x="450" y="300" text-anchor="middle" font-size="14" font-weight="700" fill="#0369a1">Downsampling &amp; Retention Policies</text>
   

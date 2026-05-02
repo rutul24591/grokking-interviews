@@ -27,7 +27,7 @@
   <!-- Arrow 3 -->
   <line x1="510" y1="102" x2="550" y2="102" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
 
-  <!-- Batch & Compress -->
+  <!-- Batch &amp; Compress -->
   <rect x="550" y="70" width="150" height="64" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
   <text x="625" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Batch &amp; Compress</text>
   <text x="625" y="113" text-anchor="middle" font-size="10" fill="#6d5bd0">gzip / debounce timer</text>

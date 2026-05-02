@@ -26,9 +26,9 @@
   <rect x="175" y="160" width="150" height="50" rx="6" fill="#22c55e"/>
   <text x="250" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">SQL Database</text>
   
-  <text x="250" y="225" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">PostgreSQL, MySQL</text>
-  <text x="250" y="240" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">✓ ACID transactions</text>
-  <text x="250" y="255" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">✓ Complex queries</text>
+  <text x="250" y="225" text-anchor="middle" font-size="9" fill="#47556ird">PostgreSQL, MySQL</text>
+  <text x="250" y="240" text-anchor="middle" font-size="9" fill="#47556ird">✓ ACID transactions</text>
+  <text x="250" y="255" text-anchor="middle" font-size="9" fill="#47556ird">✓ Complex queries</text>
   
   <!-- No path -->
   <path d="M 250 130 L 250 145 L 350 145 L 350 160" stroke="#ef4444" stroke-width="2"/>
@@ -45,9 +45,9 @@
   <rect x="275" y="240" width="150" height="50" rx="6" fill="#8b5cf6"/>
   <text x="350" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">NoSQL Database</text>
   
-  <text x="350" y="295" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Cassandra, DynamoDB</text>
-  <text x="350" y="310" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">✓ Horizontal scaling</text>
-  <text x="350" y="325" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">✓ High write throughput</text>
+  <text x="350" y="295" text-anchor="middle" font-size="9" fill="#47556ird">Cassandra, DynamoDB</text>
+  <text x="350" y="310" text-anchor="middle" font-size="9" fill="#47556ird">✓ Horizontal scaling</text>
+  <text x="350" y="325" text-anchor="middle" font-size="9" fill="#47556ird">✓ High write throughput</text>
   
   <!-- No path from scaling -->
   <path d="M 350 210 L 350 225 L 150 225 L 150 240" stroke="#ef4444" stroke-width="2"/>
@@ -63,43 +63,43 @@
   
   <!-- SQL -->
   <rect x="540" y="110" width="190" height="80" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="635" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#3b82f6">Relational (SQL)</text>
-  <text x="635" y="155" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Fixed schema, ACID</text>
-  <text x="635" y="172" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Use: Financial, ERP</text>
+  <text x="635" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#3b82f6">Relational (SQL</text>
+  <text x="635" y="155" text-anchor="middle" font-size="9" fill="#47556ird">Fixed schema, ACID</text>
+  <text x="635" y="172" text-anchor="middle" font-size="9" fill="#47556ird">Use: Financial, ERP</text>
   <text x="635" y="187" text-anchor="middle" font-size="9" fill="#0f172a" font-weight="bold">PostgreSQL, MySQL</text>
   
   <!-- Document -->
   <rect x="540" y="200" width="190" height="80" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="635" y="225" text-anchor="middle" font-size="11" font-weight="bold" fill="#3b82f6">Document</text>
-  <text x="635" y="245" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Flexible schema, JSON</text>
-  <text x="635" y="262" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Use: Content, catalogs</text>
+  <text x="635" y="245" text-anchor="middle" font-size="9" fill="#47556ird">Flexible schema, JSON</text>
+  <text x="635" y="262" text-anchor="middle" font-size="9" fill="#47556ird">Use: Content, catalogs</text>
   <text x="635" y="277" text-anchor="middle" font-size="9" fill="#0f172a" font-weight="bold">MongoDB, CouchDB</text>
   
   <!-- Key-Value -->
   <rect x="540" y="290" width="190" height="60" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="635" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#3b82f6">Key-Value</text>
-  <text x="635" y="335" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Simple, fast lookups</text>
+  <text x="635" y="335" text-anchor="middle" font-size="9" fill="#47556ird">Simple, fast lookups</text>
   <text x="635" y="347" text-anchor="middle" font-size="9" fill="#0f172a" font-weight="bold">Redis, DynamoDB</text>
   
   <!-- Column-Family -->
   <rect x="750" y="110" width="180" height="80" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="840" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#8b5cf6">Column-Family</text>
-  <text x="840" y="155" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Wide columns, scalable</text>
-  <text x="840" y="172" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Use: Time-series, IoT</text>
+  <text x="840" y="155" text-anchor="middle" font-size="9" fill="#47556ird">Wide columns, scalable</text>
+  <text x="840" y="172" text-anchor="middle" font-size="9" fill="#47556ird">Use: Time-series, IoT</text>
   <text x="840" y="187" text-anchor="middle" font-size="9" fill="#0f172a" font-weight="bold">Cassandra, HBase</text>
   
   <!-- Graph -->
   <rect x="750" y="200" width="180" height="80" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="840" y="225" text-anchor="middle" font-size="11" font-weight="bold" fill="#8b5cf6">Graph</text>
-  <text x="840" y="245" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Relationships, traversals</text>
-  <text x="840" y="262" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Use: Social, fraud detection</text>
+  <text x="840" y="245" text-anchor="middle" font-size="9" fill="#47556ird">Relationships, traversals</text>
+  <text x="840" y="262" text-anchor="middle" font-size="9" fill="#47556ird">Use: Social, fraud detection</text>
   <text x="840" y="277" text-anchor="middle" font-size="9" fill="#0f172a" font-weight="bold">Neo4j, Neptune</text>
   
   <!-- Time-Series -->
   <rect x="750" y="290" width="180" height="60" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="840" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#8b5cf6">Time-Series</text>
-  <text x="840" y="335" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Time-ordered data</text>
+  <text x="840" y="335" text-anchor="middle" font-size="9" fill="#47556ird">Time-ordered data</text>
   <text x="840" y="347" text-anchor="middle" font-size="9" fill="#0f172a" font-weight="bold">InfluxDB, TimescaleDB</text>
   
-  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Choose database based on access patterns, consistency needs, and scale requirements.</text>
+  <text x="500" y="390" text-anchor="middle" font-size="9" fill="#64748b">Key: Choose database based on access patterns, consistency needs, and scale requirements.</text>
 </svg>

@@ -35,7 +35,7 @@
   <text x="230" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#8B5CF6">Instance 4</text>
   <text x="230" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#8B5CF6">Launching...</text>
   
-  <!-- Metrics & Policies -->
+  <!-- Metrics &amp; Policies -->
   <rect x="550" y="185" width="200" height="130" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
   <text x="650" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Scaling Policies</text>
   

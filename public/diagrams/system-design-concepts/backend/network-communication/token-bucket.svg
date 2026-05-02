@@ -3,40 +3,40 @@
   <desc id="desc">Token bucket algorithm showing tokens being added at a fixed rate and requests consuming tokens before being allowed</desc>
   
   <!-- Background -->
-  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  <rect width="800" height="500" fill="#f8fafc"/>
   
   <!-- Title -->
-  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Token Bucket Algorithm</text>
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Token Bucket Algorithm</text>
   
   <!-- Bucket -->
-  <rect x="300" y="100" width="200" height="250" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="3"/>
-  <text x="400" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Token Bucket</text>
-  <text x="400" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">Capacity: 10 tokens</text>
+  <rect x="300" y="100" width="200" height="250" rx="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="3"/>
+  <text x="400" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Token Bucket</text>
+  <text x="400" y="150" text-anchor="middle" font-size="10" fill="#64748b">Capacity: 10 tokens</text>
   
   <!-- Tokens inside bucket -->
-  <circle cx="330" cy="190" r="12" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <circle cx="330" cy="190" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="330" y="195" text-anchor="middle" font-size="10" fill="white">T</text>
   
-  <circle cx="370" cy="190" r="12" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <circle cx="370" cy="190" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="370" y="195" text-anchor="middle" font-size="10" fill="white">T</text>
   
-  <circle cx="410" cy="190" r="12" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <circle cx="410" cy="190" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="410" y="195" text-anchor="middle" font-size="10" fill="white">T</text>
   
-  <circle cx="450" cy="190" r="12" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <circle cx="450" cy="190" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="450" y="195" text-anchor="middle" font-size="10" fill="white">T</text>
   
-  <circle cx="350" cy="230" r="12" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <circle cx="350" cy="230" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="350" y="235" text-anchor="middle" font-size="10" fill="white">T</text>
   
-  <circle cx="390" cy="230" r="12" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <circle cx="390" cy="230" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="390" y="235" text-anchor="middle" font-size="10" fill="white">T</text>
   
-  <circle cx="430" cy="230" r="12" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <circle cx="430" cy="230" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="430" y="235" text-anchor="middle" font-size="10" fill="white">T</text>
   
   <!-- Token Inflow -->
-  <rect x="50" y="180" width="180" height="80" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <rect x="50" y="180" width="180" height="80" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
   <text x="140" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Token Generator</text>
   <text x="140" y="235" text-anchor="middle" font-size="10" fill="white">+1 token/sec</text>
   <text x="140" y="250" text-anchor="middle" font-size="10" fill="white">(fixed rate)</text>
@@ -44,56 +44,56 @@
   <!-- Arrow from generator to bucket -->
   <defs>
     <marker id="arrowToken" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
     </marker>
     <marker id="arrowRequest" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
     <marker id="arrowAllowed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
     </marker>
     <marker id="arrowDenied" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #dc2626)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
     </marker>
   </defs>
   
-  <line x1="230" y1="220" x2="300" y2="220" stroke="var(--text-theme, #10b981)" stroke-width="3" stroke-dasharray="5,3" marker-end="url(#arrowToken)"/>
-  <text x="265" y="215" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Add tokens</text>
+  <line x1="230" y1="220" x2="300" y2="220" stroke="#10b981" stroke-width="3" stroke-dasharray="5,3" marker-end="url(#arrowToken)"/>
+  <text x="265" y="215" text-anchor="middle" font-size="10" fill="#64748b">Add tokens</text>
   
   <!-- Request Flow -->
-  <rect x="550" y="180" width="180" height="80" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <rect x="550" y="180" width="180" height="80" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
   <text x="640" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Incoming Requests</text>
   <text x="640" y="235" text-anchor="middle" font-size="10" fill="white">API calls</text>
   
   <!-- Arrow from requests to bucket -->
-  <line x1="550" y1="220" x2="500" y2="220" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowRequest)"/>
-  <text x="525" y="215" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Consume</text>
+  <line x1="550" y1="220" x2="500" y2="220" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowRequest)"/>
+  <text x="525" y="215" text-anchor="middle" font-size="10" fill="#64748b">Consume</text>
   
   <!-- Allowed Requests -->
-  <rect x="550" y="300" width="180" height="70" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <rect x="550" y="300" width="180" height="70" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="640" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Allowed</text>
   <text x="640" y="355" text-anchor="middle" font-size="10" fill="white">Has tokens</text>
   
   <!-- Denied Requests -->
-  <rect x="50" y="300" width="180" height="70" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="2"/>
+  <rect x="50" y="300" width="180" height="70" rx="8" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
   <text x="140" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Denied (429)</text>
   <text x="140" y="355" text-anchor="middle" font-size="10" fill="white">No tokens</text>
   
   <!-- Arrows from bucket to outcomes -->
-  <path d="M 400 350 L 400 380 L 640 380 L 640 370" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowAllowed)"/>
-  <text x="530" y="395" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Token available</text>
+  <path d="M 400 350 L 400 380 L 640 380 L 640 370" stroke="#10b981" stroke-width="2" marker-end="url(#arrowAllowed)"/>
+  <text x="530" y="395" text-anchor="middle" font-size="9" fill="#10b981">Token available</text>
   
-  <path d="M 300 350 L 300 400 L 140 400 L 140 370" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowDenied)"/>
-  <text x="210" y="415" text-anchor="middle" font-size="9" fill="var(--text-theme, #dc2626">Bucket empty</text>
+  <path d="M 300 350 L 300 400 L 140 400 L 140 370" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowDenied)"/>
+  <text x="210" y="415" text-anchor="middle" font-size="9" fill="#dc2626">Bucket empty</text>
   
   <!-- Algorithm Steps -->
-  <rect x="250" y="420" width="300" height="70" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
-  <text x="400" y="442" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Algorithm</text>
-  <text x="400" y="462" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">1. Request arrives → 2. Check tokens → 3. Allow &amp; decrement OR Deny (429)</text>
+  <rect x="250" y="420" width="300" height="70" rx="8" fill="white" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="400" y="442" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Algorithm</text>
+  <text x="400" y="462" text-anchor="middle" font-size="9" fill="#64748b">1. Request arrives → 2. Check tokens → 3. Allow &amp; decrement OR Deny (429</text>
   
   <!-- Burst Handling Note -->
-  <rect x="550" y="70" width="200" height="60" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
-  <text x="650" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Burst Handling</text>
-  <text x="650" y="112" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Allows bursts up to</text>
-  <text x="650" y="125" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">bucket capacity</text>
+  <rect x="550" y="70" width="200" height="60" rx="6" fill="#f1f5f9" stroke="#f59e0b" stroke-width="2"/>
+  <text x="650" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">Burst Handling</text>
+  <text x="650" y="112" text-anchor="middle" font-size="9" fill="#64748b">Allows bursts up to</text>
+  <text x="650" y="125" text-anchor="middle" font-size="9" fill="#64748b">bucket capacity</text>
 </svg>

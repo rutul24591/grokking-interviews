@@ -76,7 +76,7 @@
   <rect x="20" y="280" width="860" height="200" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
   <text class="label" x="450" y="305" text-anchor="middle">Strategy Comparison</text>
 
-  <text class="sublabel" x="40" y="330" x="40" font-weight="700">Strategy</text>
+  <text class="sublabel" x="40" y="330"  font-weight="700">Strategy</text>
   <text class="sublabel" x="200" y="330" font-weight="700">Chunk Size</text>
   <text class="sublabel" x="360" y="330" font-weight="700">Cost</text>
   <text class="sublabel" x="500" y="330" font-weight="700">Quality</text>

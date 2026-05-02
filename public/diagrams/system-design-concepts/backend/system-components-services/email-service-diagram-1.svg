@@ -101,10 +101,10 @@
   <!-- Arrow markers -->
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
     </marker>
     <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+      <polygon points="0 0, 10 0, 5 7" fill="#64748b"/>
     </marker>
   </defs>
 </svg>

@@ -37,7 +37,7 @@
   
   <line x1="230" y1="130" x2="270" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
   
-  <!-- Batch & Buffer -->
+  <!-- Batch &amp; Buffer -->
   <rect x="270" y="70" width="200" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
   <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Batch &amp; Buffer</text>
   <rect x="290" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
@@ -59,7 +59,7 @@
   
   <line x1="710" y1="130" x2="750" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
   
-  <!-- Storage & Analysis -->
+  <!-- Storage &amp; Analysis -->
   <rect x="750" y="70" width="120" height="120" rx="5" class="highlight-purple" stroke-width="2"/>
   <text x="810" y="130" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Storage &amp; Analysis</text>
   

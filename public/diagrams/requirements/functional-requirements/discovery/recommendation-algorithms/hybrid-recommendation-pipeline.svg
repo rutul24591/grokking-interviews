@@ -60,7 +60,7 @@
   <!-- Arrow to Merge -->
   <line x1="380" y1="150" x2="420" y2="150" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
   
-  <!-- Merge & Deduplicate -->
+  <!-- Merge &amp; Deduplicate -->
   <rect x="420" y="120" width="130" height="60" rx="5" class="highlight-box" stroke-width="2"/>
   <text x="485" y="145" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Merge &amp;</text>
   <text x="485" y="165" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Deduplicate</text>

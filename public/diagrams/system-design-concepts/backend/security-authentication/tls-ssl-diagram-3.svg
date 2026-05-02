@@ -22,7 +22,7 @@
   <rect x="50" y="230" width="370" height="30" rx="4" fill="#cc4444" opacity="0.08" stroke="#cc4444" stroke-width="1"/>
   <text x="235" y="250" text-anchor="middle" font-size="9" font-weight="600" fill="#cc4444">DISABLE: RC4, 3DES, CBC, MD5, static RSA</text>
 
-  <!-- HSTS & Cert Management -->
+  <!-- HSTS &amp; Cert Management -->
   <rect x="460" y="80" width="410" height="190" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
   <rect x="460" y="80" width="410" height="35" rx="10" fill="#4caf50"/>
   <rect x="460" y="105" width="410" height="10" fill="#4caf50"/>

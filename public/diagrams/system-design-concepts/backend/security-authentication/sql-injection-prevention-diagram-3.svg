@@ -59,7 +59,7 @@
   <text x="235" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Validate input type, length, format before database query</text>
   <text x="235" y="358" text-anchor="middle" font-size="9" fill="#1a1822">Numeric IDs: parseInt, validate range. Emails: regex validate</text>
 
-  <!-- Layer 5: WAF & Monitoring -->
+  <!-- Layer 5: WAF &amp; Monitoring -->
   <rect x="460" y="280" width="410" height="100" rx="10" fill="#ffffff" stroke="#f0ad4e" stroke-width="2"/>
   <rect x="460" y="280" width="410" height="30" rx="10" fill="#f0ad4e"/>
   <rect x="460" y="300" width="410" height="10" fill="#f0ad4e"/>

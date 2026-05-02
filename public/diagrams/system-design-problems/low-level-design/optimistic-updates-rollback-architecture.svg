@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
   <rect width="800" height="600" fill="#ffffff"/>
-  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Optimistic Updates & Rollback Architecture</text>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Optimistic Updates &amp; Rollback Architecture</text>
   
   <!-- Three Phase Flow -->
   <rect x="40" y="70" width="220" height="160" rx="8" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="2"/>

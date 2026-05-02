@@ -161,7 +161,7 @@
     <line x1="530" y1="77" x2="560" y2="207" stroke="#1f2937" stroke-width="2" marker-end="url(#arrowhead)"/>
   </g>
 
-  <!-- Lock Timeout & Deadlock Prevention -->
+  <!-- Lock Timeout &amp; Deadlock Prevention -->
   <g transform="translate(50, 560)">
     <text x="400" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#111827" text-anchor="middle">Lock Timeout, Deadlock Prevention &#38; Lease Patterns</text>
     

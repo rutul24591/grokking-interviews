@@ -25,7 +25,7 @@
   <text x="790" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Best For</text>
   <text x="790" y="118" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.8">Use case</text>
 
-  <!-- Row 1: Backup & Restore -->
+  <!-- Row 1: Backup &amp; Restore -->
   <rect x="30" y="140" width="170" height="80" rx="8" fill="#ffffff" stroke="#cc4444" stroke-width="2"/>
   <text x="115" y="168" text-anchor="middle" font-size="12" font-weight="700" fill="#cc4444">Backup &amp; Restore</text>
   <text x="115" y="186" text-anchor="middle" font-size="9" fill="#1a1822">Periodic backups,</text>

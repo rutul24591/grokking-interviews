@@ -4,7 +4,7 @@
   <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Clean Architecture: Concentric Layers</text>
   <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">The Dependency Rule: source code dependencies point only inward toward higher-level policies</text>
 
-  <!-- Outer layer: Frameworks & Drivers -->
+  <!-- Outer layer: Frameworks &amp; Drivers -->
   <rect x="80" y="80" width="740" height="400" rx="12" fill="#2563eb" opacity="0.08" stroke="#2563eb" stroke-width="2"/>
   <text x="820" y="105" font-size="12" font-weight="700" fill="#2563eb">Layer 4: Frameworks &amp; Drivers</text>
   <text x="120" y="130" font-size="9" fill="#64748b">• Web frameworks (Express, Spring)</text>

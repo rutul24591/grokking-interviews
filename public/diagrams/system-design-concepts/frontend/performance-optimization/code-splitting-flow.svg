@@ -49,7 +49,7 @@
   <!-- Arrow down -->
   <line x1="500" y1="140" x2="500" y2="180" stroke="#475569" stroke-width="2" marker-end="url(#flowArrow)" />
   
-  <!-- Step 4: Chunk Loaded & Executed -->
+  <!-- Step 4: Chunk Loaded &amp; Executed -->
   <g transform="translate(430, 185)">
     <rect x="0" y="0" width="140" height="80" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="2" />
     <text x="70" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">4. Chunk Executed</text>

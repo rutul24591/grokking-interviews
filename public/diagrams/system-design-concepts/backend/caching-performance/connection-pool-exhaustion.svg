@@ -450,7 +450,7 @@
   <text x="1015" y="1443" font-family="system-ui, -apache-system, sans-serif" font-size="11" font-weight="700" fill="#16a34a">STABLE</text>
 
   <!-- ============================================================ -->
-  <!-- SECTION 4: PROACTIVE MONITORING & SIZING -->
+  <!-- SECTION 4: PROACTIVE MONITORING &amp; SIZING -->
   <!-- ============================================================ -->
   <text x="60" y="1520" font-family="system-ui, -apache-system, sans-serif" font-size="18" font-weight="700" fill="#111827">Proactive Guardrails: Pool Sizing and Alerting Thresholds</text>
 

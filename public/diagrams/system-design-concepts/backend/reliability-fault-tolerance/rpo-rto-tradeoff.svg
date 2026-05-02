@@ -67,7 +67,7 @@
   <text x="560" y="313" text-anchor="middle" font-size="8" fill="#1a1822">RPO:min, RTO:10-30m</text>
   <text x="560" y="333" text-anchor="middle" font-size="8" fill="#1a1822" font-weight="600">$800/mo</text>
 
-  <!-- Point 4: Backup & Restore (high RPO, high RTO) -->
+  <!-- Point 4: Backup &amp; Restore (high RPO, high RTO) -->
   <circle cx="760" cy="390" r="28" fill="#cc4444" opacity="0.15" stroke="#cc4444" stroke-width="2"/>
   <text x="760" y="386" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Backup &amp;</text>
   <text x="760" y="400" text-anchor="middle" font-size="10" font-weight="700" fill="#cc4444">Restore</text>

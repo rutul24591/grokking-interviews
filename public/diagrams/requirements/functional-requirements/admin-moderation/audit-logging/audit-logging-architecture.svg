@@ -56,7 +56,7 @@
   <rect class="compliance" x="610" y="190" width="140" height="35" rx="4"/>
   <text x="680" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Compliance Reports</text>
   
-  <!-- Search & Analysis -->
+  <!-- Search &amp; Analysis -->
   <rect class="search" x="590" y="280" width="330" height="140" rx="8"/>
   <text x="755" y="310" text-anchor="middle" class="text-label" style="font-size: 16px">Search &amp; Analysis</text>
   

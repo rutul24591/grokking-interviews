@@ -17,95 +17,95 @@
   
   <!-- App Servers -->
   <rect x="70" y="110" width="80" height="50" rx="4" fill="#3b82f6"/>
-  <text x="110" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">App Server 1</text>
+  <text x="110" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">App Server 1</text>
   
   <rect x="70" y="170" width="80" height="50" rx="4" fill="#3b82f6"/>
-  <text x="110" y="195" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">App Server 2</text>
+  <text x="110" y="195" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">App Server 2</text>
   
   <rect x="70" y="230" width="80" height="50" rx="4" fill="#3b82f6"/>
-  <text x="110" y="255" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">App Server N</text>
+  <text x="110" y="255" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">App Server N</text>
   
   <!-- Filebeat agents -->
-  <line x1="150" y1="135" x2="180" y2="135" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
+  <line x1="150" y1="135" x2="180" y2="135" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow"/>
   <line x1="150" y1="195" x2="180" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
   <line x1="150" y1="255" x2="180" y2="255" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
   
   <rect x="180" y="110" width="70" height="170" rx="4" fill="#8b5cf6"/>
-  <text x="215" y="200" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">Filebeat</text>
-  <text x="215" y="220" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Log Shipper</text>
-  <text x="215" y="235" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">All servers</text>
+  <text x="215" y="200" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Filebeat</text>
+  <text x="215" y="220" text-anchor="middle" font-size="7" fill="#ffffff">Log Shipper</text>
+  <text x="215" y="235" text-anchor="middle" font-size="7" fill="#ffffff">All servers</text>
   
   <!-- Logstash -->
-  <line x1="250" y1="195" x2="280" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
+  <line x1="250" y1="195" x2="280" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow"/>
   
   <rect x="280" y="150" width="100" height="90" rx="4" fill="#f97316"/>
-  <text x="330" y="185" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">Logstash</text>
-  <text x="330" y="205" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Parse &amp; Transform</text>
-  <text x="330" y="220" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Enrich data</text>
+  <text x="330" y="185" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Logstash</text>
+  <text x="330" y="205" text-anchor="middle" font-size="7" fill="#ffffff">Parse &amp; Transform</text>
+  <text x="330" y="220" text-anchor="middle" font-size="7" fill="#ffffff">Enrich data</text>
   
   <!-- Elasticsearch -->
-  <line x1="380" y1="195" x2="410" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
+  <line x1="380" y1="195" x2="410" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow"/>
   
   <rect x="410" y="150" width="80" height="90" rx="4" fill="#22c55e"/>
-  <text x="450" y="185" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--text-inverse, #ffffff">Elasticsearch</text>
-  <text x="450" y="205" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Index &amp; Store</text>
-  <text x="450" y="220" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Cluster</text>
+  <text x="450" y="185" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">Elasticsearch</text>
+  <text x="450" y="205" text-anchor="middle" font-size="7" fill="#ffffff">Index &amp; Store</text>
+  <text x="450" y="220" text-anchor="middle" font-size="7" fill="#ffffff">Cluster</text>
   
   <!-- Kibana -->
-  <line x1="450" y1="240" x2="450" y2="270" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
+  <line x1="450" y1="240" x2="450" y2="270" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow"/>
   
   <rect x="400" y="270" width="100" height="40" rx="4" fill="#ef4444"/>
-  <text x="450" y="295" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">Kibana</text>
-  <text x="450" y="310" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Dashboards</text>
+  <text x="450" y="295" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Kibana</text>
+  <text x="450" y="310" text-anchor="middle" font-size="7" fill="#ffffff">Dashboards</text>
   
   <!-- Log Levels -->
   <rect x="520" y="60" width="430" height="140" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Log Levels &amp; Usage</text>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Log Levels &amp; Usage</text>
   
   <rect x="540" y="110" width="190" height="30" rx="3" fill="#22c55e"/>
-  <text x="635" y="130" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">DEBUG</text>
-  <text x="750" y="130" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Development, verbose</text>
+  <text x="635" y="130" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">DEBUG</text>
+  <text x="750" y="130" text-anchor="start" font-size="8" fill="#47556ird">Development, verbose</text>
   
   <rect x="540" y="145" width="190" height="30" rx="3" fill="#3b82f6"/>
-  <text x="635" y="165" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">INFO</text>
-  <text x="750" y="165" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Normal operations</text>
+  <text x="635" y="165" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">INFO</text>
+  <text x="750" y="165" text-anchor="start" font-size="8" fill="#47556ird">Normal operations</text>
   
   <rect x="540" y="180" width="190" height="30" rx="3" fill="#f97316"/>
-  <text x="635" y="200" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">WARN</text>
-  <text x="750" y="200" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Potential issues</text>
+  <text x="635" y="200" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">WARN</text>
+  <text x="750" y="200" text-anchor="start" font-size="8" fill="#47556ird">Potential issues</text>
   
   <rect x="540" y="215" width="190" height="30" rx="3" fill="#ef4444"/>
-  <text x="635" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">ERROR</text>
-  <text x="750" y="235" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Errors, exceptions</text>
+  <text x="635" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">ERROR</text>
+  <text x="750" y="235" text-anchor="start" font-size="8" fill="#47556ird">Errors, exceptions</text>
   
   <!-- Correlation ID Flow -->
   <rect x="520" y="220" width="430" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Distributed Tracing with Logs</text>
+  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Distributed Tracing with Logs</text>
   
   <rect x="540" y="265" width="80" height="40" rx="3" fill="#3b82f6"/>
-  <text x="580" y="285" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff">API Gateway</text>
-  <text x="580" y="300" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Generate trace_id</text>
+  <text x="580" y="285" text-anchor="middle" font-size="8" fill="#ffffff">API Gateway</text>
+  <text x="580" y="300" text-anchor="middle" font-size="7" fill="#ffffff">Generate trace_id</text>
   
-  <line x1="620" y1="285" x2="650" y2="285" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
-  <text x="635" y="275" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">trace_id: abc123</text>
+  <line x1="620" y1="285" x2="650" y2="285" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow"/>
+  <text x="635" y="275" text-anchor="middle" font-size="7" fill="#47556ird">trace_id: abc123</text>
   
   <rect x="650" y="265" width="80" height="40" rx="3" fill="#8b5cf6"/>
-  <text x="690" y="285" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff">Service A</text>
-  <text x="690" y="300" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Pass trace_id</text>
+  <text x="690" y="285" text-anchor="middle" font-size="8" fill="#ffffff">Service A</text>
+  <text x="690" y="300" text-anchor="middle" font-size="7" fill="#ffffff">Pass trace_id</text>
   
-  <line x1="730" y1="285" x2="760" y2="285" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
+  <line x1="730" y1="285" x2="760" y2="285" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow"/>
   
   <rect x="760" y="265" width="80" height="40" rx="3" fill="#f97316"/>
-  <text x="800" y="285" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff">Service B</text>
-  <text x="800" y="300" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Pass trace_id</text>
+  <text x="800" y="285" text-anchor="middle" font-size="8" fill="#ffffff">Service B</text>
+  <text x="800" y="300" text-anchor="middle" font-size="7" fill="#ffffff">Pass trace_id</text>
   
-  <line x1="840" y1="285" x2="870" y2="285" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow)"/>
+  <line x1="840" y1="285" x2="870" y2="285" stroke="#3b82f6" stroke-width="2" marker-end="url(#logArrow"/>
   
   <rect x="870" y="265" width="70" height="40" rx="3" fill="#22c55e"/>
-  <text x="905" y="285" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff">Database</text>
-  <text x="905" y="300" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Log query</text>
+  <text x="905" y="285" text-anchor="middle" font-size="8" fill="#ffffff">Database</text>
+  <text x="905" y="300" text-anchor="middle" font-size="7" fill="#ffffff">Log query</text>
   
-  <text x="735" y="335" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Query all logs with trace_id=abc123 to see full request journey</text>
+  <text x="735" y="335" text-anchor="middle" font-size="9" fill="#47556ird">Query all logs with trace_id=abc123 to see full request journey</text>
   
-  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Use correlation IDs (trace_id) to track requests across distributed services.</text>
+  <text x="500" y="390" text-anchor="middle" font-size="9" fill="#64748b">Key: Use correlation IDs (trace_id to track requests across distributed services.</text>
 </svg>

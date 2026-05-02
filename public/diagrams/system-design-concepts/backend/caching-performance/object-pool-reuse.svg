@@ -181,7 +181,7 @@
   <text x="580" y="595" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#1f2937">Max Wait: Blocking timeout when pool is exhausted. Prevents infinite queue buildup.</text>
 
   <!-- ============================================= -->
-  <!-- BOTTOM: Common Patterns & Anti-patterns       -->
+  <!-- BOTTOM: Common Patterns &amp; Anti-patterns       -->
   <!-- ============================================= -->
   <rect x="30" y="605" width="1040" height="175" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
   <text x="550" y="635" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Pool Management Patterns &amp; Trade-offs</text>

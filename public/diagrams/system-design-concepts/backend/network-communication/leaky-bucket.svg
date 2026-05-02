@@ -3,90 +3,90 @@
   <desc id="desc">Leaky bucket algorithm showing water (requests) flowing in and leaking out at a fixed rate</desc>
   
   <!-- Background -->
-  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  <rect width="800" height="500" fill="#f8fafc"/>
   
   <!-- Title -->
-  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Leaky Bucket Algorithm</text>
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Leaky Bucket Algorithm</text>
   
   <!-- Bucket with water -->
-  <rect x="300" y="100" width="200" height="250" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="3"/>
+  <rect x="300" y="100" width="200" height="250" rx="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="3"/>
   
   <!-- Water level -->
-  <rect x="310" y="180" width="180" height="160" rx="4" fill="var(--bg-theme, #3b82f6)" opacity="0.6"/>
+  <rect x="310" y="180" width="180" height="160" rx="4" fill="#3b82f6" opacity="0.6"/>
   
   <!-- Water waves -->
-  <path d="M 320 180 Q 340 175 360 180 T 400 180 T 440 180 T 480 180" stroke="var(--bg-theme, #3b82f6)" stroke-width="2" fill="none"/>
+  <path d="M 320 180 Q 340 175 360 180 T 400 180 T 440 180 T 480 180" stroke="#3b82f6" stroke-width="2" fill="none"/>
   
-  <text x="400" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Leaky Bucket</text>
-  <text x="400" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Queue capacity: N requests</text>
-  <text x="400" y="340" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b" font-weight="bold">Water level = Queue depth</text>
+  <text x="400" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Leaky Bucket</text>
+  <text x="400" y="150" text-anchor="middle" font-size="10" fill="#64748b">Queue capacity: N requests</text>
+  <text x="400" y="340" text-anchor="middle" font-size="10" fill="#1e293b" font-weight="bold">Water level = Queue depth</text>
   
   <!-- Leak at bottom -->
-  <ellipse cx="400" cy="350" rx="20" ry="10" fill="var(--bg-theme, #3b82f6)" opacity="0.8"/>
+  <ellipse cx="400" cy="350" rx="20" ry="10" fill="#3b82f6" opacity="0.8"/>
   
   <!-- Water drops leaking out -->
-  <circle cx="385" cy="380" r="6" fill="var(--bg-theme, #3b82f6)"/>
-  <circle cx="400" cy="400" r="6" fill="var(--bg-theme, #3b82f6)"/>
-  <circle cx="415" cy="420" r="6" fill="var(--bg-theme, #3b82f6)"/>
-  <circle cx="400" cy="445" r="6" fill="var(--bg-theme, #3b82f6)"/>
+  <circle cx="385" cy="380" r="6" fill="#3b82f6"/>
+  <circle cx="400" cy="400" r="6" fill="#3b82f6"/>
+  <circle cx="415" cy="420" r="6" fill="#3b82f6"/>
+  <circle cx="400" cy="445" r="6" fill="#3b82f6"/>
   
   <!-- Request Inflow -->
-  <rect x="50" y="180" width="180" height="80" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <rect x="50" y="180" width="180" height="80" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
   <text x="140" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Incoming Requests</text>
   <text x="140" y="235" text-anchor="middle" font-size="10" fill="white">(variable rate)</text>
   
   <!-- Arrow from requests to bucket -->
   <defs>
     <marker id="arrowIn" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6"/>
     </marker>
     <marker id="arrowOut" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
     <marker id="arrowOverflow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #dc2626)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
     </marker>
   </defs>
   
-  <line x1="230" y1="220" x2="300" y2="220" stroke="var(--text-theme, #8b5cf6)" stroke-width="3" marker-end="url(#arrowIn)"/>
-  <text x="265" y="215" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Add water</text>
+  <line x1="230" y1="220" x2="300" y2="220" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrowIn)"/>
+  <text x="265" y="215" text-anchor="middle" font-size="10" fill="#64748b">Add water</text>
   
   <!-- Processed Output -->
-  <rect x="550" y="380" width="180" height="80" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <rect x="550" y="380" width="180" height="80" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
   <text x="640" y="415" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Processed</text>
   <text x="640" y="440" text-anchor="middle" font-size="10" fill="white">Fixed rate output</text>
   
   <!-- Arrow from leak to output -->
-  <path d="M 400 450 L 400 480 L 550 480 L 550 420" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowOut)"/>
-  <text x="475" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Fixed leak rate</text>
+  <path d="M 400 450 L 400 480 L 550 480 L 550 420" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowOut)"/>
+  <text x="475" y="495" text-anchor="middle" font-size="10" fill="#64748b">Fixed leak rate</text>
   
   <!-- Overflow/Denied -->
-  <rect x="550" y="100" width="180" height="80" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="2"/>
+  <rect x="550" y="100" width="180" height="80" rx="8" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
   <text x="640" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Overflow (429)</text>
   <text x="640" y="155" text-anchor="middle" font-size="10" fill="white">Bucket full</text>
   
   <!-- Overflow arrow -->
-  <path d="M 500 120 L 550 120" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowOverflow)"/>
-  <text x="525" y="115" text-anchor="middle" font-size="9" fill="var(--text-theme, #dc2626">Bucket full</text>
+  <path d="M 500 120 L 550 120" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowOverflow)"/>
+  <text x="525" y="115" text-anchor="middle" font-size="9" fill="#dc2626">Bucket full</text>
   
   <!-- Water level indicator -->
-  <line x1="270" y1="180" x2="290" y2="180" stroke="var(--text-theme, #3b82f6)" stroke-width="2"/>
-  <line x1="270" y1="250" x2="290" y2="250" stroke="var(--text-theme, #3b82f6)" stroke-width="2"/>
-  <line x1="280" y1="180" x2="280" y2="250" stroke="var(--text-theme, #3b82f6)" stroke-width="2"/>
-  <text x="260" y="220" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Level</text>
+  <line x1="270" y1="180" x2="290" y2="180" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="270" y1="250" x2="290" y2="250" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="280" y1="180" x2="280" y2="250" stroke="#3b82f6" stroke-width="2"/>
+  <text x="260" y="220" text-anchor="middle" font-size="9" fill="#64748b">Level</text>
   
   <!-- Algorithm Steps -->
-  <rect x="50" y="300" width="400" height="100" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
-  <text x="250" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">How It Works</text>
-  <text x="250" y="350" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">1. Requests (water) flow into bucket at variable rate</text>
-  <text x="250" y="370" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">2. Bucket leaks at fixed rate (constant output)</text>
-  <text x="250" y="390" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">3. If bucket overflows → requests denied (429)</text>
+  <rect x="50" y="300" width="400" height="100" rx="8" fill="white" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="250" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">How It Works</text>
+  <text x="250" y="350" text-anchor="middle" font-size="10" fill="#64748b">1. Requests (water flow into bucket at variable rate</text>
+  <text x="250" y="370" text-anchor="middle" font-size="10" fill="#64748b">2. Bucket leaks at fixed rate (constant output</text>
+  <text x="250" y="390" text-anchor="middle" font-size="10" fill="#64748b">3. If bucket overflows → requests denied (429</text>
   
   <!-- Characteristics -->
-  <rect x="500" y="220" width="230" height="120" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
-  <text x="615" y="245" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Characteristics</text>
-  <text x="615" y="268" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Smooths bursty traffic</text>
-  <text x="615" y="288" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Constant output rate</text>
-  <text x="615" y="308" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Queue overflow = denial</text>
-  <text x="615" y="328" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Good for rate smoothing</text>
+  <rect x="500" y="220" width="230" height="120" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="615" y="245" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Characteristics</text>
+  <text x="615" y="268" text-anchor="start" font-size="10" fill="#64748b">• Smooths bursty traffic</text>
+  <text x="615" y="288" text-anchor="start" font-size="10" fill="#64748b">• Constant output rate</text>
+  <text x="615" y="308" text-anchor="start" font-size="10" fill="#64748b">• Queue overflow = denial</text>
+  <text x="615" y="328" text-anchor="start" font-size="10" fill="#64748b">• Good for rate smoothing</text>
 </svg>

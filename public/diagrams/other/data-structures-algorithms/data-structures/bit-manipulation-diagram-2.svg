@@ -5,7 +5,7 @@
   <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Canonical Bit Tricks</text>
   <text x="450" y="52" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Two-line identities that unlock fundamentally faster algorithms</text>
 
-  <!-- Trick 1: n & (n-1) -->
+  <!-- Trick 1: n &amp; (n-1) -->
   <rect x="40" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
   <rect x="40" y="80" width="410" height="28" rx="10" fill="#4caf50"/>
   <text x="245" y="99" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">n &amp; (n − 1) → clears lowest set bit</text>
@@ -46,7 +46,7 @@
   <text x="245" y="224" text-anchor="middle" font-size="11" fill="#1a1822">Lowest bit turned off, everything else preserved.</text>
   <text x="245" y="242" text-anchor="middle" font-size="11" font-style="italic" fill="#4caf50">Kernighan&apos;s popcount: loop once per set bit</text>
 
-  <!-- Trick 2: x & -x -->
+  <!-- Trick 2: x &amp; -x -->
   <rect x="470" y="80" width="410" height="180" rx="10" fill="#ffffff" stroke="#ff9800" stroke-width="2"/>
   <rect x="470" y="80" width="410" height="28" rx="10" fill="#ff9800"/>
   <text x="675" y="99" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">x &amp; −x → isolates lowest set bit</text>

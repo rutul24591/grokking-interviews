@@ -25,7 +25,7 @@
   <text x="680" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#f3e8ff">Build (Packer)</text>
   <!-- Arrow down -->
   <line x1="680" y1="150" x2="680" y2="200" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <!-- Version & Registry -->
+  <!-- Version &amp; Registry -->
   <rect x="610" y="200" width="140" height="70" rx="8" fill="#d946ef"/>
   <text x="680" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Version</text>
   <text x="680" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="400" fill="#faf5ff">AMI-20260404-v1.2.3</text>

@@ -64,7 +64,7 @@
   <rect x="550" y="430" width="180" height="35" rx="4" fill="#22c55e" opacity="0.4"/>
   <text x="640" y="452" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">SIEM Integration</text>
   
-  <!-- Search & Investigation -->
+  <!-- Search &amp; Investigation -->
   <rect x="50" y="220" width="450" height="230" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
   <text x="275" y="245" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Search &amp; Investigation</text>
   

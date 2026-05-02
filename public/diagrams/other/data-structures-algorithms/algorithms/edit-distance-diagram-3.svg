@@ -24,7 +24,7 @@
   <text x="480" y="240" font-size="11" fill="#4caf50" font-weight="700">BLAST, minimap2, ClustalW.</text>
 
   <rect x="40" y="270" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
-  <text x="60" y="295" font-size="13" font-weight="700" fill="#6d5bd0">3. Speech & NLP metrics</text>
+  <text x="60" y="295" font-size="13" font-weight="700" fill="#6d5bd0">3. Speech &amp; NLP metrics</text>
   <text x="60" y="318" font-size="11" fill="#1a1822">WER (Word Error Rate) =</text>
   <text x="60" y="334" font-size="11" fill="#1a1822" font-family="monospace">  edit_distance(hyp, ref) / |ref|</text>
   <text x="60" y="358" font-size="11" fill="#1a1822">CER (Character Error Rate) uses chars.</text>
@@ -32,7 +32,7 @@
   <text x="60" y="408" font-size="11" fill="#4caf50" font-weight="700">Used by: Whisper, DeepSpeech, SQuAD evals.</text>
 
   <rect x="460" y="270" width="400" height="190" fill="#fff" stroke="#6d5bd0" stroke-width="2" rx="6"/>
-  <text x="480" y="295" font-size="13" font-weight="700" fill="#6d5bd0">4. Fuzzy search & dedup</text>
+  <text x="480" y="295" font-size="13" font-weight="700" fill="#6d5bd0">4. Fuzzy search &amp; dedup</text>
   <text x="480" y="318" font-size="11" fill="#1a1822">ElasticSearch fuzzy: edit distance on</text>
   <text x="480" y="334" font-size="11" fill="#1a1822">tokens (Levenshtein automaton, O(k·n)).</text>
   <text x="480" y="358" font-size="11" fill="#1a1822">Record linkage: "John Smith" vs</text>

@@ -198,7 +198,7 @@
   <text x="475" y="738" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#8b5cf6">Monitor: Stale serve ratio, SWR trigger rate, grace period utilization, refresh latency, cache hit rate during SWR</text>
 
   <!-- ============================================================ -->
-  <!-- MONITORING & ALERTING OVERLAY -->
+  <!-- MONITORING &amp; ALERTING OVERLAY -->
   <!-- ============================================================ -->
   <rect x="30" y="755" width="890" height="80" rx="12" fill="url(#monitorGrad)" stroke="#8b5cf6" stroke-width="2" />
   <text x="475" y="785" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#8b5cf6">Cross-Layer Monitoring &amp; Alerting</text>

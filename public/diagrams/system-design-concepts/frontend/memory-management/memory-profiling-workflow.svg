@@ -79,7 +79,7 @@
   <!-- Arrow down to Fix -->
   <line x1="427" y1="420" x2="427" y2="455" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowFlow1)"/>
   
-  <!-- Step 6: Fix & Verify -->
+  <!-- Step 6: Fix &amp; Verify -->
   <rect x="320" y="460" width="215" height="60" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
   <text x="427" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#065f46">6. Fix &amp; Verify</text>
   <text x="427" y="508" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Apply fix, repeat workflow</text>

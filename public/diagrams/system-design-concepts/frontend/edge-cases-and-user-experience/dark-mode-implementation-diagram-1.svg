@@ -94,29 +94,7 @@
   <!-- Card component example -->
   <rect x="50" y="340" width="250" height="125" rx="6" fill="#f3f1f8" stroke="#d7d1e6"/>
   <text x="175" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Card Component</text>
-  <text x="62" y="380" font-size="9" fill="#1a1822">background: var(--color-bg-surface)</text>
-  <text x="62" y="396" font-size="9" fill="#1a1822">color: var(--color-text-primary)</text>
-  <text x="62" y="412" font-size="9" fill="#1a1822">border: 1px solid var(--color-border)</text>
-  <text x="62" y="428" font-size="9" fill="#1a1822">box-shadow: var(--shadow-elevation-1)</text>
-
-  <text x="175" y="455" text-anchor="middle" font-size="9" fill="#228B22">Zero theme-specific styles needed</text>
-
-  <!-- Utility classes -->
-  <rect x="325" y="340" width="250" height="125" rx="6" fill="#f3f1f8" stroke="#d7d1e6"/>
-  <text x="450" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Tailwind Utilities</text>
-  <text x="337" y="380" font-size="9" fill="#1a1822">bg-theme → var(--color-bg-primary)</text>
-  <text x="337" y="396" font-size="9" fill="#1a1822">text-theme → var(--color-text-primary)</text>
-  <text x="337" y="412" font-size="9" fill="#1a1822">border-theme → var(--color-border)</text>
-  <text x="337" y="428" font-size="9" fill="#1a1822">bg-panel → var(--color-bg-surface)</text>
-
-  <text x="450" y="455" text-anchor="middle" font-size="9" fill="#228B22">One class works in all themes</text>
-
-  <!-- Token count summary -->
-  <rect x="600" y="340" width="250" height="125" rx="6" fill="#6d5bd0"/>
-  <text x="725" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Token Count Summary</text>
-  <text x="615" y="384" font-size="10" fill="#ffffff">Primitive tokens: ~60 values</text>
-  <text x="615" y="404" font-size="10" fill="#ffffff">Semantic tokens: ~30 variables</text>
-  <text x="615" y="424" font-size="10" fill="#ffffff">Theme variants: 2+ (light, dark)</text>
+  <text x="62" y="380" font-size="9" fill="#1a1822">background: dark</text>
   <text x="615" y="444" font-size="10" fill="#ffffff">Component overrides: 0 needed</text>
   <text x="615" y="464" font-size="10" fill="#ffffff">Total CSS changes for new theme: 1 file</text>
 

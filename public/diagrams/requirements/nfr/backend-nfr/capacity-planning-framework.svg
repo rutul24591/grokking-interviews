@@ -65,7 +65,7 @@
   
   <!-- Utilization Trend Chart -->
   <rect x="40" y="430" width="720" height="150" rx="8" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
-  <text x="400" y="460" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Capacity Utilization Trend & Forecast</text>
+  <text x="400" y="460" font-size="18" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Capacity Utilization Trend &amp; Forecast</text>
   
   <!-- Simple trend visualization -->
   <rect x="60" y="480" width="680" height="80" rx="4" fill="#e0e0e0"/>

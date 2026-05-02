@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
   <rect width="800" height="600" fill="#ffffff"/>
-  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Fault Tolerance & Resilience Patterns</text>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Fault Tolerance &amp; Resilience Patterns</text>
   
   <!-- Circuit Breaker -->
   <rect x="40" y="60" width="340" height="170" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>

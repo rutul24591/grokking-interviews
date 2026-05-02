@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="system-ui, -apple-system, sans-serif">
   <rect width="800" height="600" fill="#ffffff"/>
-  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">WAL, Replication & Backup Deep Dive</text>
+  <text x="400" y="35" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">WAL, Replication &amp; Backup Deep Dive</text>
   
   <!-- WAL -->
   <rect x="40" y="70" width="220" height="180" rx="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="2"/>
@@ -92,7 +92,7 @@
   <text x="400" y="480" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a1a1a">RTO (Recovery Time)</text>
   <text x="400" y="510" font-size="11" text-anchor="middle" fill="#666666">Max downtime tolerance</text>
   <text x="400" y="530" font-size="11" text-anchor="middle" fill="#666666">Determined by restore speed</text>
-  <text x="400" y="550" font-size="11" text-anchor="middle" fill="#666666">+ WAL replay time</li>
+  <text x="400" y="550" font-size="11" text-anchor="middle" fill="#666666">+ WAL replay time</text>
   <text x="400" y="570" font-size="11" text-anchor="middle" fill="#666666">Target: Minutes</text>
   
   <rect x="540" y="450" width="220" height="130" rx="8" fill="#fff3e0" stroke="#ffcc80" stroke-width="2"/>

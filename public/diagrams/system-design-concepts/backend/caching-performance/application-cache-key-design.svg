@@ -73,7 +73,7 @@
   <text x="660" y="493" font-family="monospace" font-size="13" font-weight="700" fill="#16a34a">GOOD: "order:item:123" vs "user:cart:456" (full namespace)</text>
 
   <!-- ============================================ -->
-  <!-- SECTION 3: KEY SERIALIZATION & DELIMITER ESCAPING -->
+  <!-- SECTION 3: KEY SERIALIZATION &amp; DELIMITER ESCAPING -->
   <!-- ============================================ -->
 
   <text x="60" y="570" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#111827">Key Serialization &amp; Delimiter Escaping</text>

@@ -1,13 +1,13 @@
 <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .bg { fill: var(--bg-primary, #ffffff); }
-      .card { fill: var(--bg-panel, #f8fafc); }
-      .text { fill: var(--text-primary, #1e293b); }
-      .text-muted { fill: var(--text-muted, #64748b); }
-      .border { stroke: var(--border-color, #e2e8f0); }
-      .accent { fill: var(--accent-color, #3b82f6); }
-      .success { fill: var(--success-color, #22c55e); }
+      .bg { fill: #ffffff; }
+      .card { fill: #f8fafc; }
+      .text { fill: #1e293b; }
+      .text-muted { fill: #64748b; }
+      .border { stroke: #e2e8f0; }
+      .accent { fill: #3b82f6; }
+      .success { fill: #22c55e; }
     </style>
   </defs>
   
@@ -18,7 +18,7 @@
   <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Compression Best Practices</text>
   
   <!-- Server Config Column -->
-  <rect x="40" y="70" width="220" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="40" y="70" width="220" height="180" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="150" y="100" text-anchor="middle" class="text" font-size="13" font-weight="bold">Server Configuration</text>
   
   <line x1="60" y1="115" x2="240" y2="115" class="border" stroke-width="1"/>
@@ -33,7 +33,7 @@
   <text x="60" y="250" class="text-muted" font-size="9">Vary: Accept-Encoding</text>
   
   <!-- Pre-Compression Column -->
-  <rect x="290" y="70" width="220" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="290" y="70" width="220" height="180" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="400" y="100" text-anchor="middle" class="text" font-size="13" font-weight="bold">Pre-Compression</text>
   
   <line x1="310" y1="115" x2="490" y2="115" class="border" stroke-width="1"/>
@@ -48,7 +48,7 @@
   <text x="310" y="250" class="text-muted" font-size="9">Original + .gz + .br</text>
   
   <!-- CDN Column -->
-  <rect x="540" y="70" width="220" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="540" y="70" width="220" height="180" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="650" y="100" text-anchor="middle" class="text" font-size="13" font-weight="bold">CDN Setup</text>
   
   <line x1="560" y1="115" x2="740" y2="115" class="border" stroke-width="1"/>
@@ -63,7 +63,7 @@
   <text x="560" y="250" class="text-muted" font-size="9">Check Content-Encoding header</text>
   
   <!-- Monitoring Column -->
-  <rect x="40" y="280" width="340" height="120" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="40" y="280" width="340" height="120" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="210" y="310" text-anchor="middle" class="text" font-size="13" font-weight="bold">Monitoring</text>
   
   <line x1="60" y1="325" x2="360" y2="325" class="border" stroke-width="1"/>
@@ -75,7 +75,7 @@
   <text x="60" y="415" class="text-muted" font-size="9">Exclude already-compressed formats</text>
   
   <!-- Content Types Column -->
-  <rect x="420" y="280" width="340" height="120" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="420" y="280" width="340" height="120" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="590" y="310" text-anchor="middle" class="text" font-size="13" font-weight="bold">Content Types</text>
   
   <line x1="440" y1="325" x2="740" y2="325" class="border" stroke-width="1"/>
@@ -87,7 +87,7 @@
   <text x="440" y="415" class="text-muted" font-size="9">Smaller files don't benefit enough</text>
   
   <!-- Key Insight -->
-  <rect x="180" y="420" width="440" height="60" class="card" rx="6" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <rect x="180" y="420" width="440" height="60" class="card" rx="6" stroke="#3b82f6" stroke-width="2"/>
   <text x="400" y="445" text-anchor="middle" class="accent" font-size="12" font-weight="bold">Best Practice Summary</text>
   <text x="400" y="465" text-anchor="middle" class="text-muted" font-size="10">Pre-compress static assets, dynamic compression for APIs, CDN for edge delivery</text>
 </svg>

@@ -65,7 +65,7 @@
   
   <text x="820" y="230" text-anchor="middle" font-size="9" fill="#475569">Constant outflow</text>
   <text x="820" y="260" text-anchor="middle" font-size="9" fill="#475569">✓ Smooths traffic</text>
-  <text x="820" y="278" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569">✗ No bursts allowed</text>
+  <text x="820" y="278" text-anchor="middle" font-size="9" fill="#475569">✗ No bursts allowed</text>
   
   <!-- Algorithm comparison -->
   <rect x="50" y="300" width="900" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
@@ -87,7 +87,7 @@
   <text x="750" y="375" text-anchor="middle" font-size="10" fill="#475569">Simple use cases</text>
   <text x="750" y="395" text-anchor="middle" font-size="10" fill="#475569">Low-precision needs</text>
   
-  <text x="500" y="440" text-anchor="middle" font-size="10" fill="var(--text-muted, #64748b)">Key: Token Bucket is most common for API rate limiting. Sliding Window for precision. Leaky Bucket for traffic shaping.</text>
+  <text x="500" y="440" text-anchor="middle" font-size="10" fill="#64748b">Key: Token Bucket is most common for API rate limiting. Sliding Window for precision. Leaky Bucket for traffic shaping.</text>
   
   <!-- Rate limit tiers -->
   <rect x="50" y="435" width="440" height="105" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
@@ -105,10 +105,10 @@
   <text x="300" y="485" font-size="10" fill="#475569">Burst:</text>
   <text x="360" y="485" font-size="10" fill="#0f172a" font-weight="bold">10 req/sec</text>
   
-  <text x="300" y="505" font-size="10" fill="var(--text-secondary, #475569">Burst:</text>
+  <text x="300" y="505" font-size="10" fill="#475569">Burst:</text>
   <text x="360" y="505" font-size="10" fill="#0f172a" font-weight="bold">100 req/sec</text>
   
-  <text x="300" y="525" font-size="10" fill="var(--text-secondary, #475569">Burst:</text>
+  <text x="300" y="525" font-size="10" fill="#475569">Burst:</text>
   <text x="360" y="525" font-size="10" fill="#0f172a" font-weight="bold">1000 req/sec</text>
   
   <!-- Abuse protection -->

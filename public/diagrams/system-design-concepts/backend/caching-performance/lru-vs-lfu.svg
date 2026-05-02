@@ -167,7 +167,7 @@
   <text x="825" y="550" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" fill="#111827">LFU evicts C</text>
   <text x="825" y="568" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="400" fill="#374151">(lowest frequency, oldest among ties)</text>
 
-  <!-- ==================== STRENGTHS & WEAKNESSES ==================== -->
+  <!-- ==================== STRENGTHS &amp; WEAKNESSES ==================== -->
   <text x="550" y="620" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Strengths &amp; Weaknesses Comparison</text>
 
   <!-- LRU Strengths -->

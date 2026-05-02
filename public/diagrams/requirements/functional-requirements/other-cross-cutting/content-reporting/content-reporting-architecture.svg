@@ -43,7 +43,7 @@
   <rect class="analysis" x="340" y="190" width="160" height="35" rx="4"/>
   <text x="420" y="212" text-anchor="middle" class="sublabel" style="font-weight: 600">Severity Scoring</text>
   
-  <!-- Triage & Routing -->
+  <!-- Triage &amp; Routing -->
   <rect class="triage" x="590" y="50" width="180" height="180" rx="8"/>
   <text x="680" y="80" text-anchor="middle" class="text-label" style="font-size: 16px">Triage &amp; Routing</text>
   

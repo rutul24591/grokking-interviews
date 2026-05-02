@@ -103,7 +103,7 @@
   <text x="730" y="377" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#1f2937">Always revalidate; never serve stale without validation</text>
 
   <!-- ============================================= -->
-  <!-- SECTION 3: ETag & Last-Modified (bottom-left) -->
+  <!-- SECTION 3: ETag &amp; Last-Modified (bottom-left) -->
   <!-- ============================================= -->
   <rect x="30" y="410" width="510" height="290" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
   <text x="285" y="440" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827" text-anchor="middle">Revalidation Headers</text>

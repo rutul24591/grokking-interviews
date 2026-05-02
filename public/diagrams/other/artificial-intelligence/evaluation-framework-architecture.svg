@@ -38,7 +38,7 @@
 
   <path class="arrow" d="M600 145 L640 145"/>
 
-  <!-- Scoring & Comparison -->
+  <!-- Scoring &amp; Comparison -->
   <rect class="box" x="650" y="80" width="220" height="130" stroke="#059669"/>
   <text class="label" x="760" y="105" text-anchor="middle" fill="#059669">Scoring &amp; Comparison</text>
   <rect class="detail-box" x="665" y="115" width="190" height="80"/>

@@ -1,13 +1,13 @@
 <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .bg { fill: var(--bg-primary, #ffffff); }
-      .card { fill: var(--bg-panel, #f8fafc); }
-      .text { fill: var(--text-primary, #1e293b); }
-      .text-muted { fill: var(--text-muted, #64748b); }
-      .border { stroke: var(--border-color, #e2e8f0); }
-      .accent { fill: var(--accent-color, #3b82f6); }
-      .success { fill: var(--success-color, #22c55e); }
+      .bg { fill: #ffffff; }
+      .card { fill: #f8fafc; }
+      .text { fill: #1e293b; }
+      .text-muted { fill: #64748b; }
+      .border { stroke: #e2e8f0; }
+      .accent { fill: #3b82f6; }
+      .success { fill: #22c55e; }
     </style>
   </defs>
   
@@ -18,7 +18,7 @@
   <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Business Impact of Tree Shaking</text>
   
   <!-- E-commerce Case Study -->
-  <rect x="40" y="70" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="40" y="70" width="340" height="180" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="210" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">E-commerce: Lodash Tree Shaking</text>
   
   <text x="60" y="130" class="text-muted" font-size="11">Named imports from lodash-es:</text>
@@ -30,7 +30,7 @@
   <text x="60" y="240" class="text-muted" font-size="9">Configured Webpack tree shaking</text>
   
   <!-- Component Library Case Study -->
-  <rect x="420" y="70" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="420" y="70" width="340" height="180" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="590" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Component Library: sideEffects</text>
   
   <text x="440" y="130" class="text-muted" font-size="11">Proper sideEffects configuration:</text>
@@ -42,7 +42,7 @@
   <text x="440" y="240" class="text-muted" font-size="9">Provided deep imports for components</text>
   
   <!-- SaaS Case Study -->
-  <rect x="40" y="280" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="40" y="280" width="340" height="180" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="210" y="310" text-anchor="middle" class="text" font-size="14" font-weight="bold">SaaS: Icon Library Optimization</text>
   
   <text x="60" y="340" class="text-muted" font-size="11">Tree-shakeable icon imports:</text>
@@ -53,7 +53,7 @@
   <text x="60" y="435" class="text-muted" font-size="9">Individual icon imports instead of full library</text>
   
   <!-- Open Source Case Study -->
-  <rect x="420" y="280" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <rect x="420" y="280" width="340" height="180" class="card" rx="6" stroke="#e2e8f0" stroke-width="1"/>
   <text x="590" y="310" text-anchor="middle" class="text" font-size="14" font-weight="bold">Open Source: Dual Package</text>
   
   <text x="440" y="340" class="text-muted" font-size="11">ESM + CommonJS builds:</text>
@@ -65,6 +65,6 @@
   <text x="440" y="450" class="text-muted" font-size="9">sideEffects: false for ESM build</text>
   
   <!-- Key Insight -->
-  <rect x="180" y="470" width="440" height="25" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <rect x="180" y="470" width="440" height="25" class="card" rx="4" stroke="#3b82f6" stroke-width="2"/>
   <text x="400" y="488" text-anchor="middle" class="accent" font-size="11" font-weight="bold">Tree shaking reduces bundle sizes 30-70% → faster loads, better UX</text>
 </svg>

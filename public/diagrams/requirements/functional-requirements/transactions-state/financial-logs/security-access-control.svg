@@ -60,19 +60,19 @@
   <rect class="encryption" x="70" y="320" width="200" height="70" rx="4"/>
   <text x="170" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">Layer 1: Encryption</text>
   <text x="170" y="365" text-anchor="middle" class="sublabel">Protect Data</text>
-  <text x="170" y="380" text-anchor="middle" class="sublabel">At Rest & In Transit</text>
+  <text x="170" y="380" text-anchor="middle" class="sublabel">At Rest &amp; In Transit</text>
   
   <!-- Layer 2 -->
   <rect class="access" x="300" y="320" width="200" height="70" rx="4"/>
   <text x="400" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">Layer 2: Access Control</text>
   <text x="400" y="365" text-anchor="middle" class="sublabel">Control Access</text>
-  <text x="400" y="380" text-anchor="middle" class="sublabel">Authentication & Authorization</text>
+  <text x="400" y="380" text-anchor="middle" class="sublabel">Authentication &amp; Authorization</text>
   
   <!-- Layer 3 -->
   <rect class="audit" x="530" y="320" width="200" height="70" rx="4"/>
   <text x="630" y="345" text-anchor="middle" class="sublabel" style="font-weight: 600">Layer 3: Audit Trails</text>
   <text x="630" y="365" text-anchor="middle" class="sublabel">Log Access</text>
-  <text x="630" y="380" text-anchor="middle" class="sublabel">Log Modifications & Deletions</text>
+  <text x="630" y="380" text-anchor="middle" class="sublabel">Log Modifications &amp; Deletions</text>
   
   <!-- Layer 4 -->
   <rect class="encryption" x="760" y="320" width="170" height="70" rx="4"/>
