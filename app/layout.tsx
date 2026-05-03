@@ -37,7 +37,9 @@ const firaCode = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://interviewprep.studio'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://interviewprep.studio",
+  ),
   title: "Interview Prep Studio",
   description:
     "Master system design and technical interviews with deep-dive articles, architecture diagrams, and real-world code examples.",
@@ -71,9 +73,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${sora.variable} ${firaCode.variable} antialiased`}
-      >
+      <body className={`${sora.variable} ${firaCode.variable} antialiased`}>
         <WebVitalsReporter />
         <AppLayout>{children}</AppLayout>
       </body>
