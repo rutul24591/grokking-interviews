@@ -1,1 +1,17 @@
-public class Solution { public static void main(String[] args) { throw new RuntimeException("TODO"); } }
+import java.util.Arrays;
+
+public class Solution {
+  static boolean isAnagramSort(String s, String t) {
+    if (s.length() != t.length()) return false;
+    char[] a = s.toCharArray();
+    char[] b = t.toCharArray();
+    Arrays.sort(a);
+    Arrays.sort(b);
+    return Arrays.equals(a, b);
+  }
+
+  public static void main(String[] args) {
+    System.out.println(isAnagramSort("anagram", "nagaram"));
+    System.out.println(isAnagramSort("rat", "car"));
+  }
+}
