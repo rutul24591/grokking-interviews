@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function ContextMenuArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable context menu component for a large-scale React
           application. The menu appears when the user triggers it via right-click on a
           target element, long-press on touch devices, or keyboard shortcuts (Menu key,
@@ -49,7 +50,7 @@ export default function ContextMenuArticle() {
           restore focus to the trigger element on close. The system must support menu items
           with labels, icons, keyboard shortcut hints, separators, disabled states with
           explanatory tooltips, and sub-menu indicators.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -57,14 +58,14 @@ export default function ContextMenuArticle() {
           <li>
             The application is a React 19+ SPA with concurrent mode support.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Context menus can be triggered on any element in the application (table rows,
             file items, text selections, custom controls).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Menu items are statically defined per trigger or dynamically fetched based on
             the context (e.g., selected items in a list).
-          </li>
+          </HighlightBlock>
           <li>
             Sub-menus can be nested up to 3 levels deep.
           </li>
@@ -75,10 +76,10 @@ export default function ContextMenuArticle() {
             The menu must close on outside click, Escape key, or when a new context menu
             opens.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Maximum menu width is constrained (e.g., 280px) to prevent overly wide menus
             on large screens.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -88,30 +89,30 @@ export default function ContextMenuArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trigger Detection:</strong> Menu opens on <code>contextmenu</code>
             event (right-click), long-press (500ms on touch devices), and keyboard
             triggers (Menu key, Shift+F10).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Positioning:</strong> Menu appears near the cursor or trigger element.
             Viewport boundary detection prevents overflow — the menu flips to the opposite
             side if it would extend beyond the viewport edges.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Menu Items:</strong> Each item supports a label, optional icon,
             optional keyboard shortcut hint (e.g., <code>Ctrl+C</code>), separator/divider
             between groups, and sub-menu indicator arrow.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Disabled Items:</strong> Items can be disabled (grayed out,
             non-interactive) with a tooltip explaining why the action is unavailable.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard Navigation:</strong> ArrowUp/ArrowDown moves focus between
             items, Enter/Space activates the focused item, Escape closes the menu,
             Home/End jump to first/last item.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Focus Trap:</strong> While the menu is open, focus cycles within the
             menu. On close, focus returns to the element that triggered the menu.
@@ -134,12 +135,12 @@ export default function ContextMenuArticle() {
             <strong>Outside Click:</strong> Clicking outside the menu closes it and all
             open sub-menus.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Menu uses <code>role=&quot;menu&quot;</code>,
             items use <code>role=&quot;menuitem&quot;</code>, sub-menu triggers use
             <code>aria-haspopup=&quot;menu&quot;</code> with
             <code>aria-expanded</code> and <code>aria-controls</code>.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
@@ -200,7 +201,7 @@ export default function ContextMenuArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate <strong>trigger detection</strong>,{" "}
           <strong>state management</strong>, and <strong>rendering</strong> into
           composable layers. A trigger component captures the <code>contextmenu</code>,
@@ -211,36 +212,36 @@ export default function ContextMenuArticle() {
           navigation, and manages focus trapping. Sub-menus are managed by a dedicated
           module that handles fly-out positioning, nested stacks, and ArrowRight/ArrowLeft
           navigation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Local state per trigger component:</strong> Each trigger manages its
             own menu state via <code>useState</code>. This works for simple cases but breaks
             when multiple triggers exist — there is no coordination to ensure only one menu
             is open. A global store is necessary for singleton behavior.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Event-based pub/sub:</strong> An event emitter could open/close menus
             without a store. However, React&apos;s rendering model benefits from reactive
             state — Zustand provides subscriptions that automatically trigger re-renders
             when state changes, whereas pub/sub requires manual synchronization.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS-only context menu:</strong> Using <code>:active</code> and
             <code>:focus-within</code> pseudo-classes to show/hide menus avoids JavaScript
             entirely. This approach cannot handle keyboard navigation, focus trapping,
             viewport boundary detection, or sub-menu fly-outs with flip logic.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + Portal is optimal:</strong> Zustand provides a singleton
           store accessible from any component without provider wrapping. The portal rendering
           strategy ensures the menu escapes CSS constraints of ancestor elements. This pattern
           is used by production libraries like Floating UI and Radix UI&apos;s context menu.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -252,7 +253,7 @@ export default function ContextMenuArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Menu Types &amp; Interfaces (<code>context-menu-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>MenuItem</code> interface with fields for <code>id</code>,
             <code>label</code>, optional <code>icon</code>, optional <code>shortcut</code>
             hint string, optional <code>disabled</code> flag with <code>disabledReason</code>,
@@ -262,7 +263,7 @@ export default function ContextMenuArticle() {
             <code>items</code>, <code>focusedIndex</code>, <code>triggerRef</code>, and
             <code>subMenuStack</code>. The <code>MenuPosition</code> type represents the
             computed x/y coordinates with flip direction flags.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -279,13 +280,13 @@ export default function ContextMenuArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Position Calculator (<code>menu-position-calculator.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Pure utility function that computes the optimal menu position given cursor
             coordinates, menu dimensions, and viewport dimensions. It checks all four edges
             (top, bottom, left, right) and flips the position if the menu would overflow.
             A configurable margin (default: 8px) ensures the menu does not touch the
             cursor directly. Returns <code>&lbrace; x, y, flipX, flipY &rbrace;</code>.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -300,23 +301,23 @@ export default function ContextMenuArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Keyboard Handler (<code>menu-keyboard-handler.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Processes keyboard events within the menu. ArrowUp/ArrowDown move focus between
             non-disabled items (skipping separators). Enter/Space triggers the focused
             item&apos;s <code>onSelect</code>. Escape closes the entire menu and all
             sub-menus. Home/End jump to the first/last non-disabled item. ArrowRight opens
             sub-menus, ArrowLeft closes them.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Trigger Hook (<code>use-context-menu.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             React hook that attaches <code>contextmenu</code> event listeners, manages a
             long-press timer for touch devices (500ms threshold), and captures keyboard
             triggers (Menu key, Shift+F10). On trigger, it calls the position calculator,
             updates the store, and returns a ref to attach to any element.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -331,7 +332,7 @@ export default function ContextMenuArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">8. Component Layer</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <strong>ContextMenuTrigger</strong> — wrapper component that uses the
             <code>useContextMenu</code> hook and renders children with the attached ref.
             <strong>ContextMenu</strong> — portal-rendered menu container with focus trap,
@@ -341,7 +342,7 @@ export default function ContextMenuArticle() {
             <strong>ContextMenuSeparator</strong> — horizontal divider between item groups.
             <strong>ContextMenuSubmenu</strong> — fly-out sub-menu portal with nested items
             and independent focus management.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
@@ -405,16 +406,16 @@ export default function ContextMenuArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The execution follows a unidirectional flow: trigger events update the store,
           store subscriptions drive rendering, and user interactions within the menu
           dispatch back to the store. The position calculator and keyboard handler are pure
           functions that take inputs and return outputs — they have no side effects and are
           independently testable.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Position Calculation Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Given cursor position <code>(cursorX, cursorY)</code>, the calculator checks if
           <code>cursorX + menuWidth + margin</code> exceeds <code>viewportWidth</code>. If
           so, it sets <code>flipX = true</code> and positions the menu at
@@ -423,35 +424,35 @@ export default function ContextMenuArticle() {
           it sets <code>flipY = true</code> and positions at
           <code>cursorY - menuHeight - margin</code>. This ensures the menu is always fully
           visible regardless of cursor position.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Sub-menu Stack Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When ArrowRight is pressed on a sub-menu item, the <code>submenuManager</code>
           creates a new sub-menu entry with the child items, computes the fly-out position
           (right side of parent item, or left if near viewport edge), and pushes it to the
           stack. The stack depth is limited to 3 to prevent infinite nesting. When ArrowLeft
           is pressed, the top entry is popped and focus returns to the parent item index.
           When the main menu closes, the entire stack is cleared.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Focus Trap Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the menu opens, <code>document.activeElement</code> is saved as the
           previously focused element. A <code>keydown</code> listener intercepts the Tab
           key — if the user tabs past the last focusable item, focus wraps to the first.
           This creates a closed focus loop. On close, the saved element is focused if it
           still exists in the DOM. If the trigger element was removed, focus falls back to
           <code>document.body</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Corner triggers:</strong> When the cursor is near a corner, both X and
             Y flip flags may be set. The calculator handles this independently — the menu
             appears in the quadrant with the most available space.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Dynamic item changes:</strong> If menu items change while the menu is
             open (e.g., an action becomes available), the store updates the items array.
@@ -476,10 +477,10 @@ export default function ContextMenuArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
@@ -502,14 +503,14 @@ export default function ContextMenuArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (context-menu-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages open/close state, position, items, focused index, and sub-menu
           stack. <code>openMenu</code> resets all state and stores the trigger ref for focus
           restoration. <code>closeMenu</code> clears the sub-menu stack, restores focus, and
           resets state. <code>setFocusedIndex</code> updates the focused item (used by
           keyboard handler and hover events). <code>pushSubMenu</code> and{" "}
           <code>popSubMenu</code> manage the sub-menu stack with depth limiting.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Position Calculator (menu-position-calculator.ts)</h3>
         <p>
@@ -530,23 +531,23 @@ export default function ContextMenuArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Keyboard Handler (menu-keyboard-handler.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Processes keyboard events within the menu context. ArrowUp/ArrowDown find the next
           non-disabled, non-separator item and update the focused index. Enter/Space call
           the focused item&apos;s <code>onSelect</code>. Escape closes the entire menu.
           Home/End find the first/last valid item. ArrowRight opens sub-menus, ArrowLeft
           closes them. All operations skip disabled items and separators in focus order.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Trigger Hook (use-context-menu.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hook that returns a ref to attach to any element. On mount, it attaches a
           <code>contextmenu</code> listener that prevents default, calculates position, and
           opens the menu. For touch devices, it starts a 500ms timer on
           <code>touchstart</code> — if the timer fires before <code>touchend</code>, it
           opens the menu at the touch position and prevents the native menu. For keyboard,
           it listens for the Menu key (code: <code>ContextMenu</code>) and Shift+F10.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: Outside Click Hook (use-outside-click.ts)</h3>
         <p>
@@ -558,7 +559,7 @@ export default function ContextMenuArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: Component Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>ContextMenuTrigger</strong> wraps children and attaches the ref from
           <code>useContextMenu</code>. <strong>ContextMenu</strong> renders via Portal with
           SSR-safe mounting, focus trap, entrance/exit animations (opacity + scale), and
@@ -567,7 +568,7 @@ export default function ContextMenuArticle() {
           <strong>ContextMenuSeparator</strong> renders a horizontal divider.{" "}
           <strong>ContextMenuSubmenu</strong> is a secondary portal-rendered menu for nested
           items with independent position calculation.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -613,26 +614,26 @@ export default function ContextMenuArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is the number of menu items (typically 5-15) and{" "}
           <code>d</code> is the sub-menu depth (max 3). All operations are effectively
           constant-time in practice.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Keyboard navigation scanning:</strong> ArrowDown scans forward through
             items to find the next non-disabled, non-separator item. With 50+ items this
             could be O(n). Mitigation: maintain a separate index of focusable item positions
             in the store, updated when items change.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Portal re-renders:</strong> If the store subscriber selects the entire
             state object, every state change re-renders the entire menu. Mitigation: use
             Zustand selectors to subscribe to individual fields (e.g., only
             <code>focusedIndex</code>), so only the affected item re-renders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Animation jank:</strong> Animating layout properties triggers expensive
             recalculations. Mitigation: animate only <code>opacity</code> and{" "}
@@ -642,11 +643,11 @@ export default function ContextMenuArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Selector-based subscriptions:</strong> Each ContextMenuItem subscribes
             to its own index match with <code>focusedIndex</code>. Moving focus only
             re-renders the previously focused and newly focused items.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy sub-menu rendering:</strong> Sub-menus are not rendered in the DOM
             until they are opened. This keeps the initial menu lightweight.
@@ -656,11 +657,11 @@ export default function ContextMenuArticle() {
             scheduled via <code>requestAnimationFrame</code> to ensure it runs after the
             browser paint, avoiding frame drops.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce position calculation:</strong> If the trigger position changes
             rapidly (e.g., user drags while holding right-click), debounce the position
             calculation to avoid thrashing.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -669,13 +670,13 @@ export default function ContextMenuArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Menu item labels may contain user-generated content (e.g., file names, user
           names). These must be rendered as text content, not HTML, to prevent XSS. React
           automatically escapes string content, but if custom React nodes are allowed as
           item content, they must come from trusted sources. Shortcut hint strings should
           also be sanitized if derived from user input.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -717,15 +718,15 @@ export default function ContextMenuArticle() {
               Each item uses <code>role=&quot;menuitem&quot;</code> with{" "}
               <code>tabIndex=&quot;-1&quot;</code> (managed focus, not tab-order).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Sub-menu triggers use <code>aria-haspopup=&quot;menu&quot;</code>,{" "}
               <code>aria-expanded=&quot;true&quot;</code> when open, and{" "}
               <code>aria-controls</code> pointing to the sub-menu element ID.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               Disabled items use <code>aria-disabled=&quot;true&quot;</code> with a
               <code>title</code> attribute for the tooltip explanation.
-            </li>
+            </HighlightBlock>
             <li>
               Separators use <code>role=&quot;separator&quot;</code> with
               <code>aria-orientation=&quot;horizontal&quot;</code>.
@@ -734,14 +735,14 @@ export default function ContextMenuArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Focus Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Proper focus management is critical for accessibility. When the menu opens, focus
           is programmatically moved to the first menu item (not the container). This ensures
           screen reader users immediately hear the menu content. When the menu closes, focus
           returns to the trigger element. If the trigger element no longer exists in the DOM
           (e.g., it was removed during the menu&apos;s open state), focus falls back to
           <code>document.body</code> to prevent focus loss.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
@@ -750,11 +751,11 @@ export default function ContextMenuArticle() {
             time. Opening a new menu automatically closes the previous one. This prevents
             menu stacking abuse from programmatic triggers.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sub-menu depth limit:</strong> Sub-menu nesting is capped at 3 levels
             to prevent excessively deep navigation trees that are confusing for keyboard and
             screen reader users.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -764,17 +765,17 @@ export default function ContextMenuArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Position calculator:</strong> Test all flip scenarios — cursor at
             top-left (no flip), bottom-right (flip both), top-right (flip X), bottom-left
             (flip Y). Verify margin is correctly applied.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard handler:</strong> Test ArrowDown skips disabled items and
             separators, ArrowUp wraps to the last item from the first, Enter calls
             <code>onSelect</code>, Escape returns the correct action, Home/End jump
             correctly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store actions:</strong> Test openMenu sets all fields correctly,
             closeMenu clears everything and calls focus restoration, pushSubMenu adds to
@@ -794,11 +795,11 @@ export default function ContextMenuArticle() {
             button, fire contextmenu event at (100, 100), assert menu appears in DOM at
             correct position. Fire Escape key, assert menu is removed and button is focused.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard navigation:</strong> Open menu, fire ArrowDown 3 times, assert
             focusedIndex is 3 (skipping any disabled items). Fire Enter, assert
             <code>onSelect</code> was called for that item.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sub-menu flow:</strong> Open menu, focus a sub-menu item, fire
             ArrowRight, assert sub-menu renders. Fire ArrowLeft, assert sub-menu is removed
@@ -825,14 +826,14 @@ export default function ContextMenuArticle() {
             Trigger element removed while menu is open: verify focus restoration falls back
             to <code>document.body</code> without errors.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Menu with 50+ items: verify keyboard navigation performance remains acceptable,
             no memory leaks on repeated open/close.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered menu, verify role
             attributes, aria-disabled, aria-haspopup, and keyboard navigation.
-          </li>
+          </HighlightBlock>
           <li>
             Viewport boundary: simulate small viewport (mobile), verify menu flips correctly
             and does not overflow.
@@ -858,11 +859,11 @@ export default function ContextMenuArticle() {
             the menu clips off-screen when triggered near edges. Interviewers expect
             candidates to discuss flip logic or at minimum clamping.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No focus management:</strong> Opening a menu without moving focus into
             it means keyboard users cannot navigate. Closing without returning focus to the
             trigger leaves keyboard focus stranded. This is a critical accessibility failure.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Animating layout properties:</strong> Animating <code>left</code>,{" "}
             <code>top</code>, or <code>width</code> triggers layout recalculations.
@@ -898,19 +899,19 @@ export default function ContextMenuArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Hover vs Click for Sub-menu Opening</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Opening sub-menus on hover provides a fast, fluid experience for mouse users.
             However, it creates challenges for touch devices (no hover equivalent) and
             keyboard users (requires ArrowRight). The best approach supports both: hover
             opens after a short delay (150ms) to prevent accidental openings, ArrowRight
             opens for keyboard users, and tap toggles for touch. The delay prevents
             sub-menus from flashing as the mouse crosses over them en route to another target.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Cursor-based vs Anchor-based Positioning</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Cursor-based positioning (menu appears at the mouse position) feels natural for
             right-click menus. However, for keyboard-triggered menus (Menu key, Shift+F10),
             there is no cursor position. The fallback is to position the menu at the trigger
@@ -918,7 +919,7 @@ export default function ContextMenuArticle() {
             ensures the menu appears in a sensible location regardless of trigger method.
             The trade-off is implementing two positioning strategies and choosing the right
             one based on trigger type.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -944,7 +945,7 @@ export default function ContextMenuArticle() {
               Q: How would you implement keyboard shortcut hints that actually work (e.g.,
               pressing Ctrl+C triggers the &quot;Copy&quot; menu item)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Add a <code>shortcut</code> field with a standardized format (e.g.,{" "}
               <code>&quot;Ctrl+C&quot;</code>). Register a global keydown listener that
               parses the shortcut string and matches it against the pressed keys. When a
@@ -952,21 +953,21 @@ export default function ContextMenuArticle() {
               is separate from the menu&apos;s own keyboard navigation — shortcuts work even
               when the menu is closed. Use a library like Mousetrap or implement a simple
               key-matching utility.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How would you support virtualized menus for 100+ items?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Wrap the menu items container with a virtualization library like{" "}
               <code>@tanstack/react-virtual</code>. Calculate the total height based on
               item count and item height, then render only the items visible in the
               viewport (typically 10-15). Set a max-height on the menu container and
               <code>overflow-y: auto</code>. The focused index management remains the same —
               virtualization only affects rendering, not the logical focus order.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

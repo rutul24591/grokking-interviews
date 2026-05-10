@@ -1,0 +1,87 @@
+<svg viewBox="0 0 860 390" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="390" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Comments System — Threading, Lazy Loading, Moderation, and Real-time</text>
+
+  <!-- Thread data model -->
+  <rect x="20" y="45" width="260" height="320" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Comment Data Model</text>
+
+  <rect x="35" y="78" width="230" height="90" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Comment Record</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">id, parentId (null = top-level)</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">rootId (root of thread)</text>
+  <text x="150" y="143" text-anchor="middle" font-size="10" fill="#1565c0">depth (0=top, 1=reply, max 3)</text>
+  <text x="150" y="158" text-anchor="middle" font-size="10" fill="#1565c0">likeCount, replyCount</text>
+
+  <rect x="35" y="178" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="197" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Thread Fetch Strategy</text>
+  <text x="150" y="213" text-anchor="middle" font-size="10" fill="#1565c0">Fetch top-level + top 3 replies</text>
+  <text x="150" y="228" text-anchor="middle" font-size="10" fill="#1565c0">"Show N more replies" lazy-loads</text>
+
+  <rect x="35" y="253" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="272" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Sort Modes</text>
+  <text x="150" y="288" text-anchor="middle" font-size="10" fill="#1565c0">Top: sort by likeCount DESC</text>
+  <text x="150" y="303" text-anchor="middle" font-size="10" fill="#1565c0">Newest: sort by createdAt DESC</text>
+
+  <rect x="35" y="328" width="230" height="30" rx="4" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="150" y="348" text-anchor="middle" font-size="10" fill="#0d47a1">Adjacency list — efficient for max depth 3</text>
+
+  <!-- Optimistic + real-time -->
+  <rect x="295" y="45" width="280" height="320" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Post &amp; Real-time</text>
+
+  <rect x="310" y="78" width="250" height="70" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Optimistic Post</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">Add comment with temp ID instantly</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">POST /comments → real ID from server</text>
+  <text x="435" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">Replace temp ID, or revert on error</text>
+
+  <rect x="310" y="158" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="177" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Real-time New Comments</text>
+  <text x="435" y="192" text-anchor="middle" font-size="10" fill="#2e7d32">WebSocket: new comment event</text>
+  <text x="435" y="207" text-anchor="middle" font-size="10" fill="#2e7d32">Prepend if sort=Newest</text>
+  <text x="435" y="220" text-anchor="middle" font-size="10" fill="#2e7d32">Update replyCount on parent</text>
+
+  <rect x="310" y="233" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Edit / Delete</text>
+  <text x="435" y="268" text-anchor="middle" font-size="10" fill="#2e7d32">Soft delete: show "deleted" placeholder</text>
+  <text x="435" y="283" text-anchor="middle" font-size="10" fill="#2e7d32">Keep for reply threading context</text>
+
+  <rect x="310" y="308" width="250" height="50" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="327" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Like / React</text>
+  <text x="435" y="342" text-anchor="middle" font-size="10" fill="#2e7d32">Optimistic toggle — debounce 500ms</text>
+  <text x="435" y="356" text-anchor="middle" font-size="10" fill="#2e7d32">Batch PATCH to server</text>
+
+  <!-- Moderation + spam -->
+  <rect x="590" y="45" width="250" height="320" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">Moderation</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Pre-publish Filters</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#c62828">Profanity filter (word list)</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#c62828">URL spam detection (regex)</text>
+  <text x="715" y="141" text-anchor="middle" font-size="10" fill="#c62828">Rate limit: 5 comments/min</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">User Reporting</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#c62828">Flag as spam/abuse/off-topic</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#c62828">Auto-hide after 5 reports</text>
+  <text x="715" y="217" text-anchor="middle" font-size="10" fill="#c62828">Mod review queue</text>
+
+  <rect x="605" y="228" width="220" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="715" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Author Controls</text>
+  <text x="715" y="263" text-anchor="middle" font-size="10" fill="#c62828">Pin comment to top</text>
+  <text x="715" y="278" text-anchor="middle" font-size="10" fill="#c62828">Lock thread (no new comments)</text>
+  <text x="715" y="292" text-anchor="middle" font-size="10" fill="#c62828">Delete any comment in thread</text>
+
+  <rect x="605" y="303" width="220" height="55" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="715" y="322" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">LLM Moderation</text>
+  <text x="715" y="337" text-anchor="middle" font-size="10" fill="#c62828">Async review: classify toxic</text>
+  <text x="715" y="352" text-anchor="middle" font-size="10" fill="#c62828">Human review for borderline</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

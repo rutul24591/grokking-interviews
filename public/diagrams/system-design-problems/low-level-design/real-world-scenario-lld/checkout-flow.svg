@@ -1,0 +1,83 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="400" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Checkout Flow — Multi-Step State, Payment, and Error Recovery</text>
+
+  <!-- Steps flow -->
+  <rect x="20" y="45" width="820" height="60" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="65" font-size="11" font-weight="bold" fill="#0d47a1">Checkout Steps (each step validated before advance — no skipping)</text>
+  <rect x="35" y="73" width="110" height="25" rx="4" fill="#1976d2"/>
+  <text x="90" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="white">1. Cart Review</text>
+  <line x1="145" y1="85" x2="163" y2="85" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="165" y="73" width="110" height="25" rx="4" fill="#1976d2"/>
+  <text x="220" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="white">2. Shipping</text>
+  <line x1="275" y1="85" x2="293" y2="85" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="295" y="73" width="110" height="25" rx="4" fill="#1976d2"/>
+  <text x="350" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="white">3. Payment</text>
+  <line x1="405" y1="85" x2="423" y2="85" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="425" y="73" width="110" height="25" rx="4" fill="#1976d2"/>
+  <text x="480" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="white">4. Review</text>
+  <line x1="535" y1="85" x2="553" y2="85" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="555" y="73" width="110" height="25" rx="4" fill="#2e7d32"/>
+  <text x="610" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="white">5. Confirm</text>
+  <line x1="665" y1="85" x2="683" y2="85" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="685" y="73" width="130" height="25" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="750" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">6. Order Placed ✓</text>
+
+  <!-- Payment section -->
+  <rect x="20" y="125" width="415" height="240" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+  <text x="30" y="145" font-size="12" font-weight="bold" fill="#b71c1c">Payment — PCI Isolation</text>
+
+  <rect x="30" y="153" width="390" height="65" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="225" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Stripe / Payment Processor Iframe</text>
+  <text x="225" y="188" text-anchor="middle" font-size="10" fill="#c62828">Card fields in sandboxed iframe — card data never touches your server</text>
+  <text x="225" y="203" text-anchor="middle" font-size="10" fill="#c62828">PCI DSS: minimize scope by using hosted fields</text>
+
+  <rect x="30" y="228" width="185" height="55" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="122" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Payment Intent</text>
+  <text x="122" y="262" text-anchor="middle" font-size="10" fill="#c62828">Create server-side before render</text>
+  <text x="122" y="277" text-anchor="middle" font-size="10" fill="#c62828">client_secret → confirm client</text>
+
+  <rect x="225" y="228" width="200" height="55" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="325" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">3DS Authentication</text>
+  <text x="325" y="262" text-anchor="middle" font-size="10" fill="#c62828">Bank popup for strong auth</text>
+  <text x="325" y="277" text-anchor="middle" font-size="10" fill="#c62828">Handle requires_action status</text>
+
+  <rect x="30" y="294" width="390" height="55" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="225" y="313" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Idempotency on Submit</text>
+  <text x="225" y="329" text-anchor="middle" font-size="10" fill="#c62828">Disable button after first click — prevent double-charge</text>
+  <text x="225" y="344" text-anchor="middle" font-size="10" fill="#c62828">Idempotency-Key header on order creation request</text>
+
+  <!-- Error recovery + state -->
+  <rect x="448" y="125" width="392" height="240" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="458" y="145" font-size="12" font-weight="bold" fill="#1b5e20">State Persistence and Error Recovery</text>
+
+  <rect x="458" y="153" width="370" height="55" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="643" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Step State Preservation</text>
+  <text x="643" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">All form values in sessionStorage on every change</text>
+  <text x="643" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Back button restores without re-entering data</text>
+
+  <rect x="458" y="218" width="175" height="60" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="545" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Network Failure</text>
+  <text x="545" y="252" text-anchor="middle" font-size="10" fill="#2e7d32">Retry with backoff</text>
+  <text x="545" y="267" text-anchor="middle" font-size="10" fill="#2e7d32">Payment: check status first</text>
+
+  <rect x="645" y="218" width="185" height="60" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="737" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Out of Stock at Confirm</text>
+  <text x="737" y="252" text-anchor="middle" font-size="10" fill="#2e7d32">Return to cart step</text>
+  <text x="737" y="267" text-anchor="middle" font-size="10" fill="#2e7d32">Highlight unavailable items</text>
+
+  <rect x="458" y="290" width="370" height="60" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="643" y="309" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Order Confirmation</text>
+  <text x="643" y="325" text-anchor="middle" font-size="10" fill="#2e7d32">Order ID stored before redirect — safe to navigate away</text>
+  <text x="643" y="340" text-anchor="middle" font-size="10" fill="#2e7d32">Idempotent confirmation page (reloadable)</text>
+
+  <!-- Note bar -->
+  <rect x="20" y="378" width="820" height="18" rx="3" fill="#fff9c4" stroke="#f9a825" stroke-width="1"/>
+  <text x="430" y="391" text-anchor="middle" font-size="10" fill="#e65100">Checkout locked during payment processing — disable navigation, show spinner, prevent accidental double-submit</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

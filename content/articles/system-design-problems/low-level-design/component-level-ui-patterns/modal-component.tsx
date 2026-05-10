@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function ModalComponentArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable Modal (dialog) component for a large-scale
           React application. The modal must support multiple types — confirmation
           dialogs (yes/no), alerts (OK only), and custom content modals (arbitrary
@@ -51,7 +52,7 @@ export default function ModalComponentArticle() {
           the WAI-ARIA dialog pattern for screen-reader accessibility. The
           component must be SSR-safe, support entrance/exit animations, and clean
           up all side effects on unmount.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -59,23 +60,23 @@ export default function ModalComponentArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Only one modal is visible at a time, but the architecture should support
             z-index stacking for future multi-modal scenarios.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Modal types include: confirm (title, message, yes/no actions), alert
             (title, message, OK only), and custom (arbitrary React content with
             optional header/footer).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The system must support full accessibility: focus trap, Escape dismissal,
             ARIA dialog semantics, and screen-reader announcements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The modal must render via a React Portal to <code>document.body</code> to
             escape parent CSS constraints.
-          </li>
+          </HighlightBlock>
           <li>
             Body scroll must be locked when the modal is open (prevent background
             scrolling while modal content scrolls independently).
@@ -97,22 +98,22 @@ export default function ModalComponentArticle() {
             (e.g., <code>modal.confirm()</code>, <code>modal.alert()</code>,
             <code>modal.open()</code>) to open a modal from anywhere in the app.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Modal Types:</strong> The system supports three modal types:
             <em>confirm</em> (title, message, Yes/No buttons, returns boolean
             promise), <em>alert</em> (title, message, OK button), and
             <em>custom</em> (arbitrary React node content with optional header
             and footer).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Dismissal:</strong> Modals dismiss on: backdrop click, Escape
             key press, explicit close button click, or programmatic API call.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Focus Trap:</strong> While the modal is open, Tab and
             Shift+Tab must cycle focus only among focusable elements within the
             modal. Focus must return to the previously focused element on close.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll Lock:</strong> The body element must have
             <code>overflow: hidden</code> applied while the modal is open to
@@ -142,12 +143,12 @@ export default function ModalComponentArticle() {
             visible jank. Animations must run at 60fps using GPU-accelerated
             properties (transform, opacity).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Full WAI-ARIA dialog pattern compliance:
             <code>role=&quot;dialog&quot;</code>, <code>aria-modal=&quot;true&quot;</code>,
             <code>aria-labelledby</code> pointing to the title, focus trap, Escape
             dismissal, focus restoration on close.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for modal options,
             types, custom content, and promise-based results.
@@ -157,10 +158,10 @@ export default function ModalComponentArticle() {
             SSR (modals are inherently client-side interactions). No hydration
             mismatches.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Cleanup:</strong> All event listeners, timers, and
             side effects must be cleaned up on unmount to prevent memory leaks.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
@@ -178,10 +179,10 @@ export default function ModalComponentArticle() {
             Modal with content taller than the viewport — modal content area must
             scroll independently, header and footer remain sticky.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             No focusable elements inside the modal — the modal container itself
             must be focusable to satisfy the focus-trap requirement.
-          </li>
+          </HighlightBlock>
           <li>
             Multiple rapid modal open calls — only the last one should render (or
             queue them if multi-modal support is desired).
@@ -196,7 +197,7 @@ export default function ModalComponentArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>modal state management</strong> from
           the <strong>modal rendering</strong> using a global store (Zustand) and a
           portal-based rendering strategy. The store manages the current modal state
@@ -205,39 +206,39 @@ export default function ModalComponentArticle() {
           subscribes to the store, renders the appropriate modal type with
           entrance/exit animations, manages the focus trap, and handles backdrop
           dismissal.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API + useReducer:</strong> Viable but requires wrapping
             the app in a Provider and consuming context in every modal-triggering
             component. Zustand provides the same functionality with less boilerplate
             and better performance (selectors prevent unnecessary re-renders).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Imperative ref-based modal:</strong> Exposing an imperative handle
             via <code>useImperativeHandle</code> and managing modal state in a parent
             component. This creates tight coupling between the modal and its parent,
             making it difficult to trigger modals from deeply nested components or
             non-React code (e.g., API interceptors).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Third-party libraries (e.g., Radix Dialog, Headless UI):</strong>
             Production-ready and accessible, but interviewers expect candidates to
             understand the underlying mechanics (focus trap, portal, ARIA attributes,
             scroll lock) rather than delegating to a library.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + Portal is optimal:</strong> Zustand provides a
           lightweight, selector-based global store with zero boilerplate. The modal
           container renders via React Portal to a DOM node outside the application
           tree, ensuring the modal is always on top (z-index isolation) and unaffected
           by parent component CSS (overflow: hidden, position: relative). This pattern
           is used by production libraries like Radix UI and Headless UI.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -308,13 +309,13 @@ export default function ModalComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Focus Trap Hook (<code>use-focus-trap.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Custom React hook that implements keyboard focus trapping within a modal
             container. Uses <code>useEffect</code> to attach a <code>keydown</code> listener
             that intercepts Tab/Shift+Tab and cycles focus among all focusable elements
             within the container. Stores the previously focused element and restores
             focus on cleanup. See the Example tab for the complete implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -329,13 +330,13 @@ export default function ModalComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Modal Component (<code>modal-component.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The modal panel itself. Renders the appropriate UI based on modal type
             (confirm: title + message + Yes/No buttons; alert: title + message + OK
             button; custom: arbitrary content with optional header/footer). Manages
             entrance/exit animations, calls the focus trap hook, and sets ARIA
             attributes. See the Example tab for the complete implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -367,7 +368,7 @@ export default function ModalComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Focus Trap Mechanics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The focus trap is the most complex part of the modal. On open, it stores a
           reference to the currently focused element (the &quot;trigger&quot; element).
           It then identifies all focusable elements within the modal (buttons, inputs,
@@ -376,7 +377,7 @@ export default function ModalComponentArticle() {
           so, it wraps focus to the first focusable element inside. Shift+Tab does the
           reverse, wrapping to the last focusable element. On close, focus is restored
           to the trigger element.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/modal-component-architecture.svg"
@@ -401,18 +402,18 @@ export default function ModalComponentArticle() {
           <li>
             ModalContainer applies scroll lock to body, mounts via portal.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             ModalPanel renders with entrance animation (scale + fade), focus trap hook
             activates, focus moves to first focusable element.
-          </li>
+          </HighlightBlock>
           <li>
             User clicks &quot;Yes&quot;: store calls <code>confirm()</code>, resolves
             Promise with <code>true</code>, sets <code>isOpen = false</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             ModalPanel renders exit animation, unmounts. ModalContainer removes scroll
             lock, restores focus to trigger element.
-          </li>
+          </HighlightBlock>
           <li>
             The original <code>await</code> call resolves with <code>true</code>.
           </li>
@@ -422,65 +423,65 @@ export default function ModalComponentArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions. This ensures predictable behavior and makes the system testable
           in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rapid open/close:</strong> If <code>modal.confirm()</code> is called
             and immediately followed by <code>modal.close()</code>, the Promise still
             resolves (with <code>null</code>, indicating dismissal without explicit
             choice). The store handles this by always resolving the pending Promise on
             close, regardless of the dismissal reason.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Route transitions:</strong> The ModalContainer is rendered at the app
             root (e.g., in layout.tsx), so it persists across route changes. Any open
             modal remains visible during navigation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>No focusable elements:</strong> If the modal content has no focusable
             elements, the focus trap sets <code>{`tabIndex={-1}`}</code> on the modal
             container itself, ensuring the container receives focus and the trap logic
             has a valid target.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SSR safety:</strong> The ModalContainer uses a useEffect to mount the
             portal, ensuring it only renders on the client. During SSR, the container
             returns null.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Backdrop click during animation:</strong> A flag (<code>isAnimating</code>)
             prevents backdrop dismissal during entrance/exit animations. The flag is set
             to <code>true</code> on open and reset to <code>false</code> after the
             animation duration elapses (via <code>setTimeout</code>).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The complete, production-ready implementation consists of 7 files:
             TypeScript type definitions, Zustand store with promise-based confirm API,
             focus-trap custom hook, portal-based container, backdrop component,
             modal panel with type-specific rendering, and a full EXPLANATION.md
             walkthrough. Click the <strong>Example</strong> toggle at the
             top of the article to view all source files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Modal Types (modal-types.ts)</h3>
@@ -494,31 +495,31 @@ export default function ModalComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (modal-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages the modal state, z-index stacking, and promise-based confirm
           results. Key design decisions include: storing the Promise resolver in a ref
           (not in Zustand state, since it is not reactive), auto-incrementing z-index
           for stacking support, and always resolving the pending Promise on close to
           prevent unhandled Promise rejections.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Focus Trap Hook (use-focus-trap.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Custom hook accepting a ref to the modal container. On mount, stores the
           currently active element. On Tab/Shift+Tab, intercepts the event and cycles
           focus among all focusable elements within the container using
           <code>querySelectorAll</code> with a focusable selector
           (<code>button, [href], input, select, textarea, [tabindex]:not([tabindex=&quot;-1&quot;])</code>).
           On cleanup, restores focus to the stored element.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Backdrop (modal-backdrop.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders a full-viewport semi-transparent overlay with CSS fade animation.
           Accepts <code>onDismiss</code> callback and <code>zIndex</code> props. Uses
           <code>position: fixed</code> with <code>inset: 0</code> to cover the entire
           viewport. Background color uses CSS variable for dark-mode support.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Modal Panel (modal-component.tsx)</h3>
         <p>
@@ -583,25 +584,25 @@ export default function ModalComponentArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is the number of focusable elements within the modal.
           For typical modals (5-15 focusable elements), focus trap operations are
           sub-millisecond.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Focus trap querySelectorAll:</strong> O(n) scan of the DOM on every
             Tab key press. For very large modals (100+ focusable elements), this could
             become noticeable. Mitigation: cache the focusable elements list and
             invalidate only when the modal content changes (e.g., via MutationObserver).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Animation jank:</strong> Animating layout properties (width, height,
             top) triggers expensive layout recalculations. Mitigation: animate only
             transform (scale, translateY) and opacity, which are GPU-composited.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Re-render cascades:</strong> If the store subscriber selects the
             entire modal state, every property change triggers a re-render. Mitigation:
@@ -612,17 +613,17 @@ export default function ModalComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>will-change hint:</strong> Apply <code>will-change: transform, opacity</code>
             to the modal panel during animation to promote it to its own compositor layer.
             Remove the hint after animation completes to free GPU memory.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy content rendering:</strong> For custom modals with heavy content
             (e.g., large forms, data tables), defer rendering until the modal is fully
             mounted using <code>requestIdleCallback</code> or a short
             <code>setTimeout</code>. This prevents blocking the entrance animation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Body scroll lock via class:</strong> Instead of directly manipulating
             <code>document.body.style</code>, toggle a CSS class (<code>modal-open</code>)
@@ -638,27 +639,27 @@ export default function ModalComponentArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modal titles and messages may contain user-generated content (e.g.,
           confirmation messages with entity names, error descriptions). If rendered as
           HTML, they are XSS vectors. Always sanitize HTML content before rendering.
           Prefer rendering strings as text content (React&apos;s default escaping) and
           only allow React nodes from trusted sources (internal components).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">WAI-ARIA Dialog Pattern</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               The modal container has <code>role=&quot;dialog&quot;</code> and
               <code>aria-modal=&quot;true&quot;</code>, signaling to assistive
               technologies that this is a modal dialog that traps interaction.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <code>aria-labelledby</code> points to the modal title element&apos;s ID,
               providing a label for screen readers.
-            </li>
+            </HighlightBlock>
             <li>
               <code>aria-describedby</code> points to the modal message element&apos;s
               ID, providing the modal&apos;s content description.
@@ -691,7 +692,7 @@ export default function ModalComponentArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The modal uses <code>role=&quot;dialog&quot;</code> with
             <code>aria-modal=&quot;true&quot;</code>, which causes screen readers to
             announce the modal as a distinct context. The <code>aria-labelledby</code>
@@ -699,7 +700,7 @@ export default function ModalComponentArticle() {
             backdrop is marked with <code>aria-hidden=&quot;true&quot;</code> to prevent
             screen readers from navigating to background content. See the Example tab
             for the exact markup.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
@@ -710,12 +711,12 @@ export default function ModalComponentArticle() {
             visible, the previous modal is closed first. This prevents modal stacking
             abuse and keeps the UX clean.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Promise timeout:</strong> For confirm modals, if the caller never
             awaits the result (e.g., forgets <code>await</code>), the Promise remains
             pending indefinitely. The store mitigates this by auto-resolving the Promise
             with <code>null</code> after a configurable timeout (default: 30 seconds).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -725,26 +726,26 @@ export default function ModalComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Store actions:</strong> Test openConfirm creates modal with correct
             config and returns a Promise, openAlert creates alert modal, close() clears
             state and resolves Promise, confirm() resolves with true, cancel() resolves
             with false.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Promise resolution:</strong> Verify that <code>await modal.confirm()</code>
             resolves to <code>true</code> when the user clicks Yes, and
             <code>false</code> when the user clicks No. Test that Promise timeout
             resolves with <code>null</code> after 30 seconds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Z-index stacking:</strong> Verify that each new modal gets a
             higher z-index than the previous one.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Focus trap:</strong> Test that Tab cycles through focusable elements
             in order, Shift+Tab reverses, and focus wraps from last to first element.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
@@ -760,10 +761,10 @@ export default function ModalComponentArticle() {
             assert modal dismisses. Test with <code>closeOnBackdropClick: false</code>,
             assert backdrop click does nothing.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Escape key:</strong> Open modal, fire Escape keydown event, assert
             modal dismisses and focus returns to trigger element.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll lock:</strong> Open modal, assert body has
             <code>overflow: hidden</code>. Close modal, assert body overflow is
@@ -785,11 +786,11 @@ export default function ModalComponentArticle() {
             Modal with content taller than viewport: verify modal content area scrolls
             independently, header and footer remain visible.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered modal, verify
             role=&quot;dialog&quot;, aria-modal, aria-labelledby, focus trap, and
             keyboard dismissal.
-          </li>
+          </HighlightBlock>
           <li>
             Rapid open/close: open modal and immediately close it, verify no unhandled
             Promise rejection.
@@ -803,13 +804,13 @@ export default function ModalComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Not implementing focus trap:</strong> Candidates often render the
             modal visually but forget to trap keyboard focus. This is a critical
             accessibility failure — tabbing out of the modal into background content
             is disorienting for screen-reader users. Interviewers expect candidates to
             implement at least a basic Tab/Shift+Tab cycle.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting focus restoration:</strong> When the modal closes, focus
             should return to the element that triggered the modal. Without this, focus
@@ -827,12 +828,12 @@ export default function ModalComponentArticle() {
             (overflow: hidden, z-index stacking contexts). Interviewers look for
             candidates who know to use React Portal for z-index isolation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing ARIA attributes:</strong> Rendering a modal without
             <code>role=&quot;dialog&quot;</code>, <code>aria-modal=&quot;true&quot;</code>,
             and <code>aria-labelledby</code> means screen readers do not announce the
             modal as a distinct context. This is a critical accessibility failure.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Animating expensive properties:</strong> Animating
             <code>width</code>, <code>height</code>, or <code>top</code> triggers layout
@@ -844,7 +845,7 @@ export default function ModalComponentArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Single Modal vs Multi-Modal Stack</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Most applications need only one modal at a time. A single-modal design is
             simpler and prevents UX confusion (users should not have to dismiss three
             stacked modals to return to their task). However, enterprise applications
@@ -853,12 +854,12 @@ export default function ModalComponentArticle() {
             management per modal, and a stack data structure instead of a single
             <code>currentModal</code> field. For interviews, start with single-modal
             and discuss multi-modal as a follow-up.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Promise-based vs Callback-based API</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A callback-based API (<code>onConfirm</code>, <code>onCancel</code>) is
             straightforward but leads to callback nesting when modals trigger other
             modals. A Promise-based API (<code>const result = await modal.confirm()</code>)
@@ -867,7 +868,7 @@ export default function ModalComponentArticle() {
             manage Promise resolvers in the store and handle timeout scenarios. For
             interviews, the Promise-based approach demonstrates deeper understanding
             of modern JavaScript patterns.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -919,14 +920,14 @@ export default function ModalComponentArticle() {
             <p className="font-semibold">
               Q: How would you test the focus trap in an automated test?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use Playwright with keyboard event dispatches. Open the modal, dispatch
               Tab keydown events, and assert <code>document.activeElement</code> cycles
               through focusable elements in the correct order. For the wrap-around test,
               Tab from the last element and assert focus moves to the first element. For
               focus restoration, record the trigger element before opening, close the
               modal, and assert the trigger element is focused again.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

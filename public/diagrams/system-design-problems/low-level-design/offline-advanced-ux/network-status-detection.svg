@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="560">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Network Status Detection &amp; Failure Handling</text>
+
+  <!-- Detection Methods -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Detection Methods</text>
+
+    <rect x="30" y="75" width="380" height="80" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="220" y="98" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">navigator.onLine (Unreliable)</text>
+    <text x="45" y="120" font-size="10" fill="#374151">Returns true even when connected to LAN but no internet</text>
+    <text x="45" y="138" font-size="10" fill="#374151">Use only as fast hint — never trust alone for logic decisions</text>
+    <text x="45" y="148" font-size="9" fill="#ef4444">window 'online'/'offline' events — same limitation</text>
+
+    <rect x="30" y="170" width="380" height="90" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="220" y="193" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Heartbeat Polling (Reliable)</text>
+    <text x="45" y="215" font-size="10" fill="#374151">GET /health or HEAD / every 30s</text>
+    <text x="45" y="233" font-size="10" fill="#374151">Success (200) → online. Timeout/network error → offline.</text>
+    <text x="45" y="251" font-size="10" fill="#374151">Back-off: increase interval if repeatedly offline (30s → 60s → 2m)</text>
+
+    <rect x="30" y="275" width="380" height="90" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="220" y="298" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Fetch Interception (Best)</text>
+    <text x="45" y="320" font-size="10" fill="#374151">Catch failed fetch: network errors → set offline state</text>
+    <text x="45" y="338" font-size="10" fill="#374151">Successful API response → confirm online (implicit check)</text>
+    <text x="45" y="356" font-size="10" fill="#374151">Service Worker: detect fetch failures at browser level</text>
+
+    <rect x="30" y="380" width="380" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="220" y="403" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Network Quality API</text>
+    <text x="45" y="425" font-size="10" fill="#374151">navigator.connection.effectiveType: 'slow-2g' | '2g' | '3g' | '4g'</text>
+    <text x="45" y="443" font-size="10" fill="#374151">navigator.connection.downlink, rtt</text>
+    <text x="45" y="453" font-size="9" fill="#3b82f6">Adapt: low quality → reduce image res, disable auto-play</text>
+  </g>
+
+  <!-- State Machine -->
+  <g>
+    <text x="740" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Network State Machine</text>
+
+    <rect x="460" y="75" width="610" height="270" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" rx="6"/>
+
+    <ellipse cx="650" cy="150" rx="90" ry="32" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+    <text x="650" y="154" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">ONLINE</text>
+
+    <ellipse cx="920" cy="150" rx="90" ry="32" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+    <text x="920" y="154" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">OFFLINE</text>
+
+    <ellipse cx="650" cy="280" rx="90" ry="32" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="650" y="284" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">RECONNECTING</text>
+
+    <ellipse cx="920" cy="280" rx="90" ry="32" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="920" y="284" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">DEGRADED</text>
+
+    <path d="M 740 150 L 830 150" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#an1)"/>
+    <text x="785" y="142" font-size="9" text-anchor="middle" fill="#991b1b">fetch fails</text>
+
+    <path d="M 830 165 L 740 165" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#ang)"/>
+    <text x="785" y="178" font-size="9" text-anchor="middle" fill="#065f46">fetch succeeds</text>
+
+    <path d="M 920 182 L 920 248" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#any)"/>
+    <text x="932" y="218" font-size="9" fill="#92400e">retry start</text>
+
+    <path d="M 830 280 L 740 280" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#ang)"/>
+    <text x="785" y="272" font-size="9" text-anchor="middle" fill="#065f46">retry success</text>
+
+    <path d="M 650 248 L 650 182" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#ang)"/>
+    <text x="630" y="218" font-size="9" text-anchor="end" fill="#065f46">reconnected</text>
+
+    <path d="M 740 160 L 840 270" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#anb)"/>
+    <text x="778" y="224" font-size="9" fill="#1e40af">high latency</text>
+
+    <text x="690" y="330" font-size="9" fill="#6b7280">Retry strategy: exponential back-off (1s, 2s, 4s, 8s max 60s)</text>
+  </g>
+
+  <!-- UX Patterns -->
+  <g>
+    <text x="740" y="380" font-size="14" font-weight="bold" fill="#1a1a1a">UX Patterns</text>
+
+    <rect x="460" y="395" width="290" height="140" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="605" y="418" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Offline Banner</text>
+    <text x="475" y="440" font-size="10" fill="#374151">Top persistent banner (yellow/red)</text>
+    <text x="475" y="458" font-size="10" fill="#374151">"You're offline. Changes saved locally."</text>
+    <text x="475" y="476" font-size="10" fill="#374151">Auto-dismiss 3s after reconnect</text>
+    <text x="475" y="494" font-size="10" fill="#374151">Show sync progress: "Syncing 3 items..."</text>
+    <text x="475" y="510" font-size="9" fill="#a855f7">aria-live="polite" for screen readers</text>
+
+    <rect x="770" y="395" width="300" height="140" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="920" y="418" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Degraded Mode UX</text>
+    <text x="785" y="440" font-size="10" fill="#374151">Disable features requiring server (real-time)</text>
+    <text x="785" y="458" font-size="10" fill="#374151">Show cached data with "Last synced" timestamp</text>
+    <text x="785" y="476" font-size="10" fill="#374151">Queue writes with pending indicator</text>
+    <text x="785" y="494" font-size="10" fill="#374151">Retry button for failed actions</text>
+    <text x="785" y="510" font-size="9" fill="#3b82f6">Never block reads — always show local data</text>
+  </g>
+
+  <rect x="30" y="500" width="410" height="48" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="520" font-size="11" fill="#374151"><tspan font-weight="bold">Strategy:</tspan> Combine navigator.onLine + heartbeat + fetch interception.</text>
+  <text x="50" y="538" font-size="11" fill="#374151">Always show UI immediately. Sync in background. Never block on network.</text>
+
+  <defs>
+    <marker id="an1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/></marker>
+    <marker id="ang" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
+    <marker id="any" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/></marker>
+    <marker id="anb" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/></marker>
+  </defs>
+</svg>

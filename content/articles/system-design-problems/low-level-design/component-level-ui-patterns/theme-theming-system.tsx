@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function ThemeThemingSystemArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We need to design a reusable theme/theming system for a large-scale React
           application. The system must support multiple visual themes (light mode,
           dark mode, custom brand palettes), apply them consistently across every
@@ -48,8 +49,8 @@ export default function ThemeThemingSystemArticle() {
           color scheme preference when no manual selection exists, and support nested
           or scoped themes where a subsection of a page renders with a different theme
           than the rest of the document.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The system should be built on CSS custom properties (CSS variables) for
           runtime theming, integrated with the Tailwind CSS utility framework so that
           utility classes resolve to theme-aware values, and enforce accessibility
@@ -57,19 +58,19 @@ export default function ThemeThemingSystemArticle() {
           decision — color palette, typography scale, spacing units, shadow tokens,
           border radii — must be expressed as a design token that can be swapped
           atomically when the theme changes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             The application is a Next.js 16 website using React 19+, Tailwind CSS 4,
             and Zustand 5+ for state management.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Users can select light mode, dark mode, or defer to their system preference
             (<code>prefers-color-scheme</code>).
-          </li>
+          </HighlightBlock>
           <li>
             Organizations may define custom brand themes that override the default
             light/dark palettes with specific colors, fonts, and token values.
@@ -78,10 +79,10 @@ export default function ThemeThemingSystemArticle() {
             The application server-renders pages (SSR/SSG), so theme application must
             happen before the first paint to avoid FOUC.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Theme switching should feel instant — either an immediate CSS variable swap
             or a short CSS transition on color/background properties.
-          </li>
+          </HighlightBlock>
           <li>
             Nested themes are supported: a dark-themed code preview embedded within a
             light-themed article page, for example.
@@ -130,11 +131,11 @@ export default function ThemeThemingSystemArticle() {
             <code>data-theme</code> on <code>&lt;html&gt;</code> before the first paint,
             preventing FOUC.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Theme Scoping:</strong> A scoped theme component wraps a subtree
             and applies a different theme locally via a nested <code>data-theme</code>
             attribute and CSS variable re-definition.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Contrast Checking:</strong> A utility validates that any foreground/
             background token pair meets WCAG AA or AAA contrast ratios.
@@ -148,26 +149,26 @@ export default function ThemeThemingSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Theme switching must not cause layout thrashing
             or visible jank. CSS variable updates are batched by the browser and trigger
             only repaint (not reflow) when color/background properties change.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Scalability:</strong> The token system should support 100+ tokens
             without impacting render performance. CSS variable lookups are O(1) at
             runtime.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reliability:</strong> The theme persists across sessions and route
             navigations. If <code>localStorage</code> is unavailable (private browsing),
             the system gracefully falls back to system preference detection on each load.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> All token color combinations must meet
             WCAG 2.1 AA minimum contrast. A high-contrast mode variant is available
             for users who require it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Maintainability:</strong> Adding a new theme or modifying an existing
             one requires changing only token definitions — no component-level code
@@ -185,10 +186,10 @@ export default function ThemeThemingSystemArticle() {
             System preference changes while the page is open — should the application
             auto-switch or respect the user&apos;s manual override?
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Nested themes: a dark-themed component inside a light page must not leak
             CSS variables into sibling components.
-          </li>
+          </HighlightBlock>
           <li>
             Custom brand themes that only override a subset of tokens — the system must
             fall back to default theme values for undefined tokens.
@@ -213,7 +214,7 @@ export default function ThemeThemingSystemArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate <strong>theme definition</strong> (design tokens
           expressed as CSS custom properties), <strong>theme state management</strong>
           (which theme is active, persisted in localStorage, synchronized with system
@@ -222,35 +223,35 @@ export default function ThemeThemingSystemArticle() {
           them). CSS custom properties are the ideal mechanism because they cascade,
           can be redefined at any scope (enabling nested themes), and update at runtime
           without re-rendering React components.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS-in-JS runtime injection (styled-components, Emotion):</strong>
             Generates CSS at runtime via JavaScript. Flexible but adds a runtime bundle
             (~10-15 KB gzipped), requires hydration matching, and can cause a flash if
             the style tag injects after first paint. CSS variables have zero runtime
             cost and are natively supported in all modern browsers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Static CSS class swapping (e.g., <code>.light</code> / <code>.dark</code>
             classes on body):</strong> Simple but requires defining every token value
             under each class selector. Does not support runtime customization or nested
             themes without complex selector specificity management. CSS variables on
             <code>data-theme</code> attribute selectors are cleaner and more composable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Tailwind dark mode with <code>class</code> strategy:</strong>
             Tailwind&apos;s built-in dark mode toggles a class on the root element and
             uses <code>dark:</code> prefix variants. This works for light/dark but does
             not support custom multi-theme palettes or nested themes out of the box.
             Our approach maps Tailwind utilities to CSS variables, giving us the best
             of both worlds.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why CSS Variables + Zustand + inline script is optimal:</strong>
           CSS variables provide the runtime theming layer with native browser support
           and zero JavaScript cost. Zustand manages the theme selection state,
@@ -258,7 +259,7 @@ export default function ThemeThemingSystemArticle() {
           inline <code>&lt;script&gt;</code> in <code>&lt;head&gt;</code> applies the
           theme before the browser paints, eliminating FOUC entirely. This pattern is
           used by production systems like Next.js docs, Vercel dashboard, and Linear.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -270,7 +271,7 @@ export default function ThemeThemingSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Theme Types &amp; Interfaces (<code>theme-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the core TypeScript interfaces: <code>ThemeId</code> (union of
             &quot;light&quot; | &quot;dark&quot; | string), <code>ColorToken</code>
             (hex or CSS variable reference), <code>ColorPalette</code> (map of semantic
@@ -279,7 +280,7 @@ export default function ThemeThemingSystemArticle() {
             (generic token with name, value, and category), and <code>ThemeConfig</code>
             (complete theme definition combining palette, typography, spacing, shadows,
             and border radii). See the Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -297,7 +298,7 @@ export default function ThemeThemingSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. CSS Variable Manager (<code>css-variable-manager.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Handles dynamic CSS variable injection onto the <code>&lt;html&gt;</code>
             element (or any scoped element). Converts a <code>ThemeConfig</code> into
             a flat map of CSS custom property assignments (e.g.,
@@ -305,7 +306,7 @@ export default function ThemeThemingSystemArticle() {
             <code>element.style.setProperty()</code>, and supports contrast checking
             for any foreground/background token pair. Exposes a utility to get the
             computed value of any CSS variable for debugging or runtime validation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -348,7 +349,7 @@ export default function ThemeThemingSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">7. React Components</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <strong>ThemeProvider</strong> wraps the application tree, subscribes to
             the theme store, and calls the CSS variable manager whenever the theme
             changes. <strong>ThemeToggle</strong> renders a switch control with
@@ -360,7 +361,7 @@ export default function ThemeThemingSystemArticle() {
             <code>&lt;html&gt;</code> before paint. <strong>ThemeScoped</strong> is a
             wrapper component that applies a local theme to its children by setting
             <code>data-theme</code> and injecting CSS variables on the wrapper element.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
@@ -384,10 +385,10 @@ export default function ThemeThemingSystemArticle() {
             <code>&lt;head&gt;</code>, reads <code>localStorage</code>, sets
             <code>data-theme</code> on <code>&lt;html&gt;</code> before paint.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             React hydrates. <code>ThemeProvider</code> mounts, initializes Zustand
             store, applies CSS variables to <code>&lt;html&gt;</code>.
-          </li>
+          </HighlightBlock>
           <li>
             User clicks theme toggle. <code>setMode(&quot;dark&quot;)</code> called.
           </li>
@@ -395,10 +396,10 @@ export default function ThemeThemingSystemArticle() {
             Store updates mode, persists to <code>localStorage</code>, computes
             resolved theme.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Zustand notifies subscribers. <code>ThemeProvider</code> calls CSS variable
             manager to update <code>&lt;html&gt;</code> styles.
-          </li>
+          </HighlightBlock>
           <li>
             Browser repaints with new CSS variable values. Components using
             <code>var(--bg-surface)</code>, <code>var(--text-primary)</code>, etc.
@@ -422,42 +423,42 @@ export default function ThemeThemingSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Phase 1: Server-Side Render</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The server renders the HTML without knowledge of the user&apos;s theme
           preference (no <code>localStorage</code> or <code>matchMedia</code> on the
           server). The <code>&lt;html&gt;</code> element has no <code>data-theme</code>
           attribute. CSS variables are defined with fallback values in the global
           stylesheet. The <code>ThemeScriptInjector</code> renders an inline
           <code>&lt;script&gt;</code> tag into <code>&lt;head&gt;</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Phase 2: Pre-Paint Script Execution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Before the browser paints, the inline script executes synchronously. It reads
           <code>localStorage.getItem(&quot;theme-mode&quot;)</code>. If a value exists,
           it resolves &quot;system&quot; via <code>matchMedia</code> and sets
           <code>document.documentElement.setAttribute(&quot;data-theme&quot;, resolvedTheme)</code>.
           If no stored value exists, it detects the system preference and sets the
           attribute. This entire operation takes less than 1ms and guarantees no FOUC.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Phase 3: React Hydration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           React hydrates the application. The <code>ThemeProvider</code> initializes
           the Zustand store, which re-reads <code>localStorage</code> (confirming the
           pre-paint script&aposs work) and applies CSS variables via the CSS variable
           manager. The <code>matchMedia</code> listener is registered for future system
           preference changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>FOUC prevention:</strong> The inline script runs before paint
             because it is placed in <code>&lt;head&gt;</code> with no <code>defer</code>
             or <code>async</code> attribute. Next.js <code>&lt;Script strategy=&quot;beforeInteractive&quot;</code>
             ensures this. The script is minimal (~15 lines) and executes in under 1ms.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Private browsing:</strong> The <code>localStorage</code> read/write
             is wrapped in a try/catch. If it throws, the system falls back to
@@ -472,13 +473,13 @@ export default function ThemeThemingSystemArticle() {
             transitions for subsequent theme switches. This prevents the flash of
             animated color changes on initial load.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Nested theme scoping:</strong> The <code>ThemeScoped</code> component
             sets <code>data-theme</code> on its own wrapper element (not
             <code>&lt;html&gt;</code>). CSS variables defined within that scope override
             the global ones for all descendant components, while siblings remain
             unaffected. This works because CSS variables cascade down the DOM tree.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -492,7 +493,7 @@ export default function ThemeThemingSystemArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The complete, production-ready implementation consists of 11 files: TypeScript
             interfaces, design token definitions, Zustand store with persistence and
             system preference detection, CSS variable manager with contrast checking,
@@ -500,7 +501,7 @@ export default function ThemeThemingSystemArticle() {
             with sun/moon icons, FOUC-prevention script injector, scoped theme wrapper,
             and a full EXPLANATION.md walkthrough. Click the <strong>Example</strong>
             toggle at the top of the article to view all source files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Theme Types (theme-types.ts)</h3>
@@ -515,17 +516,17 @@ export default function ThemeThemingSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Design Tokens (design-tokens.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Exports <code>lightTheme</code> and <code>darkTheme</code> as concrete
           <code>ThemeConfig</code> objects. Light theme uses white/off-white backgrounds,
           dark text, blue primary color. Dark theme uses near-black backgrounds, light
           text, adjusted primary color for contrast on dark backgrounds. Both themes
           share the same typography and spacing scales. Tokens are organized as flat
           key-value maps for easy CSS variable conversion.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: CSS Variable Manager (css-variable-manager.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>applyThemeVariables()</code> function takes a target element and a
           <code>ThemeConfig</code>, iterates over all token categories, and calls
           <code>element.style.setProperty()</code> for each token (e.g.,
@@ -533,7 +534,7 @@ export default function ThemeThemingSystemArticle() {
           <code>getComputedTokenValue()</code> utility reads the resolved value from the
           browser for debugging. The <code>checkContrast()</code> function validates any
           two color tokens against a specified WCAG level.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Contrast Checker (contrast-checker.ts)</h3>
         <p>
@@ -568,23 +569,23 @@ export default function ThemeThemingSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: Theme Provider (theme-provider.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Wraps the application tree. Subscribes to the theme store, calls
           <code>applyThemeVariables()</code> on <code>document.documentElement</code>
           whenever the resolved theme changes. Handles the transition-enabling
           <code>requestAnimationFrame</code> on mount. Accepts an optional
           <code>customThemes</code> prop to register organization-specific themes at
           the app root.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: Theme Toggle (theme-toggle.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders a segmented control or switch with three states: light (sun icon),
           dark (moon icon), and system (monitor icon). Uses inline SVG icons to avoid
           external dependencies. On click, cycles through the three modes. Displays a
           tooltip or label for the current mode. Styled with Tailwind utility classes
           that reference CSS variables for theme-aware colors.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: Theme Script Injector (theme-script-injector.tsx)</h3>
         <p>
@@ -652,29 +653,29 @@ export default function ThemeThemingSystemArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Where <code>t</code> is the number of design tokens (typically 30-60 for a
           complete theme). CSS variable assignment is a native browser operation and is
           highly optimized. For 50 tokens, <code>applyThemeVariables</code> completes
           in under 2ms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Large token sets:</strong> If a theme defines 200+ tokens (granular
             color scales, extensive typography), applying all variables on every switch
             adds up. Mitigation: batch variable assignments in a single
             <code>requestAnimationFrame</code> callback to ensure the browser processes
             them in one style recalculation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS transitions on theme switch:</strong> If <code>transition</code>
             is set on <code>*</code> or <code>body</code>, the browser will animate
             every color change, causing a 200-300ms repaint storm. Mitigation: only
             apply transitions to specific elements that should animate (e.g., background
             surfaces), not to text colors or borders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Zustand re-render cascades:</strong> If the theme provider selects
             the entire store state, every store update re-renders the provider and all
@@ -685,18 +686,18 @@ export default function ThemeThemingSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pre-paint script:</strong> The inline FOUC-prevention script is ~15
             lines of vanilla JS, executes in under 1ms, and requires no framework
             overhead. This is the single most important optimization for perceived
             performance.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS variable cascading:</strong> By defining variables on
             <code>&lt;html&gt;</code>, all components inherit them automatically. No
             component needs to re-apply styles or re-render on theme change. The browser
             handles the repaint natively.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Selector-based Zustand subscriptions:</strong> Components that need
             the theme ID subscribe only to <code>resolvedThemeId</code>. Components that
@@ -717,7 +718,7 @@ export default function ThemeThemingSystemArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Inline Script Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The FOUC-prevention inline script is a static string injected via Next.js
           <code>&lt;Script&gt;</code> component. It contains no user-generated content
           and does not read from the URL, so it is not an XSS vector. However, if your
@@ -725,10 +726,10 @@ export default function ThemeThemingSystemArticle() {
           measure), you must add a nonce or hash to the CSP <code>script-src</code>
           directive for this specific script. Next.js supports CSP nonces via the
           <code>nonce</code> prop on <code>&lt;Script&gt;</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">localStorage Safety</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The theme mode stored in <code>localStorage</code> is a simple string
           (&quot;light&quot;, &quot;dark&quot;, or &quot;system&quot;). It is never
           evaluated as code or inserted into the DOM as HTML, so there is no injection
@@ -737,7 +738,7 @@ export default function ThemeThemingSystemArticle() {
           theme configurations (if persisted) should be validated against the
           <code>ThemeConfig</code> interface before application to prevent malformed
           data from corrupting the theme.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -762,19 +763,19 @@ export default function ThemeThemingSystemArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">High-Contrast Mode</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Respect <code>prefers-contrast: more</code> media query by offering a
               high-contrast theme variant that increases token contrast ratios beyond
               AA minimums.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The theme toggle should be keyboard accessible and announce its current
               state via <code>aria-pressed</code> or <code>aria-checked</code>.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               Icon-only toggles must have <code>aria-label</code> attributes describing
               their function (e.g., &quot;Switch to dark mode&quot;).
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -814,11 +815,11 @@ export default function ThemeThemingSystemArticle() {
             21:1, black on white = 21:1, light gray on white = fails AA). Verify AA and
             AAA thresholds for normal and large text.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS variable manager:</strong> Test that <code>applyThemeVariables</code>
             sets the correct CSS custom properties on a mock element. Verify that
             <code>getComputedTokenValue</code> returns the expected value.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Theme store:</strong> Test initialization with no stored preference
             (defaults to &quot;system&quot;), with stored &quot;light&quot;/&quot;dark&quot;,
@@ -834,27 +835,27 @@ export default function ThemeThemingSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Theme provider lifecycle:</strong> Render ThemeProvider in a test
             harness, assert that CSS variables are applied to <code>document.documentElement</code>.
             Trigger a mode change, assert variables update.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>System preference listener:</strong> Mock <code>matchMedia</code>,
             set mode to &quot;system&quot;, fire the <code>change</code> event on the
             MediaQueryList, assert the resolved theme updates.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Theme toggle:</strong> Render the toggle component, click through
             all three states, assert the displayed icon/label matches the current mode.
             Verify <code>aria-pressed</code> updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Scoped themes:</strong> Render a ThemeScoped component inside a
             light-themed parent, assert that the scoped element has its own
             <code>data-theme</code> attribute and CSS variables defined on its inline
             style, not leaking to the parent.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">End-to-End Tests</h3>
@@ -874,10 +875,10 @@ export default function ThemeThemingSystemArticle() {
             Node.js script in the CI pipeline. Fail the build if any built-in theme
             token pair fails AA compliance.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility audit:</strong> Run axe-core on pages with both light
             and dark themes applied, verify no contrast violations are reported.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -923,7 +924,7 @@ export default function ThemeThemingSystemArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">CSS Variables vs CSS-in-JS</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             CSS-in-JS libraries (styled-components, Emotion) generate styles at runtime
             and offer powerful features like dynamic theming via props, automatic vendor
             prefixing, and component-scoped styles. However, they add a runtime bundle
@@ -935,12 +936,12 @@ export default function ThemeThemingSystemArticle() {
             without JavaScript helpers. For a theming system, CSS variables are the
             correct default; CSS-in-JS is overkill unless you need runtime style
             computation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Immediate Swap vs Animated Transition</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             When the user switches themes, you can either swap CSS variables instantly
             (instant but jarring) or add CSS transitions on color/background properties
             (smooth but risks a flash on initial load if transitions are active before
@@ -950,7 +951,7 @@ export default function ThemeThemingSystemArticle() {
             <code>requestAnimationFrame</code>. This gives instant theme application on
             load and smooth transitions on subsequent user-initiated switches.
             Interviewers appreciate candidates who discuss this nuance.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -990,7 +991,7 @@ export default function ThemeThemingSystemArticle() {
             <p className="font-semibold">
               Q: How would you integrate this with Tailwind CSS 4?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: In Tailwind CSS 4, you define CSS variables in your global stylesheet
               and reference them in utility classes using the <code>theme()</code>
               function or by mapping Tailwind&apos;s default keys to your CSS variable
@@ -1000,14 +1001,14 @@ export default function ThemeThemingSystemArticle() {
               automatically uses theme-aware colors. Tailwind 4&apos;s CSS-first
               configuration makes this even cleaner — you can define your theme directly
               in CSS without a JavaScript config file.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How would you handle a theme with 200+ tokens without performance issues?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Group tokens into categories (colors, typography, spacing, shadows) and
               only apply the category that changed on a theme switch. If switching from
               light to dark, only color tokens change — typography and spacing remain
@@ -1016,7 +1017,7 @@ export default function ThemeThemingSystemArticle() {
               batch all style mutations into a single browser style recalculation. For
               extremely large token sets, consider a virtualized token registry where
               tokens are loaded on demand rather than applied globally.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -1040,7 +1041,7 @@ export default function ThemeThemingSystemArticle() {
               Q: How would you support user-generated custom themes (e.g., users pick
               their own primary/accent colors)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Provide a color picker UI that lets users select a primary color.
               Generate a full palette from that color using color math (adjusting
               lightness/darkness for hover, active, and disabled states). Validate the
@@ -1050,7 +1051,7 @@ export default function ThemeThemingSystemArticle() {
               new theme in the Zustand store&apos;s <code>customThemes</code> map and
               activate it. If contrast fails, fall back to a safer variant of the color
               (e.g., darken the primary for use on light backgrounds).
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

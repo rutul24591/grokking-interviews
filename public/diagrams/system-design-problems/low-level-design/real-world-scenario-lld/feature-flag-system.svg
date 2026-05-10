@@ -1,0 +1,91 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="400" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Feature Flag System — Targeting, Rollout, and Runtime Toggle</text>
+
+  <!-- Flag definition -->
+  <rect x="20" y="45" width="240" height="330" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="140" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Flag Schema</text>
+
+  <rect x="35" y="78" width="210" height="110" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="140" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Flag Record</text>
+  <text x="140" y="113" text-anchor="middle" font-size="10" fill="#1565c0">key: "new_dashboard_v2"</text>
+  <text x="140" y="128" text-anchor="middle" font-size="10" fill="#1565c0">enabled: true/false (kill switch)</text>
+  <text x="140" y="143" text-anchor="middle" font-size="10" fill="#1565c0">rolloutPercent: 0–100</text>
+  <text x="140" y="158" text-anchor="middle" font-size="10" fill="#1565c0">rules: [{attr, op, value}]</text>
+  <text x="140" y="173" text-anchor="middle" font-size="10" fill="#1565c0">variants: {control, treatment}</text>
+
+  <rect x="35" y="198" width="210" height="80" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="140" y="217" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Targeting Rules</text>
+  <text x="140" y="233" text-anchor="middle" font-size="10" fill="#1565c0">userId IN [betaList]</text>
+  <text x="140" y="248" text-anchor="middle" font-size="10" fill="#1565c0">country = "US"</text>
+  <text x="140" y="263" text-anchor="middle" font-size="10" fill="#1565c0">plan = "enterprise"</text>
+
+  <rect x="35" y="288" width="210" height="70" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="140" y="307" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">SDK Cache</text>
+  <text x="140" y="323" text-anchor="middle" font-size="10" fill="#1565c0">TTL: 60s client-side cache</text>
+  <text x="140" y="338" text-anchor="middle" font-size="10" fill="#1565c0">SSE stream for instant push</text>
+  <text x="140" y="350" text-anchor="middle" font-size="10" fill="#1565c0">Fallback: last-known value</text>
+
+  <!-- Evaluation engine -->
+  <rect x="275" y="45" width="285" height="330" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="417" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Flag Evaluation Engine</text>
+
+  <rect x="290" y="78" width="255" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="417" y="98" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Step 1: Kill Switch</text>
+  <text x="417" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">enabled=false → always return off</text>
+  <text x="417" y="126" text-anchor="middle" font-size="10" fill="#2e7d32">Instant disable with no deploy</text>
+
+  <line x1="417" y1="133" x2="417" y2="153" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="290" y="155" width="255" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="417" y="175" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Step 2: Force Targeting</text>
+  <text x="417" y="190" text-anchor="middle" font-size="10" fill="#2e7d32">User in allowlist → always on</text>
+  <text x="417" y="205" text-anchor="middle" font-size="10" fill="#2e7d32">Internal team, beta users</text>
+
+  <line x1="417" y1="210" x2="417" y2="230" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="290" y="232" width="255" height="60" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="417" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Step 3: Rule Evaluation</text>
+  <text x="417" y="267" text-anchor="middle" font-size="10" fill="#2e7d32">Evaluate rules in order</text>
+  <text x="417" y="281" text-anchor="middle" font-size="10" fill="#2e7d32">First matching rule wins</text>
+
+  <line x1="417" y1="292" x2="417" y2="312" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="290" y="314" width="255" height="50" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="417" y="333" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Step 4: % Rollout</text>
+  <text x="417" y="348" text-anchor="middle" font-size="10" fill="#2e7d32">hash(flagKey + userId) % 100</text>
+  <text x="417" y="360" text-anchor="middle" font-size="10" fill="#2e7d32">Deterministic: same user = same bucket</text>
+
+  <!-- Delivery + monitoring -->
+  <rect x="575" y="45" width="265" height="330" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="707" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Delivery and Monitoring</text>
+
+  <rect x="590" y="78" width="235" height="70" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="707" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">SDK Fetch Strategy</text>
+  <text x="707" y="112" text-anchor="middle" font-size="10" fill="#bf360c">Bootstrap: all flags in HTML response</text>
+  <text x="707" y="127" text-anchor="middle" font-size="10" fill="#bf360c">SSE for real-time updates (instant kill)</text>
+  <text x="707" y="141" text-anchor="middle" font-size="10" fill="#bf360c">60s polling fallback</text>
+
+  <rect x="590" y="158" width="235" height="70" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="707" y="177" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">A/B Test Metrics</text>
+  <text x="707" y="192" text-anchor="middle" font-size="10" fill="#bf360c">Log impression + flag variant</text>
+  <text x="707" y="207" text-anchor="middle" font-size="10" fill="#bf360c">Conversion rate per variant</text>
+  <text x="707" y="221" text-anchor="middle" font-size="10" fill="#bf360c">Statistical significance gate</text>
+
+  <rect x="590" y="238" width="235" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="707" y="257" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Kill Switch Monitoring</text>
+  <text x="707" y="272" text-anchor="middle" font-size="10" fill="#bf360c">Error rate alert: P99 latency ↑</text>
+  <text x="707" y="287" text-anchor="middle" font-size="10" fill="#bf360c">Auto-disable at threshold</text>
+  <text x="707" y="301" text-anchor="middle" font-size="10" fill="#bf360c">Ops dashboard for instant toggle</text>
+
+  <rect x="590" y="313" width="235" height="55" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="707" y="332" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Flag Cleanup</text>
+  <text x="707" y="347" text-anchor="middle" font-size="10" fill="#bf360c">Archive after rollout complete</text>
+  <text x="707" y="362" text-anchor="middle" font-size="10" fill="#bf360c">Remove code reference in 1 sprint</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

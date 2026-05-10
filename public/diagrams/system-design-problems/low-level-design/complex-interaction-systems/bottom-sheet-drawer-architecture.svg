@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Bottom Sheet / Drawer: States &amp; Interaction Model</text>
+
+  <!-- Sheet States -->
+  <g>
+    <text x="170" y="65" font-size="14" font-weight="bold" fill="#1a1a1a">Snap States</text>
+
+    <!-- Hidden -->
+    <rect x="30" y="80" width="130" height="200" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="6"/>
+    <text x="95" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#6b7280">Hidden</text>
+    <rect x="30" y="250" width="130" height="30" fill="#e5e7eb" stroke="#6b7280" stroke-width="1" rx="3"/>
+    <text x="95" y="271" font-size="10" text-anchor="middle" fill="#6b7280">translateY(100%)</text>
+
+    <!-- Peek -->
+    <rect x="190" y="80" width="130" height="200" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="6"/>
+    <text x="255" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">Peek (25%)</text>
+    <rect x="190" y="130" width="130" height="150" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="3"/>
+    <text x="255" y="160" font-size="10" text-anchor="middle" fill="#92400e">Sheet content</text>
+    <text x="255" y="178" font-size="10" text-anchor="middle" fill="#92400e">Handle visible</text>
+    <rect x="190" y="250" width="130" height="30" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+    <text x="255" y="271" font-size="10" text-anchor="middle" fill="#92400e">translateY(75%)</text>
+
+    <!-- Half -->
+    <rect x="350" y="80" width="130" height="200" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="6"/>
+    <text x="415" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#1e40af">Half (50%)</text>
+    <rect x="350" y="180" width="130" height="100" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="3"/>
+    <text x="415" y="220" font-size="10" text-anchor="middle" fill="#1e40af">Partial content</text>
+    <rect x="350" y="250" width="130" height="30" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+    <text x="415" y="271" font-size="10" text-anchor="middle" fill="#1e40af">translateY(50%)</text>
+
+    <!-- Full -->
+    <rect x="510" y="80" width="130" height="200" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="6"/>
+    <text x="575" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">Full (90%)</text>
+    <rect x="510" y="90" width="130" height="160" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="3"/>
+    <text x="575" y="165" font-size="10" text-anchor="middle" fill="#065f46">Full content</text>
+    <text x="575" y="182" font-size="10" text-anchor="middle" fill="#065f46">Scrollable</text>
+    <rect x="510" y="250" width="130" height="30" fill="#dcfce7" stroke="#10b981" stroke-width="1" rx="3"/>
+    <text x="575" y="271" font-size="10" text-anchor="middle" fill="#065f46">translateY(10%)</text>
+
+    <!-- Transition arrows -->
+    <path d="M 165 195 L 185 195" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+    <path d="M 325 195 L 345 195" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+    <path d="M 485 195 L 505 195" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+  </g>
+
+  <!-- Gesture Recognition -->
+  <g>
+    <text x="730" y="65" font-size="14" font-weight="bold" fill="#1a1a1a">Gesture &amp; Drag Logic</text>
+
+    <rect x="680" y="80" width="380" height="160" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="870" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Drag Handler</text>
+    <text x="695" y="128" font-size="10" fill="#374151">onPointerDown → record startY, current snap position</text>
+    <text x="695" y="145" font-size="10" fill="#374151">onPointerMove → deltaY = currentY - startY</text>
+    <text x="695" y="162" font-size="10" fill="#374151">                 translateY = snapOffset + deltaY</text>
+    <text x="695" y="179" font-size="10" fill="#374151">                 Apply rubber-banding at extremes</text>
+    <text x="695" y="196" font-size="10" fill="#374151">onPointerUp   → velocity = deltaY / duration</text>
+    <text x="695" y="213" font-size="10" fill="#374151">                 Snap to nearest point or flick target</text>
+    <text x="695" y="230" font-size="9" fill="#a855f7">Use CSS will-change: transform for GPU compositing</text>
+
+    <!-- Snap Decision -->
+    <rect x="680" y="260" width="380" height="130" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="870" y="283" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Snap Point Decision</text>
+    <text x="695" y="305" font-size="10" fill="#374151">velocity &gt; threshold → flick to next/prev snap</text>
+    <text x="695" y="322" font-size="10" fill="#374151">velocity &lt; threshold → snap to nearest point</text>
+    <text x="695" y="339" font-size="10" fill="#374151">past dismiss threshold → close sheet</text>
+    <text x="695" y="356" font-size="10" fill="#374151">Animate with spring physics (stiffness, damping)</text>
+    <text x="695" y="373" font-size="9" fill="#f59e0b">Snap points: [0%, 25%, 50%, 90%] configurable</text>
+
+    <!-- Backdrop -->
+    <rect x="680" y="410" width="380" height="100" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="870" y="433" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Backdrop &amp; Accessibility</text>
+    <text x="695" y="455" font-size="10" fill="#374151">Backdrop opacity tracks sheet position (0→1)</text>
+    <text x="695" y="472" font-size="10" fill="#374151">Click backdrop → dismiss sheet</text>
+    <text x="695" y="489" font-size="10" fill="#374151">Escape key → dismiss</text>
+    <text x="695" y="506" font-size="9" fill="#ef4444">role="dialog" aria-modal focus trap inside sheet</text>
+  </g>
+
+  <!-- Summary bar -->
+  <rect x="30" y="520" width="1040" height="48" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="542" font-size="11" fill="#374151"><tspan font-weight="bold">Performance:</tspan> CSS transform (GPU) not top/height. <tspan font-weight="bold">Touch:</tspan> touchAction: none prevents scroll conflicts. <tspan font-weight="bold">Scroll inside sheet:</tspan> Detect when sheet is full + inner scrollable at top.</text>
+
+  <defs>
+    <marker id="arrow1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+    </marker>
+  </defs>
+</svg>

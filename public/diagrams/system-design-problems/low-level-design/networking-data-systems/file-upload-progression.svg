@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">File Upload API: Phases & Handling</text>
+
+  <!-- Upload Phases -->
+  <g>
+    <text x="100" y="70" font-size="16" font-weight="bold" fill="#1a1a1a">Upload Phases</text>
+
+    <!-- Phase 1: Validation -->
+    <rect x="50" y="100" width="160" height="100" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="130" y="125" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">1. Validation</text>
+    <text x="60" y="148" font-size="10" fill="#374151">• File exists</text>
+    <text x="60" y="165" font-size="10" fill="#374151">• Type check</text>
+    <text x="60" y="182" font-size="10" fill="#374151">• Size check</text>
+
+    <!-- Arrow -->
+    <path d="M 210 150 L 250 150" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+
+    <!-- Phase 2: Chunk -->
+    <rect x="250" y="100" width="160" height="100" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="4"/>
+    <text x="330" y="125" font-size="12" font-weight="bold" text-anchor="middle" fill="#312e81">2. Chunk File</text>
+    <text x="260" y="148" font-size="10" fill="#374151">• Split 5MB chunks</text>
+    <text x="260" y="165" font-size="10" fill="#374151">• Compute hash</text>
+    <text x="260" y="182" font-size="10" fill="#374151">• Create ID</text>
+
+    <!-- Arrow -->
+    <path d="M 410 150 L 450 150" stroke="#6366f1" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+    <!-- Phase 3: Upload Chunks -->
+    <rect x="450" y="100" width="160" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="530" y="125" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">3. Upload Chunks</text>
+    <text x="460" y="148" font-size="10" fill="#374151">• Parallel requests</text>
+    <text x="460" y="165" font-size="10" fill="#374151">• Progress tracking</text>
+    <text x="460" y="182" font-size="10" fill="#374151">• Retry on fail</text>
+
+    <!-- Arrow -->
+    <path d="M 610 150 L 650 150" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+
+    <!-- Phase 4: Assemble -->
+    <rect x="650" y="100" width="160" height="100" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="730" y="125" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">4. Assemble</text>
+    <text x="660" y="148" font-size="10" fill="#374151">• Verify all chunks</text>
+    <text x="660" y="165" font-size="10" fill="#374151">• Reassemble file</text>
+    <text x="660" y="182" font-size="10" fill="#374151">• Confirm upload</text>
+
+    <!-- Arrow -->
+    <path d="M 810 150 L 850 150" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>
+
+    <!-- Phase 5: Finalize -->
+    <rect x="850" y="100" width="160" height="100" fill="#fce7f3" stroke="#ec4899" stroke-width="2" rx="4"/>
+    <text x="930" y="125" font-size="12" font-weight="bold" text-anchor="middle" fill="#831843">5. Finalize</text>
+    <text x="860" y="148" font-size="10" fill="#374151">• Return URL</text>
+    <text x="860" y="165" font-size="10" fill="#374151">• Cache entry</text>
+    <text x="860" y="182" font-size="10" fill="#374151">• Notify client</text>
+  </g>
+
+  <!-- Error Handling -->
+  <g>
+    <text x="100" y="250" font-size="16" font-weight="bold" fill="#1a1a1a">Error Handling Strategies</text>
+
+    <!-- Retry Logic -->
+    <rect x="50" y="280" width="220" height="120" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="160" y="305" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Chunk Retry</text>
+    <text x="60" y="328" font-size="10" fill="#374151">• Failed chunk: retry up to 3x</text>
+    <text x="60" y="345" font-size="10" fill="#374151">• Exponential backoff</text>
+    <text x="60" y="362" font-size="10" fill="#374151">• Skip if user cancels</text>
+    <text x="60" y="379" font-size="10" fill="#374151">• Resume from failure point</text>
+
+    <!-- Resume Logic -->
+    <rect x="290" y="280" width="220" height="120" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="400" y="305" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Resume Upload</text>
+    <text x="300" y="328" font-size="10" fill="#374151">• Store upload session ID</text>
+    <text x="300" y="345" font-size="10" fill="#374151">• Query server for completed</text>
+    <text x="300" y="362" font-size="10" fill="#374151">• Resume from last chunk</text>
+    <text x="300" y="379" font-size="10" fill="#374151">• Avoid re-uploading done chunks</text>
+
+    <!-- Cleanup -->
+    <rect x="530" y="280" width="220" height="120" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="4"/>
+    <text x="640" y="305" font-size="12" font-weight="bold" text-anchor="middle" fill="#312e81">Cleanup on Failure</text>
+    <text x="540" y="328" font-size="10" fill="#374151">• Server clears orphan chunks</text>
+    <text x="540" y="345" font-size="10" fill="#374151">• Timeout incomplete uploads</text>
+    <text x="540" y="362" font-size="10" fill="#374151">• Client removes temp files</text>
+    <text x="540" y="379" font-size="10" fill="#374151">• Show user retry option</text>
+
+    <!-- Pause/Cancel -->
+    <rect x="770" y="280" width="220" height="120" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="880" y="305" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Pause/Cancel</text>
+    <text x="780" y="328" font-size="10" fill="#374151">• Pause: abort current chunks</text>
+    <text x="780" y="345" font-size="10" fill="#374151">• Cancel: clear session</text>
+    <text x="780" y="362" font-size="10" fill="#374151">• Clean up server state</text>
+    <text x="780" y="379" font-size="10" fill="#374151">• Show confirmation before delete</text>
+  </g>
+
+  <!-- Performance Optimization -->
+  <g>
+    <text x="100" y="450" font-size="16" font-weight="bold" fill="#1a1a1a">Performance Optimizations</text>
+
+    <rect x="50" y="480" width="1100" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
+    <text x="70" y="505" font-size="11" fill="#374151"><tspan font-weight="bold">Parallel Chunks:</tspan> Upload multiple chunks concurrently (default 3-4). Increases throughput significantly. Requires careful memory management.</text>
+    <text x="70" y="530" font-size="11" fill="#374151"><tspan font-weight="bold">Progress Tracking:</tspan> Report bytes uploaded via progress events. Users see upload bar. Critical for large files &gt;100MB.</text>
+    <text x="70" y="555" font-size="11" fill="#374151"><tspan font-weight="bold">Pre-upload Hash:</tspan> Compute SHA-256 client-side before upload. Verify server-side after assembly. Detects corruption.</text>
+  </g>
+
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981"/>
+    </marker>
+  </defs>
+</svg>

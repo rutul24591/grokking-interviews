@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Social media news feed frontend architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .chip { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .chip { fill: #111827; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text class="t h" x="40" y="54" font-size="22">News Feed Frontend: Request, Cache, and Media</text>
+  <text class="t muted" x="40" y="78" font-size="13">Goal: smooth infinite scroll without load amplification</text>
+
+  <rect class="box" x="40" y="110" width="300" height="360" rx="14"/>
+  <text class="t h" x="60" y="140" font-size="16">Client (Web / Mobile Web)</text>
+  <rect class="chip" x="60" y="160" width="260" height="58" rx="10"/>
+  <text class="t" x="74" y="185" font-size="13">UI renderer</text>
+  <text class="t muted" x="74" y="205" font-size="12">Virtualized list, media lazy-load</text>
+
+  <rect class="chip" x="60" y="232" width="260" height="70" rx="10"/>
+  <text class="t" x="74" y="257" font-size="13">Policy fetch layer</text>
+  <text class="t muted" x="74" y="277" font-size="12">Dedupe, backoff+jitter, budgets</text>
+  <text class="t muted" x="74" y="295" font-size="12">Cursor pagination, refresh semantics</text>
+
+  <rect class="chip" x="60" y="316" width="260" height="70" rx="10"/>
+  <text class="t" x="74" y="341" font-size="13">Client cache</text>
+  <text class="t muted" x="74" y="361" font-size="12">In-memory + persisted window</text>
+  <text class="t muted" x="74" y="379" font-size="12">Eviction + TTL; offline read-only</text>
+
+  <rect class="chip" x="60" y="400" width="260" height="50" rx="10"/>
+  <text class="t" x="74" y="428" font-size="13">RUM + error telemetry</text>
+
+  <rect class="box" x="390" y="140" width="240" height="140" rx="14"/>
+  <text class="t h" x="410" y="170" font-size="15">API Gateway</text>
+  <text class="t muted" x="410" y="194" font-size="12">Auth, rate limits, routing</text>
+  <text class="t muted" x="410" y="214" font-size="12">Request IDs for correlation</text>
+  <text class="t muted" x="410" y="234" font-size="12">Canary / feature flags</text>
+
+  <rect class="box" x="680" y="110" width="240" height="180" rx="14"/>
+  <text class="t h" x="700" y="140" font-size="15">Feed + Ranking</text>
+  <text class="t muted" x="700" y="164" font-size="12">Returns: item cards + cursor</text>
+  <text class="t muted" x="700" y="184" font-size="12">Stable cursor snapshot token</text>
+  <text class="t muted" x="700" y="204" font-size="12">Safety filters applied server-side</text>
+  <text class="t muted" x="700" y="224" font-size="12">Hydration endpoints for details</text>
+
+  <rect class="box" x="680" y="318" width="240" height="152" rx="14"/>
+  <text class="t h" x="700" y="348" font-size="15">Media CDN</text>
+  <text class="t muted" x="700" y="372" font-size="12">Images, video segments</text>
+  <text class="t muted" x="700" y="392" font-size="12">Progressive loading</text>
+  <text class="t muted" x="700" y="412" font-size="12">Backpressure via client budgets</text>
+
+  <path class="line" d="M340 250 L380 250" />
+  <polygon class="arrow" points="380,250 372,246 372,254"/>
+
+  <path class="line" d="M630 210 L670 210" />
+  <polygon class="arrow" points="670,210 662,206 662,214"/>
+
+  <path class="line" d="M340 360 L660 360" />
+  <polygon class="arrow" points="660,360 652,356 652,364"/>
+  <text class="t muted" x="390" y="348" font-size="12">Media requests (lazy, prioritized)</text>
+</svg>
+

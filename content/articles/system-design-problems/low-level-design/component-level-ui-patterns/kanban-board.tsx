@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +25,18 @@ export default function KanbanBoardArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a Kanban board — a visual project management tool with columns
           representing workflow stages (e.g., Backlog, In Progress, Done) and cards
           representing tasks. Users drag cards between columns to update their status.
           The system must support swimlanes for horizontal categorization, real-time
           multi-user collaboration with optimistic updates, and full keyboard accessibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Assumptions:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>Columns are fixed or configurable (3-7 columns typical).</li>
+          <HighlightBlock as="li" tier="important">Columns are fixed or configurable (3-7 columns typical).</HighlightBlock>
           <li>Cards contain title, assignee, labels, due date, and description.</li>
           <li>Multiple users can edit the board simultaneously via WebSocket.</li>
           <li>Cards can be dragged between columns and reordered within a column.</li>
@@ -49,7 +50,7 @@ export default function KanbanBoardArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Drag Between Columns:</strong> Cards can be dragged from one column to another, updating their status.</li>
+          <HighlightBlock as="li" tier="important"><strong>Drag Between Columns:</strong> Cards can be dragged from one column to another, updating their status.</HighlightBlock>
           <li><strong>Reorder Within Column:</strong> Cards can be reordered within a column via drag.</li>
           <li><strong>Swimlanes:</strong> Horizontal grouping with collapsible sections.</li>
           <li><strong>Real-Time Updates:</strong> WebSocket pushes card moves from other users, merged optimistically.</li>
@@ -62,8 +63,8 @@ export default function KanbanBoardArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Performance:</strong> Drag operations at 60fps using CSS transforms. Board with 200+ cards renders smoothly.</li>
-          <li><strong>Accessibility:</strong> Full keyboard navigation between cards and columns. Screen reader announces card moves.</li>
+          <HighlightBlock as="li" tier="important"><strong>Performance:</strong> Drag operations at 60fps using CSS transforms. Board with 200+ cards renders smoothly.</HighlightBlock>
+          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Full keyboard navigation between cards and columns. Screen reader announces card moves.</HighlightBlock>
           <li><strong>Real-Time Latency:</strong> WebSocket updates applied within 200ms of broadcast.</li>
           <li><strong>Type Safety:</strong> Full TypeScript for card, column, and board types.</li>
         </ul>
@@ -79,26 +80,26 @@ export default function KanbanBoardArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is a <strong>board state store</strong> (Zustand) holding columns
           and cards as normalized data. A <strong>drag-and-drop system</strong> using
           Pointer Events handles card movement between columns and within-column
           reordering. <strong>WebSocket integration</strong> broadcasts moves to other
           users and merges incoming moves with optimistic local state. The board renders
           columns as flex items with cards as draggable elements.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches:</strong>
         </p>
         <ul className="space-y-2">
-          <li><strong>Third-party library (@hello-pangea/dnd, dnd-kit):</strong> Battle-tested but heavy bundle size and limited real-time merge logic.</li>
-          <li><strong>HTML5 Drag and Drop API:</strong> Works for mouse but not touch devices. Pointer Events provide unified support.</li>
+          <HighlightBlock as="li" tier="important"><strong>Third-party library (@hello-pangea/dnd, dnd-kit):</strong> Battle-tested but heavy bundle size and limited real-time merge logic.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>HTML5 Drag and Drop API:</strong> Works for mouse but not touch devices. Pointer Events provide unified support.</HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why custom implementation is optimal:</strong> Full control over drag
           mechanics, real-time merge conflict resolution, and accessibility. The
           normalized store makes optimistic updates and rollback trivial.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -114,17 +115,17 @@ export default function KanbanBoardArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Board Store (<code>board-store.ts</code>)</h4>
-          <p>Zustand store with normalized data: <code>cards: Map&lt;id, Card&gt;</code>, <code>columns: Column[]</code> with card ID arrays, <code>swimlanes: Swimlane[]</code>. Actions: moveCard, reorderCard, addCard, deleteCard, applyRemoteUpdate, rollback.</p>
+          <HighlightBlock as="p" tier="important">Zustand store with normalized data: <code>cards: Map&lt;id, Card&gt;</code>, <code>columns: Column[]</code> with card ID arrays, <code>swimlanes: Swimlane[]</code>. Actions: moveCard, reorderCard, addCard, deleteCard, applyRemoteUpdate, rollback.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Drag System (<code>kanban-drag.ts</code>)</h4>
-          <p>Pointer event-based drag: pointerdown on card captures pointer, pointermove on document computes position, pointerup triggers drop resolution. Drop target computed by hit-testing against column and card bounding boxes.</p>
+          <HighlightBlock as="p" tier="important">Pointer event-based drag: pointerdown on card captures pointer, pointermove on document computes position, pointerup triggers drop resolution. Drop target computed by hit-testing against column and card bounding boxes.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. WebSocket Manager (<code>websocket-manager.ts</code>)</h4>
-          <p>Manages WebSocket connection, sends board actions on local moves, receives remote actions from other users. Handles reconnect with exponential backoff, message buffering during offline.</p>
+          <HighlightBlock as="p" tier="important">Manages WebSocket connection, sends board actions on local moves, receives remote actions from other users. Handles reconnect with exponential backoff, message buffering during offline.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -134,12 +135,12 @@ export default function KanbanBoardArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Optimistic Update Manager (<code>optimistic-manager.ts</code>)</h4>
-          <p>On drag drop, immediately applies the move to the store, generates a pending action ID, sends to server. On server confirmation, marks as committed. On failure, rolls back to pre-move state using snapshot.</p>
+          <HighlightBlock as="p" tier="important">On drag drop, immediately applies the move to the store, generates a pending action ID, sends to server. On server confirmation, marks as committed. On failure, rolls back to pre-move state using snapshot.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">7. Keyboard Navigation (<code>kanban-keyboard.ts</code>)</h4>
-          <p>Arrow keys move focus between cards and columns. Enter opens card detail. Space picks up a card for keyboard drag. Escape cancels drag. Tab navigates between columns.</p>
+          <HighlightBlock as="p" tier="crucial">Arrow keys move focus between cards and columns. Enter opens card detail. Space picks up a card for keyboard drag. Escape cancels drag. Tab navigates between columns.</HighlightBlock>
         </div>
 
         <ArticleImage
@@ -162,61 +163,61 @@ export default function KanbanBoardArticle() {
 
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The data flow is: user drag → drop target resolution → optimistic apply →
           WebSocket send → server confirmation → commit or rollback. Remote moves from
           other users flow: WebSocket receive → conflict check → store update → UI re-render.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li><strong>Concurrent moves:</strong> When two users move the same card, the server resolves using last-write-wins based on vector clocks. The losing client receives the winning state and applies it, showing a brief &quot;Card was moved by another user&quot; notification.</li>
-          <li><strong>WebSocket disconnect during drag:</strong> The optimistic update remains in the UI. On reconnect, the pending action is replayed. If the server rejects (e.g., column was deleted), the client rolls back.</li>
-          <li><strong>Large boards (500+ cards):</strong> Columns with many cards use virtualized rendering — only visible cards in the viewport are rendered. The drag placeholder maintains the correct height.</li>
+          <HighlightBlock as="li" tier="important"><strong>Concurrent moves:</strong> When two users move the same card, the server resolves using last-write-wins based on vector clocks. The losing client receives the winning state and applies it, showing a brief &quot;Card was moved by another user&quot; notification.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>WebSocket disconnect during drag:</strong> The optimistic update remains in the UI. On reconnect, the pending action is replayed. If the server rejects (e.g., column was deleted), the client rolls back.</HighlightBlock>
+          <HighlightBlock as="li" tier="crucial"><strong>Large boards (500+ cards):</strong> Columns with many cards use virtualized rendering — only visible cards in the viewport are rendered. The drag placeholder maintains the correct height.</HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Complete production-ready implementation includes: normalized Zustand store
             with optimistic updates, Pointer Events drag system, WebSocket manager with
             reconnect logic, conflict resolver with vector clocks, keyboard navigation,
             swimlane rendering, and card detail modal.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Types &amp; Interfaces</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <code>Card</code> with id, title, columnId, swimlaneId, position, assignee,
           labels, dueDate, version. <code>Column</code> with id, title, cardIds array,
           order. <code>Swimlane</code> with id, title, collapsed state. <code>DragState</code>
           with source column, card id, current position, drop target.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Board Store</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Normalized Zustand store: cards Map for O(1) card lookup, columns array with
           ordered cardIds. Actions manipulate the normalized data — moveCard removes card
           ID from source column, inserts into target column at position, increments card
           version. Snapshot captures full state before optimistic move for rollback.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Modules 3-7: Drag, WebSocket, Conflict, Optimistic, Keyboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Pointer drag uses document-level listeners for cross-column movement. WebSocket
           manager buffers messages during disconnect and replays on reconnect. Conflict
           resolver compares vector clocks to detect concurrent edits. Optimistic manager
           snapshots state, applies move, tracks pending actions by ID. Keyboard navigation
           uses roving tabindex pattern across cards and columns.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -254,15 +255,15 @@ export default function KanbanBoardArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li><strong>Column re-rendering on every move:</strong> Moving a card triggers re-renders of both source and target columns. Mitigation: Zustand selectors subscribe each column component only to its own cardIds, so only the affected columns re-render.</li>
-          <li><strong>Hit-testing against all cards during drag:</strong> Computing drop target by checking every card bounding box is O(n). Mitigation: check column bounding boxes first (O(c)), then only cards within the target column.</li>
-          <li><strong>WebSocket message flooding:</strong> Rapid moves generate many messages. Mitigation: debounce local actions at 100ms before sending, coalesce multiple moves of the same card into a single message.</li>
+          <HighlightBlock as="li" tier="important"><strong>Column re-rendering on every move:</strong> Moving a card triggers re-renders of both source and target columns. Mitigation: Zustand selectors subscribe each column component only to its own cardIds, so only the affected columns re-render.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Hit-testing against all cards during drag:</strong> Computing drop target by checking every card bounding box is O(n). Mitigation: check column bounding boxes first (O(c)), then only cards within the target column.</HighlightBlock>
+          <HighlightBlock as="li" tier="crucial"><strong>WebSocket message flooding:</strong> Rapid moves generate many messages. Mitigation: debounce local actions at 100ms before sending, coalesce multiple moves of the same card into a single message.</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li><strong>Virtualized columns:</strong> For columns with 50+ cards, render only visible cards using a custom virtualizer (similar to the Infinite Scroll article&apos;s approach).</li>
-          <li><strong>CSS transforms during drag:</strong> Use <code>transform: translate()</code> for the dragged card ghost instead of updating DOM position. GPU-composited, no layout thrashing.</li>
+          <HighlightBlock as="li" tier="important"><strong>Virtualized columns:</strong> For columns with 50+ cards, render only visible cards using a custom virtualizer (similar to the Infinite Scroll article&apos;s approach).</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>CSS transforms during drag:</strong> Use <code>transform: translate()</code> for the dragged card ghost instead of updating DOM position. GPU-composited, no layout thrashing.</HighlightBlock>
           <li><strong>Web Worker for conflict resolution:</strong> Offload vector clock comparison to a Web Worker for boards with 10+ concurrent users.</li>
         </ul>
       </section>
@@ -271,11 +272,11 @@ export default function KanbanBoardArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Card titles and descriptions from user input are sanitized before rendering.
           WebSocket messages are validated against a schema (Zod or similar) before
           applying to the store to prevent malformed remote state updates.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -283,7 +284,7 @@ export default function KanbanBoardArticle() {
           <ul className="space-y-2">
             <li>Tab moves focus between columns. ArrowLeft/Right moves between columns.</li>
             <li>ArrowUp/Down moves focus between cards within a column.</li>
-            <li>Space picks up the focused card for keyboard drag. Arrow keys move it, Enter drops, Escape cancels.</li>
+            <HighlightBlock as="li" tier="important">Space picks up the focused card for keyboard drag. Arrow keys move it, Enter drops, Escape cancels.</HighlightBlock>
             <li>Enter on a card opens the detail modal. Escape closes the modal.</li>
           </ul>
         </div>
@@ -294,14 +295,14 @@ export default function KanbanBoardArticle() {
             <li>The board has <code>role=&quot;application&quot;</code> with <code>aria-label=&quot;Kanban board&quot;</code>.</li>
             <li>Each column has <code>role=&quot;list&quot;</code> with <code>aria-label</code> showing the column name and card count.</li>
             <li>Each card has <code>role=&quot;listitem&quot;</code> with <code>aria-grabbed</code> during drag.</li>
-            <li>An <code>aria-live=&quot;assertive&quot;</code> region announces card moves: &quot;Task moved from In Progress to Done&quot;.</li>
+            <HighlightBlock as="li" tier="important">An <code>aria-live=&quot;assertive&quot;</code> region announces card moves: &quot;Task moved from In Progress to Done&quot;.</HighlightBlock>
           </ul>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
-          <li><strong>WebSocket authentication:</strong> Each WebSocket message includes a JWT. The server verifies the user has permission to modify the board and the specific card.</li>
-          <li><strong>Rate limiting:</strong> Server-side rate limit on board actions (max 10 moves per second per user) to prevent abuse.</li>
+          <HighlightBlock as="li" tier="important"><strong>WebSocket authentication:</strong> Each WebSocket message includes a JWT. The server verifies the user has permission to modify the board and the specific card.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Rate limiting:</strong> Server-side rate limit on board actions (max 10 moves per second per user) to prevent abuse.</HighlightBlock>
         </ul>
       </section>
 
@@ -310,7 +311,7 @@ export default function KanbanBoardArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li><strong>Board store:</strong> Test moveCard updates both source and target columns, preserves card order, increments version. Test rollback restores pre-move state exactly.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Board store:</strong> Test moveCard updates both source and target columns, preserves card order, increments version. Test rollback restores pre-move state exactly.</HighlightBlock>
           <li><strong>Conflict resolver:</strong> Test concurrent moves detected via version mismatch, last-write-wins applied correctly, losing client notified.</li>
           <li><strong>WebSocket manager:</strong> Test message send/receive, reconnect with exponential backoff, offline buffering and replay.</li>
         </ul>
@@ -318,15 +319,15 @@ export default function KanbanBoardArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
           <li><strong>Drag between columns:</strong> Simulate drag via pointer events, verify card moves in store, verify WebSocket message sent, verify server confirmation commits the move.</li>
-          <li><strong>Real-time sync:</strong> Open two board instances, move card in one, verify it appears in the other within 200ms.</li>
-          <li><strong>Keyboard drag:</strong> Focus card, press Space to pick up, ArrowRight to move to next column, Enter to drop. Verify store state updated.</li>
+          <HighlightBlock as="li" tier="important"><strong>Real-time sync:</strong> Open two board instances, move card in one, verify it appears in the other within 200ms.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Keyboard drag:</strong> Focus card, press Space to pick up, ArrowRight to move to next column, Enter to drop. Verify store state updated.</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
         <ul className="space-y-2">
-          <li>WebSocket disconnect during drag: verify optimistic update rolls back on reconnect failure.</li>
+          <HighlightBlock as="li" tier="important">WebSocket disconnect during drag: verify optimistic update rolls back on reconnect failure.</HighlightBlock>
           <li>Concurrent moves of same card: verify conflict detection and resolution.</li>
-          <li>500-card board: verify virtualized columns render correctly, drag target resolution is accurate.</li>
+          <HighlightBlock as="li" tier="important">500-card board: verify virtualized columns render correctly, drag target resolution is accurate.</HighlightBlock>
         </ul>
       </section>
 
@@ -337,31 +338,31 @@ export default function KanbanBoardArticle() {
         <ul className="space-y-3">
           <li><strong>No optimistic updates:</strong> Waiting for server confirmation before updating the UI makes the board feel sluggish. Staff-level candidates should propose optimistic updates with rollback.</li>
           <li><strong>Denormalized store:</strong> Storing cards inside column objects makes cross-column moves complex (search, remove, insert). Normalized Map-based store simplifies moves to O(1) card update + O(n) column splice.</li>
-          <li><strong>Not handling disconnect:</strong> If the WebSocket drops during a drag, the card&apos;s state is inconsistent. Candidates must discuss offline buffering and reconnect reconciliation.</li>
-          <li><strong>Ignoring keyboard accessibility:</strong> A drag-only board is completely inaccessible. Keyboard drag (Space to pick up, Arrows to move, Enter to drop) is essential.</li>
+          <HighlightBlock as="li" tier="important"><strong>Not handling disconnect:</strong> If the WebSocket drops during a drag, the card&apos;s state is inconsistent. Candidates must discuss offline buffering and reconnect reconciliation.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Ignoring keyboard accessibility:</strong> A drag-only board is completely inaccessible. Keyboard drag (Space to pick up, Arrows to move, Enter to drop) is essential.</HighlightBlock>
           <li><strong>No conflict resolution:</strong> With multiple users, concurrent edits are inevitable. Without conflict detection, the board state diverges.</li>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Optimistic vs Pessimistic Updates</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Optimistic updates give instant feedback but risk inconsistency if the server
             rejects the move. Pessimistic updates (wait for server) are consistent but
             slow. For a Kanban board, optimistic is preferred because card moves are
             rarely rejected (unlike, say, a payment). Rollback on failure is acceptable
             UX — show a toast &quot;Move failed, card returned to previous column&quot;.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Pointer Events vs HTML5 Drag and Drop</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             HTML5 DnD has native drag image support but does not work on touch devices.
             Pointer Events work on mouse, touch, and pen. The trade-off: Pointer Events
             require manual drag image creation and hit-testing. For a Kanban board,
             Pointer Events are the right choice because touch support is mandatory.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -391,12 +392,12 @@ export default function KanbanBoardArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you implement WYSIWYG inline card editing?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Double-clicking a card title switches to an inline input field. On blur
               or Enter, the updated title is sent to the store and broadcast via WebSocket.
               Use a contentEditable div or a controlled input. Debounce the update at
               500ms to avoid sending every keystroke.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

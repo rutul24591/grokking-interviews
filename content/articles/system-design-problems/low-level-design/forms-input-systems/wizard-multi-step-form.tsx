@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -31,7 +32,7 @@ export default function WizardArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a wizard runtime: a system that takes a long
           form and presents it as a sequence of focused, validated
           steps with persistent accumulated state, branching paths,
@@ -44,8 +45,8 @@ export default function WizardArticle() {
           forward and back, edit prior steps, paste shared deep links,
           reload mid-task, switch devices, and occasionally close the
           tab. The wizard must keep all of those scenarios coherent.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Wizards are the right pattern for any data collection that
           would overwhelm users in a single page — onboarding,
           KYC/identity verification, multi-page applications, complex
@@ -63,10 +64,10 @@ export default function WizardArticle() {
           well they are an accessibility win (smaller cognitive load
           per step) and a conversion win (resumability, progress
           visibility, lower drop-off).
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The end user is the primary persona, and they are the most
           demanding stakeholder. They use wizards on mobile and
           desktop, often interrupted by phone calls, notifications,
@@ -82,7 +83,7 @@ export default function WizardArticle() {
           ordinary React components; they don&rsquo;t want to think
           about state machines, URL reconciliation, or resumability
           in their per-step code.
-        </p>
+        </HighlightBlock>
         <p>
           Data sources vary by product. Some wizards collect
           everything client-side and submit at the end with one
@@ -97,7 +98,7 @@ export default function WizardArticle() {
         </p>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Three to ten steps per wizard, with each step containing
           five to twenty fields. Branching exists: an answer at step
           two may change which steps remain. The URL is the source
@@ -114,10 +115,10 @@ export default function WizardArticle() {
           underneath the wizard already has fields, validators, and
           conditional logic; the wizard composes on top, never
           duplicates that machinery.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Field-level rendering, per-field validation, and
           conditional field logic are delegated to the form runtime
           (Form Builder) the wizard sits on top of; we don&rsquo;t
@@ -131,14 +132,14 @@ export default function WizardArticle() {
           instance (two users editing the same flow concurrently)
           is also out of scope; that&rsquo;s a different problem
           requiring CRDTs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The runtime must support sequential navigation — Next,
           Back, and Skip when configured — and enforce a per-step
           validation gate before advancing. Users go Back at any
@@ -157,10 +158,10 @@ export default function WizardArticle() {
           rehydrating from a draft. The final step is a review with
           submission, and submission is idempotent so retries on
           slow networks do not duplicate.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Step-level autosave on Next means a user who reloads
           mid-flow lands on the last completed step rather than the
           step before it. Animated step transitions give the wizard
@@ -175,24 +176,24 @@ export default function WizardArticle() {
           step&rdquo; affordance from the review step gives users
           confidence about going back to fix things without losing
           their place.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Visual schema/flow editor, dashboards, real-time
           collaboration on a wizard, and AI-assisted step
           completion are explicitly out of scope. Each is a
           significant subsystem in its own right; folding them into
           the wizard backbone would create a monolith that
           can&rsquo;t evolve.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Step transitions must feel instant — under approximately
           100 ms of script and layout work. Only the active step is
           mounted at any time, so total DOM stays small regardless
@@ -205,20 +206,20 @@ export default function WizardArticle() {
           paint of the first step happens as part of the page&rsquo;s
           regular SSR/SSG render in Next.js, so the first useful
           paint is well under 1.5 s on a mid-tier network.
-        </p>
+        </HighlightBlock>
 
         <h3>Scalability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture is independent of step count: memory and
           DOM cost are O(active step), not O(total steps). The
           branching graph is evaluated lazily at transition time, so
           wide branching factors don&rsquo;t affect mount time. Adding
           a new step to a 10-step wizard has the same cost as
           adding a new step to a 3-step wizard.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reload preserves state via draft hydration. Submission is
           idempotent through a client-generated request id (UUID
           v7) so server-side retries dedupe. Navigation is robust
@@ -230,10 +231,10 @@ export default function WizardArticle() {
           Browser Back and Forward keep the URL and the rendered
           step in lockstep; we never see the URL on step 4 with
           step 3 rendered.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Sensitive steps (payment, identity numbers, personal
           health information) are excluded from local draft
           persistence by configuration; their values live only in
@@ -243,10 +244,10 @@ export default function WizardArticle() {
           — never trust a client to enforce business eligibility.
           Server-bound steps attach CSRF tokens at the fetch layer
           and use idempotency keys.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Stepper is a navigation landmark with
           <code> aria-current=&quot;step&quot;</code> on the active
           item. Step transitions move focus to the step heading
@@ -260,7 +261,7 @@ export default function WizardArticle() {
           clickable only when reachable. Animations respect
           <code> prefers-reduced-motion</code> and degrade to a
           one-frame swap.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
         <p>
@@ -293,7 +294,7 @@ export default function WizardArticle() {
           interaction is what makes the wizard feel native to the
           web while staying tractable as the flow grows.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The state machine&rsquo;s states are the step ids plus
           terminal states (<code>review</code>,
           <code> submitting</code>, <code>success</code>,
@@ -314,8 +315,8 @@ export default function WizardArticle() {
           component lifecycle. This is the smallest set of moving
           parts that handles branching, deep linking, and
           resumability cleanly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>mount</strong>, the runtime initializes in a
           specific order so that hydration and reconciliation
           don&rsquo;t conflict. First, it asks the draft adapter for
@@ -338,8 +339,8 @@ export default function WizardArticle() {
           for cross-tab consistency. All of this happens before the
           first interactive frame, so users see the correct step
           on first paint without flicker.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>Next click</strong>, the runtime asks the
           underlying form layer to validate the fields belonging to
           the current step. The form layer already maintains errors
@@ -361,7 +362,7 @@ export default function WizardArticle() {
           even under fast clicking: every Next is a guarded
           transition, and the guard is the source of truth for
           whether the user can proceed.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>Back</strong>, the machine pops its history
           stack and dispatches a <code>BACK</code> event. The URL
@@ -378,7 +379,7 @@ export default function WizardArticle() {
           make Back a destructive operation and users would lose
           work in the common case of going back to double-check.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>Edit-and-branch-divergence</strong> — the
           subtlest correctness concern — the user goes back and
           edits a prior step whose answer gates a branching
@@ -396,7 +397,7 @@ export default function WizardArticle() {
           lose user work; doing it not at all would silently
           submit stale answers from a dead branch. We surface the
           consequence so the user can confirm.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>deep link</strong> from the address bar, the
           runtime treats the URL as a request rather than a
@@ -435,7 +436,7 @@ export default function WizardArticle() {
           The deviceId in each broadcast prevents loops where the
           originating tab also receives its own message.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           On <strong>submit</strong>, the runtime enters the
           <code> submitting</code> state. It validates the entire
           form one last time (because nothing prevents an
@@ -455,12 +456,12 @@ export default function WizardArticle() {
           it returns to <code>review</code> with a retry banner.
           The idempotency key persists so retries dedupe at the
           server even across reloads.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>WizardProvider</strong> instantiates the state
           machine and the shared form store and exposes them
           through stable refs in a React Context. The Context value
@@ -473,7 +474,7 @@ export default function WizardArticle() {
           except its children, and it cleans up on unmount so
           unmounting and remounting the whole wizard works
           predictably.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>StepRouter</strong> bridges the URL to the
           machine. It reads the active route segment via the
@@ -488,7 +489,7 @@ export default function WizardArticle() {
           This component is the only place that reads the URL or
           calls the router; everywhere else uses machine state.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Stepper</strong> is presentational. It reads the
           machine state and produces a navigation landmark with
           completed / current / disabled affordances. Items are
@@ -500,8 +501,8 @@ export default function WizardArticle() {
           hook (<code>useWizardSteps</code>) that returns the list
           of steps with their states. This isolation is what lets
           us evolve the visual without touching the orchestration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>StepShell</strong> is the mount/unmount boundary
           for step content. It uses <code>React.lazy</code> with
           <code> Suspense</code> for the active step component and a
@@ -513,7 +514,7 @@ export default function WizardArticle() {
           per step on transition, because mount-only-active
           rendering would otherwise drop transient state and feel
           disorienting on Back.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>NavigationControls</strong> renders Back / Next /
           Skip; the labels come from the active step (so a step can
@@ -524,7 +525,7 @@ export default function WizardArticle() {
           <code> submitting</code>, controls are disabled and a
           spinner replaces the Next/Submit button.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>ReviewStep</strong> is a built-in terminal step
           showing all collected values grouped by their originating
           step, with edit affordances that jump back to the
@@ -534,8 +535,8 @@ export default function WizardArticle() {
           ReviewStep is a default — products can replace it with a
           custom review screen by registering their own step under
           the <code>review</code> slot.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>WizardMachine</strong> is the small custom state
           machine. We don&rsquo;t take an XState dependency for
           this because the machine is small enough to maintain
@@ -543,7 +544,7 @@ export default function WizardArticle() {
           guards (which involve async validation). The machine is a
           pure reducer plus a guarded dispatcher; it&rsquo;s a few
           hundred lines of code and exhaustively unit-testable.
-        </p>
+        </HighlightBlock>
         <p>
           The architecture leans on three patterns. First, finite
           state machines for transition correctness — branching,
@@ -561,7 +562,7 @@ export default function WizardArticle() {
 
       <section>
         <h2>🔄 State Management Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           State splits into four planes that coexist without
           overlapping. <strong>Machine state</strong> — current
           step, history stack, branch decisions, per-step
@@ -577,8 +578,8 @@ export default function WizardArticle() {
           flags, ephemeral focus state, hover indicators — lives
           in the components that need it via
           <code> useState</code>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Ownership is per-instance. A
           <code> WizardProvider</code> owns its own machine and
           form store; nested wizards (rare but possible — a
@@ -590,8 +591,8 @@ export default function WizardArticle() {
           transitions. This lets the URL be the canonical
           observable for navigation while keeping the machine
           authoritative for transition correctness.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Why two stores rather than one? The wizard machine and
           the form store have different lifecycles, different
           authoring requirements (the machine is tightly coupled
@@ -603,8 +604,8 @@ export default function WizardArticle() {
           conflate concerns and make either store harder to
           test. Two small stores with a clean interface beat one
           large one.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The trade-off here that&rsquo;s worth being explicit
           about: state machine versus ad-hoc
           <code> currentStep</code> counter. The counter approach
@@ -621,12 +622,12 @@ export default function WizardArticle() {
           logic on mount and on browser navigation. We accepted
           the cost because the alternative breaks fundamental
           web conventions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Inputs to the wizard are: an array of step descriptors
           (<code>{` { id, component, validate, next?, sensitive? } `}</code>),
           an <code>initialValues</code> bag, an
@@ -642,9 +643,8 @@ export default function WizardArticle() {
           convention; we keep them serializable so the same
           descriptor format works for hard-coded and server-driven
           step graphs identically.
-        </p>
-        <p>
-          Each step component receives a small props bag from the
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">Each step component receives a small props bag from the
           StepShell: <code>values</code> (the current full form
           values), <code>setValue(name, value)</code>,
           <code> errors</code>, and a <code>helpers</code>
@@ -653,7 +653,8 @@ export default function WizardArticle() {
           <code> setFormError(message)</code>, and
           <code> markStepValidated()</code>; these cover the
           escape hatches a step might need without exposing the
-          machine directly. The flow is one-way: machine state
+          machine directly.</HighlightBlock>
+<HighlightBlock as="p" tier="important">The flow is one-way: machine state
           and form state project to rendered UI; user events
           dispatch actions to either the machine (navigation) or
           the form store (values). The underlying form runtime is
@@ -661,13 +662,12 @@ export default function WizardArticle() {
           them at gate time and never duplicates the validation
           pipeline. This separation is what keeps the wizard
           backbone compatible with any form runtime that
-          conforms to the small contract.
-        </p>
+          conforms to the small contract.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Only one step is mounted at a time. Step components are
           lazy-loaded via <code>React.lazy</code>; the wizard
           prefetches the likely-next step on idle (using
@@ -678,8 +678,8 @@ export default function WizardArticle() {
           fallbacks are sized to the expected step content rather
           than collapsed, which keeps the page from jumping during
           load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Animations use CSS transitions or the View Transitions
           API where available. We avoid layout-thrashing
           animations by fixing the container height to the larger
@@ -695,8 +695,8 @@ export default function WizardArticle() {
           This server-side rehydration eliminates the
           flash-of-step-1-then-jump-to-step-3 that pure
           client-side rehydration produces.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Step transitions are budgeted at ~100 ms total. On
           decent mid-tier devices this is comfortable; on slow
           devices the lazy-loaded chunk size becomes the dominant
@@ -706,12 +706,12 @@ export default function WizardArticle() {
           50 KB gzipped — when one does, it&rsquo;s usually
           because a heavy library leaked into the per-step tree
           by accident.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX &amp; Interaction Design</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A persistent Stepper sits at the top of the wizard on
           desktop, condensed to a &ldquo;Step 2 of 5&rdquo; chip
           on mobile because there isn&rsquo;t room for the full
@@ -725,8 +725,8 @@ export default function WizardArticle() {
           intermediate Next labels reflect the destination so
           users know what they&rsquo;re committing to before
           they click.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On long async transitions (e.g. a server-bound step
           that validates a shipping address before showing the
           next step), we render a determinate or indeterminate
@@ -737,8 +737,8 @@ export default function WizardArticle() {
           wait — racing the server tends to surface as a
           confusing flash of the wrong step that we then have to
           take back.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The review step deserves a small UX investment beyond
           &ldquo;list of values&rdquo;. We group values by
           originating step with collapsible sections, mark
@@ -750,12 +750,12 @@ export default function WizardArticle() {
           before navigating away, rather than ripping the wizard
           out from under the user; the confirmation is a small
           but perceived-quality win.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Stepper is rendered as
           <code> {`<ol>`}</code> with each item as
           <code> {`<li>`}</code>; the active item carries
@@ -769,34 +769,27 @@ export default function WizardArticle() {
           focusable; clickable only when reachable. The submit
           confirmation modal traps focus while open and returns
           focus to the originating button on close.
-        </p>
-        <p>
-          Keyboard support: every action that can be reached
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">Keyboard support: every action that can be reached
           with the mouse — jumping to a previous step from the
           Stepper, editing from review, submitting, canceling —
-          is reachable by Tab and operable by Enter or Space. We
+          is reachable by Tab and operable by Enter or Space.</HighlightBlock>
+<HighlightBlock as="p" tier="important">We
           test keyboard-only end-to-end flows in CI to catch
           regressions early, because keyboard regressions are
           easy to introduce and hard to notice unless you
           deliberately test for them. Screen-reader smoke tests
           run on a representative wizard once per release; we
           can&rsquo;t catch every screen-reader bug with axe-core
-          alone, so the manual pass matters.
-        </p>
+          alone, so the manual pass matters.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security Considerations</h2>
-        <p>
-          Steps marked <code>sensitive: true</code> are excluded
-          from local draft persistence; their values live only in
-          memory and, if a server-side encrypted draft endpoint
-          is configured, are sent there directly. On logout, the
-          wizard listens for a session-end event and clears all
-          in-memory state plus any local draft entries it owns.
-          Submit endpoints attach CSRF tokens at the fetch layer
-          (handled outside the wizard) and use the idempotency
-          key generated by the wizard on submit entry. Branch
+        <HighlightBlock as="p" tier="important">Steps marked sensitive: true are excluded from local draft persistence; their values live only in memory and, if a server-side encrypted draft endpoint is</HighlightBlock>
+<HighlightBlock as="p" tier="important">configured, are sent there directly. On logout, the wizard listens for a session-end event and clears all in-memory state plus any local draft entries it</HighlightBlock>
+<HighlightBlock as="p" tier="important">owns. Submit endpoints attach CSRF tokens at the fetch layer (handled outside the wizard) and use the idempotency key generated by the wizard on submit entry.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Branch
           decisions are advisory: the server re-evaluates
           branching rules at submission time and rejects payloads
           that don&rsquo;t match a valid path, preventing a
@@ -804,18 +797,17 @@ export default function WizardArticle() {
           go through the same DSL sandboxing as the form&rsquo;s
           conditional engine — predicates are data, not arbitrary
           code, so a CMS-served step graph cannot become a
-          remote-code-execution vector.
-        </p>
+          remote-code-execution vector.</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Unit tests cover the machine: every transition, every
+        <HighlightBlock as="p" tier="important">Unit tests cover the machine: every transition, every
           guard, every branching resolver under representative
           value permutations. The machine is a pure reducer plus
           a dispatcher, which makes exhaustive transition
-          coverage feasible. Integration tests mount the runtime
+          coverage feasible.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Integration tests mount the runtime
           with a realistic step graph and exercise: forward
           navigation with valid and invalid steps, Back
           preservation of values, deep link to a valid step,
@@ -825,9 +817,8 @@ export default function WizardArticle() {
           Playwright run real flows in a real browser including
           reload-and-resume and cross-tab broadcast lockout,
           because synthetic events in jsdom don&rsquo;t
-          faithfully model browser history APIs.
-        </p>
-        <p>
+          faithfully model browser history APIs.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Accessibility tests verify focus management on
           transition (focus lands on the step heading) and
           live-region announcements through a stubbed assistive-
@@ -837,13 +828,12 @@ export default function WizardArticle() {
           Lighthouse&rsquo;s mobile throttling as a baseline).
           Regression budgets fail the CI build, which is the
           only way to keep performance from drifting.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
-          Editing a prior step changes branching: the machine
+        <HighlightBlock as="p" tier="important">Editing a prior step changes branching: the machine
           detects the diverging future path on the next
           transition and surfaces an explicit warning, clearing
           values for orphaned steps. Reload mid-step: the
@@ -852,7 +842,8 @@ export default function WizardArticle() {
           the user was actively editing, because edits since
           the last debounced save may not have been persisted)
           with a banner offering to restore the in-progress
-          values that <em>were</em> persisted. Network failure
+          values that <em>were</em> persisted.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Network failure
           on a server-gated Next: the wizard stays on the
           current step with an inline retryable error; values
           are not lost. Browser Back: we intercept the URL
@@ -861,9 +852,8 @@ export default function WizardArticle() {
           the idempotency key prevents double-submit on retry;
           the runtime surfaces a determinate timeout banner
           (&ldquo;Still submitting&hellip; we&rsquo;ll let you
-          know shortly&rdquo;) rather than a hard failure.
-        </p>
-        <p>
+          know shortly&rdquo;) rather than a hard failure.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           A user submits in tab A while tab B is editing: tab
           B receives a <code>form_submitted</code> broadcast
           and locks itself into a read-only review state with
@@ -882,61 +872,28 @@ export default function WizardArticle() {
           earns its keep by handling the cumulative weight of
           all of them in one place rather than each step
           re-implementing the workarounds.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          Step content is any React component conforming to the
-          small contract (receives values, setValue, errors,
-          helpers; can imperatively call
-          <code> helpers.setStepInvalid()</code> for custom
-          invalidation that doesn&rsquo;t fit the validator
-          signature). The branching resolver is pluggable:
-          declarative tables for simple flows, the conditional
-          DSL for richer logic, or a function for the rare cases
-          that need it. Theming is design-token-driven; the
-          Stepper component can be replaced wholesale via the
-          registry. The wizard exposes hooks for analytics,
-          telemetry, and AI assistance to subscribe without
-          modifying internals — the
-          <code> onStepChange</code> callback fires with
-          <code> from</code>, <code>to</code>, and
-          <code> reason</code> so subscribers can build a
-          complete funnel picture without instrumenting per-step
-          code.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Theming is design-token-driven; the Stepper component can be replaced wholesale via the registry. The wizard exposes</HighlightBlock>
+<HighlightBlock as="p" tier="important">hooks for analytics, telemetry, and AI assistance to subscribe without modifying internals — the onStepChange callback</HighlightBlock>
+<HighlightBlock as="p" tier="important">fires with from , to , and reason so subscribers can build a complete funnel picture without instrumenting per-step code.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Step titles, navigation labels, and live-region
-          announcements all resolve through the host&rsquo;s
-          i18n function. Step counters localize numerals via
-          <code> Intl.NumberFormat</code> (Arabic-Indic
-          numerals, Devanagari digits, etc., not just
-          Latin-1). Under <code>dir=&quot;rtl&quot;</code> the
-          Stepper&rsquo;s visual direction flips by relying on
-          CSS logical properties; Back/Next swap visual
-          position but maintain their semantic role so screen
-          readers announce them consistently. Date and currency
-          fields inside steps follow the same rules as
-          elsewhere in the form runtime: format via Intl, store
-          canonical, never rely on string concatenation. For
-          server-bound steps (e.g. a step that validates an
-          address against a postal service), the server
-          response carries locale-aware error messages that
-          map to the same i18n key system as client validators.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Date and currency fields inside steps follow the same rules as elsewhere in the form runtime: format via Intl, store</HighlightBlock>
+<HighlightBlock as="p" tier="important">canonical, never rely on string concatenation. For server-bound steps (e.g. a step that validates an address against a postal</HighlightBlock>
+<HighlightBlock as="p" tier="important">service), the server response carries locale-aware error messages that map to the same i18n key system as client validators.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
 
         <h3>State machine vs imperative routing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We chose a small finite state machine because
           branching, guarded transitions, and deep-link
           reconciliation become unmanageable in imperative code
@@ -951,10 +908,10 @@ export default function WizardArticle() {
           is more honest. We document the threshold so teams
           don&rsquo;t reach for the wizard runtime when they
           really just need a two-page form.
-        </p>
+        </HighlightBlock>
 
         <h3>URL-driven vs purely in-memory step</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           URL-driven gives us shareable links, browser
           Back/Forward, reload-safety, and analytics URL-mapping
           for free, at the cost of needing reconciliation
@@ -965,10 +922,10 @@ export default function WizardArticle() {
           expect them to work; users who hit Back expect to go
           back. Violating those conventions is a worse trade
           than the reconciliation complexity.
-        </p>
+        </HighlightBlock>
 
         <h3>Mount-only-active vs keep-mounted</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mount-only-active is dramatically cheaper: DOM stays
           O(active step) instead of O(total steps), and step
           components can be lazy-loaded. The cost is that
@@ -980,10 +937,10 @@ export default function WizardArticle() {
           but fundamentally lose the lazy-load and memory-bound
           benefits, which matter at the high end of complexity
           where wizards are most useful.
-        </p>
+        </HighlightBlock>
 
         <h3>Client draft vs server draft for resumability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client drafts (IndexedDB) are fast, work offline, and
           require no server changes; server drafts are durable
           across devices and survive local storage clearing. We
@@ -995,10 +952,10 @@ export default function WizardArticle() {
           store covers the other&rsquo;s blind spots, and the
           implementation cost of supporting both is moderate
           once you have the adapter layer in place.
-        </p>
+        </HighlightBlock>
 
         <h3>Validate-on-Next vs continuous validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Continuous validation gives immediate feedback but
           creates noisy errors before the user has even
           finished typing. Validate-on-Next (with per-field
@@ -1012,7 +969,7 @@ export default function WizardArticle() {
           The result feels both forgiving (no premature
           errors) and helpful (errors clear in real time once
           you&rsquo;re aware of them).
-        </p>
+        </HighlightBlock>
 
         <h3>Custom small machine vs XState dependency</h3>
         <p>
@@ -1032,30 +989,15 @@ export default function WizardArticle() {
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          A server-driven step graph (delivered as JSON from a
-          configuration service) unlocks runtime A/B testing of
-          step ordering without redeploys; the runtime already
-          treats step descriptors as data, so this is mostly
-          about fetching and validating the schema before
-          mount. Predictive prefetch — using historical
-          analytics to decide which step to preload next —
-          is a natural performance win. A visual flow editor
-          for product managers would democratize wizard
-          authoring further. Cross-device cursor (showing
-          where the user left off when they open the wizard
-          on a different device) is a modest extension on top
-          of server drafts. CRDT-based merge of concurrent
-          edits across devices is interesting but probably
-          overkill for most wizard use cases — wizards
-          aren&rsquo;t typically a multi-user experience.
-        </p>
+        <HighlightBlock as="p" tier="crucial">A visual flow editor for product managers would democratize wizard authoring further. Cross-device cursor (showing where the user left</HighlightBlock>
+<HighlightBlock as="p" tier="important">off when they open the wizard on a different device) is a modest extension on top of server drafts. CRDT-based merge of concurrent edits</HighlightBlock>
+<HighlightBlock as="p" tier="important">across devices is interesting but probably overkill for most wizard use cases — wizards aren&rsquo;t typically a multi-user experience.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why model navigation as a state machine instead
           of an integer step counter?</strong> A counter handles
           linear flows and breaks at the first branch. The
@@ -1065,7 +1007,7 @@ export default function WizardArticle() {
           in isolation. The one-time setup cost is repaid the
           first time a branching requirement appears, and it
           keeps paying off as the flow grows.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>2. How do you handle deep links to step 3 when step
@@ -1079,7 +1021,7 @@ export default function WizardArticle() {
           step they can&rsquo;t complete.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. What happens when a user edits a prior answer
           that changes the remaining branch?</strong> The machine
           recomputes the future path on the next forward
@@ -1090,9 +1032,9 @@ export default function WizardArticle() {
           branch. Doing this implicitly would silently lose
           work; doing it not at all would silently submit
           inconsistent data.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How do you preserve scroll position and focus
           across step transitions?</strong> The StepShell records
           a checkpoint (<code>scrollTop</code>, focused element
@@ -1100,7 +1042,7 @@ export default function WizardArticle() {
           checkpointing, mount-only-active rendering would feel
           disorienting because Back would always return the user
           to the top of the previous step.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How would you make the wizard resumable across
@@ -1122,7 +1064,7 @@ export default function WizardArticle() {
           a webpage rather than a desktop app.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How do you prevent double submission on slow
           networks?</strong> A UUID v7 idempotency key generated
           when the wizard enters <code>submitting</code>; the
@@ -1130,9 +1072,9 @@ export default function WizardArticle() {
           dedupes by key. Tab-level locking via
           BroadcastChannel prevents the double-tab variant of
           the same problem.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How do you support A/B testing of step
           ordering?</strong> Treat step descriptors as data. The
           wizard already accepts an array of descriptors; an
@@ -1140,20 +1082,15 @@ export default function WizardArticle() {
           variant. The descriptor format is serializable so
           this works for hard-coded, CMS-fetched, and
           experiment-driven graphs identically.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A robust wizard treats navigation as a{" "}
-          <strong>guarded finite state machine</strong> sitting
-          on top of a single shared form store, with the URL as
-          the reconciliation source of truth. Mount-only-active
-          rendering keeps performance flat regardless of step
-          count; branching is encoded explicitly so divergence
-          detection becomes tractable; resumability comes from a
-          local-plus-server draft pair. The machine, the store,
+        <HighlightBlock as="p" tier="important">A robust wizard treats navigation as a guarded finite state machine sitting on top of a single shared form store, with the</HighlightBlock>
+<HighlightBlock as="p" tier="important">URL as the reconciliation source of truth. Mount-only-active rendering keeps performance flat regardless of step count;</HighlightBlock>
+<HighlightBlock as="p" tier="important">branching is encoded explicitly so divergence detection becomes tractable; resumability comes from a local-plus-server draft pair.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">The machine, the store,
           and the URL are three small ideas that, applied
           consistently, produce wizards that feel native to the
           web: deep-linkable, refresh-safe, accessible, and
@@ -1162,8 +1099,7 @@ export default function WizardArticle() {
           guards, reload reconciliation — are handled by the
           backbone in one place, so per-step code stays simple
           and product teams can ship new wizards in days rather
-          than weeks.
-        </p>
+          than weeks.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

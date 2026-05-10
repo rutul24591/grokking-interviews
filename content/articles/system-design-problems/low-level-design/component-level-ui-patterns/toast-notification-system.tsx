@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function ToastNotificationSystemArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable toast/notification system for a large-scale
           React application. The system must display transient messages to users
           confirming actions, alerting them to errors, or providing informational
@@ -48,15 +49,15 @@ export default function ToastNotificationSystemArticle() {
           a configurable duration, and support manual dismissal. The system must be
           globally accessible — any component in the application should be able to
           trigger a toast without prop drilling or component tree coupling.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Assumptions:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>React 19+ SPA with concurrent features support.</li>
           <li>Multiple toasts can trigger in rapid succession (e.g., bulk operations).</li>
           <li>Toast types: success, error, warning, info, and custom.</li>
-          <li>Must support accessibility (screen readers, keyboard navigation, focus management).</li>
+          <HighlightBlock as="li" tier="important">Must support accessibility (screen readers, keyboard navigation, focus management).</HighlightBlock>
           <li>Maximum visible toasts configurable (default: 3-5).</li>
           <li>Application may run in both light and dark mode.</li>
         </ul>
@@ -68,24 +69,24 @@ export default function ToastNotificationSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Toast Creation:</strong> Any component can call a global API
             (e.g., <code>toast.success()</code>, <code>toast.error()</code>) to
             create and display a toast notification.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Auto-dismiss:</strong> Each toast automatically dismisses after a
             configurable duration (default: 5 seconds for info/success, 10 seconds
             for error/warning).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Manual Dismissal:</strong> Each toast has a close button for manual
             dismissal.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Stacking:</strong> When more toasts exist than the visible limit,
             excess toasts queue and appear only when visible toasts dismiss.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Queue Management:</strong> The system maintains a FIFO queue. When
             a visible toast dismisses, the next queued toast enters the viewport.
@@ -114,18 +115,18 @@ export default function ToastNotificationSystemArticle() {
             visible jank. Animations must run at 60fps using GPU-accelerated properties
             (transform, opacity).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Scalability:</strong> The system should handle 50+ toasts queued
             without memory leaks or performance degradation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reliability:</strong> Toasts must not be lost if the user navigates
             between routes. The toast container persists across route changes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> Toasts must be announced to screen readers
             via ARIA live regions. Keyboard users must be able to dismiss toasts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for toast options,
             types, and custom content.
@@ -164,44 +165,44 @@ export default function ToastNotificationSystemArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate the <strong>toast state management</strong> from
           the <strong>toast rendering</strong> using a global store (Zustand) and a
           portal-based rendering strategy. The store manages the toast queue, handles
           auto-dismiss timers, and exposes actions (add, dismiss, dismissAll). The
           rendering layer subscribes to the store, renders visible toasts with entrance/
           exit animations, and manages the stacking layout.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API + useReducer:</strong> Viable but requires wrapping the
             app in a Provider and consumes context in every toast-triggering component.
             Adds coupling to the component tree. Zustand provides the same functionality
             with less boilerplate and better performance (selectors prevent unnecessary
             re-renders).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Redux:</strong> Overkill for this use case. Requires boilerplate
             (actions, reducers, middleware for timers) and introduces global state that
             is unnecessary for a transient UI pattern.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Event Emitter (pub/sub):</strong> Lightweight but lacks reactivity.
             Components would need to manually subscribe/unsubscribe and manage local
             state for visibility. More error-prone.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + Portal is optimal:</strong> Zustand provides a
           lightweight, selector-based global store with zero boilerplate. The toast
           container renders via React Portal to a DOM node outside the application tree,
           ensuring toasts are always on top (z-index isolation) and unaffected by parent
           component CSS (overflow: hidden, position: relative). This pattern is used by
           production libraries like Sonner and react-hot-toast.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -213,11 +214,11 @@ export default function ToastNotificationSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Toast Store (<code>toast-store.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Manages the global toast state using Zustand. Exposes actions for adding,
             dismissing, and clearing toasts. Handles auto-dismiss timer logic via
             <code>setTimeout</code> with cleanup on unmount.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>State shape:</strong>
           </p>
@@ -256,22 +257,22 @@ export default function ToastNotificationSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Toast Types &amp; Interfaces (<code>toast-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>ToastType</code> union (<code>success | error | warning | info | custom</code>),
             the <code>Toast</code> interface with fields for id, type, title, message, duration, action,
             onDismiss callback, and createdAt. The <code>ToastOptions</code> interface allows callers to
             customize duration, position, and persistent flag. See the Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Toast Container (<code>toast-container.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Renders toasts in a stacked layout using a fixed-position container. Subscribes
             to the Zustand store via selectors to get visible toasts only. Renders each
             toast with entrance/exit animations (Framer Motion or CSS transitions). Handles
             hover pause/resume via mouse event listeners.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Component tree:</strong>
           </p>
@@ -293,11 +294,11 @@ export default function ToastNotificationSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. Toast API (<code>toast-api.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Convenience functions that wrap store actions. Exported as a singleton so any
             module can call <code>toast.success(&quot;Saved!&quot;)</code> without importing React
             or hooks. See the Example tab for the complete singleton API implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
@@ -308,14 +309,14 @@ export default function ToastNotificationSystemArticle() {
           management is implicit — toasts beyond the visible limit simply are not
           rendered until earlier toasts are dismissed.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Timer management is the most complex part. Each toast with a duration gets a
           <code>setTimeout</code> stored in a Map. When the timer fires, it calls
           <code>dismissToast(id)</code>. If the user pauses (hover), the timer is
           cleared and the remaining time is stored on the toast object. On resume, a new
           <code>setTimeout</code> is created with the remaining time. This prevents
           toasts from disappearing immediately after hover ends.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Architecture</h3>
         <ArticleImage
@@ -361,73 +362,73 @@ export default function ToastNotificationSystemArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions. This ensures predictable behavior and makes the system testable
           in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Rapid-fire creation:</strong> Each call to <code>addToast</code> is
             synchronous and appends to the array. Only the first N (visibleLimit) render.
             The rest queue without performance impact. Store operations are O(1) amortized.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Route transitions:</strong> The ToastContainer is rendered at the app
             root (e.g., in layout.tsx), so it persists across route changes. Toasts remain
             visible during navigation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Hover near dismiss:</strong> The remaining time is calculated as
             <code>duration - (Date.now() - createdAt - pausedTime)</code>. This ensures
             accurate remaining time even after multiple pause/resume cycles.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR safety:</strong> The ToastContainer uses a useEffect to mount the
             portal, ensuring it only renders on the client. During SSR, the container
             returns null.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The complete, production-ready implementation consists of 7 files:
             Zustand store with timer management, Portal-based container, ToastItem with
             ARIA and animations, ToastIcon, type definitions, singleton API, and a full
             EXPLANATION.md walkthrough. Click the <strong>Example</strong> toggle at the
             top of the article to view all source files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Zustand Store (toast-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages the toast queue, auto-dismiss timers, and queue management.
           Key design decisions include: using <code>crypto.randomUUID()</code> for stable
           IDs, storing timer references in a <code>Map</code> for O(1) lookup and cleanup,
           and computing remaining time dynamically for accurate pause/resume behavior.
           Default durations vary by type (5s for info/success, 10s for error, 8s for warning).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Toast Types (toast-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the <code>Toast</code> interface with optional title, message (string or
           ReactNode), duration, action button, onDismiss callback, and createdAt timestamp.
           The <code>ToastOptions</code> interface allows callers to customize duration,
           position, and persistent flag.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Toast Container (toast-container.tsx)</h3>
         <p>
@@ -439,12 +440,12 @@ export default function ToastNotificationSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Toast Item (toast-item.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Individual toast component with type-based color styling, close button, hover
           pause/resume lifecycle, entrance/exit animations (CSS transitions on transform
           and opacity for GPU compositing), and ARIA attributes for accessibility. Manages
           its own mount/unmount animation state to avoid layout thrashing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Toast Icon (toast-icon.tsx)</h3>
         <p>
@@ -501,30 +502,30 @@ export default function ToastNotificationSystemArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is total toasts in queue and <code>k</code> is the visible
           limit (typically 3-5). For 50 queued toasts, operations remain sub-millisecond.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Array filter on dismiss:</strong> O(n) operation on every dismiss.
             For extremely large queues (500+ toasts), this could degrade. Mitigation: use
             a linked list or Set for O(1) removal. In practice, n is small enough that
             filter is faster than the overhead of alternative structures.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-render cascades:</strong> If the store subscriber selects the
             entire toast array, every add/dismiss triggers a re-render of all ToastItems.
             Mitigation: use Zustand selectors to subscribe to individual toasts by ID, so
             only the affected ToastItem re-renders.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Animation jank:</strong> Animating layout properties (top, height)
             triggers expensive layout recalculations. Mitigation: animate only transform
             (translateY) and opacity, which are GPU-composited.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -542,11 +543,11 @@ export default function ToastNotificationSystemArticle() {
             <strong>will-change hint:</strong> Apply <code>will-change: transform, opacity</code>
             to ToastItem during animation to promote to its own compositor layer.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Batch rapid toasts:</strong> If 10+ toasts arrive within 100ms, batch
             them into a single grouped notification (e.g., &quot;15 items processed&quot;)
             rather than rendering individually.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -555,13 +556,13 @@ export default function ToastNotificationSystemArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Toast messages may contain user-generated content (e.g., server error messages,
           validation feedback). If rendered as React nodes via <code>dangerouslySetInnerHTML</code>
           or custom content, they are XSS vectors. Always sanitize HTML content before
           rendering. Prefer rendering strings as text content (React&apos;s default
           escaping) and only allow React nodes from trusted sources (internal components).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -584,11 +585,11 @@ export default function ToastNotificationSystemArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               The toast container includes an <code>aria-live=&quot;polite&quot;</code> region
               for non-critical toasts (info, success) and <code>aria-live=&quot;assertive&quot;</code>
               for critical toasts (error, warning).
-            </li>
+            </HighlightBlock>
             <li>
               Each toast has <code>role=&quot;status&quot;</code> for status messages or
               <code>role=&quot;alert&quot;</code> for error/warning toasts.
@@ -602,28 +603,28 @@ export default function ToastNotificationSystemArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Toasts use <code>role=&quot;status&quot;</code> for informational messages and
             <code>role=&quot;alert&quot;</code> for errors, wrapped in
             <code>aria-live</code> regions (<code>polite</code> for info,
             <code>assertive</code> for errors). The close button has
             <code>aria-label=&quot;Dismiss notification&quot;</code>. See the Example tab
             for the exact markup.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rate limiting:</strong> Cap toast creation at 10 per second to prevent
             accidental or malicious flooding (e.g., a buggy loop calling toast.error in
             a useEffect without dependency array).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Deduplication:</strong> If an identical toast (same message + type) is
             already visible, increment a counter on it rather than creating a duplicate.
             This prevents spam from repeated API retries.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -633,16 +634,16 @@ export default function ToastNotificationSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Store actions:</strong> Test addToast creates toast with correct defaults,
             dismissToast removes it and clears timer, dismissAll clears everything,
             pauseTimer/resumeTimer correctly adjusts remaining time.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Timer behavior:</strong> Mock <code>setTimeout</code> and verify that
             auto-dismiss fires after the correct duration. Test that pause/resume adjusts
             the timer correctly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Queue management:</strong> Verify that only visibleLimit toasts are
             returned by the selector. Test that dismissing a visible toast makes the next
@@ -652,11 +653,11 @@ export default function ToastNotificationSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Toast rendering lifecycle:</strong> Render ToastContainer, call
             <code>toast.success()</code>, assert toast appears in DOM. Wait for duration,
             assert toast is removed. Test manual dismiss via close button.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hover pause:</strong> Render toast, fire mouseEnter, advance timers
             beyond duration, assert toast is still present. Fire mouseLeave, advance timers
@@ -678,14 +679,14 @@ export default function ToastNotificationSystemArticle() {
             Toast with extremely long message: verify text wraps, container does not
             overflow viewport.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Rapid-fire 50 toasts: verify no memory leaks, all timers cleaned up, final
             state is empty after all dismiss.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Accessibility: run axe-core automated checks on rendered toasts, verify
             aria-live regions, role attributes, and keyboard dismiss.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -701,22 +702,22 @@ export default function ToastNotificationSystemArticle() {
             consumption in every component that needs to show a toast. Interviewers expect
             a global, decoupled mechanism (store, event bus, or imperative API).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting timer cleanup:</strong> Not clearing setTimeout on unmount
             or on manual dismiss causes memory leaks and stale closures. Always store
             timer IDs and clear them in cleanup functions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Animating expensive properties:</strong> Animating <code>height</code>,
             <code>margin</code>, or <code>top</code> triggers layout recalculations.
             Interviewers look for candidates who know to animate only <code>transform</code>
             and <code>opacity</code> for 60fps animations.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility:</strong> Rendering toasts without ARIA live
             regions means screen reader users never hear the messages. This is a critical
             oversight in production systems.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not handling queue overflow:</strong> Without a visible limit, 50
             toasts stack and push content off-screen. Interviewers expect candidates to
@@ -739,19 +740,19 @@ export default function ToastNotificationSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Portal vs Inline Rendering</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Rendering toasts inline (inside the component tree) means they are subject to
             parent CSS (overflow: hidden, z-index stacking contexts). Portals escape these
             constraints by rendering directly into document.body. The trade-off is that
             portal-rendered components are outside the normal React tree, making context
             consumption trickier (though React 18+ handles this well). For toasts, portals
             are the right choice because z-index isolation is non-negotiable.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">FIFO vs Priority Queue</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A simple FIFO queue works for most cases. But in enterprise applications, an
             error toast (e.g., &quot;Payment failed&quot;) should take priority over an
             info toast (e.g., &quot;File synced&quot;). A priority queue ensures critical
@@ -759,7 +760,7 @@ export default function ToastNotificationSystemArticle() {
             to compare priorities on insertion and potentially reorder the queue. For
             most applications, FIFO is sufficient; priority queues are justified for
             high-noise environments (monitoring dashboards, trading platforms).
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -809,7 +810,7 @@ export default function ToastNotificationSystemArticle() {
             <p className="font-semibold">
               Q: What if the toast message contains sensitive data (e.g., PII)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Avoid rendering PII in toasts. If unavoidable, add a
               <code>sensitive</code> flag that renders the toast with a
               <code>user-select: none</code> style and disables text copying. For screen
@@ -817,7 +818,7 @@ export default function ToastNotificationSystemArticle() {
               provide a generic announcement (e.g., &quot;Action completed&quot;). In
               high-security environments, toasts should only contain generic status
               messages, with details available in a secure audit log.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

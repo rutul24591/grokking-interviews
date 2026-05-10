@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,19 +25,19 @@ export default function ChatMessagingUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a chat/messaging UI — a real-time messaging interface where
           users exchange messages in a conversation. Messages appear in chronological
           order, with the newest at the bottom. The system must support message grouping
           by sender and time, read receipts (sent/delivered/read), typing indicators,
           infinite scroll upward for message history, media previews (images, files),
           and full keyboard accessibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Assumptions:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>Messages are delivered via WebSocket for real-time updates.</li>
+          <HighlightBlock as="li" tier="important">Messages are delivered via WebSocket for real-time updates.</HighlightBlock>
           <li>Message history is paginated — older messages load on scroll-up.</li>
           <li>Messages can contain text, images, files, and emoji reactions.</li>
           <li>Read receipts track per-message read status for each participant.</li>
@@ -50,10 +51,10 @@ export default function ChatMessagingUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Message Display:</strong> Messages render in chronological order, newest at bottom. Messages from the same sender within a time threshold are grouped visually.</li>
-          <li><strong>Message Sending:</strong> User types in input, presses Enter to send. Message appears instantly (optimistic), then confirms via server.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Message Display:</strong> Messages render in chronological order, newest at bottom. Messages from the same sender within a time threshold are grouped visually.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Message Sending:</strong> User types in input, presses Enter to send. Message appears instantly (optimistic), then confirms via server.</HighlightBlock>
           <li><strong>Read Receipts:</strong> Each message shows sent/delivered/read status with timestamp. Read receipts update when the recipient views the message.</li>
-          <li><strong>Typing Indicators:</strong> Show &quot;User is typing...&quot; when a participant is composing a message. Disappears after 3 seconds of inactivity.</li>
+          <HighlightBlock as="li" tier="important"><strong>Typing Indicators:</strong> Show &quot;User is typing...&quot; when a participant is composing a message. Disappears after 3 seconds of inactivity.</HighlightBlock>
           <li><strong>Infinite Scroll Upward:</strong> Scrolling to the top loads older messages. Scroll position is maintained after loading.</li>
           <li><strong>Media Previews:</strong> Images render inline with click-to-expand lightbox. Files show download link with size.</li>
           <li><strong>Emoji Reactions:</strong> Add/remove emoji reactions on messages, with count display.</li>
@@ -64,7 +65,7 @@ export default function ChatMessagingUIArticle() {
         <ul className="space-y-2">
           <li><strong>Performance:</strong> Smooth 60fps scrolling with 1000+ messages. Virtualize off-screen messages.</li>
           <li><strong>Real-Time Latency:</strong> Messages appear within 200ms of send. Typing indicators within 100ms.</li>
-          <li><strong>Accessibility:</strong> Screen reader announces new messages, keyboard navigation between messages.</li>
+          <HighlightBlock as="li" tier="important"><strong>Accessibility:</strong> Screen reader announces new messages, keyboard navigation between messages.</HighlightBlock>
           <li><strong>Offline Support:</strong> Messages queue locally when offline, send on reconnect.</li>
         </ul>
 
@@ -74,13 +75,13 @@ export default function ChatMessagingUIArticle() {
           <li>WebSocket reconnects after disconnect — reconcile missed messages, fill gaps.</li>
           <li>Two users send messages simultaneously — ordering by server timestamp, not client clock.</li>
           <li>Large image upload — show progress, allow cancel, retry on failure.</li>
-          <li>Message sent but server rejects it (rate limit, content policy) — rollback optimistic message, show error.</li>
+          <HighlightBlock as="li" tier="important">Message sent but server rejects it (rate limit, content policy) — rollback optimistic message, show error.</HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is a <strong>message store</strong> (Zustand) with an ordered
           array of messages. A <strong>WebSocket manager</strong> handles real-time
           message delivery, typing indicator broadcasts, and read receipt updates.
@@ -88,21 +89,21 @@ export default function ChatMessagingUIArticle() {
           position preservation — when older messages load, the scroll offset is
           adjusted so the user&apos;s view doesn&apos;t jump. Messages are rendered
           with <strong>virtualization</strong> for large conversations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches:</strong>
         </p>
         <ul className="space-y-2">
-          <li><strong>Pagination with &quot;Load More&quot; button:</strong> Simpler but worse UX. Infinite scroll is preferred for chat.</li>
-          <li><strong>Full DOM rendering:</strong> Works for small conversations (&lt;200 messages) but causes jank for large ones. Virtualization is mandatory at scale.</li>
+          <HighlightBlock as="li" tier="important"><strong>Pagination with &quot;Load More&quot; button:</strong> Simpler but worse UX. Infinite scroll is preferred for chat.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Full DOM rendering:</strong> Works for small conversations (&lt;200 messages) but causes jank for large ones. Virtualization is mandatory at scale.</HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why normalized store + virtualized scroll is optimal:</strong> The
           normalized store makes optimistic updates and reconciliation trivial.
           Virtualization ensures smooth scrolling regardless of message count. The
           auto-scroll behavior (only scroll to bottom if user was at bottom) is the
           standard chat UX pattern used by Slack, WhatsApp, and iMessage.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -113,17 +114,17 @@ export default function ChatMessagingUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Types &amp; Interfaces (<code>chat-types.ts</code>)</h4>
-          <p>Defines <code>Message</code> (id, senderId, content, timestamp, status, reactions, media), <code>ChatState</code> (messages array, typing users, cursor for pagination), and <code>MessageStatus</code> (sending, sent, delivered, read, failed).</p>
+          <HighlightBlock as="p" tier="important">Defines <code>Message</code> (id, senderId, content, timestamp, status, reactions, media), <code>ChatState</code> (messages array, typing users, cursor for pagination), and <code>MessageStatus</code> (sending, sent, delivered, read, failed).</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Message Store (<code>message-store.ts</code>)</h4>
-          <p>Zustand store: ordered message array, optimistic message tracking, typing indicator state, pagination cursor. Actions: addMessage (optimistic + confirm), prependMessages (for load-more), updateReadReceipt, setTypingUser.</p>
+          <HighlightBlock as="p" tier="important">Zustand store: ordered message array, optimistic message tracking, typing indicator state, pagination cursor. Actions: addMessage (optimistic + confirm), prependMessages (for load-more), updateReadReceipt, setTypingUser.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. WebSocket Manager (<code>chat-websocket.ts</code>)</h4>
-          <p>Manages WebSocket connection: sends messages, receives incoming messages, typing indicators, read receipts. Handles reconnect with exponential backoff. Buffers outgoing messages during offline.</p>
+          <HighlightBlock as="p" tier="important">Manages WebSocket connection: sends messages, receives incoming messages, typing indicators, read receipts. Handles reconnect with exponential backoff. Buffers outgoing messages during offline.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -133,12 +134,12 @@ export default function ChatMessagingUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Typing Indicator Manager (<code>typing-manager.ts</code>)</h4>
-          <p>Debounced typing broadcast: sends &quot;typing&quot; event on first keystroke, &quot;stopped typing&quot; after 3 seconds of inactivity. Tracks typing users with auto-expiry (5-second timeout).</p>
+          <HighlightBlock as="p" tier="crucial">Debounced typing broadcast: sends &quot;typing&quot; event on first keystroke, &quot;stopped typing&quot; after 3 seconds of inactivity. Tracks typing users with auto-expiry (5-second timeout).</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Message Grouping Engine (<code>message-grouper.ts</code>)</h4>
-          <p>Groups consecutive messages from the same sender within a 5-minute time window. Returns grouped message objects with isFirstInGroup and isLastInGroup flags for rendering avatars and bubbles correctly.</p>
+          <HighlightBlock as="p" tier="important">Groups consecutive messages from the same sender within a 5-minute time window. Returns grouped message objects with isFirstInGroup and isLastInGroup flags for rendering avatars and bubbles correctly.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -167,41 +168,41 @@ export default function ChatMessagingUIArticle() {
 
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The data flow is bidirectional: send (optimistic → server → confirm) and
           receive (WebSocket → store → render → scroll). Typing indicators follow a
           debounce-send-expire pattern. Read receipts are triggered by intersection
           observation (message enters viewport).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li><strong>Auto-scroll only when at bottom:</strong> The scroll manager tracks a <code>isAtBottom</code> flag (true when scroll position is within 50px of bottom). On new message, auto-scroll only if flag is true. If user scrolled up to read history, no auto-scroll — a &quot;New messages&quot; badge appears instead.</li>
-          <li><strong>Scroll position preservation:</strong> Before loading older messages, record <code>scrollHeight</code> and <code>scrollTop</code>. After prepending, set <code>scrollTop = newScrollHeight - oldScrollHeight + oldScrollTop</code>.</li>
-          <li><strong>Message reconciliation:</strong> On WebSocket reconnect, fetch missed messages since the last known message ID. Insert them in chronological order, deduplicating by ID.</li>
-          <li><strong>Typing indicator expiry:</strong> If a typing event is received but no subsequent stop-typing event arrives (due to disconnect), the typing indicator auto-expires after 5 seconds.</li>
+          <HighlightBlock as="li" tier="important"><strong>Auto-scroll only when at bottom:</strong> The scroll manager tracks a <code>isAtBottom</code> flag (true when scroll position is within 50px of bottom). On new message, auto-scroll only if flag is true. If user scrolled up to read history, no auto-scroll — a &quot;New messages&quot; badge appears instead.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Scroll position preservation:</strong> Before loading older messages, record <code>scrollHeight</code> and <code>scrollTop</code>. After prepending, set <code>scrollTop = newScrollHeight - oldScrollHeight + oldScrollTop</code>.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Message reconciliation:</strong> On WebSocket reconnect, fetch missed messages since the last known message ID. Insert them in chronological order, deduplicating by ID.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Typing indicator expiry:</strong> If a typing event is received but no subsequent stop-typing event arrives (due to disconnect), the typing indicator auto-expires after 5 seconds.</HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Complete production-ready implementation includes: normalized message store
             with optimistic updates, WebSocket manager with reconnect logic, scroll manager
             with position preservation, typing indicator with debounce/expiry, message
             grouping engine, media lightbox, emoji reactions, and full ARIA compliance.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Modules Overview</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The message store uses an ordered array with optimistic message tracking
           (temporary IDs replaced on server confirmation). The WebSocket manager handles
           send/receive with exponential backoff reconnect. The scroll manager tracks
@@ -209,7 +210,7 @@ export default function ChatMessagingUIArticle() {
           broadcasts and auto-expires stale indicators. The grouper clusters messages
           by sender and time window. Media preview renders images with lightbox and files
           with download links.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -252,16 +253,16 @@ export default function ChatMessagingUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li><strong>Large message history in DOM:</strong> 1000+ messages cause slow rendering and memory usage. Mitigation: virtualize messages — only render visible items plus overscan buffer.</li>
-          <li><strong>Frequent re-renders on typing indicators:</strong> Typing state changes every few seconds. Mitigation: isolate typing indicator in a separate component that does not re-render the message list.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Large message history in DOM:</strong> 1000+ messages cause slow rendering and memory usage. Mitigation: virtualize messages — only render visible items plus overscan buffer.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Frequent re-renders on typing indicators:</strong> Typing state changes every few seconds. Mitigation: isolate typing indicator in a separate component that does not re-render the message list.</HighlightBlock>
           <li><strong>Image decoding jank:</strong> Large images block the main thread during decode. Mitigation: use <code>decode()</code> API on Image objects before inserting into DOM.</li>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li><strong>Virtualized message list:</strong> Render only visible messages (20-30) plus 10-item overscan buffer. Each message has a fixed or measured height. Total scroll height computed from message count × average height.</li>
-          <li><strong>Message memoization:</strong> Each message component is wrapped in <code>React.memo</code> with a custom comparator comparing only the fields that affect rendering (content, status, reactions).</li>
-          <li><strong>Batched read receipts:</strong> Instead of sending a read receipt for each message, batch them: send one receipt for all messages viewed in the last 500ms.</li>
+          <HighlightBlock as="li" tier="important"><strong>Virtualized message list:</strong> Render only visible messages (20-30) plus 10-item overscan buffer. Each message has a fixed or measured height. Total scroll height computed from message count × average height.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Message memoization:</strong> Each message component is wrapped in <code>React.memo</code> with a custom comparator comparing only the fields that affect rendering (content, status, reactions).</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Batched read receipts:</strong> Instead of sending a read receipt for each message, batch them: send one receipt for all messages viewed in the last 500ms.</HighlightBlock>
         </ul>
       </section>
 
@@ -269,17 +270,17 @@ export default function ChatMessagingUIArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Message content is sanitized before rendering. Links are validated against
           allowlist. File uploads are scanned for malware and type-checked. Maximum
           message length enforced (e.g., 10,000 characters).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>New messages are announced via <code>aria-live=&quot;polite&quot;</code> region: &quot;John: Hey, are you free?&quot;.</li>
+            <HighlightBlock as="li" tier="important">New messages are announced via <code>aria-live=&quot;polite&quot;</code> region: &quot;John: Hey, are you free?&quot;.</HighlightBlock>
             <li>Message count announced on chat open: &quot;42 messages in this conversation&quot;.</li>
             <li>Typing indicator announced: &quot;Jane is typing&quot;.</li>
           </ul>
@@ -298,7 +299,7 @@ export default function ChatMessagingUIArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
           <li><strong>Rate limiting:</strong> Server-side limit of 10 messages per second per user to prevent spam.</li>
-          <li><strong>Content moderation:</strong> Messages scanned for prohibited content (links, profanity) before broadcast.</li>
+          <HighlightBlock as="li" tier="important"><strong>Content moderation:</strong> Messages scanned for prohibited content (links, profanity) before broadcast.</HighlightBlock>
         </ul>
       </section>
 
@@ -307,23 +308,23 @@ export default function ChatMessagingUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li><strong>Message store:</strong> Test optimistic add, confirm, reject/rollback. Test prependMessages maintains order. Test read receipt updates.</li>
-          <li><strong>Message grouper:</strong> Test same-sender within 5 minutes groups together, different sender breaks group, time gap over 5 minutes breaks group.</li>
+          <HighlightBlock as="li" tier="important"><strong>Message store:</strong> Test optimistic add, confirm, reject/rollback. Test prependMessages maintains order. Test read receipt updates.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Message grouper:</strong> Test same-sender within 5 minutes groups together, different sender breaks group, time gap over 5 minutes breaks group.</HighlightBlock>
           <li><strong>Scroll manager:</strong> Test isAtBottom detection, scroll offset preservation after prepend, auto-scroll trigger.</li>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
           <li><strong>Send flow:</strong> Type message, press Enter, verify optimistic render, verify WebSocket send, verify server confirmation replaces temp ID.</li>
-          <li><strong>Receive flow:</strong> Simulate WebSocket message, verify append to store, verify auto-scroll when at bottom, verify no auto-scroll when scrolled up.</li>
-          <li><strong>Typing indicator:</strong> Simulate keystrokes, verify typing event sent after debounce, verify expiry after 5 seconds of silence.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Receive flow:</strong> Simulate WebSocket message, verify append to store, verify auto-scroll when at bottom, verify no auto-scroll when scrolled up.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Typing indicator:</strong> Simulate keystrokes, verify typing event sent after debounce, verify expiry after 5 seconds of silence.</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility Tests</h3>
         <ul className="space-y-2">
           <li>Run axe-core on message list — no violations.</li>
           <li>Test with VoiceOver — new messages announced, typing indicator announced, message count spoken on open.</li>
-          <li>Verify keyboard navigation: Arrow keys move focus between messages, input is reachable via Tab.</li>
+          <HighlightBlock as="li" tier="important">Verify keyboard navigation: Arrow keys move focus between messages, input is reachable via Tab.</HighlightBlock>
         </ul>
       </section>
 
@@ -332,22 +333,22 @@ export default function ChatMessagingUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
-          <li><strong>No optimistic rendering:</strong> Waiting for server confirmation before showing the message creates perceived latency. Staff candidates should propose optimistic rendering with rollback.</li>
+          <HighlightBlock as="li" tier="important"><strong>No optimistic rendering:</strong> Waiting for server confirmation before showing the message creates perceived latency. Staff candidates should propose optimistic rendering with rollback.</HighlightBlock>
           <li><strong>Scroll jumps on load-more:</strong> Prepending messages without adjusting scrollTop causes the view to jump to the top. Candidates must discuss scroll offset preservation.</li>
           <li><strong>Auto-scrolling when user is reading history:</strong> Force-scrolling to bottom on every new message disrupts the user&apos;s reading flow. The &quot;is at bottom&quot; check is critical.</li>
-          <li><strong>Rendering all messages in DOM:</strong> For conversations with 1000+ messages, full DOM rendering causes severe jank. Virtualization is mandatory.</li>
+          <HighlightBlock as="li" tier="important"><strong>Rendering all messages in DOM:</strong> For conversations with 1000+ messages, full DOM rendering causes severe jank. Virtualization is mandatory.</HighlightBlock>
           <li><strong>No typing indicator expiry:</strong> If a user closes the tab while typing, the typing indicator persists forever. Auto-expiry (5 seconds) is essential.</li>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Virtualization vs Full DOM</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Virtualization reduces DOM nodes but adds complexity (height measurement,
             scroll position math). For small chats (&lt;200 messages), full DOM is
             simpler and performant. For large chats, virtualization is mandatory. The
             hybrid approach: render all messages up to 200, then switch to virtualization.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -387,13 +388,13 @@ export default function ChatMessagingUIArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you implement end-to-end encryption?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use the Signal Protocol (Double Ratchet Algorithm). Each participant has
               a key pair. Messages are encrypted client-side before sending. The server
               only sees ciphertext. Key exchange happens via a pre-key bundle. This
               prevents the server from reading messages. The trade-off: no server-side
               search, no web access from new devices without key sync.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -408,13 +409,13 @@ export default function ChatMessagingUIArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you implement message drafts (unsent text preserved across sessions)?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Store the current input value in localStorage keyed by conversation ID.
               On chat open, restore the draft. Clear the draft on send. Debounce writes
               at 200ms to avoid excessive localStorage writes. Handle the edge case of
               the same conversation open in two tabs — use the <code>storage</code> event
               to sync drafts across tabs.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

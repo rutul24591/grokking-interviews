@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function FormValidationEngineArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable form validation engine for a large-scale React
           application. The engine must validate individual fields and entire forms using
           declarative rule definitions, support both synchronous and asynchronous
@@ -49,7 +50,7 @@ export default function FormValidationEngineArticle() {
           component in the application should be able to use the engine without duplicating
           validation logic, and the engine must perform efficiently even on forms with
           dozens of fields and complex async rules.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -60,27 +61,27 @@ export default function FormValidationEngineArticle() {
           <li>
             Forms may have 10-50+ fields, each with 1-8 validation rules.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Async validation rules involve server-side checks (username availability,
             email uniqueness) that require network calls.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The engine must support multiple validation modes: onChange, onBlur, onSubmit,
             and all (trigger on every interaction).
-          </li>
+          </HighlightBlock>
           <li>
             Error messages must be internationalized with template interpolation (for
             example, &quot;Must be at least {"{"}min{"}"} characters&quot;).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The engine must be accessible: inline errors below fields, summary at form top,
             and aria-live announcements for screen readers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Cross-field validation includes password/confirm-password matching, date range
             validation (end date after start date), and conditional requirements (field B
             required only when field A has a specific value).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -99,31 +100,31 @@ export default function FormValidationEngineArticle() {
             <strong>Sync Validation:</strong> Instant feedback on blur, change, or submit.
             Rules execute as a chain, short-circuiting on the first error.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Async Validation:</strong> Server-side checks with debounce (to avoid
             excessive network calls on every keystroke), AbortController cancellation (to
             discard stale responses), and deduplication (to avoid re-checking identical
             values).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cross-Field Validation:</strong> Rules that depend on multiple field
             values (password match, date range, conditional requirements) with a dependency
             graph to revalidate dependent fields when a source field changes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Validation Modes:</strong> Configurable trigger modes — onChange
             (validate on every keystroke), onBlur (validate when field loses focus),
             onSubmit (validate only on form submission), and all (both onChange and onBlur).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Error Aggregation:</strong> Per-field error lists, form-level valid/
             invalid state, and total error count for summary display.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Error Display:</strong> Inline error messages below each invalid field,
             a summary list at the top of the form with anchor links to fields, and
             aria-live=&quot;polite&quot; announcements for screen readers.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Custom Validators:</strong> User-defined validator functions that
             return a ValidationError object or null, composable with built-in rules.
@@ -137,11 +138,11 @@ export default function FormValidationEngineArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Sync validation must complete in under 1ms per
             field. Async validation must debounce at a configurable interval (default
             300ms) and cancel in-flight requests on value change.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> The engine must handle forms with 50+ fields
             and 5+ async validators per form without blocking the main thread.
@@ -155,11 +156,11 @@ export default function FormValidationEngineArticle() {
             <strong>Type Safety:</strong> Full TypeScript support for ValidationRule,
             ValidationError, FieldErrors, ValidationConfig, and ValidationResult types.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Inline errors linked to fields via
             aria-describedby, summary region with role=&quot;alert&quot;, and aria-live
             announcements on validation state changes.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
@@ -195,7 +196,7 @@ export default function FormValidationEngineArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>validation logic</strong> from the
           <strong>UI rendering</strong> using a modular architecture. The engine consists
           of pure validator functions (sync and async), a central orchestration layer that
@@ -203,12 +204,12 @@ export default function FormValidationEngineArticle() {
           engine to component state. Cross-field validation is handled by a dependency
           graph that tracks which fields depend on which other fields and triggers cascade
           revalidation when a source value changes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>React Hook Form + Zod:</strong> Excellent for general form validation
             with schema-based rules. However, Zod schemas are defined upfront and are less
             flexible for dynamic rule injection at runtime. Async validation with Zod
@@ -216,21 +217,21 @@ export default function FormValidationEngineArticle() {
             AbortController support. For a reusable engine that must be configurable
             declaratively and support dynamic async rules, a custom engine provides more
             control.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Formik + Yup:</strong> Similar trade-offs. Formik manages form state
             and validation together, coupling state management with validation logic. Yup
             schemas are powerful but do not natively support cross-field dependency graphs
             or debounced async validation. The engine would need significant wrappers to
             add these features.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Inline validation in each component:</strong> Each component implements
             its own validation logic. This leads to duplicated code, inconsistent error
             messages, and no centralized error aggregation. Unmaintainable at scale.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why a custom modular engine is optimal:</strong> A custom engine
           provides full control over rule execution order, async debouncing, dependency
           graph management, and i18n interpolation. The modular design (separate modules
@@ -238,7 +239,7 @@ export default function FormValidationEngineArticle() {
           formatting) allows each piece to be tested in isolation and composed together
           flexibly. React hooks provide the bridge to component state without coupling the
           engine to any specific UI framework.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -250,7 +251,7 @@ export default function FormValidationEngineArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Validation Types (<code>validation-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the core TypeScript interfaces used throughout the engine. The
             <code>ValidationRule</code> union type represents individual rules (required,
             minLength, pattern, custom, async). The <code>ValidationError</code> interface
@@ -259,7 +260,7 @@ export default function FormValidationEngineArticle() {
             <code>ValidationResult</code> aggregates per-field errors and a top-level valid
             flag. <code>ValidationConfig</code> allows callers to configure modes, debounce
             intervals, and i18n dictionaries.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -277,7 +278,7 @@ export default function FormValidationEngineArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Async Validator (<code>async-validator.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Handles server-side validation with debounce, AbortController cancellation, and
             result deduplication. The <code>createAsyncValidator</code> factory returns a
             function that wraps a user-provided async check (e.g., API call). It maintains
@@ -286,7 +287,7 @@ export default function FormValidationEngineArticle() {
             before the previous request completes, the old controller is aborted. Debounce
             interval is configurable (default 300ms). See the Example tab for the complete
             implementation with cache management and abort logic.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -342,11 +343,11 @@ export default function FormValidationEngineArticle() {
               all fields, managing touch tracking, and gating form submission until all
               validators resolve.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <code>useAsyncValidation</code> — dedicated hook for async validation with
               debounce, loading state, and AbortController cancellation integrated into the
               field validation lifecycle.
-            </li>
+            </HighlightBlock>
           </ul>
           <p className="mt-3">
             See the Example tab for the complete hook implementations.
@@ -354,22 +355,22 @@ export default function FormValidationEngineArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The engine itself is stateless — it receives field values and config, returns
           results. State lives in React hooks: <code>useFormValidation</code> maintains
           the field values map, touched fields set, per-field errors, async loading flags,
           and the overall form valid state. This separation ensures the engine is
           framework-agnostic and testable in isolation, while the hooks handle React
           lifecycle concerns (state updates, cleanup on unmount, debounced effects).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Async validation state is the most complex part. Each field with async rules
           tracks its own loading flag and debounce timer. When the field value changes,
           the debounce timer resets. When the debounce fires, the async validator runs
           with a fresh AbortController. If the value changes again before the async check
           completes, the AbortController cancels the in-flight request and a new one
           begins. This prevents stale results from corrupting the validation state.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/form-validation-engine-architecture.svg"
@@ -419,16 +420,16 @@ export default function FormValidationEngineArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a layered approach: field value changes trigger the
           sync validation layer, which may trigger the async validation layer, which may
           trigger cross-field cascade revalidation. Results bubble up from individual
           field validators to the form-level aggregator, which updates the overall valid
           state and re-renders the form with updated error display.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Sync Validation Execution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When a field value changes, the engine retrieves the field&apos;s rule chain
           (array of ValidationRule objects). It iterates through the chain, calling each
           validator function with the current value and rule parameters. On the first
@@ -436,10 +437,10 @@ export default function FormValidationEngineArticle() {
           the error is stored in the field&apos;s error array. If all validators pass,
           the field&apos;s error array is cleared. This is an O(r) operation where r is
           the number of rules per field (typically 1-8).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Async Validation Execution</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           After sync validation passes (or concurrently, depending on config), async
           validators are triggered. Each async validator has its own debounce timer. When
           the timer fires, the engine creates an AbortController, passes it to the async
@@ -447,7 +448,7 @@ export default function FormValidationEngineArticle() {
           check completes, the AbortController is aborted, the promise rejects, and the
           result is discarded. A new debounce cycle begins with the updated value. Results
           are cached by value to avoid redundant network calls for repeated inputs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Cross-Field Cascade Revalidation</h3>
         <p>
@@ -462,24 +463,24 @@ export default function FormValidationEngineArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rapid typing with async validation:</strong> Each keystroke resets the
             debounce timer. No network call fires until the user stops typing for the
             debounce interval (default 300ms). If the user types continuously, no async
             requests are made until they pause.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Form submit during async validation:</strong> The submit handler awaits
             all pending async validators before returning the final ValidationResult.
             Aborted requests are excluded from the pending set. This ensures the form
             cannot be submitted with incomplete validation results.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Custom validator exception:</strong> Wrapped in a try/catch block. On
             exception, the engine logs the error and returns a generic ValidationError
             with code &quot;unexpected_error&quot;. The field is marked invalid with a
             fallback message (for example, &quot;Validation failed. Please try again.&quot;).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Runtime locale change:</strong> The locale dictionary is stored in
             React state (or a Zustand store). When the locale changes, the error formatter
@@ -492,21 +493,21 @@ export default function FormValidationEngineArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The complete, production-ready implementation consists of 13 files: TypeScript
             interfaces, sync validators, async validator with debounce and AbortController,
             cross-field validator with dependency graph, core validation engine, error
             formatter with i18n, three React hooks, three UI components, and a full
             EXPLANATION.md walkthrough. Click the <strong>Example</strong> toggle at the
             top of the article to view all source files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Validation Types (validation-types.ts)</h3>
@@ -534,7 +535,7 @@ export default function FormValidationEngineArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Async Validator (async-validator.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The async validator factory accepts an async check function and debounce
           configuration, and returns a debounced, cancellable validator. It maintains a
           Map cache of previously checked values mapped to their results. Before making a
@@ -543,7 +544,7 @@ export default function FormValidationEngineArticle() {
           controller signal. If a new call arrives before the previous one completes, it
           aborts the old controller and creates a new one. The cache has a configurable
           max size (default 100 entries) with LRU eviction.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Cross-Field Validator (cross-field-validator.ts)</h3>
         <p>
@@ -582,7 +583,7 @@ export default function FormValidationEngineArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: React Hooks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <code>useFieldValidation</code> manages per-field state: current value, touched
           flag, errors array, and async loading flag. It binds onChange and onBlur
           handlers to the engine and triggers validation based on the configured mode.
@@ -593,10 +594,10 @@ export default function FormValidationEngineArticle() {
           form is valid. <code>useAsyncValidation</code> wraps the async validator
           factory, managing debounce timers, AbortController lifecycle, and loading state
           transitions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: UI Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <code>ValidationError</code> renders an inline error message below a field with
           an error icon and aria-live=&quot;polite&quot; for screen reader announcements.
           <code>ValidationSummary</code> renders a list of all errors at the top of the
@@ -604,7 +605,7 @@ export default function FormValidationEngineArticle() {
           <code>ValidationProvider</code> is a React context provider that makes the
           form-level validation state available to all descendant components, eliminating
           prop drilling for nested form fields.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -650,31 +651,31 @@ export default function FormValidationEngineArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>f</code> is the number of fields, <code>r</code> is rules per field,
           <code>e</code> is errors per field, <code>d</code> is dependent fields in the
           cascade, <code>c</code> is cache size, and <code>v</code> is visited nodes.
           For a 30-field form with 5 rules each, full sync validation completes in under
           5ms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cross-field cascade revalidation:</strong> In the worst case (every
             field depends on every other field), a single change triggers O(f * r)
             revalidations. For forms with 50+ fields and dense dependency graphs, this
             could cause noticeable lag. Mitigation: batch cascade revalidations into a
             single microtask using <code>queueMicrotask</code>, so all dependent fields
             revalidate in one render cycle rather than triggering multiple re-renders.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Async validation cache growth:</strong> Without a max size limit, the
             cache grows unbounded. The LRU eviction with a default max of 100 entries
             prevents memory leaks. For forms with highly variable async inputs (e.g.,
             free-text search), consider increasing the cache size or using a TTL-based
             eviction strategy.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Re-render cascades:</strong> When form-level error state changes, all
             field components re-render. Mitigation: use React.memo on field components
@@ -691,18 +692,18 @@ export default function FormValidationEngineArticle() {
             error. For fields with 8 rules, this means most validation chains complete
             after 1-2 validator calls, not all 8.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Parallel async execution:</strong> Async validators for different
             fields run in parallel (each with its own AbortController), not sequentially.
             This reduces total async validation time from O(n * latency) to O(max latency)
             for n fields.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced async validators:</strong> The debounce timer prevents
             network calls during rapid typing. For a user typing 5 characters per second,
             a 300ms debounce reduces async calls by approximately 80% compared to
             validating on every keystroke.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Result caching:</strong> Sync and async validation results are cached
             by field value. If a user changes a field from &quot;abc&quot; to &quot;def&quot;
@@ -717,7 +718,7 @@ export default function FormValidationEngineArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validation error messages may contain interpolated values from user input (for
           example, the actual value that failed validation). If these values are rendered
           as HTML (via <code>dangerouslySetInnerHTML</code>), they become XSS vectors.
@@ -726,10 +727,10 @@ export default function FormValidationEngineArticle() {
           interpolation in JSX is safe. Custom validators that
           construct error messages from user input must sanitize the input before
           embedding it in the message string.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Server-Side Validation is Mandatory</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client-side validation improves user experience but provides zero security
           guarantees. A malicious actor can bypass client-side validation by modifying
           JavaScript, using browser DevTools, or sending requests directly to the API.
@@ -737,7 +738,7 @@ export default function FormValidationEngineArticle() {
           server. The async validation layer (which calls the server for uniqueness
           checks) is the only security-critical validation in the engine. All sync
           validators are UX-only and must be duplicated server-side.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -747,11 +748,11 @@ export default function FormValidationEngineArticle() {
               Each invalid field has <code>aria-invalid=&quot;true&quot;</code> set when
               errors exist.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The inline error message element has a unique <code>id</code> (e.g.,
               <code>email-error</code>), and the input element references it via
               <code>aria-describedby=&quot;email-error&quot;</code>.
-            </li>
+            </HighlightBlock>
             <li>
               Screen readers announce the error message when the user focuses the field.
             </li>
@@ -778,21 +779,21 @@ export default function FormValidationEngineArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Live Announcements</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             A hidden <code>aria-live=&quot;polite&quot;</code> region is updated with the
             error count whenever validation state changes (for example, &quot;3 errors
             found&quot;). This ensures screen reader users are informed of validation
             changes even when not focused on a specific field. The region is polite so it
             does not interrupt ongoing screen reader speech.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Rate Limiting Async Validation</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce:</strong> The debounce mechanism (default 300ms) acts as a
             client-side rate limiter, preventing excessive API calls during rapid input.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>AbortController:</strong> Cancelling in-flight requests prevents
             resource waste and ensures stale results do not corrupt validation state.
@@ -810,21 +811,21 @@ export default function FormValidationEngineArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sync validators:</strong> Test each built-in validator (required,
             minLength, email, etc.) with valid and invalid inputs. Test boundary values
             (exact minLength, maxLength). Test custom validator functions returning error
             and null. Test short-circuit behavior — verify that the first failing validator
             stops chain execution.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Async validator:</strong> Test debounce timing — verify no network
             call fires before the debounce interval. Test AbortController cancellation —
             verify that changing the value mid-request aborts the previous request and
             discards its result. Test deduplication — verify that checking the same value
             twice returns the cached result without a network call. Test cache eviction —
             verify LRU eviction when the cache exceeds max size.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cross-field validator:</strong> Test dependency graph registration and
             lookup. Test cascade revalidation — verify that changing a source field
@@ -858,20 +859,20 @@ export default function FormValidationEngineArticle() {
             mode and verify errors appear on every keystroke. Configure with onSubmit mode
             and verify no validation until submit.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Run axe-core automated checks on a form with
             errors. Verify aria-invalid, aria-describedby, aria-live, and role=&quot;alert&quot;
             attributes. Test keyboard navigation — verify focus moves to summary on submit
             with errors.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Rapid typing in an async-validated field: verify debounce prevents network
             flood, no stale results corrupt state.
-          </li>
+          </HighlightBlock>
           <li>
             Form submission during pending async validation: verify submit awaits all
             pending validators before returning result.
@@ -883,10 +884,10 @@ export default function FormValidationEngineArticle() {
           <li>
             Runtime locale change: verify all error messages re-render in the new locale.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Form with 50 fields and 5 async validators each: verify no memory leaks, all
             AbortControllers cleaned up on unmount, final state is consistent.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -920,12 +921,12 @@ export default function FormValidationEngineArticle() {
             after the first error is wasteful. Interviewers look for candidates who
             implement short-circuit evaluation for sync validation chains.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Skipping accessibility:</strong> Rendering errors without
             aria-invalid, aria-describedby, or aria-live regions means screen reader users
             cannot understand why their input is rejected. This is a critical oversight
             for production systems.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Coupling validation logic to UI:</strong> Implementing validation
             directly inside React components without a separate engine layer makes the
@@ -936,7 +937,7 @@ export default function FormValidationEngineArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Custom Engine vs React Hook Form + Zod</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             React Hook Form + Zod is the pragmatic choice for most applications. It
             provides unmanaged form state (minimizing re-renders), schema-based validation,
             and excellent TypeScript support. However, it couples the application to
@@ -947,24 +948,24 @@ export default function FormValidationEngineArticle() {
             dozens of forms with varying requirements, the custom approach pays off. For a
             single application with standard forms, React Hook Form + Zod is the better
             choice.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Debounce Interval: 300ms vs 500ms vs 1000ms</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             A shorter debounce (100ms) makes async validation feel snappier but increases
             network calls. A longer debounce (1000ms) reduces server load but makes the
             user wait longer for feedback. The default 300ms is a balance — it covers
             typical typing cadence (most users pause 200-400ms between words) while
             keeping server calls reasonable. For high-latency APIs (external services),
             500ms may be better. For low-latency internal APIs, 100ms is acceptable.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Eager vs Lazy Cross-Field Revalidation</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Eager revalidation triggers dependent field validation immediately when a
             source field changes. This provides the most responsive UX but can cause
             cascade chains (A changes, revalidates B, which revalidates C, etc.). Lazy
@@ -974,7 +975,7 @@ export default function FormValidationEngineArticle() {
             coupled fields (password/confirm-password); lazy is acceptable for loosely
             coupled fields (date range where the user will likely fill both fields
             sequentially).
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -1059,7 +1060,7 @@ export default function FormValidationEngineArticle() {
             <p className="font-semibold">
               Q: What happens if the async validation API is down (server error, timeout)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The async validator should catch network errors and return a
               ValidationError with a retryable flag. The UI can then display a message
               like &quot;Could not verify availability. Please try again.&quot; with a
@@ -1068,7 +1069,7 @@ export default function FormValidationEngineArticle() {
               Instead, it marks the field as &quot;async_pending&quot; and allows
               submission with a warning. The server-side validation will catch any issues
               on submission.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

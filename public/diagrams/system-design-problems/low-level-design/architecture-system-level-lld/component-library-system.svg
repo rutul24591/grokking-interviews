@@ -1,0 +1,182 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+
+  <!-- Background -->
+  <rect width="960" height="620" fill="#f8fafc" rx="8"/>
+
+  <!-- Title -->
+  <text x="480" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Component Library System — Architecture</text>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- Row 1: Design Tokens Layer -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <rect x="20" y="52" width="920" height="110" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+  <text x="36" y="73" font-size="11" font-weight="700" fill="#1e40af">DESIGN TOKENS LAYER</text>
+
+  <!-- Token categories -->
+  <rect x="36" y="82" width="130" height="66" rx="4" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="101" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Color Tokens</text>
+  <text x="101" y="115" text-anchor="middle" font-size="9" fill="#3730a3">--color-primary: #3b82f6</text>
+  <text x="101" y="128" text-anchor="middle" font-size="9" fill="#3730a3">--color-bg: #ffffff</text>
+  <text x="101" y="141" text-anchor="middle" font-size="9" fill="#3730a3">--color-text: #0f172a</text>
+
+  <rect x="182" y="82" width="130" height="66" rx="4" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="247" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Spacing Tokens</text>
+  <text x="247" y="115" text-anchor="middle" font-size="9" fill="#3730a3">--space-4: 1rem</text>
+  <text x="247" y="128" text-anchor="middle" font-size="9" fill="#3730a3">--space-2: 0.5rem</text>
+  <text x="247" y="141" text-anchor="middle" font-size="9" fill="#3730a3">--space-8: 2rem</text>
+
+  <rect x="328" y="82" width="130" height="66" rx="4" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="393" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Typography Tokens</text>
+  <text x="393" y="115" text-anchor="middle" font-size="9" fill="#3730a3">--font-size-base: 16px</text>
+  <text x="393" y="128" text-anchor="middle" font-size="9" fill="#3730a3">--font-weight-bold: 700</text>
+  <text x="393" y="141" text-anchor="middle" font-size="9" fill="#3730a3">--line-height: 1.5</text>
+
+  <rect x="474" y="82" width="130" height="66" rx="4" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="539" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Shadow / Radius</text>
+  <text x="539" y="115" text-anchor="middle" font-size="9" fill="#3730a3">--radius-sm: 4px</text>
+  <text x="539" y="128" text-anchor="middle" font-size="9" fill="#3730a3">--radius-lg: 12px</text>
+  <text x="539" y="141" text-anchor="middle" font-size="9" fill="#3730a3">--shadow-md: 0 4px 6px</text>
+
+  <rect x="620" y="82" width="160" height="66" rx="4" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="700" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#4338ca">Theme Override System</text>
+  <text x="700" y="115" text-anchor="middle" font-size="9" fill="#4338ca">Brand A: --color-primary: #e11d48</text>
+  <text x="700" y="128" text-anchor="middle" font-size="9" fill="#4338ca">Dark mode: --color-bg: #0f172a</text>
+  <text x="700" y="141" text-anchor="middle" font-size="9" fill="#4338ca">data-theme attr on :root</text>
+
+  <rect x="796" y="82" width="128" height="66" rx="4" fill="#fef3c7" stroke="#fcd34d" stroke-width="1"/>
+  <text x="860" y="100" text-anchor="middle" font-size="10" font-weight="600" fill="#92400e">Token Format</text>
+  <text x="860" y="115" text-anchor="middle" font-size="9" fill="#78350f">CSS Variables (runtime)</text>
+  <text x="860" y="128" text-anchor="middle" font-size="9" fill="#78350f">JS constants (bundled)</text>
+  <text x="860" y="141" text-anchor="middle" font-size="9" fill="#78350f">Style Dictionary → both</text>
+
+  <!-- Arrow down -->
+  <line x1="480" y1="162" x2="480" y2="182" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- Row 2: Component Categories -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <rect x="20" y="182" width="920" height="110" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+  <text x="36" y="203" font-size="11" font-weight="700" fill="#166534">COMPONENT TAXONOMY</text>
+
+  <rect x="36" y="212" width="160" height="66" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="116" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Primitives</text>
+  <text x="116" y="245" text-anchor="middle" font-size="9" fill="#14532d">Button, Input, Checkbox</text>
+  <text x="116" y="258" text-anchor="middle" font-size="9" fill="#14532d">Icon, Badge, Spinner</text>
+  <text x="116" y="271" text-anchor="middle" font-size="9" fill="#14532d">No business logic</text>
+
+  <rect x="212" y="212" width="160" height="66" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="292" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Composite</text>
+  <text x="292" y="245" text-anchor="middle" font-size="9" fill="#14532d">Modal, Dropdown, Table</text>
+  <text x="292" y="258" text-anchor="middle" font-size="9" fill="#14532d">Form, DatePicker, Toast</text>
+  <text x="292" y="271" text-anchor="middle" font-size="9" fill="#14532d">Compose primitives</text>
+
+  <rect x="388" y="212" width="160" height="66" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="468" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Layout</text>
+  <text x="468" y="245" text-anchor="middle" font-size="9" fill="#14532d">Grid, Stack, Flex</text>
+  <text x="468" y="258" text-anchor="middle" font-size="9" fill="#14532d">Container, Divider</text>
+  <text x="468" y="271" text-anchor="middle" font-size="9" fill="#14532d">Structure only</text>
+
+  <rect x="564" y="212" width="160" height="66" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="644" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Page Templates</text>
+  <text x="644" y="245" text-anchor="middle" font-size="9" fill="#14532d">AuthLayout, DashboardLayout</text>
+  <text x="644" y="258" text-anchor="middle" font-size="9" fill="#14532d">SettingsLayout</text>
+  <text x="644" y="271" text-anchor="middle" font-size="9" fill="#14532d">Opinionated wiring</text>
+
+  <rect x="740" y="212" width="184" height="66" rx="4" fill="#fef9c3" stroke="#fde047" stroke-width="1"/>
+  <text x="832" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#713f12">Component Contract</text>
+  <text x="832" y="245" text-anchor="middle" font-size="9" fill="#713f12">TypeScript props interface</text>
+  <text x="832" y="258" text-anchor="middle" font-size="9" fill="#713f12">Slots / children pattern</text>
+  <text x="832" y="271" text-anchor="middle" font-size="9" fill="#713f12">forwardRef + displayName</text>
+
+  <!-- Arrow down -->
+  <line x1="480" y1="292" x2="480" y2="312" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- Row 3: Versioning + Distribution -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <rect x="20" y="312" width="460" height="130" rx="6" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1.5"/>
+  <text x="36" y="333" font-size="11" font-weight="700" fill="#6b21a8">VERSIONING &amp; RELEASE</text>
+
+  <rect x="36" y="342" width="200" height="86" rx="4" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="1"/>
+  <text x="136" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#6b21a8">Semantic Versioning</text>
+  <text x="136" y="375" text-anchor="middle" font-size="9" fill="#7c3aed">MAJOR: breaking changes</text>
+  <text x="136" y="388" text-anchor="middle" font-size="9" fill="#7c3aed">MINOR: new components</text>
+  <text x="136" y="401" text-anchor="middle" font-size="9" fill="#7c3aed">PATCH: bug fixes</text>
+  <text x="136" y="414" text-anchor="middle" font-size="9" fill="#7c3aed">Changesets for monorepo</text>
+  <text x="136" y="427" text-anchor="middle" font-size="9" fill="#7c3aed">codemods for migrations</text>
+
+  <rect x="252" y="342" width="200" height="86" rx="4" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="1"/>
+  <text x="352" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#6b21a8">Distribution</text>
+  <text x="352" y="375" text-anchor="middle" font-size="9" fill="#7c3aed">npm package (@org/ui)</text>
+  <text x="352" y="388" text-anchor="middle" font-size="9" fill="#7c3aed">ESM + CJS dual build</text>
+  <text x="352" y="401" text-anchor="middle" font-size="9" fill="#7c3aed">CSS bundle separate</text>
+  <text x="352" y="414" text-anchor="middle" font-size="9" fill="#7c3aed">Tree-shakeable exports</text>
+  <text x="352" y="427" text-anchor="middle" font-size="9" fill="#7c3aed">Bundled: Rollup / tsup</text>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- Row 3b: Testing + Docs -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <rect x="496" y="312" width="444" height="130" rx="6" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="512" y="333" font-size="11" font-weight="700" fill="#9a3412">TESTING &amp; DOCUMENTATION</text>
+
+  <rect x="512" y="342" width="200" height="86" rx="4" fill="#ffedd5" stroke="#fdba74" stroke-width="1"/>
+  <text x="612" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#9a3412">Testing Strategy</text>
+  <text x="612" y="375" text-anchor="middle" font-size="9" fill="#7c2d12">Unit: Vitest + RTL</text>
+  <text x="612" y="388" text-anchor="middle" font-size="9" fill="#7c2d12">Visual: Chromatic snapshots</text>
+  <text x="612" y="401" text-anchor="middle" font-size="9" fill="#7c2d12">a11y: axe-core automated</text>
+  <text x="612" y="414" text-anchor="middle" font-size="9" fill="#7c2d12">Interaction: Storybook play()</text>
+  <text x="612" y="427" text-anchor="middle" font-size="9" fill="#7c2d12">CI gates before publish</text>
+
+  <rect x="728" y="342" width="196" height="86" rx="4" fill="#ffedd5" stroke="#fdba74" stroke-width="1"/>
+  <text x="826" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#9a3412">Documentation</text>
+  <text x="826" y="375" text-anchor="middle" font-size="9" fill="#7c2d12">Storybook: live examples</text>
+  <text x="826" y="388" text-anchor="middle" font-size="9" fill="#7c2d12">Props table: auto-generated</text>
+  <text x="826" y="401" text-anchor="middle" font-size="9" fill="#7c2d12">Do / Don't usage examples</text>
+  <text x="826" y="414" text-anchor="middle" font-size="9" fill="#7c2d12">Figma component links</text>
+  <text x="826" y="427" text-anchor="middle" font-size="9" fill="#7c2d12">Changelog per version</text>
+
+  <!-- Arrow down -->
+  <line x1="480" y1="442" x2="480" y2="462" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- Row 4: Governance + Adoption -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <rect x="20" y="462" width="920" height="130" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="36" y="483" font-size="11" font-weight="700" fill="#334155">GOVERNANCE, ADOPTION &amp; MIGRATION</text>
+
+  <rect x="36" y="492" width="200" height="86" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+  <text x="136" y="510" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">Contribution Model</text>
+  <text x="136" y="525" text-anchor="middle" font-size="9" fill="#334155">RFC for new components</text>
+  <text x="136" y="538" text-anchor="middle" font-size="9" fill="#334155">Design review required</text>
+  <text x="136" y="551" text-anchor="middle" font-size="9" fill="#334155">Core team owns merges</text>
+  <text x="136" y="564" text-anchor="middle" font-size="9" fill="#334155">Satellite repos for domain</text>
+
+  <rect x="252" y="492" width="200" height="86" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+  <text x="352" y="510" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">Breaking Change Policy</text>
+  <text x="352" y="525" text-anchor="middle" font-size="9" fill="#334155">Deprecation warnings v+1</text>
+  <text x="352" y="538" text-anchor="middle" font-size="9" fill="#334155">Removal at v+2 (6mo window)</text>
+  <text x="352" y="551" text-anchor="middle" font-size="9" fill="#334155">Codemod provided</text>
+  <text x="352" y="564" text-anchor="middle" font-size="9" fill="#334155">Migration guide in CHANGELOG</text>
+
+  <rect x="468" y="492" width="200" height="86" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+  <text x="568" y="510" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">Monorepo Structure</text>
+  <text x="568" y="525" text-anchor="middle" font-size="9" fill="#334155">packages/tokens</text>
+  <text x="568" y="538" text-anchor="middle" font-size="9" fill="#334155">packages/primitives</text>
+  <text x="568" y="551" text-anchor="middle" font-size="9" fill="#334155">packages/composite</text>
+  <text x="568" y="564" text-anchor="middle" font-size="9" fill="#334155">apps/storybook</text>
+
+  <rect x="684" y="492" width="240" height="86" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+  <text x="804" y="510" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">Adoption Metrics</text>
+  <text x="804" y="525" text-anchor="middle" font-size="9" fill="#334155">% apps on latest version</text>
+  <text x="804" y="538" text-anchor="middle" font-size="9" fill="#334155">Custom component override rate</text>
+  <text x="804" y="551" text-anchor="middle" font-size="9" fill="#334155">Time to integrate new component</text>
+  <text x="804" y="564" text-anchor="middle" font-size="9" fill="#334155">Lint rule: no direct imports</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Architecture for a frontend hosting platform dashboard showing tenant shell, APIs, event stream, job workflows, and audit and RBAC">
+  <title>Hosting Platform Dashboard Architecture</title>
+  <desc>Shows a tenant-aware dashboard consuming snapshot APIs for truth and an event stream for low-latency updates. Long-running operations are modeled as jobs with idempotency and audit.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .dash{stroke-dasharray:7 6}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .good{fill:#052018;stroke:#34d399}
+      .warn{fill:#2a1606;stroke:#fb923c}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <rect class="box" x="60" y="80" width="420" height="240"/>
+  <text class="label bold" x="90" y="125">Dashboard shell (tenant-aware)</text>
+  <text class="label small" x="90" y="155">project context + environment switch</text>
+  <text class="label small" x="90" y="180">RBAC-aware action gating</text>
+  <text class="label small" x="90" y="205">optimistic UI with job tracking</text>
+  <text class="label small" x="90" y="230">snapshot reconciliation loop</text>
+  <text class="label small" x="90" y="255">event stream subscriber</text>
+
+  <rect class="accent" x="520" y="70" width="320" height="150"/>
+  <text class="label bold" x="550" y="115">Snapshot APIs</text>
+  <text class="label small" x="550" y="145">projects, domains, env config</text>
+  <text class="label small" x="550" y="170">deployments + current pointers</text>
+  <text class="label small" x="550" y="195">logs metadata, health signals</text>
+
+  <rect class="muted" x="520" y="250" width="320" height="160"/>
+  <text class="label bold" x="550" y="295">Event stream</text>
+  <text class="label small" x="550" y="325">build &amp; deploy state changes</text>
+  <text class="label small" x="550" y="350">domain validation updates</text>
+  <text class="label small" x="550" y="375">incident banners, degrades</text>
+
+  <rect class="warn" x="880" y="70" width="260" height="150"/>
+  <text class="label bold" x="910" y="115">Job orchestration</text>
+  <text class="label small" x="910" y="145">deploy / rollback / promote</text>
+  <text class="label small" x="910" y="170">idempotency keys</text>
+  <text class="label small" x="910" y="195">status polling endpoint</text>
+
+  <rect class="good" x="880" y="260" width="260" height="150"/>
+  <text class="label bold" x="910" y="305">Audit + policy</text>
+  <text class="label small" x="910" y="335">immutable action log</text>
+  <text class="label small" x="910" y="360">approvals for production</text>
+  <text class="label small" x="910" y="385">org / project RBAC</text>
+
+  <rect class="box" x="60" y="360" width="780" height="220"/>
+  <text class="label bold" x="90" y="405">Why this split works</text>
+  <text class="label small" x="90" y="435">Snapshots provide correctness under missed events and reconnects</text>
+  <text class="label small" x="90" y="460">Events provide low-latency progress for builds and deployments</text>
+  <text class="label small" x="90" y="485">Jobs provide durable progress and safe retries for long-running actions</text>
+  <text class="label small" x="90" y="510">Audit and RBAC keep the control plane safe under incident pressure</text>
+
+  <path class="arrow" d="M480 160 L520 140"/>
+  <path class="arrow" d="M480 230 L520 320"/>
+  <path class="arrow dash" d="M840 140 L880 140"/>
+  <path class="arrow dash" d="M840 320 L880 320"/>
+  <path class="arrow dash" d="M1010 220 L1010 260"/>
+</svg>
+

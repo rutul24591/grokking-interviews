@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +40,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing an infinite-scrolling, virtualized
           list — the kind that powers feeds (social, news,
           activity), search results, message threads,
@@ -54,8 +56,8 @@ export default function InfiniteScrollVirtualizedListArticle() {
           jank machine that drops frames, loses scroll
           position on navigation, and breaks accessibility
           for keyboard and screen-reader users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are deeply interrelated. Variable
           row heights make scroll math non-trivial because
           row offsets aren&rsquo;t derivable from index alone.
@@ -73,10 +75,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           infinite list navigable by keyboard and announceable
           by screen readers — is genuinely hard because the
           ARIA patterns assume bounded content.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users browse feeds, results, and threads on
           mobile and desktop. They expect butter-smooth scroll
           (60 fps minimum, ideally 120 fps on capable
@@ -91,10 +93,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           customer support inbox) keep the list open for
           hours; performance debt accumulates fast on
           long-running scroll sessions.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data sources are typically cursor-paginated:
           <code> fetchPage(cursor)</code> returns
           <code> { `{ items, nextCursor }` }</code>. Item
@@ -109,10 +111,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           for scroll-driven updates. The host has a router
           that supports back/forward navigation; we integrate
           with its scroll restoration model.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement traditional pagination (Next /
           Previous buttons) — that&rsquo;s the Cursor-based
           Pagination UI subsystem. We do not implement table
@@ -123,14 +125,14 @@ export default function InfiniteScrollVirtualizedListArticle() {
           Grid. We do not implement search-result-specific
           features (highlight, snippet ranking) — those layer
           on top via custom row renderers.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Virtualize rows so DOM size stays O(visible) even
           for million-item lists. Support fixed-height and
           variable-height items via different
@@ -146,10 +148,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           changes (new items loaded, end reached) via polite
           live region. Two-way infinite scroll (prepend on top,
           append on bottom) for chat-style flows.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time updates via WebSocket: new items appear
           smoothly without disrupting scroll. Pinned items at
           top or bottom (sticky banners, system messages).
@@ -161,23 +163,23 @@ export default function InfiniteScrollVirtualizedListArticle() {
           smoothness vs memory usage. Item-level
           prefetching of expensive resources just before
           they enter the viewport.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Filter/sort UIs, table-like column structure,
           drag-to-reorder, and bulk selection don&rsquo;t fit
           the infinite-scroll mental model and live
           elsewhere. Custom transitions for item enter/exit
           animations are an opt-in plugin, not core.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Scroll at 60 fps on mid-tier devices, no dropped
           frames. Initial render of the visible viewport
           under 100 ms. Page-fetch triggers complete in time
@@ -189,10 +191,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           unload deeply off-screen items, with an LRU eviction
           policy that holds enough recent windows for fast
           backtrack but releases far-away pages.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Race-protect concurrent page fetches with tokens;
           the latest token wins. Survive network failures
           gracefully — surface an inline retry, never lose
@@ -201,18 +203,18 @@ export default function InfiniteScrollVirtualizedListArticle() {
           pixels of where they left off, even if items have
           changed (we restore by item id, not by raw scroll
           offset).
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Item rendering is text by default; HTML opt-in via
           a sanitizer per item type. Real-time updates are
           authenticated; we don&rsquo;t inject server-pushed
           items into a stranger&rsquo;s list.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The list uses <code>role=&quot;feed&quot;</code> for
           chronological feeds (twitter-style), or
           <code> role=&quot;list&quot;</code> for unordered
@@ -221,17 +223,17 @@ export default function InfiniteScrollVirtualizedListArticle() {
           states announce via polite live region. Keyboard
           navigation (Page Up/Down) works without trapping;
           arrow keys move between items when configured.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The runtime is a small core (virtualizer + fetch
           orchestrator + scroll restoration) with hooks for
           consumers to plug their data source and row
           renderer. Adding new behaviors (real-time, pinned,
           pull-to-refresh) is a one-file plugin per
           behavior.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -242,7 +244,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The list is built around four cooperating
           mechanisms: a <strong>data source with cursor
           pagination</strong> behind an item cache, a
@@ -254,8 +256,8 @@ export default function InfiniteScrollVirtualizedListArticle() {
           system. Each is well-understood individually; their
           interaction is what makes the list feel solid
           rather than haphazard.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>data source</strong> exposes
           <code> fetchPage(cursor)</code> →{" "}
           <code>{` { items, nextCursor } `}</code>. The item
@@ -273,8 +275,8 @@ export default function InfiniteScrollVirtualizedListArticle() {
           bounded. Eviction is conservative because we want
           fast backtracking; aggressive eviction would
           cause re-fetches on minor scroll-up.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>virtualizer</strong> handles the
           translation from scroll position to visible window.
           For fixed-height items, the math is trivial:
@@ -293,7 +295,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           overscan (typically 5–10 items above and below the
           viewport) prevents blank flashes during fast
           scrolling.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>trigger</strong> uses an
           IntersectionObserver on a sentinel element placed
@@ -311,7 +313,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           prevent multiple parallel fetches if the user
           scrolls past the threshold quickly.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Scroll restoration</strong> is the trickiest
           piece because raw scroll offsets are unreliable —
           items may have changed since the user navigated
@@ -329,7 +331,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           This robustness against item changes is what makes
           scroll restoration feel reliable rather than
           flaky.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>mount</strong>, the runtime checks for a
           stored scroll state from the host&rsquo;s
@@ -352,7 +354,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           style), a second sentinel near the top fires for
           older-messages fetch.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>page response</strong>, the new items are
           appended (or prepended for two-way) to the cache.
           Subscribers are notified; the virtualizer
@@ -365,7 +367,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           <code> scrollTop = scrollTop + prependedHeight</code>{" "}
           inside the same frame as the DOM mutation, so
           users see no jump.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>real-time update</strong>, new items
           arriving via WebSocket are added to the cache
@@ -392,34 +394,34 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>ListProvider</strong> instantiates the
           virtualizer, the data source orchestrator, the
           item cache, and the trigger observer. It exposes
           them through stable refs in a React Context.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Virtualizer</strong> handles the
           scroll-to-window translation. It supports both
           fixed-height and variable-height modes; consumers
           declare which via a prop. For variable-height, it
           uses <code>ResizeObserver</code> on each mounted
           item and maintains the cumulative-height index.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>ItemCache</strong> stores items by id with
           ordered cursor mappings. Supports append, prepend,
           and LRU eviction. Subscribers receive notifications
           on cache changes via a small event interface.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>FetchOrchestrator</strong> manages
           concurrent fetch tokens, debounces triggers, and
           handles retry-on-error. It exposes status
           (<code>idle</code>, <code>loading</code>,
           <code> error</code>, <code>endReached</code>) to
           the UI.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>TriggerSentinel</strong> is a small DOM
           element observed by IntersectionObserver to detect
@@ -444,7 +446,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           banner above or below the list. It&rsquo;s
           consumer-skinnable.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The architectural patterns are
           <strong> virtualization</strong> (DOM scoped to
           viewport), <strong>cursor-paginated cache</strong>{" "}
@@ -452,12 +454,12 @@ export default function InfiniteScrollVirtualizedListArticle() {
           triggers</strong> (off-main near-end detection),
           and <strong>id-anchored restoration</strong>{" "}
           (robust to data changes).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Three planes. <strong>Cache state</strong> (item
           cache, cursors, fetch status) lives in an external
           store created per list. <strong>Render state</strong>{" "}
@@ -466,23 +468,21 @@ export default function InfiniteScrollVirtualizedListArticle() {
           isn&rsquo;t exposed to React unless the consumer
           asks. <strong>Scroll anchor</strong> lives in the
           host router&rsquo;s state across navigation.
-        </p>
-        <p>
-          The cache store and the visible-window state are
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">The cache store and the visible-window state are
           deliberately separate because they update at very
           different cadences. Cache updates are infrequent
           (once per page fetch); window updates are every
-          scroll frame. Conflating them would either cause
+          scroll frame.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Conflating them would either cause
           unnecessary cache subscriber re-renders during
           scroll, or add scroll-frame state to the cache
-          store, both of which are wrong.
-        </p>
+          store, both of which are wrong.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs:{" "}
+        <HighlightBlock as="p" tier="important">Inputs:{" "}
           <code>dataSource</code> (with
           <code> fetchPage(cursor)</code>),
           <code> renderItem(item)</code>,
@@ -493,25 +493,25 @@ export default function InfiniteScrollVirtualizedListArticle() {
           fetch), <code>twoWay</code> (boolean for
           chat-style), and event handlers
           (<code> onEndReached</code>,
-          <code> onItemView</code>). Outputs are
+          <code> onItemView</code>).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Outputs are
           subscription events for telemetry plus an
           imperative API on the list ref
           (<code> scrollToItem</code>,
-          <code> scrollToTop</code>, <code>refetch</code>).
-        </p>
-        <p>
+          <code> scrollToTop</code>, <code>refetch</code>).</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Item contract: each item must have a stable
           <code> id</code> field. Without stable ids,
           reconciliation, scroll restoration, and React
           keys all break. Consumers using objects without
           natural ids must synthesize them deterministically
           (a hash of content, never an array index).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Virtualization scopes mounted DOM to ~30 items
           regardless of total count. Item components are
           memoized so unchanged items don&rsquo;t re-render
@@ -520,8 +520,8 @@ export default function InfiniteScrollVirtualizedListArticle() {
           <code> requestAnimationFrame</code> so it aligns
           with the browser&rsquo;s rendering pipeline rather
           than fighting it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For variable-height items, the cumulative-height
           index is updated incrementally — only the items
           whose measured heights changed contribute to the
@@ -529,8 +529,8 @@ export default function InfiniteScrollVirtualizedListArticle() {
           O(log N) lookup for the item at a scroll offset.
           Without the index, we&rsquo;d need O(N) to find
           the right item, which doesn&rsquo;t scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           IntersectionObserver fires off-main, so trigger
           detection doesn&rsquo;t add to the scroll
           critical path. The fetch happens after the trigger
@@ -538,8 +538,8 @@ export default function InfiniteScrollVirtualizedListArticle() {
           fetch latency because the threshold is set far
           enough from the end that the page arrives before
           they reach it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Item-level lazy-loading of images and media uses
           <code> loading=&quot;lazy&quot;</code> for native
           lazy-load, plus a hook for non-image expensive
@@ -547,25 +547,24 @@ export default function InfiniteScrollVirtualizedListArticle() {
           delays mount until the item is in the viewport.
           This keeps initial item mount cheap even for
           rich content.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX Considerations</h2>
-        <p>
-          Skeleton items during loading match the layout of
+        <HighlightBlock as="p" tier="important">Skeleton items during loading match the layout of
           real items (same height, same column structure)
           to avoid cumulative layout shift. End-of-list
           states are explicit text rather than just an
           absence of more loading; users should never wonder
-          if more is coming. Error states surface inline
+          if more is coming.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Error states surface inline
           with a Retry button; the retry preserves the
           loaded items above so the user&rsquo;s scroll
           context is preserved. Empty states (zero items
           total) explain why and offer remediation
-          (clear filter, change query).
-        </p>
-        <p>
+          (clear filter, change query).</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           For real-time updates, the &ldquo;new items
           arrived&rdquo; banner respects the user&rsquo;s
           intent. If they&rsquo;re scrolled to the top
@@ -576,29 +575,28 @@ export default function InfiniteScrollVirtualizedListArticle() {
           a deep-scroll session with auto-scroll is
           obnoxious. The banner is accessible (announced
           via live region) and dismissible.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Chronological feeds use
+        <HighlightBlock as="p" tier="important">Chronological feeds use
           <code> role=&quot;feed&quot;</code> with
           <code> aria-busy</code> while loading.
           Non-chronological lists use
           <code> role=&quot;list&quot;</code>. Each item is
           a focusable region (focusable via Tab) with its
           own accessible name (constructed from item
-          content). Keyboard navigation: Page Up/Down moves
+          content).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Keyboard navigation: Page Up/Down moves
           by viewport; Home/End move to start/end (where
           End may trigger a fetch if not yet at the
           server-side end). Loading state announces via
           polite live region — &ldquo;Loading more
           items&rdquo;, &ldquo;5 new items&rdquo;, &ldquo;End
           of list&rdquo; — without spamming the
-          accessibility tree on every scroll frame.
-        </p>
-        <p>
+          accessibility tree on every scroll frame.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The trickiest accessibility concern is that
           virtualization may unmount items the user has
           interacted with. We mitigate by ensuring focused
@@ -608,58 +606,34 @@ export default function InfiniteScrollVirtualizedListArticle() {
           the unmount/mount boundary because the virtualizer
           checks for the focused item when computing the
           visible window.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security Considerations</h2>
-        <p>
-          Item content renders as text by default; rich
-          content (e.g. user-generated HTML in a feed item)
-          opts in via a sanitizer. Real-time updates are
-          authenticated via the WebSocket connection&rsquo;s
-          session; we don&rsquo;t accept items from
-          unauthenticated sources. Cursor tokens are
-          opaque server-issued strings; we don&rsquo;t
-          inspect or modify them. The list&rsquo;s
-          imperative API
-          (<code> scrollToItem(id)</code>) accepts an item
-          id but doesn&rsquo;t fetch arbitrary cross-list
-          items — it only operates within the current
-          list&rsquo;s data source.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Cursor tokens are opaque server-issued strings; we don&rsquo;t inspect or modify them. The</HighlightBlock>
+<HighlightBlock as="p" tier="important">list&rsquo;s imperative API ( scrollToItem(id) ) accepts an item id but doesn&rsquo;t fetch</HighlightBlock>
+<HighlightBlock as="p" tier="important">arbitrary cross-list items — it only operates within the current list&rsquo;s data source.</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Unit tests cover the cache (append, prepend, LRU
-          eviction, gap detection), the virtualizer (visible
-          window calculation, cumulative-height index for
-          variable heights), and the fetch orchestrator
-          (token races, retry on error). Integration tests
-          mount realistic lists with mocked data sources and
-          exercise: scroll to trigger fetch, scroll
-          restoration after navigation, real-time updates,
-          two-way scroll. Visual regression tests catch
-          layout shifts. Performance tests assert 60 fps
-          scroll on a 100k-item list. Accessibility tests
-          verify the live region announcements and focus
-          preservation across virtualization boundaries.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Integration tests mount realistic lists with mocked data sources and exercise: scroll to trigger fetch, scroll restoration after</HighlightBlock>
+<HighlightBlock as="p" tier="important">navigation, real-time updates, two-way scroll. Visual regression tests catch layout shifts. Performance tests assert 60 fps scroll on</HighlightBlock>
+<HighlightBlock as="p" tier="important">a 100k-item list. Accessibility tests verify the live region announcements and focus preservation across virtualization boundaries.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
-          User scrolls very fast past the trigger: the
+        <HighlightBlock as="p" tier="important">User scrolls very fast past the trigger: the
           IntersectionObserver fires only once per
           intersection, so we don&rsquo;t spam the data
           source; debouncing adds belt-and-suspenders
           protection. User loses network mid-scroll: we
           surface an inline retry; the loaded items above
           remain. Item heights change after measurement
-          (e.g. an image loads and grows the item): the
+          (e.g.</HighlightBlock>
+<HighlightBlock as="p" tier="important">an image loads and grows the item): the
           ResizeObserver updates the cache and the
           virtualizer recalculates; we adjust scroll
           position to maintain the user&rsquo;s view if the
@@ -668,9 +642,8 @@ export default function InfiniteScrollVirtualizedListArticle() {
           changed (real-time deletes): the scroll restorer
           falls back to the nearest available anchor;
           users land near where they were rather than at the
-          top.
-        </p>
-        <p>
+          top.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Cache eviction policy edge case: user scrolls
           deep, eviction kicks in for top pages, then user
           tries to scroll back to the top. The cache notices
@@ -685,36 +658,34 @@ export default function InfiniteScrollVirtualizedListArticle() {
           end-of-list state explicitly. Server returns
           duplicate items (real-time + initial fetch
           overlap): the cache deduplicates by id.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          The runtime is generic over item type and data
+        <HighlightBlock as="p" tier="crucial">The runtime is generic over item type and data
           source. Plugins for real-time updates,
           pull-to-refresh, and pinned items slot in via
-          composition. The item renderer is fully
+          composition.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">The item renderer is fully
           consumer-controlled, so the runtime works for
           feed cards, message bubbles, search results,
           notifications, and anything else with the same
-          mental model.
-        </p>
+          mental model.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Status strings (loading, end of list, retry)
+        <HighlightBlock as="p" tier="crucial">Status strings (loading, end of list, retry)
           resolve via the host i18n function. Right-to-left
           layouts work via CSS logical properties; the
           virtualizer is direction-agnostic (it operates on
           scroll position, which the browser handles
-          correctly across directions). For
+          correctly across directions).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">For
           chat-style two-way scroll, RTL flips visual
           orientation but the prepend/append semantics
-          remain.
-        </p>
+          remain.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -735,7 +706,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
         </p>
 
         <h3>IntersectionObserver vs scroll-position math</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           IntersectionObserver runs off-main, doesn&rsquo;t
           fire excessively during fast scrolling, and
           aligns with the browser&rsquo;s render pipeline.
@@ -744,20 +715,20 @@ export default function InfiniteScrollVirtualizedListArticle() {
           main thread, fires per scroll event, and can
           cause jank if the handler is non-trivial. We use
           IntersectionObserver wherever possible.
-        </p>
+        </HighlightBlock>
 
         <h3>ID-anchored vs offset-anchored scroll restoration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Offset-anchored restoration is simpler but breaks
           when items change between visits. ID-anchored is
           robust to changes (items added, removed, resized)
           and feels reliable. The cost is an extra lookup
           on restore; the gain is a much better UX in the
           presence of any data churn.
-        </p>
+        </HighlightBlock>
 
         <h3>LRU eviction vs holding everything</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For very long-lived sessions (a Twitter timeline
           open for hours), holding every loaded item
           consumes unbounded memory. LRU eviction keeps
@@ -766,10 +737,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           common backtrack distances stay in cache while
           long-distance backtracks pay a refetch cost; the
           window is configurable per consumer.
-        </p>
+        </HighlightBlock>
 
         <h3>Real-time auto-scroll vs banner</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-scrolling on new items interrupts users who
           are reading. A banner (&ldquo;5 new items&rdquo;)
           is unobtrusive and respects user intent. We
@@ -778,10 +749,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           This rule is opinionated but correct for
           consumer-facing feeds; chat apps can override the
           policy because their semantics are different.
-        </p>
+        </HighlightBlock>
 
         <h3>Variable-height vs forced fixed-height</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Forced fixed-height is dramatically simpler but
           looks bad for content with intrinsically variable
           length (cards, messages). Variable-height costs
@@ -792,26 +763,14 @@ export default function InfiniteScrollVirtualizedListArticle() {
           fixed-height is an opt-in for cases that genuinely
           have uniform items (e.g. an inbox of equal-size
           rows).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Predictive prefetching based on scroll velocity:
-          if the user is scrolling fast, fetch further ahead
-          to keep ahead of them. Offline-first caching with
-          IndexedDB so users can re-open a session and see
-          their loaded items without a network round-trip.
-          Smooth animations for item insertions and removals
-          (especially for real-time updates). Cross-session
-          scroll restoration: come back tomorrow and land
-          where you were last night. Better integration with
-          the View Transitions API for navigation between
-          list and detail views. Service-worker-driven
-          push updates so new items can arrive even when
-          the tab is backgrounded.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Cross-session scroll restoration: come back tomorrow and land where you were last night.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Better integration with the View Transitions API for navigation between list and detail views.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Service-worker-driven push updates so new items can arrive even when the tab is backgrounded.</HighlightBlock>
       </section>
 
       <section>
@@ -839,7 +798,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           nearest available anchor.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How do you handle variable-height items?</strong>{" "}
           Maintain a measured-height cache keyed by item id.
           Use <code>ResizeObserver</code> on each mounted
@@ -847,7 +806,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           height index that maps scroll offset → item index
           via binary search. Estimated default heights for
           unmeasured items.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. Why IntersectionObserver instead of scroll
@@ -860,7 +819,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           better.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. How do you keep memory bounded for long
           sessions?</strong> LRU eviction of cache pages far
           from the current scroll position. Items in the
@@ -868,9 +827,9 @@ export default function InfiniteScrollVirtualizedListArticle() {
           re-fetched if the user backtracks beyond the
           window. The window is configurable; defaults are
           tuned for typical use.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How do you handle real-time updates without
           disrupting the user?</strong> Surface a banner
           (&ldquo;5 new items&rdquo;) for users who are deep
@@ -878,9 +837,9 @@ export default function InfiniteScrollVirtualizedListArticle() {
           the relevant end (top of chronological feed,
           bottom of chat). The banner is accessible and
           dismissible.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. What happens when the user prepends items
           (chat scrolls up to load older messages)?</strong> When
           older messages prepend to the cache, the
@@ -889,9 +848,9 @@ export default function InfiniteScrollVirtualizedListArticle() {
           mutation. Without this adjustment, prepending would
           push the user&rsquo;s current view down. With it,
           the user sees no jump.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How is the list accessible to screen
           readers?</strong> Use <code>role=&quot;feed&quot;</code>{" "}
           for chronological lists with
@@ -902,25 +861,14 @@ export default function InfiniteScrollVirtualizedListArticle() {
           Up/Down) works without trapping. Focused items
           don&rsquo;t unmount even if they leave the
           virtualizer&rsquo;s default window.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          An infinite-scrolling virtualized list is a
-          <strong> four-mechanism system</strong>: cursor-
-          paginated cache, virtualizer (with measured-height
-          support for variable rows), IntersectionObserver-
-          driven trigger, and id-anchored scroll restoration.
-          Each mechanism is tractable on its own; their
-          interaction is what makes the list feel reliable
-          across the messy real-world scenarios — fast
-          scrolling, real-time updates, navigation away and
-          back, variable content. Choose infinite scroll for
-          browse-and-discover flows; choose pagination for
-          look-up flows; don&rsquo;t mix them up.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Each mechanism is tractable on its own; their interaction is what makes the list feel reliable across the</HighlightBlock>
+<HighlightBlock as="p" tier="important">messy real-world scenarios — fast scrolling, real-time updates, navigation away and back, variable content.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Choose infinite scroll for browse-and-discover flows; choose pagination for look-up flows; don&rsquo;t mix them up.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

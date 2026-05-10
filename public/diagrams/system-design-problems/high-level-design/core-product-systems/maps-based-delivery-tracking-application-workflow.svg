@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Workflow for delivery snapshot, realtime updates, smoothing, and polling fallback">
+  <title>Delivery Tracking Workflow</title>
+  <desc>Shows initial snapshot load, realtime subscription, batched updates with smoothing, and fallback to polling and text mode.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="70" width="330" height="150" />
+  <text class="label bold" x="90" y="115">Open tracking link</text>
+  <text class="label small" x="90" y="145">fetch delivery snapshot</text>
+  <text class="label small" x="90" y="170">init map + marker</text>
+  <text class="label small" x="90" y="195">show status timeline</text>
+
+  <rect class="accent" x="440" y="70" width="350" height="150" />
+  <text class="label bold" x="470" y="115">Realtime subscribe</text>
+  <text class="label small" x="470" y="145">batched updates</text>
+  <text class="label small" x="470" y="170">sequence handling</text>
+  <text class="label small" x="470" y="195">ETA refresh slower cadence</text>
+
+  <rect class="box" x="840" y="70" width="300" height="150" />
+  <text class="label bold" x="870" y="115">Render updates</text>
+  <text class="label small" x="870" y="145">controlled smoothing</text>
+  <text class="label small" x="870" y="170">staleness watermark</text>
+  <text class="label small" x="870" y="195">follow mode optional</text>
+
+  <path class="arrow" d="M390 145 L440 145" />
+  <path class="arrow" d="M790 145 L840 145" />
+
+  <rect class="muted" x="120" y="300" width="420" height="190" />
+  <text class="label bold" x="150" y="345">Fallback</text>
+  <text class="label small" x="150" y="375">stream disconnect → polling</text>
+  <text class="label small" x="150" y="400">backoff + jitter</text>
+  <text class="label small" x="150" y="425">show “location delayed”</text>
+  <text class="label small" x="150" y="450">widen ETA confidence</text>
+
+  <rect class="muted" x="600" y="300" width="480" height="190" />
+  <text class="label bold" x="630" y="345">Tiles fail</text>
+  <text class="label small" x="630" y="375">render text-first view</text>
+  <text class="label small" x="630" y="400">last known coords + time</text>
+  <text class="label small" x="630" y="425">status timeline still works</text>
+  <text class="label small" x="630" y="450">accessibility preserved</text>
+
+  <path class="arrow" d="M990 220 C990 270 820 270 820 300" />
+  <path class="arrow" d="M540 395 L600 395" />
+</svg>

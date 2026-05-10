@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,7 @@ export default function DataTableArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable, production-grade data table component for a
           large-scale React application. The table must display tabular data with
           support for column sorting (single-column and multi-column), column filtering
@@ -52,7 +53,7 @@ export default function DataTableArticle() {
           full keyboard and screen-reader accessibility. The component must perform
           smoothly with large datasets, avoid unnecessary re-renders, and maintain a
           predictable state model that any consuming component can interact with.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -60,24 +61,24 @@ export default function DataTableArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Data can be provided client-side (in-memory array) or fetched from a
             remote API (server-side operations).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Column definitions are provided as a configuration array, specifying field
             keys, labels, data types (string, number, date, enum), and optional render
             functions for custom cell content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The table must handle datasets ranging from a few rows to 100K+ rows.
             Virtualization is mandatory for client-side datasets exceeding a configurable
             threshold (e.g., 500 rows).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Column widths are user-adjustable via drag, and persisted across sessions
             (e.g., localStorage).
-          </li>
+          </HighlightBlock>
           <li>
             Row selection supports single select, multi-select (checkbox), select all,
             and shift-click for range selection.
@@ -118,12 +119,12 @@ export default function DataTableArticle() {
             resize. Minimum width enforcement prevents columns from collapsing. Resized
             widths persist in localStorage and restore on remount.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Row Virtualization:</strong> Only rows within the visible viewport
             are rendered. Scroll position is tracked and mapped to row indices.
             Virtualization activates when row count exceeds a threshold (default: 500).
             Uses a spacer div to simulate full scroll height.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Row Selection:</strong> Checkbox column on the left. Select all
             toggles selection for visible rows. Shift-click selects a range from last
@@ -146,21 +147,21 @@ export default function DataTableArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Initial render of 100K rows with virtualization
             should be under 200ms. Scrolling should maintain 60fps. Sorting and filtering
             100K rows client-side should complete under 500ms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory:</strong> No memory leaks from stale event listeners,
             intersection observers, or resize observers. Virtualized rows must unmount
             cleanly when scrolled out of view.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Full WAI-ARIA table semantics. Keyboard
             navigation (Tab, Arrow keys, Space for checkbox, Enter for row action).
             Screen reader announces sort changes, filter changes, and row selection.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for column definitions,
             row data, sort state, filter state, and pagination state.
@@ -190,10 +191,10 @@ export default function DataTableArticle() {
             records added) — handle gracefully by adjusting the current page if it
             exceeds the new total pages.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Virtualization with variable row heights — use a measured heights cache and
             dynamically adjust scroll spacer height.
-          </li>
+          </HighlightBlock>
           <li>
             Export with 100K+ rows — chunk the CSV generation using
             <code>requestIdleCallback</code> to avoid blocking the main thread.
@@ -204,38 +205,38 @@ export default function DataTableArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate <strong>table state management</strong> from
           <strong>table rendering</strong> using a global store (Zustand) and a
           composition-based component architecture. The store manages sort state, filter
           state, pagination state, selection state, column visibility, and column widths.
           The rendering layer subscribes to the store and renders only what is needed —
           virtualized rows, memoized cells, and a sticky header.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Local state (useState) per table instance:</strong> Simple for small
             tables but becomes unwieldy when many pieces of state (sort, filter, page,
             selection, columns) must be lifted and shared across child components (header,
             row, cell, pagination). Prop drilling increases coupling.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>React Context + useReducer:</strong> Viable and avoids external
             dependencies. However, context consumers re-render on every state change
             unless carefully split into multiple contexts. Zustand selectors provide
             fine-grained subscriptions out of the box.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Existing libraries (TanStack Table, AG-Grid):</strong> Production-ready
             and feature-complete. However, they add significant bundle weight (AG-Grid is
             300KB+ minified). For applications needing a custom, lightweight table with
             only specific features, a bespoke implementation is preferable.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + Composition is optimal:</strong> Zustand provides
           selector-based subscriptions so the header, pagination, and filter bar each
           subscribe only to the slice of state they need. This prevents unnecessary
@@ -243,7 +244,7 @@ export default function DataTableArticle() {
           headers. The composition pattern (DataTable wraps TableHeader, TableRow,
           TableCell, Pagination, FilterBar) ensures each piece is independently testable
           and reusable.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -255,7 +256,7 @@ export default function DataTableArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Table Types &amp; Interfaces (<code>table-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>Column</code> interface (field key, label, type, width,
             minWidth, render function, sortable, filterable), <code>SortDirection</code>
             union (<code>asc | desc | none</code>), <code>SortConfig</code> (field +
@@ -263,7 +264,7 @@ export default function DataTableArticle() {
             value), <code>PaginationState</code> (page, pageSize, totalRows),
             <code>RowSelection</code> (Set of selected row IDs), and <code>TableData</code>
             (generic row type). See the Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -335,13 +336,13 @@ export default function DataTableArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Virtualization Hook (<code>use-virtualization.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Custom hook using a ref on the scroll container. Tracks scrollTop and
             container height via ResizeObserver. Computes <code>startIndex</code> and
             <code>endIndex</code> based on row height, scrollTop, and overscan buffer.
             Returns visible rows slice, total scroll height, and offsetY for the spacer
             element. Supports variable row heights via a measured heights cache.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -357,23 +358,23 @@ export default function DataTableArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">8. Data Table Component (<code>data-table.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Root component composing all sub-components. Accepts column definitions and
             row data (or a data-fetching function for server-side mode). Initializes the
             store, applies sort/filter/pagination/virtualization, and renders the table
             structure. See the Example tab for the complete component.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">9. Table Header Component (<code>table-header.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Renders <code>&lt;thead&gt;</code> with sortable column headers (click to
             cycle sort direction, shift-click for multi-sort), sort indicator icons,
             resize handles (using the column resizer hook), filter inputs per column, and
             column visibility toggle dropdown. Uses <code>role=&quot;columnheader&quot;</code>
             and <code>aria-sort</code> attributes.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -389,13 +390,13 @@ export default function DataTableArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Zustand store is the single source of truth. Sort, filter, pagination,
           selection, column visibility, and column widths are all managed here. Derived
           values (e.g., filtered rows, sorted rows, paginated rows, virtualized rows) are
           computed in hooks or selectors — not stored — to avoid stale state. The store
           exposes actions that any sub-component can call without prop drilling.
-        </p>
+        </HighlightBlock>
         <p>
           Persistence is handled for column widths and hidden columns. On store
           initialization, the store reads from localStorage (within a useEffect to be
@@ -451,29 +452,29 @@ export default function DataTableArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The data flow follows a pipeline: raw data → filter → sort → paginate →
           virtualize → render. Each stage is a pure transformation, and state changes at
           any stage trigger re-evaluation of all downstream stages. This ensures
           consistency — for example, changing a filter always re-applies sort and
           pagination.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Client-Side vs Server-Side Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In <strong>client-side mode</strong>, all pipeline stages execute in the browser.
           This is fast for datasets up to ~10K rows. Beyond that, filter and sort become
           expensive (O(n log n) for sort, O(n) per filter). Virtualization ensures the
           render cost stays constant regardless of data size.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           In <strong>server-side mode</strong>, the client sends the current sort, filter,
           and pagination params to the API on each change. The server returns the
           pre-computed page of results and the total count. The client skips filter and
           sort stages locally — only pagination and virtualization apply. This trades
           network latency for reduced client-side CPU, which is essential for datasets
           exceeding 100K rows or when data is too large to transfer.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
@@ -482,11 +483,11 @@ export default function DataTableArticle() {
             array. The render stage detects zero rows and displays an empty state message
             with a &quot;Clear Filters&quot; button that resets the filter store.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Current page exceeds total pages after filter:</strong> The pagination
             hook detects <code>page &gt; totalPages</code> and clamps the page to
             <code>totalPages</code>. This prevents showing a blank page.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shift-click with no previous selection:</strong> The store&apos;s
             <code>lastSelectedIndex</code> is null. The handler treats the click as a
@@ -498,14 +499,14 @@ export default function DataTableArticle() {
             <code>Math.max(delta, column.minWidth || 80)</code>. The column never shrinks
             below the minimum, preventing layout collapse.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualization with variable row heights:</strong> The
             <code>use-virtualization</code> hook maintains a <code>Map&lt;rowIndex,
             measuredHeight&gt;</code>. On first render, it estimates heights. As rows
             mount, a ResizeObserver measures actual heights and updates the map. The
             scroll spacer height is recalculated as the sum of all row heights (measured +
             estimated). This prevents scroll bar jumps as rows are measured.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -519,7 +520,7 @@ export default function DataTableArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The complete, production-ready implementation consists of 14 files: type
             definitions, Zustand store with persistence, sorting utility, filtering
             utility, pagination hook, virtualization hook, column resizer hook, data table
@@ -527,7 +528,7 @@ export default function DataTableArticle() {
             pagination component, filter bar component, and a full EXPLANATION.md
             walkthrough. Click the <strong>Example</strong> toggle at the top of the
             article to view all source files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Table Types (table-types.ts)</h3>
@@ -541,14 +542,14 @@ export default function DataTableArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Table Store (table-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages sort, filter, pagination, selection, column widths, and hidden
           columns. Key design decisions include: using a <code>Map</code> for filters
           (O(1) lookup and iteration), persisting column widths and visibility to
           localStorage with debounced writes, and providing a <code>reset</code> action
           that clears all state except persisted preferences. Selection uses a
           <code>Set</code> for O(1) add/remove/has operations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Sorting Utility (sort-utils.ts)</h3>
         <p>
@@ -579,7 +580,7 @@ export default function DataTableArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Virtualization Hook (use-virtualization.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Attaches a ref to the scrollable tbody container. Uses ResizeObserver to track
           container height and scroll event listener for scrollTop. Computes visible row
           range: <code>startIndex = Math.floor(scrollTop / rowHeight)</code>,
@@ -587,7 +588,7 @@ export default function DataTableArticle() {
           Adds overscan of 5 rows above and below. Returns the visible slice, total
           scroll height (for spacer), and offsetY. Supports variable heights via a
           measured cache Map.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: Column Resizer Hook (use-column-resizer.ts)</h3>
         <p>
@@ -600,13 +601,13 @@ export default function DataTableArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: Data Table Component (data-table.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Root component wiring everything together. Accepts columns and data (or a
           fetcher function for server-side mode). Computes filtered rows, sorted rows, and
           passes them through pagination and virtualization. Renders TableHeader,
           FilterBar (optional), virtualized rows via spacer + visible rows, and Pagination
           component. Handles the empty state when no rows match filters.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: Table Header (table-header.tsx)</h3>
         <p>
@@ -637,12 +638,12 @@ export default function DataTableArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 12: Filter Bar (filter-bar.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders filter inputs per filterable column. Text inputs for text columns,
           number inputs for range filters, multi-select dropdowns for enum columns.
           Debounces text input (300ms) to avoid excessive re-filtering on every keystroke.
           Includes a &quot;Clear All Filters&quot; button. Syncs with the store on change.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -698,32 +699,32 @@ export default function DataTableArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For 100K rows and 10 columns: filter takes ~50ms, sort takes ~200ms, paginate
           is sub-millisecond, virtualization renders only ~20 rows. Total time for a
           filter change on 100K rows is approximately 250ms (filter + sort + paginate +
           render). This is well within the 500ms target.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sort on 100K+ rows client-side:</strong> O(n log n) becomes
             expensive. For 500K rows, sort can take 1-2 seconds. Mitigation: switch to
             server-side sort, or use a Web Worker to sort off the main thread.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Filter with many active filters:</strong> Each filter adds a pass over
             the data. With 10 active filters on 100K rows, the filter stage iterates 1M
             times. Mitigation: combine filters into a single pass predicate function
             generated once when filters change, rather than iterating filters per row.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-render cascades:</strong> If the store subscriber selects the
             entire state object, every change triggers a full table re-render. Mitigation:
             use Zustand selectors — header subscribes to sort + columns, pagination
             subscribes to pagination, rows subscribe to visible data only.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Export blocking the main thread:</strong> Generating a CSV string for
             100K rows synchronously freezes the UI for 500-1000ms. Mitigation: chunk the
@@ -740,16 +741,16 @@ export default function DataTableArticle() {
             the cell value and selected state. This prevents re-rendering cells whose data
             has not changed.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualized rows:</strong> Only ~20 rows are in the DOM at any time
             (viewport rows + overscan). The scroll spacer simulates the full height. This
             keeps DOM node count constant regardless of data size.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced filter input:</strong> Text filters debounce at 300ms,
             preventing filter computation on every keystroke. Range and multi-select
             filters are immediate (lower frequency).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stable row keys:</strong> Each row uses a unique ID (not array index)
             as the React key. This prevents DOM node recreation when rows are reordered by
@@ -768,42 +769,42 @@ export default function DataTableArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cell values may contain user-generated content. If rendered directly as text
           (React&apos;s default), they are automatically escaped. However, if a column
           uses a custom <code>render</code> function that produces HTML, the content must
           be sanitized to prevent XSS. Prefer passing React elements (not HTML strings)
           from trusted sources. If HTML is unavoidable, use a sanitizer library
           (e.g., DOMPurify) before rendering.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Export Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSV export can be an injection vector if cell values contain commas, quotes, or
           newlines. All cell values must be properly escaped: wrap values containing
           special characters in double quotes, and escape internal double quotes by
           doubling them (<code>&quot;</code> becomes <code>&quot;&quot;</code>). For JSON
           export, <code>JSON.stringify</code> handles escaping automatically.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Data Exposure</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           In client-side mode, all data is loaded into the browser memory. If the dataset
           contains sensitive fields (PII, financial data), ensure that the API only
           returns rows the user is authorized to see. Column visibility toggles are a
           UI-only feature — they do not restrict data access. Server-side filtering and
           pagination are required for true data access control.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Keyboard Navigation</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">Tab</kbd> navigates
               between interactive elements (checkboxes, sort buttons, filter inputs,
               pagination buttons).
-            </li>
+            </HighlightBlock>
             <li>
               <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">Arrow keys</kbd>
               move focus between cells when the table is in grid navigation mode.
@@ -825,7 +826,7 @@ export default function DataTableArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The table uses <code>role=&quot;table&quot;</code> (or native
             <code>&lt;table&gt;</code>). Headers use <code>role=&quot;columnheader&quot;</code>
             with <code>aria-sort=&quot;ascending&quot;</code>,
@@ -837,7 +838,7 @@ export default function DataTableArticle() {
             Pagination uses <code>aria-label=&quot;Pagination&quot;</code> with
             <code>aria-current=&quot;page&quot;</code> on the active page. See the Example
             tab for the exact markup.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -866,12 +867,12 @@ export default function DataTableArticle() {
             pageSize larger than totalRows), and actions (nextPage clamps to last page,
             prevPage clamps to 1, goToPage validates input).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Virtualization hook:</strong> Test visible row computation given
             scrollTop, container height, and row height. Test overscan inclusion. Test
             variable row height cache updates. Test that returned indices are within
             bounds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store actions:</strong> Test sort toggle (cycles none → asc → desc),
             multi-sort (adds to array), filter set/clear, page change, selection toggle
@@ -888,12 +889,12 @@ export default function DataTableArticle() {
             sort, assert first row has the correct sorted value. Change page, assert
             correct rows render.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualization rendering:</strong> Render DataTable with 10K rows,
             assert only ~25 DOM nodes exist for rows (not 10K). Scroll to the middle,
             assert different rows are rendered. Scroll to the end, assert last rows are
             rendered.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Column resize persistence:</strong> Drag a column header border,
             assert the column width changes. Unmount and remount the table, assert the
@@ -913,11 +914,11 @@ export default function DataTableArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Run axe-core automated checks on rendered table. Verify all
             <code>aria-sort</code> attributes are correct, checkboxes have labels, and
             pagination is properly announced.
-          </li>
+          </HighlightBlock>
           <li>
             Test keyboard navigation: Tab through all interactive elements, Arrow keys
             navigate cells, Space toggles selection, Enter triggers row action.
@@ -931,14 +932,14 @@ export default function DataTableArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Performance Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Measure render time for 100K rows with virtualization enabled. Assert initial
             render completes in under 200ms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Scroll through a virtualized table of 100K rows. Measure frame rate — assert
             no frame takes longer than 16.67ms (60fps).
-          </li>
+          </HighlightBlock>
           <li>
             Apply a text filter on 100K rows. Measure filter computation time — assert
             under 500ms.
@@ -974,12 +975,12 @@ export default function DataTableArticle() {
             implement client-side logic without discussing when to switch to server-side
             miss a critical architectural decision.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility:</strong> Rendering a table without
             <code>aria-sort</code>, without keyboard navigation, or with non-semantic
             elements (divs instead of table/thead/tbody/tr/td) is a red flag for
             production-readiness.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not memoizing expensive computations:</strong> Re-sorting or
             re-filtering on every render (e.g., calling sort/filter inside the component
@@ -996,7 +997,7 @@ export default function DataTableArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Client-Side vs Server-Side Operations</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Client-side operations provide instant feedback (no network latency) but are
             bounded by the browser&apos;s CPU and memory. Server-side operations handle
             arbitrarily large datasets but introduce network round-trip latency and
@@ -1004,12 +1005,12 @@ export default function DataTableArticle() {
             depends on data size: under 10K rows, client-side is fine. Over 100K rows,
             server-side is mandatory. Between 10K-100K, it depends on the target device
             (desktop vs mobile) and user expectations.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Fixed vs Variable Row Height Virtualization</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Fixed row height virtualization is simpler — compute visible indices by
             dividing scrollTop by rowHeight. Variable height requires measuring each row,
             caching heights, and computing cumulative offsets. The trade-off is
@@ -1019,12 +1020,12 @@ export default function DataTableArticle() {
             variable height is necessary. A practical compromise is to set a fixed row
             height with CSS <code>overflow: hidden</code> and <code>text-overflow:
             ellipsis</code>, eliminating the need for variable height virtualization.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Zustand vs TanStack Table</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Building a table from scratch with Zustand gives full control and minimal
             bundle size. TanStack Table (formerly React Table) is a headless utility
             providing sort, filter, pagination, grouping, aggregation, row selection, and
@@ -1034,7 +1035,7 @@ export default function DataTableArticle() {
             lighter. For enterprise-grade tables with complex requirements (grouping,
             pivoting, aggregation), TanStack Table is the better choice. Interviewers want
             to see that candidates can reason about build vs. buy decisions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1059,7 +1060,7 @@ export default function DataTableArticle() {
               Q: How would you handle real-time data updates (e.g., stock prices updating
               every second) in the table?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use WebSockets or Server-Sent Events to receive updates. On receiving an
               update, find the affected row by ID and update its value in the data array.
               If the updated field is a sort column, the row may need to move to a new
@@ -1068,7 +1069,7 @@ export default function DataTableArticle() {
               update only the affected cell via React.memo. For high-frequency updates
               (e.g., 100 updates/second), batch updates using requestAnimationFrame and
               apply them in a single store update.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

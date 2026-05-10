@@ -1,0 +1,86 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Version History System — Immutable Snapshots, Diff, and Rollback</text>
+
+  <!-- Version model -->
+  <rect x="20" y="45" width="260" height="310" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Version Record Schema</text>
+
+  <rect x="35" y="78" width="230" height="100" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Immutable Snapshot</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">versionId: UUID</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">documentId: parent reference</text>
+  <text x="150" y="143" text-anchor="middle" font-size="10" fill="#1565c0">contentHash: SHA-256</text>
+  <text x="150" y="158" text-anchor="middle" font-size="10" fill="#1565c0">authorId, timestamp</text>
+  <text x="150" y="173" text-anchor="middle" font-size="10" fill="#1565c0">label: "v3 — Added intro"</text>
+
+  <rect x="35" y="188" width="230" height="70" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="207" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Storage Strategy</text>
+  <text x="150" y="223" text-anchor="middle" font-size="10" fill="#1565c0">Full snapshot (simple, fast read)</text>
+  <text x="150" y="238" text-anchor="middle" font-size="10" fill="#1565c0">Delta + base (space-efficient)</text>
+  <text x="150" y="253" text-anchor="middle" font-size="10" fill="#1565c0">Use full for &lt;1MB docs</text>
+
+  <rect x="35" y="268" width="230" height="70" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="287" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Version Triggers</text>
+  <text x="150" y="303" text-anchor="middle" font-size="10" fill="#1565c0">Manual: "Save version" button</text>
+  <text x="150" y="318" text-anchor="middle" font-size="10" fill="#1565c0">Auto: every 30s during edit</text>
+  <text x="150" y="333" text-anchor="middle" font-size="10" fill="#1565c0">Milestone: publish, share</text>
+
+  <!-- Diff view -->
+  <rect x="295" y="45" width="280" height="310" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Diff View</text>
+
+  <rect x="310" y="78" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Word-Level Diff</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">diff-match-patch library</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">Insertions: green highlight</text>
+  <text x="435" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">Deletions: red strikethrough</text>
+
+  <rect x="310" y="153" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Version Timeline UI</text>
+  <text x="435" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">Sidebar list: newest first</text>
+  <text x="435" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Click version → preview in panel</text>
+  <text x="435" y="218" text-anchor="middle" font-size="10" fill="#2e7d32">Drag to compare any two</text>
+
+  <rect x="310" y="228" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Named Versions</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">User labels milestones</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">Labeled versions shown in bold</text>
+  <text x="435" y="293" text-anchor="middle" font-size="10" fill="#2e7d32">Auto versions collapsible in list</text>
+
+  <rect x="310" y="303" width="250" height="42" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="435" y="322" text-anchor="middle" font-size="10" fill="#1b5e20">Performance: compute diff client-side</text>
+  <text x="435" y="335" text-anchor="middle" font-size="10" fill="#2e7d32">for docs ≤ 50KB (under 50ms)</text>
+
+  <!-- Rollback -->
+  <rect x="590" y="45" width="250" height="310" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Rollback and Restore</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Rollback = New Version</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#bf360c">Never overwrite existing version</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#bf360c">Create new version = copy of target</text>
+  <text x="715" y="142" text-anchor="middle" font-size="10" fill="#bf360c">Preserves full audit chain</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Conflict Check</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#bf360c">Warn if others edited since target</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#bf360c">Show diff: rollback vs current</text>
+  <text x="715" y="218" text-anchor="middle" font-size="10" fill="#bf360c">User confirms intentional rollback</text>
+
+  <rect x="605" y="228" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Version Retention</text>
+  <text x="715" y="263" text-anchor="middle" font-size="10" fill="#bf360c">Keep all named versions forever</text>
+  <text x="715" y="278" text-anchor="middle" font-size="10" fill="#bf360c">Auto: keep last 100 per doc</text>
+  <text x="715" y="293" text-anchor="middle" font-size="10" fill="#bf360c">Archive older to S3 (still browsable)</text>
+
+  <rect x="605" y="303" width="220" height="42" rx="4" fill="#ffecb3" stroke="#f9a825" stroke-width="1"/>
+  <text x="715" y="322" text-anchor="middle" font-size="10" fill="#e65100">Collaborative: show other users</text>
+  <text x="715" y="335" text-anchor="middle" font-size="10" fill="#bf360c">browsing history in presence</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

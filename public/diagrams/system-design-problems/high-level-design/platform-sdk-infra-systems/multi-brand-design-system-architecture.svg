@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Architecture for a multi-brand design system with token pipeline, component library, docs, and product consumers">
+  <title>Multi-Brand Design System Architecture</title>
+  <desc>Shows token pipeline producing semantic tokens and brand themes, component library consuming semantic tokens, governance and docs, and multiple product apps consuming versioned packages.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .dash { stroke-dasharray: 7 6; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640" />
+
+  <rect class="box" x="60" y="80" width="360" height="170" />
+  <text class="label bold" x="90" y="125">Design inputs</text>
+  <text class="label small" x="90" y="155">brand primitives</text>
+  <text class="label small" x="90" y="180">typography scale</text>
+  <text class="label small" x="90" y="205">spacing and motion</text>
+
+  <rect class="accent" x="450" y="70" width="340" height="190" />
+  <text class="label bold" x="480" y="115">Token pipeline</text>
+  <text class="label small" x="480" y="145">semantic token mapping</text>
+  <text class="label small" x="480" y="170">theme bundles per brand</text>
+  <text class="label small" x="480" y="195">contrast validation</text>
+  <text class="label small" x="480" y="220">versioned outputs</text>
+
+  <rect class="good" x="830" y="80" width="310" height="170" />
+  <text class="label bold" x="860" y="125">Component library</text>
+  <text class="label small" x="860" y="155">uses semantic tokens</text>
+  <text class="label small" x="860" y="180">a11y defaults</text>
+  <text class="label small" x="860" y="205">behavior contracts</text>
+
+  <path class="arrow" d="M420 165 L450 165" />
+  <path class="arrow" d="M790 165 L830 165" />
+
+  <rect class="muted" x="60" y="310" width="520" height="220" />
+  <text class="label bold" x="90" y="355">Governance + docs</text>
+  <text class="label small" x="90" y="385">contribution model</text>
+  <text class="label small" x="90" y="410">deprecation policy</text>
+  <text class="label small" x="90" y="435">accessibility rules</text>
+  <text class="label small" x="90" y="460">adoption dashboards</text>
+  <text class="label small" x="90" y="485">release notes</text>
+
+  <rect class="box" x="620" y="310" width="520" height="220" />
+  <text class="label bold" x="650" y="355">Product apps</text>
+  <text class="label small" x="650" y="385">consume versioned packages</text>
+  <text class="label small" x="650" y="410">choose a brand theme</text>
+  <text class="label small" x="650" y="435">override via controlled variants</text>
+  <text class="label small" x="650" y="460">report telemetry and a11y issues</text>
+
+  <path class="arrow dash" d="M985 250 L985 310" />
+</svg>
+

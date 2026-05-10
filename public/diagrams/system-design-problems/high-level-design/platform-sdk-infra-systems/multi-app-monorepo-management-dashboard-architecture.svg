@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Architecture for a monorepo management dashboard showing incremental indexing, graph snapshot store, materialized views, and UI APIs">
+  <title>Monorepo Management Dashboard Architecture</title>
+  <desc>Shows repo and CI inputs feeding an indexing pipeline that produces a graph snapshot and materialized views for fast UI queries.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .dash{stroke-dasharray:7 6}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .good{fill:#052018;stroke:#34d399}
+      .warn{fill:#2a1606;stroke:#fb923c}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <rect class="box" x="60" y="90" width="380" height="150"/>
+  <text class="label bold" x="90" y="130">Repo metadata</text>
+  <text class="label small" x="90" y="160">files, packages, owners</text>
+  <text class="label small" x="90" y="185">commit and PR events</text>
+  <text class="label small" x="90" y="210">policy rules</text>
+
+  <rect class="box" x="60" y="270" width="380" height="150"/>
+  <text class="label bold" x="90" y="310">CI telemetry</text>
+  <text class="label small" x="90" y="340">build and test results</text>
+  <text class="label small" x="90" y="365">flakiness signals</text>
+  <text class="label small" x="90" y="390">release gates</text>
+
+  <rect class="warn" x="480" y="140" width="320" height="210"/>
+  <text class="label bold" x="510" y="185">Indexing pipeline</text>
+  <text class="label small" x="510" y="215">incremental updates</text>
+  <text class="label small" x="510" y="240">periodic full rebuild</text>
+  <text class="label small" x="510" y="265">freshness + health</text>
+  <text class="label small" x="510" y="290">materialize views</text>
+
+  <rect class="good" x="840" y="90" width="300" height="150"/>
+  <text class="label bold" x="870" y="130">Graph snapshot store</text>
+  <text class="label small" x="870" y="160">nodes and edges</text>
+  <text class="label small" x="870" y="185">versioned by commit</text>
+  <text class="label small" x="870" y="210">tenant isolation if needed</text>
+
+  <rect class="accent" x="840" y="270" width="300" height="150"/>
+  <text class="label bold" x="870" y="310">Materialized views</text>
+  <text class="label small" x="870" y="340">top dependents</text>
+  <text class="label small" x="870" y="365">impact sets</text>
+  <text class="label small" x="870" y="390">CI rollups per entity</text>
+
+  <rect class="muted" x="60" y="470" width="1080" height="140"/>
+  <text class="label bold" x="90" y="510">Dashboard UI</text>
+  <text class="label small" x="90" y="540">bounded APIs for entity pages, search and facets, and impact analysis explanations</text>
+  <text class="label small" x="90" y="565">cache hot entities; show freshness and confidence</text>
+
+  <path class="arrow" d="M440 165 L480 210"/>
+  <path class="arrow" d="M440 345 L480 280"/>
+  <path class="arrow" d="M800 210 L840 165"/>
+  <path class="arrow" d="M800 280 L840 345"/>
+  <path class="arrow dash" d="M990 420 L990 470"/>
+</svg>
+

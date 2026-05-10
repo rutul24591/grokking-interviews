@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="560">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Cross-Tab State Sync System</text>
+
+  <!-- Mechanisms -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Sync Mechanisms</text>
+
+    <rect x="30" y="75" width="380" height="130" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="220" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">BroadcastChannel API (Modern)</text>
+    <text x="45" y="122" font-size="10" fill="#374151">const ch = new BroadcastChannel('app_state')</text>
+    <text x="45" y="140" font-size="10" fill="#374151">ch.postMessage({type:'CART_UPDATE', payload})</text>
+    <text x="45" y="158" font-size="10" fill="#374151">ch.onmessage = (e) =&gt; dispatch(e.data)</text>
+    <text x="45" y="176" font-size="10" fill="#374151">Same origin only. Does NOT persist.</text>
+    <text x="45" y="192" font-size="9" fill="#3b82f6">Best: low latency, clean API, no storage pollution</text>
+
+    <rect x="30" y="220" width="380" height="115" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="220" y="245" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">localStorage + storage Event (Compat)</text>
+    <text x="45" y="267" font-size="10" fill="#374151">Tab A: localStorage.setItem('cart', JSON.stringify(data))</text>
+    <text x="45" y="285" font-size="10" fill="#374151">Tab B: window.addEventListener('storage', handler)</text>
+    <text x="45" y="303" font-size="10" fill="#374151">Fires only in OTHER tabs (not emitting tab)</text>
+    <text x="45" y="319" font-size="9" fill="#10b981">Fallback for BroadcastChannel (IE/older). Persists across sessions.</text>
+
+    <rect x="30" y="350" width="380" height="115" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="220" y="375" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">SharedWorker (Advanced)</text>
+    <text x="45" y="397" font-size="10" fill="#374151">Single worker shared across all tabs of origin</text>
+    <text x="45" y="415" font-size="10" fill="#374151">Tabs connect to worker via port — worker routes messages</text>
+    <text x="45" y="433" font-size="10" fill="#374151">Can hold shared state centrally (auth, cart)</text>
+    <text x="45" y="449" font-size="9" fill="#92400e">Best for complex coordination. Overkill for simple sync.</text>
+  </g>
+
+  <!-- Use Cases -->
+  <g>
+    <text x="740" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Use Cases &amp; Patterns</text>
+
+    <rect x="450" y="75" width="620" height="200" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="760" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Critical Sync Scenarios</text>
+    <text x="465" y="122" font-size="10" fill="#374151">Auth state: login/logout propagates to all tabs immediately</text>
+    <text x="465" y="140" font-size="10" fill="#374151">Shopping cart: add item in Tab A → Tab B cart updates</text>
+    <text x="465" y="158" font-size="10" fill="#374151">Session timeout: timer fires → all tabs log out together</text>
+    <text x="465" y="176" font-size="10" fill="#374151">Settings: user changes theme → all tabs apply immediately</text>
+    <text x="465" y="194" font-size="10" fill="#374151">Notifications: new notification badge updates all tabs</text>
+    <text x="465" y="212" font-size="10" fill="#374151">Lock: prevent concurrent editing (tab A has lock, Tab B shows warning)</text>
+    <text x="465" y="230" font-size="10" fill="#374151">Leader election: one tab drives polling/WebSocket, others follow</text>
+    <text x="465" y="252" font-size="9" fill="#a855f7">Rule: sync security state (auth) eagerly; sync UX state lazily</text>
+
+    <rect x="450" y="290" width="620" height="150" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="760" y="315" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Conflict &amp; Race Conditions</text>
+    <text x="465" y="338" font-size="10" fill="#374151">Two tabs write simultaneously: last-write-wins (LWW by timestamp)</text>
+    <text x="465" y="356" font-size="10" fill="#374151">Message ordering: BroadcastChannel is ordered per sender, not global</text>
+    <text x="465" y="374" font-size="10" fill="#374151">Idempotent handlers: receiving same message twice should be safe</text>
+    <text x="465" y="392" font-size="10" fill="#374151">Include version/sequence in messages to detect stale updates</text>
+    <text x="465" y="410" font-size="10" fill="#374151">Don't sync derived state — sync source facts, recompute locally</text>
+    <text x="465" y="424" font-size="9" fill="#ef4444">Circular echo: don't re-broadcast messages received from other tabs</text>
+
+    <rect x="450" y="455" width="620" height="90" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="760" y="478" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Leader Election Pattern</text>
+    <text x="465" y="500" font-size="10" fill="#374151">Tabs compete to be leader (hold WebSocket, timer, polling)</text>
+    <text x="465" y="518" font-size="10" fill="#374151">Leader heartbeats via BroadcastChannel. On leader close, new election runs.</text>
+    <text x="465" y="531" font-size="9" fill="#3b82f6">Libraries: broadcast-channel, tab-master. Reduces duplicate server connections.</text>
+  </g>
+
+  <rect x="30" y="490" width="400" height="58" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="510" font-size="11" fill="#374151"><tspan font-weight="bold">Priority:</tspan> BroadcastChannel first, localStorage fallback.</text>
+  <text x="50" y="528" font-size="11" fill="#374151"><tspan font-weight="bold">Always sync:</tspan> auth logout (security). Consider sync: cart, theme, notifications.</text>
+  <text x="50" y="543" font-size="9" fill="#6b7280">Zustand: built-in cross-tab sync via persist + storage event listener.</text>
+</svg>

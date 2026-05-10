@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function WizardMultiStepFormArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable wizard/multi-step form component for a
           large-scale React application. The wizard guides users through a complex
           data-entry workflow broken into discrete, manageable steps. Each step
@@ -50,7 +51,7 @@ export default function WizardMultiStepFormArticle() {
           showing all entered data before submission, and both linear (forced
           sequential) and non-linear (allowing jumps between completed steps)
           navigation modes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -58,24 +59,24 @@ export default function WizardMultiStepFormArticle() {
           <li>
             The application is a React 19+ SPA with Zustand for state management.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Each step is defined declaratively as an object with a title, field
             definitions, and validation rules.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The wizard may contain 3-12 steps depending on the use case (e.g.,
             user onboarding, application submission, product configuration).
-          </li>
+          </HighlightBlock>
           <li>
             Field values persist even when steps are skipped or revisited.
           </li>
           <li>
             Drafts are auto-saved periodically and restored on return.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The system must support accessibility requirements (screen readers,
             keyboard navigation, focus management on step change).
-          </li>
+          </HighlightBlock>
           <li>
             Conditional steps are determined by predicates evaluated against
             previously entered data.
@@ -132,28 +133,28 @@ export default function WizardMultiStepFormArticle() {
             In linear mode, users must complete steps sequentially. In non-linear
             mode, users can jump to any completed or current step freely.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard Navigation:</strong> Tab through fields within a step,
             Enter to submit the current step (trigger validation and advance),
             Arrow keys to navigate the stepper, Escape to cancel and prompt
             confirmation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong>
             <code>aria-current=&quot;step&quot;</code> on the active step in the
             stepper, <code>aria-live</code> announcements when validation errors
             occur or step changes, focus management on step change (move focus to
             step heading or first error field).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Step transitions should not cause visible
             jank. Validation should run in under 50ms per step for typical forms
             (up to 15 fields).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> The wizard should handle up to 12 steps
             with 20+ fields each without performance degradation or memory leaks.
@@ -188,26 +189,26 @@ export default function WizardMultiStepFormArticle() {
             validation reveals an error on step 2 while user is on step 4) — how
             does the system surface and block submission?
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Draft data in <code>localStorage</code> is stale or corrupted — graceful
             fallback to fresh state without crashing.
-          </li>
+          </HighlightBlock>
           <li>
             Concurrent tabs — should drafts sync across tabs? (Assumption: no,
             each tab maintains independent wizard state.)
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Server-side rendering — the wizard is inherently client-side (involves
             user interaction, <code>localStorage</code>, focus management). Must
             not break during SSR hydration.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate <strong>wizard orchestration</strong> from{" "}
           <strong>step rendering</strong>. The orchestration layer (Zustand store +
           custom hooks) manages the current step index, field values keyed by step,
@@ -215,34 +216,34 @@ export default function WizardMultiStepFormArticle() {
           draft persistence. The rendering layer (wizard component, stepper, step
           renderer, field renderer, summary) subscribes to the orchestration state
           and renders the appropriate UI.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>React Hook Form with nested forms:</strong> RHF excels at
             single-form validation but struggles with multi-step flows where each
             step is validated independently and state must persist across unmounted
             steps. Workarounds involve <code>keepMounted</code> or persisting to
             external storage, adding complexity. Zustand provides a cleaner
             separation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>XState (state machine):</strong> A state machine is an excellent
             fit for wizard flows with complex conditional logic and transitions.
             However, it introduces significant learning curve and boilerplate for
             simpler wizards. We use a lightweight predicate-based step router
             instead, which covers 90% of use cases with less overhead.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API + useReducer:</strong> Viable but requires wrapping
             the wizard tree in a provider. Every step re-renders on any state
             change unless context is carefully split. Zustand selectors prevent
             unnecessary re-renders with less boilerplate.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + declarative step definitions is optimal:</strong>{" "}
           Zustand provides a lightweight, selector-based global store. Step
           definitions are declarative JSON/TS objects, making them easy to generate
@@ -252,7 +253,7 @@ export default function WizardMultiStepFormArticle() {
           transparently via middleware. This pattern is used in production
           applications like multi-step onboarding flows, loan applications, and
           configuration wizards.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -269,7 +270,7 @@ export default function WizardMultiStepFormArticle() {
           <h4 className="mb-3 font-semibold">
             1. Type Definitions (<code>wizard-types.ts</code>)
           </h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the core interfaces: <code>StepDefinition</code> (title, fields,
             validators, skipStep predicate), <code>WizardState</code> (currentStep,
             visitedSteps, fieldValues keyed by step ID, validationResults per step,
@@ -279,14 +280,14 @@ export default function WizardMultiStepFormArticle() {
             (union of string, number, boolean, array, or object). These types form
             the contract between all modules. See the Example tab for the complete
             type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">
             2. Zustand Store (<code>wizard-store.ts</code>)
           </h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Manages the global wizard state: current step index, field values
             organized as a map of step ID to field-value map, validation results per
             step, visited steps set, navigation history stack, and draft metadata.
@@ -294,7 +295,7 @@ export default function WizardMultiStepFormArticle() {
             values, running validation, saving/restoring drafts, and submitting.
             Draft persistence to <code>localStorage</code> uses JSON serialization
             with a versioned schema for forward compatibility.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Key state shape:</strong>
           </p>
@@ -327,7 +328,7 @@ export default function WizardMultiStepFormArticle() {
           <h4 className="mb-3 font-semibold">
             3. Validation Gate (<code>validation-gate.ts</code>)
           </h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Per-step validation engine supporting both synchronous validators
             (required, minLength, maxLength, pattern matching, numeric range) and
             asynchronous validators (API uniqueness checks, external service calls).
@@ -336,7 +337,7 @@ export default function WizardMultiStepFormArticle() {
             error message. Async validators return a Promise and the validation
             result tracks a <code>pending</code> flag. See the Example tab for the
             complete validation engine with debounce support.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -366,13 +367,13 @@ export default function WizardMultiStepFormArticle() {
             mount, attempt draft restore; on unmount, auto-save; on step change, run
             conditional step recalculation.
           </p>
-          <p className="mt-2">
+          <HighlightBlock as="p" tier="important" className="mt-2">
             <code>useStepValidation</code> provides per-field validation with
             debounced input (default 300ms), real-time error display, and async
             validator status tracking. It prevents premature error display by only
             showing errors after the field has been touched or the step submission
             has been attempted.
-          </p>
+          </HighlightBlock>
           <p className="mt-2">
             <code>useStepHistory</code> manages the navigation history stack,
             tracking completed steps and enabling accurate back-button behavior. It
@@ -413,7 +414,7 @@ export default function WizardMultiStepFormArticle() {
           The history stack enables accurate back navigation — going back pops the
           current step from history and navigates to the previous entry.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Draft persistence runs on a timer (every 2 seconds) and on every step
           change. The store serializes <code>fieldValues</code>,{" "}
           <code>validationResults</code>, <code>visitedSteps</code>, and{" "}
@@ -423,7 +424,7 @@ export default function WizardMultiStepFormArticle() {
           and restore. If parsing fails (corrupted data), it falls back to fresh
           state. The version key enables schema migration — if the wizard structure
           changes, old drafts with incompatible schemas are discarded gracefully.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -472,12 +473,12 @@ export default function WizardMultiStepFormArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions. Step transitions are gated by validation, and conditional
           step resolution happens before each navigation decision.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Validation Flow (Detailed)</h3>
         <p>
@@ -508,15 +509,15 @@ export default function WizardMultiStepFormArticle() {
             If all validators pass, the step is marked as visited, the history stack
             is updated, and the step router computes the next effective step index.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Focus is programmatically moved to the new step&apos;s heading
             (<code>headingRef.current?.focus()</code>) and an aria-live region
             announces the step change to screen readers.
-          </li>
+          </HighlightBlock>
         </ol>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Conditional Step Resolution</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Conditional steps are resolved dynamically before each navigation action.
           The step router iterates through the steps array, evaluates each step&apos;s{" "}
           <code>skipStep</code> predicate (if present) against the current field
@@ -526,7 +527,7 @@ export default function WizardMultiStepFormArticle() {
           user goes back to step 2 and changes their occupation from &quot;Employed&quot;
           to &quot;Student,&quot; the step router re-evaluates and may insert or
           remove the &quot;Employment Details&quot; step from the effective path.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
@@ -541,20 +542,20 @@ export default function WizardMultiStepFormArticle() {
             restore, the store logs a warning, discards the corrupted data, and
             initializes fresh state. No crash occurs.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Async validation failure on a past step:</strong> If an async
             validator on step 2 fails while the user is on step 5, the step&apos;s{" "}
             <code>validationResults</code> are updated. The submit button on the
             final step checks all visited steps&apos; validation results and disables
             submission if any step has <code>isValid: false</code>. The user is
             prompted to revisit the failing step.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR safety:</strong> The wizard component uses a{" "}
             <code>useEffect</code> to mount, ensuring <code>localStorage</code> access
             and focus management only occur on the client. During SSR, the component
             renders a skeleton or returns null.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -593,7 +594,7 @@ export default function WizardMultiStepFormArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (wizard-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages field values, validation results, navigation state, and
           draft persistence. Key design decisions include: using versioned{" "}
           <code>localStorage</code> keys for forward-compatible schema migration,
@@ -602,10 +603,10 @@ export default function WizardMultiStepFormArticle() {
           <code>setInterval</code> (2-second cadence) with cleanup on store destroy,
           and a <code>draftKey</code> that uniquely identifies this wizard instance
           for multi-wizard scenarios.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Validation Gate (validation-gate.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The validation engine supports composable sync validators (required,
           minLength, maxLength, pattern, min, max, email format, phone format) and
           async validators (API uniqueness checks). Each validator is a pure function
@@ -614,10 +615,10 @@ export default function WizardMultiStepFormArticle() {
           after sync validation passes, returning a Promise that resolves to a
           <code>StepValidationResult</code>. The engine also supports a debounce
           wrapper for real-time validation during typing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Step Router (step-router.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The step router evaluates <code>skipStep</code> predicates against current
           field values and computes an effective step path. It maintains a navigation
           history stack for accurate back-button behavior. When going back, it pops
@@ -625,7 +626,7 @@ export default function WizardMultiStepFormArticle() {
           it pushes the current step to history. The router also exposes a{" "}
           <code>canGoToStep(stepId)</code> method that checks whether a step is
           accessible (not locked behind an incomplete prerequisite in linear mode).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: useWizard Hook</h3>
         <p>
@@ -640,7 +641,7 @@ export default function WizardMultiStepFormArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: useStepValidation Hook</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-field validation hook that debounces input (default 300ms), runs sync
           validators on change, and displays errors on blur or after the first
           submit attempt. It tracks a <code>touched</code> flag per field to avoid
@@ -648,10 +649,10 @@ export default function WizardMultiStepFormArticle() {
           validators are tracked with a <code>status</code> field
           (<code>idle | running | done</code>) to enable loading indicators on
           individual fields.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: Wizard Component Assembly</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The root <code>Wizard</code> component assembles the stepper at the top,
           the current step renderer in the middle, and navigation buttons at the
           bottom. It conditionally renders the summary step as the final step, the
@@ -659,7 +660,7 @@ export default function WizardMultiStepFormArticle() {
           validation. The stepper uses <code>aria-current=&quot;step&quot;</code> on
           the active step and visual indicators (checkmarks for completed, numbered
           circles for upcoming, lock icons for locked steps in linear mode).
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -710,24 +711,24 @@ export default function WizardMultiStepFormArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>f</code> is the number of fields per step, <code>v</code> is the
           number of validators per field, <code>a</code> is the number of async
           validators, <code>s</code> is the total number of steps, <code>n</code> is
           the total number of field values, and <code>h</code> is the history depth.
           For typical wizards (8 steps, 10 fields each, 3 validators per field), all
           operations complete in under 10ms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>JSON serialization on draft save:</strong> For wizards with 100+
             field values (large configuration wizards), <code>JSON.stringify</code>
             and <code>localStorage.setItem</code> can take 5-10ms. Mitigation: only
             serialize changed fields (diff-based save) or throttle saves to every
             2 seconds.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Re-render cascades:</strong> If the store subscriber selects the
             entire <code>fieldValues</code> object, every field value change triggers
@@ -735,13 +736,13 @@ export default function WizardMultiStepFormArticle() {
             to only the current step&apos;s field values, so only the active step
             re-renders.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Conditional step recalculation:</strong> Re-evaluating all{" "}
             <code>skipStep</code> predicates on every field change is O(s). For
             wizards with complex predicates involving multiple field lookups, this
             adds up. Mitigation: only re-evaluate predicates for steps downstream
             from the changed field, and cache predicate results.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -751,22 +752,22 @@ export default function WizardMultiStepFormArticle() {
             to only its own field values and validation results via Zustand selectors.
             Changing a value on step 3 does not re-render steps 1, 2, 4, or 5.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced validation:</strong> Real-time field validation uses a
             300ms debounce to avoid running validators on every keystroke. This is
             critical for fields with async validators (API calls).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memoized step rendering:</strong> The step renderer uses{" "}
             <code>React.memo</code> on the WizardStep component with a custom equality
             function that compares only the step&apos;s own field values and validation
             state. Unvisited steps with no data are not rendered at all.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy draft persistence:</strong> Instead of serializing the entire
             state on every change, the store tracks a <code>dirty</code> flag and only
             persists when the flag is set and the throttle interval has elapsed.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -775,22 +776,22 @@ export default function WizardMultiStepFormArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Data Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Field values entered by users may contain malicious content (XSS payloads,
           SQL injection attempts). While React automatically escapes string content
           rendered as text, any field value that is later rendered as HTML (e.g., rich
           text fields) must be sanitized using a library like DOMPurify before rendering.
           Values submitted to the server should be validated and sanitized server-side
           as well — client-side validation is a UX concern, not a security boundary.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Draft Storage Risks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storing draft data in <code>localStorage</code> means it is accessible to
           any JavaScript running on the same origin. Sensitive data (PII, financial
           information, health records) should not be stored in <code>localStorage</code>{" "}
           in plain text. For sensitive wizards, use one of these strategies:
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Encrypt before storing:</strong> Use the Web Crypto API to encrypt
@@ -818,15 +819,15 @@ export default function WizardMultiStepFormArticle() {
               triggers step submission (validation + advance). Escape opens a
               confirmation dialog to cancel the wizard.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Arrow Left/Right on the stepper navigates between steps. Arrow keys
               are only effective on steps that are unlocked (visited or accessible
               in non-linear mode).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The Next/Previous/Submit buttons are native{" "}
               <code>&lt;button&gt;</code> elements, automatically keyboard-accessible.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -869,13 +870,13 @@ export default function WizardMultiStepFormArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">CSRF Protection on Submit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the wizard submits data to the server, include a CSRF token (if the
           backend uses session-based authentication). The submit function should
           attach the token to the request headers. If using token-based authentication
           (JWT in Authorization header), CSRF is less of a concern, but the server
           should still validate the request origin.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 9: Testing Strategy */}
@@ -884,30 +885,30 @@ export default function WizardMultiStepFormArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Validation gate:</strong> Test each sync validator (required,
             minLength, pattern, email format) with valid and invalid inputs. Test
             async validators with mocked API responses (success, failure, timeout).
             Verify error aggregation produces the correct error map.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Step router:</strong> Test conditional step resolution with
             various field value combinations. Verify that <code>skipStep</code>{" "}
             predicates correctly include/exclude steps. Test history push/pop
             behavior for back/forward navigation.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store actions:</strong> Test next/previous/goToStep update
             <code>currentStepIndex</code> correctly. Test <code>setFieldValue</code>{" "}
             stores values under the correct step ID. Test draft save/restore with
             mock <code>localStorage</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Draft persistence:</strong> Test JSON serialization and
             deserialization round-trips. Test corrupted data handling (invalid JSON
             in <code>localStorage</code>). Test versioned key migration (old draft
             with <code>wizard:v0:</code> key is ignored by <code>v1</code> store).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
@@ -943,16 +944,16 @@ export default function WizardMultiStepFormArticle() {
             SSR rendering: verify the wizard returns null or a skeleton during SSR
             and mounts correctly on hydration.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Keyboard-only navigation: Tab through all fields, press Enter to submit
             step, Arrow keys on stepper, Escape to cancel. Verify all interactions
             work without a mouse.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on the rendered wizard,
             verify <code>aria-current</code>, <code>aria-live</code>,{" "}
             <code>aria-describedby</code>, focus management, and keyboard navigation.
-          </li>
+          </HighlightBlock>
           <li>
             Concurrent wizard instances: render two wizards with different{" "}
             <code>draftKey</code> values on the same page. Verify their state is
@@ -992,18 +993,18 @@ export default function WizardMultiStepFormArticle() {
             multi-minute ones like loan applications), this is unacceptable.
             Interviewers expect candidates to discuss persistence strategies.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility as an afterthought:</strong> Rendering a stepper
             without <code>aria-current</code>, not managing focus on step change,
             and not announcing validation errors to screen readers are common
             oversights. These are baseline requirements for production applications.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Linear vs Non-linear Navigation</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Linear mode (force sequential completion) is simpler to implement and
             ensures data integrity — every step is validated before the next begins.
             Non-linear mode (allow jumping between steps) provides flexibility for
@@ -1012,12 +1013,12 @@ export default function WizardMultiStepFormArticle() {
             are &quot;unlocked&quot; and handling out-of-order validation. Most
             production wizards default to linear mode but offer a non-linear toggle
             for power users.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">localStorage vs Server-side Drafts</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <code>localStorage</code> is simple, fast, and requires no backend
             infrastructure. It works well for non-sensitive data and single-device
             workflows. However, it does not sync across devices, is vulnerable to
@@ -1027,12 +1028,12 @@ export default function WizardMultiStepFormArticle() {
             drafts with encryption are the right choice. For consumer-facing wizards,
             <code>localStorage</code> with a &quot;Continue where you left off&quot;
             prompt is usually sufficient.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">State Machine vs Predicate-based Routing</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A state machine (XState) provides a rigorous way to model wizard flows
             with explicit transitions, guards, and side effects. It is ideal for
             wizards with complex conditional logic, parallel steps, or retry/cancel
@@ -1041,7 +1042,7 @@ export default function WizardMultiStepFormArticle() {
             covers 90% of use cases with a fraction of the complexity. Interviewers
             appreciate candidates who can articulate when a state machine is justified
             and when a simpler approach suffices.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -1112,7 +1113,7 @@ export default function WizardMultiStepFormArticle() {
             <p className="font-semibold">
               Q: How does your design handle file uploads within a wizard step?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: File uploads require special handling. The field definition includes
               type <code>file</code> with constraints (max size, allowed MIME types,
               max count). The <code>WizardFieldRenderer</code> renders a file input
@@ -1124,7 +1125,7 @@ export default function WizardMultiStepFormArticle() {
               and cannot persist to <code>localStorage</code>. On draft restore, the
               file URLs are displayed as &quot;already uploaded&quot; with an option
               to replace.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

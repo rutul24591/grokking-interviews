@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Music and audio streaming frontend architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Audio Streaming: Authorize, Fetch Segments, Buffer, Telemetry</text>
+  <text class="t muted" x="40" y="78" font-size="13">QoE measured via time-to-first-audio and stall rate</text>
+
+  <rect class="box" x="40" y="130" width="280" height="320" rx="14"/>
+  <text class="t h" x="60" y="160" font-size="16">Client</text>
+  <text class="t muted" x="60" y="190" font-size="12">Playback state machine + buffer manager</text>
+  <text class="t muted" x="60" y="212" font-size="12">Adaptive bitrate + retries</text>
+  <text class="t muted" x="60" y="234" font-size="12">Queue + multi-device control</text>
+
+  <rect class="box" x="360" y="140" width="260" height="140" rx="14"/>
+  <text class="t h" x="380" y="170" font-size="15">Playback Auth Service</text>
+  <text class="t muted" x="380" y="198" font-size="12">Short-lived stream token</text>
+  <text class="t muted" x="380" y="218" font-size="12">Quality manifest</text>
+
+  <rect class="box" x="660" y="140" width="260" height="140" rx="14"/>
+  <text class="t h" x="680" y="170" font-size="15">CDN + Origin</text>
+  <text class="t muted" x="680" y="198" font-size="12">Segment delivery</text>
+  <text class="t muted" x="680" y="218" font-size="12">Regional edges</text>
+
+  <rect class="box" x="360" y="310" width="560" height="140" rx="14"/>
+  <text class="t h" x="380" y="340" font-size="15">Telemetry / QoE Pipeline</text>
+  <text class="t muted" x="380" y="368" font-size="12">Startup latency, stalls, errors, device and region</text>
+
+  <path class="line" d="M320 210 L350 210" />
+  <polygon class="arrow" points="350,210 342,206 342,214"/>
+  <path class="line" d="M620 210 L650 210" />
+  <polygon class="arrow" points="650,210 642,206 642,214"/>
+  <path class="line" d="M180 450 L180 470" />
+</svg>
+

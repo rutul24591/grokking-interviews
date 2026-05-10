@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function AvatarComponentArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable Avatar component for a large-scale React
           application. The avatar represents a user visually — typically as a profile
           photograph — and must gracefully handle scenarios where the image is
@@ -54,7 +55,7 @@ export default function AvatarComponentArticle() {
           grouped rendering (avatar stacks with overlap and an &ldquo;+N more&rdquo;
           overflow badge) and meet accessibility requirements including screen-reader
           announcements and keyboard navigation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -62,22 +63,22 @@ export default function AvatarComponentArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Avatars appear in many contexts: user profiles, comment threads, team
             directories, chat messages, and notification panels.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             A single page may render hundreds of avatars (e.g., a team directory or
             participant list), making lazy loading and performance critical.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Image URLs may become stale (user deletes their photo, CDN link expires),
             requiring reliable error detection and fallback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The component must support international names, including CJK (Chinese,
             Japanese, Korean) characters and emoji.
-          </li>
+          </HighlightBlock>
           <li>
             The application may run in both light and dark mode.
           </li>
@@ -99,11 +100,11 @@ export default function AvatarComponentArticle() {
             element with <code>src</code>, <code>alt</code>, and{" "}
             <code>loading=&quot;lazy&quot;</code> attributes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Fallback Chain:</strong> If the image fails to load, the component
             falls back to displaying the user&apos;s initials. If no name is provided, it
             falls back to a generic user icon SVG.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Initials Generation:</strong> Extract the first letter of each word
             in the name, uppercase them, and cap at 2 characters. Support CJK names by
@@ -122,38 +123,38 @@ export default function AvatarComponentArticle() {
             edge indicating user status: online (green), offline (gray), away (yellow),
             busy (red).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Image Error Handling:</strong> On <code>onError</code>, swap to
             fallback. Support retry on hover (re-attempt image load when user hovers
             over the fallback).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Grouped Avatars:</strong> Support an avatar stack component where
             avatars overlap via negative margin, with a &ldquo;+N more&rdquo; overflow
             badge.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> Each avatar has an <code>aria-label</code>{" "}
             with the person&apos;s name, <code>role=&quot;img&quot;</code>, and status
             announced to screen readers.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Lazy loading via IntersectionObserver ensures
             images only download when near the viewport. Initial render must be under 1ms
             per avatar.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> The component must handle 500+ avatars on a
             single page without memory leaks or jank.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reliability:</strong> Image errors are tracked in a Zustand store with
             retry counts and cache status. Failed images are not re-attempted infinitely.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support via discriminated unions
             for size, shape, and status types.
@@ -205,39 +206,39 @@ export default function AvatarComponentArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>avatar image lifecycle</strong> from
           the <strong>avatar rendering</strong> using a composable component architecture
           and a lightweight Zustand store for error tracking. The main Avatar component
           composes sub-components: AvatarImage handles lazy loading and error detection,
           AvatarFallback renders initials or a generic icon, AvatarStatus renders the
           status indicator dot, and AvatarGroup manages stacked rendering with overlap.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Single monolithic component:</strong> Viable for simple use cases but
             becomes unmaintainable as features accumulate (lazy loading, retry logic,
             status indicators, grouping). Separation into focused sub-components enables
             independent testing and reuse.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>React Context for error tracking:</strong> Would require wrapping
             every avatar in a provider, adding overhead for a feature that is inherently
             global (error state is keyed by URL, not by component tree). Zustand provides
             a simpler global lookup without provider nesting.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Native loading=&quot;lazy&quot; only:</strong> The browser&apos;s
             native lazy loading is convenient but uses a fixed threshold (typically 1250px
             from viewport). IntersectionObserver gives us precise control over the
             loading trigger distance and allows us to show a skeleton placeholder until
             the image loads.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why composition + Zustand is optimal:</strong> The compound component
           pattern (Avatar, Avatar.Image, Avatar.Fallback, Avatar.Status, Avatar.Group)
           provides a clean public API while keeping implementation details encapsulated.
@@ -245,7 +246,7 @@ export default function AvatarComponentArticle() {
           across multiple avatars, the error state is shared and retry logic is
           coordinated. This pattern is used by production component libraries like
           Radix UI and Chakra UI.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -281,7 +282,7 @@ export default function AvatarComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Avatar Store (<code>avatar-store.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Zustand store tracking image error state per URL. State shape includes a Map
             of <code>src</code> to <code>ErrorEntry</code> objects, where each entry holds
             <code>errorCount</code>, <code>lastErrorAt</code>, and <code>cacheStatus</code>{" "}
@@ -289,7 +290,7 @@ export default function AvatarComponentArticle() {
             <code>markError(src)</code>, <code>markLoaded(src)</code>,{" "}
             <code>requestRetry(src)</code>, <code>clearCache()</code>. Maximum retry
             count is 3 to prevent infinite loops on permanently broken URLs.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -306,17 +307,17 @@ export default function AvatarComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. useAvatarStatus Hook (<code>use-avatar-status.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Maps <code>UserStatus</code> values to color tokens (green, gray, yellow, red)
             and generates accessibility labels (e.g., &ldquo;John Doe — online&rdquo;).
             Returns the color class, the ARIA label suffix, and a <code>title</code> for
             tooltip text.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Avatar Component (<code>avatar.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Main component composing the fallback chain. Renders AvatarImage as the
             primary content; on error, renders AvatarFallback. Computes size and shape
             classes from props. Applies <code>role=&quot;img&quot;</code> and{" "}
@@ -324,7 +325,7 @@ export default function AvatarComponentArticle() {
             compound component pattern: <code>Avatar.Image</code>,{" "}
             <code>Avatar.Fallback</code>, <code>Avatar.Status</code>,{" "}
             <code>Avatar.Group</code>.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -339,7 +340,7 @@ export default function AvatarComponentArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Zustand store is the single source of truth for image error state. It is
           keyed by image URL, not by component instance, so if the same URL appears in
           multiple avatars, the error state is shared. This prevents redundant retry
@@ -347,7 +348,7 @@ export default function AvatarComponentArticle() {
           also exposes a <code>cacheStatus</code> field that the image hook reads to
           decide whether to attempt a load (skip if already cached as error with max
           retries reached).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -379,23 +380,23 @@ export default function AvatarComponentArticle() {
             On error: store calls <code>markError(src)</code>, component renders
             AvatarFallback (initials or icon).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             User hovers over fallback: <code>retry()</code> is called, store sets{" "}
             <code>cacheStatus = retrying</code>, image load is re-attempted.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional pattern. Image state mutations
           flow through the Zustand store, and rendering flows from hook subscriptions
           to store state. The IntersectionObserver acts as the trigger for lazy loading,
           and the <code>onError</code> event on the <code>{"<img>"}</code> element
           drives the fallback transition.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Fallback Chain Execution</h3>
         <ol className="space-y-3 list-decimal list-inside">
@@ -404,31 +405,31 @@ export default function AvatarComponentArticle() {
             does not block loading, render <code>{"<img>"}</code> with
             <code>onError</code> handler.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>On error:</strong> <code>onError</code> fires, store records error
             with incremented <code>errorCount</code>, component re-renders showing
             AvatarFallback.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Compute initials:</strong> Fallback calls{" "}
             <code>generateInitials(name)</code>. If name exists and yields initials,
             render initials in a colored container. If no name, render generic user icon
             SVG.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Retry on hover:</strong> If user hovers over the fallback and
             <code>errorCount &lt; maxRetries</code>, call <code>retry()</code>, which
             resets <code>cacheStatus</code> to <code>pending</code> and re-attempts the
             image load.
-          </li>
+          </HighlightBlock>
         </ol>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Empty src:</strong> Skip image rendering entirely, go directly to
             initials or icon fallback. No network request is made.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Image corrupted (zero dimensions):</strong> Add an <code>onLoad</code>{" "}
             handler that checks <code>event.currentTarget.naturalWidth</code>. If zero,
@@ -489,7 +490,7 @@ export default function AvatarComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Avatar Store (avatar-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zustand store with state: <code>Map&lt;string, ErrorEntry&gt;</code> keyed by
           image URL. Actions: <code>markError(src)</code> increments error count and sets
           timestamp, <code>markLoaded(src)</code> sets cache status to loaded,
@@ -497,43 +498,43 @@ export default function AvatarComponentArticle() {
           max (3), <code>clearCache()</code> resets the entire map. The store uses
           <code>persist: false</code> — error state is session-scoped and does not survive
           page refreshes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: useAvatarImage Hook (use-avatar-image.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
             Custom hook accepting <code>src</code> and optional <code>onError</code> callback.
             Creates an IntersectionObserver with <code>rootMargin: &apos;50px&apos;</code> to
             trigger loading when the avatar is within 50px of the viewport. Returns
             <code>isInView</code>, <code>isLoading</code>, <code>hasError</code>, and a
             <code>retry</code> function. On unmount, disconnects the observer and guards
             against state updates via a mounted ref.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: useAvatarStatus Hook (use-avatar-status.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
             Maps <code>UserStatus</code> to Tailwind color classes (bg-green-500 for online,
             bg-gray-400 for offline, bg-yellow-400 for away, bg-red-500 for busy). Generates
             accessibility labels (&ldquo;— online&rdquo;, &ldquo;— offline&rdquo;, etc.) and
             tooltip titles (&ldquo;Currently online&rdquo;, &ldquo;Last seen 5 minutes ago&rdquo;).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Avatar Component (avatar.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
             Main component that composes the fallback chain. Computes container classes from
             size and shape props. Renders AvatarImage when src is provided and not in error
             state; otherwise renders AvatarFallback. Applies <code>role=&quot;img&quot;</code>,
             <code>aria-label</code> (including status suffix), and <code>title</code> for
             tooltip. Attaches sub-components as static properties for the compound component API.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: AvatarFallback Component (avatar-fallback.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
             Renders either initials or a generic user icon SVG. Initials are displayed in a
             colored container with background color derived from a hash of the name string
             (ensuring consistent color for the same name). The hash function uses a simple
             DJB2 algorithm modulo a palette of 20 accessible color pairs (background + text
             color). The generic icon SVG is a simple silhouette matching the avatar shape.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: AvatarGroup Component (avatar-group.tsx)</h3>
         <p>
@@ -588,45 +589,45 @@ export default function AvatarComponentArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is the number of avatars in the group, <code>max</code> is
           the visible limit (default 4), and <code>u</code> is the number of unique image
           URLs tracked. For 500 avatars on a page, each avatar performs O(1) work, and the
           IntersectionObserver triggers lazily as the user scrolls.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>IntersectionObserver per instance:</strong> Each avatar creates its own
             observer. For 500+ avatars, this creates 500 observer instances. Mitigation:
             share a single IntersectionObserver across all avatar instances using a module-level
             singleton pattern with a Set of callbacks. This reduces observer overhead from
             O(n) to O(1).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Hash-based color derivation:</strong> The DJB2 hash runs on every render
             for initials fallback. Mitigation: memoize the color computation with{" "}
             <code>useMemo</code> keyed by name. Since the hash is deterministic, the same
             name always yields the same color without re-computation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-render cascades on store updates:</strong> When the avatar store
             updates (e.g., marking an image as errored), all components subscribed to that
             URL re-render. Mitigation: use Zustand selectors to subscribe only to the
             specific URL entry, so unrelated avatars are unaffected.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Shared IntersectionObserver:</strong> Create a module-level observer
             singleton. Each avatar registers its element and callback via a{" "}
             <code>useEffect</code>. The observer fires once per intersection event and
             dispatches to the appropriate callback via a Map. This avoids creating N
             observers for N avatars.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>object-fit: cover:</strong> Apply <code>object-fit: cover</code> to
             the <code>{"<img>"}</code> element to ensure the image fills the avatar
@@ -670,14 +671,14 @@ export default function AvatarComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Content Security Policy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Ensure the application&apos;s Content Security Policy (CSP) includes the
           avatar image CDN in the <code>img-src</code> directive. If avatars are loaded
           from external CDNs (e.g., Gravatar, Cloudinary), those domains must be
           explicitly whitelisted. A restrictive CSP without the CDN in <code>img-src</code>{" "}
           will block all avatar images silently, causing every avatar to fall back to
           initials — a subtle but impactful failure mode.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -692,14 +693,14 @@ export default function AvatarComponentArticle() {
               When a status indicator is present, the status is appended to the aria-label
               (e.g., <code>aria-label=&quot;John Doe, online&quot;</code>).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               For fallback initials, the aria-label still uses the full name — screen
               readers should announce the person&apos;s name, not their initials.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The generic user icon fallback has <code>aria-label=&quot;Anonymous user&quot;</code>
               to indicate that no identifying information is available.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -712,21 +713,21 @@ export default function AvatarComponentArticle() {
               it in a <code>{"<button>"}</code> or <code>{"<a>"}</code> element with an
               appropriate <code>aria-label</code>.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               The retry-on-hover feature does not require keyboard support since it is a
               convenience feature, not core functionality. However, adding a visible retry
               button on the fallback (shown on focus) would improve keyboard accessibility.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rate-limited retries:</strong> Cap image retry attempts at 3 per URL
             per session. This prevents a broken URL from triggering infinite network
             requests if the user repeatedly hovers over the fallback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>URL sanitization:</strong> Trim and validate the <code>src</code>{" "}
             prop before passing it to the <code>{"<img>"}</code> element. Strip leading
@@ -754,36 +755,36 @@ export default function AvatarComponentArticle() {
             emoji via grapheme-aware slicing, &ldquo;   &rdquo; (whitespace only) yields
             null.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Avatar store:</strong> Test markError increments error count,
             markLoaded sets cache status to loaded, requestRetry increments retry count
             if below max, requestRetry returns false if at max retries, clearCache
             empties the map.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Status hook:</strong> Test each UserStatus maps to the correct color
             class and accessibility label. Test undefined status returns defaults.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Fallback chain:</strong> Render Avatar with a broken src URL. Assert
             that the initials fallback renders with the correct text. Assert that
             <code>aria-label</code> contains the full name.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy loading:</strong> Render Avatar off-screen. Assert that no{" "}
             <code>{"<img>"}</code> element is in the DOM (skeleton renders instead).
             Scroll avatar into view (using <code>scrollIntoView()</code> in the test),
             assert that <code>{"<img>"}</code> renders with the correct src.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry on hover:</strong> Render Avatar with broken src, wait for error.
             Fire mouseEnter on the fallback, assert that retry is attempted. If the mock
             server returns success on retry, assert that the image renders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>AvatarGroup:</strong> Render AvatarGroup with 6 children and{" "}
             <code>max={4}</code>. Assert that 4 avatars render and the overflow badge
@@ -815,11 +816,11 @@ export default function AvatarComponentArticle() {
             them, all IntersectionObservers are cleaned up on unmount, and the store size
             does not exceed the number of unique URLs.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered avatars, verify
             <code>role=&quot;img&quot;</code>, <code>aria-label</code> presence, and that
             initials are not announced (the full name should be announced instead).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -848,12 +849,12 @@ export default function AvatarComponentArticle() {
             irregular spacing. Interviewers look for candidates who discuss Unicode
             handling, <code>Intl.Segmenter</code>, and grapheme clusters.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility:</strong> Rendering an avatar without{" "}
             <code>aria-label</code> or <code>role=&quot;img&quot;</code> means screen
             readers either skip it or announce the image filename (which is meaningless).
             This is a critical oversight.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No error retry limit:</strong> Re-attempting image load infinitely on
             hover creates a network storm if the URL is permanently broken. Interviewers
@@ -883,7 +884,7 @@ export default function AvatarComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Hash-Based Color vs Pre-Assigned Colors</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Hash-based color derivation (DJB2 modulo a palette) ensures that the same name
             always produces the same color, creating a consistent visual identity. The
             trade-off is computational cost (hash on every render) and the possibility of
@@ -892,12 +893,12 @@ export default function AvatarComponentArticle() {
             server-side storage and an additional API call. For most applications, hash-based
             colors are a good default with the option to override via a <code>color</code>{" "}
             prop.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Zustand Store vs Local State for Error Tracking</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Local state (useState per avatar) is simpler but means each avatar independently
             tracks its own error state. If the same URL appears in 10 avatars and fails, all
             10 independently retry on hover, creating 10 redundant network requests. A
@@ -906,7 +907,7 @@ export default function AvatarComponentArticle() {
             added complexity of an external store for what seems like a simple feature. For
             small applications, local state is acceptable; for large-scale applications with
             repeated URLs, a global store is justified.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -917,14 +918,14 @@ export default function AvatarComponentArticle() {
               Q: How would you handle avatar images that take a long time to load (slow
               network)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: Add a loading skeleton with a shimmer animation that matches the avatar&apos;s
               size and shape. Set a timeout (e.g., 2 seconds) after which, if the image
               has not loaded, show the initials fallback alongside the still-loading image.
               This gives the user a readable avatar immediately while the image loads in
               the background. When the image eventually loads, it replaces the initials.
               This approach balances perceived performance with visual completeness.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -989,7 +990,7 @@ export default function AvatarComponentArticle() {
             <p className="font-semibold">
               Q: How would you test avatar rendering with different image states in CI?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use Playwright with a mock server that returns different responses based
               on the URL. Configure routes: a URL ending in &ldquo;/success&rdquo; returns
               a valid image, &ldquo;/error&rdquo; returns a 404, &ldquo;/slow&rdquo; delays
@@ -997,7 +998,7 @@ export default function AvatarComponentArticle() {
               state (image renders, initials show, or skeleton persists). For visual
               regression testing, use Percy or Chromatic to capture pixel-perfect snapshots
               of each state.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

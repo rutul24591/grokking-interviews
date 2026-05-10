@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -41,7 +43,7 @@ export default function DataTableArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We are designing a Data Table component for a
           large-scale React/Next.js application — the kind of
           table that appears in admin consoles, ops tools,
@@ -57,8 +59,8 @@ export default function DataTableArticle() {
           keystroke and scroll latency under the 16 ms
           budget, and be fully accessible to keyboard and
           screen reader users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are deceptively numerous. Sticky
           headers and sticky columns must coexist with
           virtualization without rendering glitches.
@@ -78,10 +80,10 @@ export default function DataTableArticle() {
           the table becomes a platform component used by
           dozens of features; done poorly, every feature
           team rebuilds it badly.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Internal users — operators, support staff,
           analysts — spend significant time in tables. They
           care deeply about predictable behavior, fast
@@ -98,10 +100,10 @@ export default function DataTableArticle() {
           columns get sorted, which filters are common,
           which views are saved — to inform the next
           iteration.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data sources are heterogeneous: some flows ship
           server-paginated data with metadata for total
           count; others ship the full set client-side and
@@ -117,10 +119,10 @@ export default function DataTableArticle() {
           a styling system (Tailwind, CSS-in-JS, design
           tokens) — the table consumes tokens but
           doesn&rsquo;t prescribe them.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement spreadsheet behaviors (cell
           editing with formulas, copy-paste regions, undo
           stack) — those belong to the Spreadsheet Grid
@@ -132,14 +134,14 @@ export default function DataTableArticle() {
           pipeline (CSV, PDF) — that&rsquo;s a separate tool
           that consumes the table&rsquo;s current view as
           input.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Render a tabular structure with declared columns,
           row content driven by a data source. Sort by any
           column, single-key by default with shift-click for
@@ -161,10 +163,10 @@ export default function DataTableArticle() {
           row hover affordances are decorative. Empty
           state, loading state, and error state all
           first-class.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Inline cell editing for power-user flows.
           Expandable rows that reveal nested content. Pinned
           rows (sticky top or bottom). Group-by with
@@ -176,10 +178,10 @@ export default function DataTableArticle() {
           view. Density toggle (comfortable / compact /
           spacious). Skeleton rows during loading that
           preserve layout.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cell-level formulas, copy-paste of regions,
           undo/redo of edits — Spreadsheet Grid territory.
           2D virtualization for hundreds of columns —
@@ -187,14 +189,14 @@ export default function DataTableArticle() {
           operations (delete-all-matching) — those flow
           through a separate mutation endpoint that the
           table can trigger but doesn&rsquo;t own.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Initial render of the visible viewport under 100
           ms for a 1000-row dataset. Sorting and filtering
           on client-paginated data (10k rows) under 50 ms.
@@ -205,10 +207,10 @@ export default function DataTableArticle() {
           transitions for server-paginated tables under 200
           ms when network is healthy, with skeleton rows
           instead of jarring blank states.
-        </p>
+        </HighlightBlock>
 
         <h3>Scalability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Virtualization keeps DOM size O(visible rows),
           typically 20–50, regardless of total row count.
           Columns are not virtualized by default (we assume
@@ -218,10 +220,10 @@ export default function DataTableArticle() {
           backend; the client only ever holds a page worth
           of data plus a small ring buffer for quick
           navigation.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stale data after rapid filter changes does not
           render: each fetch carries a token, only the
           latest token&rsquo;s data is committed. Selection
@@ -232,10 +234,10 @@ export default function DataTableArticle() {
           is robust to fast clicks; the second click while
           the first is in flight is a no-op (or supersedes
           the first, depending on configuration).
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cell content renders as text by default; HTML
           rendering is opt-in per column with a sanitizer.
           Column definitions and filters are data, not code
@@ -244,10 +246,10 @@ export default function DataTableArticle() {
           requests carry CSRF tokens and respect
           authorization at the row level (the server filters
           by user permissions; the client trusts the server).
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The table uses
           <code> role=&quot;table&quot;</code> with proper
           row/cell roles. Keyboard navigation follows the
@@ -258,7 +260,7 @@ export default function DataTableArticle() {
           announced via <code>aria-sort</code>. Selection
           checkboxes have proper labels including row
           identifiers.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
         <p>
@@ -280,7 +282,7 @@ export default function DataTableArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The table is structured around five interlocking
           layers: a <strong>column model</strong> (declarative
           schema for columns and their behaviors), a
@@ -294,7 +296,7 @@ export default function DataTableArticle() {
           composes onto the engine without bloating the
           common case. Each layer has a narrow contract;
           plugins opt in per table.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>column model</strong> is a typed array
           of column definitions. Each column declares an
@@ -311,7 +313,7 @@ export default function DataTableArticle() {
           same array reference produces the same engine
           plan, so consumers should hoist or memoize it.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>data source adapter</strong> is the
           unifying abstraction. It exposes a small contract:
           <code> getPage(params)</code> returns rows for the
@@ -327,8 +329,8 @@ export default function DataTableArticle() {
           adapter routes intelligently. Switching data
           sources is a configuration change, not a
           rewrite.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>mount</strong>, the table engine reads
           the column model, initializes default sort and
           filter state from URL or persisted preferences,
@@ -342,7 +344,7 @@ export default function DataTableArticle() {
           <code> position: sticky</code>. The footer
           renders pagination controls or, for cursor-based
           flows, a Load More affordance.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>sort</strong>, the user clicks a
           sortable header. The engine updates sort state,
@@ -370,7 +372,7 @@ export default function DataTableArticle() {
           cross-column filter via the adapter, with
           server-side full-text search when supported.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           On <strong>scroll</strong>, the virtualizer
           observes the scroll position and recalculates
           which rows fall in the viewport. The DOM mounts
@@ -387,7 +389,7 @@ export default function DataTableArticle() {
           estimates for unmeasured rows. This continuous
           measurement is what makes variable-height
           virtualization smooth.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>page change</strong> for server-paginated
           tables, the engine issues a new
@@ -426,7 +428,7 @@ export default function DataTableArticle() {
           Selected rows are tracked by id, not by position,
           so they survive sort and filter changes.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>row click</strong>, the engine
           dispatches a row activation event. Consumers can
           navigate, open a side panel, or invoke an action.
@@ -434,7 +436,7 @@ export default function DataTableArticle() {
           Activation is keyboard-accessible: Enter on a
           focused cell triggers the row&rsquo;s default
           action.
-        </p>
+        </HighlightBlock>
         <p>
           The architecture works because the engine is a
           pure function of (column model, data source state,
@@ -450,7 +452,7 @@ export default function DataTableArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>TableProvider</strong> instantiates the
           engine, the virtualizer, and the plugin chain.
           It exposes them through stable refs in a React
@@ -458,7 +460,7 @@ export default function DataTableArticle() {
           state, so consumers don&rsquo;t re-render on
           engine state changes; they subscribe via
           selector hooks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>TableEngine</strong> owns sort, filter,
           and pagination state. It delegates to the data
@@ -468,7 +470,7 @@ export default function DataTableArticle() {
           async dispatcher (for server requests). It&rsquo;s
           unit-testable with synthetic data sources.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>DataSourceAdapter</strong> is the
           interface implementations satisfy. We ship two
           built-ins:
@@ -479,8 +481,8 @@ export default function DataTableArticle() {
           adapters slot in for special cases (a streaming
           WebSocket adapter, a hybrid that mixes
           client/server processing).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Virtualizer</strong> handles row
           virtualization with variable heights. It
           maintains a <code>measuredHeights</code> map
@@ -489,7 +491,7 @@ export default function DataTableArticle() {
           measurements as rows mount. Scroll position →
           visible window translation runs in
           <code> requestAnimationFrame</code>.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>HeaderRow</strong> renders the column
           headers, sticky to the viewport top. Each header
@@ -512,12 +514,12 @@ export default function DataTableArticle() {
           <code> React.lazy</code> components so they don&rsquo;t
           bloat the initial bundle.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Paginator</strong> renders pagination
           controls (page numbers, next/prev) for page-based
           flows or a Load More button for cursor-based
           flows. It reads engine state via selectors.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Plugins</strong> are independent modules
           that subscribe to engine state and contribute
@@ -528,7 +530,7 @@ export default function DataTableArticle() {
           tracks edit state per cell. Plugins compose:
           consumers opt in to whichever they need.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architectural patterns at play are
           <strong> adapter</strong> (data source
           abstraction), <strong>plugin chain</strong>{" "}
@@ -537,12 +539,12 @@ export default function DataTableArticle() {
           <strong> single-writer engine state</strong>{" "}
           (engine is the only mutator; everything else
           reads via selectors).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           State splits into four planes. <strong>Engine
           state</strong> — sort keys, filter values,
           current page, scroll position, fetch token — lives
@@ -557,8 +559,8 @@ export default function DataTableArticle() {
           <strong> Local UI state</strong> — open dropdowns,
           hover, drag-in-progress flags — lives in the
           components that need it.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Why an external store rather than React Context?
           The same reason as the form runtime: a table with
           50 visible rows × 10 columns has 500 cell
@@ -567,8 +569,8 @@ export default function DataTableArticle() {
           keep cell re-renders proportional to actual
           changes (typically zero or one cell per state
           update).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           URL reflection is a deliberate design choice:
           sort, filter, and page state live in the URL so
           views are shareable, refreshable, and
@@ -578,13 +580,12 @@ export default function DataTableArticle() {
           routing). The URL is the source of truth on
           mount; the engine reconciles its state from URL
           parameters.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs:{" "}
+        <HighlightBlock as="p" tier="important">Inputs:{" "}
           <code>columns</code> (array of column definitions),
           <code> dataSource</code> (adapter instance),
           <code> initialState</code> (sort, filter, page;
@@ -592,13 +593,13 @@ export default function DataTableArticle() {
           configs, and event handlers
           (<code>onRowClick</code>,
           <code> onSortChange</code>,
-          <code> onSelectionChange</code>). Outputs are
+          <code> onSelectionChange</code>).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Outputs are
           subscription events for telemetry and a small
           imperative API on the table ref
           (<code>scrollToRow</code>,
-          <code> refetch</code>, <code>clearFilters</code>).
-        </p>
-        <p>
+          <code> refetch</code>, <code>clearFilters</code>).</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Column contract:
           <code>{` { id, header, cell, sortFn?, filterType?, accessor?, width?, minWidth?, maxWidth?, sticky?, pinned? } `}</code>.
           The <code>cell</code> function receives the row
@@ -606,12 +607,12 @@ export default function DataTableArticle() {
           (defined outside render) so memoization works.
           The data source contract:
           <code>{` { getPage(params), totalCount?, supportsServerSort, supportsServerFilter } `}</code>.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Virtualization is the headline performance lever.
           We use a fixed-height virtualizer for tables with
           uniform row heights (common case) — the math is
@@ -622,8 +623,8 @@ export default function DataTableArticle() {
           the cache. Overscan (~10 rows above and below the
           viewport) prevents blank space during fast
           scrolling.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Memoization is layered. The column model is
           compiled once per reference into an internal
           plan. Each Cell is wrapped in
@@ -633,8 +634,8 @@ export default function DataTableArticle() {
           cells do (relevant during inline edit). The
           BodyRow component is similarly memoized so unchanged
           rows skip render.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Sorting and filtering on client-paginated data use
           a small in-memory index that&rsquo;s rebuilt only
           when the underlying data or the column&rsquo;s
@@ -645,8 +646,8 @@ export default function DataTableArticle() {
           but still well under the user-perceived budget.
           For larger client datasets (50k+), we move sort
           and filter into a Web Worker.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server requests are debounced for filter changes
           (300 ms) and immediate for sort and pagination.
           Stale responses are discarded via fetch tokens.
@@ -654,12 +655,12 @@ export default function DataTableArticle() {
           column widths so layout doesn&rsquo;t shift; this
           eliminates the cumulative-layout-shift problem
           common to naive table implementations.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX &amp; Interaction Design</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Density toggles let users compact the table when
           they need to see more rows at once; this is
           surprisingly impactful for power users who spend
@@ -672,8 +673,8 @@ export default function DataTableArticle() {
           inline at the top with a Retry button; the table
           retains the previous data so the user&rsquo;s
           context isn&rsquo;t lost.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Selection across pages deserves explicit UX. When
           a user clicks select-all, we select the current
           page and surface a banner: &ldquo;All 25 rows on
@@ -683,21 +684,20 @@ export default function DataTableArticle() {
           two-step flow prevents the common mistake of
           accidentally selecting tens of thousands of rows
           when the user only meant the visible page.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Column resize feels native by using pointer
           capture and live preview. Reorder uses a drag
           handle next to the header text with visual
           feedback. The column chooser is a popover that
           lists all columns with checkboxes and a search
           input for tables with many columns.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          The table uses
+        <HighlightBlock as="p" tier="important">The table uses
           <code> role=&quot;table&quot;</code> with
           <code> role=&quot;row&quot;</code>,
           <code> role=&quot;columnheader&quot;</code>, and
@@ -705,7 +705,8 @@ export default function DataTableArticle() {
           grid pattern (<code>role=&quot;grid&quot;</code>)
           is opt-in for tables that want full keyboard cell
           navigation; default tables use the simpler table
-          role with row-level keyboard support. Sort state
+          role with row-level keyboard support.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Sort state
           announces via
           <code> aria-sort=&quot;ascending&quot;</code> or
           <code> &quot;descending&quot;</code> on the
@@ -715,9 +716,8 @@ export default function DataTableArticle() {
           Sticky headers must remain announceable: screen
           readers should be able to navigate to column
           headers from any row without losing context. We
-          test this explicitly with VoiceOver and NVDA.
-        </p>
-        <p>
+          test this explicitly with VoiceOver and NVDA.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Keyboard navigation for the grid pattern: arrow
           keys move the focused cell, Home/End move to row
           edges, Ctrl+Home/End move to corners, Page
@@ -726,53 +726,34 @@ export default function DataTableArticle() {
           carries <code>tabIndex=&quot;0&quot;</code>;
           others are <code>-1</code>. Focus visibility is
           high-contrast and respects user preferences.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security Considerations</h2>
-        <p>
-          Cell content renders as text by default; columns
-          that need HTML opt in via a render function that
-          uses a sanitizer (DOMPurify). Filter editors
-          escape user input — a text filter for &ldquo;name
-          contains&rdquo; never injects SQL or template
-          syntax into the server request; the server
-          handles user input as parameters, not
-          interpolated strings. Authorization is enforced
-          server-side: the server filters by user
-          permissions and never trusts the client&rsquo;s
-          row id list. Sensitive columns (e.g. payment
-          details) can be configured to render redacted
-          values by default with a click-to-reveal action
-          that&rsquo;s audit-logged.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Authorization is enforced server-side: the server filters by user permissions and never</HighlightBlock>
+<HighlightBlock as="p" tier="important">trusts the client&rsquo;s row id list. Sensitive columns (e.g. payment details) can be configured</HighlightBlock>
+<HighlightBlock as="p" tier="important">to render redacted values by default with a click-to-reveal action that&rsquo;s audit-logged.</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Unit tests cover the engine: sort and filter
-          logic against canonical inputs, pagination math,
-          fetch-token race resolution. Integration tests
-          mount realistic tables with synthetic data
-          sources and exercise: scroll-and-virtualize, sort
-          and filter, server-side pagination with mocked
-          adapters, selection across pages, column resize
-          persistence. Accessibility tests verify
+        <HighlightBlock as="p" tier="important">Unit tests cover the engine: sort and filter logic against canonical inputs, pagination math, fetch-token race</HighlightBlock>
+<HighlightBlock as="p" tier="important">resolution. Integration tests mount realistic tables with synthetic data sources and exercise:</HighlightBlock>
+<HighlightBlock as="p" tier="important">scroll-and-virtualize, sort and filter, server-side pagination with mocked adapters, selection across pages, column resize persistence.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Accessibility tests verify
           <code> aria-sort</code>, focus management on
           arrow-key navigation, and announcement of empty
           and loading states. Visual regression tests on
           representative tables catch layout regressions
           (sticky header glitches, resize visual bugs).
           Performance tests assert scroll fps and
-          initial-render budget on a 100k-row table.
-        </p>
+          initial-render budget on a 100k-row table.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Variable row heights with sticky-left columns
           (the sticky cells must match height to their
           row): we use CSS Grid for the row layout so
@@ -787,9 +768,8 @@ export default function DataTableArticle() {
           and preserving scroll would be misleading. User
           rapidly clicks Next page: fetch tokens ensure
           only the latest response renders.
-        </p>
-        <p>
-          Server returns inconsistent total count between
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">Server returns inconsistent total count between
           pages (real-world data can shift): we surface a
           subtle banner &ldquo;Data changed&rdquo; and
           offer a refresh; we don&rsquo;t silently
@@ -799,61 +779,36 @@ export default function DataTableArticle() {
           operation that returns the matching id set; we
           cap the cross-page selection at a configurable
           limit (10k by default) to prevent the UI from
-          tracking arbitrarily many ids. Column resize that
+          tracking arbitrarily many ids.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Column resize that
           would make a column smaller than its content&rsquo;s
           minimum: the resize stops at minWidth; the
           content overflows with ellipsis. A column with a
           long unwrappable cell (e.g. a UUID): we apply
           <code> overflow: hidden</code> with
           <code> text-overflow: ellipsis</code> by default
-          and a hover tooltip with full content.
-        </p>
+          and a hover tooltip with full content.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          The plugin system is the primary extension point.
-          Plugins implement a small interface (mount,
-          unmount, contribute to render, expose state via
-          selectors) and slot in via composition. Custom
-          cell renderers are first-class; the cell render
-          function takes the row and returns any React, so
-          a column can render anything from a simple
-          string to a complex sub-component. Theming uses
-          design tokens; consumers can override per table
-          via <code>className</code> on the wrapper. Data
-          source adapters let teams plug in unusual data
-          sources (a WebSocket stream, a GraphQL endpoint
-          with cursor pagination) without modifying engine
-          internals.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Theming uses design tokens; consumers can override per table via className on the</HighlightBlock>
+<HighlightBlock as="p" tier="important">wrapper. Data source adapters let teams plug in unusual data sources (a WebSocket</HighlightBlock>
+<HighlightBlock as="p" tier="important">stream, a GraphQL endpoint with cursor pagination) without modifying engine internals.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Headers, filter editors, and pagination labels
-          resolve through the host&rsquo;s i18n function.
-          Numbers and dates in cells format via
-          <code> Intl.NumberFormat</code> and
-          <code> Intl.DateTimeFormat</code> with the active
-          locale; column-level format overrides are
-          supported. Sort comparisons use
-          <code> Intl.Collator</code> for locale-aware
-          string ordering (so &ldquo;Ä&rdquo; sorts after
-          &ldquo;Z&rdquo; in some locales and after
-          &ldquo;A&rdquo; in others). RTL flips the table
-          via CSS logical properties; sticky-left becomes
-          sticky-end naturally.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Sort comparisons use Intl.Collator for locale-aware string ordering (so</HighlightBlock>
+<HighlightBlock as="p" tier="important">&ldquo;Ä&rdquo; sorts after &ldquo;Z&rdquo; in some locales and after &ldquo;A&rdquo; in others).</HighlightBlock>
+<HighlightBlock as="p" tier="important">RTL flips the table via CSS logical properties; sticky-left becomes sticky-end naturally.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
 
         <h3>Virtualize rows but not columns by default</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Most tables have under 50 columns; row counts go
           much higher. Virtualizing rows is high-leverage
           and tractable; virtualizing columns is more
@@ -863,10 +818,10 @@ export default function DataTableArticle() {
           Virtualized Grid subsystem applies. Splitting
           the use cases this way keeps each subsystem
           simpler.
-        </p>
+        </HighlightBlock>
 
         <h3>Adapter pattern for data sources</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A unified adapter interface lets the table work
           identically against client-side and server-side
           data, with a configuration switch. The cost is
@@ -875,19 +830,19 @@ export default function DataTableArticle() {
           consumers can move pagination from client to
           server when they outgrow the client-side model
           without rewriting their table code.
-        </p>
+        </HighlightBlock>
 
         <h3>External store vs Context for engine state</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Context would re-render every cell on every state
           change. An external store with selector
           subscriptions keeps re-renders surgical. The
           extra dependency is worth it past a few dozen
           cells.
-        </p>
+        </HighlightBlock>
 
         <h3>URL as source of truth for sort/filter/page</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reflecting state in the URL gives shareable,
           refreshable, back-button-safe views. The cost is
           reconciliation complexity on mount (parse URL →
@@ -896,10 +851,10 @@ export default function DataTableArticle() {
           share &ldquo;here&rsquo;s the view I&rsquo;m
           looking at&rdquo; via URL, which is non-trivial
           for ops teams.
-        </p>
+        </HighlightBlock>
 
         <h3>Skeleton rows vs spinner during load</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Skeleton rows preserve layout and convey progress
           implicitly; spinners obliterate context.
           Skeletons are slightly more code (need to know
@@ -907,7 +862,7 @@ export default function DataTableArticle() {
           substantial for users who spend hours in the
           table and want their context preserved across
           page transitions.
-        </p>
+        </HighlightBlock>
 
         <h3>Selection by id vs by index</h3>
         <p>
@@ -921,24 +876,23 @@ export default function DataTableArticle() {
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          A built-in CSV export from the current view, with
+        <HighlightBlock as="p" tier="crucial">A built-in CSV export from the current view, with
           server-side support for cross-page export. Web
           Worker-based sort and filter for very large
           client datasets (50k+ rows). Real-time row
           updates via WebSocket with smooth animation of
-          inserted, updated, and removed rows. Group-by
+          inserted, updated, and removed rows.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Group-by
           with collapsible aggregate rows. Conditional row
           formatting (highlight rows that match a
           predicate). Column-level pinning beyond just
-          first column. Saved view sharing across users.
-        </p>
+          first column. Saved view sharing across users.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How does virtualization work for
           variable-height rows?</strong> Maintain a measured-
           height cache keyed by row id; render unmeasured
@@ -946,7 +900,7 @@ export default function DataTableArticle() {
           <code> ResizeObserver</code> to update measurements
           when rows mount; recalculate scroll height as the
           sum of measured plus estimated heights.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>2. How do you avoid losing selections when the
@@ -956,7 +910,7 @@ export default function DataTableArticle() {
           they re-appear when the filter relaxes.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. Sticky header with virtualization — what&rsquo;s
           tricky?</strong> The header must scroll with the
           viewport horizontally but stay sticky vertically.
@@ -967,9 +921,9 @@ export default function DataTableArticle() {
           height dynamically, but sticky positioning
           honors the viewport, not the content, so it
           works.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How do you reflect sort/filter/page state in
           the URL?</strong> Use the Next.js router&rsquo;s
           shallow routing to update query parameters
@@ -977,7 +931,7 @@ export default function DataTableArticle() {
           and seed engine state from it. On every state
           change, debounce a URL update so rapid typing in
           a filter doesn&rsquo;t spam the history.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How do you handle a mix of server-sortable
@@ -1001,7 +955,7 @@ export default function DataTableArticle() {
           races.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How is the table accessible to keyboard
           users?</strong> ARIA grid pattern with single
           tabstop and arrow-key navigation. Sort state via
@@ -1009,9 +963,9 @@ export default function DataTableArticle() {
           labeled with row identifiers. Sticky headers
           remain announceable. We test with real screen
           readers, not just axe-core.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How would you scale this to a million
           rows?</strong> Server-side pagination is the
           answer; the client never holds a million rows.
@@ -1019,26 +973,14 @@ export default function DataTableArticle() {
           page-based at large offsets because the database
           doesn&rsquo;t have to skip millions of rows. The
           table&rsquo;s adapter pattern accommodates either.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A production Data Table is a{" "}
-          <strong>five-layer system</strong>: column model,
-          data source adapter, table engine, virtualizer,
-          and plugin chain. The adapter unifies client and
-          server data; the engine handles sort, filter,
-          and pagination as pure functions; the virtualizer
-          scopes DOM to the viewport; plugins compose for
-          features that aren&rsquo;t universal. URL
-          reflection makes views shareable; selection-by-id
-          survives sort and filter; skeleton loading
-          preserves layout. The result is a table that
-          feels native at any data scale, accessible to
-          all users, and extensible without forking.
-        </p>
+        <HighlightBlock as="p" tier="crucial">URL reflection makes views shareable; selection-by-id survives sort and</HighlightBlock>
+<HighlightBlock as="p" tier="important">filter; skeleton loading preserves layout. The result is a table that feels</HighlightBlock>
+<HighlightBlock as="p" tier="important">native at any data scale, accessible to all users, and extensible without forking.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

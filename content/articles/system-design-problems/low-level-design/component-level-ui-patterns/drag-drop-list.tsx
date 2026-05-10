@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function DragDropListArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable drag-and-drop list component for a large-scale
           React application. Users must be able to reorder items within a list via drag
           and drop, with changes persisted to a backend API. The component must support
@@ -48,7 +49,7 @@ export default function DragDropListArticle() {
           line, placeholder, and ghost image — must be clear and instantaneous. The
           component must also handle nested lists (drag between nested groups) and
           implement optimistic reordering with rollback on API failure.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -64,17 +65,17 @@ export default function DragDropListArticle() {
             Reorder operations must be persisted to a backend API with optimistic UI
             updates.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The component supports both single-column reordering and multi-column
             (Kanban-style) drag-and-drop.
-          </li>
+          </HighlightBlock>
           <li>
             Touch devices must support long-press to initiate drag (to distinguish from
             scroll).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Keyboard users must be able to fully operate drag-and-drop without a mouse.
-          </li>
+          </HighlightBlock>
           <li>
             Screen readers must announce position changes and drop confirmations.
           </li>
@@ -110,15 +111,15 @@ export default function DragDropListArticle() {
             <strong>Multi-Column Support:</strong> Items can be dragged between columns
             (Kanban-style). Each column is a drop target.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Touch Support:</strong> Pointer events handle both mouse and touch.
             Long-press (300ms) initiates drag on touch devices to avoid conflict with
             scroll.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard Accessibility:</strong> Focus an item, press Space to pick
             up, Arrow keys to move, Enter to drop, Escape to cancel.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Screen Reader Announcements:</strong> On pick up: &quot;Item picked,
             position X of Y.&quot; On move: &quot;Moved to position X.&quot; On drop:
@@ -145,19 +146,19 @@ export default function DragDropListArticle() {
             GPU-accelerated properties (transform, opacity). No layout thrashing during
             drag.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Scalability:</strong> Handle lists of 10,000+ items. Virtualize
             rendering if needed. Collision detection must be O(log n) or better.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Reliability:</strong> Optimistic updates must always have a rollback
             path. No data loss on API failure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> WCAG 2.1 AA compliant. Full keyboard
             support, screen reader announcements via aria-live regions, visible focus
             indicators.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for drag state, drop
             targets, item types, and configuration.
@@ -204,7 +205,7 @@ export default function DragDropListArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate <strong>drag state management</strong> from
           <strong>rendering</strong> using a global Zustand store for active drag state
           and custom hooks for individual item behavior. The store tracks which item is
@@ -213,8 +214,8 @@ export default function DragDropListArticle() {
           mouse/touch) and keyboard event handling for accessibility. Drop targets use
           a separate hook with collision detection based on pointer position relative to
           item bounding boxes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Drag mechanism choice:</strong> We use Pointer Events instead of the
           HTML5 Drag and Drop API. The HTML5 API has significant limitations: it does not
           support custom drag images on mobile, offers no touch support, provides limited
@@ -223,39 +224,39 @@ export default function DragDropListArticle() {
           lifecycle, work uniformly across mouse and touch, and allow custom ghost
           rendering. However, we provide an HTML5 wrapper as a fallback for environments
           where pointer events are insufficient (e.g., drag from browser into the app).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>HTML5 Drag and Drop API:</strong> Built-in browser support, zero
             custom drag logic. But no touch support, limited ghost customization, no
             custom drop indicators, and inconsistent behavior across browsers. Suitable
             for simple file-upload drag-and-drop, not for list reordering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Third-party libraries (dnd-kit, react-beautiful-dnd):</strong>
             Production-ready, accessible, well-tested. But they add bundle size (15-30kb
             gzipped), abstract away internals (harder to customize), and may not support
             all edge cases (e.g., deeply nested lists with custom collision detection).
             Building from scratch gives full control and is a better interview
             demonstration.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mutation Observer + direct DOM manipulation:</strong> Maximum
             performance but bypasses React&apos;s rendering model, creating bugs and
             making testing difficult. Not recommended.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Pointer Events + Zustand + FLIP is optimal:</strong> Pointer events
           provide a unified input model for mouse, touch, and pen. Zustand manages drag
           state globally so any component can read active drag info without prop drilling.
           FLIP (First, Last, Invert, Play) enables smooth 60fps reordering animations
           without layout thrashing. This pattern is used by production libraries like
           dnd-kit and Framer Motion.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -280,14 +281,14 @@ export default function DragDropListArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Drag-Drop Store (<code>drag-drop-store.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Zustand store managing the global drag state. Tracks the currently dragged
             item, pointer position, active drop target, and reorder history (for rollback).
             Exposes actions: <code>startDrag</code>, <code>updatePointer</code>,{" "}
             <code>setDropTarget</code>, <code>endDrag</code>, <code>commitReorder</code>,
             <code>rollbackReorder</code>. The store maintains a history stack of previous
             list orders so that API failures can trigger instant rollback.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>State shape:</strong>
           </p>
@@ -309,26 +310,26 @@ export default function DragDropListArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Pointer Drag Handler (<code>pointer-drag-handler.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Handles pointer event-based drag detection. On pointer down, starts a
             long-press timer (300ms default). If the pointer moves beyond the movement
             threshold (5px) before the timer fires, drag initiates immediately. If the
             timer fires first, drag initiates on long-press. Tracks pointer delta to
             update the ghost position. On pointer up, ends the drag and triggers drop
             logic. Supports cancellation via Escape key.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. HTML5 Drag Handler (<code>html5-drag-handler.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Wrapper around the HTML5 Drag and Drop API for environments where pointer
             events are insufficient (e.g., drag from external sources like file explorer
             or browser tabs). Sets <code>dataTransfer</code> with item ID and type,
             configures the drag image, and handles drag events (dragstart, dragover,
             drop, dragend). Used as a fallback or for interop scenarios. See the Example
             tab for the complete implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -347,11 +348,11 @@ export default function DragDropListArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Hooks (<code>use-draggable.ts</code>, <code>use-droppable.ts</code>, <code>use-sortable-list.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <code>use-draggable</code> — attaches pointer and keyboard event listeners to
             an individual item. Manages visual states (grabbed, hovering, dragging).
             Announces position to screen readers via aria-live.
-          </p>
+          </HighlightBlock>
           <p className="mt-2">
             <code>use-droppable</code> — attaches to drop target zones (individual items
             or entire columns). Computes collision based on pointer position vs. item
@@ -372,10 +373,10 @@ export default function DragDropListArticle() {
             <code>DragDropList</code> — root container, provides context, renders the
             list and drop indicator portal.
           </p>
-          <p className="mt-2">
+          <HighlightBlock as="p" tier="important" className="mt-2">
             <code>DraggableItem</code> — individual item with drag handle, keyboard
             support, visual states (default, dragging placeholder, hovered drop target).
-          </p>
+          </HighlightBlock>
           <p className="mt-2">
             <code>DropIndicator</code> — thin horizontal line rendered absolutely at the
             computed drop position via portal.
@@ -444,15 +445,15 @@ export default function DragDropListArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. Drag state
           mutations flow through the Zustand store, and rendering flows from store
           subscriptions and local hook state. This ensures predictable behavior and makes
           the system testable in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Pointer Event Lifecycle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The pointer event lifecycle is the backbone of drag detection. On{" "}
           <code>pointerdown</code>, we record the initial pointer position and start the
           long-press timer. On <code>pointermove</code>, we compute the delta from the
@@ -462,10 +463,10 @@ export default function DragDropListArticle() {
           fires before any movement, we initiate drag on long-press (for touch devices
           where the user intentionally holds to drag). The Escape key at any point
           cancels the drag and restores the original item position.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Collision Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Collision detection determines where the dragged item would land if dropped.
           For each droppable zone (item or column), we maintain a sorted list of bounding
           boxes (sorted by Y coordinate for vertical lists, X for horizontal). On pointer
@@ -474,10 +475,10 @@ export default function DragDropListArticle() {
           the item before and after the insertion point. For multi-column scenarios, we
           also check if the pointer is within any column&apos;s bounding box, and if so,
           compute the insertion point within that column.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimistic Reorder with Rollback</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the user drops, the list hook captures the current item array as a
           snapshot and pushes it to the history stack. It then computes the new order
           (remove item from old index, insert at new index, or move between columns for
@@ -489,15 +490,15 @@ export default function DragDropListArticle() {
           FLIP animation, and shows an error toast. The AbortController on the API call
           allows cancellation if the user initiates another reorder before the first
           completes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Drop on same position:</strong> The hook detects that the source and
             target indices are identical. No reorder, no API call, no animation. This
             prevents unnecessary network traffic and UI flicker.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Empty target list:</strong> If dropping into an empty column, the
             insertion index is 0. The column&apos;s droppable zone must still render a
@@ -540,7 +541,7 @@ export default function DragDropListArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Types (drag-drop-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines <code>DraggableItem</code> with id, data payload, disabled flag, and
           optional groupId for nested lists. <code>DropTarget</code> carries the target
           item id, insertion position (&quot;before&quot; or &quot;after&quot;), and
@@ -550,10 +551,10 @@ export default function DragDropListArticle() {
           300ms), movementThreshold (default 5px), animationDuration (default 250ms).
           <code>ReorderPayload</code> is the API contract with source index, target index,
           source column, target column, and item IDs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (drag-drop-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages active drag state, drop targets, reorder history, and pending
           API requests. Key design decisions include: using a history stack with max depth
           (10 entries) to limit memory, storing AbortControllers for in-flight API calls
@@ -561,7 +562,7 @@ export default function DragDropListArticle() {
           <code>rollbackReorder</code> actions that the list hook calls after API success
           or failure. The store is instance-scoped via a unique list ID so multiple
           sortable lists on the same page do not share state.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Pointer Drag Handler (pointer-drag-handler.ts)</h3>
         <p>
@@ -598,7 +599,7 @@ export default function DragDropListArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: use-draggable Hook</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Attaches pointer and keyboard event listeners to an individual draggable item.
           Uses the pointer drag handler for mouse/touch drag. For keyboard, listens for
           Space/Enter to initiate drag, ArrowUp/ArrowDown to move the item within the
@@ -608,7 +609,7 @@ export default function DragDropListArticle() {
           props to spread on the item element: <code>tabIndex</code>,{" "}
           <code>role=&quot;listitem&quot;</code>, <code>aria-grabbed</code>, event
           handlers, and aria-label.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: use-droppable Hook</h3>
         <p>
@@ -622,7 +623,7 @@ export default function DragDropListArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: use-sortable-list Hook</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The main orchestrator hook. Accepts an item array, an onReorder callback (API
           call), and optional config (columnId, nested depth). Manages the local item
           array, subscribes to the store for drop target changes, and commits reorders
@@ -630,7 +631,7 @@ export default function DragDropListArticle() {
           it, triggers FLIP animation, and fires the API call. On API failure, rolls
           back from history. Handles edge cases: same-position drop (no-op), empty
           target list (index 0), circular nesting (reject).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: DragDropList Component</h3>
         <p>
@@ -642,14 +643,14 @@ export default function DragDropListArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 10: DraggableItem Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Individual item component. Uses <code>use-draggable</code> for pointer/keyboard
           behavior. Renders a drag handle icon, item content, and visual state indicators
           (dimmed when placeholder, highlighted when drop target). Applies{" "}
           <code>aria-grabbed</code>, <code>aria-label</code> with position info, and
           <code>tabIndex=&quot;0&quot;</code>. When acting as a drag placeholder,
           maintains its original dimensions via inline styles to prevent layout shift.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 11: DropIndicator Component</h3>
         <p>
@@ -718,24 +719,24 @@ export default function DragDropListArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is the number of items in the list and <code>h</code> is
           the history depth (max 10). For lists of 10,000+ items, collision detection
           remains sub-millisecond via binary search. The bottleneck is the O(n) reorder
           computation and FLIP capture, which are acceptable because they run only on
           drop (not during drag).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Bounding box updates during scroll:</strong> If the user scrolls
             while dragging, all bounding boxes become stale. The <code>use-droppable</code>{" "}
             hook uses a <code>ResizeObserver</code> to update boxes on layout changes,
             but scroll-induced position changes require a <code>scroll</code> event
             listener that recalculates offsets. This is O(n) and can cause jank on large
             lists. Mitigation: only update boxes for items in the viewport (virtualization).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Array splice on reorder:</strong> O(n) operation. For lists with
             frequent reorders and 10,000+ items, this can degrade. Mitigation: use a
@@ -753,32 +754,32 @@ export default function DragDropListArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualization:</strong> For lists exceeding 500 items, use windowing
             (react-window pattern) to render only visible items. During drag, expand the
             rendered window to include items near the drop target.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Spatial indexing:</strong> For multi-column boards with thousands of
             items, use a quadtree or grid-based spatial index for O(1) collision detection
             instead of binary search.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Throttled pointer updates:</strong> Throttle pointer position updates
             to the store at 60Hz (16ms) to avoid excessive re-renders. Pointer events
             fire at the display refresh rate, but React re-renders at a lower frequency
             under load. Throttling ensures consistent performance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>will-change hint:</strong> Apply <code>will-change: transform</code>{" "}
             to draggable items during drag to promote them to their own compositor layer.
             Remove it after drag ends to free GPU memory.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Batch rapid reorders:</strong> If the user performs multiple
             reorders in quick succession (e.g., rapid keyboard arrow presses), debounce
             the API call by 300ms and batch all changes into a single request.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -787,7 +788,7 @@ export default function DragDropListArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Item data may contain user-generated content (e.g., task titles, descriptions).
           If rendered as HTML via <code>dangerouslySetInnerHTML</code>, it becomes an XSS
           vector. Always sanitize HTML content before rendering. Prefer rendering strings
@@ -795,7 +796,7 @@ export default function DragDropListArticle() {
           trusted sources. The reorder API payload (item IDs, indices) must be validated
           server-side to prevent authorization bypasses (e.g., a user reordering another
           user&apos;s items by manipulating the payload).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -829,26 +830,26 @@ export default function DragDropListArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               An <code>aria-live=&quot;polite&quot;</code> region announces drag state
               changes: &quot;Item picked, position 3 of 12&quot;, &quot;Moved to
               position 5&quot;, &quot;Item dropped at position 5&quot;.
-            </li>
+            </HighlightBlock>
             <li>
               Each item has <code>aria-grabbed=&quot;true&quot;</code> when dragging and{" "}
               <code>aria-grabbed=&quot;false&quot;</code> otherwise.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The list container has <code>role=&quot;list&quot;</code> and each item has{" "}
               <code>role=&quot;listitem&quot;</code> with <code>aria-posinset</code> and{" "}
               <code>aria-setsize</code> for position context.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The list uses <code>role=&quot;list&quot;</code> (or <code>role=&quot;listbox&quot;</code>{" "}
             for single-select scenarios). Items use <code>role=&quot;listitem&quot;</code>{" "}
             with <code>aria-posinset</code> (1-based index) and <code>aria-setsize</code>{" "}
@@ -856,7 +857,7 @@ export default function DragDropListArticle() {
             and <code>role=&quot;button&quot;</code>. The drop indicator uses{" "}
             <code>aria-hidden=&quot;true&quot;</code> since it is purely visual. See the
             Example tab for the exact markup.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Authorization</h3>
@@ -866,11 +867,11 @@ export default function DragDropListArticle() {
             the user has permission to reorder the items in question. Item IDs and
             column IDs must be checked against the user&apos;s authorization scope.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSRF protection:</strong> Reorder requests that mutate server state
             must include CSRF tokens (for cookie-based auth) or use same-site cookie
             attributes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rate limiting:</strong> Cap reorder API calls at 10 per second per
             user to prevent abuse from automated scripts.
@@ -916,15 +917,15 @@ export default function DragDropListArticle() {
             drop indicator rendered during drag, ghost rendered during drag, and API call
             fired with correct payload.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Keyboard reorder:</strong> Focus item 3, press Space to pick up,
             press ArrowDown 4 times, press Enter to drop. Assert item is now at index 6
             and API call fired.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rollback on API failure:</strong> Mock API to reject. Perform reorder.
             Assert order reverts to previous state and error message is shown.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multi-column drag:</strong> Render two columns. Drag item from column
             A to column B. Assert item is removed from A and inserted in B at correct
@@ -934,19 +935,19 @@ export default function DragDropListArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Run axe-core automated checks on rendered list. Verify aria-live regions,
             aria-grabbed, aria-posinset, aria-setsize, and role attributes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Test keyboard navigation: Tab to list, Arrow keys to navigate items, Space
             to pick up, Arrow keys to move, Enter to drop. Verify focus management
             throughout.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Test screen reader announcements using a mock aria-live observer. Verify
             announcements on pick up, move, and drop.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
@@ -997,12 +998,12 @@ export default function DragDropListArticle() {
             recalculations. Interviewers look for candidates who know to use FLIP with
             <code>transform: translateY()</code> for 60fps animations.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility:</strong> Implementing drag-and-drop without
             keyboard support means keyboard and screen reader users cannot reorder items.
             This is a critical oversight. Interviewers expect Space/Arrow/Enter/Escape
             keyboard support and aria-live announcements.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No rollback on API failure:</strong> Optimistic updates without a
             rollback path lead to data inconsistency. Interviewers expect candidates to
@@ -1019,7 +1020,7 @@ export default function DragDropListArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Pointer Events vs HTML5 Drag and Drop API</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             HTML5 Drag and Drop API is built-in and requires no custom drag logic. However,
             it has no touch support, limited ghost customization (only a translucent
             screenshot of the dragged element), no custom drop indicators (browser shows
@@ -1029,12 +1030,12 @@ export default function DragDropListArticle() {
             support, and consistent behavior. The trade-off is implementation complexity —
             you must manage the entire drag lifecycle manually. For production applications,
             pointer events are the right choice.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">FLIP Animation vs CSS Transitions vs Framer Motion</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             FLIP is the gold standard for list reordering animations because it handles
             the case where items change position in the DOM. Pure CSS transitions cannot
             animate from &quot;where the item was&quot; to &quot;where the item is&quot;
@@ -1043,12 +1044,12 @@ export default function DragDropListArticle() {
             API. The trade-off is bundle size (~12kb gzipped). For an interview, implementing
             FLIP manually demonstrates deep understanding of browser rendering and animation
             principles. For production, Framer Motion is the pragmatic choice.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Optimistic Updates vs Server-Confirmed Updates</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Server-confirmed updates (wait for API response, then update UI) guarantee
             consistency but introduce latency (200-500ms round trip) that makes the UI
             feel sluggish. Optimistic updates (update UI immediately, rollback on failure)
@@ -1057,7 +1058,7 @@ export default function DragDropListArticle() {
             is always better. For user-facing apps with unreliable networks, consider a
             hybrid: show the reorder immediately but display a &quot;saving...&quot;
             indicator until the API confirms. This gives the best of both worlds.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1080,7 +1081,7 @@ export default function DragDropListArticle() {
             <p className="font-semibold">
               Q: How would you handle drag-and-drop with virtualized lists (10,000+ items)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Virtualization renders only the visible window of items. During drag, we
               need to expand the rendered window to include items near the drop target.
               When the ghost approaches the bottom of the viewport, auto-scroll the list
@@ -1089,7 +1090,7 @@ export default function DragDropListArticle() {
               virtual indices and data indices. The bounding box cache only stores boxes
               for rendered items; non-rendered items use estimated heights for collision
               calculation. On drop, the precise position is computed from the data index.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

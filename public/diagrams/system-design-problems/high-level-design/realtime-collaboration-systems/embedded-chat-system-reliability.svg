@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Reliability and load shedding model for embedded chat">
+  <title>Embedded Chat Reliability</title>
+  <desc>Shows prioritizing durable message delivery and shedding ephemeral signals under load, with fallback to polling when realtime is unstable.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="ok" x="70" y="70" width="520" height="180" />
+  <text class="label bold" x="100" y="115">Durable messages</text>
+  <text class="label small" x="100" y="145">server sequencing</text>
+  <text class="label small" x="100" y="170">idempotent sends</text>
+  <text class="label small" x="100" y="195">snapshot + stream recovery</text>
+  <text class="label small" x="100" y="220">offline queue replay</text>
+
+  <rect class="warn" x="640" y="70" width="490" height="180" />
+  <text class="label bold" x="670" y="115">Ephemeral signals</text>
+  <text class="label small" x="670" y="145">typing indicators</text>
+  <text class="label small" x="670" y="170">read receipts (optional)</text>
+  <text class="label small" x="670" y="195">rate limited + shed first</text>
+  <text class="label small" x="670" y="220">best-effort</text>
+
+  <path class="arrow" d="M590 160 L640 160" />
+
+  <rect class="box" x="70" y="310" width="520" height="170" />
+  <text class="label bold" x="100" y="355">Fallback</text>
+  <text class="label small" x="100" y="385">realtime unstable → polling</text>
+  <text class="label small" x="100" y="410">bounded backoff + jitter</text>
+  <text class="label small" x="100" y="435">connection indicator visible</text>
+
+  <rect class="box" x="640" y="310" width="490" height="170" />
+  <text class="label bold" x="670" y="355">Operability</text>
+  <text class="label small" x="670" y="385">send latency + failures</text>
+  <text class="label small" x="670" y="410">disconnect and catch-up time</text>
+  <text class="label small" x="670" y="435">duplicate suppression rate</text>
+
+  <path class="arrow" d="M590 395 L640 395" />
+</svg>

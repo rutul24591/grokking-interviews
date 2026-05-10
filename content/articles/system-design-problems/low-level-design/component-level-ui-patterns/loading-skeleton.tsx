@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function LoadingSkeletonArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable loading skeleton component system for a
           large-scale React application. When data is being fetched from an API,
           the application must show a structural placeholder that mirrors the
@@ -55,23 +56,23 @@ export default function LoadingSkeletonArticle() {
           with CSS-only animations (no JavaScript animation loops), and SSR-safe
           so skeletons render immediately on the server and are replaced by
           actual content on the client.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             The application is a React 19+ SPA with support for concurrent features
             and server-side rendering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Skeletons are used across many components (cards, tables, profiles,
             dashboards), so they must be composable and configurable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The shimmer animation must run at 60fps without JavaScript intervention
             (CSS-only keyframes).
-          </li>
+          </HighlightBlock>
           <li>
             Skeleton dimensions must closely match the eventual content dimensions
             to prevent cumulative layout shift (CLS).
@@ -80,10 +81,10 @@ export default function LoadingSkeletonArticle() {
             The application may run in both light and dark mode, and skeleton colors
             must adapt accordingly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Screen readers must be informed when a container is in a loading state
             via ARIA attributes.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -117,17 +118,17 @@ export default function LoadingSkeletonArticle() {
             SSR, providing content structure on the initial HTML response. They are
             replaced by actual content once client-side data resolves.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Loading containers include
             <code>aria-busy=&quot;true&quot;</code> and
             <code>aria-label</code> describing what is loading. Screen readers
             announce the loading state appropriately.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Integration:</strong> The skeleton system integrates with React
             Query (<code>isLoading</code>, <code>isFetching</code>) and SWR (
             <code>isLoading</code>, <code>isValidating</code>) loading states.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
@@ -156,19 +157,19 @@ export default function LoadingSkeletonArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Skeleton shown for an extended period (slow network, large payload) —
             shimmer animation loops indefinitely without performance degradation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Rapid loading state toggles (cached data, stale-while-revalidate) —
             skeleton flashes in and out; must avoid jarring visual transitions.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Skeleton for content with dynamic height (e.g., variable-length text) —
             skeleton must estimate height or use min-height to prevent layout shift
             when content exceeds the skeleton.
-          </li>
+          </HighlightBlock>
           <li>
             SSR hydration mismatch — if server renders a skeleton but client already
             has cached data, the skeleton should not render at all.
@@ -189,7 +190,7 @@ export default function LoadingSkeletonArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to provide a set of composable, type-driven skeleton
           components that mirror the structure of the content they are replacing.
           A root <code>Skeleton</code> component dispatches to type-specific
@@ -201,33 +202,33 @@ export default function LoadingSkeletonArticle() {
           true, it renders its skeleton children; when false, it renders its
           actual children. This composition pattern avoids conditional rendering
           boilerplate at every call site.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Spinner-only loading:</strong> A simple spinner is easy to
             implement but provides no structural context about what is loading.
             Users perceive spinners as longer waits because they see no progress
             toward the final layout. Skeletons are superior for perceived performance
             because they show the shape of the incoming content.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Static placeholder divs:</strong> Using plain gray divs without
             animation works but feels like a broken UI. The shimmer animation signals
             to the user that the system is actively loading, not that the content is
             missing or broken.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>JavaScript-driven animation (requestAnimationFrame):</strong>
             Updating skeleton gradient positions via JS works but consumes the main
             thread, competes with React rendering, and drains battery on mobile
             devices. CSS keyframes run on the compositor thread and are strictly
             preferable.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why CSS shimmer + type-dispatch + wrapper composition is optimal:</strong>{" "}
           CSS keyframe animations for the shimmer effect run entirely on the GPU
           compositor thread, ensuring 60fps with zero JavaScript overhead. The type
@@ -236,7 +237,7 @@ export default function LoadingSkeletonArticle() {
           dedicated components. The wrapper component eliminates the repetitive{" "}
           <code>{"{loading ? <Skeleton /> : <Content />}"}</code> pattern at every
           call site, centralizing loading-state logic in one place.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -250,7 +251,7 @@ export default function LoadingSkeletonArticle() {
           <h4 className="mb-3 font-semibold">
             1. Skeleton Types &amp; Interfaces (<code>skeleton-types.ts</code>)
           </h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>SkeletonType</code> union (
             <code>text | image | avatar | custom</code>), the{" "}
             <code>SkeletonProps</code> interface shared by all skeleton components
@@ -259,14 +260,14 @@ export default function LoadingSkeletonArticle() {
             <code>SkeletonWrapperProps</code> interface adds the{" "}
             <code>loading</code> boolean and <code>children</code> for the
             composition wrapper.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">
             2. Root Skeleton Component (<code>skeleton.tsx</code>)
           </h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The entry-point component that accepts a <code>type</code> prop and
             dispatches to the appropriate sub-component. For <code>type=&quot;text&quot;</code>,
             it renders multiple <code>SkeletonLine</code> components. For{" "}
@@ -275,7 +276,7 @@ export default function LoadingSkeletonArticle() {
             renders a <code>SkeletonCircle</code>. The custom type renders a div
             with configurable border-radius. This component is the public API that
             most consumers will use directly.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -321,18 +322,18 @@ export default function LoadingSkeletonArticle() {
           <h4 className="mb-3 font-semibold">
             6. Skeleton Wrapper (<code>skeleton-wrapper.tsx</code>)
           </h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The composition component that accepts a <code>loading</code> boolean
             and <code>children</code>. When loading is true, it renders the skeleton
             children; when false, it renders the actual content children. Wraps the
             output in a container with <code>aria-busy</code> set appropriately. This
             eliminates conditional rendering boilerplate and centralizes accessibility
             attributes in one place.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Shimmer Animation Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The shimmer effect is implemented as a CSS keyframe animation that moves a
           linear gradient across the element background. The gradient consists of three
           color stops: a base color (dark gray in light mode, dark gray in dark mode),
@@ -341,7 +342,7 @@ export default function LoadingSkeletonArticle() {
           <code>200% 0</code>, creating a sweeping light band across the skeleton. The
           animation runs infinitely with a linear easing and a duration of
           approximately 1.5 seconds.
-        </p>
+        </HighlightBlock>
         <p>
           For users with <code>prefers-reduced-motion: reduce</code>, a media query
           disables the animation entirely, rendering a static gray placeholder. This
@@ -365,10 +366,10 @@ export default function LoadingSkeletonArticle() {
             Parent renders <code>{"<SkeletonWrapper loading={true}>"}</code> with
             skeleton children inside.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <code>SkeletonWrapper</code> renders its children (skeletons) and sets{" "}
             <code>aria-busy=&quot;true&quot;</code> on the container.
-          </li>
+          </HighlightBlock>
           <li>
             Each skeleton component renders a div with the shimmer CSS class, sized
             to match the expected content dimensions.
@@ -401,7 +402,7 @@ export default function LoadingSkeletonArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration with React Query</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When using React Query, the <code>useQuery</code> hook returns an{" "}
           <code>isLoading</code> flag that is true only during the initial fetch
           (no cached data exists) and <code>isFetching</code> that is true during
@@ -411,33 +412,33 @@ export default function LoadingSkeletonArticle() {
           recommended pattern is: show full skeleton during <code>isLoading</code>,
           show no skeleton during <code>isFetching</code> (content remains visible,
           optional opacity transition during refetch).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration with SWR</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SWR provides <code>isLoading</code> (no data yet) and{" "}
           <code>isValidating</code> (currently fetching). The same pattern applies:
           skeleton during <code>isLoading</code>, no skeleton during{" "}
           <code>isValidating</code>. SWR&apos;s <code>fallbackData</code> option can
           be used to provide skeleton-shaped placeholder data during SSR, ensuring
           the server renders the skeleton HTML immediately.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Extended loading (slow network):</strong> The shimmer animation
             loops indefinitely via CSS keyframes. No JavaScript timer or state update
             is required. The browser compositor thread handles the animation with
             negligible CPU usage.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rapid loading toggles:</strong> If data is cached and loading
             resolves within milliseconds, the skeleton may flash briefly. Mitigation:
             add a <code>delay</code> prop (e.g., 200ms) to the SkeletonWrapper that
             only renders skeletons if loading persists beyond the delay threshold.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR hydration mismatch:</strong> If the server renders a skeleton
             but the client has cached data, React will attempt to replace the skeleton
             with content during hydration. To prevent warnings, use a{" "}
@@ -445,7 +446,7 @@ export default function LoadingSkeletonArticle() {
             skeleton during SSR, then on client mount, check if data is already
             available and render content instead. This is a controlled hydration
             transition.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reduced motion:</strong> The CSS <code>@media
             (prefers-reduced-motion: reduce)</code> rule disables the shimmer
@@ -458,11 +459,11 @@ export default function LoadingSkeletonArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the{" "}
           <strong>Example tab</strong>. Below is a high-level overview of each module
           and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">
@@ -482,7 +483,7 @@ export default function LoadingSkeletonArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Module 1: Skeleton Types (skeleton-types.ts)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the <code>SkeletonType</code> union (
           <code>text | image | avatar | custom</code>), the base{" "}
           <code>SkeletonProps</code> interface with shared fields (width, height,
@@ -490,7 +491,7 @@ export default function LoadingSkeletonArticle() {
           interface adding the <code>loading</code> boolean. All interfaces use
           optional fields with sensible defaults to minimize boilerplate at call
           sites.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Module 2: Root Skeleton (skeleton.tsx)
@@ -508,14 +509,14 @@ export default function LoadingSkeletonArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Module 3: Skeleton Line (skeleton-line.tsx)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders <code>count</code> number of horizontal bars, each with a
           configurable width (from the <code>widths</code> array or a default of
           100%). Each line uses the shimmer CSS class. The height defaults to 16px
           (matching a 1rem line-height with padding). Lines are separated by a
           consistent gap (8px) to match typical text line spacing. The last line
           can be given a shorter width to mimic natural paragraph endings.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Module 4: Skeleton Rect (skeleton-rect.tsx)
@@ -542,7 +543,7 @@ export default function LoadingSkeletonArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Module 6: Skeleton Wrapper (skeleton-wrapper.tsx)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The composition component that accepts <code>loading</code> and{" "}
           <code>children</code>. When loading is true, renders the skeleton children.
           When false, renders the actual content. Wraps output in a container div
@@ -552,12 +553,12 @@ export default function LoadingSkeletonArticle() {
           user profile&quot;). An optional <code>delay</code> prop prevents skeleton
           flashing for fast resolutions by only rendering skeletons if loading persists
           beyond the delay threshold.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Module 7: Shimmer CSS (shimmer-animation.css)
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the <code>@keyframes shimmer</code> animation that moves a linear
           gradient from <code>-200% 0</code> to <code>200% 0</code>. The gradient
           uses three stops: base color, highlight, base color. The animation runs
@@ -566,7 +567,7 @@ export default function LoadingSkeletonArticle() {
           animation by setting <code>animation: none</code> and rendering the base
           color as a static background. The shimmer class is applied to skeleton
           elements via Tailwind&apos;s <code>className</code> prop.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -611,7 +612,7 @@ export default function LoadingSkeletonArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The shimmer animation uses <code>background-position</code> which, while
           not a transform property, is optimized by modern browsers for gradient
           animations because the gradient is pre-composited. For even better
@@ -619,7 +620,7 @@ export default function LoadingSkeletonArticle() {
           <code>transform: translateX</code> (which is strictly GPU-composited),
           but the background-position approach is simpler and performs well for
           typical skeleton counts (under 20 elements on screen).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">CLS Prevention</h3>
         <p>
@@ -627,14 +628,14 @@ export default function LoadingSkeletonArticle() {
           address. To prevent CLS:
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Text skeletons:</strong> Use the same number of lines as the
             expected content. For variable-length text (e.g., article titles), use
             a max line count (e.g., 3 lines) and accept that shorter text will have
             unused skeleton lines that disappear on content render — this is
             acceptable because the container height shrinks, which does not count
             as CLS if it does not push other content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Image skeletons:</strong> Use the exact aspect ratio of the
             loaded image. If the image is 16:9, the skeleton rect must be 16:9.
@@ -649,14 +650,14 @@ export default function LoadingSkeletonArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Excessive skeleton count:</strong> Rendering 50+ skeleton elements
             on a complex page (e.g., a data table with 20 rows, each with 3 skeleton
             cells) means 60+ simultaneous shimmer animations. While each animation is
             GPU-composited, the browser still needs to manage 60+ compositor layers.
             Mitigation: limit shimmer to the viewport-visible skeletons, use
             intersection observer to defer off-screen skeleton animations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Large skeleton elements:</strong> A full-page skeleton rect
             (e.g., a hero image placeholder at 1920x600) with a shimmer animation
@@ -676,24 +677,24 @@ export default function LoadingSkeletonArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Delay threshold:</strong> Only show skeletons if loading exceeds
             200-300ms. For fast resolutions (cached data, edge CDN), skip the skeleton
             entirely and render content directly. This eliminates the flash of skeleton
             followed immediately by content.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Batch skeleton rendering:</strong> For data tables or lists,
             render a single skeleton row and repeat it via CSS or a loop, rather than
             rendering unique skeleton components per cell. This reduces React component
             tree size.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>will-change hint:</strong> Apply <code>will-change: background-position</code>
             to skeleton elements to promote them to their own compositor layer before
             the animation starts. Remove the hint after animation begins to free
             memory (the browser manages this automatically for CSS animations).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -705,17 +706,17 @@ export default function LoadingSkeletonArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               The loading container (SkeletonWrapper) sets{" "}
               <code>aria-busy=&quot;true&quot;</code> when skeletons are visible.
               Screen readers announce &quot;busy&quot; or &quot;loading&quot; to
               indicate that content is being fetched.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               An <code>aria-label</code> describes what is loading (e.g., &quot;Loading
               user profile&quot;, &quot;Loading search results&quot;). This provides
               context beyond the generic &quot;busy&quot; announcement.
-            </li>
+            </HighlightBlock>
             <li>
               For critical loading states (e.g., payment processing), use{" "}
               <code>role=&quot;status&quot;</code> on the container with a live region
@@ -726,14 +727,14 @@ export default function LoadingSkeletonArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Reduced Motion</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The shimmer animation is disabled for users with{" "}
             <code>prefers-reduced-motion: reduce</code> via a CSS media query. The
             skeleton renders as a static gray placeholder. This is not optional — it
             is a WCAG 2.1 requirement and a legal requirement in many jurisdictions.
             Users with vestibular disorders can experience nausea or dizziness from
             continuous motion animations.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Keyboard Navigation</h3>
@@ -748,20 +749,20 @@ export default function LoadingSkeletonArticle() {
             replaces skeletons, the actual interactive elements (buttons, links,
             inputs) receive their natural tab order.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             If a loading state includes a cancel/retry button, that button must be
             focusable and operable via keyboard while skeletons are visible.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Skeleton components do not accept user input or render untrusted content,
           so XSS is not a direct concern. However, the <code>aria-label</code> prop
           on SkeletonWrapper may contain dynamic strings (e.g., <code>{`"Loading {productName}"`}</code>). Ensure these strings are sanitized if they originate
           from user-generated content or API responses. React&apos;s default text
           rendering escapes HTML, so plain string interpolation is safe.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 9: Testing Strategy */}
@@ -778,20 +779,20 @@ export default function LoadingSkeletonArticle() {
             Verify DOM structure: text skeletons produce multiple divs, image
             skeletons produce a single rect, avatar skeletons produce a circle.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>SkeletonWrapper loading toggle:</strong> Render SkeletonWrapper
             with <code>loading=true</code>, assert skeleton children are in the DOM
             and <code>aria-busy=&quot;true&quot;</code> is set. Re-render with{" "}
             <code>loading=false</code>, assert actual children replace skeletons and{" "}
             <code>aria-busy=&quot;false&quot;</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Delay threshold:</strong> Render SkeletonWrapper with{" "}
             <code>{`delay={200}`}</code> and <code>{`loading={true}`}</code>. Advance timers
             by 100ms, assert skeletons are not yet rendered. Advance to 250ms, assert
             skeletons appear. Set <code>loading=false</code> at 150ms, assert
             skeletons never rendered.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Line widths:</strong> Render SkeletonLine with{" "}
             <code>{"widths={['100%', '80%', '60%']"}</code>,
@@ -801,12 +802,12 @@ export default function LoadingSkeletonArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>React Query integration:</strong> Mock a useQuery hook with a
             500ms delay. Render a component using SkeletonWrapper with{" "}
             <code>{`loading={isLoading}`}</code>. Assert skeletons render immediately,
             content appears after 500ms, skeletons are removed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>CLS measurement:</strong> Use Playwright&apos;s{" "}
             <code>performance.getEntriesByType(&quot;layout-shift&quot;)</code> to
@@ -827,11 +828,11 @@ export default function LoadingSkeletonArticle() {
             Run axe-core automated checks on a page with visible skeletons. Verify
             no violations.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Test with a screen reader (NVDA, VoiceOver, or JAWS). Verify that
             <code>aria-busy=&quot;true&quot;</code> causes the screen reader to
             announce &quot;busy&quot; or &quot;loading&quot;.
-          </li>
+          </HighlightBlock>
           <li>
             Test with <code>prefers-reduced-motion: reduce</code> enabled in browser
             dev tools. Verify shimmer animation is not playing (static gray placeholder).
@@ -844,10 +845,10 @@ export default function LoadingSkeletonArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Rapid loading toggles (50ms on/off cycles): verify no memory leaks, no
             stale state, skeletons clean up correctly.
-          </li>
+          </HighlightBlock>
           <li>
             50+ skeleton elements on screen simultaneously: verify no jank, all
             shimmer animations run at 60fps, memory usage is stable.
@@ -893,10 +894,10 @@ export default function LoadingSkeletonArticle() {
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Use Spinners When:</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               The content shape is unknown or variable (e.g., search results with
               varying result types, API responses with dynamic schemas).
-            </li>
+            </HighlightBlock>
             <li>
               The loading duration is expected to be long (5+ seconds). A spinner
               with a progress indicator is more appropriate than a skeleton that
@@ -928,18 +929,18 @@ export default function LoadingSkeletonArticle() {
             (Framer Motion, React Spring) consumes the main thread and battery.
             Interviewers expect CSS-only keyframe animations for this use case.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility:</strong> Rendering skeletons without{" "}
             <code>aria-busy</code> or without respecting <code>prefers-reduced-motion</code>{" "}
             means screen reader users get no loading indication and motion-sensitive
             users get an annoying animation. Both are production-blocking issues.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>No delay threshold:</strong> Showing skeletons immediately causes
             a flash when data resolves in under 100ms (cached responses, edge CDN).
             Interviewers look for candidates who discuss the delay threshold pattern
             (show skeleton only if loading exceeds 200-300ms).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Over-nesting skeletons:</strong> Wrapping every individual element
             in its own SkeletonWrapper creates deeply nested loading state logic. The
@@ -967,7 +968,7 @@ export default function LoadingSkeletonArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">SkeletonWrapper vs Conditional Rendering</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The inline pattern <code>{"{loading ? <Skeleton /> : <Content />}"}</code>{" "}
             is simple and requires no additional components. The SkeletonWrapper pattern
             adds a layer of abstraction but centralizes accessibility attributes, delay
@@ -976,12 +977,12 @@ export default function LoadingSkeletonArticle() {
             states, SkeletonWrapper provides consistency and reduces boilerplate.
             Interviewers expect candidates to articulate this trade-off rather than
             dogmatically preferring one approach.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">SSR Skeletons vs SSR Content</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Rendering skeletons during SSR ensures the initial HTML response has a
             complete page structure, which is good for perceived performance and SEO
             (search engine crawlers see a structured page). However, if the server
@@ -991,7 +992,7 @@ export default function LoadingSkeletonArticle() {
             skeletons during SSR are simpler (no server-side data fetching) but slower
             (client must fetch after hydration). Server-fetched content during SSR is
             faster but adds server complexity and coupling.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>

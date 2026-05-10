@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,7 @@ export default function CommentThreadArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable comment thread component for a large-scale
           web application. The system must support deeply nested replies with visual
           threading (indent levels, connecting lines), lazy-loading of child comments
@@ -49,7 +50,7 @@ export default function CommentThreadArticle() {
           (avatar, username, timestamp, edited indicator), pagination at the root level,
           real-time updates via WebSocket for incoming replies, and full keyboard
           accessibility with screen reader announcements for dynamic content changes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -57,25 +58,25 @@ export default function CommentThreadArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Maximum nesting depth is 5 levels. Beyond that, replies are flattened
             and displayed via a &quot;see more replies&quot; link.
-          </li>
+          </HighlightBlock>
           <li>
             Comments can contain basic rich text: bold, italic, links, and inline code.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The backend provides REST endpoints for CRUD operations on comments and
             a WebSocket endpoint for real-time notifications.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Root-level comments are paginated (cursor-based). Child comments load
             on-demand when a user expands a collapsed thread.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Users can perform actions (like, reply, edit, delete) on their own comments
             or like other users&apos; comments.
-          </li>
+          </HighlightBlock>
           <li>
             The system must handle concurrent edits gracefully (two users editing the
             same comment simultaneously).
@@ -94,11 +95,11 @@ export default function CommentThreadArticle() {
             tree structure with visual indentation and connecting lines to indicate
             parent-child relationships.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Nested Reply Depth Limit:</strong> Maximum nesting depth of 5.
             Replies beyond depth 5 are flattened and accessible via a
             &quot;see more replies&quot; link.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy Loading Children:</strong> Child comments are not fetched
             initially. When a user clicks &quot;expand replies&quot;, the children are
@@ -109,11 +110,11 @@ export default function CommentThreadArticle() {
             appears instantly in the thread. If the API call fails, the comment reverts
             with an error indicator and retry option.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimistic Actions:</strong> Like, edit, and delete operations update
             the UI immediately. On API failure, the UI rolls back to the previous state
             and displays an error toast.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rich Text in Comments:</strong> Support basic formatting — bold,
             italic, hyperlinks, and inline code. Rendered as sanitized HTML.
@@ -127,10 +128,10 @@ export default function CommentThreadArticle() {
             <strong>Comment Actions:</strong> Each comment has action buttons: reply,
             edit (owner only), delete (owner only), and like/upvote.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Root-Level Pagination:</strong> Top-level comments load in pages
             via cursor-based pagination with a &quot;Load More&quot; button.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Real-Time Updates:</strong> A WebSocket connection delivers new
             replies and new root comments in real time. Updates are merged optimistically
@@ -153,15 +154,15 @@ export default function CommentThreadArticle() {
             <strong>Scalability:</strong> The system should handle threads with 10,000+
             total comments without memory leaks or render degradation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reliability:</strong> Optimistic updates must always have a rollback
             path. No data loss on API failure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Full keyboard navigation between comments
             (arrow keys), <code>aria-live</code> regions announce new comments to screen
             readers, focus management after post/edit/delete actions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for the comment tree
             structure, action types, and state shape.
@@ -200,7 +201,7 @@ export default function CommentThreadArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>comment tree state management</strong>
           from the <strong>comment rendering</strong> using a global store (Zustand) and
           a recursive component rendering strategy. The store manages the flat comment
@@ -208,32 +209,32 @@ export default function CommentThreadArticle() {
           rollback snapshots, and exposes actions for CRUD operations and real-time
           merge. The rendering layer subscribes to the store, renders the tree recursively
           with lazy-loading support, and manages collapse/expand state per node.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API + useReducer:</strong> Viable but requires wrapping the
             component tree in a Provider. Every comment node would consume the context,
             causing re-renders on any tree mutation. Zustand&apos;s selector-based
             subscriptions allow individual comment nodes to re-render only when their
             own data changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Redux Toolkit:</strong> Overkill for this use case. Requires
             boilerplate (slices, thunks, extraReducers) and introduces global state that
             is unnecessary for a single-page component. Redux&apos;s immutable update
             patterns are also more verbose for tree manipulations.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Server-side rendering with hydration:</strong> Initial comments
             could be SSR-rendered, but optimistic UI and real-time WebSocket updates
             are inherently client-side. A hybrid approach (SSR for initial page load,
             client hydration for interactivity) is possible but adds complexity.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why Zustand + Recursive Components + Flat-to-Tree is optimal:</strong>{" "}
           Zustand provides a lightweight, selector-based global store. Storing comments
           as a flat list (keyed by ID) with parent references avoids the complexity of
@@ -242,7 +243,7 @@ export default function CommentThreadArticle() {
           inserts, updates, and deletes O(1) operations on the flat list, with tree
           reconstruction being a derived computation only triggered when the UI re-renders.
           Recursive components naturally map to the tree structure.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -254,7 +255,7 @@ export default function CommentThreadArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Comment Types &amp; Interfaces (<code>comment-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Defines the <code>CommentNode</code> interface with fields for id, parentId,
             author, content (rich text string), likeCount, createdAt, updatedAt, isEdited,
             isOptimistic, isDeleted, and childrenIds. The <code>CommentAction</code> union
@@ -262,7 +263,7 @@ export default function CommentThreadArticle() {
             The <code>ThreadState</code> interface describes the flat store shape: a
             record of comments keyed by ID, a set of root IDs, a cursor for pagination,
             and a map of pending (in-flight) request IDs.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -331,17 +332,17 @@ export default function CommentThreadArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. useCommentActions Hook (<code>use-comment-actions.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Custom hook wrapping optimistic action dispatch with automatic rollback on
             API failure. Each action (like, edit, delete, post) captures the current
             state as a rollback snapshot, applies the optimistic update, calls the API,
             and on failure, restores the snapshot and triggers an error notification.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">7. Component Layer</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <code>CommentThread</code> — root renderer, subscribes to store rootIds,
             renders pagination button. <code>CommentNode</code> — recursive component
             rendering a single comment with its actions, rich text content, author info,
@@ -350,7 +351,7 @@ export default function CommentThreadArticle() {
             with basic validation. <code>CommentActions</code> — action button row
             (like, reply, edit, delete). <code>LoadMore</code> — pagination button for
             root-level comments. See the Example tab for complete implementations.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
@@ -362,13 +363,13 @@ export default function CommentThreadArticle() {
           The tree structure is derived: a utility function walks the flat list and
           builds the rendering order, respecting depth limits and collapsed states.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimistic updates are the most complex part. Before any mutation, the store
           snapshots the affected comment(s) into <code>rollbackSnapshots</code>. The
           optimistic change is applied immediately. If the API succeeds, the snapshot is
           discarded. If it fails, the snapshot is restored and the optimistic flag is
           cleared. This ensures the UI is always consistent, even under network failure.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/comment-thread-architecture.svg"
@@ -404,10 +405,10 @@ export default function CommentThreadArticle() {
             On success: the API returns the server-assigned ID. The optimistic comment
             is replaced with the real one. Snapshot is cleared.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             On failure: the rollback snapshot restores the previous state. The optimistic
             comment is removed. An error toast notifies the user with a retry option.
-          </li>
+          </HighlightBlock>
           <li>
             WebSocket delivers a <code>NEW_REPLY</code> event. The store merges the
             incoming comment into the flat list. If the parent is loaded, the comment
@@ -419,40 +420,40 @@ export default function CommentThreadArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions and derived tree computations. This ensures predictable behavior
           and makes the system testable in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Navigate away during post:</strong> The <code>useCommentThread</code>{" "}
             hook uses <code>AbortController</code> to cancel in-flight fetch requests on
             unmount. Optimistic comments with <code>isOptimistic: true</code> are cleaned
             up from the store on unmount.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>WebSocket reply for unloaded parent:</strong> The store checks if the
             parentId exists in <code>comments</code>. If not, the incoming comment is
             stored in a <code>bufferedComments</code> map. When the user eventually
             expands that parent, buffered comments are flushed into the tree.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Concurrent edits:</strong> Each mutation carries an
             <code>updatedAt</code> timestamp. The store uses last-write-wins semantics
             based on the server&apos;s returned timestamp. If the user&apos;s local edit
             is superseded, the UI updates with the server version and shows a subtle
             &quot;updated&quot; indicator.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Deleted parent with visible children:</strong> When a parent is
             deleted, its children&apos;s <code>parentId</code> is reassigned to the
             grandparent (if exists) or to null (becoming a root comment). This prevents
             orphaned comments from disappearing.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -490,7 +491,7 @@ export default function CommentThreadArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (comment-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages the flat comment list, rollback snapshots, collapse state,
           and pagination metadata. Key design decisions include: storing comments as a
           flat <code>Record&lt;string, CommentNode&gt;</code> for O(1) access, maintaining
@@ -499,7 +500,7 @@ export default function CommentThreadArticle() {
           exposes <code>applyOptimisticInsert</code>, <code>confirmOptimisticInsert</code>,
           <code>rollbackMutation</code>, <code>toggleCollapse</code>, and{" "}
           <code>mergeWebSocketUpdate</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Tree Utilities (comment-tree-utils.ts)</h3>
         <p>
@@ -513,36 +514,36 @@ export default function CommentThreadArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: API Service (comment-api.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Thin wrapper around <code>fetch</code> with typed request/response objects.
           Functions: <code>fetchThread</code> (paginated, cursor-based),{" "}
           <code>fetchChildren</code> (lazy-loaded by parentId), <code>postComment</code>,
           <code>editComment</code>, <code>deleteComment</code>, <code>likeComment</code>.
           Each returns a typed promise. Errors are normalized into a consistent
           <code>ApiError</code> shape with message, status code, and retry flag.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: useCommentThread Hook</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Orchestrates the initial fetch, pagination (loadMore function), lazy loading
           (loadChildren function), and WebSocket connection. Manages local state for
           <code>isLoading</code>, <code>error</code>, and <code>isConnected</code>.
           The WebSocket handler parses incoming messages and dispatches them to the
           store&apos;s <code>mergeWebSocketUpdate</code> action. Handles reconnection
           with exponential backoff (1s, 2s, 4s, max 30s).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: useCommentActions Hook</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Wraps the optimistic-update-with-rollback pattern. Each action function
           (handleLike, handleEdit, handleDelete, handlePost) follows the same flow:
           snapshot current state, apply optimistic update, fire API call, on success
           confirm, on failure rollback. The hook exposes these functions for use in
           components. Error handling triggers a toast notification with retry capability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: Component Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <code>CommentThread</code> subscribes to rootIds and renders the top-level
           comment list with the LoadMore button. <code>CommentNode</code> is recursive
           — it renders the comment body, author info, action buttons, and conditionally
@@ -553,7 +554,7 @@ export default function CommentThreadArticle() {
           <code>CommentActions</code> renders the action row with like count, reply,
           edit (conditional on ownership), and delete (conditional on ownership).{" "}
           <code>LoadMore</code> is a simple button that triggers pagination.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -609,29 +610,29 @@ export default function CommentThreadArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is total loaded comments and <code>k</code> is the number
           of children of a deleted comment (typically small, &lt; 20). Tree derivation
           runs on every render but is optimized via memoization — the store only triggers
           re-derivation when the comment set changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Tree derivation on every mutation:</strong> Running{" "}
             <code>buildTree</code> on the entire flat list for every single comment
             insert is O(n). For threads with 10,000+ comments, this becomes costly.
             Mitigation: memoize the tree derivation using{" "}
             <code>useMemo</code> in the root component, keyed on the comment record
             reference. Only re-derive when the store signals a structural change.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Recursive re-renders:</strong> A mutation to a root comment could
             cascade re-renders through all descendant CommentNodes. Mitigation: use
             Zustand selectors so each CommentNode subscribes only to its own comment by
             ID. The parent only re-renders if its childrenIds array changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rich text sanitization:</strong> Running DOMPurify on every comment
             render is expensive for large comment sets. Mitigation: sanitize once on
@@ -647,22 +648,22 @@ export default function CommentThreadArticle() {
             expands. This drastically reduces initial data transfer and render cost.
             A thread with 500 total comments might only load 50 root comments initially.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtual scrolling for root comments:</strong> For extremely long
             threads, replace the flat render with a virtualized list (e.g.,
             @tanstack/react-virtual). Only visible comments are rendered in the DOM.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stable IDs:</strong> Use server-generated UUIDs. Optimistic comments
             use client-generated UUIDs with a <code>optimistic-</code> prefix to avoid
             collisions. On confirmation, the optimistic entry is replaced with the
             server entry.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Debounced like actions:</strong> Rapid likes are debounced (300ms)
             to avoid firing multiple API requests. The UI reflects the latest like state
             immediately.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -671,7 +672,7 @@ export default function CommentThreadArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">XSS Prevention (CRITICAL)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Comment content is rich text rendered via <code>dangerouslySetInnerHTML</code>.
           This is the primary XSS vector. All user-generated content must pass through
           a sanitization layer (e.g., DOMPurify) before rendering. The sanitizer should
@@ -680,16 +681,16 @@ export default function CommentThreadArticle() {
           noreferrer&quot;</code>), and <code>&lt;code&gt;</code>. All other tags,
           attributes, and inline styles are stripped. Server-side sanitization is the
           first line of defense; client-side sanitization is a defense-in-depth measure.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Authorization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Edit and delete actions must verify ownership on the server. The client hides
           these buttons for non-owners, but the API must independently validate that the
           requesting user is the comment author or has admin privileges. The store should
           track the current user&apos;s ID and compare it against the comment&apos;s
           author ID before exposing edit/delete UI.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Rate Limiting</h3>
         <p>
@@ -721,26 +722,26 @@ export default function CommentThreadArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               The comment thread region has <code>aria-live=&quot;polite&quot;</code> so
               new comments are announced to screen readers without interrupting ongoing
               speech.
-            </li>
+            </HighlightBlock>
             <li>
               Each comment has <code>role=&quot;article&quot;</code> with{" "}
               <code>aria-label</code> containing the author name and timestamp.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Optimistic comments have an <code>aria-busy=&quot;true&quot;</code>{" "}
               attribute, indicating to screen readers that the content is being
               confirmed by the server.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The thread container uses <code>role=&quot;feed&quot;</code> with{" "}
             <code>aria-busy</code> during initial load. Individual comments use{" "}
             <code>role=&quot;article&quot;</code>. The reply form uses{" "}
@@ -748,7 +749,7 @@ export default function CommentThreadArticle() {
             Action buttons have descriptive <code>aria-label</code> attributes
             (e.g., &quot;Like comment by John&quot;, &quot;Delete your comment&quot;).
             See the Example tab for the exact markup.
-          </p>
+          </HighlightBlock>
         </div>
       </section>
 
@@ -758,13 +759,13 @@ export default function CommentThreadArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Store actions:</strong> Test applyOptimisticInsert creates a comment
             with isOptimistic: true and stores the rollback snapshot. Test
             confirmOptimisticInsert replaces the optimistic entry with the server
             response. Test rollbackMutation restores the snapshot and removes the
             optimistic change.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Tree utilities:</strong> Test buildTree correctly nests children
             under parents. Test depth calculation produces correct depth values. Test
@@ -780,12 +781,12 @@ export default function CommentThreadArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Optimistic post flow:</strong> Render CommentThread, fill form,
             submit. Assert optimistic comment appears immediately. Mock API success,
             assert comment is confirmed with server ID. Mock API failure, assert comment
             reverts and error toast appears.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy loading:</strong> Render a comment with collapsed children.
             Click &quot;expand replies&quot;. Assert fetchChildren is called with
@@ -796,10 +797,10 @@ export default function CommentThreadArticle() {
             message. Assert the comment appears in the correct position in the tree.
             Test that a reply for an unloaded parent is buffered.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pagination:</strong> Click &quot;Load More&quot;. Assert fetchThread
             is called with the correct cursor. Assert new comments append to rootIds.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
@@ -812,14 +813,14 @@ export default function CommentThreadArticle() {
             Rapid like clicks: verify debouncing prevents multiple API calls, UI reflects
             the latest state.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             XSS attempt in comment content: verify sanitizer strips script tags and
             dangerous attributes, only allowed tags remain.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered thread, verify
             aria-live regions, role attributes, keyboard navigation between comments.
-          </li>
+          </HighlightBlock>
           <li>
             WebSocket disconnect and reconnect: verify messages are not lost during
             reconnect window, buffered messages are processed after reconnect.
@@ -847,18 +848,18 @@ export default function CommentThreadArticle() {
             comment remains on screen indefinitely. Always capture a snapshot before the
             mutation and restore it on failure.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Fetching all comments on initial load:</strong> For threads with
             thousands of comments, fetching everything upfront is a performance disaster.
             Interviewers look for candidates who discuss lazy loading, pagination, and
             virtualization as essential strategies.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility:</strong> Rendering a comment thread without
             aria-live regions means screen reader users are unaware of new replies.
             Without keyboard navigation, users who cannot use a mouse are locked out.
             This is a critical oversight.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No depth limit on nesting:</strong> Allowing unlimited nesting means
             a malicious user could create 10,000 levels of nesting, crashing the
@@ -869,7 +870,7 @@ export default function CommentThreadArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Flat List vs Nested Tree in State</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A nested tree mirrors the visual structure but makes mutations O(d) where d
             is the depth of the affected node. Every mutation requires walking the tree
             and creating new objects along the path (immutability). A flat list with
@@ -879,12 +880,12 @@ export default function CommentThreadArticle() {
             fast enough with memoization. For very large threads (n &gt; 10,000), a
             hybrid approach works: store the tree but use Immer for immutable updates,
             which provides O(d) mutations with minimal boilerplate.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Optimistic UI vs Server-Confirmed UI</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Server-confirmed UI is simpler — wait for the API response, then update the
             UI. The latency cost is noticeable (200-800ms round trip), making the app
             feel sluggish. Optimistic UI updates immediately, providing instant feedback.
@@ -894,12 +895,12 @@ export default function CommentThreadArticle() {
             failure rate is low and the UX improvement is significant. For destructive
             actions (delete), some teams prefer a confirmation dialog before the action,
             reducing the rollback probability.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Cursor-Based vs Offset Pagination</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Offset pagination (page=1, page=2) is simple to implement but has a critical
             flaw: if items are inserted or deleted between page requests, items can be
             skipped or duplicated. Cursor-based pagination (cursor=lastItemId) uses the
@@ -908,7 +909,7 @@ export default function CommentThreadArticle() {
             where new replies arrive in real time, cursor-based pagination is essential.
             The trade-off is that you cannot jump to an arbitrary page number — users
             must scroll sequentially.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">

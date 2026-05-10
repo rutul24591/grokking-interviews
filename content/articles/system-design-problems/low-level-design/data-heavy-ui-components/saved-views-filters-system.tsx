@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +38,7 @@ export default function SavedViewsFiltersSystemArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a saved-views system — the layer
           that lets users capture a combination of filters,
           sort, column configuration, and density into a
@@ -49,8 +51,8 @@ export default function SavedViewsFiltersSystemArticle() {
           the Data Table&rsquo;s filter and sort state and
           the Column Configuration system, gathering them
           into a serializable preset.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: a serializable view
           schema that captures everything that affects
           presentation; sharing semantics (private,
@@ -60,10 +62,10 @@ export default function SavedViewsFiltersSystemArticle() {
           schema evolves; conflict resolution when a
           shared view is edited concurrently; and
           accessibility for the view-management UI.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Power users (analysts, ops, customer success)
           curate dozens of saved views to fit different
           workflows. Team leads share team-relevant views.
@@ -73,33 +75,33 @@ export default function SavedViewsFiltersSystemArticle() {
           declare the view schema (which dimensions are
           captured), point to a persistence endpoint, and
           the system handles the rest.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Data Table&rsquo;s filter and sort state and
           the Column Configuration are accessible via
           stable APIs. Backend provides per-user view
           storage plus shared-view storage. Modern
           browsers; we use the URL for sharing and
           localStorage as a write-through cache.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the Data Table itself or
           its filter editors. We do not implement
           dashboard saved-views (different concern). We
           do not implement cross-table saved views (each
           view is per-table).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Capture current state into a named preset:
           filters, sort, column config, density. Restore a
           preset: apply all captured state to the table.
@@ -111,10 +113,10 @@ export default function SavedViewsFiltersSystemArticle() {
           ad-hoc-overridden state) reflects in the URL
           for sharing. Schema migration: views referencing
           removed filters or columns gracefully drop them.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sharing: team-shared views (visible to all team
           members); org-shared. Role defaults: admin sets
           a default view per role for new users. Pinned
@@ -123,65 +125,65 @@ export default function SavedViewsFiltersSystemArticle() {
           log for shared views (who edited what).
           Conflict resolution: warn when a shared view is
           modified by another user.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-table views, dashboard views (separate
           subsystems). Real-time collaborative editing of
           a single view. Server-side execution of views
           (saving the rendered data, not just the
           definition).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           View load on table mount under 100 ms (using
           cache). Switching presets feels instant (under
           200 ms including data fetch). Save debounced.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Views serialize and deserialize round-trip
           cleanly. Schema migration handles missing
           referenced fields without breaking views.
           Concurrent edits to shared views detected and
           surfaced.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-user views scope by user id. Shared views
           scope by team or org with proper access checks.
           Server enforces ownership and sharing
           permissions.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           View picker is keyboard-navigable. Save and
           rename dialogs are accessible. State changes
           announce.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           View schema is versioned; migrations bridge
           versions. The capture logic is centralized
           (one place that knows what dimensions a view
           contains). Adding a new dimension is a schema
           extension plus a migration.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The system is structured as a <strong>view
           schema</strong> (declares what dimensions a view
           captures), a <strong>view store</strong> (per-user
@@ -190,8 +192,8 @@ export default function SavedViewsFiltersSystemArticle() {
           a view, applies a view to the table), and a
           <strong> URL bridge</strong> (synchronizes active
           view with URL).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>view schema</strong> is a versioned
           JSON shape. Each view has{" "}
           <code>{` { id, name, version, filters, sort, columnConfig, density, owner, sharing? } `}</code>.
@@ -200,8 +202,8 @@ export default function SavedViewsFiltersSystemArticle() {
           from the current table state. The apply logic
           (a single function per version) knows how to
           push them back into the table.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>view store</strong> holds the user&rsquo;s
           presets plus shared presets they have access to.
           On mount, we fetch both lists in parallel.
@@ -210,7 +212,7 @@ export default function SavedViewsFiltersSystemArticle() {
           active view is part of the store; switching
           views updates the active view id and applies
           the captured state to the table.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>capture</strong> (user clicks Save
           View), the system gathers the current filter,
@@ -231,7 +233,7 @@ export default function SavedViewsFiltersSystemArticle() {
           new state. The URL updates to reference the
           view.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>URL sync</strong>: the active view&rsquo;s
           id is in the URL. When the user makes ad-hoc
           changes (e.g. adds an additional filter
@@ -241,8 +243,8 @@ export default function SavedViewsFiltersSystemArticle() {
           back to the view, the URL is just the view id
           again. Sharing the URL takes recipients to the
           same state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Schema migration</strong>: views are
           versioned. If the table schema changes (a
           filter dimension is removed), views referring
@@ -253,7 +255,7 @@ export default function SavedViewsFiltersSystemArticle() {
           warning that the view may not apply correctly
           and let the user choose to apply anyway or
           delete.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Sharing</strong>: views can be marked
           private (default), team-shared (visible to a
@@ -275,195 +277,208 @@ export default function SavedViewsFiltersSystemArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>ViewProvider</strong> instantiates the
+        <HighlightBlock as="p" tier="important"><Highlight tier="important"><strong>ViewProvider</strong></Highlight> instantiates the
           view store, capture/apply logic, and URL bridge.
           <strong> ViewStore</strong> holds the user&rsquo;s
           views and shared views.
           <strong> ViewCapture</strong> gathers state from
-          subsystems. <strong>ViewApply</strong> pushes
+          subsystems.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial"><strong>ViewApply</strong> pushes
           state to subsystems.
           <strong> ViewMigrator</strong> handles schema
           migration on load.
           <strong> ViewPicker</strong> is the UI for
           listing, selecting, saving, editing.
           <strong> URLBridge</strong> synchronizes active
-          view with URL.
-        </p>
+          view with URL.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          View list and active view live in an external
+        <HighlightBlock as="p" tier="crucial">View list and active view live in an external
           store. Active view&rsquo;s ad-hoc overrides
-          (changes since last save) are tracked separately
+          (changes</HighlightBlock>
+<HighlightBlock as="p" tier="important">since last save) are tracked separately
           so we can compute &ldquo;has this view been
-          modified&rdquo; for the Save badge. URL is the
+          modified&rdquo;</HighlightBlock>
+<HighlightBlock as="p" tier="important">for the Save badge. URL is the
           source of truth for the active view id and
-          override state.
-        </p>
+          override state.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          View shape:{" "}
-          <code>{` { id, name, version, filters, sort, columnConfig, density, owner, sharing? } `}</code>.
-          Server contract:{" "}
-          <code>{` GET /tables/:id/views, POST /views, PUT /views/:id, DELETE /views/:id `}</code>.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The contract must be versioned and migratable: a saved view payload should carry a schema
+          version so older clients can still render and newer clients can repair/migrate safely.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          A typical server contract includes listing views per table and CRUD operations, for example:
+          <code>GET /tables/:id/views</code>, <code>POST /views</code>, <code>PUT /views/:id</code>,
+          <code>DELETE /views/:id</code>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Concurrency should be explicit: use an <code>etag</code>/<code>version</code> to detect concurrent edits
+          and surface a conflict instead of silently overwriting another user&rsquo;s updates.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance</h2>
-        <p>
-          View list is small (typically dozens of views);
-          loading is fast. Apply happens in one
+        <HighlightBlock as="p" tier="crucial">View list is small (typically dozens of views);
+          loading is fast. Apply</HighlightBlock>
+<HighlightBlock as="p" tier="important">happens in one
           transaction across subsystems so the table
-          re-renders once. Caching of view list
-          eliminates per-mount network dependency.
-        </p>
+          re-renders</HighlightBlock>
+<HighlightBlock as="p" tier="important">once. Caching of view list
+          eliminates per-mount network dependency.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          The view picker is a dropdown or sidebar
+        <HighlightBlock as="p" tier="crucial">The view picker is a dropdown or sidebar
           listing views, with a Save button to capture
           current state. Active view shows a checkmark.
           Modified state shows a &ldquo;modified&rdquo;
           indicator next to the active view name; a Save
-          action commits changes back. Save As clones the
+          action commits changes back.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Save As clones the
           view under a new name. Sharing is a
           right-click or settings option per view.
           Search input filters the picker for users with
-          many views.
-        </p>
+          many views.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          View picker is keyboard-navigable
-          (arrow keys, Enter to select). Save dialog has
+        <HighlightBlock as="p" tier="crucial">View picker is keyboard-navigable
+          (arrow keys, Enter to select). Save</HighlightBlock>
+<HighlightBlock as="p" tier="important">dialog has
           proper labels. Modified-state indicator is
-          accessible (text equivalent, not just a
-          dot). Schema migration warnings announce.
-        </p>
+          accessible</HighlightBlock>
+<HighlightBlock as="p" tier="important">(text equivalent, not just a
+          dot). Schema migration warnings announce.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Per-user views scope by user id. Shared views
-          have explicit access lists; server enforces.
-          Audit log records edits for shared views. View
-          payloads contain filter values which may
-          contain PII (e.g. a user&rsquo;s email in a
-          filter); we treat them as sensitive in
-          logging and access controls.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          Saved views are data with access control: the server must enforce who can read/write/share a view,
+          and scopes must match the underlying dataset permissions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          View payloads can contain PII in filter values (for example an email); treat them as sensitive in
+          logging, analytics, and support tooling.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          When sharing, prefer server-side share tokens/ACLs over URL-only secrets, and rotate/revoke shares
+          as part of incident response.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for capture/apply round-trips,
-          schema migration scenarios. Integration tests:
-          save, switch, edit, share, clone. Concurrent
-          edit detection on shared views. URL sync
-          across navigation.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          Capture/apply must be round-trip safe: applying a saved view and then capturing should produce an
+          equivalent payload (modulo versioning/normalization).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Integration tests cover save, switch, edit, share, and clone flows, including URL sync across navigation.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Concurrency tests verify conflict detection on shared views (etag/version mismatch) and validate that
+          migrations repair older payloads without breaking rendering.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          A view references a filter dimension that no
-          longer exists: migrator drops it; user is
-          informed via a banner. A shared view is
-          edited concurrently by two users: optimistic
-          locking surfaces a conflict; the second saver
-          chooses to merge or overwrite. A view is
+        <HighlightBlock as="p" tier="important">A view references a filter dimension that no longer exists: migrator drops it;</HighlightBlock>
+<HighlightBlock as="p" tier="important">user is informed via a banner. A shared view is edited concurrently by two users:</HighlightBlock>
+<HighlightBlock as="p" tier="important">optimistic locking surfaces a conflict; the second saver chooses to merge or overwrite.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">A view is
           deleted while a user has it active: graceful
           fallback to default; banner explains. URL
           carries an unknown view id: fall back to
           default with a banner. Role default and user
           default conflict: user default wins. Many
           views (hundreds): picker virtualizes the list
-          and adds search.
-        </p>
+          and adds search.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          The system is generic over the captured
-          dimensions. Adding a new dimension (e.g.
+        <HighlightBlock as="p" tier="crucial">The system is generic over the captured
+          dimensions. Adding a new dimension</HighlightBlock>
+<HighlightBlock as="p" tier="important">(e.g.
           group-by) is a schema extension plus updates
-          to capture/apply. The same pattern works for
-          dashboard views, search views, and any
-          presentation-state-as-data UI.
-        </p>
+          to capture/apply.</HighlightBlock>
+        <HighlightBlock as="p" tier="important">The same pattern works for dashboard views,
+          search views, and any presentation-state-as-data UI.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          UI strings via i18n. View names are
-          user-supplied content; we render them as
-          text. Sharing labels (Private, Team) translate.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          All UI strings (Save, Save As, Modified, Sharing scopes) come from i18n and must be consistent across
+          surfaces (table header, picker, dialogs).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          View names are user-supplied content: render as text, don&rsquo;t auto-translate, and ensure sorting/search
+          uses locale-aware collation.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          RTL impacts picker layout and icons; use logical properties so the same view model renders correctly in RTL
+          without changing payload semantics.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Versioned schema vs free-form</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Versioned + migrations gracefully handles
           evolution; free-form requires manual fix-up
           per change. Versioned is the right architecture
           for any non-trivial product.
-        </p>
+        </HighlightBlock>
 
         <h3>Server-shared vs URL-only sharing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           URL-only sharing works for ad-hoc; server-
           shared views are persistent and discoverable
           by team members. Both are useful; we support
           both.
-        </p>
+        </HighlightBlock>
 
         <h3>Role defaults vs per-user only</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Role defaults reduce onboarding friction (new
           user lands on a sensible view rather than
           empty). Per-user-only is simpler but worse UX
           for new joiners.
-        </p>
+        </HighlightBlock>
 
         <h3>Modified-state tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tracking ad-hoc overrides and surfacing the
           modified indicator costs some implementation
           but is essential UX — without it, users
           don&rsquo;t know whether their changes are
           saved.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          AI-suggested views based on observed usage
+        <HighlightBlock as="p" tier="crucial">AI-suggested views based on observed usage
           patterns. View templates marketplace where
-          teams share well-curated views. Cross-tool
+          teams share well-curated views.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Cross-tool
           views (apply the same filter set to multiple
           tables). Real-time collaborative editing of
-          shared views. Versioning of views with rollback.
-        </p>
+          shared views. Versioning of views with rollback.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -477,32 +492,32 @@ export default function SavedViewsFiltersSystemArticle() {
           payload.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>2. How do you handle schema
           evolution?</strong> Versioned views with
           migrations. On load, migrators upgrade old
           versions to current; orphan references (filters
           for removed dimensions) drop gracefully with
           user notification.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How is sharing implemented?</strong>{" "}
           Per-view sharing flag (private, team, org).
           Server enforces access on read. Shared views
           show a &ldquo;Shared&rdquo; badge. Non-owners
           can apply and clone but not edit unless
           permissions allow.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How is the active view
           URL-synced?</strong> View id in URL; ad-hoc
           overrides since last save also serialize.
           Sharing the URL takes recipients to the same
           state. Saving overrides back to the view
           simplifies the URL to just the id.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. What happens with concurrent edits
@@ -511,13 +526,13 @@ export default function SavedViewsFiltersSystemArticle() {
           conflict and chooses to merge or overwrite.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How do role defaults fit in?</strong>{" "}
           Admins set a default per role. New users in
           that role mount the table with that view.
           User can change and save their own default,
           which then takes precedence.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>7. How is the modified state
@@ -527,30 +542,29 @@ export default function SavedViewsFiltersSystemArticle() {
           modified indicator.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How does this integrate with the
           Data Table?</strong> Through stable APIs on the
           subsystems (filters, sort, column config). The
           views system reads via getter, writes via
           setter; subsystems don&rsquo;t know about views.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A saved-views system is a{" "}
+        <HighlightBlock as="p" tier="crucial">A saved-views system is a{" "}
           <strong>versioned, capturable preset model</strong>{" "}
           for presentation state. Capture and apply
           gather and push state through stable subsystem
           APIs; URL sync makes views shareable; schema
           migration keeps views resilient to evolution;
           sharing semantics support private, team, and
-          role-default views. The result turns ad-hoc
+          role-default views.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">The result turns ad-hoc
           table use into repeatable workflows — power
           users curate their library; new users land on
-          sensible defaults; teams share what works.
-        </p>
+          sensible defaults; teams share what works.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

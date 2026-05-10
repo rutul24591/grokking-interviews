@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Collaborative whiteboard architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .chip { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .chip { fill: #111827; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Collaborative Whiteboard: Viewport Sync + Snapshots</text>
+  <text class="t muted" x="40" y="78" font-size="13">Ops are batched; durable snapshots allow fast join and recovery</text>
+
+  <rect class="box" x="40" y="120" width="300" height="340" rx="14"/>
+  <text class="t h" x="60" y="150" font-size="16">Client</text>
+  <rect class="chip" x="60" y="170" width="260" height="66" rx="10"/>
+  <text class="t" x="74" y="196" font-size="13">Render engine</text>
+  <text class="t muted" x="74" y="216" font-size="12">Canvas/WebGL + culling</text>
+  <rect class="chip" x="60" y="248" width="260" height="84" rx="10"/>
+  <text class="t" x="74" y="274" font-size="13">Collaboration engine</text>
+  <text class="t muted" x="74" y="294" font-size="12">Local apply + op batching</text>
+  <text class="t muted" x="74" y="312" font-size="12">Viewport subscriptions</text>
+  <rect class="chip" x="60" y="344" width="260" height="64" rx="10"/>
+  <text class="t" x="74" y="370" font-size="13">Offline queue</text>
+  <text class="t muted" x="74" y="390" font-size="12">Idempotent ops on reconnect</text>
+
+  <rect class="box" x="390" y="160" width="240" height="160" rx="14"/>
+  <text class="t h" x="410" y="190" font-size="15">Realtime Gateway</text>
+  <text class="t muted" x="410" y="214" font-size="12">Room relay + rate limits</text>
+  <text class="t muted" x="410" y="234" font-size="12">Viewport-scoped topics</text>
+
+  <rect class="box" x="680" y="130" width="240" height="220" rx="14"/>
+  <text class="t h" x="700" y="160" font-size="15">Board State Service</text>
+  <text class="t muted" x="700" y="184" font-size="12">Snapshots + ops log</text>
+  <text class="t muted" x="700" y="204" font-size="12">Spatial index for objects</text>
+  <text class="t muted" x="700" y="224" font-size="12">AuthZ + audit</text>
+
+  <path class="line" d="M340 250 L380 250" />
+  <polygon class="arrow" points="380,250 372,246 372,254"/>
+  <path class="line" d="M630 250 L670 250" />
+  <polygon class="arrow" points="670,250 662,246 662,254"/>
+</svg>
+

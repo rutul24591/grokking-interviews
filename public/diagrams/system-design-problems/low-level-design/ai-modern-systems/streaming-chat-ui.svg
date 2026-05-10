@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Streaming Chat UI: Architecture &amp; Token Rendering Pipeline</text>
+
+  <!-- Chat UI Layout -->
+  <g>
+    <text x="200" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Chat Message States</text>
+
+    <rect x="30" y="75" width="360" height="400" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" rx="6"/>
+
+    <!-- User message -->
+    <rect x="175" y="90" width="200" height="55" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="4"/>
+    <text x="275" y="112" font-size="11" font-weight="bold" text-anchor="middle" fill="#1e40af">User</text>
+    <text x="275" y="130" font-size="10" text-anchor="middle" fill="#374151">Explain async/await</text>
+
+    <!-- AI loading -->
+    <rect x="45" y="160" width="200" height="55" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1" rx="4"/>
+    <text x="145" y="182" font-size="11" font-weight="bold" text-anchor="middle" fill="#6b7280">AI — thinking...</text>
+    <text x="145" y="200" font-size="12" text-anchor="middle" fill="#9ca3af">● ● ●</text>
+
+    <!-- AI streaming -->
+    <rect x="45" y="230" width="200" height="80" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="145" y="252" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">AI — streaming ▌</text>
+    <text x="55" y="270" font-size="10" fill="#374151">Async/await is syntax sugar</text>
+    <text x="55" y="286" font-size="10" fill="#374151">over Promises. The await...</text>
+    <text x="145" y="302" font-size="9" text-anchor="middle" fill="#10b981">cursor blinks at end</text>
+
+    <!-- AI complete -->
+    <rect x="45" y="325" width="200" height="80" fill="white" stroke="#e2e8f0" stroke-width="1" rx="4"/>
+    <text x="145" y="347" font-size="11" font-weight="bold" text-anchor="middle" fill="#374151">AI — complete</text>
+    <text x="55" y="365" font-size="10" fill="#374151">...pauses execution until</text>
+    <text x="55" y="381" font-size="10" fill="#374151">the Promise resolves.</text>
+    <text x="145" y="397" font-size="9" text-anchor="middle" fill="#10b981">Copy | Retry | Like</text>
+
+    <text x="200" y="460" font-size="10" text-anchor="middle" fill="#6b7280">States: idle → loading → streaming → complete | error</text>
+  </g>
+
+  <!-- Streaming Architecture -->
+  <g>
+    <text x="680" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Streaming Architecture</text>
+
+    <rect x="420" y="75" width="650" height="200" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="745" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Token Stream Pipeline</text>
+    <text x="435" y="122" font-size="10" fill="#374151">Server-Sent Events (SSE): text/event-stream response</text>
+    <text x="435" y="140" font-size="10" fill="#374151">  data: {"{"}"token": "async"{"}"}  ← one token per event</text>
+    <text x="435" y="158" font-size="10" fill="#374151">  data: [DONE]           ← stream complete signal</text>
+    <text x="435" y="178" font-size="10" fill="#374151">Client: ReadableStream + TextDecoder</text>
+    <text x="435" y="196" font-size="10" fill="#374151">  const reader = response.body.getReader()</text>
+    <text x="435" y="214" font-size="10" fill="#374151">  while(true) {"{"} const {"{"} done, value {"}"} = await reader.read() ... {"}"}</text>
+    <text x="435" y="234" font-size="10" fill="#374151">Token accumulator: append to message string, trigger re-render</text>
+    <text x="435" y="252" font-size="9" fill="#a855f7">Vercel AI SDK: useChat hook wraps all stream plumbing automatically</text>
+
+    <rect x="420" y="290" width="300" height="185" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="570" y="315" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Render Optimization</text>
+    <text x="435" y="338" font-size="10" fill="#374151">Throttle re-renders: batch tokens</text>
+    <text x="435" y="356" font-size="10" fill="#374151">  accumulate 50ms → single setState</text>
+    <text x="435" y="374" font-size="10" fill="#374151">Virtual scroll: long chat history</text>
+    <text x="435" y="392" font-size="10" fill="#374151">Markdown: stream-safe renderer</text>
+    <text x="435" y="410" font-size="10" fill="#374151">  (not full parse until done)</text>
+    <text x="435" y="428" font-size="10" fill="#374151">Auto-scroll: stick to bottom</text>
+    <text x="435" y="446" font-size="10" fill="#374151">  unless user scrolled up</text>
+    <text x="435" y="465" font-size="9" fill="#3b82f6">requestAnimationFrame for smooth scroll</text>
+
+    <rect x="740" y="290" width="330" height="185" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="905" y="315" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Error &amp; Cancellation</text>
+    <text x="755" y="338" font-size="10" fill="#374151">Abort: AbortController on component unmount</text>
+    <text x="755" y="356" font-size="10" fill="#374151">Stop button: abort mid-stream</text>
+    <text x="755" y="374" font-size="10" fill="#374151">Partial response: show what came before abort</text>
+    <text x="755" y="392" font-size="10" fill="#374151">Network error: show retry button</text>
+    <text x="755" y="410" font-size="10" fill="#374151">Rate limit 429: back-off + retry</text>
+    <text x="755" y="428" font-size="10" fill="#374151">Timeout: if no token in 30s → error</text>
+    <text x="755" y="446" font-size="10" fill="#374151">Resume: reconnect SSE on disconnect</text>
+    <text x="755" y="465" font-size="9" fill="#10b981">Always clean up reader.cancel() on abort</text>
+
+    <rect x="420" y="490" width="650" height="70" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="745" y="513" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Message Persistence</text>
+    <text x="435" y="535" font-size="10" fill="#374151">Save complete message (not tokens) to DB after stream ends. Include: role, content, model, tokens used, finish_reason.</text>
+    <text x="435" y="552" font-size="9" fill="#f59e0b">Never save partial streaming state — wait for [DONE] signal before persisting.</text>
+  </g>
+
+  <rect x="30" y="505" width="370" height="65" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="525" font-size="11" fill="#374151"><tspan font-weight="bold">Stack:</tspan> Next.js Route Handler + OpenAI stream + Vercel AI SDK.</text>
+  <text x="50" y="543" font-size="11" fill="#374151"><tspan font-weight="bold">UX:</tspan> Show cursor while streaming. Disable input during stream.</text>
+  <text x="50" y="558" font-size="9" fill="#6b7280">Token budget: show usage in footer. Warn if approaching limit.</text>
+</svg>

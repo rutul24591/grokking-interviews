@@ -147,6 +147,28 @@ function main() {
       ),
       manifestSubcategory: "algorithms",
     },
+    {
+      rootDir: path.join(
+        ROOT,
+        "content",
+        "examples",
+        "other",
+        "leetcode",
+        "patterns",
+      ),
+      manifestSubcategory: "patterns",
+    },
+    {
+      rootDir: path.join(
+        ROOT,
+        "content",
+        "examples",
+        "other",
+        "leetcode",
+        "problems",
+      ),
+      manifestSubcategory: "problems",
+    },
   ];
 
   const nextEntries = Object.assign({}, ...sources.map(collectEntries));

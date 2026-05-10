@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Gesture System: Recognition Pipeline &amp; Event Lifecycle</text>
+
+  <!-- Gesture Types -->
+  <g>
+    <text x="170" y="65" font-size="14" font-weight="bold" fill="#1a1a1a">Gesture Types</text>
+
+    <!-- Tap -->
+    <rect x="30" y="80" width="130" height="90" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="95" y="103" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Tap</text>
+    <text x="95" y="122" font-size="10" text-anchor="middle" fill="#374151">down + up</text>
+    <text x="95" y="138" font-size="10" text-anchor="middle" fill="#374151">&lt; 300ms</text>
+    <text x="95" y="154" font-size="10" text-anchor="middle" fill="#374151">&lt; 10px move</text>
+
+    <!-- Long Press -->
+    <rect x="30" y="185" width="130" height="90" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="95" y="208" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Long Press</text>
+    <text x="95" y="227" font-size="10" text-anchor="middle" fill="#374151">down held</text>
+    <text x="95" y="243" font-size="10" text-anchor="middle" fill="#374151">&gt; 500ms</text>
+    <text x="95" y="259" font-size="10" text-anchor="middle" fill="#374151">&lt; 10px move</text>
+
+    <!-- Swipe -->
+    <rect x="30" y="290" width="130" height="90" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="95" y="313" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Swipe</text>
+    <text x="95" y="332" font-size="10" text-anchor="middle" fill="#374151">fast drag</text>
+    <text x="95" y="348" font-size="10" text-anchor="middle" fill="#374151">velocity &gt; 0.5</text>
+    <text x="95" y="364" font-size="10" text-anchor="middle" fill="#374151">directional</text>
+
+    <!-- Pinch -->
+    <rect x="30" y="395" width="130" height="90" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="95" y="418" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Pinch</text>
+    <text x="95" y="437" font-size="10" text-anchor="middle" fill="#374151">2 touch points</text>
+    <text x="95" y="453" font-size="10" text-anchor="middle" fill="#374151">distance change</text>
+    <text x="95" y="469" font-size="10" text-anchor="middle" fill="#374151">scale factor</text>
+  </g>
+
+  <!-- Recognition Pipeline -->
+  <g>
+    <text x="430" y="65" font-size="14" font-weight="bold" fill="#1a1a1a">Recognition Pipeline</text>
+
+    <rect x="190" y="80" width="480" height="420" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" rx="6"/>
+
+    <!-- Step 1: Raw Events -->
+    <rect x="210" y="100" width="200" height="55" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+    <text x="310" y="123" font-size="11" font-weight="bold" text-anchor="middle" fill="#0369a1">1. Raw Pointer Events</text>
+    <text x="310" y="141" font-size="10" text-anchor="middle" fill="#374151">pointerdown / pointermove / pointerup</text>
+
+    <path d="M 310 155 L 310 175" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowg)"/>
+
+    <!-- Step 2: Normalize -->
+    <rect x="210" y="175" width="200" height="55" fill="#fef9c3" stroke="#eab308" stroke-width="2" rx="4"/>
+    <text x="310" y="198" font-size="11" font-weight="bold" text-anchor="middle" fill="#854d0e">2. Normalize Input</text>
+    <text x="310" y="216" font-size="10" text-anchor="middle" fill="#374151">unify mouse + touch + pen</text>
+
+    <path d="M 310 230 L 310 250" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowg)"/>
+
+    <!-- Step 3: Track -->
+    <rect x="210" y="250" width="200" height="55" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="4"/>
+    <text x="310" y="273" font-size="11" font-weight="bold" text-anchor="middle" fill="#14532d">3. Track Gesture State</text>
+    <text x="310" y="291" font-size="10" text-anchor="middle" fill="#374151">startPos, currentPos, startTime</text>
+
+    <path d="M 310 305 L 310 325" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowg)"/>
+
+    <!-- Step 4: Classify -->
+    <rect x="210" y="325" width="200" height="55" fill="#f3e8ff" stroke="#9333ea" stroke-width="2" rx="4"/>
+    <text x="310" y="348" font-size="11" font-weight="bold" text-anchor="middle" fill="#581c87">4. Classify Gesture</text>
+    <text x="310" y="366" font-size="10" text-anchor="middle" fill="#374151">tap / swipe / longpress / pinch</text>
+
+    <path d="M 310 380 L 310 400" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowg)"/>
+
+    <!-- Step 5: Emit -->
+    <rect x="210" y="400" width="200" height="55" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="310" y="423" font-size="11" font-weight="bold" text-anchor="middle" fill="#991b1b">5. Emit Custom Event</text>
+    <text x="310" y="441" font-size="10" text-anchor="middle" fill="#374151">dispatch gesture + metadata</text>
+
+    <!-- Side annotations -->
+    <text x="430" y="128" font-size="10" fill="#6b7280">PointerEvent API</text>
+    <text x="430" y="203" font-size="10" fill="#6b7280">clientX/Y → canvas coords</text>
+    <text x="430" y="278" font-size="10" fill="#6b7280">deltaX, deltaY, velocity</text>
+    <text x="430" y="353" font-size="10" fill="#6b7280">direction, distance, scale</text>
+    <text x="430" y="428" font-size="10" fill="#6b7280">onTap, onSwipe, onPinch</text>
+  </g>
+
+  <!-- Conflict Resolution -->
+  <g>
+    <text x="820" y="65" font-size="14" font-weight="bold" fill="#1a1a1a">Conflict Resolution</text>
+
+    <rect x="700" y="80" width="360" height="180" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="880" y="105" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Gesture Recognizer Arbitration</text>
+    <text x="715" y="128" font-size="10" fill="#374151">• Simultaneous: tap + scroll can coexist</text>
+    <text x="715" y="146" font-size="10" fill="#374151">• Exclusive: swipe vs scroll — first wins</text>
+    <text x="715" y="164" font-size="10" fill="#374151">• Defer: wait for disambiguation</text>
+    <text x="715" y="182" font-size="10" fill="#374151">• Cancel: pending recognizer if another fires</text>
+    <text x="715" y="200" font-size="10" fill="#374151">• Priority: element closest to target wins</text>
+    <text x="715" y="220" font-size="10" fill="#374151">• touchAction: pan-x | pan-y | none</text>
+    <text x="715" y="245" font-size="9" fill="#f59e0b">Use requireFailure() to sequence recognizers</text>
+
+    <rect x="700" y="280" width="360" height="130" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="880" y="305" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Velocity &amp; Momentum</text>
+    <text x="715" y="328" font-size="10" fill="#374151">velocity = (pos[n] - pos[n-3]) / Δtime</text>
+    <text x="715" y="346" font-size="10" fill="#374151">Direction = Math.atan2(dy, dx)</text>
+    <text x="715" y="364" font-size="10" fill="#374151">Flick: velocity &gt; threshold → momentum scroll</text>
+    <text x="715" y="382" font-size="10" fill="#374151">Decay: pos += vel * friction each frame</text>
+    <text x="715" y="398" font-size="9" fill="#3b82f6">Sample last 3 points for stable velocity estimate</text>
+
+    <rect x="700" y="430" width="360" height="80" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="880" y="453" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Accessibility &amp; Keyboard</text>
+    <text x="715" y="475" font-size="10" fill="#374151">All gestures must have keyboard equivalents</text>
+    <text x="715" y="492" font-size="10" fill="#374151">Arrow keys → pan; +/- keys → zoom</text>
+    <text x="715" y="505" font-size="9" fill="#10b981">prefers-reduced-motion: disable momentum/inertia</text>
+  </g>
+
+  <!-- Summary bar -->
+  <rect x="30" y="520" width="1040" height="48" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="540" font-size="11" fill="#374151"><tspan font-weight="bold">Key:</tspan> Use PointerEvents (not Touch + Mouse separately). <tspan font-weight="bold">Pinch:</tspan> track 2 pointer IDs, measure distance delta. <tspan font-weight="bold">Conflict:</tspan> touchAction CSS prevents browser interference.</text>
+  <text x="50" y="558" font-size="11" fill="#374151"><tspan font-weight="bold">Libraries:</tspan> Hammer.js, @use-gesture/react, Framer Motion (useGesture). Build custom for full control.</text>
+
+  <defs>
+    <marker id="arrowg" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+</svg>

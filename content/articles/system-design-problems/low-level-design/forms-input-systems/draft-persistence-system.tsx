@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -47,7 +49,7 @@ export default function DraftPersistenceArticle() {
           of them wrong is enough to undermine user trust in the
           entire experience.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: making writes invisible to
           typing users (debounce + offload from the input
           critical path); dealing gracefully with quota limits
@@ -64,10 +66,10 @@ export default function DraftPersistenceArticle() {
           everything&rdquo; into a non-event; done poorly it
           becomes a source of subtle data corruption that
           erodes trust faster than it builds resumability.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users on mobile and desktop, frequently
           interrupted, sometimes offline, occasionally switching
           devices mid-task. They expect their work to survive
@@ -82,8 +84,8 @@ export default function DraftPersistenceArticle() {
           the form runtime; they should not need to think about
           IndexedDB transactions, BroadcastChannel coordination,
           or schema migration semantics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most demanding edge cases come from real-world
           interruption patterns: a user fills two-thirds of a
           form, switches to another tab to look up information,
@@ -96,10 +98,10 @@ export default function DraftPersistenceArticle() {
           other. The system has to handle all of these
           coherently or it doesn&rsquo;t deliver on its
           promise.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drafts are user-scoped and bind to a stable form id
           (and optional record id for editing existing
           entities). Forms range from a few fields to large
@@ -115,10 +117,10 @@ export default function DraftPersistenceArticle() {
           browsers; we use <code>IndexedDB</code>,
           <code> BroadcastChannel</code>, and
           <code> WebCrypto.subtle</code>.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time collaborative editing of a single draft is
           out of scope (different problem; CRDTs apply).
           General-purpose offline action queue (for any
@@ -128,14 +130,14 @@ export default function DraftPersistenceArticle() {
           hooks. We also don&rsquo;t implement the authentication
           system; we consume an authentication context provided
           by the host application.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Autosave on change, debounced (1–2 seconds,
           configurable), plus immediate save on visibility
           change and best-effort flush on tab close. Local
@@ -152,10 +154,10 @@ export default function DraftPersistenceArticle() {
           Drafts auto-deleted on submission success and on TTL
           expiry so user storage doesn&rsquo;t fill up with
           stale entries.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Patch-based persistence (only changed fields) to
           reduce payload size for large forms. Encrypted local
           storage for PII drafts using a session-derived key
@@ -166,10 +168,10 @@ export default function DraftPersistenceArticle() {
           drift. Telemetry on resume rates, conflict
           frequencies, and quota errors so the platform can be
           tuned over time based on real usage.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generic offline mutation queue, push notifications
           for draft activity, dashboards on draft usage, and
           end-to-end encryption with client-managed keys are
@@ -177,14 +179,14 @@ export default function DraftPersistenceArticle() {
           interesting and worth doing eventually for the most
           sensitive forms, but it&rsquo;s a substantial
           subsystem in its own right.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Writes must be off the input critical path.
           Debouncing keeps the average write rate to roughly
           one per second-of-typing; writes happen in microtasks
@@ -195,10 +197,10 @@ export default function DraftPersistenceArticle() {
           changes. The user&rsquo;s typing must feel
           instantaneous regardless of what the persistence
           layer is doing in the background.
-        </p>
+        </HighlightBlock>
 
         <h3>Scalability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The system handles drafts up to a few MB without UI
           jank. Storage cost scales linearly with form size; we
           cap per-user draft count and TTL to prevent unbounded
@@ -207,10 +209,10 @@ export default function DraftPersistenceArticle() {
           the application. We don&rsquo;t architect for forms
           beyond a few MB because at that point the form itself
           is probably mis-architected.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           At-least-once server delivery, idempotent server
           upsert via client-generated draft IDs (UUID v7). The
           local store is authoritative for the current device;
@@ -219,7 +221,7 @@ export default function DraftPersistenceArticle() {
           does not lose local work; a local quota exceeded does
           not break the form, it just degrades to memory-only
           mode with a warning.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
         <p>
@@ -234,7 +236,7 @@ export default function DraftPersistenceArticle() {
         </p>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Save status updates announce via polite live region
           without stealing focus. Resume banners are
           keyboard-focusable; Restore and Discard are reachable
@@ -242,10 +244,10 @@ export default function DraftPersistenceArticle() {
           return it on close. Status indicators are
           perceivable without color alone — text labels and
           iconography both convey state.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clean separation: form store ↔ draft store ↔ adapter
           ↔ syncer. Each layer is unit-testable in isolation.
           Adapters are swappable (IndexedDB, OPFS, memory for
@@ -253,7 +255,7 @@ export default function DraftPersistenceArticle() {
           runtime is a small subscribe/restore pair, so the
           draft system attaches to any form runtime that
           conforms.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -299,7 +301,7 @@ export default function DraftPersistenceArticle() {
           surfacing the conflict gives them the dignity of
           choice.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           On every form change, the form runtime emits a
           <code> change</code> event. The draft store collects
           changes, debounces them (default 1.5 seconds,
@@ -314,7 +316,7 @@ export default function DraftPersistenceArticle() {
           returns its own updatedAt timestamp, which the
           client persists as <code>lastSyncedAt</code> for
           future conflict detection.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>visibility change</strong> (tab hidden), the
           draft store flushes any pending debounced write
@@ -330,7 +332,7 @@ export default function DraftPersistenceArticle() {
           recoverable on next mount when the syncer notices
           the local-but-not-synced state and pushes it.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-tab consistency</strong> uses a
           <code> BroadcastChannel</code> named after the form id.
           When tab A writes, it broadcasts the snapshot. Tab B
@@ -345,8 +347,8 @@ export default function DraftPersistenceArticle() {
           editing in tab B, then submits again with stale
           values; the broadcast turns it from a silent data
           corruption into an explicit user-visible state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Schema migration</strong> is handled at restore
           time. The snapshot includes <code>schemaVersion</code>;
           if it matches the current version, restore is a
@@ -360,8 +362,8 @@ export default function DraftPersistenceArticle() {
           and offering to start fresh — silent migration is
           too risky for breaking changes, where guessing wrong
           could submit nonsense to the backend.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Sensitive fields</strong> are marked in the
           form schema with a <code>sensitive: true</code> flag.
           The draft store excludes them from local snapshots by
@@ -376,8 +378,8 @@ export default function DraftPersistenceArticle() {
           opted in, server-only if highly sensitive — gives
           products the right tools to handle PII responsibly
           without forcing one policy on every form.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Quota handling</strong>: writes catch
           <code> QuotaExceededError</code> from IndexedDB and
           respond by deleting the oldest drafts (LRU eviction
@@ -388,7 +390,7 @@ export default function DraftPersistenceArticle() {
           crash. We also track quota usage proactively and warn
           the user when they&rsquo;re approaching the limit so
           they can clean up before hitting the failure mode.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Authentication transitions</strong> deserve
           explicit handling because they&rsquo;re a real source
@@ -407,7 +409,7 @@ export default function DraftPersistenceArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>DraftStore</strong> is the public facade. It
           subscribes to the form&rsquo;s change stream,
           debounces, and writes. It exposes
@@ -415,8 +417,8 @@ export default function DraftPersistenceArticle() {
           <code> discard()</code>, and <code>status</code> as a
           small surface, plus an event stream that consumers can
           subscribe to for status indicator UIs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>LocalAdapter</strong> implements the
           IndexedDB-backed read/write/delete. It uses a single
           object store keyed by
@@ -428,8 +430,8 @@ export default function DraftPersistenceArticle() {
           forced. The adapter handles transaction boundaries
           carefully — a write is one transaction so partial
           writes aren&rsquo;t observable from concurrent reads.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>RemoteAdapter</strong> wraps fetch with
           retry-with-exponential-backoff and abort signals. It
           attaches CSRF tokens (from the host) and idempotency
@@ -439,7 +441,7 @@ export default function DraftPersistenceArticle() {
           (4xx authentication errors) surface to the user. The
           retry budget is bounded to avoid pathological retry
           loops on persistent server errors.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Syncer</strong> orchestrates the local-first
           flow. After every local write, it enqueues a server
@@ -467,7 +469,7 @@ export default function DraftPersistenceArticle() {
           the right policy; for high-stakes forms, prompt-user
           is non-negotiable.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>BroadcastBridge</strong> wraps
           <code> BroadcastChannel</code> for cross-tab
           consistency and provides a small event bus
@@ -477,8 +479,8 @@ export default function DraftPersistenceArticle() {
           existing tabs for their state on join, so a newly
           opened tab gets immediate convergence rather than
           waiting for the next change broadcast.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>SchemaMigrator</strong> holds the registered
           version-to-version migration chain and applies it on
           restore. Each migration is a pure function that takes
@@ -487,7 +489,7 @@ export default function DraftPersistenceArticle() {
           sequence to upgrade an old draft all the way to
           current, or surfaces an error if any link in the
           chain is missing.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>StatusIndicator</strong> is the UI component
           that consumes the DraftStore&rsquo;s status (saving,
@@ -500,7 +502,7 @@ export default function DraftPersistenceArticle() {
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           State splits naturally into per-form draft state and
           a per-user session/quota state. Per-form draft state
           lives in the DraftStore: <code>values</code>,
@@ -514,41 +516,39 @@ export default function DraftPersistenceArticle() {
           conflating them would make the form runtime depend on
           the draft system, which we want to avoid for clean
           separation of concerns.
-        </p>
-        <p>
-          Cross-tab consistency: when tab A writes and
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">Cross-tab consistency: when tab A writes and
           broadcasts, tab B&rsquo;s DraftStore receives the
           snapshot and compares timestamps; if it&rsquo;s
           newer than tab B&rsquo;s own snapshot, tab B&rsquo;s
           form runtime is asked to merge the values. If tab B
           has unsaved local changes newer than the broadcast,
           those are preserved (the broadcast loses; the
-          local-newer value wins). This asymmetric merge
+          local-newer value wins).</HighlightBlock>
+<HighlightBlock as="p" tier="important">This asymmetric merge
           prevents the surprising case where a background tab
           silently overwrites work in the foreground tab — we
           err on the side of preserving the most recent user
           input rather than the most recent timestamp,
           because timestamps can be misleading in the face of
-          concurrent edits.
-        </p>
+          concurrent edits.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Snapshot shape:
+        <HighlightBlock as="p" tier="important">Snapshot shape:
           <code>{` { formId, draftId, schemaVersion, values, updatedAt, deviceId, userId, lastSyncedAt? } `}</code>.
           Server contract:
           <code> PUT /drafts/:draftId</code> with a snapshot
           body, idempotent by <code>draftId</code>; server
           returns its own <code>updatedAt</code> for clock
-          synchronization. Resume contract: on form mount,
+          synchronization.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Resume contract: on form mount,
           fetch latest server draft and read local; combine
           via the conflict policy. Submission contract: on
           success, both client and server delete the draft to
-          prevent zombie drafts hanging around forever.
-        </p>
-        <p>
+          prevent zombie drafts hanging around forever.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The integration with the form runtime is via two
           hooks: <code>useDraftRestore(formId, recordId)</code>{" "}
           which the form provider calls to seed initial values
@@ -558,13 +558,12 @@ export default function DraftPersistenceArticle() {
           These hooks are the only public surface the form
           runtime needs to wire up — everything else is
           internal to the draft system.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance Strategy</h2>
-        <p>
-          Debouncing keeps write rates low; visibility-change
+        <HighlightBlock as="p" tier="important">Debouncing keeps write rates low; visibility-change
           and best-effort beforeunload flushes catch the
           near-navigation cases. IndexedDB writes happen in
           microtasks via the async API; we don&rsquo;t block
@@ -573,13 +572,13 @@ export default function DraftPersistenceArticle() {
           fields most of the time, with periodic full
           snapshots (every N writes or every minute, whichever
           first) as a safety net for cases where a patch chain
-          might desync. The full-snapshot interval is tunable
+          might desync.</HighlightBlock>
+<HighlightBlock as="p" tier="important">The full-snapshot interval is tunable
           per form; products with heavily-changing forms
           benefit from less frequent full snapshots, while
           products with mostly-stable forms benefit from more
-          frequent ones to keep the patch chain short.
-        </p>
-        <p>
+          frequent ones to keep the patch chain short.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           For very large forms, we compress payloads via
           <code> CompressionStream</code> (gzip) before
           sending. The compression cost is small (sub-ms for
@@ -589,19 +588,19 @@ export default function DraftPersistenceArticle() {
           form unmounts. Writes don&rsquo;t need to read first
           (we know what we&rsquo;re writing), so the read-write
           asymmetry doesn&rsquo;t cost us anything.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX Considerations</h2>
-        <p>
-          The save status is rendered as a subtle indicator —
+        <HighlightBlock as="p" tier="important">The save status is rendered as a subtle indicator —
           &ldquo;Saving&hellip;&rdquo;, &ldquo;Saved 12s
           ago&rdquo;, &ldquo;Offline, will retry&rdquo; —
           never modal, never alarming. Modal dialogs for save
           status would be insulting; users care about the
           status but they don&rsquo;t want to be interrupted
-          by it. On resume, a banner at the top of the form
+          by it.</HighlightBlock>
+<HighlightBlock as="p" tier="important">On resume, a banner at the top of the form
           announces &ldquo;Restored from 2 hours ago&rdquo;
           with a Discard control; the banner dismisses on
           first edit so it doesn&rsquo;t linger past the
@@ -610,9 +609,8 @@ export default function DraftPersistenceArticle() {
           explicit Use This / Use That controls; we don&rsquo;t
           force a merge because field-level merging of
           arbitrary forms is ambiguous and would produce
-          worse outcomes than letting users choose.
-        </p>
-        <p>
+          worse outcomes than letting users choose.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The Discard control requires a confirmation step the
           first time it&rsquo;s used — an accidental Discard
           would be catastrophic in a form the user has spent
@@ -622,42 +620,31 @@ export default function DraftPersistenceArticle() {
           accessible — the announcement uses a polite live
           region so screen reader users hear the same
           information visual users see.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Status updates live in a polite live region; screen
-          readers announce them but don&rsquo;t interrupt the
-          user&rsquo;s typing. The resume banner is rendered
-          as a dismissible alert with a clear heading and
-          reachable buttons. The conflict dialog is a modal
-          with focus trap; tab order goes Restore-A → Restore-B
-          → Cancel; Escape closes (returning to a safe default
-          of taking no action, because closing the conflict
-          dialog without choosing should not commit either
-          version). Status indicators use both color and
-          text/icon so they&rsquo;re perceivable without color.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The conflict dialog is a modal with focus trap; tab order goes Restore-A → Restore-B → Cancel; Escape closes</HighlightBlock>
+<HighlightBlock as="p" tier="important">(returning to a safe default of taking no action, because closing the conflict dialog without choosing should not</HighlightBlock>
+<HighlightBlock as="p" tier="important">commit either version). Status indicators use both color and text/icon so they&rsquo;re perceivable without color.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security Considerations</h2>
-        <p>
-          Sensitive fields are excluded from local persistence
+        <HighlightBlock as="p" tier="important">Sensitive fields are excluded from local persistence
           by default; opt-in encryption uses a session-derived
           key via <code>WebCrypto.subtle</code>. The key is
           derived from a server-issued session secret; logging
           out invalidates the session and the key, so the
-          encrypted local data is unreadable thereafter. Drafts
+          encrypted local data is unreadable thereafter.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Drafts
           are bound to user id; on mount we ignore drafts whose
           userId doesn&rsquo;t match the current session —
           defends against shared-device scenarios where another
           user might inadvertently see a draft from a previous
-          session.
-        </p>
-        <p>
+          session.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The server-side draft store is encrypted at rest; we
           treat draft contents with the same care as the
           submitted form. On logout, both client and server
@@ -668,19 +655,15 @@ export default function DraftPersistenceArticle() {
           are attached to every server request, and the server
           re-validates draft ownership on every PUT to defend
           against tampering with the draftId.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Unit tests cover debounce, diff/snapshot construction,
-          schema version migration, and conflict resolution
-          policies in isolation. Integration tests exercise:
-          offline → online sync, multi-tab convergence (two
-          test tabs sharing a BroadcastChannel mock), reload
-          mid-form with successful restore, schema upgrade
-          across a real migration. End-to-end tests in
+        <HighlightBlock as="p" tier="important">Unit tests cover debounce, diff/snapshot construction, schema version migration, and conflict resolution</HighlightBlock>
+<HighlightBlock as="p" tier="important">policies in isolation. Integration tests exercise: offline → online sync, multi-tab convergence (two test tabs</HighlightBlock>
+<HighlightBlock as="p" tier="important">sharing a BroadcastChannel mock), reload mid-form with successful restore, schema upgrade across a real migration.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">End-to-end tests in
           Playwright run reload-during-typing and observe that
           no characters are lost — this is the headline
           guarantee, and we test it explicitly. We also test
@@ -689,14 +672,12 @@ export default function DraftPersistenceArticle() {
           5xx for retries, simulate clock skew, simulate
           session expiry mid-flow, simulate concurrent edits
           across tabs. Each failure mode has an expected
-          recovery behavior; the tests pin those behaviors.
-        </p>
+          recovery behavior; the tests pin those behaviors.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
-          Quota exceeded in IndexedDB: catch the error, evict
+        <HighlightBlock as="p" tier="important">Quota exceeded in IndexedDB: catch the error, evict
           the oldest drafts (LRU on
           <code> updatedAt</code>), retry. If still failing,
           fall back to memory-only mode with a non-blocking
@@ -704,7 +685,8 @@ export default function DraftPersistenceArticle() {
           have changed since last sync, surface conflict UI;
           we never silently overwrite. Schema migration: run
           the registered upgrade chain; if no path exists,
-          prompt to discard and start fresh. Submission
+          prompt to discard and start fresh.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Submission
           completes in tab A while tab B is editing: tab B
           receives the <code>submitted</code> broadcast and
           locks itself into a read-only state with a link to
@@ -713,9 +695,8 @@ export default function DraftPersistenceArticle() {
           the client&rsquo;s <code>Date.now()</code>. Beacon
           flush fails on unload: rely on next mount to
           re-sync from local — the syncer notices that
-          local has newer data than server and pushes it.
-        </p>
-        <p>
+          local has newer data than server and pushes it.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The backend returns 401 (session expired): pause the
           syncer, surface a re-auth prompt; on success, retry
           the queued writes. The local snapshot becomes
@@ -730,49 +711,36 @@ export default function DraftPersistenceArticle() {
           these are individually exotic; the system earns its
           keep by handling all of them coherently in one
           place.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          The adapter interface lets us swap IndexedDB for
-          OPFS (when available, OPFS is faster), or for an
-          in-memory stub during tests. The conflict resolution
-          policy is a plug point — products can pick
-          last-write-wins for low-stakes forms or prompt-user
-          for high-stakes forms. The encryption layer is
-          opt-in per form; the migration chain is per-form.
-          The system attaches to any form runtime that exposes
-          a change-event subscribe and a values-restore
-          method, so it&rsquo;s not coupled to our specific
-          Form Builder. This decoupling is important because
-          the form runtime evolves on a different cadence
-          than the persistence layer.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The system attaches to any form runtime that exposes a change-event subscribe and a</HighlightBlock>
+<HighlightBlock as="p" tier="important">values-restore method, so it&rsquo;s not coupled to our specific Form Builder. This decoupling is</HighlightBlock>
+<HighlightBlock as="p" tier="important">important because the form runtime evolves on a different cadence than the persistence layer.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Status messages and resume banners use the
+        <HighlightBlock as="p" tier="crucial">Status messages and resume banners use the
           host&rsquo;s i18n function. Timestamps localize via
           <code> Intl.RelativeTimeFormat</code> (&ldquo;2 hours
           ago&rdquo;), which produces locale-correct output
           across all supported languages and degrades to
           absolute timestamps when relative isn&rsquo;t
-          appropriate. Conflict dialog labels go through the
+          appropriate.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Conflict dialog labels go through the
           same i18n stack. Numerical sizes (&ldquo;12 KB&rdquo;)
-          format via <code>Intl.NumberFormat</code> with
-          locale-correct unit display.
-        </p>
+          format via </Highlight><code>Intl.NumberFormat</code> with
+          locale-correct unit display.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
 
         <h3>Local-only vs hybrid sync</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Local-only is simple, has no server cost, works
           offline by definition, and is sufficient for many
           consumer apps. Hybrid local+server enables
@@ -784,7 +752,7 @@ export default function DraftPersistenceArticle() {
           architecture is local-first either way; server is
           opt-in per form. This split lets products choose the
           right model without forcing one on everyone.
-        </p>
+        </HighlightBlock>
 
         <h3>Diff vs full snapshot for server payloads</h3>
         <p>
@@ -812,7 +780,7 @@ export default function DraftPersistenceArticle() {
         </p>
 
         <h3>IndexedDB vs localStorage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           IndexedDB is async (no main thread blocking),
           structured (no JSON.stringify on every write), and
           larger (typically tens of MB). localStorage is
@@ -820,10 +788,10 @@ export default function DraftPersistenceArticle() {
           only stores strings. We prefer IndexedDB by a wide
           margin; localStorage is a legacy fallback only for
           environments where IndexedDB is unavailable.
-        </p>
+        </HighlightBlock>
 
         <h3>Outbox queue vs synchronous server-first</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Synchronous server-first writes give the strongest
           consistency guarantees but block the user&rsquo;s
           typing on network latency — terrible UX. The outbox
@@ -834,10 +802,10 @@ export default function DraftPersistenceArticle() {
           consistency is the right contract; we&rsquo;re not
           coordinating financial transactions, we&rsquo;re
           backing up form state.
-        </p>
+        </HighlightBlock>
 
         <h3>Encryption opt-in vs default</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Default encryption sounds appealing but adds CPU
           cost on every write and complicates testing. Opt-in
           encryption per form via the
@@ -847,10 +815,10 @@ export default function DraftPersistenceArticle() {
           schema. The form authoring tool can default
           schemas to encrypted for sensitive form types and
           let authors override.
-        </p>
+        </HighlightBlock>
 
         <h3>Per-form draft vs single global draft store</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-form scoping makes nested and modal forms work
           without conflict, supports multiple-record editing
           flows, and isolates failure modes (a corrupted
@@ -859,30 +827,22 @@ export default function DraftPersistenceArticle() {
           handle multi-record use cases without ad-hoc
           extensions. We accept the per-form complexity
           because it scales with product needs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          CRDT-based merge for concurrent edits across devices
-          would let us handle multi-device editing without
-          surfacing conflicts to users; the per-field merge
-          semantics are tractable for many form types
-          (last-writer-per-field) and harder for nested
-          structures. Service-Worker-driven background sync
-          (using the Background Sync API where available)
-          would let drafts sync even after a tab closes,
-          addressing the beacon-isn&rsquo;t-guaranteed gap.
-          End-to-end encrypted server storage (the server
+        <HighlightBlock as="p" tier="important">CRDT-based merge for concurrent edits across devices would let us handle multi-device editing without surfacing conflicts to users; the per-field</HighlightBlock>
+<HighlightBlock as="p" tier="important">merge semantics are tractable for many form types (last-writer-per-field) and harder for nested structures. Service-Worker-driven background</HighlightBlock>
+<HighlightBlock as="p" tier="important">sync (using the Background Sync API where available) would let drafts sync even after a tab closes, addressing the beacon-isn&rsquo;t-guaranteed gap.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">End-to-end encrypted server storage (the server
           stores ciphertext only, key managed by client) would
           tighten the security posture for highly sensitive
           forms. Telemetry-driven tuning of debounce intervals
           and TTLs based on real usage patterns. A draft
           history view that lets users see and restore prior
           versions of their work for forms where iteration is
-          common.
-        </p>
+          common.</HighlightBlock>
       </section>
 
       <section>
@@ -897,7 +857,7 @@ export default function DraftPersistenceArticle() {
           are non-negotiable.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How do you flush a pending save when the user
           closes the tab?</strong> Two-layer best-effort:
           visibility-change fires before tab close in most
@@ -909,7 +869,7 @@ export default function DraftPersistenceArticle() {
           write done at debounce time is the actual
           durability barrier; the worst case is the server
           lags by one debounce cycle.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. How do you detect and resolve cross-device
@@ -923,25 +883,25 @@ export default function DraftPersistenceArticle() {
           Silent last-write-wins would be wrong here.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. What ensures server upsert is idempotent?</strong>{" "}
           Client-generated <code>draftId</code> (UUID v7);
           server treats <code>PUT /drafts/:draftId</code> as
           an upsert keyed by id. Same id → update; new id →
           create. Retries reuse the same id, so they never
           duplicate.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>5. How do you make autosave invisible to the
           typing user?</strong> Debounce on every change
           (default 1.5s), run writes via async IndexedDB API
           in microtasks, render save status as a subtle inline
           indicator (never modal). The user&rsquo;s typing is
           never blocked by a write.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How are sensitive fields handled?</strong>{" "}
           Marked in the form schema with
           <code> sensitive: true</code>. By default
@@ -951,9 +911,9 @@ export default function DraftPersistenceArticle() {
           session ends, the key is invalidated, and the
           encrypted data becomes unreadable. Server-side
           drafts of sensitive forms are encrypted at rest.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How do you survive a schema breaking change in
           a stored draft?</strong> Snapshot includes
           <code> schemaVersion</code>. On restore, we run a
@@ -961,7 +921,7 @@ export default function DraftPersistenceArticle() {
           no chain exists for the gap, we prompt the user to
           discard rather than load a broken state — silent
           migration of unknown changes is too risky.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. How does cross-tab consistency work?</strong>{" "}
@@ -977,15 +937,10 @@ export default function DraftPersistenceArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A solid draft system is{" "}
-          <strong>local-first, eventually synced</strong>, with
-          an idempotent server contract, versioned schemas, and
-          explicit conflict UX. Treat persistence as a separate
-          concern from form state, isolate adapters per
-          backend, surface conflicts rather than silently
-          overwriting, and handle sensitive fields with the
-          care they deserve. The user-facing promise is
+        <HighlightBlock as="p" tier="important">A solid draft system is local-first, eventually synced , with an idempotent server contract, versioned</HighlightBlock>
+<HighlightBlock as="p" tier="important">schemas, and explicit conflict UX. Treat persistence as a separate concern from form state, isolate adapters per</HighlightBlock>
+<HighlightBlock as="p" tier="important">backend, surface conflicts rather than silently overwriting, and handle sensitive fields with the care they deserve.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">The user-facing promise is
           simple: nothing they type is ever lost, and they
           always know what state their work is in. That
           promise is delivered by getting the small details
@@ -994,8 +949,7 @@ export default function DraftPersistenceArticle() {
           surfacing — none of which are individually hard, but
           all of which need to compose correctly. The
           architecture exists to make that composition
-          tractable rather than ad-hoc.
-        </p>
+          tractable rather than ad-hoc.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

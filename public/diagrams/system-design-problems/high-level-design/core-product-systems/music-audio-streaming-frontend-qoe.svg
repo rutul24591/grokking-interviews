@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Quality of experience metrics and levers for audio streaming">
+  <title>Audio Streaming QoE</title>
+  <desc>Shows key QoE metrics and the main levers: buffering, bitrate adaptation, retry strategy, and prefetch budgeting.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="ok" x="70" y="70" width="520" height="180" />
+  <text class="label bold" x="100" y="115">QoE metrics</text>
+  <text class="label small" x="100" y="145">TTFA (time-to-first-audio)</text>
+  <text class="label small" x="100" y="170">stall rate + total rebuffer time</text>
+  <text class="label small" x="100" y="195">quality switch rate (oscillation)</text>
+  <text class="label small" x="100" y="220">errors by CDN / device / network</text>
+
+  <rect class="warn" x="640" y="70" width="490" height="180" />
+  <text class="label bold" x="670" y="115">Levers</text>
+  <text class="label small" x="670" y="145">initial buffer target</text>
+  <text class="label small" x="670" y="170">adaptive buffer depth</text>
+  <text class="label small" x="670" y="195">ABR strategy + downgrade on stalls</text>
+  <text class="label small" x="670" y="220">bounded retries + prefetch budget</text>
+
+  <path class="arrow" d="M590 160 L640 160" />
+
+  <rect class="box" x="70" y="310" width="520" height="170" />
+  <text class="label bold" x="100" y="355">Trade-offs</text>
+  <text class="label small" x="100" y="385">bigger buffers reduce stalls but slow skips</text>
+  <text class="label small" x="100" y="410">aggressive prefetch lowers gaps but wastes bandwidth</text>
+  <text class="label small" x="100" y="435">fast ABR reacts quickly but may oscillate</text>
+
+  <rect class="box" x="640" y="310" width="490" height="170" />
+  <text class="label bold" x="670" y="355">Observability</text>
+  <text class="label small" x="670" y="385">segment metrics by device/network</text>
+  <text class="label small" x="670" y="410">correlate with CDN region</text>
+  <text class="label small" x="670" y="435">alert on stall spikes and TTFA regressions</text>
+
+  <path class="arrow" d="M590 395 L640 395" />
+</svg>

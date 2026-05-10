@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +40,7 @@ export default function SpreadsheetLikeGridArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a spreadsheet-like grid — the
           interaction layer over a 2D virtualized grid that
           turns it from a viewer into an editor. Users edit
@@ -50,8 +52,8 @@ export default function SpreadsheetLikeGridArticle() {
           financial modeling tools, data-entry workflows,
           and any UI where tabular interaction matches user
           mental models from Excel or Google Sheets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are deeply interrelated.
           Formula evaluation requires a dependency graph
           that updates incrementally as cells change.
@@ -69,10 +71,10 @@ export default function SpreadsheetLikeGridArticle() {
           this becomes a powerful primitive used across the
           product; done poorly, the spreadsheet feels
           broken in subtle ways that frustrate power users.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Power users (analysts, financial modelers, data
           entry operators) spend hours in the spreadsheet
           and have deep muscle memory from Excel and Google
@@ -84,10 +86,10 @@ export default function SpreadsheetLikeGridArticle() {
           they&rsquo;ve taken. Engineering teams consume the
           spreadsheet as a higher-level component built on
           top of the Virtualized Grid 2D primitive.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The grid sits on top of the Virtualized Grid 2D
           primitive. Datasets fit in client memory (up to
           tens of thousands of rows × hundreds of columns —
@@ -97,10 +99,10 @@ export default function SpreadsheetLikeGridArticle() {
           aggregates) — not the full Excel feature set.
           Modern browsers; we use the Clipboard API for
           paste, IndexedDB for offline edit queue.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the full Excel formula
           surface (no LAMBDA, no advanced statistical
           functions). We do not implement charts, pivot
@@ -108,14 +110,14 @@ export default function SpreadsheetLikeGridArticle() {
           subset, or macros. Real-time collaboration on a
           single sheet is a separate problem (CRDTs apply);
           we support single-user edit with eventual sync.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           In-place cell editing: double-click or F2 to
           edit, Enter to commit, Escape to cancel. Type-aware
           editors based on cell type (text, number, date,
@@ -131,10 +133,10 @@ export default function SpreadsheetLikeGridArticle() {
           and column resize via drag. Undo/redo across all
           edit types. Keyboard navigation: arrow keys, Tab,
           Enter, Page Up/Down, Home/End, Ctrl+Home/End.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Conditional formatting (highlight cells matching
           rules). Cell comments / notes. Frozen first-row
           and first-column (delegated to the underlying 2D
@@ -145,31 +147,31 @@ export default function SpreadsheetLikeGridArticle() {
           sync of edits with conflict resolution. Real-time
           presence indicators (multiple users viewing the
           same sheet, with their cursors).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full Excel feature parity, charts, pivot tables,
           macros, real-time collaborative editing of the
           same cell.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cell edits commit in under 50 ms including
           dependent formula recomputation. Undo/redo of
           single edits in under 50 ms; multi-cell undos in
           under 200 ms. Smooth scroll preserved despite
           dependency graph updates. Drag-fill of a 100-row
           range in under 100 ms.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Formula evaluation deterministic: same inputs
           produce same outputs. Circular references
           detected and surfaced rather than crashing.
@@ -178,37 +180,37 @@ export default function SpreadsheetLikeGridArticle() {
           reconstruction. Copy-paste never silently drops
           data; mismatched shapes (paste a 5x5 region into
           a 3x3 selection) surface a confirmation.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Formula DSL is sandboxed: no host access, no
           arbitrary function calls, no eval. Formulas
           can&rsquo;t reference external URLs or read host
           state. Cell content renders as text; HTML opt-in
           per cell type with sanitizer. Pasted content from
           external sources is sanitized before commit.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           ARIA grid pattern with cell-level focus. Edit
           state announced (&ldquo;Editing cell B5&rdquo;).
           Selection range announced. Keyboard parity with
           mouse — every action available via keyboard.
           Formula errors surface as accessible inline
           messages.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Formula functions in a registry; adding a new
           function is a one-file change. Editor types
           plug into a registry. The undo stack is built
           from a single command interface; new edit types
           implement the interface and are automatically
           undoable.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -219,7 +221,7 @@ export default function SpreadsheetLikeGridArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The spreadsheet is a layered system on top of the
           2D virtualized grid. The substrate handles
           rendering and virtualization. On top of it, we
@@ -235,8 +237,8 @@ export default function SpreadsheetLikeGridArticle() {
           external paste), and a <strong>fill-handle</strong>{" "}
           (pattern detection and extrapolation). Each
           subsystem is independently testable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>cell store</strong> holds, for each
           cell, a canonical value (the literal or computed
           result), a formula string if the cell is a
@@ -246,8 +248,8 @@ export default function SpreadsheetLikeGridArticle() {
           evaluated value); both are kept because the user
           types the input and the UI displays the output,
           but editing reverts to showing the input.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>formula engine</strong> parses formula
           strings into ASTs, extracts cell references, and
           builds a dependency DAG: cell A depends on cell
@@ -261,7 +263,7 @@ export default function SpreadsheetLikeGridArticle() {
           incremental recomputation: changing one cell
           touches only its dependents, not the entire
           sheet.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>selection model</strong> tracks the
           current selection: an active cell, a range
@@ -272,7 +274,7 @@ export default function SpreadsheetLikeGridArticle() {
           rather than per-cell state, which keeps cell
           re-renders to a minimum during selection drag.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>edit state</strong> tracks which cell
           is in edit mode, the current editor type, and the
           in-progress value. When the user double-clicks or
@@ -283,8 +285,8 @@ export default function SpreadsheetLikeGridArticle() {
           Escape cancels. While editing, formula references
           highlight the referenced cells in the grid for
           orientation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>command history</strong> uses the
           command pattern. Every edit (cell value change,
           range paste, drag-fill, row/column insert) is
@@ -297,7 +299,7 @@ export default function SpreadsheetLikeGridArticle() {
           undoing a paste reverts all affected cells in one
           step. This atomicity matches user expectation
           from Excel.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>clipboard bridge</strong> handles copy
           and paste. Copy serializes the selected range to
@@ -337,152 +339,99 @@ export default function SpreadsheetLikeGridArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>SpreadsheetProvider</strong> instantiates
-          all subsystems and exposes them via stable
-          context. <strong>CellStore</strong> holds canonical
-          cell data. <strong>FormulaEngine</strong> manages
-          parsing, the DAG, and evaluation.
-          <strong> SelectionModel</strong> tracks the current
-          selection. <strong>EditController</strong> manages
-          edit state. <strong>CommandHistory</strong>{" "}
-          implements undo/redo. <strong>ClipboardBridge</strong>{" "}
-          handles copy/paste. <strong>FillHandle</strong>{" "}
-          detects and extrapolates patterns.
-          <strong> CellRenderer</strong> renders one cell
-          and connects to the appropriate editor in edit
-          mode.
-        </p>
+        <HighlightBlock as="p" tier="crucial">EditController manages edit state. CommandHistory implements undo/redo.</HighlightBlock>
+<HighlightBlock as="p" tier="important">ClipboardBridge handles copy/paste. FillHandle detects and extrapolates patterns.</HighlightBlock>
+<HighlightBlock as="p" tier="important">CellRenderer renders one cell and connects to the appropriate editor in edit mode.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          The cell store is the largest state surface;
-          subscribers (visible cells) read via selectors.
-          Selection is a small store that the overlay
-          subscribes to. Edit state is a small store that
-          only the editor and a few UI elements (formula
-          bar) subscribe to. The command history is its own
-          store. All subsystems read from and write to a
-          shared form-store-like coordinator that
-          serializes mutations for undo/redo correctness.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The invariant is deterministic, serializable edits: all mutations flow through a single
+          command pipeline so undo/redo is correct even across multi-cell operations.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The command history is its own store, and subsystems (edit controller, formula engine,
+          clipboard, fill handle) only mutate state via commands.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          A shared coordinator serializes mutations and emits a single committed state per transaction
+          so rendering and autosave don&rsquo;t observe partial updates.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs:{" "}
-          <code>cells</code> (initial cell data),
-          <code> rowCount</code>, <code>columnCount</code>,
-          <code> functions</code> (formula function
-          registry),
-          <code> editors</code> (editor type registry),
-          <code> onCellsChange</code>. Cell shape:{" "}
-          <code>{` { type, value, formula?, format?, note? } `}</code>.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The contract must support incremental updates: the grid should accept and emit deltas
+          (changed cells + metadata) rather than forcing full-sheet replaces on every edit.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Inputs include initial <code>cells</code>, dimensions (row/column count), a formula function
+          registry, an editor registry, and an <code>onCellsChange</code> callback.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Each cell carries type + value, optional formula, formatting, and notes. The contract should
+          keep stable ids for rows/columns so sorting/inserts don&rsquo;t break references.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance</h2>
-        <p>
-          Selection rendering is a CSS overlay, not per-cell
-          state, so dragging a selection across hundreds of
-          cells doesn&rsquo;t re-render any cell. Edit state
-          is per-cell-only-when-editing; the rest of the
-          time, cells render their value memoized by (cell
-          id, value, formatting). Formula recomputation is
-          incremental via the dependency DAG; changing one
-          cell touches only its dependents. For large
-          formula workloads, the engine runs in a Web
-          Worker; the main thread only handles edit input
-          and rendering.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Formula recomputation is incremental via the dependency DAG; changing one</HighlightBlock>
+<HighlightBlock as="p" tier="important">cell touches only its dependents. For large formula workloads, the engine</HighlightBlock>
+<HighlightBlock as="p" tier="important">runs in a Web Worker; the main thread only handles edit input and rendering.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX</h2>
-        <p>
-          A formula bar above the grid shows the active
-          cell&rsquo;s formula (or value if no formula).
-          Editing in the formula bar mirrors editing
-          in-cell. Selection visualization uses a colored
-          border for the selection range plus
-          highlighted column and row headers. The fill
-          handle appears at the bottom-right corner of the
-          active cell. Cell type indicators (a small badge
-          for date or formula cells) help users orient.
-          Errors render inline as
-          <code> #ERROR</code> with a tooltip explaining
-          the error.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The fill handle appears at the bottom-right corner of the active cell.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Cell type indicators (a small badge for date or formula cells) help users</HighlightBlock>
+<HighlightBlock as="p" tier="important">orient. Errors render inline as #ERROR with a tooltip explaining the error.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          ARIA grid pattern from the underlying 2D grid.
+        <HighlightBlock as="p" tier="crucial">ARIA grid pattern from the underlying 2D grid.
           Edit state announces (&ldquo;Editing cell
           B5&rdquo;). Selection announces (&ldquo;Selected
           range B5 to D7&rdquo;). Formula errors are
-          accessible inline messages. Every keyboard
+          accessible inline messages.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Every keyboard
           shortcut has a discoverable equivalent in a
           keyboard-help dialog. Visual selection indicators
           are paired with text equivalents so non-visual
-          users have parity.
-        </p>
+          users have parity.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Formula DSL is sandboxed: a strict parser
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Formula DSL is sandboxed: a strict parser
           whitelists tokens; identifiers must resolve to
           cell references or registered functions. No
           host access, no
-          <code> eval</code>, no arbitrary code. Functions
+          </Highlight><code> eval</code>, no arbitrary code.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Functions
           are pure and registered explicitly. External
           paste content is sanitized: HTML clipboard
           content runs through DOMPurify; we never insert
           raw HTML into a cell. Cell content renders as
-          text by default.
-        </p>
+          text by default.</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests cover the formula parser (operator
-          precedence, references, ranges), the dependency
-          DAG (topological sort, cycle detection),
-          incremental recomputation (only dependents
-          recompute), the command pattern (apply/undo
-          symmetry), pattern detection for fill (numeric,
-          date, day-of-week). Integration tests exercise
-          full edit flows: edit a cell, verify dependents
-          update; copy a range, paste, verify reference
-          translation; undo a multi-cell edit, verify
-          full revert. Property tests verify undo/redo
-          correctness: any sequence of edits followed by
-          equal undos should return to the initial state.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Integration tests exercise full edit flows: edit a cell, verify dependents update; copy a range,</HighlightBlock>
+<HighlightBlock as="p" tier="important">paste, verify reference translation; undo a multi-cell edit, verify full revert. Property tests verify</HighlightBlock>
+<HighlightBlock as="p" tier="important">undo/redo correctness: any sequence of edits followed by equal undos should return to the initial state.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Circular references: detected when adding a
-          formula to the DAG; the cell shows
-          <code> #CYCLE</code>. A formula references a
-          cell that doesn&rsquo;t exist (out of bounds):
-          shows
-          <code> #REF</code>. Paste larger than
-          selection: extends selection with confirmation.
-          Paste of TSV with formulas (from Excel): we
-          parse the TSV and translate formula syntax;
-          incompatible formulas show
-          <code> #N/A</code>. Insert a row in the middle
+        <HighlightBlock as="p" tier="important">Circular references: detected when adding a formula to the DAG; the cell shows #CYCLE . A formula references a cell</HighlightBlock>
+<HighlightBlock as="p" tier="important">that doesn&rsquo;t exist (out of bounds): shows #REF . Paste larger than selection: extends selection with confirmation.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Paste of TSV with formulas (from Excel): we parse the TSV and translate formula syntax; incompatible formulas show #N/A .</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Insert a row in the middle
           of the sheet: all formulas referring to rows
           below shift their references; absolute
           references with
@@ -495,121 +444,116 @@ export default function SpreadsheetLikeGridArticle() {
           parser depth limit prevents stack overflow.
           Performance regression on large dependency
           graphs: we throttle recomputation to one batch
-          per frame.
-        </p>
+          per frame.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          The formula engine, command history, and
+        <HighlightBlock as="p" tier="crucial">The formula engine, command history, and
           selection model are reusable in any table-like
           UI that needs them. The fill-handle pattern
-          detector is generic over cell types.
-          Function-registry-based design lets consumers
+          detector is generic over cell types.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Function-registry-based design lets consumers
           add custom functions per product (a
           finance-specific
-          <code> NPV</code>, an analytics-specific
-          <code> COHORT</code>).
-        </p>
+          </Highlight><code> NPV</code>, an analytics-specific
+          <code> COHORT</code>).</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Number and date formatting via
-          <code> Intl.NumberFormat</code> and
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Number and date formatting via
+          </Highlight><code> Intl.NumberFormat</code> and
           <code> Intl.DateTimeFormat</code> with locale
-          awareness. Function names are i18n-safe
+          awareness.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Function names are i18n-safe
           (typically English, like Excel) but error
           messages translate. Paste from locale-different
           sources (German decimal commas, US decimal
           points) parses correctly via locale-aware
-          parsers.
-        </p>
+          parsers.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Custom DSL vs JavaScript expressions</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Custom DSL is sandboxed, predictable,
           serializable. JavaScript expressions via
           <code> eval</code> would let users write
           anything but open massive security and
           stability holes. We use a custom DSL.
-        </p>
+        </HighlightBlock>
 
         <h3>Command pattern vs immutable state snapshots</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Command pattern is memory-efficient (each
           command is small) and easy to reason about (undo
           is the inverse). Immutable state snapshots are
           simpler to implement but balloon memory for
           large sheets. We use commands.
-        </p>
+        </HighlightBlock>
 
         <h3>Dependency DAG vs full re-evaluation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full re-evaluation on every edit is simple but
           O(cells); the DAG enables O(dependents)
           incremental recomputation, which is what scales
           to large sheets. We use the DAG.
-        </p>
+        </HighlightBlock>
 
         <h3>Web Worker for formula engine</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For very large sheets with heavy formula
           workloads, moving the engine to a worker keeps
           the main thread free for input. The cost is
           message-channel overhead per edit; for typical
           sheets, main-thread is fine. Web Worker is
           opt-in via configuration.
-        </p>
+        </HighlightBlock>
 
         <h3>Selection as overlay vs per-cell state</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Overlay is a single CSS layer that doesn&rsquo;t
           re-render cells during selection drag. Per-cell
           state would re-render every cell in the
           selection on every drag tick. Overlay is the
           right design for performance.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Real-time collaborative editing via CRDTs.
+        <HighlightBlock as="p" tier="crucial">Real-time collaborative editing via CRDTs.
           More formula functions (statistical, financial).
-          Conditional formatting rule UI. Chart
+          Conditional formatting rule UI.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Chart
           rendering inline in cells. Data validation
           rules. Server-side formula evaluation for
           extremely large sheets. Voice input for cell
-          values.
-        </p>
+          values.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How does formula recomputation stay
           incremental?</strong> A dependency DAG. When a
           cell changes, look up dependents in the DAG and
           recompute them in topological order. Cells not
           in the dependent set don&rsquo;t recompute.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How is undo/redo implemented?</strong>{" "}
           Command pattern. Every edit is a command with
           apply/undo methods. Commands push onto a stack;
           redo uses a separate stack that clears on the
           next non-redo command. Multi-cell edits are
           single commands with multiple internal effects.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. How do you handle circular
@@ -641,7 +585,7 @@ export default function SpreadsheetLikeGridArticle() {
           source.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. Why is the formula DSL sandboxed?</strong>{" "}
           Security and predictability. JavaScript
           expressions via
@@ -649,9 +593,9 @@ export default function SpreadsheetLikeGridArticle() {
           arbitrary code, opening XSS, data exfiltration,
           and infinite loops. A whitelisted DSL prevents
           all of those.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How does the spreadsheet stay fast on
           large sheets?</strong> Virtualization from the
           underlying 2D grid; selection as overlay (no
@@ -659,9 +603,9 @@ export default function SpreadsheetLikeGridArticle() {
           recomputation via dependency DAG; optional
           Web Worker for the engine. Memoization of cell
           renders by (cell id, value, formatting).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How is the spreadsheet
           accessible?</strong> ARIA grid pattern from
           the underlying 2D grid. Edit and selection
@@ -669,26 +613,14 @@ export default function SpreadsheetLikeGridArticle() {
           keyboard shortcut has a discoverable equivalent
           via a help dialog. Errors are inline accessible
           messages.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A spreadsheet is the <strong>interaction
-          layer</strong> over a 2D virtualized grid: cell
-          store, formula engine with dependency DAG,
-          selection model, edit state, command-pattern
-          undo/redo, clipboard bridge, and fill-handle
-          pattern detection. The substrate handles
-          rendering; the spreadsheet handles
-          interaction. Sandboxed formula DSL keeps it
-          secure; incremental recomputation keeps it
-          fast; the command pattern keeps undo
-          coherent. The result feels like Excel without
-          becoming Excel — a primitive consumers compose
-          into product-specific spreadsheet experiences.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Sandboxed formula DSL keeps it secure; incremental recomputation keeps it fast; the</HighlightBlock>
+<HighlightBlock as="p" tier="important">command pattern keeps undo coherent. The result feels like Excel without becoming</HighlightBlock>
+<HighlightBlock as="p" tier="important">Excel — a primitive consumers compose into product-specific spreadsheet experiences.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

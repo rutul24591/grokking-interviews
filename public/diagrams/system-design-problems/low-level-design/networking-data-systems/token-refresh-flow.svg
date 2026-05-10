@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Token Refresh Flow: Silent Refresh Strategy</text>
+
+  <!-- Token Lifecycle -->
+  <g>
+    <text x="100" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Token Lifecycle</text>
+
+    <rect x="50" y="100" width="1100" height="70" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
+    <text x="70" y="125" font-size="11" fill="#374151"><tspan font-weight="bold">Access Token:</tspan> Short-lived (15-60 min). Sent with every request in Authorization header. Expires → triggers refresh.</text>
+    <text x="70" y="150" font-size="11" fill="#374151"><tspan font-weight="bold">Refresh Token:</tspan> Long-lived (days-months). Stored securely (HttpOnly cookie or secure storage). Used to get new access token without user re-login.</text>
+  </g>
+
+  <!-- Silent Refresh Flow -->
+  <g>
+    <text x="100" y="220" font-size="14" font-weight="bold" fill="#1a1a1a">Silent Refresh Flow</text>
+
+    <!-- Timeline -->
+    <line x1="50" y1="260" x2="1100" y2="260" stroke="#d1d5db" stroke-width="2"/>
+
+    <!-- T0: Request with access token -->
+    <circle cx="100" cy="260" r="5" fill="#dbeafe"/>
+    <text x="100" y="285" font-size="10" text-anchor="middle" fill="#1e40af" font-weight="bold">Request</text>
+    <text x="100" y="302" font-size="9" text-anchor="middle" fill="#374151">Access token sent</text>
+
+    <!-- T1: Server checks -->
+    <circle cx="300" cy="260" r="5" fill="#e0e7ff"/>
+    <text x="300" y="285" font-size="10" text-anchor="middle" fill="#312e81" font-weight="bold">Validate</text>
+    <text x="300" y="302" font-size="9" text-anchor="middle" fill="#374151">Server checks expiry</text>
+
+    <!-- T2a: Valid path -->
+    <circle cx="500" cy="260" r="5" fill="#dcfce7"/>
+    <text x="500" y="285" font-size="10" text-anchor="middle" fill="#065f46" font-weight="bold">Valid</text>
+    <text x="500" y="302" font-size="9" text-anchor="middle" fill="#374151">Process request</text>
+    <path d="M 300 260 L 500 260" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+    <text x="395" y="250" font-size="9" fill="#059669" font-weight="bold">token ok</text>
+
+    <!-- T2b: Expired path -->
+    <circle cx="500" cy="340" r="5" fill="#fee2e2"/>
+    <text x="500" y="365" font-size="10" text-anchor="middle" fill="#991b1b" font-weight="bold">Expired</text>
+    <text x="500" y="382" font-size="9" text-anchor="middle" fill="#374151">Return 401</text>
+    <path d="M 300 260 L 500 340" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+    <text x="395" y="310" font-size="9" fill="#dc2626" font-weight="bold">expired</text>
+
+    <!-- T3a: Return response -->
+    <circle cx="700" cy="260" r="5" fill="#dcfce7"/>
+    <text x="700" y="285" font-size="10" text-anchor="middle" fill="#065f46" font-weight="bold">Response</text>
+    <text x="700" y="302" font-size="9" text-anchor="middle" fill="#374151">Data returned</text>
+    <path d="M 500 260 L 700 260" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+
+    <!-- T3b: Attempt refresh -->
+    <circle cx="700" cy="340" r="5" fill="#fef3c7"/>
+    <text x="700" y="365" font-size="10" text-anchor="middle" fill="#92400e" font-weight="bold">Refresh</text>
+    <text x="700" y="382" font-size="9" text-anchor="middle" fill="#374151">Send refresh token</text>
+    <path d="M 500 340 L 700 340" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+
+    <!-- T4b: New token -->
+    <circle cx="900" cy="340" r="5" fill="#dcfce7"/>
+    <text x="900" y="365" font-size="10" text-anchor="middle" fill="#065f46" font-weight="bold">New Token</text>
+    <text x="900" y="382" font-size="9" text-anchor="middle" fill="#374151">Received</text>
+    <path d="M 700 340 L 900 340" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+
+    <!-- T5b: Retry original request -->
+    <circle cx="1050" cy="340" r="5" fill="#dbeafe"/>
+    <text x="1050" y="365" font-size="10" text-anchor="middle" fill="#1e40af" font-weight="bold">Retry</text>
+    <text x="1050" y="382" font-size="9" text-anchor="middle" fill="#374151">Original request</text>
+    <path d="M 900 340 L 1050 340" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>
+
+    <!-- T5a: Return response -->
+    <circle cx="900" cy="260" r="5" fill="#dcfce7"/>
+    <text x="900" y="285" font-size="10" text-anchor="middle" fill="#065f46" font-weight="bold">Done</text>
+    <text x="900" y="302" font-size="9" text-anchor="middle" fill="#374151">User sees data</text>
+    <path d="M 700 260 L 900 260" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+  </g>
+
+  <!-- Error Scenarios -->
+  <g>
+    <text x="100" y="460" font-size="14" font-weight="bold" fill="#1a1a1a">Error Scenarios & Recovery</text>
+
+    <!-- Refresh token expired -->
+    <rect x="50" y="490" width="330" height="90" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="215" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#991b1b">Refresh Token Expired</text>
+    <text x="60" y="540" font-size="10" fill="#374151">• Cannot silently refresh</text>
+    <text x="60" y="556" font-size="10" fill="#374151">• User must re-login</text>
+    <text x="60" y="572" font-size="10" fill="#374151">• Clear local tokens</text>
+
+    <!-- Concurrent refresh requests -->
+    <rect x="410" y="490" width="330" height="90" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="575" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">Concurrent Refresh Race</text>
+    <text x="420" y="540" font-size="10" fill="#374151">• Multiple requests expire at once</text>
+    <text x="420" y="556" font-size="10" fill="#374151">• Lock: only 1st refreshes</text>
+    <text x="420" y="572" font-size="10" fill="#374151">• Others await same token</text>
+
+    <!-- Network failure during refresh -->
+    <rect x="770" y="490" width="330" height="90" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="935" y="515" font-size="11" font-weight="bold" text-anchor="middle" fill="#1e40af">Network Error</text>
+    <text x="780" y="540" font-size="10" fill="#374151">• Retry refresh with backoff</text>
+    <text x="780" y="556" font-size="10" fill="#374151">• Max 3 retries</text>
+    <text x="780" y="572" font-size="10" fill="#374151">• Fail: user re-login</text>
+  </g>
+
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+</svg>

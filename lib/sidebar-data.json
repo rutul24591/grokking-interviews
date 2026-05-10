@@ -319,7 +319,7 @@
             { "name": "Auth & User Systems", "slug": "auth-user-systems" },
             {
               "name": "Offline & Advanced UX Systems",
-              "slug": "offline-advanced-ux-systems"
+              "slug": "offline-advanced-ux"
             },
             {
               "name": "State & Interaction Modeling",

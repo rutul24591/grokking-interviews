@@ -1,0 +1,85 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Export System (CSV/PDF) — Async Pipeline, Large Datasets, and Download</text>
+
+  <!-- Export pipeline -->
+  <rect x="20" y="45" width="820" height="85" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="65" font-size="12" font-weight="bold" fill="#0d47a1">Async Export Pipeline</text>
+
+  <rect x="30" y="73" width="135" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="97" y="92" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">User Triggers Export</text>
+  <text x="97" y="107" text-anchor="middle" font-size="9" fill="#1565c0">format, filters, columns</text>
+  <line x1="165" y1="98" x2="183" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="185" y="73" width="130" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="250" y="92" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Create Job</text>
+  <text x="250" y="107" text-anchor="middle" font-size="9" fill="#1565c0">Returns jobId instantly</text>
+  <line x1="315" y1="98" x2="333" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="335" y="73" width="135" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="402" y="92" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Worker Process</text>
+  <text x="402" y="107" text-anchor="middle" font-size="9" fill="#1565c0">Query + stream → S3</text>
+  <line x1="470" y1="98" x2="488" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="490" y="73" width="135" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="557" y="92" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Progress Updates</text>
+  <text x="557" y="107" text-anchor="middle" font-size="9" fill="#1565c0">SSE: 0% → 45% → 100%</text>
+  <line x1="625" y1="98" x2="643" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="645" y="73" width="170" height="50" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="730" y="92" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">Signed URL Download</text>
+  <text x="730" y="107" text-anchor="middle" font-size="9" fill="#2e7d32">Pre-signed S3 URL, 1h expiry</text>
+
+  <!-- Format section -->
+  <rect x="20" y="150" width="400" height="210" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="30" y="170" font-size="12" font-weight="bold" fill="#1b5e20">Format Implementations</text>
+
+  <rect x="30" y="180" width="183" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="121" y="199" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">CSV Export</text>
+  <text x="121" y="215" text-anchor="middle" font-size="10" fill="#2e7d32">Stream rows in chunks of 1000</text>
+  <text x="121" y="230" text-anchor="middle" font-size="10" fill="#2e7d32">Escape commas/newlines in values</text>
+  <text x="121" y="245" text-anchor="middle" font-size="10" fill="#2e7d32">UTF-8 BOM for Excel compatibility</text>
+
+  <rect x="223" y="180" width="183" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="314" y="199" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">PDF Export</text>
+  <text x="314" y="215" text-anchor="middle" font-size="10" fill="#2e7d32">Headless browser (Puppeteer)</text>
+  <text x="314" y="230" text-anchor="middle" font-size="10" fill="#2e7d32">or pdfmake (client-side)</text>
+  <text x="314" y="245" text-anchor="middle" font-size="10" fill="#2e7d32">Table pagination in PDF pages</text>
+
+  <rect x="30" y="255" width="375" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="217" y="275" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Large Dataset Streaming</text>
+  <text x="217" y="290" text-anchor="middle" font-size="10" fill="#2e7d32">DB cursor + batch fetch: never load all rows in memory</text>
+  <text x="217" y="305" text-anchor="middle" font-size="10" fill="#2e7d32">Write chunks to S3 multipart upload (5MB chunks)</text>
+
+  <rect x="30" y="320" width="375" height="30" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="217" y="340" text-anchor="middle" font-size="10" fill="#1b5e20">Progress estimate: rows_processed / total_rows_estimate × 100</text>
+
+  <!-- Client UX + limits -->
+  <rect x="435" y="150" width="405" height="210" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="445" y="170" font-size="12" font-weight="bold" fill="#e65100">Client UX and Limits</text>
+
+  <rect x="445" y="180" width="382" height="55" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="636" y="200" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Non-blocking UI</text>
+  <text x="636" y="215" text-anchor="middle" font-size="10" fill="#bf360c">Export runs in background — user can navigate away</text>
+  <text x="636" y="230" text-anchor="middle" font-size="10" fill="#bf360c">Email notification when complete (large exports)</text>
+
+  <rect x="445" y="245" width="183" height="55" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="536" y="264" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Size Limits</text>
+  <text x="536" y="280" text-anchor="middle" font-size="10" fill="#bf360c">CSV: up to 1M rows (queue)</text>
+  <text x="536" y="295" text-anchor="middle" font-size="10" fill="#bf360c">PDF: up to 10k rows (sync)</text>
+
+  <rect x="638" y="245" width="184" height="55" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="730" y="264" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Rate Limiting</text>
+  <text x="730" y="280" text-anchor="middle" font-size="10" fill="#bf360c">3 concurrent exports per user</text>
+  <text x="730" y="295" text-anchor="middle" font-size="10" fill="#bf360c">Queue and notify on capacity</text>
+
+  <rect x="445" y="310" width="382" height="40" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1"/>
+  <text x="636" y="328" text-anchor="middle" font-size="10" fill="#e65100">Security: apply same row-level access control to export as to UI display</text>
+  <text x="636" y="342" text-anchor="middle" font-size="10" fill="#bf360c">Never export data the user cannot see in the UI</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

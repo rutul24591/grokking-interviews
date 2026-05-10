@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Scaling and resilience for a social feed frontend">
+  <title>Feed Frontend Scaling and Resilience</title>
+  <desc>Highlights client-side load shaping, caching, and graceful degradation to prevent amplification during spikes and partial outages.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="70" y="70" width="340" height="150" />
+  <text class="label bold" x="100" y="115">Client budgets</text>
+  <text class="label small" x="100" y="145">request cap per surface</text>
+  <text class="label small" x="100" y="170">media concurrency limits</text>
+  <text class="label small" x="100" y="195">retry backoff + jitter</text>
+
+  <rect class="ok" x="460" y="70" width="330" height="150" />
+  <text class="label bold" x="490" y="115">Caching &amp; dedupe</text>
+  <text class="label small" x="490" y="145">entity normalization</text>
+  <text class="label small" x="490" y="170">snapshot-keyed pages</text>
+  <text class="label small" x="490" y="195">seen-set per session</text>
+
+  <rect class="warn" x="830" y="70" width="300" height="150" />
+  <text class="label bold" x="860" y="115">Incident mode</text>
+  <text class="label small" x="860" y="145">disable prefetch</text>
+  <text class="label small" x="860" y="170">serve cached text</text>
+  <text class="label small" x="860" y="195">inline retries only</text>
+
+  <path class="arrow" d="M410 145 L460 145" />
+  <path class="arrow" d="M790 145 L830 145" />
+
+  <rect class="box" x="70" y="300" width="520" height="190" />
+  <text class="label bold" x="100" y="345">Graceful degradation ladder</text>
+  <text class="label small" x="100" y="375">1) text + placeholders if media fails</text>
+  <text class="label small" x="100" y="400">2) cached feed if ranking degrades</text>
+  <text class="label small" x="100" y="425">3) inline retry cards for paging errors</text>
+  <text class="label small" x="100" y="450">4) full refresh only as last resort</text>
+
+  <rect class="box" x="650" y="300" width="480" height="190" />
+  <text class="label bold" x="680" y="345">Observability guardrails</text>
+  <text class="label small" x="680" y="375">TTFC, scroll jank, media errors</text>
+  <text class="label small" x="680" y="400">retry volume, cache hit ratios</text>
+  <text class="label small" x="680" y="425">segment by device, network, cohort</text>
+  <text class="label small" x="680" y="450">alert on sudden amplification</text>
+</svg>

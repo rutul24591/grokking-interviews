@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable infinite scroll / virtualized list component for a
           large-scale React application. The component must efficiently render thousands
           (or millions) of items by only rendering the subset currently visible in the
@@ -48,7 +49,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           should handle real-time data feeds where items can be inserted or removed while
           the user is mid-scroll, and it must do all of this without visible jank or
           layout thrashing.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -56,28 +57,28 @@ export default function InfiniteScrollVirtualizedListArticle() {
           <li>
             The application is a React 19+ SPA with concurrent rendering support.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The data source is paginated (REST or WebSocket) with configurable page sizes
             (default: 20-50 items per page).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Items may have fixed or variable heights. Variable-height items require
             measurement after mount and a height cache for subsequent renders.
-          </li>
+          </HighlightBlock>
           <li>
             The list may contain anywhere from a few hundred to millions of items.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The user may navigate away and return; scroll position should be restored
             via history state.
-          </li>
+          </HighlightBlock>
           <li>
             The application may run in both light and dark mode.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Real-time feeds may push new items to the top of the list (e.g., social media
             feeds), shifting existing items downward.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -92,11 +93,11 @@ export default function InfiniteScrollVirtualizedListArticle() {
             visible in the viewport plus an overscan buffer (items above and below the
             visible window).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Variable Height Support:</strong> Measure item heights after mount,
             maintain a height cache, and recalculate total scroll height when content
             changes or items resize.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Infinite Scroll:</strong> Use IntersectionObserver on a sentinel
             element at the bottom of the rendered window to detect when the user is near
@@ -127,20 +128,20 @@ export default function InfiniteScrollVirtualizedListArticle() {
             devices. Prevent jank during data fetch by pre-loading pages before the user
             reaches the sentinel.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Announce &quot;Loaded X more items&quot; to
             screen readers via aria-live regions. Support keyboard navigation through the
             list (arrow keys, Page Up/Down, Home/End).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Scrolling must remain at 60fps. The virtualizer
             recalculates the visible window on every scroll event using
             <code>requestAnimationFrame</code> to batch updates and avoid layout thrashing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> The component should handle 1,000,000+ items
             without increased memory usage. Only the visible window (e.g., 20 items) plus
@@ -151,11 +152,11 @@ export default function InfiniteScrollVirtualizedListArticle() {
             changes via history state. If the user navigates away and returns, the list
             restores to the same visual position.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> The list must be navigable via keyboard,
             announce new content loads to screen readers, and maintain proper ARIA roles
             (list, listitem).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for generic item types,
             scroll state, data sources, and configuration.
@@ -169,10 +170,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
             sentinel should trigger loading early enough (overscan in data space) to
             prevent the user from seeing an empty gap.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Variable-height items cause the total scroll height to shift after measurement
             — the virtualizer must adjust spacer heights without causing a visible jump.
-          </li>
+          </HighlightBlock>
           <li>
             New items inserted at the top of the list (real-time feed) — existing items
             shift downward. The virtualizer must adjust the scroll offset to keep the
@@ -196,7 +197,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate <strong>virtualization logic</strong> from{" "}
           <strong>data-fetching logic</strong>. The virtualizer computes which items
           should be rendered based on the current scroll offset, viewport height, and
@@ -205,32 +206,32 @@ export default function InfiniteScrollVirtualizedListArticle() {
           list height. The infinite-scroll engine watches a sentinel element via
           IntersectionObserver and triggers page loads when the sentinel enters the
           viewport.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Render all items:</strong> Simplest approach but impractical for
             large datasets. 100,000 DOM nodes cause massive memory usage, slow layout
             recalculations, and input latency. Virtualization reduces this to ~20-30
             DOM nodes regardless of total item count.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Pagination with &quot;Load More&quot; button:</strong> Better than
             rendering everything but requires explicit user action. Loses the seamless
             browsing experience of infinite scroll. However, it provides clear
             boundaries (page numbers) and easier scroll restoration.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Windowing libraries (react-window, react-virtualized):</strong>
             Production-ready solutions with excellent performance. The trade-off is
             bundle size and less control over edge-case behavior (e.g., real-time feed
             inserts). Building a custom virtualizer is justified when the application
             has unique requirements (WebSocket-driven inserts, custom height caching).
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why custom virtualization + IntersectionObserver is optimal:</strong>{" "}
           IntersectionObserver is non-blocking, runs off the main thread, and fires only
           when the sentinel crosses the viewport threshold. This is far more efficient
@@ -238,7 +239,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           virtualizer that maintains a height cache, we get precise rendering with
           minimal main-thread work. This pattern is used by production libraries like
           TanStack Virtual and react-window.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -263,7 +264,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Virtualization Engine (<code>virtualization-engine.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Pure functions that compute the visible window. Given the scroll offset,
             viewport height, total item count, and height cache, the engine returns the
             start index, end index, and per-item offset/size. It handles both fixed and
@@ -271,7 +272,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
             height (configurable, default: 100px). The engine also calculates the total
             content height (sum of all item heights) which the container uses to set the
             outer spacer size.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Key functions:</strong>
           </p>
@@ -318,19 +319,19 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. React Hooks</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <code>useVirtualizer</code> integrates scroll tracking, height measurement
             via ResizeObserver on each rendered item, and visible window computation.
             It subscribes to the scroll container&apos;s scroll event (throttled via
             <code>requestAnimationFrame</code>) and returns the array of virtual items
             to render. <code>useInfiniteScroll</code> wraps the infinite scroll engine,
             exposing loading state, error state, loadMore trigger, and retry handler.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. React Components</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <code>VirtualizedList</code> — root container with the scroll listener, outer
             spacer (total height), and inner container for positioned items.
             <code>VirtualizedItem</code> — individual item rendered with absolute
@@ -340,11 +341,11 @@ export default function InfiniteScrollVirtualizedListArticle() {
             on mount, scrolls to the saved position after items are rendered.
             <code>FeedSkeleton</code> — animated placeholder rows shown during initial
             load or while fetching the next page.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The virtualizer maintains local state: scroll offset, viewport height, height
           cache (Map of index to measured height), and the current data array. The
           infinite-scroll engine maintains: current page number, loading flag, error
@@ -354,7 +355,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           needed because the state is component-local — the list is a self-contained
           widget. However, for applications that need to share list state across routes,
           a Zustand store can be layered on top for persistence.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -370,11 +371,11 @@ export default function InfiniteScrollVirtualizedListArticle() {
             Page 1 resolves. Items are added to the data array. Virtualizer recomputes
             the visible window and renders VirtualizedItems for the visible range.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Each VirtualizedItem mounts, measures its height via ResizeObserver, and
             reports to the height cache. The virtualizer recalculates offsets and total
             height.
-          </li>
+          </HighlightBlock>
           <li>
             User scrolls. The scroll handler (rAF-throttled) updates scroll offset.
             Virtualizer computes a new visible window and updates which items are rendered.
@@ -405,13 +406,13 @@ export default function InfiniteScrollVirtualizedListArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional pattern. Scroll events drive the
           virtualizer&apos;s visible window computation, which determines which items
           render. IntersectionObserver events drive the infinite-scroll engine&apos;s
           page-fetching logic. Both flows converge on the data array, which is the single
           source of truth for what the list displays.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Scroll Event Path</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -425,10 +426,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           <li>
             rAF fires. <code>computeVisibleWindow</code> runs with the new scroll offset.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The virtualizer returns a new array of VirtualItems. React reconciles the
             diff — only changed items re-render.
-          </li>
+          </HighlightBlock>
           <li>
             Spacer heights update to reflect total content height. Because spacers use
             <code>height</code> style (not transform), this may trigger layout. Mitigation:
@@ -472,26 +473,26 @@ export default function InfiniteScrollVirtualizedListArticle() {
             trigger a load. This is a dual-trigger strategy (IntersectionObserver +
             scroll position check).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Variable height recalculation:</strong> When an item&apos;s content
             changes (e.g., expanded accordion), ResizeObserver fires with the new size.
             The height cache updates, and all subsequent item offsets shift. The
             virtualizer triggers a re-render with the new offsets. The scroll position
             is preserved, so the user sees the content shift naturally.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-time insert at top:</strong> A WebSocket push adds items at
             index 0. All existing items shift down. The virtualizer adjusts by adding
             the height of inserted items to the scroll offset, keeping the user&apos;s
             current visual content in view. An aria-live announcement (&quot;X new items
             added&quot;) notifies screen reader users.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR safety:</strong> All virtualization logic runs inside
             <code>useEffect</code> or behind a <code>typeof window !== 'undefined'</code>
             guard. During SSR, the component renders a static skeleton or the first page
             of items without virtualization.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -529,7 +530,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Virtualization Engine (virtualization-engine.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pure functions with no side effects. <code>computeVisibleWindow</code> uses
           binary search to find the start index given the scroll offset and height cache
           (for variable-height items, a linear scan from the last known position is
@@ -538,10 +539,10 @@ export default function InfiniteScrollVirtualizedListArticle() {
           count. <code>getItemOffset</code> returns the cumulative height of all items
           before the given index. The height cache is a simple <code>Map&lt;number, number&gt;</code>{" "}
           that grows as items are measured.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Infinite Scroll Engine (infinite-scroll-engine.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Encapsulates IntersectionObserver lifecycle. Creates the observer with a
           configurable <code>rootMargin</code> (e.g., <code>&apos;200px 0px 0px 0px&apos;</code>{" "}
           to trigger 200px before the sentinel enters the viewport). Manages page counter,
@@ -549,7 +550,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
           exponential backoff (1s, 2s, 4s, max 30s) for automatic retries, and exposes a
           manual <code>retry()</code> method for user-initiated retry. The <code>reset()</code>
           method clears all state for re-fetching (e.g., when filters change).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Data Source (data-source.ts)</h3>
         <p>
@@ -564,7 +565,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: useVirtualizer Hook (hooks/use-virtualizer.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The main integration hook. Accepts the data array, viewport ref, and config.
           Sets up a scroll listener on the container (rAF-throttled). Maintains the
           height cache as a ref (persisted across renders to avoid recalculation). Returns{" "}
@@ -572,17 +573,17 @@ export default function InfiniteScrollVirtualizedListArticle() {
           the outer spacer), and <code>updateItemSize</code> (callback for ResizeObserver
           to report measured heights). Uses <code>useMemo</code> to avoid recomputing the
           visible window unless scroll offset or data changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: useInfiniteScroll Hook (hooks/use-infinite-scroll.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Wraps the infinite scroll engine. Returns <code>items</code> (accumulated data),
           <code>isLoading</code>, <code>error</code>, <code>hasMore</code>,{" "}
           <code>loadMore</code> (triggered by sentinel), and <code>retry</code> (for
           error recovery). Internally manages the page counter and calls the data
           source&apos;s <code>fetchPage</code>. Cleans up the IntersectionObserver on
           unmount.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: VirtualizedList Component (components/virtualized-list.tsx)</h3>
         <p>
@@ -623,13 +624,13 @@ export default function InfiniteScrollVirtualizedListArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 11: FeedSkeleton Component (components/feed-skeleton.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders 5-10 placeholder rows with a shimmer animation (CSS gradient moving
           left-to-right). Each row has a fixed height matching the estimated item size.
           Shown during the initial page load and at the bottom while fetching the next
           page. Uses <code>aria-busy=&quot;true&quot;</code> and{" "}
           <code>aria-label=&quot;Loading more items&quot;</code> for accessibility.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -647,11 +648,11 @@ export default function InfiniteScrollVirtualizedListArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">computeVisibleWindow</td>
                 <td className="p-2">O(log n) binary search or O(k) incremental scan</td>
                 <td className="p-2">O(n) height cache for n measured items</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">getItemOffset</td>
                 <td className="p-2">O(k) from cache start position</td>
@@ -689,14 +690,14 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Height cache invalidation:</strong> When items are inserted or removed
             mid-list, all subsequent indices shift. The height cache (keyed by index)
             becomes stale. Mitigation: key the cache by item ID instead of index, and
             recompute offsets by iterating in index order. This adds O(n) work on
             mutation but is amortized since mutations are infrequent compared to scroll
             events.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Spacer height updates:</strong> Changing the outer spacer&apos;s height
             triggers a layout recalculation. If this happens on every scroll frame, it
@@ -710,23 +711,23 @@ export default function InfiniteScrollVirtualizedListArticle() {
             use a single ResizeObserver on the container and delegate measurements via
             event bubbling, or pool observers (create 5, reuse across items).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory leak from stale closures:</strong> The scroll handler captures
             the height cache ref. If the ref changes (e.g., cache reset), the handler
             may use stale data. Mitigation: store the cache in a <code>useRef</code> and
             always read <code>cacheRef.current</code> inside the handler.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Binary search for start index:</strong> For variable-height items,
             instead of linear scan, build a prefix-sum array of heights and use binary
             search to find the item at a given offset. This reduces start index computation
             from O(n) to O(log n). The prefix-sum array is rebuilt only when the height
             cache changes, not on every scroll.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stable keys:</strong> Each VirtualizedItem uses the item&apos;s unique
             ID as the React <code>key</code> prop (not array index). This prevents React
@@ -745,12 +746,12 @@ export default function InfiniteScrollVirtualizedListArticle() {
             network request time to resolve before the user actually reaches the bottom,
             creating a seamless experience.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>React.memo on VirtualizedItem:</strong> Wrap the item component in
             <code>React.memo</code> with a custom comparator that compares the item data,
             offset, and size. This prevents re-renders when the parent re-renders due to
             unrelated scroll position changes.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -759,22 +760,22 @@ export default function InfiniteScrollVirtualizedListArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           List items may contain user-generated content (e.g., social media posts,
           comments). If rendered via <code>dangerouslySetInnerHTML</code>, they are XSS
           vectors. Always sanitize HTML content before rendering. Prefer rendering strings
           as text content (React&apos;s default escaping) and only allow rich content from
           trusted sources through a sanitization library like DOMPurify.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Data Source Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <code>RestApiDataSource</code> makes HTTP requests to fetch paginated data.
           Ensure the API enforces authentication and authorization checks on every page
           request. An attacker should not be able to enumerate all items by iterating
           through page numbers. Implement server-side rate limiting on the paginated
           endpoint to prevent scraping.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -784,12 +785,12 @@ export default function InfiniteScrollVirtualizedListArticle() {
               The list container has <code>role=&quot;list&quot;</code> and each item has
               <code>role=&quot;listitem&quot;</code>.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               When new items load, an aria-live region announces{" "}
               <code>{`"Loaded {count} more items"`}</code> with{" "}
               <code>aria-live=&quot;polite&quot;</code> to avoid interrupting ongoing
               screen reader speech.
-            </li>
+            </HighlightBlock>
             <li>
               The loading skeleton has <code>aria-busy=&quot;true&quot;</code> and an
               <code>aria-label</code> describing what is loading.
@@ -807,20 +808,20 @@ export default function InfiniteScrollVirtualizedListArticle() {
               Arrow Up/Down moves focus to the previous/next item. Page Up/Down jumps by
               10 items. Home/End jump to the first/last item.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Each VirtualizedItem is focusable with <code>{`tabIndex={-1}`}</code> (managed
               by the container&apos;s focus state — roving tabindex pattern).
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rate limiting on data source:</strong> The data source should not
             allow unbounded page fetching. Cap the maximum pages per session (e.g., 100
             pages) to prevent scraping.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Request cancellation:</strong> When the component unmounts or filters
             change, in-flight requests are cancelled via AbortController. This prevents
@@ -835,12 +836,12 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Virtualization engine:</strong> Test <code>computeVisibleWindow</code>
             with fixed heights (trivial), variable heights with a partially-filled cache,
             and edge cases (scroll at top, scroll at bottom, viewport larger than content).
             Verify start/end indices and offsets are correct.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Height cache:</strong> Test that <code>updateHeightCache</code>{" "}
             correctly stores and retrieves measurements. Test that cache invalidation on
@@ -859,16 +860,16 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Full list rendering:</strong> Render VirtualizedList with 1000 items,
             assert only ~20-30 DOM nodes exist (not 1000). Scroll to the bottom, assert
             new items load via IntersectionObserver mock.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Variable height measurement:</strong> Render items with varying
             content heights. Assert ResizeObserver fires, height cache updates, and
             subsequent scroll calculations use measured heights.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll restoration:</strong> Scroll to a position, simulate route
             change (save to history.state), re-render the list, assert scroll position
@@ -887,19 +888,19 @@ export default function InfiniteScrollVirtualizedListArticle() {
             SSR rendering: verify the list renders a skeleton or first-page items during
             SSR and hydrates correctly on the client.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Rapid scroll: simulate 100 scroll events in 1 second, verify only 1 rAF
             callback executes per frame, no memory leaks, height cache remains consistent.
-          </li>
+          </HighlightBlock>
           <li>
             Real-time insert: add 5 items at index 0 while user is scrolled to the middle,
             verify scroll offset adjusts by the inserted height and the user&apos;s current
             visual content remains stable.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Accessibility: run axe-core automated checks, verify aria-live announcements
             on page load, keyboard navigation through items, roving tabindex behavior.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -932,12 +933,12 @@ export default function InfiniteScrollVirtualizedListArticle() {
             position on navigation is a major UX issue. Candidates should discuss saving
             position to history state or a store and restoring it on return.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting accessibility:</strong> Virtualized lists are inherently
             challenging for screen readers (only a subset of items exist in the DOM).
             Candidates should discuss aria-live regions for load announcements and
             keyboard navigation patterns.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Using array index as React key:</strong> When items shift due to
             insertion or removal, index-based keys cause React to re-render items with
@@ -948,13 +949,13 @@ export default function InfiniteScrollVirtualizedListArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Infinite Scroll vs Pagination vs &quot;Load More&quot; Button</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Infinite scroll</strong> provides a seamless, exploratory browsing
             experience ideal for content feeds (social media, news, product catalogs). The
             trade-off is that users lose their sense of position (no page numbers), the
             footer is unreachable, and scroll restoration is complex. It also makes it
             hard to share a specific position in the list (no URL-based pagination).
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>Pagination</strong> provides clear boundaries (page numbers), easy
             bookmarking, and server-side control over data delivery. The trade-off is
@@ -973,7 +974,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Fixed Height vs Variable Height Virtualization</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Fixed-height virtualization is significantly simpler — the visible window is
             a straightforward calculation: <code>startIndex = floor(scrollTop / itemHeight)</code>,
             <code>endIndex = ceil((scrollTop + viewportHeight) / itemHeight)</code>.
@@ -982,12 +983,12 @@ export default function InfiniteScrollVirtualizedListArticle() {
             vs accuracy. For homogeneous content (e.g., contact lists, settings rows),
             fixed height is sufficient. For heterogeneous content (e.g., social feeds,
             comment threads), variable height is necessary.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Custom Virtualizer vs Library (react-window, TanStack Virtual)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Building a custom virtualizer gives full control over edge cases (real-time
             inserts, custom height caching, WebSocket integration). The trade-off is
             engineering effort and maintenance burden. Production libraries like react-window
@@ -996,7 +997,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
             virtualization is justified when the application has unique requirements that
             existing libraries don&apos;t address well, or when bundle size is a critical
             constraint and the use case is simple enough to implement in ~200 lines.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -1087,7 +1088,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
             <p className="font-semibold">
               Q: What if the list needs to support drag-and-drop reordering?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Drag-and-drop with virtualization is challenging because the dragged item
               may be one that&apos;s not currently in the DOM (outside the visible window).
               Solution: when a drag starts, create a &quot;ghost&quot; clone of the item
@@ -1095,7 +1096,7 @@ export default function InfiniteScrollVirtualizedListArticle() {
               based on the cursor&apos;s Y position and item offsets. On drop, reorder
               the data array, invalidate the height cache (indices shift), and re-render.
               Libraries like @dnd-kit/core handle this with virtualization-aware adapters.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

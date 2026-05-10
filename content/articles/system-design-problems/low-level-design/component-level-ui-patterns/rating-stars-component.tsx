@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function RatingStarsComponentArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable Rating/Stars component for a large-scale React
           application. The component must display and capture user ratings as a sequence
           of star icons that can be filled, half-filled, or empty. Users should be able
@@ -49,7 +50,7 @@ export default function RatingStarsComponentArticle() {
           rating, keyboard users must be able to adjust it with arrow keys, and the
           component must expose proper ARIA attributes including role, value range, and
           human-readable value text.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -57,28 +58,28 @@ export default function RatingStarsComponentArticle() {
           <li>
             The application is a React 19+ SPA with TypeScript strict mode enabled.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The default maximum rating is 5 stars, but the component should support
             configurable max values (e.g., 10 stars).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Ratings support half-star increments (0.5 steps). Values like 3.5 are valid;
             values like 3.3 round to the nearest 0.5.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The component supports three size variants: small (16px), medium (24px), and
             large (32px) star icons.
-          </li>
+          </HighlightBlock>
           <li>
             Colors for filled, empty, and hover states are customizable via props.
           </li>
           <li>
             The application may run in both light and dark mode.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The component must work without JavaScript for read-only display (static SVG
             rendering), but interactive features require client-side hydration.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -97,11 +98,11 @@ export default function RatingStarsComponentArticle() {
             element to determine whether the user intends a full (1.0) or half (0.5)
             rating for that star.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Read-Only vs Interactive Mode:</strong> In read-only mode, stars
             display the rating without interaction handlers. In interactive mode, stars
             respond to click, hover, and keyboard events.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hover Preview:</strong> When the user hovers over stars, they light
             up to show what the rating would be if clicked. On mouse leave, stars revert
@@ -116,15 +117,15 @@ export default function RatingStarsComponentArticle() {
             0.5, ArrowLeft/ArrowDown decreases by 0.5, Home sets rating to 0, End sets
             rating to max.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>ARIA Support:</strong> The component uses role="slider" with
             aria-valuenow, aria-valuemin, aria-valuemax, and aria-valuetext (e.g., "3.5
             out of 5 stars").
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Size Variants:</strong> Support sm (16px), md (24px), lg (32px) via
             a size prop that scales the SVG icons.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Color Customization:</strong> Allow custom colors for filled stars,
             empty stars, and hover state.
@@ -146,15 +147,15 @@ export default function RatingStarsComponentArticle() {
             visible jank. Use CSS transitions on color and clip-path for GPU-accelerated
             rendering.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> The component must pass WCAG 2.1 AA
             requirements for keyboard navigation, screen reader support, and focus
             visibility.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Type Safety:</strong> Full TypeScript support for rating values, size
             variants, color configuration, and event callbacks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reusability:</strong> The component should be usable across the
             application with zero configuration (sensible defaults) while supporting
@@ -197,7 +198,7 @@ export default function RatingStarsComponentArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>rating state management</strong> from
           the <strong>star rendering</strong>. The rating value and hover preview state
           are managed by a Zustand store, which exposes the current value, hover value,
@@ -205,32 +206,32 @@ export default function RatingStarsComponentArticle() {
           by a dedicated component that receives its fill state (filled, half, empty) as
           props and renders the appropriate SVG. Interaction logic (mouse position
           detection, keyboard handling, ARIA generation) is encapsulated in custom hooks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Local useState in component:</strong> Viable for simple use cases but
             becomes unwieldy when hover preview, keyboard handling, and ARIA generation
             all manage separate pieces of state. Extracting to hooks and a store keeps
             the component focused on rendering.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API:</strong> Would work for sharing rating state across
             sub-components (StarIcon, RatingLabel, RatingDisplay) but introduces provider
             coupling. Since the Rating component is self-contained (no need to share
             state outside its tree), Zustand provides a cleaner API without provider
             wrapping.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Radio group pattern:</strong> Using hidden radio inputs with visible
             star labels is a classic accessible pattern. However, it does not naturally
             support half-star values or fractional display. The ARIA slider role is a
             better fit for this component&apos;s requirements.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why Zustand + hooks + SVG clip-path is optimal:</strong> Zustand
           provides reactive state for the rating value and hover preview without provider
           overhead. Custom hooks encapsulate interaction logic (keyboard, mouse, ARIA)
@@ -239,7 +240,7 @@ export default function RatingStarsComponentArticle() {
           assets or complex path math. This pattern is used by production rating
           components and provides the best balance of accessibility, performance, and
           visual fidelity.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -251,14 +252,14 @@ export default function RatingStarsComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Rating Types (<code>rating-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>RatingValue</code> type (number between 0 and max), the
             <code>RatingSize</code> union (<code>sm | md | lg</code>), and the
             <code>RatingConfig</code> interface containing max rating, size, colors,
             readOnly flag, and optional label. The <code>StarFillState</code> union
             represents the three visual states: <code>filled | half | empty</code>. See
             the Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -302,13 +303,13 @@ export default function RatingStarsComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Star Path Data (<code>star-path-data.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Contains the SVG path data for filled and empty star shapes. The filled star
             is a standard 5-pointed star polygon. The empty star is the same path rendered
             as an outline (stroke only, no fill). Half-fill is achieved by rendering the
             filled star with a <code>clip-path</code> that clips at 50% width. Fractional
             fills (e.g., 70%) use dynamic clip-path rectangles computed at render time.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -323,25 +324,25 @@ export default function RatingStarsComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Interaction Hook (<code>use-rating-interactions.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Custom React hook that wires up mouse move, mouse leave, click, and keyboard
             handlers. Manages local hover state, computes the effective display value
             (hover value if hovering, otherwise selected value), and dispatches updates
             to the Zustand store. Encapsulates all interaction logic so the rendering
             component stays clean.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. ARIA Hook (<code>use-rating-aria.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Custom hook that generates the complete set of ARIA attributes for the rating
             container: <code>role="slider"</code>, <code>aria-valuenow</code>,
             <code>aria-valuemin</code>, <code>aria-valuemax</code>, and
             <code>aria-valuetext</code> (human-readable string like "3.5 out of 5 stars").
             Also generates <code>aria-label</code> from an optional prop and
             <code>tabIndex</code> for keyboard focusability.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
@@ -371,23 +372,23 @@ export default function RatingStarsComponentArticle() {
             User moves mouse away: interaction hook clears hover value. Stars revert to
             showing the selected value.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Keyboard user focuses the container and presses ArrowRight: value increments
             by 0.5, clamped to max.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. User interactions
           (mouse, keyboard, touch) flow through custom hooks, which update the Zustand
           store. The store notifies subscribed components, which re-render with the new
           effective display value. StarIcon components are pure rendering functions — they
           receive fill state as props and render the appropriate SVG.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Star Fill State Computation</h3>
         <p>
@@ -399,12 +400,12 @@ export default function RatingStarsComponentArticle() {
             If <code>i + 1 &lt;= v</code>: the star is fully filled (fill state =
             <code>filled</code>).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             If <code>i &lt; v &lt; i + 1</code>: the star is partially filled. The
             fractional amount is <code>v - i</code>. For interactive mode, this is always
             0.5 (half-fill). For read-only mode, this can be any value from 0 to 1
             (e.g., 0.7 for a 3.7 rating).
-          </li>
+          </HighlightBlock>
           <li>
             If <code>v &lt;= i</code>: the star is empty (fill state =
             <code>empty</code>).
@@ -413,22 +414,22 @@ export default function RatingStarsComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Rapid keyboard input:</strong> Each keypress increments/decrements by
             0.5. The store clamps the value to the range [0, max]. Holding a key triggers
             the browser&apos;s key repeat behavior, which naturally throttles updates to
             the OS-level repeat rate.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Touch devices:</strong> The click handler uses the touch event&apos;s
             first touch point to compute position. Since there is no hover on touch, the
             tap directly sets the value without a preview phase.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR safety:</strong> The RatingStars component renders read-only stars
             during SSR (no event handlers). Interactive features activate after hydration
             via a useEffect that sets a mounted flag.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multiple rating components:</strong> Each RatingStars instance uses
             its own Zustand store instance (created via a factory function) to avoid state
@@ -447,14 +448,14 @@ export default function RatingStarsComponentArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The complete, production-ready implementation consists of 11 files: TypeScript
             interfaces, Zustand store, SVG star path data, hover position detection, two
             custom hooks (interactions and ARIA), four React components (main rating,
             star icon, label, display), and a full EXPLANATION.md walkthrough. Click the
             <strong> Example</strong> toggle at the top of the article to view all source
             files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Rating Types (rating-types.ts)</h3>
@@ -468,13 +469,13 @@ export default function RatingStarsComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (rating-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The store manages the rating value, hover preview, and configuration. Key design
           decisions include: using a factory function to create scoped store instances
           (supporting multiple rating components on one page), clamping values to the
           valid range [0, max] on every update, and clearing hover state on value change
           to prevent stale preview values persisting after selection.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Star Path Data (star-path-data.ts)</h3>
         <p>
@@ -504,13 +505,13 @@ export default function RatingStarsComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: ARIA Hook (use-rating-aria.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generates ARIA attributes from the current value and config. Constructs
           <code>aria-valuetext</code> as a human-readable string (e.g., "3.5 out of 5
           stars"). Returns the complete attribute set: role, aria-valuenow, aria-valuemin,
           aria-valuemax, aria-valuetext, aria-label, tabIndex, and aria-disabled (for
           read-only mode).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: Star Icon (star-icon.tsx)</h3>
         <p>
@@ -532,21 +533,21 @@ export default function RatingStarsComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: Rating Label (rating-label.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optional text label component. Displays the human-readable rating (e.g., "3.5
           out of 5 stars") below the stars. Supports custom label text via prop. Uses
           screen-reader-only text variant for accessibility when the visual label is
           hidden.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 10: Rating Display (rating-display.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Read-only variant of the rating component. Renders stars without interaction
           handlers, supporting fractional fill values (e.g., 3.7). Used for displaying
           average ratings from server data. Simpler than the interactive version — no
           hover, keyboard, or ARIA slider role needed. Uses aria-label for screen reader
           announcement.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -599,47 +600,47 @@ export default function RatingStarsComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Re-render on every mouse move:</strong> The onMouseMove handler fires
             frequently as the cursor moves across stars. If every move triggers a store
             update and full re-render, it could cause jank. Mitigation: only update the
             store when the hover value actually changes (e.g., crossing the 50% boundary
             of a star), not on every pixel move.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SVG clip-path on every star:</strong> Creating a new clip-path element
             for each fractional star triggers DOM mutations. Mitigation: define clip-paths
             in a shared SVG defs block and reference them by ID. For half-fill, a single
             predefined clip-path suffices.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Zustand subscription overhead:</strong> If all StarIcon components
             subscribe to the entire store state, every value change re-renders all stars.
             Mitigation: use Zustand selectors to subscribe only to the effective display
             value, and memoize StarIcon with React.memo to skip re-renders when fill state
             is unchanged.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Throttled hover updates:</strong> Only dispatch setHover when the
             computed fill value (0.5 or 1.0 per star) actually changes, not on every
             mousemove event. This reduces store updates from potentially dozens per second
             to at most one per star boundary crossing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>React.memo on StarIcon:</strong> Wrap StarIcon in React.memo with a
             custom equality check on fill state, color, and size props. This prevents
             unnecessary re-renders when the display value changes but a particular star&apos;s
             fill state is unchanged.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS transitions over JS animation:</strong> Star color changes on
             hover use CSS <code>transition: fill 150ms ease</code>, which runs on the
             compositor thread. No requestAnimationFrame or JS animation loop needed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Shared SVG defs:</strong> Define clip-path rectangles once in a
             top-level SVG defs element and reference via <code>url(#clip-half)</code>.
@@ -653,14 +654,14 @@ export default function RatingStarsComponentArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The rating value is a number, so there is no XSS risk from the value itself.
           However, the optional label text is a string that may come from user input (e.g.,
           a custom rating category name). Always render label text as text content (React&apos;s
           default escaping) and never use dangerouslySetInnerHTML for label content.
           Color values should be validated against a whitelist of valid CSS color formats
           (hex, rgb, named colors) to prevent injection of malicious CSS expressions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -688,10 +689,10 @@ export default function RatingStarsComponentArticle() {
               <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">End</kbd> sets
               rating to max.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               A visible focus ring (2px outline with offset) indicates keyboard focus,
               styled via <code>:focus-visible</code> pseudo-class.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -709,10 +710,10 @@ export default function RatingStarsComponentArticle() {
               <code>aria-valuemin</code> and <code>aria-valuemax</code> define the valid
               range.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               <code>aria-valuetext</code> provides a human-readable announcement (e.g.,
               "3.5 out of 5 stars") that screen readers announce instead of the raw number.
-            </li>
+            </HighlightBlock>
             <li>
               <code>aria-label</code> provides context (e.g., "Product rating") announced
               before the value.
@@ -726,23 +727,23 @@ export default function RatingStarsComponentArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Focus Management</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The rating container uses <code>:focus-visible</code> to show a focus ring
             only for keyboard navigation (not mouse clicks). The focus ring uses a
             high-contrast color (e.g., blue outline on light background, yellow outline
             on dark background) to meet WCAG 2.1 AA contrast requirements. The ring is
             rendered as a 2px outline with 2px offset, ensuring it does not overlap the
             star icons.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Value clamping:</strong> The store clamps all rating values to the
             range [0, max]. This prevents out-of-range values from causing rendering bugs
             or ARIA inconsistencies.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rounding:</strong> Interactive mode rounds all values to the nearest
             0.5. This prevents fractional values like 3.333 from creating inconsistent
@@ -762,15 +763,15 @@ export default function RatingStarsComponentArticle() {
             setHover updates hoverValue, clearHover sets it to null. Verify that setValue
             clears hoverValue.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Hover position:</strong> Test hoverPosition with mouse at 25% of star
             width (returns 0.5), at 75% (returns 1.0), and at exactly 50% (returns 0.5).
             Test edge cases: mouse at 0px and at full width.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>ARIA generation:</strong> Test useRatingAria with value=3.5, max=5
             returns correct aria-valuenow, aria-valuetext. Test with value=0, value=max.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Star fill computation:</strong> Test that star at index 0 with value
             3.5 computes as filled, star at index 3 computes as half, star at index 4
@@ -780,16 +781,16 @@ export default function RatingStarsComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mouse interaction:</strong> Render RatingStars, fire mouseMove on star
             3 at 60% width, assert hover preview shows 3 full stars. Fire mouseLeave,
             assert stars revert to selected value. Fire click, assert value updates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard interaction:</strong> Focus container, fire keyDown with
             ArrowRight, assert value increases by 0.5. Fire Home, assert value is 0.
             Fire End, assert value is max.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Half-star detection:</strong> Click star 2 at 30% width (left half),
             assert value is 1.5. Click at 70% width (right half), assert value is 2.0.
@@ -813,10 +814,10 @@ export default function RatingStarsComponentArticle() {
           <li>
             Value of max: all stars filled, aria-valuetext reads "5 out of 5 stars".
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks, verify role="slider",
             aria-*attributes, keyboard focus ring visibility, screen reader announcements.
-          </li>
+          </HighlightBlock>
           <li>
             Touch device simulation: verify tap sets rating directly without hover preview.
           </li>
@@ -829,14 +830,14 @@ export default function RatingStarsComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using radio buttons for half-star support:</strong> The classic
             accessible rating pattern uses hidden radio inputs with visible labels styled
             as stars. This works for integer ratings but breaks for half-stars because
             each half-star would need its own radio, doubling the inputs and complicating
             the tab order. Interviewers expect candidates to recognize this limitation and
             propose the ARIA slider pattern instead.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not handling hover preview state:</strong> Candidates often implement
             click-to-set but forget the hover preview phase, where stars light up as the
@@ -849,12 +850,12 @@ export default function RatingStarsComponentArticle() {
             position within the star element. This misses the half-star capability
             entirely.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Missing ARIA attributes:</strong> Rendering stars without role,
             aria-valuenow, or aria-valuetext means screen reader users cannot determine
             the current rating or interact with the component. This is a critical
             accessibility failure.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Animating with JavaScript:</strong> Using requestAnimationFrame or
             state-based animation for star fill transitions causes jank. Interviewers
@@ -872,7 +873,7 @@ export default function RatingStarsComponentArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">ARIA Slider vs Radio Group</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The radio group pattern (hidden radios + visible star labels) is the most
             accessible pattern for integer ratings because it provides individual focusable
             elements per star and works without JavaScript. However, it does not support
@@ -882,7 +883,7 @@ export default function RatingStarsComponentArticle() {
             naturally supports half-steps and fractional values. The trade-off is that the
             slider pattern requires JavaScript for interaction, while radio groups work
             with pure HTML. For a React SPA, the slider pattern is the better choice.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -900,7 +901,7 @@ export default function RatingStarsComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Zustand Store vs Local State</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             For a single rating component, useState is perfectly adequate. However, when
             multiple rating components exist on the same page (e.g., a product review list
             where each review has its own rating), a shared store pattern provides
@@ -909,7 +910,7 @@ export default function RatingStarsComponentArticle() {
             creating scoped store instances supports this without state collision. The
             trade-off is added complexity — for simple use cases, useState + hooks is
             simpler and has fewer dependencies.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -919,14 +920,14 @@ export default function RatingStarsComponentArticle() {
             <p className="font-semibold">
               Q: How would you add a "clear rating" feature (set back to 0)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Add a clickable area to the left of the stars (an X icon or "Clear" text
               button). On click, call setValue(0). For keyboard users, add a separate
               focusable button before the rating container with aria-label="Clear rating".
               Alternatively, allow clicking the currently selected star again to deselect
               (toggle between current value and 0), but this changes the interaction model
               and may be surprising to users.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

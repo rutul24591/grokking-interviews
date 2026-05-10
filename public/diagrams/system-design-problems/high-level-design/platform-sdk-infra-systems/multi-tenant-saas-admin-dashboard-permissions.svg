@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Permission enforcement points for admin dashboard including UI gating, API authorization, and audit logging">
+  <title>Permissions and Audit Enforcement</title>
+  <desc>Shows UI capability gating, server-side authorization checks, and audit log generation for privileged actions.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="muted" x="60" y="90" width="340" height="170" />
+  <text class="label bold" x="90" y="135">UI capability model</text>
+  <text class="label small" x="90" y="165">hide/disable actions</text>
+  <text class="label small" x="90" y="190">explain missing permission</text>
+  <text class="label small" x="90" y="215">prevent accidental attempts</text>
+
+  <rect class="accent" x="440" y="90" width="340" height="170" />
+  <text class="label bold" x="470" y="135">API authorization</text>
+  <text class="label small" x="470" y="165">server-side authZ</text>
+  <text class="label small" x="470" y="190">tenant scoping</text>
+  <text class="label small" x="470" y="215">policy evaluation</text>
+
+  <rect class="box" x="820" y="90" width="320" height="170" />
+  <text class="label bold" x="850" y="135">Audit log</text>
+  <text class="label small" x="850" y="165">who/what/when</text>
+  <text class="label small" x="850" y="190">before/after summary</text>
+  <text class="label small" x="850" y="215">correlation id</text>
+
+  <path class="arrow" d="M400 175 L440 175" />
+  <path class="arrow" d="M780 175 L820 175" />
+
+  <rect class="warn" x="60" y="320" width="1080" height="160" />
+  <text class="label bold" x="90" y="365">Key invariant</text>
+  <text class="label small" x="90" y="395">UI gating improves UX, but only server authorization provides security</text>
+  <text class="label small" x="90" y="420">every privileged change must produce an audit record</text>
+</svg>
+

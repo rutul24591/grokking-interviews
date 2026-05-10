@@ -1,0 +1,95 @@
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="420" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Observer APIs — IntersectionObserver, MutationObserver, ResizeObserver</text>
+
+  <!-- IntersectionObserver -->
+  <rect x="20" y="45" width="265" height="330" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="152" y="67" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">IntersectionObserver</text>
+  <text x="152" y="85" text-anchor="middle" font-size="10" fill="#388e3c">Viewport entry/exit detection</text>
+
+  <rect x="35" y="96" width="235" height="65" rx="4" fill="white" stroke="#43a047" stroke-width="1.5"/>
+  <text x="152" y="113" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Options</text>
+  <text x="152" y="129" text-anchor="middle" font-size="10" fill="#2e7d32">root: viewport or custom element</text>
+  <text x="152" y="144" text-anchor="middle" font-size="10" fill="#2e7d32">rootMargin: "300px 0" (preload ahead)</text>
+  <text x="152" y="157" text-anchor="middle" font-size="10" fill="#2e7d32">threshold: [0, 0.5, 1] (multiple levels)</text>
+
+  <rect x="35" y="171" width="235" height="65" rx="4" fill="white" stroke="#43a047" stroke-width="1.5"/>
+  <text x="152" y="188" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Use Cases</text>
+  <text x="152" y="204" text-anchor="middle" font-size="10" fill="#2e7d32">Lazy-load images (src on entry)</text>
+  <text x="152" y="219" text-anchor="middle" font-size="10" fill="#2e7d32">Infinite scroll trigger</text>
+  <text x="152" y="234" text-anchor="middle" font-size="10" fill="#2e7d32">Animation on reveal</text>
+
+  <rect x="35" y="247" width="235" height="65" rx="4" fill="white" stroke="#43a047" stroke-width="1.5"/>
+  <text x="152" y="264" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Pattern</text>
+  <text x="152" y="280" text-anchor="middle" font-size="10" fill="#2e7d32">1 shared observer per page</text>
+  <text x="152" y="295" text-anchor="middle" font-size="10" fill="#2e7d32">Batch entries callback</text>
+  <text x="152" y="309" text-anchor="middle" font-size="10" fill="#2e7d32">observer.unobserve(el) after load</text>
+
+  <rect x="35" y="323" width="235" height="40" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="152" y="340" text-anchor="middle" font-size="10" fill="#e65100">Async (micro-task) — no main thread block</text>
+  <text x="152" y="354" text-anchor="middle" font-size="10" fill="#e65100">No scroll listener polling needed</text>
+
+  <!-- MutationObserver -->
+  <rect x="297" y="45" width="265" height="330" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="429" y="67" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">MutationObserver</text>
+  <text x="429" y="85" text-anchor="middle" font-size="10" fill="#1976d2">DOM change detection</text>
+
+  <rect x="312" y="96" width="235" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="429" y="113" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Options</text>
+  <text x="429" y="129" text-anchor="middle" font-size="10" fill="#1565c0">childList: true (node add/remove)</text>
+  <text x="429" y="144" text-anchor="middle" font-size="10" fill="#1565c0">attributes: true (attr changes)</text>
+  <text x="429" y="157" text-anchor="middle" font-size="10" fill="#1565c0">subtree: true (deep watch)</text>
+
+  <rect x="312" y="171" width="235" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="429" y="188" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Use Cases</text>
+  <text x="429" y="204" text-anchor="middle" font-size="10" fill="#1565c0">Rich text editor change detection</text>
+  <text x="429" y="219" text-anchor="middle" font-size="10" fill="#1565c0">Third-party widget monitoring</text>
+  <text x="429" y="234" text-anchor="middle" font-size="10" fill="#1565c0">Auto-translate injected content</text>
+
+  <rect x="312" y="247" width="235" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="429" y="264" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Pattern</text>
+  <text x="429" y="280" text-anchor="middle" font-size="10" fill="#1565c0">Debounce mutation callbacks</text>
+  <text x="429" y="295" text-anchor="middle" font-size="10" fill="#1565c0">takeRecords() to drain queue</text>
+  <text x="429" y="309" text-anchor="middle" font-size="10" fill="#1565c0">observer.disconnect() on cleanup</text>
+
+  <rect x="312" y="323" width="235" height="40" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="429" y="340" text-anchor="middle" font-size="10" fill="#e65100">Batched — fires after JS task completes</text>
+  <text x="429" y="354" text-anchor="middle" font-size="10" fill="#e65100">Watch subtree carefully (performance)</text>
+
+  <!-- ResizeObserver -->
+  <rect x="574" y="45" width="265" height="330" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="706" y="67" text-anchor="middle" font-size="13" font-weight="bold" fill="#b71c1c">ResizeObserver</text>
+  <text x="706" y="85" text-anchor="middle" font-size="10" fill="#e53935">Element dimension change detection</text>
+
+  <rect x="589" y="96" width="235" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="706" y="113" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Callback Data</text>
+  <text x="706" y="129" text-anchor="middle" font-size="10" fill="#c62828">entry.contentRect: width/height</text>
+  <text x="706" y="144" text-anchor="middle" font-size="10" fill="#c62828">entry.borderBoxSize (newer)</text>
+  <text x="706" y="157" text-anchor="middle" font-size="10" fill="#c62828">entry.devicePixelContentBoxSize</text>
+
+  <rect x="589" y="171" width="235" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="706" y="188" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Use Cases</text>
+  <text x="706" y="204" text-anchor="middle" font-size="10" fill="#c62828">Chart/canvas resize redraw</text>
+  <text x="706" y="219" text-anchor="middle" font-size="10" fill="#c62828">Container query workaround</text>
+  <text x="706" y="234" text-anchor="middle" font-size="10" fill="#c62828">Virtual list item height tracking</text>
+
+  <rect x="589" y="247" width="235" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="706" y="264" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Pattern</text>
+  <text x="706" y="280" text-anchor="middle" font-size="10" fill="#c62828">useEffect → observe on mount</text>
+  <text x="706" y="295" text-anchor="middle" font-size="10" fill="#c62828">Use ResizeObserver.observe(el)</text>
+  <text x="706" y="309" text-anchor="middle" font-size="10" fill="#c62828">Unobserve in cleanup</text>
+
+  <rect x="589" y="323" width="235" height="40" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="706" y="340" text-anchor="middle" font-size="10" fill="#e65100">Replaces window resize events per element</text>
+  <text x="706" y="354" text-anchor="middle" font-size="10" fill="#e65100">RAF-throttle callback for perf</text>
+
+  <!-- Common note -->
+  <rect x="20" y="388" width="820" height="22" rx="4" fill="#f5f5f5" stroke="#9e9e9e" stroke-width="1"/>
+  <text x="430" y="403" text-anchor="middle" font-size="10" fill="#616161">All three: async, non-blocking, no polling — always disconnect/unobserve in component cleanup to prevent memory leaks</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

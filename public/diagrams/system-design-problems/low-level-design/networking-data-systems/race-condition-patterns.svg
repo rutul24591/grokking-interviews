@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 550" width="1200" height="550">
+  <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Race Conditions: Common Patterns & Mitigation</text>
+
+  <!-- Race Condition 1: Out-of-order responses -->
+  <g>
+    <text x="100" y="70" font-size="12" font-weight="bold" fill="#1a1a1a">1. Out-of-Order Responses</text>
+
+    <rect x="50" y="100" width="280" height="140" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="190" y="125" font-size="11" font-weight="bold" text-anchor="middle" fill="#991b1b">Problem</text>
+    <text x="60" y="150" font-size="10" fill="#374151">T0: Request A sent</text>
+    <text x="60" y="167" font-size="10" fill="#374151">T1: Request B sent (data for A)</text>
+    <text x="60" y="184" font-size="10" fill="#374151">T2: B response arrives (500ms)</text>
+    <text x="60" y="201" font-size="10" fill="#374151">T3: A response arrives (1s)</text>
+    <text x="60" y="218" font-size="10" fill="#374151">→ Older data overwrites newer</text>
+
+    <rect x="360" y="100" width="280" height="140" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="500" y="125" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">Solution</text>
+    <text x="370" y="150" font-size="10" fill="#374151">• Track request ID</text>
+    <text x="370" y="167" font-size="10" fill="#374151">• Increment counter on change</text>
+    <text x="370" y="184" font-size="10" fill="#374151">• Only update if new > old</text>
+    <text x="370" y="201" font-size="10" fill="#374151">• Compare timestamps</text>
+    <text x="370" y="218" font-size="10" fill="#374151">• Discard stale updates</text>
+
+    <!-- Code example -->
+    <rect x="670" y="100" width="280" height="140" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
+    <text x="810" y="125" font-size="11" font-weight="bold" text-anchor="middle" fill="#374151">Implementation</text>
+    <text x="680" y="150" font-size="9" fill="#374151">if (response.id &gt; lastId)</text>
+    <text x="680" y="166" font-size="9" fill="#374151">  setState(response.data)</text>
+    <text x="680" y="182" font-size="9" fill="#374151">  lastId = response.id</text>
+    <text x="680" y="201" font-size="9" fill="#374151">Or compare timestamps:</text>
+    <text x="680" y="217" font-size="9" fill="#374151">if (response.ts &gt; state.ts)</text>
+  </g>
+
+  <!-- Race Condition 2: Unmount while fetching -->
+  <g>
+    <text x="100" y="290" font-size="12" font-weight="bold" fill="#1a1a1a">2. Unmount While Fetching</text>
+
+    <rect x="50" y="320" width="280" height="140" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="190" y="345" font-size="11" font-weight="bold" text-anchor="middle" fill="#991b1b">Problem</text>
+    <text x="60" y="370" font-size="10" fill="#374151">T0: Mount component</text>
+    <text x="60" y="387" font-size="10" fill="#374151">T1: Fetch initiated</text>
+    <text x="60" y="404" font-size="10" fill="#374151">T2: User navigates (unmount)</text>
+    <text x="60" y="421" font-size="10" fill="#374151">T3: Response arrives</text>
+    <text x="60" y="438" font-size="10" fill="#374151">→ setState on unmounted = error</text>
+
+    <rect x="360" y="320" width="280" height="140" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="500" y="345" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">Solution</text>
+    <text x="370" y="370" font-size="10" fill="#374151">• AbortController cancels fetch</text>
+    <text x="370" y="387" font-size="10" fill="#374151">• Cleanup in useEffect return</text>
+    <text x="370" y="404" font-size="10" fill="#374151">• Check isMounted flag</text>
+    <text x="370" y="421" font-size="10" fill="#374151">• Skip setState if unmounted</text>
+    <text x="370" y="438" font-size="10" fill="#374151">• Use try-finally for cleanup</text>
+
+    <rect x="670" y="320" width="280" height="140" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
+    <text x="810" y="345" font-size="11" font-weight="bold" text-anchor="middle" fill="#374151">Implementation</text>
+    <text x="680" y="370" font-size="9" fill="#374151">useEffect(() => {</text>
+    <text x="680" y="386" font-size="9" fill="#374151">  const controller = new AC()</text>
+    <text x="680" y="402" font-size="9" fill="#374151">  return () =&gt;</text>
+    <text x="680" y="418" font-size="9" fill="#374151">    controller.abort()</text>
+    <text x="680" y="434" font-size="9" fill="#374151">}, [deps])</text>
+  </g>
+</svg>

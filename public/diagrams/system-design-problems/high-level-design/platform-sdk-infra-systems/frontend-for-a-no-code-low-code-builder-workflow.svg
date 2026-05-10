@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-label="Workflow for editing in a no-code builder with operation log, incremental render, and versioned persistence">
+  <title>No-Code Builder Editing Workflow</title>
+  <desc>Shows edit action producing an operation, updating schema store, incremental render, and persistence checkpoints for recovery and publish.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" width="1200" height="620" />
+
+  <rect class="box" x="60" y="90" width="330" height="150" />
+  <text class="label bold" x="90" y="135">User edit</text>
+  <text class="label small" x="90" y="165">add/move node</text>
+  <text class="label small" x="90" y="190">change property</text>
+  <text class="label small" x="90" y="215">bind data</text>
+
+  <rect class="accent" x="430" y="90" width="360" height="150" />
+  <text class="label bold" x="460" y="135">Operation</text>
+  <text class="label small" x="460" y="165">idempotent change</text>
+  <text class="label small" x="460" y="190">inverse for undo</text>
+  <text class="label small" x="460" y="215">append to op log</text>
+
+  <rect class="box" x="830" y="90" width="310" height="150" />
+  <text class="label bold" x="860" y="135">Schema store</text>
+  <text class="label small" x="860" y="165">apply op</text>
+  <text class="label small" x="860" y="190">validate</text>
+  <text class="label small" x="860" y="215">derive minimal diff</text>
+
+  <path class="arrow" d="M390 165 L430 165" />
+  <path class="arrow" d="M790 165 L830 165" />
+
+  <rect class="muted" x="60" y="310" width="520" height="170" />
+  <text class="label bold" x="90" y="355">Incremental render</text>
+  <text class="label small" x="90" y="385">update only affected nodes</text>
+  <text class="label small" x="90" y="410">virtualize large lists</text>
+  <text class="label small" x="90" y="435">protect input latency</text>
+
+  <rect class="good" x="620" y="310" width="520" height="170" />
+  <text class="label bold" x="650" y="355">Persistence</text>
+  <text class="label small" x="650" y="385">save versions</text>
+  <text class="label small" x="650" y="410">periodic checkpoints</text>
+  <text class="label small" x="650" y="435">publish runtime artifact</text>
+
+  <path class="arrow" d="M985 240 C985 280 880 285 860 310" />
+  <path class="arrow" d="M580 395 L620 395" />
+</svg>
+

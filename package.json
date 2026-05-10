@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.11.1",
   "scripts": {
     "dev": "next dev",
-    "generate-article-routes": "tsx scripts/generate-article-routes.ts",
+    "generate-article-routes": "node --import tsx ./scripts/generate-article-routes.ts",
     "generate-examples-manifest:other": "node scripts/generate-examples-manifest-other.js",
     "generate-examples-manifest:requirements": "node scripts/generate-examples-manifest-requirements.js",
     "generate-examples-manifest:problems": "node scripts/generate-examples-manifest-problems.js",
@@ -21,16 +21,13 @@
     "orchestrator:merge": "node --import tsx ./scripts/orchestrator.ts merge",
     "orchestrator:recover": "node --import tsx ./scripts/orchestrator.ts recover",
     "orchestrator:fail": "node --import tsx ./scripts/orchestrator.ts fail",
-    "build": "pnpm generate-article-routes && pnpm generate-examples-manifest:requirements && next build",
+    "build": "pnpm generate-article-routes && pnpm generate-examples-manifest:requirements && pnpm generate-examples-manifest:problems && pnpm generate-examples-manifest:other && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "scan:code-snippets": "tsx scripts/scan-code-snippets.ts",
     "scan:code-snippets:fix": "tsx scripts/scan-code-snippets.ts --fix",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug",
-    "test:e2e:headed": "playwright test --headed",
-    "test:e2e:report": "playwright show-report",
+    "svgs:check": "python3 scripts/fix-svgs.py --check",
+    "svgs:fix": "python3 scripts/fix-svgs.py --fix",
     "orchestrator:help": "node --import tsx ./scripts/orchestrator.ts help"
   },
   "dependencies": {

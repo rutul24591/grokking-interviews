@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Workflow-first model for an internal developer platform showing job-based tasks with progress and audit">
+  <title>IDP Workflow Model</title>
+  <desc>Shows UI triggering a workflow job, orchestration through an engine and adapters, progress updates, and audit trail.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" width="1200" height="560" />
+
+  <rect class="box" x="60" y="90" width="340" height="150" />
+  <text class="label bold" x="90" y="135">User starts task</text>
+  <text class="label small" x="90" y="165">deploy, rollback</text>
+  <text class="label small" x="90" y="190">rotate secret</text>
+  <text class="label small" x="90" y="215">request access</text>
+
+  <rect class="accent" x="440" y="90" width="340" height="150" />
+  <text class="label bold" x="470" y="135">Workflow job</text>
+  <text class="label small" x="470" y="165">idempotency</text>
+  <text class="label small" x="470" y="190">progress states</text>
+  <text class="label small" x="470" y="215">structured errors</text>
+
+  <rect class="muted" x="820" y="70" width="320" height="190" />
+  <text class="label bold" x="850" y="115">Adapters</text>
+  <text class="label small" x="850" y="145">CI/CD, infra, secrets</text>
+  <text class="label small" x="850" y="170">normalize outcomes</text>
+  <text class="label small" x="850" y="195">enforce authZ</text>
+
+  <path class="arrow" d="M400 165 L440 165" />
+  <path class="arrow" d="M780 165 L820 165" />
+
+  <rect class="good" x="60" y="310" width="1080" height="170" />
+  <text class="label bold" x="90" y="355">UI feedback</text>
+  <text class="label small" x="90" y="385">progress updates and retries where safe</text>
+  <text class="label small" x="90" y="410">audit trail linked to entity and actor</text>
+  <text class="label small" x="90" y="435">clear failure states with remediation</text>
+</svg>
+

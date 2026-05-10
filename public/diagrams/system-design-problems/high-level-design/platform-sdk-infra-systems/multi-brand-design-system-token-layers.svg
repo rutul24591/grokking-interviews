@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Token layering model for multi-brand design systems">
+  <title>Token Layers</title>
+  <desc>Shows brand primitives feeding semantic tokens which then drive component styling and interaction tokens across multiple brands.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" width="1200" height="560" />
+
+  <rect class="box" x="70" y="90" width="320" height="160" />
+  <text class="label bold" x="100" y="135">Brand primitives</text>
+  <text class="label small" x="100" y="165">palette, type, radius</text>
+  <text class="label small" x="100" y="190">raw values per brand</text>
+  <text class="label small" x="100" y="215">not used directly by components</text>
+
+  <rect class="accent" x="440" y="90" width="320" height="160" />
+  <text class="label bold" x="470" y="135">Semantic tokens</text>
+  <text class="label small" x="470" y="165">surface, text, border</text>
+  <text class="label small" x="470" y="190">focus ring, danger</text>
+  <text class="label small" x="470" y="215">accessibility validated</text>
+
+  <rect class="good" x="810" y="90" width="320" height="160" />
+  <text class="label bold" x="840" y="135">Components</text>
+  <text class="label small" x="840" y="165">use semantic meaning</text>
+  <text class="label small" x="840" y="190">behavior contracts</text>
+  <text class="label small" x="840" y="215">variants controlled</text>
+
+  <path class="arrow" d="M390 170 L440 170" />
+  <path class="arrow" d="M760 170 L810 170" />
+
+  <rect class="muted" x="70" y="310" width="1060" height="170" />
+  <text class="label bold" x="100" y="355">Why layering matters</text>
+  <text class="label small" x="100" y="385">brands can change raw palettes without touching component code</text>
+  <text class="label small" x="100" y="410">components stay consistent across brands and products</text>
+  <text class="label small" x="100" y="435">semantic tokens enforce accessible defaults</text>
+</svg>
+

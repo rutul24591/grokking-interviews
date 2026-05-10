@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Lobby and matchmaking UI architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Lobby + Matchmaking: Authoritative Party State</text>
+  <text class="t muted" x="40" y="78" font-size="13">Realtime events are hints; pull-on-reconnect reconciles state</text>
+
+  <rect class="box" x="40" y="160" width="280" height="280" rx="14"/>
+  <text class="t h" x="60" y="190" font-size="16">Client Lobby</text>
+  <text class="t muted" x="60" y="220" font-size="12">Party state machine</text>
+  <text class="t muted" x="60" y="242" font-size="12">Queue status + accept window</text>
+
+  <rect class="box" x="360" y="140" width="260" height="140" rx="14"/>
+  <text class="t h" x="380" y="170" font-size="16">Party Service</text>
+  <text class="t muted" x="380" y="200" font-size="12">Versioned authoritative state</text>
+
+  <rect class="box" x="660" y="140" width="260" height="140" rx="14"/>
+  <text class="t h" x="680" y="170" font-size="16">Matchmaking</text>
+  <text class="t muted" x="680" y="200" font-size="12">Queue + match found</text>
+
+  <rect class="box" x="360" y="310" width="560" height="130" rx="14"/>
+  <text class="t h" x="380" y="340" font-size="16">Realtime Gateway</text>
+  <text class="t muted" x="380" y="370" font-size="12">Party updates, queue events, rate limits</text>
+
+  <path class="line" d="M320 260 L350 260" />
+  <polygon class="arrow" points="350,260 342,256 342,264"/>
+  <path class="line" d="M620 260 L650 260" />
+  <polygon class="arrow" points="650,260 642,256 642,264"/>
+</svg>
+

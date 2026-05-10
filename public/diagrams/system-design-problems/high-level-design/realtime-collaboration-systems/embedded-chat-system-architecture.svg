@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Embedded chat architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Embedded Chat: Idempotent Sends + Server Ordering</text>
+  <text class="t muted" x="40" y="78" font-size="13">Realtime delivery with pull-on-reconnect for correctness</text>
+
+  <rect class="box" x="40" y="170" width="280" height="260" rx="14"/>
+  <text class="t h" x="60" y="200" font-size="16">Client</text>
+  <text class="t muted" x="60" y="230" font-size="12">Optimistic timeline + drafts</text>
+  <text class="t muted" x="60" y="252" font-size="12">Idempotency keys per message</text>
+
+  <rect class="box" x="360" y="150" width="260" height="140" rx="14"/>
+  <text class="t h" x="380" y="180" font-size="16">Realtime Gateway</text>
+  <text class="t muted" x="380" y="210" font-size="12">Fanout + rate limits</text>
+
+  <rect class="box" x="660" y="150" width="260" height="140" rx="14"/>
+  <text class="t h" x="680" y="180" font-size="16">Message Service</text>
+  <text class="t muted" x="680" y="210" font-size="12">Server sequences per room</text>
+
+  <rect class="box" x="360" y="310" width="560" height="120" rx="14"/>
+  <text class="t h" x="380" y="340" font-size="16">Storage + Moderation</text>
+  <text class="t muted" x="380" y="368" font-size="12">History, retention, policy actions</text>
+
+  <path class="line" d="M320 280 L350 280" />
+  <polygon class="arrow" points="350,280 342,276 342,284"/>
+  <path class="line" d="M620 220 L650 220" />
+  <polygon class="arrow" points="650,220 642,216 642,224"/>
+</svg>
+

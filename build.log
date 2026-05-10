@@ -1,0 +1,1184 @@
+
+> system-design-prep@0.1.0 build /Users/rutulamin/Documents/interviews/system-design-prep
+> pnpm generate-article-routes && pnpm generate-examples-manifest:requirements && pnpm generate-examples-manifest:problems && pnpm generate-examples-manifest:other && next build --webpack
+
+
+> system-design-prep@0.1.0 generate-article-routes /Users/rutulamin/Documents/interviews/system-design-prep
+> node --import tsx ./scripts/generate-article-routes.ts
+
+🔍 Scanning article files...
+
+============================================================
+📊 SUMMARY
+============================================================
+Articles scanned:  1123
+Output: lib/article-routes.ts
+Size: 209.41 KB
+
+✅ Article routes manifest generated successfully!
+
+📝 Next steps:
+   - Run 'pnpm build' to rebuild the app
+
+
+> system-design-prep@0.1.0 generate-examples-manifest:requirements /Users/rutulamin/Documents/interviews/system-design-prep
+> node scripts/generate-examples-manifest-requirements.js
+
+Updated examples-manifest.json with 272 requirements key(s).
+- functional-requirements/admin-moderation/abuse-detection
+- functional-requirements/admin-moderation/admin-apis
+- functional-requirements/admin-moderation/admin-dashboard
+- functional-requirements/admin-moderation/alerting-systems
+- functional-requirements/admin-moderation/analytics-dashboard
+- functional-requirements/admin-moderation/audit-logging
+- functional-requirements/admin-moderation/compliance-tools
+- functional-requirements/admin-moderation/configuration-services
+- functional-requirements/admin-moderation/content-moderation-service
+- functional-requirements/admin-moderation/feature-flag-ui
+- functional-requirements/admin-moderation/legal-requests
+- functional-requirements/admin-moderation/moderation-queue-ui
+- functional-requirements/admin-moderation/moderation-services
+- functional-requirements/admin-moderation/monitoring-tools
+- functional-requirements/admin-moderation/reporting-tools-ui
+- functional-requirements/admin-moderation/user-management-services
+- functional-requirements/admin-moderation/user-management-ui
+- functional-requirements/communication/chat-interface
+- functional-requirements/communication/email-delivery-services
+- functional-requirements/communication/end-to-end-encryption
+- functional-requirements/communication/group-chat-ui
+- functional-requirements/communication/media-sharing-chat
+- functional-requirements/communication/messaging-service
+- functional-requirements/communication/notification-center
+- functional-requirements/communication/notification-delivery
+- functional-requirements/communication/offline-message-queue
+- functional-requirements/communication/presence-indicators
+- functional-requirements/communication/pub-sub-messaging
+- functional-requirements/communication/push-notification-service
+- functional-requirements/communication/read-receipts
+- functional-requirements/communication/real-time-broadcasting
+- functional-requirements/communication/sms-gateways
+- functional-requirements/communication/voice-video-calling-ui
+- functional-requirements/communication/webrtc
+- functional-requirements/communication/websocket-server
+- functional-requirements/content-management/cdn-delivery
+- functional-requirements/content-management/content-categorization-ui
+- functional-requirements/content-management/content-lifecycle-management
+- functional-requirements/content-management/content-moderation
+- functional-requirements/content-management/content-preview
+- functional-requirements/content-management/content-scheduling-ui
+- functional-requirements/content-management/content-sharing-interface
+- functional-requirements/content-management/content-storage
+- functional-requirements/content-management/content-tagging-ui
+- functional-requirements/content-management/content-validation
+- functional-requirements/content-management/content-versioning
+- functional-requirements/content-management/create-content-ui
+- functional-requirements/content-management/crud-apis
+- functional-requirements/content-management/delete-content-ui
+- functional-requirements/content-management/draft-saving
+- functional-requirements/content-management/edit-content-ui
+- functional-requirements/content-management/file-attachments
+- functional-requirements/content-management/media-processing
+- functional-requirements/content-management/media-upload
+- functional-requirements/content-management/object-storage
+- functional-requirements/content-management/publishing-workflow
+- functional-requirements/content-management/rich-text-editor
+- functional-requirements/content-management/search-indexing
+- functional-requirements/content-management/soft-delete
+- functional-requirements/content-management/tagging-categorization-management
+- functional-requirements/content-management/view-content-pages
+- functional-requirements/discovery-search-feed-browsing/category-navigation
+- functional-requirements/discovery-search-feed-browsing/elasticsearch
+- functional-requirements/discovery-search-feed-browsing/explore-page
+- functional-requirements/discovery-search-feed-browsing/faceted-search
+- functional-requirements/discovery-search-feed-browsing/feed-display
+- functional-requirements/discovery-search-feed-browsing/feed-generation
+- functional-requirements/discovery-search-feed-browsing/filters-and-sorting
+- functional-requirements/discovery-search-feed-browsing/infinite-scrolling
+- functional-requirements/discovery-search-feed-browsing/query-processing
+- functional-requirements/discovery-search-feed-browsing/ranking-optimization
+- functional-requirements/discovery-search-feed-browsing/recommendation-algorithms
+- functional-requirements/discovery-search-feed-browsing/recommendation-carousel
+- functional-requirements/discovery-search-feed-browsing/related-content
+- functional-requirements/discovery-search-feed-browsing/search-analytics
+- functional-requirements/discovery-search-feed-browsing/search-bar
+- functional-requirements/discovery-search-feed-browsing/search-indexing
+- functional-requirements/discovery-search-feed-browsing/search-ranking
+- functional-requirements/discovery-search-feed-browsing/search-results-ui
+- functional-requirements/discovery-search-feed-browsing/trending-computation
+- functional-requirements/discovery-search-feed-browsing/trending-section
+- functional-requirements/identity-access/access-control-policies
+- functional-requirements/identity-access/account-lockout
+- functional-requirements/identity-access/account-recovery-ui
+- functional-requirements/identity-access/account-settings-ui
+- functional-requirements/identity-access/account-verification
+- functional-requirements/identity-access/authentication-audit-logs
+- functional-requirements/identity-access/authentication-service
+- functional-requirements/identity-access/credential-rotation
+- functional-requirements/identity-access/device-session-management-ui
+- functional-requirements/identity-access/device-session-tracking
+- functional-requirements/identity-access/email-verification
+- functional-requirements/identity-access/identity-providers
+- functional-requirements/identity-access/login-attempt-tracking
+- functional-requirements/identity-access/login-interface
+- functional-requirements/identity-access/logout
+- functional-requirements/identity-access/mfa-setup
+- functional-requirements/identity-access/oauth-providers
+- functional-requirements/identity-access/password-hashing-and-validation
+- functional-requirements/identity-access/password-reset
+- functional-requirements/identity-access/permission-validation
+- functional-requirements/identity-access/phone-verification
+- functional-requirements/identity-access/profile-settings-ui
+- functional-requirements/identity-access/rbac
+- functional-requirements/identity-access/security-audit-logging
+- functional-requirements/identity-access/security-settings-ui
+- functional-requirements/identity-access/session-management
+- functional-requirements/identity-access/session-persistence
+- functional-requirements/identity-access/session-revocation
+- functional-requirements/identity-access/signup-interface
+- functional-requirements/identity-access/social-login-options
+- functional-requirements/identity-access/sso-integrations
+- functional-requirements/identity-access/token-generation
+- functional-requirements/identity-access/user-registration-service
+- functional-requirements/interaction-engagement/activity-feeds
+- functional-requirements/interaction-engagement/bookmark-save-ui
+- functional-requirements/interaction-engagement/comment-ui
+- functional-requirements/interaction-engagement/engagement-aggregation
+- functional-requirements/interaction-engagement/engagement-fraud-detection
+- functional-requirements/interaction-engagement/engagement-metrics-display
+- functional-requirements/interaction-engagement/engagement-storage
+- functional-requirements/interaction-engagement/engagement-tracking
+- functional-requirements/interaction-engagement/follow-subscribe-ui
+- functional-requirements/interaction-engagement/interaction-apis
+- functional-requirements/interaction-engagement/like-button
+- functional-requirements/interaction-engagement/rating-review-ui
+- functional-requirements/interaction-engagement/reaction-picker
+- functional-requirements/interaction-engagement/share-ui
+- functional-requirements/interaction-engagement/upvote-downvote-ui
+- functional-requirements/other-cross-cutting/abuse-reporting
+- functional-requirements/other-cross-cutting/access-history-logs
+- functional-requirements/other-cross-cutting/conflict-resolution
+- functional-requirements/other-cross-cutting/consent-management
+- functional-requirements/other-cross-cutting/content-archiving
+- functional-requirements/other-cross-cutting/content-flagging
+- functional-requirements/other-cross-cutting/content-recovery
+- functional-requirements/other-cross-cutting/content-reporting
+- functional-requirements/other-cross-cutting/content-scheduling
+- functional-requirements/other-cross-cutting/content-version-history
+- functional-requirements/other-cross-cutting/data-deletion-requests
+- functional-requirements/other-cross-cutting/data-download-requests
+- functional-requirements/other-cross-cutting/data-sharing-preferences
+- functional-requirements/other-cross-cutting/draft-saving
+- functional-requirements/other-cross-cutting/duplicate-request-handling
+- functional-requirements/other-cross-cutting/email-digest-preferences
+- functional-requirements/other-cross-cutting/export-user-data
+- functional-requirements/other-cross-cutting/gdpr-data-requests
+- functional-requirements/other-cross-cutting/idempotent-requests
+- functional-requirements/other-cross-cutting/import-user-data
+- functional-requirements/other-cross-cutting/language-settings
+- functional-requirements/other-cross-cutting/notification-frequency-controls
+- functional-requirements/other-cross-cutting/notification-muting
+- functional-requirements/other-cross-cutting/notification-preferences
+- functional-requirements/other-cross-cutting/permission-management
+- functional-requirements/other-cross-cutting/personalized-recommendations
+- functional-requirements/other-cross-cutting/privacy-settings
+- functional-requirements/other-cross-cutting/profile-visibility
+- functional-requirements/other-cross-cutting/recently-viewed-content
+- functional-requirements/other-cross-cutting/retry-mechanisms
+- functional-requirements/other-cross-cutting/saved-preferences
+- functional-requirements/other-cross-cutting/spam-detection
+- functional-requirements/other-cross-cutting/terms-acceptance-tracking
+- functional-requirements/other-cross-cutting/theme-settings
+- functional-requirements/other-cross-cutting/user-blocking
+- functional-requirements/other-cross-cutting/user-muting
+- functional-requirements/transactions-state/billing-platforms
+- functional-requirements/transactions-state/billing-services
+- functional-requirements/transactions-state/booking-workflows
+- functional-requirements/transactions-state/checkout-flow
+- functional-requirements/transactions-state/confirmation-screens
+- functional-requirements/transactions-state/event-sourcing-systems
+- functional-requirements/transactions-state/financial-logs
+- functional-requirements/transactions-state/idempotency
+- functional-requirements/transactions-state/inventory-management
+- functional-requirements/transactions-state/order-history-ui
+- functional-requirements/transactions-state/order-management-service
+- functional-requirements/transactions-state/order-tracking-ui
+- functional-requirements/transactions-state/payment-gateways
+- functional-requirements/transactions-state/payment-processing
+- functional-requirements/transactions-state/payment-ui
+- functional-requirements/transactions-state/refund-request-ui
+- functional-requirements/transactions-state/state-machine-implementation
+- functional-requirements/transactions-state/subscription-billing
+- functional-requirements/transactions-state/subscription-lifecycle-management
+- functional-requirements/transactions-state/subscription-management-ui
+- functional-requirements/transactions-state/transaction-fraud-detection
+- functional-requirements/transactions-state/transaction-history-ui
+- non-functional-requirements/advanced-bonus/accessibility-automation
+- non-functional-requirements/advanced-bonus/battery-cpu-efficiency
+- non-functional-requirements/advanced-bonus/canary-experimentation-framework
+- non-functional-requirements/advanced-bonus/chaos-testing
+- non-functional-requirements/advanced-bonus/data-lineage-auditability
+- non-functional-requirements/advanced-bonus/memory-management
+- non-functional-requirements/advanced-bonus/micro-frontend-compatibility
+- non-functional-requirements/advanced-bonus/multi-tenant-isolation
+- non-functional-requirements/advanced-bonus/progressive-enhancement
+- non-functional-requirements/advanced-bonus/slo-error-budget-management
+- non-functional-requirements/backend-nfr/api-versioning
+- non-functional-requirements/backend-nfr/authentication-infrastructure
+- non-functional-requirements/backend-nfr/authorization-model
+- non-functional-requirements/backend-nfr/backpressure-handling
+- non-functional-requirements/backend-nfr/capacity-planning
+- non-functional-requirements/backend-nfr/centralized-logging
+- non-functional-requirements/backend-nfr/cicd-pipelines
+- non-functional-requirements/backend-nfr/compliance-auditing
+- non-functional-requirements/backend-nfr/consistency-model
+- non-functional-requirements/backend-nfr/cost-optimization
+- non-functional-requirements/backend-nfr/data-migration-strategy
+- non-functional-requirements/backend-nfr/data-retention-archival
+- non-functional-requirements/backend-nfr/database-selection-strategy
+- non-functional-requirements/backend-nfr/disaster-recovery-strategy
+- non-functional-requirements/backend-nfr/durability-guarantees
+- non-functional-requirements/backend-nfr/event-replayability
+- non-functional-requirements/backend-nfr/fault-tolerance-resilience
+- non-functional-requirements/backend-nfr/high-availability
+- non-functional-requirements/backend-nfr/idempotency-guarantees
+- non-functional-requirements/backend-nfr/latency-slas
+- non-functional-requirements/backend-nfr/message-ordering-guarantees
+- non-functional-requirements/backend-nfr/metrics-distributed-tracing
+- non-functional-requirements/backend-nfr/multi-region-replication
+- non-functional-requirements/backend-nfr/rate-limiting-abuse-protection
+- non-functional-requirements/backend-nfr/scalability-strategy
+- non-functional-requirements/backend-nfr/schema-governance
+- non-functional-requirements/backend-nfr/secrets-management
+- non-functional-requirements/backend-nfr/server-side-caching-strategy
+- non-functional-requirements/backend-nfr/throughput-capacity
+- non-functional-requirements/backend-nfr/traffic-management-load-shedding
+- non-functional-requirements/frontend-nfr/accessibility
+- non-functional-requirements/frontend-nfr/authentication-ux-flows
+- non-functional-requirements/frontend-nfr/build-optimization
+- non-functional-requirements/frontend-nfr/client-edge-caching
+- non-functional-requirements/frontend-nfr/client-persistence-strategy
+- non-functional-requirements/frontend-nfr/conflict-resolution-ux
+- non-functional-requirements/frontend-nfr/cross-browser-compatibility
+- non-functional-requirements/frontend-nfr/developer-experience
+- non-functional-requirements/frontend-nfr/device-responsiveness
+- non-functional-requirements/frontend-nfr/error-ux-recovery
+- non-functional-requirements/frontend-nfr/feature-flagging-rollouts
+- non-functional-requirements/frontend-nfr/frontend-deployment-strategy
+- non-functional-requirements/frontend-nfr/frontend-observability-rum
+- non-functional-requirements/frontend-nfr/frontend-testing-strategy
+- non-functional-requirements/frontend-nfr/internationalization-localization
+- non-functional-requirements/frontend-nfr/media-optimization
+- non-functional-requirements/frontend-nfr/multi-tab-synchronization
+- non-functional-requirements/frontend-nfr/network-efficiency
+- non-functional-requirements/frontend-nfr/offline-support-pwa
+- non-functional-requirements/frontend-nfr/page-load-performance
+- non-functional-requirements/frontend-nfr/perceived-performance
+- non-functional-requirements/frontend-nfr/privacy-consent-ux
+- non-functional-requirements/frontend-nfr/realtime-ui-handling
+- non-functional-requirements/frontend-nfr/rendering-strategy
+- non-functional-requirements/frontend-nfr/secure-client-storage
+- non-functional-requirements/frontend-nfr/seo-discoverability
+- non-functional-requirements/frontend-nfr/state-management-strategy
+- non-functional-requirements/frontend-nfr/third-party-script-safety
+- non-functional-requirements/frontend-nfr/virtualization-windowing
+- non-functional-requirements/frontend-nfr/xss-injection-protection
+- non-functional-requirements/shared-cross-cutting-nfr/availability-slas
+- non-functional-requirements/shared-cross-cutting-nfr/caching-consistency-strategy
+- non-functional-requirements/shared-cross-cutting-nfr/change-management
+- non-functional-requirements/shared-cross-cutting-nfr/data-consistency-guarantees
+- non-functional-requirements/shared-cross-cutting-nfr/dependency-management
+- non-functional-requirements/shared-cross-cutting-nfr/documentation-quality
+- non-functional-requirements/shared-cross-cutting-nfr/end-to-end-observability
+- non-functional-requirements/shared-cross-cutting-nfr/end-to-end-performance-budgets
+- non-functional-requirements/shared-cross-cutting-nfr/end-to-end-security-posture
+- non-functional-requirements/shared-cross-cutting-nfr/error-handling-recovery-strategy
+- non-functional-requirements/shared-cross-cutting-nfr/feature-rollout-strategy
+- non-functional-requirements/shared-cross-cutting-nfr/incident-response-oncall-readiness
+- non-functional-requirements/shared-cross-cutting-nfr/privacy-data-governance
+- non-functional-requirements/shared-cross-cutting-nfr/vendor-lock-in-strategy
+- non-functional-requirements/shared-cross-cutting-nfr/versioning-backward-compatibility
+
+> system-design-prep@0.1.0 generate-examples-manifest:problems /Users/rutulamin/Documents/interviews/system-design-prep
+> node scripts/generate-examples-manifest-problems.js
+
+Updated examples-manifest.json with 332 problem-set key(s).
+- high-level-design/ads-and-monetization-systems/ads-analytics-dashboard
+- high-level-design/ads-and-monetization-systems/ads-delivery-and-targeting-ui
+- high-level-design/ads-and-monetization-systems/creator-monetization-dashboard
+- high-level-design/ai-modern-systems/ai-generated-content-moderation-ui
+- high-level-design/ai-modern-systems/ai-model-comparison-testing-interface
+- high-level-design/ai-modern-systems/ai-powered-search-interface
+- high-level-design/ai-modern-systems/ai-prompt-management-ui
+- high-level-design/ai-modern-systems/copilot-style-ai-assistant-inside-product-ui
+- high-level-design/ai-modern-systems/frontend-for-an-ai-chatbot
+- high-level-design/ai-modern-systems/multi-agent-workflow-ui
+- high-level-design/ai-modern-systems/rag-based-ui-system
+- high-level-design/core-product-systems/cross-device-user-settings-sync
+- high-level-design/core-product-systems/document-management-system
+- high-level-design/core-product-systems/frontend-for-a-social-media-news-feed
+- high-level-design/core-product-systems/large-file-upload-system-with-resume-capability
+- high-level-design/core-product-systems/low-latency-trading-ui
+- high-level-design/core-product-systems/maps-based-delivery-tracking-application
+- high-level-design/core-product-systems/multi-device-session-continuity-system
+- high-level-design/core-product-systems/multi-step-checkout-flow
+- high-level-design/core-product-systems/music-audio-streaming-frontend
+- high-level-design/core-product-systems/personalized-homepage-feed-system
+- high-level-design/core-product-systems/real-time-dashboard-frontend
+- high-level-design/core-product-systems/search-ui-with-autocomplete-filters-and-facets
+- high-level-design/core-product-systems/social-media-stories-reels-feature
+- high-level-design/core-product-systems/user-onboarding-and-activation-flow-at-scale
+- high-level-design/cross-platform-and-mobile-systems/hybrid-app
+- high-level-design/cross-platform-and-mobile-systems/pwa-with-offline-sync
+- high-level-design/cross-platform-and-mobile-systems/responsive-cross-device-frontend-architecture
+- high-level-design/cross-platform-and-mobile-systems/web-react-native-shared-system
+- high-level-design/data-heavy-systems/alerting-and-anomaly-detection-dashboard
+- high-level-design/data-heavy-systems/bi-dashboard
+- high-level-design/data-heavy-systems/large-dataset-exploration-ui
+- high-level-design/data-heavy-systems/log-monitoring-ui
+- high-level-design/data-heavy-systems/real-time-analytics-with-10k-data-points
+- high-level-design/data-heavy-systems/time-series-visualization-system
+- high-level-design/data-import-export-systems/bulk-data-import-system
+- high-level-design/data-import-export-systems/data-export-report-generation-system
+- high-level-design/data-import-export-systems/etl-pipeline-monitoring-ui
+- high-level-design/developer-experience-systems/api-playground
+- high-level-design/developer-experience-systems/ci-cd-dashboard
+- high-level-design/developer-experience-systems/developer-documentation-system
+- high-level-design/developer-experience-systems/package-registry-ui
+- high-level-design/e-commerce-and-marketplace/amazon-flipkart-frontend
+- high-level-design/e-commerce-and-marketplace/cart-checkout-at-scale-with-concurrency
+- high-level-design/e-commerce-and-marketplace/dynamic-pricing-system-ui
+- high-level-design/e-commerce-and-marketplace/inventory-aware-ui
+- high-level-design/e-commerce-and-marketplace/order-tracking-and-returns-system
+- high-level-design/e-commerce-and-marketplace/product-listing-recommendation-system-ui
+- high-level-design/e-commerce-and-marketplace/subscription-billing-frontend
+- high-level-design/emerging-and-future-systems/ar-vr-interface-system
+- high-level-design/emerging-and-future-systems/on-device-ai-inference-ui
+- high-level-design/emerging-and-future-systems/voice-based-ui-system
+- high-level-design/emerging-and-future-systems/web3-wallet-frontend
+- high-level-design/enterprise-saas-systems/admin-audit-logs-and-activity-tracking-ui
+- high-level-design/enterprise-saas-systems/crm-dashboard
+- high-level-design/enterprise-saas-systems/form-builder-system
+- high-level-design/enterprise-saas-systems/multi-role-rbac-dashboard-system
+- high-level-design/enterprise-saas-systems/project-management-tool
+- high-level-design/enterprise-saas-systems/reporting-and-analytics-dashboard
+- high-level-design/enterprise-saas-systems/workflow-automation-system
+- high-level-design/error-handling-and-reliability-systems/global-error-handling-and-fallback-ui-system
+- high-level-design/error-handling-and-reliability-systems/incident-debugging-dashboard-for-users
+- high-level-design/error-handling-and-reliability-systems/retry-and-failure-recovery-ux
+- high-level-design/experimentation-and-growth-systems/a-b-testing-platform-ui
+- high-level-design/experimentation-and-growth-systems/feature-rollout-and-experimentation-system
+- high-level-design/experimentation-and-growth-systems/user-funnel-analytics-dashboard
+- high-level-design/feature-configuration-admin-systems/dynamic-config-management-ui
+- high-level-design/feature-configuration-admin-systems/kill-switch-emergency-control-panel
+- high-level-design/feature-configuration-admin-systems/remote-app-configuration-system
+- high-level-design/file-storage-cloud-drive-systems/cloud-storage-ui
+- high-level-design/file-storage-cloud-drive-systems/file-sharing-and-permission-system
+- high-level-design/file-storage-cloud-drive-systems/file-version-history-restore-system
+- high-level-design/knowledge-and-content-systems/learning-platform
+- high-level-design/knowledge-and-content-systems/medium-like-article-platform
+- high-level-design/knowledge-and-content-systems/qanda-system
+- high-level-design/maps-and-location-intelligence/location-based-recommendation-system
+- high-level-design/maps-and-location-intelligence/maps-exploration-ui
+- high-level-design/maps-and-location-intelligence/route-optimization-ui
+- high-level-design/media-and-rich-content-systems/canvas-webgl-based-design-tool
+- high-level-design/media-and-rich-content-systems/content-creation-studio
+- high-level-design/media-and-rich-content-systems/live-streaming-platform-ui
+- high-level-design/media-and-rich-content-systems/media-upload-processing-ui-pipeline
+- high-level-design/media-and-rich-content-systems/pdf-viewer-annotation-system
+- high-level-design/media-and-rich-content-systems/rich-text-editor
+- high-level-design/media-and-rich-content-systems/short-video-editing-system
+- high-level-design/media-and-rich-content-systems/video-player-system
+- high-level-design/messaging-and-communication/email-client
+- high-level-design/messaging-and-communication/multi-channel-communication-hub
+- high-level-design/messaging-and-communication/notification-inbox-system
+- high-level-design/messaging-and-communication/threaded-messaging-system
+- high-level-design/messaging-and-communication/whatsapp-web-slack-frontend
+- high-level-design/notification-delivery-platform/priority-based-notification-delivery-ui
+- high-level-design/notification-delivery-platform/unified-notification-platform
+- high-level-design/notification-delivery-platform/user-notification-preferences-system
+- high-level-design/other/customer-support-dashboard
+- high-level-design/other/device-session-management-system
+- high-level-design/other/feature-usage-analytics-dashboard
+- high-level-design/other/survey-form-analytics-system
+- high-level-design/payments-and-fintech-systems/fraud-detection-risk-alert-ui
+- high-level-design/payments-and-fintech-systems/payment-gateway-integration-ui
+- high-level-design/payments-and-fintech-systems/transaction-history-and-reconciliation-ui
+- high-level-design/payments-and-fintech-systems/upi-wallet-payment-flow
+- high-level-design/performance-scale-edge-cases/frontend-for-1m-concurrent-users
+- high-level-design/performance-scale-edge-cases/frontend-for-low-end-devices
+- high-level-design/performance-scale-edge-cases/graceful-degradation-system
+- high-level-design/performance-scale-edge-cases/high-latency-network-optimized-ui
+- high-level-design/performance-scale-edge-cases/multi-region-frontend-architecture
+- high-level-design/performance-scale-edge-cases/offline-first-system
+- high-level-design/performance-scale-edge-cases/progressive-hydration-system
+- high-level-design/personalization-systems/recommendation-tuning-system
+- high-level-design/personalization-systems/user-personalization-engine-ui
+- high-level-design/personalization-systems/user-preference-learning-system
+- high-level-design/platform-sdk-infra-systems/embeddable-analytics-sdk
+- high-level-design/platform-sdk-infra-systems/feature-flag-management-system-ui
+- high-level-design/platform-sdk-infra-systems/frontend-architecture-for-an-internal-developer-platform
+- high-level-design/platform-sdk-infra-systems/frontend-for-a-no-code-low-code-builder
+- high-level-design/platform-sdk-infra-systems/frontend-hosting-platform-dashboard
+- high-level-design/platform-sdk-infra-systems/frontend-observability-dashboard
+- high-level-design/platform-sdk-infra-systems/frontend-sdk-for-third-party-developers
+- high-level-design/platform-sdk-infra-systems/multi-app-monorepo-management-dashboard
+- high-level-design/platform-sdk-infra-systems/multi-brand-design-system
+- high-level-design/platform-sdk-infra-systems/multi-tenant-saas-admin-dashboard
+- high-level-design/platform-sdk-infra-systems/plugin-extension-marketplace-ui
+- high-level-design/realtime-and-collaboration-systems/collaborative-editor
+- high-level-design/realtime-and-collaboration-systems/cursor-sharing-system
+- high-level-design/realtime-and-collaboration-systems/embedded-chat-system
+- high-level-design/realtime-and-collaboration-systems/live-commenting-annotation-system
+- high-level-design/realtime-and-collaboration-systems/offline-realtime-sync-reconciliation-system
+- high-level-design/realtime-and-collaboration-systems/presence-system
+- high-level-design/realtime-and-collaboration-systems/real-time-collaborative-whiteboard
+- high-level-design/realtime-and-collaboration-systems/real-time-multiplayer-game-lobby-and-matchmaking-ui
+- high-level-design/realtime-and-collaboration-systems/video-conferencing-frontend
+- high-level-design/scheduling-and-calendar-systems/calendar-system
+- high-level-design/scheduling-and-calendar-systems/meeting-scheduling-system
+- high-level-design/scheduling-and-calendar-systems/resource-booking-system
+- high-level-design/search-and-discovery-systems/faceted-search-for-large-datasets
+- high-level-design/search-and-discovery-systems/google-like-search-frontend
+- high-level-design/search-and-discovery-systems/search-analytics-dashboard
+- high-level-design/search-and-discovery-systems/search-ranking-experimentation-ui
+- high-level-design/search-and-discovery-systems/semantic-search-ui
+- high-level-design/search-and-discovery-systems/youtube-search-recommendation-ui
+- high-level-design/security-auth-and-privacy-systems/account-security-dashboard
+- high-level-design/security-auth-and-privacy-systems/authentication-system
+- high-level-design/security-auth-and-privacy-systems/permission-and-access-control-system-ui
+- high-level-design/security-auth-and-privacy-systems/privacy-and-consent-management-system
+- high-level-design/security-auth-and-privacy-systems/secure-token-session-handling-system
+- high-level-design/social-and-engagement/content-moderation-and-reporting-ui
+- high-level-design/social-and-engagement/infinite-scrolling-feed-with-ranking
+- high-level-design/social-and-engagement/instagram-twitter-frontend
+- high-level-design/social-and-engagement/notification-system-ui
+- high-level-design/social-and-engagement/user-profile-and-follower-system
+- high-level-design/social-and-engagement/viral-sharing-engagement-system
+- low-level-design/ai-modern-systems-lld/ai-assisted-search-qna-ui
+- low-level-design/ai-modern-systems-lld/ai-feedback-loop-ui
+- low-level-design/ai-modern-systems-lld/ai-ui-generator
+- low-level-design/ai-modern-systems-lld/prompt-history-versioning-ui
+- low-level-design/ai-modern-systems-lld/streaming-chat-ui
+- low-level-design/ai-modern-systems-lld/token-streaming-buffer-system
+- low-level-design/architecture-system-level-lld/component-library-system
+- low-level-design/auth-user-systems/admin-impersonation-ui
+- low-level-design/auth-user-systems/device-session-management-ui
+- low-level-design/auth-user-systems/login-auth-flow
+- low-level-design/auth-user-systems/password-reset-recovery-flow
+- low-level-design/auth-user-systems/permission-editor-ui
+- low-level-design/auth-user-systems/rbac-ui-system
+- low-level-design/auth-user-systems/route-component-access-guard-system
+- low-level-design/auth-user-systems/secure-token-storage-ux
+- low-level-design/auth-user-systems/session-timeout-auto-logout
+- low-level-design/auth-user-systems/user-onboarding-guided-tour
+- low-level-design/communication-collaboration/chat-messaging-ui
+- low-level-design/communication-collaboration/collaborative-whiteboard
+- low-level-design/communication-collaboration/conflict-resolution-ui
+- low-level-design/communication-collaboration/live-cursor-presence-system
+- low-level-design/communication-collaboration/message-delivery-state-system
+- low-level-design/communication-collaboration/multiplayer-lobby-ui
+- low-level-design/communication-collaboration/notification-center-inbox
+- low-level-design/communication-collaboration/presence-last-seen-system
+- low-level-design/communication-collaboration/real-time-collaborative-editor
+- low-level-design/communication-collaboration/real-time-notification-delivery-system
+- low-level-design/communication-collaboration/threaded-conversation-system
+- low-level-design/communication-collaboration/typing-indicator-system
+- low-level-design/complex-interaction-systems/bottom-sheet-drawer
+- low-level-design/complex-interaction-systems/calendar-scheduler
+- low-level-design/complex-interaction-systems/carousel-slider
+- low-level-design/complex-interaction-systems/drag-drop-list
+- low-level-design/complex-interaction-systems/gesture-system
+- low-level-design/complex-interaction-systems/history-timeline-ui
+- low-level-design/complex-interaction-systems/kanban-board
+- low-level-design/complex-interaction-systems/pan-zoom-minimap-system
+- low-level-design/complex-interaction-systems/resizable-split-pane
+- low-level-design/complex-interaction-systems/snap-to-grid-alignment-system
+- low-level-design/complex-interaction-systems/stepper-progress-tracker
+- low-level-design/complex-interaction-systems/zoomable-canvas-system
+- low-level-design/component-level-ui-patterns/accordion-collapsible
+- low-level-design/component-level-ui-patterns/audio-video-player
+- low-level-design/component-level-ui-patterns/avatar-component
+- low-level-design/component-level-ui-patterns/breadcrumb-component
+- low-level-design/component-level-ui-patterns/calendar-scheduler
+- low-level-design/component-level-ui-patterns/carousel-slider
+- low-level-design/component-level-ui-patterns/chat-messaging-ui
+- low-level-design/component-level-ui-patterns/code-editor-component
+- low-level-design/component-level-ui-patterns/color-picker
+- low-level-design/component-level-ui-patterns/command-palette
+- low-level-design/component-level-ui-patterns/comment-thread
+- low-level-design/component-level-ui-patterns/component-library
+- low-level-design/component-level-ui-patterns/context-menu
+- low-level-design/component-level-ui-patterns/dashboard-builder
+- low-level-design/component-level-ui-patterns/data-table
+- low-level-design/component-level-ui-patterns/date-time-picker
+- low-level-design/component-level-ui-patterns/drag-drop-list
+- low-level-design/component-level-ui-patterns/file-explorer-ui
+- low-level-design/component-level-ui-patterns/file-upload-widget
+- low-level-design/component-level-ui-patterns/form-builder
+- low-level-design/component-level-ui-patterns/form-validation-engine
+- low-level-design/component-level-ui-patterns/image-gallery-lightbox
+- low-level-design/component-level-ui-patterns/infinite-scroll-virtualized-list
+- low-level-design/component-level-ui-patterns/kanban-board
+- low-level-design/component-level-ui-patterns/loading-skeleton
+- low-level-design/component-level-ui-patterns/map-based-ui
+- low-level-design/component-level-ui-patterns/modal-component
+- low-level-design/component-level-ui-patterns/multi-select-tag-input
+- low-level-design/component-level-ui-patterns/notification-center-inbox
+- low-level-design/component-level-ui-patterns/pagination-component
+- low-level-design/component-level-ui-patterns/payment-checkout-ui
+- low-level-design/component-level-ui-patterns/pdf-viewer
+- low-level-design/component-level-ui-patterns/rating-stars-component
+- low-level-design/component-level-ui-patterns/resizable-split-pane
+- low-level-design/component-level-ui-patterns/reusable-button-system
+- low-level-design/component-level-ui-patterns/rich-text-editor
+- low-level-design/component-level-ui-patterns/search-autocomplete
+- low-level-design/component-level-ui-patterns/spreadsheet-like-grid
+- low-level-design/component-level-ui-patterns/stepper-progress-tracker
+- low-level-design/component-level-ui-patterns/theme-theming-system
+- low-level-design/component-level-ui-patterns/toast-notification-system
+- low-level-design/component-level-ui-patterns/tooltip-system
+- low-level-design/component-level-ui-patterns/tree-view-folder-explorer
+- low-level-design/component-level-ui-patterns/wizard-multi-step-form
+- low-level-design/component-level-ui-patterns/wysiwyg-email-builder
+- low-level-design/data-heavy-ui-components/client-side-data-normalization
+- low-level-design/data-heavy-ui-components/column-configuration-system
+- low-level-design/data-heavy-ui-components/cursor-based-pagination-ui
+- low-level-design/data-heavy-ui-components/dashboard-builder
+- low-level-design/data-heavy-ui-components/data-table
+- low-level-design/data-heavy-ui-components/infinite-scroll-virtualized-list
+- low-level-design/data-heavy-ui-components/inline-editing-system
+- low-level-design/data-heavy-ui-components/real-time-data-dashboard
+- low-level-design/data-heavy-ui-components/saved-views-filters-system
+- low-level-design/data-heavy-ui-components/spreadsheet-like-grid
+- low-level-design/data-heavy-ui-components/tree-view-folder-explorer
+- low-level-design/data-heavy-ui-components/virtualized-grid-2d
+- low-level-design/file-media-content-systems/audio-video-player
+- low-level-design/file-media-content-systems/code-editor-component
+- low-level-design/file-media-content-systems/file-explorer-ui
+- low-level-design/file-media-content-systems/file-upload-system
+- low-level-design/file-media-content-systems/image-gallery-lightbox
+- low-level-design/file-media-content-systems/pdf-viewer
+- low-level-design/file-media-content-systems/rich-text-editor
+- low-level-design/file-media-content-systems/streaming-markdown-renderer
+- low-level-design/file-media-content-systems/wysiwyg-email-builder
+- low-level-design/forms-input-systems/ai-assisted-form-fill
+- low-level-design/forms-input-systems/color-picker
+- low-level-design/forms-input-systems/date-time-picker
+- low-level-design/forms-input-systems/draft-persistence-system
+- low-level-design/forms-input-systems/dynamic-conditional-form-engine
+- low-level-design/forms-input-systems/file-input-system
+- low-level-design/forms-input-systems/form-builder
+- low-level-design/forms-input-systems/form-validation-engine
+- low-level-design/forms-input-systems/large-form-performance
+- low-level-design/forms-input-systems/wizard-multi-step-form
+- low-level-design/networking-data-systems/cache-invalidation-strategy
+- low-level-design/networking-data-systems/data-fetching-hook
+- low-level-design/networking-data-systems/file-upload-api-layer
+- low-level-design/networking-data-systems/frontend-caching-layer
+- low-level-design/networking-data-systems/global-api-error-handling-layer
+- low-level-design/networking-data-systems/optimistic-ui-system
+- low-level-design/networking-data-systems/polling-vs-websocket-system
+- low-level-design/networking-data-systems/race-condition-handling-system
+- low-level-design/networking-data-systems/rate-limited-autocomplete-system
+- low-level-design/networking-data-systems/request-batching-system
+- low-level-design/networking-data-systems/request-deduplication-system
+- low-level-design/networking-data-systems/retry-mechanism
+- low-level-design/networking-data-systems/token-refresh-system
+- low-level-design/offline-advanced-ux-systems/background-sync-queue-system
+- low-level-design/offline-advanced-ux-systems/conflict-resolution-offline-edits
+- low-level-design/offline-advanced-ux-systems/conflict-visualization-ui
+- low-level-design/offline-advanced-ux-systems/local-first-architecture
+- low-level-design/offline-advanced-ux-systems/network-failure-handling
+- low-level-design/offline-advanced-ux-systems/offline-first-app
+- low-level-design/offline-advanced-ux-systems/progressive-enhancement-system
+- low-level-design/offline-advanced-ux-systems/push-notification-ux
+- low-level-design/real-world-scenario-lld/activity-feed-system
+- low-level-design/real-world-scenario-lld/audit-log-viewer-ui
+- low-level-design/real-world-scenario-lld/bulk-editing-ui
+- low-level-design/real-world-scenario-lld/checkout-flow
+- low-level-design/real-world-scenario-lld/comments-system
+- low-level-design/real-world-scenario-lld/debounced-auto-save-system
+- low-level-design/real-world-scenario-lld/export-system-csv-pdf
+- low-level-design/real-world-scenario-lld/feature-flag-system
+- low-level-design/real-world-scenario-lld/feature-rollout-system
+- low-level-design/real-world-scenario-lld/map-based-ui-system
+- low-level-design/real-world-scenario-lld/multi-tenant-ui
+- low-level-design/real-world-scenario-lld/notifications-badge-system
+- low-level-design/real-world-scenario-lld/offline-form-sync-system
+- low-level-design/real-world-scenario-lld/payment-ui-system
+- low-level-design/real-world-scenario-lld/saved-views-persistence-system
+- low-level-design/real-world-scenario-lld/settings-page-system
+- low-level-design/real-world-scenario-lld/shopping-cart-system
+- low-level-design/real-world-scenario-lld/telemetry-analytics-pipeline
+- low-level-design/real-world-scenario-lld/third-party-sdk-integration
+- low-level-design/real-world-scenario-lld/version-history-system
+- low-level-design/search-discovery/full-text-search-ui
+- low-level-design/search-discovery/rag-based-search-ui
+- low-level-design/search-discovery/search-autocomplete
+- low-level-design/search-discovery/search-page-filters-facets-url-sync
+- low-level-design/state-interaction-modeling/cross-tab-state-sync-system
+- low-level-design/state-interaction-modeling/derived-state-system
+- low-level-design/state-interaction-modeling/fine-grained-subscription-system
+- low-level-design/state-interaction-modeling/global-event-bus-system
+- low-level-design/state-interaction-modeling/multi-step-async-workflow
+- low-level-design/state-interaction-modeling/state-hydration-rehydration-system
+- low-level-design/state-interaction-modeling/state-machine-for-workflows
+- low-level-design/state-interaction-modeling/time-travel-debugging-system
+- low-level-design/state-interaction-modeling/undo-redo-system
+- low-level-design/web-platform-browser-apis/background-sync-system
+- low-level-design/web-platform-browser-apis/clipboard-system
+- low-level-design/web-platform-browser-apis/idle-task-scheduling-system
+- low-level-design/web-platform-browser-apis/intersectionobserver-lazy-system
+- low-level-design/web-platform-browser-apis/native-drag-drop-file-system
+- low-level-design/web-platform-browser-apis/permissions-ux
+- low-level-design/web-platform-browser-apis/resizeobserver-layout-system
+- low-level-design/web-platform-browser-apis/visibility-based-rendering-system
+- low-level-design/web-platform-browser-apis/web-worker-computation-system
+
+> system-design-prep@0.1.0 generate-examples-manifest:other /Users/rutulamin/Documents/interviews/system-design-prep
+> node scripts/generate-examples-manifest-other.js
+
+Updated examples-manifest.json with 196 other-domain key(s).
+- other/algorithms/activity-selection
+- other/algorithms/backtracking-fundamentals
+- other/algorithms/bellman-ford
+- other/algorithms/bfs
+- other/algorithms/binary-search
+- other/algorithms/bitmask-dp
+- other/algorithms/boyer-moore
+- other/algorithms/bubble-sort
+- other/algorithms/bucket-sort
+- other/algorithms/coin-change
+- other/algorithms/counting-sort
+- other/algorithms/dfs
+- other/algorithms/dijkstra
+- other/algorithms/divide-and-conquer
+- other/algorithms/dp-fundamentals
+- other/algorithms/dp-on-trees
+- other/algorithms/edit-distance
+- other/algorithms/exponential-search
+- other/algorithms/floyd-warshall
+- other/algorithms/greedy-fundamentals
+- other/algorithms/heap-sort
+- other/algorithms/huffman-coding
+- other/algorithms/insertion-sort
+- other/algorithms/interpolation-search
+- other/algorithms/job-sequencing
+- other/algorithms/jump-search
+- other/algorithms/karatsuba-multiplication
+- other/algorithms/kmp
+- other/algorithms/knapsack-01
+- other/algorithms/kruskals-mst
+- other/algorithms/linear-search
+- other/algorithms/longest-common-subsequence
+- other/algorithms/longest-increasing-subsequence
+- other/algorithms/merge-sort
+- other/algorithms/n-queens
+- other/algorithms/permutations-and-combinations
+- other/algorithms/prims-mst
+- other/algorithms/quick-sort
+- other/algorithms/quickselect
+- other/algorithms/rabin-karp
+- other/algorithms/radix-sort
+- other/algorithms/selection-sort
+- other/algorithms/shell-sort
+- other/algorithms/sudoku-solver
+- other/algorithms/tarjans-scc
+- other/algorithms/ternary-search
+- other/algorithms/topological-sort
+- other/algorithms/word-search
+- other/artificial-intelligence/agent-orchestration
+- other/artificial-intelligence/agents
+- other/artificial-intelligence/ai-application-architecture
+- other/artificial-intelligence/ai-cost-management
+- other/artificial-intelligence/ai-model-deployment
+- other/artificial-intelligence/ai-observability-monitoring
+- other/artificial-intelligence/ai-safety-security
+- other/artificial-intelligence/ai-testing-evaluation
+- other/artificial-intelligence/context-window
+- other/artificial-intelligence/data-engineering-for-ai
+- other/artificial-intelligence/embeddings
+- other/artificial-intelligence/fine-tuning-vs-rag
+- other/artificial-intelligence/hugging-face
+- other/artificial-intelligence/langchain
+- other/artificial-intelligence/large-language-models
+- other/artificial-intelligence/mcp
+- other/artificial-intelligence/multi-agents
+- other/artificial-intelligence/plugins
+- other/artificial-intelligence/prompting
+- other/artificial-intelligence/rag
+- other/artificial-intelligence/skills
+- other/artificial-intelligence/tokens
+- other/artificial-intelligence/vector-db
+- other/artificial-intelligence/workflow
+- other/data-structures/arrays
+- other/data-structures/b-trees
+- other/data-structures/bit-manipulation
+- other/data-structures/bloom-filters
+- other/data-structures/count-min-sketch
+- other/data-structures/disjoint-set-union-find
+- other/data-structures/doubly-linked-lists
+- other/data-structures/graphs
+- other/data-structures/hash-tables
+- other/data-structures/heaps-priority-queues
+- other/data-structures/hyperloglog
+- other/data-structures/lsm-trees
+- other/data-structures/merkle-trees
+- other/data-structures/queues
+- other/data-structures/singly-linked-lists
+- other/data-structures/skip-lists
+- other/data-structures/stacks
+- other/data-structures/strings
+- other/data-structures/trees
+- other/data-structures/tries
+- other/patterns/backtracking
+- other/patterns/binary-search
+- other/patterns/bit-manipulation
+- other/patterns/cyclic-sort
+- other/patterns/divide-and-conquer
+- other/patterns/dynamic-programming
+- other/patterns/fast-slow-pointers
+- other/patterns/graph
+- other/patterns/greedy
+- other/patterns/hash-table
+- other/patterns/heap
+- other/patterns/in-place-linked-list-reversal
+- other/patterns/k-way-merge
+- other/patterns/linked-list
+- other/patterns/math
+- other/patterns/merge-intervals
+- other/patterns/monotonic-queue
+- other/patterns/monotonic-stack
+- other/patterns/prefix-sum
+- other/patterns/queues
+- other/patterns/recursion
+- other/patterns/sliding-window
+- other/patterns/stack
+- other/patterns/string
+- other/patterns/top-k-elements
+- other/patterns/tree
+- other/patterns/trie
+- other/patterns/two-pointer
+- other/patterns/union-find
+- other/problems/3sum
+- other/problems/add-and-search-word
+- other/problems/alien-dictionary
+- other/problems/best-time-to-buy-and-sell-stock
+- other/problems/binary-tree-level-order-traversal
+- other/problems/binary-tree-maximum-path-sum
+- other/problems/climbing-stairs
+- other/problems/clone-graph
+- other/problems/coin-change
+- other/problems/combination-sum
+- other/problems/construct-binary-tree-from-preorder-and-inorder-traversal
+- other/problems/container-with-most-water
+- other/problems/contains-duplicate
+- other/problems/counting-bits
+- other/problems/course-schedule
+- other/problems/decode-ways
+- other/problems/detect-cycle-in-a-linked-list
+- other/problems/encode-and-decode-strings
+- other/problems/find-median-from-data-stream
+- other/problems/find-minimum-in-rotated-sorted-array
+- other/problems/graph-valid-tree
+- other/problems/group-anagrams
+- other/problems/house-robber
+- other/problems/house-robber-ii
+- other/problems/implement-trie
+- other/problems/insert-interval
+- other/problems/invert-flip-binary-tree
+- other/problems/jump-game
+- other/problems/kth-smallest-element-in-a-bst
+- other/problems/longest-common-subsequence
+- other/problems/longest-consecutive-sequence
+- other/problems/longest-increasing-subsequence
+- other/problems/longest-palindromic-substring
+- other/problems/longest-repeating-character-replacement
+- other/problems/longest-substring-without-repeating-characters
+- other/problems/lowest-common-ancestor-of-bst
+- other/problems/maximum-depth-of-binary-tree
+- other/problems/maximum-product-subarray
+- other/problems/maximum-subarray
+- other/problems/meeting-rooms
+- other/problems/meeting-rooms-ii
+- other/problems/merge-intervals
+- other/problems/merge-k-sorted-lists
+- other/problems/merge-two-sorted-lists
+- other/problems/minimum-window-substring
+- other/problems/missing-number
+- other/problems/non-overlapping-intervals
+- other/problems/number-of-1-bits
+- other/problems/number-of-connected-components-in-an-undirected-graph
+- other/problems/number-of-islands
+- other/problems/pacific-atlantic-water-flow
+- other/problems/palindromic-substrings
+- other/problems/product-of-array-except-self
+- other/problems/remove-nth-node-from-end-of-list
+- other/problems/reorder-list
+- other/problems/reverse-a-linked-list
+- other/problems/reverse-bits
+- other/problems/rotate-image
+- other/problems/same-tree
+- other/problems/search-in-rotated-sorted-array
+- other/problems/serialize-and-deserialize-binary-tree
+- other/problems/set-matrix-zeroes
+- other/problems/spiral-matrix
+- other/problems/subtree-of-another-tree
+- other/problems/sum-of-two-integers
+- other/problems/top-k-frequent-elements
+- other/problems/two-sum
+- other/problems/unique-paths
+- other/problems/valid-anagram
+- other/problems/valid-palindrome
+- other/problems/valid-parentheses
+- other/problems/validate-binary-search-tree
+- other/problems/word-break-problem
+- other/problems/word-search
+- other/problems/word-search-ii
+▲ Next.js 16.1.6 (webpack)
+
+  Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (229kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (231kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (231kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (230kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (233kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (234kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (234kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (234kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (234kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (234kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (234kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (236kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (236kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (235kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (235kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (235kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (235kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (238kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (238kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (237kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (240kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (240kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (240kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (240kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (241kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (242kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (242kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (242kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (242kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (242kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (242kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (244kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (244kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (243kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (246kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (246kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (245kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (252kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (252kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (252kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (252kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (252kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (252kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (255kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (255kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (255kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (255kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (255kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (255kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (249kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (248kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (247kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+Failed to compile.
+
+./content/articles/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui.tsx
+Error:   x Expected '</', got 'jsx text'
+     ,-[/Users/rutulamin/Documents/interviews/system-design-prep/content/articles/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui.tsx:150:1]
+ 147 |             <p>
+ 148 |               Model improves over time. Feedback on old model may not apply to new model. Track feedback per model version. Old model feedback = historical reference. New model feedback = current quality signal.
+ 149 |             </p>
+ 150 | ,->       </section>
+ 151 | |   
+ 152 | `->       <section>
+ 153 |             <h2>Implementation Considerations</h2>
+ 154 |     
+ 155 |             <h3 className="mt-6 mb-3 text-lg font-semibuild">UI Presentation</h3>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./content/articles/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui.tsx
+./lib/article-routes.ts
+./app/sitemap.ts
+./node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_@playwright+test@1.58.2_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/build/webpack/loaders/next-metadata-route-loader.js?filePath=%2FUsers%2Frutulamin%2FDocuments%2Finterviews%2Fsystem-design-prep%2Fapp%2Fsitemap.ts&isDynamicRouteExtension=1!?__next_metadata_route__
+
+./content/articles/system-design-problems/low-level-design/ai-modern-systems/token-streaming-buffer.tsx
+Error:   x await isn't allowed in non-async function
+     ,-[/Users/rutulamin/Documents/interviews/system-design-prep/content/articles/system-design-problems/low-level-design/ai-modern-systems/token-streaming-buffer.tsx:154:1]
+ 151 | 
+ 152 |         <h3 className="mt-6 mb-3 text-lg font-semibuild">ReadableStream & Backpressure</h3>
+ 153 |         <p>
+ 154 |           Use fetch with Response.body as ReadableStream. Implement reader: while(true) { chunk = await reader.read() }. On render queue backing up, don't call read() (implicit pause). Resume when queue empty.
+     :                                                                                                   ^^^^^
+ 155 |         </p>
+ 156 | 
+ 157 |         <h3 className="mt-6 mb-3 text-lg font-semibuild">React State Updates</h3>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./content/articles/system-design-problems/low-level-design/ai-modern-systems/token-streaming-buffer.tsx
+./lib/article-routes.ts
+./app/sitemap.ts
+./node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_@playwright+test@1.58.2_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/build/webpack/loaders/next-metadata-route-loader.js?filePath=%2FUsers%2Frutulamin%2FDocuments%2Finterviews%2Fsystem-design-prep%2Fapp%2Fsitemap.ts&isDynamicRouteExtension=1!?__next_metadata_route__
+
+./content/articles/system-design-problems/low-level-design/networking-data-systems/request-batching-system.tsx
+Error:   x Expected '</', got ':'
+    ,-[/Users/rutulamin/Documents/interviews/system-design-prep/content/articles/system-design-problems/low-level-design/networking-data-systems/request-batching-system.tsx:38:1]
+ 35 |       <section>
+ 36 |         <h2>Problem Clarification</h2>
+ 37 |         <p>
+ 38 |           Page renders 10 components. Each loads user profile: GET /users/1, GET /users/2, ..., GET /users/10. Naive: 10 HTTP requests. HTTP overhead: 10 connections, 10 request headers, 10 response headers = significant. Better: batch. Collect all 10 requests in 10ms window. Send single POST /batch: [{url: /users/1}, {url: /users/2}, ...]. Server processes batch, returns 10 responses. Result: 1 HTTP request instead of 10. 10x bandwidth savings (headers, connections). Lower latency (one round-trip instead of many).
+    :                                                                                                                                                                                                                                                                                                                    ^
+ 39 |         </p>
+ 40 |         <p>
+ 41 |           Key challenges: (1) Batching window (too long = latency for early requests; too short = miss batching opportunities). Sweet spot: 10-50ms. (2) Ordered responses (client must match responses to requests—use request IDs). (3) Partial failure (some requests succeed, others fail—handle separately). (4) Server-side assembly (receive batch, process in parallel, return results in order).
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./content/articles/system-design-problems/low-level-design/networking-data-systems/request-batching-system.tsx
+./lib/article-routes.ts
+./app/sitemap.ts
+./node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_@playwright+test@1.58.2_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/build/webpack/loaders/next-metadata-route-loader.js?filePath=%2FUsers%2Frutulamin%2FDocuments%2Finterviews%2Fsystem-design-prep%2Fapp%2Fsitemap.ts&isDynamicRouteExtension=1!?__next_metadata_route__
+
+./content/articles/system-design-problems/low-level-design/state-interaction-modeling/cross-tab-state-sync.tsx
+Error:   x Expected '</', got ':'
+     ,-[/Users/rutulamin/Documents/interviews/system-design-prep/content/articles/system-design-problems/low-level-design/state-interaction-modeling/cross-tab-state-sync.tsx:101:1]
+  98 | 
+  99 |         <h3 className="mt-6 mb-3 text-lg font-semibuild">BroadcastChannel API</h3>
+ 100 |         <p>
+ 101 |           Modern API for same-origin inter-tab communication. Create channel: const channel = new BroadcastChannel('app-state'). Send: channel.postMessage({type: 'LOGIN', user: {...}}). Receive: channel.onmessage = event =&gt; handleMessage(event.data).
+     :                                                                                                                                                                 ^
+ 102 |         </p>
+ 103 | 
+ 104 |         <h3 className="mt-6 mb-3 text-lg font-semibuild">Storage Events (Fallback)</h3>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./content/articles/system-design-problems/low-level-design/state-interaction-modeling/cross-tab-state-sync.tsx
+./lib/article-routes.ts
+./app/sitemap.ts
+./node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_@playwright+test@1.58.2_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/build/webpack/loaders/next-metadata-route-loader.js?filePath=%2FUsers%2Frutulamin%2FDocuments%2Finterviews%2Fsystem-design-prep%2Fapp%2Fsitemap.ts&isDynamicRouteExtension=1!?__next_metadata_route__
+
+./content/articles/system-design-problems/low-level-design/state-interaction-modeling/derived-state.tsx
+Error:   x Expected '</', got ':'
+    ,-[/Users/rutulamin/Documents/interviews/system-design-prep/content/articles/system-design-problems/low-level-design/state-interaction-modeling/derived-state.tsx:27:1]
+ 24 |       <section>
+ 25 |         <h2>Problem Clarification</h2>
+ 26 |         <p>
+ 27 |           Base state: {users: [...], posts: [...]}. Derived state: "count of posts by user A". Naive: compute on every render. Cost: filtering 10000 posts every render (expensive). Better: memoize. Compute once, cache result. On update, reuse cache if input unchanged.
+    :                             ^
+ 28 |         </p>
+ 29 |         <p>
+ 30 |           Key insight: derived state is function of base state. If base state unchanged, derived state unchanged. Recompute only when dependencies change.
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./content/articles/system-design-problems/low-level-design/state-interaction-modeling/derived-state.tsx
+./lib/article-routes.ts
+./app/sitemap.ts
+./node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_@playwright+test@1.58.2_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/build/webpack/loaders/next-metadata-route-loader.js?filePath=%2FUsers%2Frutulamin%2FDocuments%2Finterviews%2Fsystem-design-prep%2Fapp%2Fsitemap.ts&isDynamicRouteExtension=1!?__next_metadata_route__
+
+
+> Build failed because of webpack errors
+ ELIFECYCLE  Command failed with exit code 1.

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Live commenting and annotation architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Live Comments: Stable Anchors + Realtime Thread Updates</text>
+  <text class="t muted" x="40" y="78" font-size="13">Anchors are transform-aware ranges or stable object IDs</text>
+
+  <rect class="box" x="40" y="180" width="280" height="240" rx="14"/>
+  <text class="t h" x="60" y="210" font-size="16">Client</text>
+  <text class="t muted" x="60" y="240" font-size="12">Anchor renderer + thread UI</text>
+  <text class="t muted" x="60" y="262" font-size="12">Scoped subscriptions</text>
+
+  <rect class="box" x="360" y="160" width="260" height="140" rx="14"/>
+  <text class="t h" x="380" y="190" font-size="16">Thread Service</text>
+  <text class="t muted" x="380" y="220" font-size="12">Authoritative thread state</text>
+
+  <rect class="box" x="660" y="160" width="260" height="140" rx="14"/>
+  <text class="t h" x="680" y="190" font-size="16">Realtime Fanout</text>
+  <text class="t muted" x="680" y="220" font-size="12">Events + moderation actions</text>
+
+  <path class="line" d="M320 280 L350 280" />
+  <polygon class="arrow" points="350,280 342,276 342,284"/>
+  <path class="line" d="M620 230 L650 230" />
+  <polygon class="arrow" points="650,230 642,226 642,234"/>
+</svg>
+

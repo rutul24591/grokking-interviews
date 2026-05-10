@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500">
+  <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Request Deduplication: In-Flight Request Sharing</text>
+
+  <!-- Without Deduplication -->
+  <g>
+    <text x="200" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Without Deduplication (Bad)</text>
+
+    <rect x="50" y="100" width="300" height="180" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+
+    <!-- Component A -->
+    <rect x="70" y="120" width="80" height="40" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+    <text x="110" y="147" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e40af">Component A</text>
+
+    <!-- Component B -->
+    <rect x="160" y="120" width="80" height="40" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+    <text x="200" y="147" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e40af">Component B</text>
+
+    <!-- Component C -->
+    <rect x="250" y="120" width="80" height="40" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+    <text x="290" y="147" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e40af">Component C</text>
+
+    <!-- All fetch same endpoint -->
+    <text x="70" y="190" font-size="10" fill="#374151">All fetch:</text>
+    <text x="70" y="207" font-size="10" fill="#374151">GET /user/123</text>
+
+    <!-- Three network requests -->
+    <path d="M 110 160 L 110 220" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrowred)"/>
+    <path d="M 200 160 L 200 220" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrowred)"/>
+    <path d="M 290 160 L 290 220" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrowred)"/>
+
+    <rect x="70" y="220" width="260" height="50" fill="#fee2e2" stroke="#ef4444" stroke-width="1" rx="3"/>
+    <text x="200" y="232" font-size="10" text-anchor="middle" fill="#991b1b">3 Identical Requests Sent</text>
+    <text x="200" y="250" font-size="9" text-anchor="middle" fill="#991b1b">Wasted bandwidth. Backend load.</text>
+  </g>
+
+  <!-- With Deduplication -->
+  <g>
+    <text x="900" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">With Deduplication (Good)</text>
+
+    <rect x="750" y="100" width="300" height="180" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+
+    <!-- Component A -->
+    <rect x="770" y="120" width="80" height="40" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+    <text x="810" y="147" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e40af">Component A</text>
+
+    <!-- Component B -->
+    <rect x="860" y="120" width="80" height="40" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+    <text x="900" y="147" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e40af">Component B</text>
+
+    <!-- Component C -->
+    <rect x="950" y="120" width="80" height="40" fill="#dbeafe" stroke="#3b82f6" stroke-width="1" rx="3"/>
+    <text x="990" y="147" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e40af">Component C</text>
+
+    <!-- Request Dedup Cache -->
+    <rect x="770" y="200" width="260" height="50" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="3"/>
+    <text x="900" y="225" font-size="11" font-weight="bold" text-anchor="middle" fill="#312e81">Request Dedup Cache</text>
+
+    <!-- One network request -->
+    <path d="M 900 250 L 900 310" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowgreen)"/>
+
+    <rect x="770" y="310" width="260" height="50" fill="#dcfce7" stroke="#10b981" stroke-width="1" rx="3"/>
+    <text x="900" y="322" font-size="10" text-anchor="middle" fill="#065f46">1 Request Sent</text>
+    <text x="900" y="340" font-size="9" text-anchor="middle" fill="#059669">All 3 components share Promise</text>
+  </g>
+
+  <!-- Deduplication Mechanism -->
+  <g>
+    <text x="100" y="330" font-size="14" font-weight="bold" fill="#1a1a1a">How Deduplication Works</text>
+
+    <!-- Cache Key Generation -->
+    <rect x="50" y="360" width="220" height="120" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="160" y="385" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">1. Cache Key</text>
+    <text x="60" y="410" font-size="10" fill="#374151">Method: GET</text>
+    <text x="60" y="427" font-size="10" fill="#374151">URL: /user/123</text>
+    <text x="60" y="444" font-size="10" fill="#374151">Headers: Accept: json</text>
+    <text x="60" y="461" font-size="10" fill="#374151">↓</text>
+    <text x="60" y="475" font-size="9" fill="#374151">Key: md5()</text>
+
+    <!-- In-Flight Promise Store -->
+    <rect x="300" y="360" width="220" height="120" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="4"/>
+    <text x="410" y="385" font-size="12" font-weight="bold" text-anchor="middle" fill="#312e81">2. Promise Store</text>
+    <text x="310" y="410" font-size="10" fill="#374151">Key: cache_key</text>
+    <text x="310" y="427" font-size="10" fill="#374151">Value: Promise (in-flight)</text>
+    <text x="310" y="444" font-size="10" fill="#374151">Multiple subscribers</text>
+    <text x="310" y="461" font-size="10" fill="#374151">await same Promise</text>
+    <text x="310" y="475" font-size="9" fill="#374151">When done: store result</text>
+
+    <!-- Response Distribution -->
+    <rect x="550" y="360" width="220" height="120" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="660" y="385" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">3. Response</text>
+    <text x="560" y="410" font-size="10" fill="#374151">Network response arrives</text>
+    <text x="560" y="427" font-size="10" fill="#374151">All waiting components</text>
+    <text x="560" y="444" font-size="10" fill="#374151">get same data</text>
+    <text x="560" y="461" font-size="10" fill="#374151">Promise resolves for all</text>
+    <text x="560" y="475" font-size="9" fill="#374151">Components render same data</text>
+
+    <!-- Cleanup -->
+    <rect x="800" y="360" width="220" height="120" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="910" y="385" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">4. Cleanup</text>
+    <text x="810" y="410" font-size="10" fill="#374151">Promise resolved</text>
+    <text x="810" y="427" font-size="10" fill="#374151">Remove from in-flight</text>
+    <text x="810" y="444" font-size="10" fill="#374151">Cache result (if needed)</text>
+    <text x="810" y="461" font-size="10" fill="#374151">TTL: 5 minutes</text>
+    <text x="810" y="475" font-size="9" fill="#374151">Auto-cleanup on expire</text>
+  </g>
+
+  <defs>
+    <marker id="arrowred" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981"/>
+    </marker>
+  </defs>
+</svg>

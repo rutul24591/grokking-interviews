@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Workflow for social feed paging, refresh, and realtime freshness">
+  <title>Social Feed Workflow</title>
+  <desc>Shows a browse session pinned to a snapshot token, cursor paging within the snapshot, refresh creating a new snapshot, and realtime freshness surfaced as an indicator.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="70" width="310" height="140" />
+  <text class="label bold" x="90" y="115">Open feed</text>
+  <text class="label small" x="90" y="145">Load fast cache (optional)</text>
+  <text class="label small" x="90" y="170">Request page 1</text>
+
+  <rect class="box" x="445" y="70" width="320" height="140" />
+  <text class="label bold" x="475" y="115">Page 1 response</text>
+  <text class="label small" x="475" y="145">snapshot token + next cursor</text>
+  <text class="label small" x="475" y="170">normalize + render virtualized list</text>
+
+  <rect class="box" x="835" y="70" width="305" height="140" />
+  <text class="label bold" x="865" y="115">Scroll near end</text>
+  <text class="label small" x="865" y="145">Request next page</text>
+  <text class="label small" x="865" y="170">cursor + same snapshot</text>
+
+  <path class="arrow" d="M370 140 L445 140" />
+  <path class="arrow" d="M765 140 L835 140" />
+  <path class="arrow" d="M987 210 C987 270 610 270 610 235" />
+  <path class="arrow" d="M610 235 L610 210" />
+  <text class="label small" x="690" y="260">append + dedupe items</text>
+
+  <rect class="muted" x="170" y="300" width="360" height="170" />
+  <text class="label bold" x="200" y="345">Realtime freshness signal</text>
+  <text class="label small" x="200" y="375">WebSocket/SSE sends:</text>
+  <text class="label small" x="200" y="400">new-count or top ids only</text>
+  <text class="label small" x="200" y="425">UI shows “new posts” indicator</text>
+
+  <rect class="muted" x="670" y="300" width="360" height="170" />
+  <text class="label bold" x="700" y="345">Pull-to-refresh</text>
+  <text class="label small" x="700" y="375">Start a new feed session</text>
+  <text class="label small" x="700" y="400">Request page 1 again</text>
+  <text class="label small" x="700" y="425">New snapshot token returned</text>
+
+  <path class="arrow" d="M530 385 L670 385" />
+  <path class="arrow" d="M850 300 C850 250 610 250 610 210" />
+  <text class="label small" x="760" y="255">explicit user action</text>
+</svg>

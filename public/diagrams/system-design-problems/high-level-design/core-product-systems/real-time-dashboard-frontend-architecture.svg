@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Real-time dashboard frontend architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .chip { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .chip { fill: #111827; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text class="t h" x="40" y="54" font-size="22">Real-time Dashboard: Baseline Query + Streaming Deltas</text>
+  <text class="t muted" x="40" y="78" font-size="13">Backpressure keeps UI responsive under bursts</text>
+
+  <rect class="box" x="40" y="110" width="300" height="360" rx="14"/>
+  <text class="t h" x="60" y="140" font-size="16">Client</text>
+  <rect class="chip" x="60" y="160" width="260" height="70" rx="10"/>
+  <text class="t" x="74" y="186" font-size="13">Tile + chart renderer</text>
+  <text class="t muted" x="74" y="206" font-size="12">Sampling/decimation for charts</text>
+
+  <rect class="chip" x="60" y="244" width="260" height="80" rx="10"/>
+  <text class="t" x="74" y="270" font-size="13">Update pipeline</text>
+  <text class="t muted" x="74" y="290" font-size="12">Batching, drop intermediate deltas</text>
+  <text class="t muted" x="74" y="308" font-size="12">Freshness indicators</text>
+
+  <rect class="chip" x="60" y="336" width="260" height="62" rx="10"/>
+  <text class="t" x="74" y="362" font-size="13">Local cache</text>
+  <text class="t muted" x="74" y="382" font-size="12">Dash definitions + baselines</text>
+
+  <rect class="box" x="390" y="140" width="240" height="160" rx="14"/>
+  <text class="t h" x="410" y="170" font-size="15">API Gateway</text>
+  <text class="t muted" x="410" y="194" font-size="12">Auth, routing, request IDs</text>
+  <text class="t muted" x="410" y="214" font-size="12">Tenant isolation controls</text>
+
+  <rect class="box" x="680" y="120" width="240" height="130" rx="14"/>
+  <text class="t h" x="700" y="150" font-size="15">Query API</text>
+  <text class="t muted" x="700" y="174" font-size="12">Historical baselines</text>
+  <text class="t muted" x="700" y="194" font-size="12">Rollups for wide ranges</text>
+
+  <rect class="box" x="680" y="280" width="240" height="190" rx="14"/>
+  <text class="t h" x="700" y="310" font-size="15">Stream / Relay</text>
+  <text class="t muted" x="700" y="334" font-size="12">Batched deltas</text>
+  <text class="t muted" x="700" y="354" font-size="12">Edge fanout reduction</text>
+  <text class="t muted" x="700" y="374" font-size="12">Fallback to polling on failure</text>
+
+  <path class="line" d="M340 250 L380 250" />
+  <polygon class="arrow" points="380,250 372,246 372,254"/>
+  <path class="line" d="M630 200 L670 200" />
+  <polygon class="arrow" points="670,200 662,196 662,204"/>
+  <path class="line" d="M630 360 L670 360" />
+  <polygon class="arrow" points="670,360 662,356 662,364"/>
+</svg>
+

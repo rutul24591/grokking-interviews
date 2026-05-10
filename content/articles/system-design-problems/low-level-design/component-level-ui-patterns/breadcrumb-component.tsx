@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function BreadcrumbComponentArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable breadcrumb navigation component for a large-scale
           web application. Breadcrumbs provide secondary navigation that reflects the
           hierarchical position of the current page within the site structure. They allow
@@ -50,34 +51,34 @@ export default function BreadcrumbComponentArticle() {
           mobile-friendly layout on small screens. Additionally, the component must emit
           structured JSON-LD schema markup for SEO and meet all accessibility requirements
           for keyboard navigation and screen-reader announcement.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             The application uses file-system-based routing (Next.js App Router or similar),
             where URL segments map directly to route hierarchy.
-          </li>
+          </HighlightBlock>
           <li>
             The root path (<code>/</code>) is always the first breadcrumb item (e.g., &quot;Home&quot;).
           </li>
           <li>
             The last breadcrumb item represents the current page and is not a link.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             URL segments are slugified (kebab-case) and need conversion to human-readable
             labels (e.g., <code>product-categories</code> becomes &quot;Product Categories&quot;).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Some segments have ambiguous or technical names that benefit from manual label
             overrides (e.g., <code>/pdp</code> should display &quot;Product Detail&quot; not &quot;Pdp&quot;).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Breadcrumb trails exceeding a configurable threshold (default: 5 items) should
             collapse middle items behind an ellipsis, keeping the first N and last M items
             visible.
-          </li>
+          </HighlightBlock>
           <li>
             The application supports both light and dark mode.
           </li>
@@ -119,38 +120,38 @@ export default function BreadcrumbComponentArticle() {
             trail to show only the last two items with a dropdown or menu that reveals the
             full trail.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SEO schema markup:</strong> Generate JSON-LD <code>BreadcrumbList</code>
             structured data for each breadcrumb trail and inject it into the document head.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard navigation:</strong> Each link is focusable via Tab. Enter
             activates navigation. Arrow keys move focus between items.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Breadcrumb generation must be synchronous and
             sub-millisecond. Label lookups use a Map for O(1) access. Truncation is O(n)
             where n is trail length (typically under 10).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> The component must use <code>nav</code> with
             <code>aria-label=&quot;Breadcrumb&quot;</code>. The current page item must have
             <code>aria-current=&quot;page&quot;</code>. The component must be fully operable
             with keyboard only.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type safety:</strong> Full TypeScript support for breadcrumb items,
             configuration, separators, and truncation options.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR compatibility:</strong> Breadcrumbs must render correctly during
             server-side rendering for SEO. The JSON-LD schema must be present in the
             initial HTML response.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
@@ -188,7 +189,7 @@ export default function BreadcrumbComponentArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>breadcrumb data derivation</strong> from
           the <strong>breadcrumb rendering</strong>. A custom hook (<code>useBreadcrumbs</code>)
           accepts the current path and an optional configuration object, auto-generates the
@@ -197,38 +198,38 @@ export default function BreadcrumbComponentArticle() {
           semantic <code>nav</code> element with <code>BreadcrumbItem</code> and
           <code>BreadcrumbSeparator</code> sub-components. A separate <code>BreadcrumbMobile</code>
           component handles the responsive collapse to a dropdown on small viewports.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Static breadcrumb generation at build time:</strong> Generate breadcrumb
             data during SSR/SSG and pass it as props. This works for static sites but fails
             for client-side navigation where the path changes without a full page reload.
             The hook-based approach re-computes on route change and works for both SSR and
             CSR.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Middleware-based breadcrumb injection:</strong> Use Next.js middleware
             to set breadcrumb data in response headers or cookies. Overly complex for a
             client-side concern and adds latency to every request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Context-based breadcrumb sharing:</strong> Parent components set
             breadcrumb data via Context, and the breadcrumb component consumes it. This
             requires every route to manually provide breadcrumb data, defeating the
             auto-generation requirement.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why hook-based auto-generation is optimal:</strong> The hook reads the
           current path (from the router or <code>window.location</code>), derives items
           synchronously, applies overrides, truncates, and returns a plain array. This is
           reactive (re-runs on path change), SSR-safe (uses router-provided path), and
           requires zero manual configuration from route components. The rendering layer is
           a pure function of the hook output, making it trivially testable.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -252,7 +253,7 @@ export default function BreadcrumbComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Breadcrumb Generator (<code>breadcrumb-generator.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Pure function that accepts a path string and an optional label override map.
             Splits the path on <code>/</code>, filters empty segments, converts each slug
             to a human-readable label (kebab-case to title case), and looks up any manual
@@ -260,7 +261,7 @@ export default function BreadcrumbComponentArticle() {
             <code>BreadcrumbItem</code> objects with cumulative hrefs. Also exports a
             <code>slugToLabel</code> utility that handles edge cases like numeric segments,
             acronyms, and Unicode characters.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -290,40 +291,40 @@ export default function BreadcrumbComponentArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. useBreadcrumbs Hook (<code>use-breadcrumbs.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             React hook that ties everything together. Accepts the current path and optional
             <code>BreadcrumbConfig</code>. Internally calls the generator, applies
             truncation, and returns the final breadcrumb item array. Also exposes the
             JSON-LD schema string for the consuming component to render in
             <code>head</code>. Memoizes results with <code>useMemo</code> to avoid
             re-computation on unrelated re-renders.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Rendering Components</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <strong>Breadcrumb (<code>breadcrumb.tsx</code>):</strong> Root component that
             wraps everything in a <code>nav</code> with <code>aria-label=&quot;Breadcrumb&quot;</code>.
             Renders items with separators. Handles responsive breakpoint detection and
             switches between desktop and mobile variants.
-          </p>
-          <p className="mt-3">
+          </HighlightBlock>
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>BreadcrumbItem (<code>breadcrumb-item.tsx</code>):</strong> Renders a
             single breadcrumb entry. If the item is the current page, renders as a
             <code>span</code> with <code>aria-current=&quot;page&quot;</code> and muted
             styling. Otherwise, renders as an <code>a</code> link with the href.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>BreadcrumbSeparator (<code>breadcrumb-separator.tsx</code>):</strong>
             Renders the configured separator — slash, chevron-right SVG, or a custom React
             node passed via config.
           </p>
-          <p className="mt-3">
+          <HighlightBlock as="p" tier="important" className="mt-3">
             <strong>BreadcrumbMobile (<code>breadcrumb-mobile.tsx</code>):</strong> Compact
             mobile variant that shows only the last two items and a dropdown button revealing
             the full trail. Uses a popover/menu pattern for overflow items.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
@@ -390,24 +391,24 @@ export default function BreadcrumbComponentArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The execution flow follows a pure functional pipeline: path input leads to item
           generation, then truncation, then SEO schema generation, and finally rendering.
           Each step is a pure function or memoized computation, making the system
           predictable and testable in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Root path:</strong> <code>generateBreadcrumbs</code> detects an empty
             segment list and returns a single item: <code>{`{ label: "Home", href: "/", isCurrent: false }`}</code>.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Dynamic ID segments:</strong> Segments matching a numeric or UUID pattern
             are passed through as-is (e.g., <code>12345</code>) or resolved via an optional
             resolver function passed in config (e.g., fetch user name from cache).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Trailing slashes:</strong> The path is split on <code>/</code> and
             empty strings are filtered out, so a trailing slash produces no extra segment.
@@ -417,16 +418,16 @@ export default function BreadcrumbComponentArticle() {
             path before splitting. Only the pathname portion is used for breadcrumb
             generation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Extremely deep nesting:</strong> Truncation ensures that even with 15+
             levels, only the first 2, an ellipsis, and the last 2 items render. The mobile
             dropdown shows all items in a scrollable list.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR safety:</strong> All functions are pure and synchronous. They run
             identically on server and client. The JSON-LD output is included in the initial
             HTML response, satisfying SEO requirements.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -495,54 +496,54 @@ export default function BreadcrumbComponentArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: useBreadcrumbs Hook (use-breadcrumbs.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           React hook that orchestrates the pipeline. Accepts <code>path</code> and optional
           <code>BreadcrumbConfig</code>. Uses <code>useMemo</code> with dependencies on
           <code>path</code> and <code>config</code> to avoid re-computation. Calls the
           generator, then the truncator, then the SEO function. Returns an object with
           <code>items</code> (the final breadcrumb array) and <code>jsonLD</code> (the
           schema string). The hook is pure and can be tested without rendering.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Breadcrumb Component (breadcrumb.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Root component that renders the breadcrumb navigation. Accepts <code>path</code>
           and optional config props. Calls <code>useBreadcrumbs</code> to get items and
           JSON-LD. Renders the JSON-LD via a <code>script</code> tag. Detects viewport
           width using a <code>useMediaQuery</code> hook or window resize listener and
           switches between desktop and mobile variants. The desktop variant renders an
           ordered list (<code>ol</code>) with list items for each breadcrumb.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: Breadcrumb Item (breadcrumb-item.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Renders a single breadcrumb entry. If <code>isCurrent</code> is true, renders a
           <code>span</code> with <code>aria-current=&quot;page&quot;</code>, bold font, and
           muted text color. If <code>isEllipsis</code> is true, renders a clickable button
           that expands the collapsed items. Otherwise, renders an <code>a</code> element
           with the href and standard link styling. Focus management ensures Tab order flows
           naturally through all links.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: Breadcrumb Separator (breadcrumb-separator.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders the separator between breadcrumb items. Accepts a <code>type</code> prop
           (<code>slash</code>, <code>chevron</code>, or <code>custom</code>). For slash,
           renders a text <code>/</code> with muted color and padding. For chevron, renders
           an inline SVG chevron-right icon. For custom, renders the React node passed via
           config. The separator has <code>aria-hidden=&quot;true&quot;</code> since it is
           decorative.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: Breadcrumb Mobile (breadcrumb-mobile.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Compact mobile variant that shows the last two breadcrumb items and a dropdown
           button. The dropdown button opens a popover/menu listing all breadcrumb items in
           order. The current page item is shown at the bottom of the dropdown with muted
           styling. Uses <code>useState</code> for open/close toggle and resets on path
           change via <code>useEffect</code>. The popover renders with a fixed position and
           z-index above other content.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -596,25 +597,25 @@ export default function BreadcrumbComponentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Label override Map construction:</strong> If the override map is built
             from a large configuration file or API response, construction cost is O(m) where
             m is the number of entries. Mitigation: build the Map once at app initialization
             and cache it as a module-level singleton.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Viewport detection:</strong> Using a <code>resize</code> event listener
             fires on every pixel change. Mitigation: use <code>ResizeObserver</code> on the
             container or debounce the handler at 100ms intervals. Alternatively, use CSS
             media queries to show/hide desktop and mobile variants without JavaScript
             detection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>JSON-LD re-computation:</strong> The schema string is regenerated on
             every path change. For typical breadcrumb lengths (3-8 items), this is
             negligible. If paths are extremely deep (50+ segments), memoization prevents
             redundant stringification.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -624,23 +625,23 @@ export default function BreadcrumbComponentArticle() {
             <code>useMemo</code> keyed on the path string and config reference. Route
             changes trigger re-computation; unrelated state changes do not.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS-only responsive switching:</strong> Instead of JavaScript viewport
             detection, use <code>hidden sm:flex</code> on the desktop variant and
             <code>flex sm:hidden</code> on the mobile variant. This eliminates the resize
             listener entirely and lets the browser handle the breakpoint.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pre-built label cache:</strong> For applications with known route
             structures, pre-compute the label map at build time and import it as a static
             constant. This avoids runtime slug-to-label conversion entirely.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtual scrolling in mobile dropdown:</strong> For extremely deep
             breadcrumb trails (50+ levels), the mobile dropdown can use virtualization to
             render only visible items. In practice, trails rarely exceed 10 levels, so this
             is an optimization for edge cases only.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -649,7 +650,7 @@ export default function BreadcrumbComponentArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Breadcrumb labels derive from URL path segments, which are user-controllable
           input. An attacker could craft a URL with a malicious segment (e.g.,
           <code>/products/%3Cscript%3Ealert(1)%3C/script%3E</code>). If the label is
@@ -657,7 +658,7 @@ export default function BreadcrumbComponentArticle() {
           as plain text content (React&apos;s default escaping) and never use
           <code>dangerouslySetInnerHTML</code> for auto-generated labels. Manual override
           labels from a trusted configuration are safe to render as React nodes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -671,25 +672,25 @@ export default function BreadcrumbComponentArticle() {
               Pressing <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">Enter</kbd>
               activates the link and navigates to the href.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The ellipsis expand button is a native <code>&lt;button&gt;</code> element,
               automatically keyboard-accessible.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The mobile dropdown toggle is a <code>&lt;button&gt;</code> with
               <code>aria-expanded</code> reflecting its open/closed state.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               The root element is a <code>&lt;nav&gt;</code> with
               <code>aria-label=&quot;Breadcrumb&quot;</code>, allowing screen readers to
               identify it as a navigation landmark.
-            </li>
+            </HighlightBlock>
             <li>
               The current page item has <code>aria-current=&quot;page&quot;</code>, which
               screen readers announce as &quot;current page&quot; after the label.
@@ -707,13 +708,13 @@ export default function BreadcrumbComponentArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Breadcrumbs are rendered as an ordered list (<code>ol</code>) within a
             <code>nav</code> landmark. Each item is an <code>li</code> containing either
             an <code>a</code> link or a <code>span</code> with
             <code>aria-current=&quot;page&quot;</code>. This follows the WAI-ARIA
             breadcrumb pattern exactly. See the Example tab for the exact markup.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Open Redirect Prevention</h3>
@@ -750,19 +751,19 @@ export default function BreadcrumbComponentArticle() {
             &quot;API Keys&quot;), numeric passthrough (<code>12345</code> to &quot;12345&quot;),
             and Unicode preservation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Truncator:</strong> Test that an array of 8 items with
             <code>visibleLimit: 5, keepFirst: 2, keepLast: 2</code> returns 5 items:
             first 2, ellipsis, last 2. Test that an array within the limit returns
             unchanged. Test edge case: exactly at the limit returns unchanged.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>JSON-LD:</strong> Test that <code>generateBreadcrumbJSONLD</code>
             produces valid JSON with <code>@context: &quot;https://schema.org&quot;</code>,
             <code>@type: &quot;BreadcrumbList&quot;</code>, and a <code>itemListElement</code>
             array where each entry has <code>position</code>, <code>name</code>, and
             <code>item</code>.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
@@ -773,23 +774,23 @@ export default function BreadcrumbComponentArticle() {
             match expected labels, hrefs, and truncation. Assert JSON-LD string is valid
             JSON.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Component rendering:</strong> Render the <code>Breadcrumb</code>
             component with a path. Assert <code>nav</code> has <code>aria-label</code>,
             links have correct <code>href</code> attributes, current item has
             <code>aria-current=&quot;page&quot;</code>, and separators are present between
             items.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Truncation rendering:</strong> Render a long trail, assert the ellipsis
             item appears, assert the correct number of items are visible, assert clicking
             the ellipsis reveals hidden items.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mobile variant:</strong> Set viewport width below breakpoint, assert
             mobile dropdown renders with the last two items visible, assert clicking the
             toggle opens the dropdown with all items listed.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
@@ -808,11 +809,11 @@ export default function BreadcrumbComponentArticle() {
             Malicious segment: verify <code>&lt;script&gt;</code> tags in path segments
             are escaped and rendered as text, not executed.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered breadcrumbs, verify
             <code>nav</code> landmark, <code>aria-current</code>, keyboard Tab order, and
             separator <code>aria-hidden</code>.
-          </li>
+          </HighlightBlock>
           <li>
             SSR rendering: verify breadcrumbs render correctly during server-side rendering
             and match client hydration output (no hydration mismatch).
@@ -832,12 +833,12 @@ export default function BreadcrumbComponentArticle() {
             auto-generation and requires updating every route when the hierarchy changes.
             Interviewers expect a derived approach from the URL path.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting aria-current on the last item:</strong> Rendering the current
             page as a link or omitting <code>aria-current=&quot;page&quot;</code> confuses
             screen reader users about which page they are on. This is a critical
             accessibility oversight.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not handling truncation:</strong> Deep route hierarchies produce long
             breadcrumb trails that overflow the viewport. Candidates who do not discuss
@@ -860,7 +861,7 @@ export default function BreadcrumbComponentArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Auto-generation vs Manual Configuration</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Auto-generating breadcrumbs from the URL path is zero-maintenance — adding a new
             route automatically creates the correct trail. The trade-off is that auto-generated
             labels may be ambiguous (e.g., <code>/settings/general</code> vs
@@ -869,12 +870,12 @@ export default function BreadcrumbComponentArticle() {
             auto-generation as the default with an escape hatch for overrides on a per-path
             basis. This gives the best of both worlds: zero config for simple hierarchies,
             precision control for ambiguous segments.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Truncation: Inline Ellipsis vs Dropdown</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Inline ellipsis (collapsing middle items into <code>...</code>) keeps the
             breadcrumb on a single line and allows users to see the start and end of the
             trail at a glance. The trade-off is that hidden items are not immediately
@@ -882,12 +883,12 @@ export default function BreadcrumbComponentArticle() {
             only the current page and a dropdown for the full trail) is more compact but
             hides the entire hierarchy behind an interaction. Inline ellipsis is preferred
             for desktop; dropdown is preferred for mobile.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">CSS-only vs JavaScript Responsive Detection</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Using CSS media queries (<code>hidden sm:flex</code>) to show/hide desktop and
             mobile variants eliminates JavaScript entirely. The trade-off is that both
             variants are present in the DOM, slightly increasing initial page weight.
@@ -896,7 +897,7 @@ export default function BreadcrumbComponentArticle() {
             but introduces a resize listener and potential hydration mismatch if the server
             renders the desktop variant and the client is mobile. CSS-only is the simpler
             and more reliable approach for most applications.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -970,7 +971,7 @@ export default function BreadcrumbComponentArticle() {
               Q: How does your design handle client-side navigation without re-rendering the
               entire page?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The <code>useBreadcrumbs</code> hook depends on the <code>path</code>
               argument. When the router changes the path (e.g., Next.js <code>usePathname</code>
               hook), the path value changes, triggering <code>useMemo</code> to re-compute.
@@ -978,7 +979,7 @@ export default function BreadcrumbComponentArticle() {
               This is efficient because breadcrumb computation is O(n) and n is small. The
               JSON-LD <code>script</code> tag updates with the new schema, and search engine
               crawlers that execute JavaScript will see the updated structured data.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

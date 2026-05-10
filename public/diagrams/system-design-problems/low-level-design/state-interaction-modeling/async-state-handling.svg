@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Async State Handling: Multi-Step Workflow Patterns</text>
+
+  <!-- Async State Shape -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Async State Shape</text>
+
+    <rect x="30" y="75" width="380" height="200" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="220" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Standard Async State Object</text>
+    <text x="45" y="122" font-size="10" fill="#374151">status: 'idle' | 'loading' | 'success' | 'error'</text>
+    <text x="45" y="140" font-size="10" fill="#374151">data: T | null</text>
+    <text x="45" y="158" font-size="10" fill="#374151">error: Error | null</text>
+    <text x="45" y="178" font-size="11" font-weight="bold" fill="#374151">Derived booleans (computed, not stored):</text>
+    <text x="45" y="196" font-size="10" fill="#374151">  isLoading = status === 'loading'</text>
+    <text x="45" y="214" font-size="10" fill="#374151">  isSuccess = status === 'success'</text>
+    <text x="45" y="232" font-size="10" fill="#374151">  isError = status === 'error'</text>
+    <text x="45" y="252" font-size="9" fill="#3b82f6">Never store isLoading + isError as separate booleans — impossible states arise</text>
+
+    <rect x="30" y="290" width="380" height="175" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="220" y="315" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Anti-patterns to Avoid</text>
+    <text x="45" y="337" font-size="10" fill="#374151">✗ isLoading: true + isError: true simultaneously</text>
+    <text x="45" y="355" font-size="10" fill="#374151">✗ data not cleared on new request (stale flash)</text>
+    <text x="45" y="373" font-size="10" fill="#374151">✗ No race condition handling (last req wins)</text>
+    <text x="45" y="391" font-size="10" fill="#374151">✗ Error state persists after successful retry</text>
+    <text x="45" y="409" font-size="10" fill="#374151">✗ Loading spinner after stale-while-revalidate</text>
+    <text x="45" y="445" font-size="9" fill="#ef4444">Use discriminated union type: {status:'loading'} | {status:'success',data:T} | ...</text>
+  </g>
+
+  <!-- Multi-step async workflow -->
+  <g>
+    <text x="680" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Multi-Step Async Workflow</text>
+
+    <rect x="450" y="75" width="620" height="220" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" rx="6"/>
+
+    <!-- Steps with state -->
+    <rect x="465" y="90" width="130" height="55" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+    <text x="530" y="111" font-size="10" font-weight="bold" text-anchor="middle" fill="#374151">Step 1: Validate</text>
+    <text x="530" y="128" font-size="9" text-anchor="middle" fill="#6b7280">status: success ✓</text>
+
+    <path d="M 595 117 L 618 117" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#aasG)"/>
+
+    <rect x="620" y="90" width="130" height="55" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+    <text x="685" y="111" font-size="10" font-weight="bold" text-anchor="middle" fill="#92400e">Step 2: Upload</text>
+    <text x="685" y="128" font-size="9" text-anchor="middle" fill="#92400e">status: loading ↻</text>
+
+    <path d="M 750 117 L 773 117" stroke="#6b7280" stroke-width="1.5" fill="none" stroke-dasharray="4,2"/>
+
+    <rect x="775" y="90" width="130" height="55" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+    <text x="840" y="111" font-size="10" font-weight="bold" text-anchor="middle" fill="#6b7280">Step 3: Confirm</text>
+    <text x="840" y="128" font-size="9" text-anchor="middle" fill="#9ca3af">status: idle</text>
+
+    <!-- Step state management -->
+    <text x="760" y="170" font-size="11" font-weight="bold" text-anchor="middle" fill="#374151">Step State Shape:</text>
+    <text x="465" y="190" font-size="10" fill="#374151">steps: {</text>
+    <text x="465" y="208" font-size="10" fill="#374151">  validate: AsyncState&lt;ValidationResult&gt;</text>
+    <text x="465" y="225" font-size="10" fill="#374151">  upload: AsyncState&lt;UploadResult&gt;</text>
+    <text x="465" y="242" font-size="10" fill="#374151">  confirm: AsyncState&lt;ConfirmResult&gt;</text>
+    <text x="465" y="260" font-size="10" fill="#374151">}</text>
+    <text x="465" y="278" font-size="9" fill="#6b7280">currentStep: number — tracks active step</text>
+
+    <rect x="450" y="310" width="290" height="185" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="595" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Race Condition Prevention</text>
+    <text x="465" y="358" font-size="10" fill="#374151">AbortController per request:</text>
+    <text x="465" y="376" font-size="10" fill="#374151">  abort previous on new call</text>
+    <text x="465" y="394" font-size="10" fill="#374151">Request ID pattern:</text>
+    <text x="465" y="412" font-size="10" fill="#374151">  tag req with id, ignore stale ids</text>
+    <text x="465" y="430" font-size="10" fill="#374151">useEffect cleanup:</text>
+    <text x="465" y="448" font-size="10" fill="#374151">  return () =&gt; abortCtrl.abort()</text>
+    <text x="465" y="466" font-size="10" fill="#374151">React Query / SWR:</text>
+    <text x="465" y="484" font-size="10" fill="#374151">  built-in dedup + cancellation</text>
+    <text x="465" y="492" font-size="9" fill="#a855f7">Always: abort on unmount + new fetch</text>
+
+    <rect x="760" y="310" width="310" height="185" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="915" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Optimistic Updates Pattern</text>
+    <text x="775" y="358" font-size="10" fill="#374151">1. Apply change to local state immediately</text>
+    <text x="775" y="376" font-size="10" fill="#374151">2. Fire async mutation to server</text>
+    <text x="775" y="394" font-size="10" fill="#374151">3. On success: confirm (no-op or refresh)</text>
+    <text x="775" y="412" font-size="10" fill="#374151">4. On failure: rollback + show error</text>
+    <text x="775" y="432" font-size="11" font-weight="bold" fill="#374151">Rollback snapshot:</text>
+    <text x="775" y="450" font-size="10" fill="#374151">  const prev = queryClient.getQueryData(key)</text>
+    <text x="775" y="468" font-size="10" fill="#374151">  onError: queryClient.setQueryData(key, prev)</text>
+    <text x="775" y="492" font-size="9" fill="#10b981">React Query: onMutate/onError/onSettled hooks</text>
+  </g>
+
+  <rect x="30" y="490" width="400" height="78" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="510" font-size="11" fill="#374151"><tspan font-weight="bold">State shape:</tspan> Discriminated union by status field.</text>
+  <text x="50" y="528" font-size="11" fill="#374151"><tspan font-weight="bold">Race conditions:</tspan> AbortController + cleanup in useEffect.</text>
+  <text x="50" y="546" font-size="11" fill="#374151"><tspan font-weight="bold">Multi-step:</tspan> Each step owns its AsyncState. Step order enforced by FSM.</text>
+  <text x="50" y="562" font-size="9" fill="#6b7280">Libraries: React Query, SWR, RTK Query — all handle this pattern correctly.</text>
+
+  <defs>
+    <marker id="aasG" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#10b981"/></marker>
+  </defs>
+</svg>

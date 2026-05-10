@@ -4235,9 +4235,165 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
   ],
   "system-design-problems/high-level-design/core-product-systems": [
     {
-      "slug": "social-media-news-feed-frontend",
+      "slug": "cross-device-user-settings-sync",
+      "title": "Design Cross-Device User Settings Sync",
+      "description": "Architecture for syncing user preferences across devices: conflict resolution, partial sync, offline support, schema versioning, and privacy controls."
+    },
+    {
+      "slug": "document-management-system",
+      "title": "Design a Document Management System (Preview, Versioning, Annotations)",
+      "description": "Architecture for an enterprise document management system: secure storage, in-browser preview, version history, collaborative annotations, and access control."
+    },
+    {
+      "slug": "frontend-for-a-social-media-news-feed",
       "title": "Design the Frontend for a Social Media News Feed",
-      "description": "A deep dive into designing a scalable, high-performance frontend for a social media news feed, focusing on virtualization, state normalization, and real-time updates."
+      "description": "End-to-end frontend architecture for a high-scale news feed: ranking, pagination, real-time updates, optimistic interactions, and performance at billions of impressions."
+    },
+    {
+      "slug": "large-file-upload-system-with-resume-capability",
+      "title": "Design a Large File Upload System with Resume Capability",
+      "description": "End-to-end architecture for resumable large file uploads: chunking, multipart S3, progress tracking, virus scanning, CDN distribution, and failure recovery."
+    },
+    {
+      "slug": "low-latency-trading-ui",
+      "title": "Design a Low-Latency Trading UI",
+      "description": "Architecture for a sub-100ms trading interface: binary WebSocket protocols, off-main-thread price processing, order book rendering, risk controls, and resilience under market volatility."
+    },
+    {
+      "slug": "maps-based-delivery-tracking-application",
+      "title": "Design a Maps-Based Delivery Tracking Application",
+      "description": "Architecture for real-time delivery tracking: driver location streaming, ETA calculation, map rendering, geofencing, privacy controls, and multi-party visibility."
+    },
+    {
+      "slug": "multi-device-session-continuity-system",
+      "title": "Design a Multi-Device Session Continuity System",
+      "description": "Architecture for seamless cross-device session handoff: state capture, transfer protocols, device management, security controls, and real-time sync."
+    },
+    {
+      "slug": "multi-step-checkout-flow",
+      "title": "Design a Multi-Step Checkout Flow",
+      "description": "End-to-end checkout architecture: state machine, payment integration, inventory reservation, idempotency, 3DS handling, and failure recovery at scale."
+    },
+    {
+      "slug": "music-audio-streaming-frontend",
+      "title": "Design a Music/Audio Streaming Frontend",
+      "description": "Architecture for a music streaming client: adaptive bitrate audio, gapless playback, offline caching, queue management, cross-device continuity, and DRM integration."
+    },
+    {
+      "slug": "personalized-homepage-feed-system",
+      "title": "Design a Personalized Homepage/Feed System",
+      "description": "Architecture for a personalized homepage feed: candidate generation, multi-stage ranking, real-time feature serving, cold start, experimentation, and feedback loops."
+    },
+    {
+      "slug": "real-time-dashboard-frontend",
+      "title": "Design a Real-Time Dashboard Frontend",
+      "description": "Architecture for a high-frequency real-time dashboard: WebSocket data delivery, chart rendering strategy, time-series windowing, memory management, and graceful degradation."
+    },
+    {
+      "slug": "search-ui-with-autocomplete-filters-and-facets",
+      "title": "Design a Search UI with Autocomplete, Filters, and Facets",
+      "description": "Full-stack search UI architecture: autocomplete with debouncing, Elasticsearch-backed faceted filtering, URL state management, relevance tuning, and performance at scale."
+    },
+    {
+      "slug": "social-media-stories-reels-feature",
+      "title": "Design a Social Media Stories/Reels Feature",
+      "description": "Architecture for stories and short-form video: upload pipeline, CDN delivery, viewer state tracking, pre-fetching, expiration, and engagement analytics."
+    },
+    {
+      "slug": "user-onboarding-and-activation-flow-at-scale",
+      "title": "Design a User Onboarding & Activation Flow at Scale",
+      "description": "Architecture for scalable user onboarding: progressive profiling, activation milestone tracking, personalization, A/B testing, fraud detection, and retention loop integration."
+    }
+  ],
+  "system-design-problems/low-level-design/ai-modern-systems-lld": [
+    {
+      "slug": "ai-assisted-search-qa-ui",
+      "title": "AI-Assisted Search & Q&A UI",
+      "description": "Semantic search powered by embeddings with retrieval-augmented generation (RAG) for question answering from documents."
+    },
+    {
+      "slug": "ai-feedback-loop-ui",
+      "title": "AI Feedback Loop UI",
+      "description": "Collecting user feedback on AI outputs for continuous model improvement, RLHF labeling, and quality monitoring."
+    },
+    {
+      "slug": "ai-ui-generator",
+      "title": "AI UI Generator System",
+      "description": "LLM-powered UI generation from natural language descriptions with component selection, layout reasoning, and design consistency."
+    },
+    {
+      "slug": "prompt-history-versioning-ui",
+      "title": "Prompt History & Versioning UI",
+      "description": "Managing prompt iterations, versions, and branching conversations with comparison and rollback capabilities."
+    },
+    {
+      "slug": "streaming-chat-ui",
+      "title": "Streaming Chat UI System",
+      "description": "Building chat interfaces that display streaming token responses from LLMs in real-time with incremental rendering and user interaction."
+    },
+    {
+      "slug": "token-streaming-buffer",
+      "title": "Token Streaming Buffer System",
+      "description": "Managing token streaming from LLMs with buffering, batching, backpressure, and efficient rendering of streaming responses."
+    }
+  ],
+  "system-design-problems/low-level-design/architecture-system-level-lld": [
+    {
+      "slug": "component-library-system",
+      "title": "Design a Component Library System",
+      "description": "Production-grade component library with design tokens, theming, semantic versioning, visual regression testing, and governance at scale."
+    }
+  ],
+  "system-design-problems/low-level-design/auth-user-systems": [
+    {
+      "slug": "admin-impersonation-ui",
+      "title": "Admin Impersonation UI System",
+      "description": "Designing secure admin impersonation interfaces for debugging user issues, providing support, and reproducing bugs with proper audit trails."
+    },
+    {
+      "slug": "device-session-management-ui",
+      "title": "Device / Session Management UI System",
+      "description": "Designing user-facing interfaces for viewing active sessions, detecting suspicious activity, and managing device access with privacy and security."
+    },
+    {
+      "slug": "login-session-management",
+      "title": "Login / Auth Flow and Session Management System",
+      "description": "Production-grade authentication with credential verification, session creation, multi-device management, anomaly detection, and secure session lifecycle."
+    },
+    {
+      "slug": "password-reset-system",
+      "title": "Password Reset / Recovery Flow System",
+      "description": "Production-grade password reset with secure token handling, replay attack prevention, rate limiting, verified identity confirmation, and account takeover detection."
+    },
+    {
+      "slug": "permission-editor-ui",
+      "title": "Permission Editor UI System",
+      "description": "Designing interfaces for granting and managing fine-grained permissions to users and roles with safety guarantees and audit trails."
+    },
+    {
+      "slug": "role-based-access-control",
+      "title": "Role-Based Access Control (RBAC) UI System",
+      "description": "Production-grade RBAC with granular permissions, role hierarchies, dynamic assignment, permission caching, and privilege escalation prevention."
+    },
+    {
+      "slug": "route-component-access-guard",
+      "title": "Route / Component Access Guard System",
+      "description": "Implementing permission-based access control for routes and components with real-time updates and server-side enforcement."
+    },
+    {
+      "slug": "secure-token-storage-ux",
+      "title": "Secure Token Storage UX System",
+      "description": "Designing secure storage and management of authentication tokens with protection against XSS and CSRF while maintaining seamless user experience."
+    },
+    {
+      "slug": "session-timeout-auto-logout",
+      "title": "Session Timeout and Auto-Logout System",
+      "description": "Implementing inactivity-based session expiry with user warnings, session extension, and graceful logout with draft preservation."
+    },
+    {
+      "slug": "user-onboarding-guided-tour",
+      "title": "User Onboarding and Guided Tour System",
+      "description": "Designing interactive onboarding flows and guided tours with step tracking, hotspots, and role-based tour customization for new user activation."
     }
   ],
   "system-design-problems/low-level-design/communication-collaboration": [
@@ -4300,6 +4456,68 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "typing-indicator-system",
       "title": "Design a Typing Indicator System",
       "description": "LLD for typing indicators: debounced broadcast, timeout cleanup, multi-user aggregation, accessibility, and integration with chat/editor systems."
+    }
+  ],
+  "system-design-problems/low-level-design/complex-interaction-systems": [
+    {
+      "slug": "bottom-sheet-drawer",
+      "title": "Design a Bottom Sheet / Drawer",
+      "description": "LLD for bottom sheets and drawers: snap points, drag-to-dismiss, focus trap, scroll handoff, accessibility, and integration with content."
+    },
+    {
+      "slug": "calendar-scheduler",
+      "title": "Design a Calendar / Scheduler",
+      "description": "LLD for a calendar/scheduler: event drag/drop, collision detection, recurring events, multi-view (day/week/month), time zones, and accessibility."
+    },
+    {
+      "slug": "carousel-slider",
+      "title": "Design a Carousel / Slider",
+      "description": "LLD for a carousel: touch swipe, autoplay, lazy-loaded slides, keyboard navigation, indicators, accessibility."
+    },
+    {
+      "slug": "drag-drop-list",
+      "title": "Design a Drag &amp; Drop List",
+      "description": "LLD for a drag-and-drop sortable list: pointer-driven drag, smooth reorder animation, keyboard accessibility, drop target detection, and persistence."
+    },
+    {
+      "slug": "gesture-system",
+      "title": "Gesture Recognition and Handling System",
+      "description": "Designing touch gesture recognizers for mobile and desktop applications with support for swipe, pinch, rotate, and other multi-touch patterns."
+    },
+    {
+      "slug": "history-timeline-ui",
+      "title": "Design a History Timeline UI",
+      "description": "Timeline visualization for version history, activity logs, and event sequences."
+    },
+    {
+      "slug": "kanban-board",
+      "title": "Design a Kanban Board",
+      "description": "LLD for a Kanban board: drag cards across columns, swimlanes, real-time multi-user updates, optimistic reorder, accessibility, and persistence."
+    },
+    {
+      "slug": "pan-zoom-minimap",
+      "title": "Pan + Zoom + Minimap System",
+      "description": "Interactive viewport with pan/zoom controls, minimap overview, and constraint enforcement"
+    },
+    {
+      "slug": "resizable-split-pane",
+      "title": "Design a Resizable Split Pane",
+      "description": "LLD for resizable split panes: drag-to-resize, min/max constraints, persistence, keyboard support, nested splits, and accessibility."
+    },
+    {
+      "slug": "snap-to-grid-alignment",
+      "title": "Snap-to-Grid / Alignment System",
+      "description": "Grid snapping, alignment guides, and intelligent positioning for interactive canvas tools"
+    },
+    {
+      "slug": "stepper-progress-tracker",
+      "title": "Design a Stepper / Progress Tracker",
+      "description": "LLD for a stepper/progress tracker that works across async multi-page flows: state model, persistence, deep linking, accessibility."
+    },
+    {
+      "slug": "zoomable-canvas-system",
+      "title": "Design a Zoomable Canvas System",
+      "description": "LLD for a zoomable canvas: pan, zoom (wheel/pinch/double-tap), bounded movement, keyboard control, smooth physics, and accessibility."
     }
   ],
   "system-design-problems/low-level-design/component-level-ui-patterns": [
@@ -4690,6 +4908,217 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "LLD for a multi-step Wizard preserving state across steps, validating per step, supporting branching, deep links, and resumable flows in React/Next.js."
     }
   ],
+  "system-design-problems/low-level-design/networking-data-systems": [
+    {
+      "slug": "cache-invalidation-strategy",
+      "title": "Cache Invalidation Strategy (After Mutations)",
+      "description": "Production-grade cache invalidation strategies for keeping frontend cache fresh after mutations with dependency tracking, selective invalidation, and race condition handling."
+    },
+    {
+      "slug": "data-fetching-hook",
+      "title": "Design a Data Fetching Hook",
+      "description": "Production-grade data fetching abstraction for React with loading states, error handling, dependency tracking, request lifecycle management, and cancellation support."
+    },
+    {
+      "slug": "file-upload-api-layer",
+      "title": "Design a File Upload API Layer",
+      "description": "Production-grade file upload system with chunking, resumability, progress tracking, cancellation, and error handling for large files."
+    },
+    {
+      "slug": "frontend-caching-layer",
+      "title": "Design a Frontend Caching Layer",
+      "description": "Production-grade client-side caching system with TTL, tag-based invalidation, LRU eviction, stale-while-revalidate, and memory management for high-traffic SPAs."
+    },
+    {
+      "slug": "global-api-error-handling",
+      "title": "Design a Global API Error Handling Layer",
+      "description": "Production-grade centralized error handling for API responses with classification, retry logic, user-friendly messages, and observability."
+    },
+    {
+      "slug": "optimistic-ui-system",
+      "title": "Design an Optimistic UI System",
+      "description": "Production-grade optimistic updates that immediately reflect mutations locally while network request completes, with rollback on failure and conflict resolution."
+    },
+    {
+      "slug": "polling-vs-websocket-system",
+      "title": "Design a Polling vs WebSocket System",
+      "description": "Architecture for choosing between polling and WebSockets based on latency, throughput, and resource constraints. Hybrid approaches for real-time updates."
+    },
+    {
+      "slug": "race-condition-handling",
+      "title": "Design a Race Condition Handling System",
+      "description": "Production-grade patterns for detecting and preventing race conditions in concurrent state updates, optimistic updates, and data synchronization."
+    },
+    {
+      "slug": "rate-limited-autocomplete",
+      "title": "Design a Rate-Limited Autocomplete System",
+      "description": "Production-grade autocomplete with debouncing, request deduplication, rate limiting, cancellation, and result caching for responsive search UX."
+    },
+    {
+      "slug": "request-batching-system",
+      "title": "Design a Request Batching System",
+      "description": "Production-grade request batching that coalesces multiple individual requests into single batch to reduce network overhead and improve throughput."
+    },
+    {
+      "slug": "request-deduplication-system",
+      "title": "Design a Request Deduplication System",
+      "description": "Production-grade deduplication that coalesces identical in-flight requests, returns cached results to subscribers, and handles failures atomically."
+    },
+    {
+      "slug": "retry-mechanism",
+      "title": "Design a Retry Mechanism",
+      "description": "Production-grade retry logic with exponential backoff, jitter, retry budgets, circuit breakers, and failure classification for resilient API communication."
+    },
+    {
+      "slug": "token-refresh-system",
+      "title": "Design a Token Refresh System",
+      "description": "Production-grade authentication token refresh with expiration handling, race condition prevention, and seamless token rotation without user re-login."
+    }
+  ],
+  "system-design-problems/low-level-design/offline-advanced-ux": [
+    {
+      "slug": "background-sync-queue",
+      "title": "Background Sync Queue System",
+      "description": "Application-level queueing and coordination of operations for syncing when network connectivity restores"
+    },
+    {
+      "slug": "conflict-visualization-ui",
+      "title": "Conflict Visualization UI System",
+      "description": "Visualizing and resolving data conflicts in offline-first and multi-device scenarios"
+    },
+    {
+      "slug": "data-synchronization-conflict-resolution",
+      "title": "Design Data Synchronization & Conflict Resolution",
+      "description": "Production-grade sync system with multi-device consistency, conflict detection, three-way merge, CRDT-based merging, and event sourcing patterns."
+    },
+    {
+      "slug": "local-first-architecture",
+      "title": "Local-First Architecture",
+      "description": "Building apps where local storage is primary source of truth with eventual server sync"
+    },
+    {
+      "slug": "network-status-detection",
+      "title": "Design Network Status Detection & Handling",
+      "description": "Production-grade network connectivity detection with accurate online/offline status, network type awareness, latency estimation, and UI state management."
+    },
+    {
+      "slug": "offline-first-architecture",
+      "title": "Design an Offline-First Architecture System",
+      "description": "Production-grade offline-first design with local-first data, automatic synchronization, conflict resolution, and seamless online/offline transitions."
+    },
+    {
+      "slug": "progressive-enhancement",
+      "title": "Progressive Enhancement System",
+      "description": "Building resilient apps with core functionality working without JavaScript, enhanced with JavaScript when available"
+    },
+    {
+      "slug": "push-notification-ux",
+      "title": "Push Notification UX System",
+      "description": "Designing push notifications with engagement, frequency capping, and user preference management"
+    }
+  ],
+  "system-design-problems/low-level-design/real-world-scenario-lld": [
+    {
+      "slug": "activity-feed-system",
+      "title": "Design Activity Feed System",
+      "description": "Production-grade activity feed with real-time updates, pagination, filtering, and aggregation."
+    },
+    {
+      "slug": "audit-log-viewer-ui",
+      "title": "Design Audit Log Viewer UI",
+      "description": "Production-grade audit logging interface with filtering, search, tamper-evident storage, and compliance reporting."
+    },
+    {
+      "slug": "bulk-editing-ui",
+      "title": "Design Bulk Editing UI",
+      "description": "Production-grade bulk editing with selection management, batch operations, progress tracking, and rollback."
+    },
+    {
+      "slug": "checkout-flow",
+      "title": "Design a Checkout Flow",
+      "description": "Production-grade checkout experience with multi-step forms, payment processing, error recovery, and order confirmation."
+    },
+    {
+      "slug": "comments-system",
+      "title": "Design Comments System",
+      "description": "Production-grade comment threads with real-time updates, nested replies, moderation, and spam detection."
+    },
+    {
+      "slug": "debounced-auto-save-system",
+      "title": "Design Debounced Auto-Save System",
+      "description": "Production-grade auto-save with debouncing, optimistic updates, conflict resolution, and user feedback."
+    },
+    {
+      "slug": "export-system",
+      "title": "Design Export System (CSV/PDF)",
+      "description": "Production-grade export with format support, async processing, large dataset streaming, and download delivery."
+    },
+    {
+      "slug": "feature-flag-system",
+      "title": "Design Feature Flag System",
+      "description": "Production-grade feature flags with rule-based targeting, gradual rollout, A/B testing, and kill switches."
+    },
+    {
+      "slug": "feature-rollout-system",
+      "title": "Design a Feature Rollout System (Gradual Rollout + Targeting + Kill Switch)",
+      "description": "Production-grade feature rollout with staged percentage deployment, automatic rollback triggers, user targeting, and emergency kill switches."
+    },
+    {
+      "slug": "map-based-ui-system",
+      "title": "Design a Map-Based UI System (Markers, Clustering, Viewport Queries)",
+      "description": "Production-grade mapping interface with marker clustering, debounced viewport queries, WebGL rendering, and real-time location updates."
+    },
+    {
+      "slug": "multi-tenant-ui",
+      "title": "Design Multi-Tenant UI",
+      "description": "Production-grade multi-tenant interface with organization switching, role-based access, white-label theming, and data isolation."
+    },
+    {
+      "slug": "notifications-badge-system",
+      "title": "Design Notifications Badge System",
+      "description": "Production-grade notification badges with real-time updates, mark-as-read, filtering, and multi-device sync."
+    },
+    {
+      "slug": "offline-form-sync-system",
+      "title": "Design Offline Form Sync System",
+      "description": "Production-grade offline form handling with local persistence, conflict resolution, and synchronization on reconnect."
+    },
+    {
+      "slug": "payment-ui-system",
+      "title": "Design a Payment UI System (PCI, Secure Inputs, Third-party Integration)",
+      "description": "Production-grade payment UI with PCI compliance, secure card inputs, payment state machine, and third-party processor integration."
+    },
+    {
+      "slug": "saved-views-persistence-system",
+      "title": "Design Saved Views Persistence System",
+      "description": "Production-grade saved views with filter and sort state, URL sync, CRUD management, and cross-device synchronization."
+    },
+    {
+      "slug": "settings-page-system",
+      "title": "Design Settings Page System",
+      "description": "Production-grade settings with preference taxonomy, save strategies, re-auth gates, danger zone, and cross-device sync."
+    },
+    {
+      "slug": "shopping-cart-system",
+      "title": "Design a Shopping Cart System",
+      "description": "Production-grade shopping cart with real-time updates, persistence, cart abandonment tracking, and synchronization across devices."
+    },
+    {
+      "slug": "telemetry-analytics-pipeline",
+      "title": "Design Telemetry/Analytics Pipeline",
+      "description": "Production-grade analytics with event collection, batching, sampling, privacy compliance, and real-time dashboards."
+    },
+    {
+      "slug": "third-party-sdk-integration",
+      "title": "Design Third-Party SDK Integration",
+      "description": "Production-grade SDK integration with async loading, error isolation, version pinning, and graceful degradation."
+    },
+    {
+      "slug": "version-history-system",
+      "title": "Design Version History System",
+      "description": "Production-grade version tracking with immutable snapshots, diff display, rollback, and named versions."
+    }
+  ],
   "system-design-problems/low-level-design/search-discovery": [
     {
       "slug": "full-text-search-ui",
@@ -4712,96 +5141,93 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "LLD for a search page composing query + filters + facets + sort + pagination with URL state, shareable views, and accessible controls."
     }
   ],
-  "system-design-problems/low-level-design/state-management-data-architecture": [
+  "system-design-problems/low-level-design/state-interaction-modeling": [
     {
-      "slug": "api-versioning-frontend",
-      "title": "API Versioning & Contract Management on Frontend",
-      "description": "Production-grade API versioning strategy — versioned adapters, schema validation with Zod, backward compatibility, graceful degradation, and breaking change migration."
+      "slug": "async-state-handling",
+      "title": "Design Async State Handling",
+      "description": "Production-grade async patterns with loading/error/success states, cancellation, retries, race condition handling, and request deduplication."
     },
     {
-      "slug": "client-cache-invalidation",
-      "title": "Design Client-Side Cache Invalidation",
-      "description": "Production-grade cache invalidation strategies — stale-while-revalidate, tag-based invalidation, time-based expiration, dependent query invalidation, and cache coherency."
+      "slug": "cross-tab-state-sync",
+      "title": "Cross-Tab State Sync System",
+      "description": "Synchronizing application state across multiple browser tabs/windows with conflict resolution and real-time updates."
     },
     {
-      "slug": "client-side-data-normalization",
-      "title": "Client-Side Data Normalization for GraphQL & REST",
-      "description": "Production-grade client-side data normalization — REST response flattening, GraphQL cache normalization, schema mapping, and unified entity store."
+      "slug": "derived-state",
+      "title": "Derived State System",
+      "description": "Computing derived/computed state from base state efficiently with memoization, selective updates, and performance optimization."
     },
     {
-      "slug": "component-subscription-management",
-      "title": "Manage Component Subscriptions to Prevent Re-renders",
-      "description": "Production-grade subscription management — selective subscriptions, equality functions, subscription batching, and preventing unnecessary re-renders in large-scale apps."
+      "slug": "fine-grained-subscription-system",
+      "title": "Fine-Grained Subscription System",
+      "description": "Selective state subscriptions allowing components to subscribe to specific state parts, minimizing re-renders and improving performance."
     },
     {
-      "slug": "cross-tab-state-synchronization",
-      "title": "Cross-Tab State Synchronization",
-      "description": "Production-grade cross-tab state sync — BroadcastChannel API, localStorage events, leader election, conflict resolution, and consistent state across browser tabs."
+      "slug": "finite-state-machines",
+      "title": "Design Finite State Machines",
+      "description": "Production-grade FSM implementation for complex workflows with state transitions, guards, actions, and XState for robust state modeling."
     },
     {
-      "slug": "custom-state-manager-design",
-      "title": "Design a Custom State Manager Without Redux",
-      "description": "Build a production-grade custom state manager from scratch — observable pattern, middleware support, batching, DevTools integration, and selective subscriptions."
+      "slug": "global-event-bus",
+      "title": "Global Event Bus System",
+      "description": "Pub/sub event bus for decoupled component communication with event filtering, priority handling, and async event processing."
     },
     {
-      "slug": "derived-computed-state-performance",
-      "title": "Optimize Derived & Computed State Performance",
-      "description": "Production-grade derived state optimization — selector memoization, computed pipelines, expensive calculation caching, and preventing unnecessary recomputation."
+      "slug": "state-hydration-rehydration",
+      "title": "State Hydration/Rehydration System",
+      "description": "Initializing application state from server, localStorage, and other sources with validation and migration handling."
     },
     {
-      "slug": "feature-flags-toggles",
-      "title": "Design Feature Flags & Toggles for Frontend",
-      "description": "Production-grade feature flag system — remote config, gradual rollout, A/B testing, kill switches, flag dependencies, and safe flag evaluation."
+      "slug": "time-travel-debugging",
+      "title": "Time-Travel Debugging System",
+      "description": "Stepping through application state history to debug complex issues, inspect state at any point, and replay events."
     },
     {
-      "slug": "global-event-bus-react",
-      "title": "Design a Global Event Bus in React",
-      "description": "Production-grade event bus for cross-component communication — typed events, namespace isolation, rate limiting, dead letter handling, and subscription lifecycle."
+      "slug": "undo-redo",
+      "title": "Undo/Redo System",
+      "description": "Production-grade undo/redo with command pattern, state snapshots, selective undo, and conflict resolution in collaborative editing."
+    }
+  ],
+  "system-design-problems/low-level-design/web-platform-browser-apis": [
+    {
+      "slug": "background-sync",
+      "title": "Background Sync System",
+      "description": "Service Worker background sync for reliable delivery of queued actions when network recovers"
     },
     {
-      "slug": "local-vs-global-state-strategy",
-      "title": "When to Use Local vs Global State",
-      "description": "Production-grade state boundary design for large SPAs — decision framework for local state, Context API, Zustand, Redux, and Jotai with real-world architecture patterns."
+      "slug": "clipboard-api",
+      "title": "Design Clipboard API",
+      "description": "Production-grade clipboard handling with copy/paste, permissions, data formats, and cross-platform compatibility for content sharing."
     },
     {
-      "slug": "monorepo-store-boundaries",
-      "title": "Design Store Boundaries in Monorepos",
-      "description": "Production-grade store boundaries for monorepos — per-package stores, cross-package state sharing, package-level contracts, and micro-frontend state isolation."
+      "slug": "geolocation-permissions",
+      "title": "Design Geolocation & Permissions",
+      "description": "Production-grade geolocation with privacy controls, permissions API, location tracking, accuracy handling, and graceful degradation."
     },
     {
-      "slug": "normalized-state-design",
-      "title": "Design Normalized State for Lists and Entities",
-      "description": "Production-grade normalized state design pattern — entity normalization, foreign key relationships, update propagation, and avoiding nested duplication."
+      "slug": "idle-task-scheduling",
+      "title": "Idle Task Scheduling System",
+      "description": "Scheduling non-critical work during browser idle time using requestIdleCallback"
     },
     {
-      "slug": "optimistic-updates-rollback",
-      "title": "Design Optimimistic Updates with Rollback",
-      "description": "Production-grade optimistic update pattern — instant UI feedback, server reconciliation, automatic rollback on failure, dependency handling, and conflict resolution."
+      "slug": "native-drag-drop-file",
+      "title": "Native Drag-and-Drop File System",
+      "description": "Handling file drops from OS with validation, preview, and upload orchestration"
     },
     {
-      "slug": "pagination-cursors-state-merging",
-      "title": "Pagination Cursors & State Merging",
-      "description": "Production-grade pagination state management — cursor-based pagination, offset pagination, merging pages, infinite scroll state, and cache invalidation for paginated data."
+      "slug": "observer-apis",
+      "title": "Design Observer APIs",
+      "description": "Production-grade Intersection, Mutation, and Resize Observers for efficient DOM monitoring, lazy loading, and responsive layouts without polling."
     },
     {
-      "slug": "scalable-global-state-architecture",
-      "title": "Design a Scalable Global State Architecture",
-      "description": "Production-grade global state architecture for large SPAs across multiple teams — multi-store design, domain boundaries, cross-store communication, and team autonomy patterns."
+      "slug": "visibility-based-rendering",
+      "title": "Visibility-Based Rendering System",
+      "description": "Conditional rendering and resource optimization based on page visibility and viewport intersection"
     },
     {
-      "slug": "state-persistence-rehydration",
-      "title": "State Persistence & Rehydration Strategies",
-      "description": "Production-grade state persistence — localStorage vs IndexedDB, versioned storage, selective persistence, encryption for sensitive data, and cross-device sync."
-    },
-    {
-      "slug": "transient-vs-persistent-ui-state",
-      "title": "Transient vs Persistent UI State",
-      "description": "Decision framework for transient UI state vs persistent user state — session-only data, auto-save drafts, localStorage vs IndexedDB, and state lifecycle management."
-    },
-    {
-      "slug": "usereducer-vs-usestate",
-      "title": "useReducer vs useState for Complex State",
-      "description": "Decision framework for useState vs useReducer — complex forms, state machines, multi-step workflows, testability, and when reducers are worth the boilerplate."
+      "slug": "web-workers-threading",
+      "title": "Design Web Workers & Threading",
+      "description": "Production-grade Web Workers for background processing, parallel computation, and offloading heavy tasks from the main thread."
     }
   ],
   "other/artificial-intelligence/additional-topics": [

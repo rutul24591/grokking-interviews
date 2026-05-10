@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Privacy and sampling model for RUM showing redaction layers, access control, and sampling metadata used in aggregates and drill-down">
+  <title>Privacy and Sampling as First-class Concepts</title>
+  <desc>Shows three privacy layers (capture, ingest, UI) and sampling metadata flowing into re-weighted aggregates and explicit sampled drill-down views.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .dash{stroke-dasharray:7 6}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .warn{fill:#2a1606;stroke:#fb923c}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .good{fill:#052018;stroke:#34d399}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <rect class="warn" x="60" y="90" width="520" height="170"/>
+  <text class="label bold" x="90" y="130">Privacy layers</text>
+  <text class="label small" x="90" y="160">Capture: allowlists + redaction (never send secrets)</text>
+  <text class="label small" x="90" y="185">Ingest: validate + scrub again (defense in depth)</text>
+  <text class="label small" x="90" y="210">UI: mask identifiers and gate session replay</text>
+  <text class="label small" x="90" y="235">Audit sensitive access per tenant</text>
+
+  <rect class="accent" x="620" y="90" width="520" height="170"/>
+  <text class="label bold" x="650" y="130">Sampling contract</text>
+  <text class="label small" x="650" y="160">Decision recorded per event and per session</text>
+  <text class="label small" x="650" y="185">Re-weight aggregates using sampling probability</text>
+  <text class="label small" x="650" y="210">Explicitly label drill-down as sampled</text>
+  <text class="label small" x="650" y="235">Adaptive sampling for rare, high-severity events</text>
+
+  <rect class="good" x="60" y="310" width="520" height="150"/>
+  <text class="label bold" x="90" y="350">Aggregates (trustworthy)</text>
+  <text class="label small" x="90" y="380">percentiles and rates are re-weighted</text>
+  <text class="label small" x="90" y="405">confidence shown for low sample sizes</text>
+  <text class="label small" x="90" y="430">bounded dimensions by default</text>
+
+  <rect class="muted" x="620" y="310" width="520" height="150"/>
+  <text class="label bold" x="650" y="350">Drill-down (explicit sample)</text>
+  <text class="label small" x="650" y="380">session timelines, stacks, replays</text>
+  <text class="label small" x="650" y="405">PII masked; access audited</text>
+  <text class="label small" x="650" y="430">time-windowed and quota-aware</text>
+
+  <rect class="box" x="60" y="500" width="1080" height="110"/>
+  <text class="label bold" x="90" y="540">Trade-off</text>
+  <text class="label small" x="90" y="570">More sampling reduces cost but increases uncertainty; surfacing sampling and confidence preserves trust.</text>
+
+  <path class="arrow dash" d="M580 175 L620 175"/>
+  <path class="arrow" d="M320 260 L320 310"/>
+  <path class="arrow" d="M900 260 L900 310"/>
+</svg>
+

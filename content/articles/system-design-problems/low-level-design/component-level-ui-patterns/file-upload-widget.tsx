@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function FileUploadWidgetArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable file upload widget for a large-scale web
           application. The widget must allow users to upload files via drag-and-drop
           or file picker, validate file types and sizes before upload, split large
@@ -49,7 +50,7 @@ export default function FileUploadWidgetArticle() {
           backoff, and allow users to cancel in-flight uploads. The widget must also
           display file previews (image thumbnails, file-type icons for non-images),
           meet accessibility requirements, and enforce security constraints.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -57,22 +58,22 @@ export default function FileUploadWidgetArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Files can range from a few kilobytes to several gigabytes. Files above
             50 MB should use chunked upload; smaller files upload in a single request.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The server provides a pre-signed URL for each chunk, enabling direct
             upload to cloud storage (e.g., AWS S3, GCS).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Multiple files can be uploaded simultaneously, with a configurable
             concurrency limit (default: 3 parallel uploads).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Upload state (chunk progress, uploadId) persists in IndexedDB so that
             uploads can resume after a page reload or browser crash.
-          </li>
+          </HighlightBlock>
           <li>
             The widget must work in both light and dark mode.
           </li>
@@ -114,15 +115,15 @@ export default function FileUploadWidgetArticle() {
             <strong>Progress Tracking:</strong> Per-file progress bar (overall
             percentage) and per-chunk progress indicators are displayed.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Parallel Uploads:</strong> N files upload concurrently (default:
             3). Additional files queue and start when a slot frees up.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry Logic:</strong> Failed chunk uploads retry with exponential
             backoff (e.g., 1s, 2s, 4s, 8s) up to a configurable max retry count
             (default: 3). After max retries, the file is marked as failed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cancel Upload:</strong> Users can cancel an in-flight upload.
             This aborts the active <code>AbortController</code>, removes the file
@@ -141,11 +142,11 @@ export default function FileUploadWidgetArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Chunking a 1 GB file must not block the
             main thread. Use <code>Blob.slice()</code> (lazy, no memory copy) and
             process chunks on demand. UI must remain responsive during upload.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory Efficiency:</strong> Do not load entire files into memory.
             Only the current chunk&apos;s Blob is held in memory during upload.
@@ -155,17 +156,17 @@ export default function FileUploadWidgetArticle() {
             Network failures trigger automatic retries. The widget recovers from
             browser crashes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> File selection works via keyboard (Enter/
             Space on drop zone). Progress bars use <code>role=&quot;progressbar&quot;</code>
             with <code>aria-valuenow</code>, <code>aria-valuemin</code>,
             <code>aria-valuemax</code>. Screen reader announces upload status changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Security:</strong> File type validation on the client (MIME type
             + extension). Size limits enforced before upload. CSRF token included in
             the init request. Pre-signed URLs are short-lived (5 minutes).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for upload state,
             chunk state, file metadata, and store actions.
@@ -213,7 +214,7 @@ export default function FileUploadWidgetArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>upload state management</strong>
           from the <strong>upload UI rendering</strong> using a global store (Zustand)
           and a component-based rendering strategy. The store manages the file queue,
@@ -221,32 +222,32 @@ export default function FileUploadWidgetArticle() {
           for adding files, starting uploads, cancelling, and resuming. The rendering
           layer subscribes to the store, renders the drag-drop zone, file list with
           progress bars, and file previews.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Single-request upload (no chunking):</strong> Simplest approach —
             POST the entire file in one request. Fails for large files (timeout,
             memory pressure on server, no resumability). Chunking is necessary for
             files above 50 MB in production systems.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Server-relayed upload:</strong> Client sends chunks to the
             application server, which relays them to S3. Adds server load and latency.
             Pre-signed URLs allow direct-to-S3 upload, offloading bandwidth from the
             application server.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Web Workers for chunking:</strong> Moving chunk management to a
             Web Worker avoids main-thread blocking. However, <code>Blob.slice()</code>
             is lazy and does not copy data, so chunking overhead is minimal. A Web
             Worker adds complexity (message passing, serialization) with marginal
             benefit. Only justified for files above 2 GB.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Why Zustand + IndexedDB + Pre-signed URLs is optimal:</strong>
           Zustand provides lightweight, selector-based global state with zero
           boilerplate. IndexedDB handles structured storage of upload state with
@@ -254,7 +255,7 @@ export default function FileUploadWidgetArticle() {
           enable direct-to-storage uploads, eliminating server bandwidth costs and
           reducing latency. This pattern is used by production services like Uppy,
             Transloadit, and AWS Amplify Storage.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -266,11 +267,11 @@ export default function FileUploadWidgetArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Upload Store (<code>upload-store.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Manages the global upload state using Zustand. Exposes actions for adding
             files, starting uploads, cancelling, retrying, and resuming from IndexedDB.
             Handles the upload queue, parallel concurrency, and progress aggregation.
-          </p>
+          </HighlightBlock>
           <p className="mt-3">
             <strong>State shape:</strong>
           </p>
@@ -316,7 +317,7 @@ export default function FileUploadWidgetArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Upload Types &amp; Interfaces (<code>upload-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>UploadStatus</code> union
             (<code>queued | uploading | paused | completed | failed | cancelled</code>),
             the <code>ChunkState</code> interface with fields for index, Blob, size,
@@ -325,7 +326,7 @@ export default function FileUploadWidgetArticle() {
             and progress. The <code>UploadConfig</code> interface allows callers to
             customize chunk size, concurrency, max retries, and allowed file types.
             See the Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -352,33 +353,33 @@ export default function FileUploadWidgetArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Upload Service (<code>upload-service.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Handles HTTP communication: initiating upload (POST to server for
             <code>uploadId</code> + pre-signed URLs), uploading individual chunks
             (PUT to pre-signed URL), and completing the upload (POST to server with
             chunk signatures for final assembly). Includes retry logic with exponential
             backoff and timeout handling.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Drag-Drop Zone (<code>drop-zone.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Renders the drop zone with drag event handlers (<code>onDragOver</code>,
             <code>onDragLeave</code>, <code>onDrop</code>). Visual feedback via CSS
             classes on dragover state. Clicking opens a file picker input. Keyboard
             accessible (Enter/Space triggers file picker).
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">7. File List Item (<code>file-list-item.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Renders a single file entry with preview (image thumbnail or file-type
             icon), file name, size, status badge, progress bar (per-file overall
             percentage), and action buttons (cancel, retry). Per-chunk progress is
             shown as a segmented bar beneath the main progress bar.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
@@ -447,12 +448,12 @@ export default function FileUploadWidgetArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions. This ensures predictable behavior and makes the system testable
           in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Upload Lifecycle</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -481,11 +482,11 @@ export default function FileUploadWidgetArticle() {
                 On success: mark chunk <code>completed</code>, persist to IndexedDB,
                 update progress.
               </li>
-              <li>
+              <HighlightBlock as="li" tier="important">
                 On failure: increment retryCount, wait
                 <code>2^retryCount * 1000</code> ms, retry. After max retries, mark
                 file <code>failed</code>.
-              </li>
+              </HighlightBlock>
             </ul>
           </li>
           <li>
@@ -516,26 +517,26 @@ export default function FileUploadWidgetArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Pre-signed URL expiry:</strong> Pre-signed URLs have a 5-minute
             TTL. If a chunk upload takes longer (unlikely with 5 MB chunks on typical
             broadband), the PUT returns 403. The store detects this, requests fresh
             URLs from the server, and retries the chunk.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Network disconnect:</strong> Fetch rejects with a
             <code>TypeError</code> (network error). The retry handler catches this,
             increments retryCount, and schedules a retry with backoff. If the network
             remains down beyond max retries, the file is marked <code>failed</code>
             and persists in IndexedDB for manual retry later.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cancel mid-upload:</strong> The <code>AbortController</code>
             associated with the in-flight chunk request is aborted. The fetch promise
             rejects with an <code>AbortError</code>, which the store handles by
             cleaning up (no retry). IndexedDB entry is deleted. The file is removed
             from the store.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>100 files dropped at once:</strong> All 100 are validated and
             added to the store. The first <code>concurrencyLimit</code> (default: 3)
@@ -548,10 +549,10 @@ export default function FileUploadWidgetArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">&#128230; Switch to the Example Tab</h3>
@@ -568,7 +569,7 @@ export default function FileUploadWidgetArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Upload Types (upload-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the <code>UploadStatus</code> union, <code>ChunkStatus</code> union,
           <code>ChunkState</code> interface with index, size, status, progress,
           retryCount, and pre-signed URL. The <code>UploadFile</code> interface
@@ -577,17 +578,17 @@ export default function FileUploadWidgetArticle() {
           <code>UploadConfig</code> allows customization of chunk size (default: 5 MB),
           concurrency limit (default: 3), max retries (default: 3), allowed MIME types,
           and max file size (default: 5 GB).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (upload-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The store is the single source of truth. Key design decisions include: using
           <code>crypto.randomUUID()</code> for stable file IDs, storing files in a
           <code>Map</code> for O(1) lookup, tracking <code>activeCount</code> for
           concurrency control, and computing per-file progress from chunk states
           (no redundant stored field). The store coordinates the entire upload lifecycle:
           validation, initiation, chunk progression, retry handling, and cleanup.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Chunk Manager (chunk-manager.ts)</h3>
         <p>
@@ -623,7 +624,7 @@ export default function FileUploadWidgetArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Drag-Drop Zone (drop-zone.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders the drop zone with drag event handlers. Uses <code>useRef</code> for
           the hidden file input, <code>useState</code> for dragover state. The
           <code>onDragOver</code> handler calls <code>e.preventDefault()</code> and
@@ -632,10 +633,10 @@ export default function FileUploadWidgetArticle() {
           directories, and passes File objects to the store. Clicking the zone triggers
           the hidden file input. Keyboard support: the zone has <code>{`tabIndex={0}`}</code>
           and handles Enter/Space to open the file picker.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: File List Item (file-list-item.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Renders a single file entry with thumbnail preview (using
           <code>URL.createObjectURL()</code> for images, with cleanup on unmount),
           file-type icon for non-images, file name, formatted size, status badge
@@ -644,7 +645,7 @@ export default function FileUploadWidgetArticle() {
           per chunk), and action buttons (cancel for in-flight, retry for failed).
           Uses <code>role=&quot;progressbar&quot;</code> with ARIA attributes for
           accessibility.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -695,35 +696,35 @@ export default function FileUploadWidgetArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is number of files and <code>c</code> is chunks per file.
           For a 1 GB file with 5 MB chunks, <code>c = 200</code>. Blob.slice is O(1)
           because it creates a view, not a copy. The actual upload time depends on
           network bandwidth, not computational complexity.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Main-thread blocking during chunking:</strong> While
             <code>Blob.slice()</code> is lazy, reading the chunk data (e.g., for
             computing a hash) does require I/O. For 5 MB chunks on modern hardware,
             this takes &lt;10 ms and is not perceptible. For files above 2 GB, offload
             hashing to a Web Worker.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Re-render cascades:</strong> If every chunk progress update triggers
             a store update, React re-renders the FileListItem. For 200 chunks, this is
             200 re-renders. Mitigation: throttle progress updates to every 100 ms using
             <code>requestAnimationFrame</code> or a debounce mechanism. Only the affected
             FileListItem re-renders (Zustand selector).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>IndexedDB write latency:</strong> Writing to IndexedDB after every
             chunk adds I/O overhead. Mitigation: batch writes — accumulate completed
             chunk indices in memory and flush to IndexedDB every 5 chunks or on page
             unload (<code>beforeunload</code> event).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pre-signed URL generation:</strong> If the server generates all
             pre-signed URLs upfront (200 for a 1 GB file), the init response is large
@@ -734,11 +735,11 @@ export default function FileUploadWidgetArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Throttled progress updates:</strong> Update the store&apos;s
             progress state at most every 100 ms. This limits re-renders to 10 per
             second per file, regardless of chunk count.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy chunk loading:</strong> Do not read chunk data from disk until
             the chunk is about to be uploaded. <code>Blob.slice()</code> creates a
@@ -765,23 +766,23 @@ export default function FileUploadWidgetArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">File Type Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client-side validation checks both the MIME type (from
           <code>File.type</code>) and the file extension. However, MIME types can be
           spoofed (a malicious actor can rename a .exe to .pdf). The server must
           perform its own validation (magic number inspection, content scanning). The
           client-side check is a UX convenience, not a security boundary.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">CSRF Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The init request (<code>POST /api/upload/init</code>) and the completion
           request (<code>POST /api/upload/complete</code>) are state-changing operations
           that must include a CSRF token. The token is sent as a custom header
           (<code>X-CSRF-Token</code>) and validated by the server. Pre-signed URL PUT
           requests go directly to S3 and do not require CSRF protection (the pre-signed
           URL itself is the authorization mechanism).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Pre-signed URL Security</h3>
         <p>
@@ -807,10 +808,10 @@ export default function FileUploadWidgetArticle() {
               The drop zone has <code>tabIndex=&quot;0&quot;</code> and responds to
               Enter and Space keys by triggering the hidden file input.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Each file in the list has action buttons (cancel, retry) that are native
               <code>&lt;button&gt;</code> elements, automatically keyboard-accessible.
-            </li>
+            </HighlightBlock>
             <li>
               Users can tab through the file list and interact with all controls without
               a mouse.
@@ -821,16 +822,16 @@ export default function FileUploadWidgetArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Progress bars use <code>role=&quot;progressbar&quot;</code> with
               <code>aria-valuenow</code>, <code>aria-valuemin</code>,
               <code>aria-valuemax</code>, and <code>aria-label</code> describing the
               file and progress (e.g., &quot;video.mp4 upload progress: 45%&quot;).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               Status changes (upload started, chunk completed, upload finished/failed)
               are announced via an <code>aria-live=&quot;polite&quot;</code> region.
-            </li>
+            </HighlightBlock>
             <li>
               The drop zone has <code>role=&quot;button&quot;</code> with
               <code>aria-label=&quot;Drop files here or click to browse&quot;</code>.
@@ -864,29 +865,29 @@ export default function FileUploadWidgetArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Chunk manager:</strong> Test that a 12 MB file with 5 MB chunk
             size produces 3 chunks (5 MB, 5 MB, 2 MB). Verify byte boundaries are
             correct. Test edge case: file size exactly equals chunk size (1 chunk).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Upload store:</strong> Test addFiles validates file type and size,
             creates correct chunk metadata, starts upload if slot available, or queues
             otherwise. Test cancelUpload aborts the controller, removes from Map,
             deletes IndexedDB entry. Test queue management: when a file completes, the
             next queued file starts.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Upload service:</strong> Mock fetch. Test initUpload sends correct
             payload and parses response. Test uploadChunk PUTs to pre-signed URL with
             correct headers. Test retry logic: mock a failed fetch, verify exponential
             backoff delays (1s, 2s, 4s), verify max retry limit is respected.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>IndexedDB helper:</strong> Test saveSession writes correct record.
             Test loadSessions retrieves all incomplete uploads. Test deleteSession
             removes the record. Use an in-memory IndexedDB mock or idb library test utils.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
@@ -931,11 +932,11 @@ export default function FileUploadWidgetArticle() {
             Network disconnect during upload: mock fetch to reject with network error,
             assert retry logic activates, file eventually marked failed after max retries.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered components, verify
             aria-live regions, progressbar roles, keyboard navigation through drop zone
             and file list.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -958,11 +959,11 @@ export default function FileUploadWidgetArticle() {
             for candidates who know <code>Blob.slice()</code> is lazy and processes
             chunks on demand.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No retry logic:</strong> Assuming uploads always succeed is a red
             flag. Production systems must handle transient network failures. Candidates
             should discuss exponential backoff, jitter, and max retry limits.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Forgetting to persist upload state:</strong> Without IndexedDB (or
             similar), a page reload loses all upload progress. Interviewers expect
@@ -973,17 +974,17 @@ export default function FileUploadWidgetArticle() {
             TTL. If the upload takes longer than the TTL, the PUT fails with 403.
             Candidates should discuss URL refresh strategies.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility:</strong> File upload widgets are notorious
             for accessibility gaps. Candidates should discuss keyboard file selection,
             ARIA progressbars, and screen reader announcements.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Chunk Size: 5 MB vs 10 MB vs 1 MB</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Smaller chunks (1 MB) mean more granular progress tracking and faster retry
             of individual chunks, but more HTTP requests (overhead from TCP handshakes,
             headers). Larger chunks (10 MB) reduce request count but make retries more
@@ -991,12 +992,12 @@ export default function FileUploadWidgetArticle() {
             with S3&apos;s recommended minimum part size for multipart uploads, balances
             request overhead with retry cost, and fits comfortably within typical timeout
             thresholds. Adjust based on expected network conditions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Pre-signed URLs vs Server-Relayed Upload</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Pre-signed URLs allow the client to upload directly to S3, bypassing the
             application server. This reduces server bandwidth costs, eliminates a hop
             (lower latency), and scales infinitely (S3 handles the load). The trade-off
@@ -1004,7 +1005,7 @@ export default function FileUploadWidgetArticle() {
             init and complete are called). Server-relayed uploads give the server full
             control (virus scanning, content transformation) but add cost and complexity.
             For most applications, pre-signed URLs are the right choice.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1076,7 +1077,7 @@ export default function FileUploadWidgetArticle() {
             <p className="font-semibold">
               Q: How would you add upload speed estimation and ETA calculation?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Track bytes uploaded and timestamps for each chunk. After each chunk
               completes, compute <code>bytesUploaded / elapsedSeconds</code> for an
               instantaneous speed. Smooth this with an exponential moving average (EMA)
@@ -1085,7 +1086,7 @@ export default function FileUploadWidgetArticle() {
               string (e.g., &quot;~2 min remaining&quot;). Handle edge cases: if speed
               is zero (network down), show &quot;Paused — retrying&quot;. If speed
               fluctuates wildly, increase the EMA window for smoother estimates.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

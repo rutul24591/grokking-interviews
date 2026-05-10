@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Explainable impact analysis path from changed files to packages to downstream dependents and required checks">
+  <title>Explainable Change Impact Analysis</title>
+  <desc>Shows a chain: changed files map to owning packages, graph traversal finds dependents, and required checks are selected with explanation.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .good{fill:#052018;stroke:#34d399}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <text class="label bold" x="60" y="70">Trust requires an explanation chain</text>
+
+  <rect class="accent" x="60" y="110" width="300" height="120"/>
+  <text class="label bold" x="90" y="150">Changed files</text>
+  <text class="label small" x="90" y="178">paths and diffs</text>
+  <text class="label small" x="90" y="202">mapped to owners</text>
+
+  <rect class="muted" x="390" y="110" width="300" height="120"/>
+  <text class="label bold" x="420" y="150">Owning packages</text>
+  <text class="label small" x="420" y="178">module boundaries</text>
+  <text class="label small" x="420" y="202">policy context</text>
+
+  <rect class="muted" x="720" y="110" width="300" height="120"/>
+  <text class="label bold" x="750" y="150">Graph traversal</text>
+  <text class="label small" x="750" y="178">dependents</text>
+  <text class="label small" x="750" y="202">blast radius</text>
+
+  <rect class="good" x="870" y="260" width="270" height="120"/>
+  <text class="label bold" x="900" y="300">Required checks</text>
+  <text class="label small" x="900" y="328">targeted tests</text>
+  <text class="label small" x="900" y="352">release gates</text>
+
+  <rect class="box" x="60" y="430" width="1080" height="170"/>
+  <text class="label bold" x="90" y="470">UI behavior</text>
+  <text class="label small" x="90" y="500">Show confidence and freshness for the snapshot used</text>
+  <text class="label small" x="90" y="525">Allow drill-down at each step: which file mapped to which package and edge</text>
+  <text class="label small" x="90" y="550">Support conservative mode for safety and narrow mode for speed</text>
+
+  <path class="arrow" d="M360 170 L390 170"/>
+  <path class="arrow" d="M690 170 L720 170"/>
+  <path class="arrow" d="M870 230 L870 260"/>
+  <path class="arrow" d="M870 170 L870 260"/>
+</svg>
+

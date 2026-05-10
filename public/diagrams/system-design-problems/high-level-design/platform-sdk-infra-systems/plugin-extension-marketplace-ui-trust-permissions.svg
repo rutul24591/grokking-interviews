@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Trust and permission model for plugin marketplace showing risk tiers, enforcement layers, and enterprise controls">
+  <title>Trust and Permissions Model</title>
+  <desc>Shows how the UI communicates permissions and risk tiers while enforcement occurs at runtime sandbox and server policy gates.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .dash{stroke-dasharray:7 6}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .warn{fill:#2a1606;stroke:#fb923c}
+      .good{fill:#052018;stroke:#34d399}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <rect class="box" x="60" y="90" width="520" height="200"/>
+  <text class="label bold" x="90" y="130">Permissions (what users understand)</text>
+  <text class="label small" x="90" y="160">Read customer data: limited scopes</text>
+  <text class="label small" x="90" y="185">Network access: restricted domains</text>
+  <text class="label small" x="90" y="210">UI injection: isolated surfaces</text>
+  <text class="label small" x="90" y="235">Background tasks: rate limited</text>
+  <text class="label small" x="90" y="260">Risk tier: low, medium, high</text>
+
+  <rect class="warn" x="620" y="90" width="520" height="200"/>
+  <text class="label bold" x="650" y="130">Enterprise controls (what admins enforce)</text>
+  <text class="label small" x="650" y="160">Allowlist publishers and plugins</text>
+  <text class="label small" x="650" y="185">Block high-risk permissions without approval</text>
+  <text class="label small" x="650" y="210">Pin versions, staged rollout, kill switch</text>
+  <text class="label small" x="650" y="235">Audit installs, updates, access</text>
+
+  <rect class="good" x="60" y="330" width="520" height="150"/>
+  <text class="label bold" x="90" y="370">Enforcement layer (runtime)</text>
+  <text class="label small" x="90" y="400">sandbox isolation</text>
+  <text class="label small" x="90" y="425">scoped tokens per permission</text>
+  <text class="label small" x="90" y="450">rate limits and egress controls</text>
+
+  <rect class="accent" x="620" y="330" width="520" height="150"/>
+  <text class="label bold" x="650" y="370">Feedback loop (observability)</text>
+  <text class="label small" x="650" y="400">crash rate and error spikes</text>
+  <text class="label small" x="650" y="425">uninstall and disable signals</text>
+  <text class="label small" x="650" y="450">anomaly detection per plugin</text>
+
+  <rect class="box" x="60" y="520" width="1080" height="90"/>
+  <text class="label bold" x="90" y="560">Key principle</text>
+  <text class="label small" x="90" y="585">The UI communicates risk, but enforcement must be technical and auditable.</text>
+
+  <path class="arrow dash" d="M320 290 L320 330"/>
+  <path class="arrow dash" d="M900 290 L900 330"/>
+  <path class="arrow" d="M580 405 L620 405"/>
+</svg>
+

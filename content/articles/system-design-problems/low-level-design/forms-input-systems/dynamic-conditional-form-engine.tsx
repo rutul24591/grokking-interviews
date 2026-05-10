@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +31,7 @@ export default function DynamicConditionalFormEngineArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing the engine that brings a static form to
           life. Real-world forms are not flat lists of fields; they
           show new questions in response to earlier answers,
@@ -46,8 +47,8 @@ export default function DynamicConditionalFormEngineArticle() {
           the form runtime applies to its rendered fields. This is
           the difference between a form that feels like a
           questionnaire and a form that feels like a tool.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems run deep. Keeping evaluation cost
           proportional to changed inputs rather than the total rule
           count, so a form with 500 conditional rules still updates
@@ -67,10 +68,10 @@ export default function DynamicConditionalFormEngineArticle() {
           poorly, conditional logic becomes the most fragile part
           of every form, the place where bugs hide and product
           managers learn to dread schema changes.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Schema authors — usually PMs, ops staff, or designers —
           write conditional rules in JSON or via a visual builder.
           They want predicates that are expressive enough to
@@ -89,10 +90,10 @@ export default function DynamicConditionalFormEngineArticle() {
           <code> setValue</code> /
           <code> setFieldState</code> escape hatches rather than
           working around the engine.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Predicates are expressed in a small expression DSL —
           something like jexl, jsonata, or a similar safe
           sublanguage — with comparison, boolean logic, membership,
@@ -107,10 +108,10 @@ export default function DynamicConditionalFormEngineArticle() {
           exist (e.g. an eligibility check) but are the minority;
           the synchronous case is the hot path that determines
           per-keystroke responsiveness.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validation rules are a different engine; the conditional
           engine produces visibility/required/disabled flags that
           the validation engine consumes (a hidden field is
@@ -122,14 +123,14 @@ export default function DynamicConditionalFormEngineArticle() {
           context bag if a product chooses to express it that way.
           We do not implement an authoring UI here — that&rsquo;s
           a separate tool that produces our schema as output.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The DSL supports comparison operators (=, !=, &lt;,
           &lt;=, &gt;, &gt;=), logical operators (and, or, not),
           membership (<code>in</code>), simple arithmetic (+, -,
@@ -149,10 +150,10 @@ export default function DynamicConditionalFormEngineArticle() {
           Hidden fields are excluded from validation and from
           the submitted payload (so payloads do not leak stale
           answers from hidden branches).
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Async predicates (e.g. <code>asyncEligible(userId)</code>)
           for cases where eligibility depends on a server check
           that can&rsquo;t be expressed declaratively. Rule
@@ -166,10 +167,10 @@ export default function DynamicConditionalFormEngineArticle() {
           last-evaluation results, accelerating schema author
           productivity dramatically when complex schemas
           misbehave.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Permission-based gating, validation logic, field
           rendering, and authoring UI are not concerns of this
           engine. We also do not support arbitrary JavaScript
@@ -178,14 +179,14 @@ export default function DynamicConditionalFormEngineArticle() {
           application code are available via an explicit escape
           hatch that&rsquo;s only callable from compiled code,
           never from runtime data.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-keystroke cost must be O(affected rules), not
           O(total rules). For a form with 500 conditional rules,
           evaluating rules on a single field change should take
@@ -196,10 +197,10 @@ export default function DynamicConditionalFormEngineArticle() {
           precomputed forward index. Cascading evaluation
           terminates in one topological pass, not a fixpoint
           loop, which keeps worst-case behavior bounded.
-        </p>
+        </HighlightBlock>
 
         <h3>Scalability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           500 rules across 200 fields evaluated under 5 ms
           typical per change. The architecture stays linear in
           the number of actually-affected rules. Rules are
@@ -207,10 +208,10 @@ export default function DynamicConditionalFormEngineArticle() {
           re-renders are free as long as schema reference
           identity is stable, which we document and enforce
           via lint rule.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The engine is deterministic: same inputs produce the
           same effects. Idempotent: running evaluation twice
           yields identical results. No global side effects —
@@ -219,10 +220,10 @@ export default function DynamicConditionalFormEngineArticle() {
           essential because conditional logic is exactly the
           area where flaky behavior would be most costly to
           users and most expensive to debug.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The DSL parser whitelists tokens; identifiers can only
           reference field names from the schema or built-ins; no
           host environment access (no <code>window</code>,
@@ -234,10 +235,10 @@ export default function DynamicConditionalFormEngineArticle() {
           from a CMS without becoming a remote-code-execution
           vector — the most common class of security incident
           in form platforms.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Hidden fields are unmounted or marked with the
           <code> hidden</code> attribute (which removes them
           from tab order and the accessibility tree); CSS-only
@@ -248,7 +249,7 @@ export default function DynamicConditionalFormEngineArticle() {
           tooltips. Required state changes announce only at
           meaningful moments (e.g. on submit attempt) to avoid
           spamming the accessibility tree as the user types.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
         <p>
@@ -281,7 +282,7 @@ export default function DynamicConditionalFormEngineArticle() {
           backbone. Each stage has a narrow contract that makes
           the system reasonable to test, debug, and extend.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>parse</strong>, each rule&rsquo;s
           <code> when</code> string is parsed into an AST by
           the DSL parser. The parser whitelists tokens; any
@@ -294,8 +295,8 @@ export default function DynamicConditionalFormEngineArticle() {
           per schema and is cheap; we don&rsquo;t optimize it
           aggressively because it&rsquo;s amortized across the
           form&rsquo;s lifetime.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>extract</strong>, an AST visitor walks each
           predicate and collects the set of field references it
           contains. This produces, for each rule, a list of
@@ -311,8 +312,8 @@ export default function DynamicConditionalFormEngineArticle() {
           because it would create asymmetric performance
           characteristics that schema authors couldn&rsquo;t
           predict.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           On <strong>compile</strong>, the engine assembles the
           DAG. Nodes are rules; edges go from a rule&rsquo;s
           target field to any rule that depends on that field
@@ -330,8 +331,8 @@ export default function DynamicConditionalFormEngineArticle() {
           take days to debug. Compilation is memoized by schema
           reference, so repeated mounts pay nothing — the cache
           lookup is a referential equality check.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>evaluate</strong>, the engine receives a
           set of changed field names. It looks up affected rules
           from the forward index in O(changed fields). It
@@ -348,7 +349,7 @@ export default function DynamicConditionalFormEngineArticle() {
           form store as a single batch via the dispatcher, so
           subscribers see one coherent commit per change rather
           than a flicker through intermediate states.
-        </p>
+        </HighlightBlock>
         <p>
           Computed values get special handling because they
           create a tension between &ldquo;the rule says the
@@ -370,7 +371,7 @@ export default function DynamicConditionalFormEngineArticle() {
           calculated/locked badge so users understand why the
           field doesn&rsquo;t accept their input.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cascade evaluation is idempotent because effects are
           functions of values. If the same change is dispatched
           twice, the engine produces the same effects. We
@@ -383,7 +384,7 @@ export default function DynamicConditionalFormEngineArticle() {
           one of those cases where the cheap defensive operation
           is worth running even when you think you don&rsquo;t
           need it.
-        </p>
+        </HighlightBlock>
         <p>
           Async predicates fit into the same model with one
           twist: while an async predicate is in flight, the
@@ -426,7 +427,7 @@ export default function DynamicConditionalFormEngineArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Parser</strong> takes a DSL string and produces
           an AST or a parse error. The grammar is small, fixed,
           and documented; the parser is hand-written or
@@ -437,8 +438,8 @@ export default function DynamicConditionalFormEngineArticle() {
           on a library because the grammar is small enough to
           maintain and we want exact control over what tokens
           are allowed (security matters here).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>DependencyExtractor</strong> walks an AST and
           returns the set of field names referenced. It also
           handles literal references inside built-in calls
@@ -448,8 +449,8 @@ export default function DynamicConditionalFormEngineArticle() {
           a single dependency. The extractor is a simple visitor
           pattern; new built-ins register their dependency
           extraction via a small contract.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>RuleCompiler</strong> orchestrates parse →
           extract → DAG construction → topological sort → forward
           index build. It also runs validation passes: every
@@ -457,7 +458,7 @@ export default function DynamicConditionalFormEngineArticle() {
           effect must apply to a real field, every rule has a
           unique ID. Failures are detailed and actionable, not
           generic exceptions.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Evaluator</strong> is the runtime: given a set
           of changed field names, produce a list of effects. It
@@ -467,7 +468,7 @@ export default function DynamicConditionalFormEngineArticle() {
           The evaluator is the most-tested component because
           it&rsquo;s the heart of the engine.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>EffectApplier</strong> takes the
           evaluator&rsquo;s output and applies it to the form
           store via the dispatcher. This is where the pure /
@@ -476,7 +477,7 @@ export default function DynamicConditionalFormEngineArticle() {
           effects from one cascade into a single store update,
           which is what makes subscribers see a coherent commit
           rather than intermediate flickering.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>CycleDetector</strong> runs as part of
           compilation; it&rsquo;s a Tarjan-style SCC detection
@@ -495,7 +496,7 @@ export default function DynamicConditionalFormEngineArticle() {
           computed-value rule, that&rsquo;s not a user edit and
           shouldn&rsquo;t set the override flag.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architectural patterns are <strong>reactive
           graph</strong> (push-based propagation, like a
           spreadsheet), <strong>AST visitor</strong>
@@ -505,12 +506,12 @@ export default function DynamicConditionalFormEngineArticle() {
           <strong> memoized compilation</strong> (schema → plan
           happens once, plan reused across runs). Each pattern
           earns its place; none is decorative.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The engine reads from the form store (values + per-field
           metadata) and writes effects through the dispatcher. It
           does not own the form&rsquo;s value state; that&rsquo;s
@@ -522,35 +523,32 @@ export default function DynamicConditionalFormEngineArticle() {
           is what fields actually render against. This cache is
           maintained as deltas; subscribers receive only the
           fields whose flags changed.
-        </p>
-        <p>
-          User-entered values and computed values are kept
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">User-entered values and computed values are kept
           distinct. The form store records the canonical value;
           the UserOverrideTracker records whether the user has
           edited it. This separation lets the engine decide
           when to apply a computed-value rule and when to
           suppress it, and it lets the UI surface a &ldquo;reset
-          to calculated&rdquo; control when overrides exist.
-          Without this separation, computed-value rules would
+          to calculated&rdquo; control when overrides exist.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Without this separation, computed-value rules would
           either always overwrite (frustrating to users who
           want to override) or never overwrite (defeating the
-          point of computed values).
-        </p>
+          point of computed values).</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs to the engine: <code>rules</code> (list of rule
+        <HighlightBlock as="p" tier="important">Inputs to the engine: <code>rules</code> (list of rule
           descriptors), <code>values</code> (current form
           values), <code>context</code> (locale, role flags,
-          custom built-in state). Output: a list of effects keyed
+          custom built-in state).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Output: a list of effects keyed
           by target field. Subscribers to the engine listen via
           <code> onEffect(fieldName, effects)</code> and apply
           them to their UI; alternatively they read derived
-          state via selectors.
-        </p>
-        <p>
+          state via selectors.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Rule shape:
           <code>{` { id, when, target, effect: { visible? | required? | disabled? | value? | options? }, options?: { preserveOnHide?, locked?, overridable? } } `}</code>.
           Rule IDs are stable identifiers used in error messages
@@ -559,12 +557,12 @@ export default function DynamicConditionalFormEngineArticle() {
           engine emits <em>deltas</em> rather than full state,
           so consumers can apply patches efficiently and
           re-render only changed fields.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance Strategy</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Compilation is paid once per schema reference. The
           forward index lets us go from a changed field to the
           affected rules in O(1) average time. Topological order
@@ -575,38 +573,36 @@ export default function DynamicConditionalFormEngineArticle() {
           application is batched — all effects from one cascade
           flush in a single store dispatch — which keeps React
           renders to one per change.
-        </p>
-        <p>
-          For very large forms with hundreds of cascading rules,
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">For very large forms with hundreds of cascading rules,
           we run cascade evaluation in a
           <code> queueMicrotask</code> off the synchronous
           keystroke path. Sync rule evaluation is still cheap
           enough to run on the keystroke for most cases; async
-          predicate scheduling is debounced separately. The
+          predicate scheduling is debounced separately.</HighlightBlock>
+<HighlightBlock as="p" tier="important">The
           scheduling decisions are tunable per form via
           configuration, because some forms benefit from
           aggressive sync evaluation (immediate visual feedback)
           and others from microtask batching (smoother
-          interaction during rapid typing).
-        </p>
+          interaction during rapid typing).</HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX &amp; Interaction Design</h2>
-        <p>
-          Conditional fields appearing and disappearing must
+        <HighlightBlock as="p" tier="important">Conditional fields appearing and disappearing must
           feel smooth. We animate the height transition with a
           short fade so insertions don&rsquo;t cause jarring
           layout shifts; the animation is bypassed under
-          <code> prefers-reduced-motion</code>. Computed-value
+          <code> prefers-reduced-motion</code>.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Computed-value
           fields render a subtle &ldquo;calculated&rdquo; badge
           so users understand why the value changes when they
           edit a parent field. Locked computed fields prevent
           editing and surface an explanatory tooltip on click;
           this is friendlier than a non-responsive disabled
-          control that just refuses input without explanation.
-        </p>
-        <p>
+          control that just refuses input without explanation.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           When a user edits a field that has a computed rule, the
           UI shows a small &ldquo;Reset to calculated&rdquo;
           control next to the field. This is a small detail but
@@ -614,26 +610,25 @@ export default function DynamicConditionalFormEngineArticle() {
           recover the computed value after manual edit and has
           to either remember the formula or refresh the page to
           get back to the original derivation.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Hidden-by-rule fields are unmounted or use the HTML
+        <HighlightBlock as="p" tier="important">Hidden-by-rule fields are unmounted or use the HTML
           <code> hidden</code> attribute, which removes them
           from tab order and the accessibility tree. CSS-only
           <code> display:none</code> via class toggle works too,
           but only if applied to the actual element; nested
-          focusable descendants must inherit. We avoid
+          focusable descendants must inherit.</HighlightBlock>
+<HighlightBlock as="p" tier="important">We avoid
           <code> visibility:hidden</code> because some screen
           readers still announce its content. Disabled fields
           carry <code>aria-disabled=&quot;true&quot;</code> and
           remain focusable so users can land on them and
           discover the disabled state with an accompanying
-          tooltip explaining why.
-        </p>
-        <p>
+          tooltip explaining why.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           When a rule causes a field to appear, we do not
           automatically focus it — that would steal focus from
           the user&rsquo;s current task. Instead we announce
@@ -644,12 +639,12 @@ export default function DynamicConditionalFormEngineArticle() {
           only on submit attempt, not as the rule recomputes,
           to avoid spamming the accessibility tree as the user
           types.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The DSL is intentionally constrained. The parser
           whitelists tokens and operators; identifiers must
           resolve to schema field names or known built-ins;
@@ -661,48 +656,32 @@ export default function DynamicConditionalFormEngineArticle() {
           predicates. Async predicates can call only allowlisted
           endpoints declared in configuration; the engine
           refuses URLs from runtime schema.
-        </p>
-        <p>
-          This security posture is what allows schemas to be
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">This security posture is what allows schemas to be
           served from a CMS without becoming a remote-code-
           execution vector. JavaScript-as-a-DSL via
           <code> Function</code> or <code>eval</code> is what
           turns nice forms into security incidents; the small
-          DSL is the safer architecture by a wide margin. If a
+          DSL is the safer architecture by a wide margin.</HighlightBlock>
+<HighlightBlock as="p" tier="important">If a
           product genuinely needs JavaScript-level expressiveness
           for a particular rule, we provide an explicit
           unsafe-rule escape hatch that&rsquo;s only callable
           from compiled application code, never from runtime
           data. This gives us the safety of the DSL by default
-          while leaving room for the rare case that needs more.
-        </p>
+          while leaving room for the rare case that needs more.</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Unit tests cover parser correctness across operators
-          and grammar productions, dependency extraction for
-          representative ASTs, and cycle detection on contrived
-          rule sets. Property tests verify idempotency: running
-          the evaluator twice with the same inputs yields the
-          same outputs (a property that should be invariant by
-          construction but is worth checking). Integration tests
-          mount realistic schemas and exercise: change in field
-          A correctly propagates to dependents B, C; preserve-
-          on-hide rules retain values; user override suppresses
-          computed rules; locked rules win over user input;
-          cycles fail at compile time with the right error
-          message. Accessibility tests verify that hidden fields
-          are properly removed from tab order and that disabled
-          fields carry correct ARIA attributes — these are easy
-          to regress and worth catching automatically.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Integration tests mount realistic schemas and exercise: change in field A correctly propagates to dependents B, C; preserve- on-hide rules retain values; user</HighlightBlock>
+<HighlightBlock as="p" tier="important">override suppresses computed rules; locked rules win over user input; cycles fail at compile time with the right error message. Accessibility tests verify that</HighlightBlock>
+<HighlightBlock as="p" tier="important">hidden fields are properly removed from tab order and that disabled fields carry correct ARIA attributes — these are easy to regress and worth catching automatically.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A predicate references a field that doesn&rsquo;t exist
           in the schema: caught at compile time as a hard error.
           A predicate evaluates a field that is itself hidden:
@@ -715,9 +694,8 @@ export default function DynamicConditionalFormEngineArticle() {
           surfaces <code>pending</code> indefinitely until
           aborted; consumers can configure a timeout that
           surfaces an inconclusive state instead.
-        </p>
-        <p>
-          Rapid value flapping (a user dragging a slider): the
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">Rapid value flapping (a user dragging a slider): the
           engine batches cascade evaluation on
           <code> queueMicrotask</code> so multiple changes
           within one tick produce one cascade, not one per
@@ -726,7 +704,8 @@ export default function DynamicConditionalFormEngineArticle() {
           later in topological order wins, with a warning
           logged so authors can fix the schema; we deliberately
           avoid merging because &ldquo;merge&rdquo; for booleans
-          is ambiguous. A field that becomes visible again
+          is ambiguous.</HighlightBlock>
+<HighlightBlock as="p" tier="important">A field that becomes visible again
           after being hidden: if preserveOnHide is on, the
           prior value is restored; otherwise the field starts
           at its default value, not at whatever the user typed
@@ -735,52 +714,28 @@ export default function DynamicConditionalFormEngineArticle() {
           relevant rule ID. A schema migrates between versions
           and old rules use a removed effect type: the migrator
           either upgrades the rule or surfaces a clear error
-          rather than silently dropping it.
-        </p>
+          rather than silently dropping it.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          The DSL parser is swappable; the engine accepts any
-          parser conforming to the AST contract, so consumers
-          who already have a jexl or jsonata parser can plug it
-          in. The effect registry is extensible; adding a new
-          effect type (e.g. a <code>highlight</code> effect for
-          advisory styling, or a <code>tooltip</code> effect
-          for context-sensitive help) is a one-file addition.
-          The engine is host-agnostic — it works the same in
-          React, server-side, or in a worker thread. Theming
-          and visual presentation of effects (the calculated
-          badge, the disabled tooltip) live in the form
-          runtime, not in the conditional engine, because
-          they&rsquo;re rendering concerns, not logic concerns.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The engine is host-agnostic — it works the same in React, server-side, or in a worker thread.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Theming and visual presentation of effects (the calculated badge, the disabled tooltip) live in the form</HighlightBlock>
+<HighlightBlock as="p" tier="important">runtime, not in the conditional engine, because they&rsquo;re rendering concerns, not logic concerns.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Computed string values can resolve through the
-          host&rsquo;s i18n function if marked translatable.
-          Numeric and date predicates are locale-agnostic at
-          the engine level — the DSL operates on canonical
-          values; formatting happens at the rendering layer.
-          Built-ins like <code>today()</code> honor the
-          form&rsquo;s configured time zone (passed via
-          context) so a user in a different time zone sees the
-          right behavior on date-bounded rules. The rule debugger
-          (when present) localizes its UI labels but shows
-          predicate text verbatim because that&rsquo;s the
-          authored content.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Built-ins like today() honor the form&rsquo;s configured time zone (passed via context) so a user in</HighlightBlock>
+<HighlightBlock as="p" tier="important">a different time zone sees the right behavior on date-bounded rules. The rule debugger (when present)</HighlightBlock>
+<HighlightBlock as="p" tier="important">localizes its UI labels but shows predicate text verbatim because that&rsquo;s the authored content.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
 
         <h3>DSL vs JavaScript predicates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The DSL is more constrained — no function definition,
           no host access, no arbitrary recursion. The cost is
           some loss of expressiveness; the win is safety,
@@ -793,10 +748,10 @@ export default function DynamicConditionalFormEngineArticle() {
           compiled application code, never from runtime data.
           This boundary lets the platform be safe by default
           while still expressive when needed.
-        </p>
+        </HighlightBlock>
 
         <h3>Push (reactive) vs pull (compute on demand)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Push propagates changes through the DAG and updates
           derived state immediately; subscribers re-render
           correctly without explicit invalidation. Pull computes
@@ -808,10 +763,10 @@ export default function DynamicConditionalFormEngineArticle() {
           Pull would have required every consumer to plumb
           invalidation manually, which is exactly the kind of
           code that develops bugs over time.
-        </p>
+        </HighlightBlock>
 
         <h3>Clear vs preserve hidden values</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clear by default keeps submitted payloads clean — no
           stale answers from dead branches reaching the
           backend. Preserve is opt-in per rule for cases where
@@ -822,10 +777,10 @@ export default function DynamicConditionalFormEngineArticle() {
           fields); the opt-in handles the rarer
           double-checking flow without complicating the
           default.
-        </p>
+        </HighlightBlock>
 
         <h3>Compile cache by reference</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We cache compilation by schema reference identity.
           This gives huge perf wins for stable schemas but
           requires callers to hoist or memoize. We document
@@ -835,7 +790,7 @@ export default function DynamicConditionalFormEngineArticle() {
           bug. The alternative — deep-equality caching — adds
           nontrivial overhead on every call and isn&rsquo;t
           worth the forgiving behavior.
-        </p>
+        </HighlightBlock>
 
         <h3>Topological order vs fixpoint loop</h3>
         <p>
@@ -863,7 +818,7 @@ export default function DynamicConditionalFormEngineArticle() {
         </p>
 
         <h3>Cycle detection at compile vs runtime</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Compile-time cycle detection means the schema fails
           to load when cycles exist. The alternative — runtime
           detection — would catch the same cycles but only
@@ -874,33 +829,28 @@ export default function DynamicConditionalFormEngineArticle() {
           inevitably miss subtle cycles that only emerge under
           specific value combinations. Compile-time is the
           right defense.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          A visual rule debugger that shows the DAG with
-          last-evaluation results highlighted, and lets authors
-          step through a cascade to see why a particular field
-          ended up hidden, would be enormously valuable for
-          complex forms. Cross-form rules (a wizard step
-          affecting another form mounted later) are a natural
-          extension once a form-event bus exists. Rule A/B
+        <HighlightBlock as="p" tier="important">A visual rule debugger that shows the DAG with last-evaluation results highlighted, and lets authors step through</HighlightBlock>
+<HighlightBlock as="p" tier="important">a cascade to see why a particular field ended up hidden, would be enormously valuable for complex forms.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Cross-form rules (a wizard step affecting another form mounted later) are a natural extension once a form-event bus exists.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Rule A/B
           testing harness — same form, different rule sets per
           variant — fits the serializable-rule architecture
           well. Server-side evaluation in Server Actions for
           double-checking conditional logic at submission would
           close a consistency gap with client-side branching.
           Performance profiling per-rule would help authors
-          identify expensive predicates and optimize them.
-        </p>
+          identify expensive predicates and optimize them.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why use a DSL instead of JavaScript
           predicates?</strong> Safety, predictability,
           serializability. JavaScript predicates via
@@ -911,7 +861,7 @@ export default function DynamicConditionalFormEngineArticle() {
           some expressiveness; built-ins cover the gap, and an
           explicit unsafe-rule escape hatch handles edge cases
           from compiled code only.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>2. How is cycle detection done and why is it
@@ -925,14 +875,14 @@ export default function DynamicConditionalFormEngineArticle() {
           states — is hard to attribute back to the cycle).
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How do you prevent O(rules) evaluation on every
           keystroke?</strong> A precomputed forward index maps
           each field name to the set of rules that depend on it.
           On a field change, we evaluate only the rules in that
           set. Topological order ensures cascades stabilize in
           one pass without fixpoint iteration.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. What happens to a hidden field&rsquo;s value at
@@ -957,7 +907,7 @@ export default function DynamicConditionalFormEngineArticle() {
           wrong state.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. Two rules set conflicting effects — how is
           resolution deterministic?</strong> Topological order
           decides: the rule that comes later in the order wins.
@@ -965,9 +915,9 @@ export default function DynamicConditionalFormEngineArticle() {
           than relying on order, but at runtime the behavior is
           unambiguous. The alternative — merging conflicting
           booleans — has no good semantics.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How does the engine integrate with the
           validation engine?</strong> The conditional engine
           emits visibility/required/disabled flags; the
@@ -977,9 +927,9 @@ export default function DynamicConditionalFormEngineArticle() {
           required fields. Both engines are pure consumers of
           the same form values, so they coordinate without
           explicit coupling.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How would you serialize and version rules for
           runtime updates?</strong> Rules are already
           serializable — they&rsquo;re JSON. We add a
@@ -990,18 +940,15 @@ export default function DynamicConditionalFormEngineArticle() {
           CMS deliveries include a content hash; the engine
           caches compilation by hash so identical content
           reuses plans across deliveries.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A conditional form engine is essentially a
-          <strong> spreadsheet-style reactive graph</strong>{" "}
-          driven by a safe DSL. Compile rules once into a DAG,
-          propagate changes through dependents in topological
-          order, and apply deterministic effects to the form
-          store via a single-writer dispatcher. The four
+        <HighlightBlock as="p" tier="important">A conditional form engine is essentially a spreadsheet-style reactive graph driven by a</HighlightBlock>
+<HighlightBlock as="p" tier="important">safe DSL. Compile rules once into a DAG, propagate changes through dependents in</HighlightBlock>
+<HighlightBlock as="p" tier="important">topological order, and apply deterministic effects to the form store via a single-writer dispatcher.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">The four
           invariants — declarative rules as data, a constrained
           predicate DSL, a forward dependency index, and
           topological cascade evaluation — combine to make
@@ -1010,8 +957,7 @@ export default function DynamicConditionalFormEngineArticle() {
           a graph problem; treating it as one rather than as
           ad-hoc imperative code is what turns a bug-prone area
           of every form into a stable platform component that
-          schema authors can rely on.
-        </p>
+          schema authors can rely on.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

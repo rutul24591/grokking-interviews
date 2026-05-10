@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="580">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Token Streaming Buffer System</text>
+
+  <!-- Buffer Pipeline -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Buffer Pipeline</text>
+
+    <rect x="30" y="80" width="200" height="55" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="130" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#1e40af">LLM API Stream</text>
+    <text x="130" y="120" font-size="10" text-anchor="middle" fill="#374151">SSE / ReadableStream</text>
+
+    <path d="M 230 107 L 258 107" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#atsb)"/>
+
+    <rect x="260" y="80" width="180" height="55" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="350" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">Decode Buffer</text>
+    <text x="350" y="120" font-size="10" text-anchor="middle" fill="#374151">TextDecoder, chunk split</text>
+
+    <path d="M 440 107 L 468 107" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#atsb)"/>
+
+    <rect x="470" y="80" width="180" height="55" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="560" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#581c87">Parse Buffer</text>
+    <text x="560" y="120" font-size="10" text-anchor="middle" fill="#374151">Extract token from event</text>
+
+    <path d="M 650 107 L 678 107" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#atsb)"/>
+
+    <rect x="680" y="80" width="180" height="55" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="770" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">Render Buffer</text>
+    <text x="770" y="120" font-size="10" text-anchor="middle" fill="#374151">Batch 50ms → setState</text>
+
+    <path d="M 860 107 L 888 107" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#atsb)"/>
+
+    <rect x="890" y="80" width="180" height="55" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="980" y="103" font-size="11" font-weight="bold" text-anchor="middle" fill="#991b1b">UI Render</text>
+    <text x="980" y="120" font-size="10" text-anchor="middle" fill="#374151">Append + cursor blink</text>
+  </g>
+
+  <!-- Buffer Types -->
+  <g>
+    <text x="300" y="172" font-size="14" font-weight="bold" fill="#1a1a1a">Buffer Strategies</text>
+
+    <rect x="30" y="188" width="330" height="195" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="195" y="213" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Time-Based Batching</text>
+    <text x="45" y="235" font-size="10" fill="#374151">Collect tokens for 50ms window</text>
+    <text x="45" y="253" font-size="10" fill="#374151">Flush buffer → single React setState</text>
+    <text x="45" y="271" font-size="10" fill="#374151">Prevents render-per-token (60fps target)</text>
+    <text x="45" y="289" font-size="10" fill="#374151">  10 tokens/50ms = 200 tokens/sec</text>
+    <text x="45" y="307" font-size="10" fill="#374151">setInterval(flush, 50) or rAF loop</text>
+    <text x="45" y="325" font-size="10" fill="#374151">Final flush on stream end (don't wait)</text>
+    <text x="45" y="367" font-size="9" fill="#3b82f6">Trade-off: slight visual delay vs smooth rendering</text>
+
+    <rect x="380" y="188" width="330" height="195" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="545" y="213" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Count-Based Batching</text>
+    <text x="395" y="235" font-size="10" fill="#374151">Flush every N tokens (e.g., N=5)</text>
+    <text x="395" y="253" font-size="10" fill="#374151">Predictable chunk size</text>
+    <text x="395" y="271" font-size="10" fill="#374151">Reduces state update frequency</text>
+    <text x="395" y="289" font-size="10" fill="#374151">Works well for fast models (high token/s)</text>
+    <text x="395" y="307" font-size="10" fill="#374151">Flush remainder on [DONE] signal</text>
+    <text x="395" y="325" font-size="10" fill="#374151">Combined: count OR time trigger</text>
+    <text x="395" y="367" font-size="9" fill="#10b981">Hybrid: flush on count=5 OR every 50ms, whichever first</text>
+
+    <rect x="730" y="188" width="340" height="195" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="900" y="213" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Structured Output Buffer</text>
+    <text x="745" y="235" font-size="10" fill="#374151">JSON streaming: buffer until valid JSON boundary</text>
+    <text x="745" y="253" font-size="10" fill="#374151">  partial JSON → don't render yet</text>
+    <text x="745" y="271" font-size="10" fill="#374151">  complete key-value → render field</text>
+    <text x="745" y="289" font-size="10" fill="#374151">Markdown streaming: stream paragraph level</text>
+    <text x="745" y="307" font-size="10" fill="#374151">  buffer incomplete code block until ```</text>
+    <text x="745" y="325" font-size="10" fill="#374151">  then syntax highlight full block</text>
+    <text x="745" y="343" font-size="10" fill="#374151">Function call streaming: buffer full call args</text>
+    <text x="745" y="367" font-size="9" fill="#a855f7">react-markdown + remark: handles partial markdown gracefully</text>
+  </g>
+
+  <!-- Memory and cleanup -->
+  <g>
+    <text x="300" y="415" font-size="14" font-weight="bold" fill="#1a1a1a">Memory Management &amp; Cleanup</text>
+
+    <rect x="30" y="430" width="650" height="120" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="355" y="455" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Buffer Lifecycle</text>
+    <text x="45" y="477" font-size="10" fill="#374151">Stream start: initialize buffer = '', create AbortController, start flush timer</text>
+    <text x="45" y="495" font-size="10" fill="#374151">Stream end: final flush, clear timer, cancel reader, update message status to 'complete'</text>
+    <text x="45" y="513" font-size="10" fill="#374151">Component unmount: abort stream, cancel reader, clear timer — prevent memory leaks</text>
+    <text x="45" y="532" font-size="9" fill="#f59e0b">Multiple concurrent streams: separate buffer + controller per conversation thread</text>
+
+    <rect x="700" y="430" width="370" height="120" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="885" y="455" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Back-pressure</text>
+    <text x="715" y="477" font-size="10" fill="#374151">If UI can't keep up (slow device): slow reader</text>
+    <text x="715" y="495" font-size="10" fill="#374151">ReadableStream: reader.read() blocks until consumed</text>
+    <text x="715" y="513" font-size="10" fill="#374151">In practice: LLM tokens arrive slower than rendering</text>
+    <text x="715" y="532" font-size="9" fill="#ef4444">No explicit back-pressure needed for typical LLM token rates</text>
+  </g>
+
+  <defs>
+    <marker id="atsb" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#6b7280"/></marker>
+  </defs>
+</svg>

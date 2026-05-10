@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Degraded mode ladder for trading UI safety and responsiveness">
+  <title>Trading UI Degraded Mode Ladder</title>
+  <desc>Shows preserving order entry and safety by reducing data fidelity and update rates when overloaded or stale.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="ok" x="70" y="70" width="520" height="160" />
+  <text class="label bold" x="100" y="115">Normal</text>
+  <text class="label small" x="100" y="145">batched book updates</text>
+  <text class="label small" x="100" y="170">one active video/animation max</text>
+  <text class="label small" x="100" y="195">order entry always responsive</text>
+
+  <rect class="warn" x="640" y="70" width="490" height="160" />
+  <text class="label bold" x="670" y="115">Overload detected</text>
+  <text class="label small" x="670" y="145">render budget exceeded</text>
+  <text class="label small" x="670" y="170">queue depth rises</text>
+  <text class="label small" x="670" y="195">staleness watermark grows</text>
+
+  <path class="arrow" d="M590 150 L640 150" />
+
+  <rect class="warn" x="70" y="300" width="520" height="180" />
+  <text class="label bold" x="100" y="345">Degraded rendering</text>
+  <text class="label small" x="100" y="375">reduce depth / show top-of-book</text>
+  <text class="label small" x="100" y="400">lower chart sampling</text>
+  <text class="label small" x="100" y="425">pause non-critical panels</text>
+  <text class="label small" x="100" y="450">explicit degraded indicator</text>
+
+  <rect class="box" x="640" y="300" width="490" height="180" />
+  <text class="label bold" x="670" y="345">Safety mode</text>
+  <text class="label small" x="670" y="375">show “data stale” banner</text>
+  <text class="label small" x="670" y="400">optional warn/disable submit</text>
+  <text class="label small" x="670" y="425">re-snapshot on reconnect</text>
+  <text class="label small" x="670" y="450">no false success ever</text>
+
+  <path class="arrow" d="M885 230 C885 275 430 275 430 300" />
+  <path class="arrow" d="M590 390 L640 390" />
+</svg>

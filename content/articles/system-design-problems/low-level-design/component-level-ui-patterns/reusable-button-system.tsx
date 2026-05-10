@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function ReusableButtonSystemArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a production-grade, reusable Button component system for a
           large-scale React application. The button system must serve as the foundational
           interactive element across the entire application — forms, modals, navigation
@@ -58,7 +59,7 @@ export default function ReusableButtonSystemArticle() {
           system must be fully type-safe with TypeScript, exposing interfaces for
           <code>ButtonVariant</code>, <code>ButtonSize</code>, <code>ButtonState</code>,
           and <code>ButtonProps</code>.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -66,14 +67,14 @@ export default function ReusableButtonSystemArticle() {
           <li>
             The application is a React 19+ SPA using TailwindCSS 4 for styling.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The button system will be used across hundreds of components, so API stability
             and backward compatibility are critical.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Loading states may involve async operations (form submissions, API calls) that
             take anywhere from 200ms to several seconds.
-          </li>
+          </HighlightBlock>
           <li>
             The application supports both light and dark mode.
           </li>
@@ -81,14 +82,14 @@ export default function ReusableButtonSystemArticle() {
             Icon-only buttons (e.g., toolbar actions) must remain accessible via
             <code>aria-label</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Button groups may share borders (adjacent buttons in a horizontal bar) and
             need coordinated styling to avoid double-width borders.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Ripple animation is optional and should be toggled via a prop or global config,
             not forced on all buttons.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -98,31 +99,31 @@ export default function ReusableButtonSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Variants:</strong> Support five visual variants — primary (solid
             filled, high emphasis), secondary (outlined, medium emphasis),
             tertiary/ghost (transparent background, low emphasis), danger (red-toned for
             destructive actions), and link (underlined text, minimal visual weight).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Sizes:</strong> Support five sizes — xs (extra small, for dense
             interfaces), sm (small), md (medium, default), lg (large), and xl (extra
             large, for hero CTAs).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>States:</strong> Render correctly in default, hover, active (pressed),
             focus (keyboard navigation), disabled (non-interactive), and loading (spinner
             + disabled interaction) states.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Loading state:</strong> When <code>loading</code> prop is true,
             display an animated spinner, disable user interaction, and optionally show
             &quot;Loading...&quot; or a custom loading text.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Icon support:</strong> Accept leading icon (before text), trailing icon
             (after text), and icon-only mode (no text, requires <code>aria-label</code>).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Full-width vs auto-width:</strong> Support <code>fullWidth</code> prop
             to make the button stretch to container width. Default is auto-width (shrink
@@ -144,13 +145,13 @@ export default function ReusableButtonSystemArticle() {
             via <code>ripple</code> prop. Uses CSS custom properties for positioning and
             cleans up DOM nodes on unmount.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Visible focus ring for keyboard users,
             <code>aria-busy=&quot;true&quot;</code> during loading,
             <code>aria-disabled=&quot;true&quot;</code> for disabled state,
             <code>role=&quot;button&quot;</code> for non-button elements, and
             <code>aria-label</code> for icon-only buttons.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
@@ -165,10 +166,10 @@ export default function ReusableButtonSystemArticle() {
             on the <code>as</code> prop — if <code>as=&quot;a&quot;</code>, anchor-specific
             props (e.g., <code>href</code>, <code>target</code>) must be available.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Bundle Size:</strong> The button component should be tree-shakeable.
             Unused variants and utilities should not bloat the bundle.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Theming:</strong> Support light/dark mode via Tailwind&apos;s
             <code>dark:</code> variant. Colors must meet WCAG AA contrast ratios.
@@ -217,7 +218,7 @@ export default function ReusableButtonSystemArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to build a <strong>polymorphic, variant-driven Button
           component</strong> that delegates styling to a style map (Tailwind class
           compositions keyed by variant and size), uses custom hooks for interaction
@@ -226,32 +227,32 @@ export default function ReusableButtonSystemArticle() {
           the ButtonGroup. The component is not stateful in the traditional sense — it
           is a presentational component that receives props and delegates behavior to
           hooks. This keeps the component thin and testable.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS-in-JS (styled-components, Emotion):</strong> Provides dynamic
             theming and runtime style computation. However, it adds a runtime dependency,
             increases bundle size, and introduces style recalculation on every render.
             For a button component with a finite set of variants, static Tailwind class
             maps are more performant and tree-shakeable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Component variants via class variance authority (CVA):</strong> CVA is
             an excellent library for variant management. For this implementation, we use
             a plain TypeScript style map to avoid an external dependency, but the structure
             is intentionally designed to be CVA-compatible if the team adopts it later.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Separate components per variant (PrimaryButton, SecondaryButton, etc.):</strong>
             Simpler API per variant but leads to code duplication, inconsistent APIs, and
             harder maintenance. A single polymorphic component with a <code>variant</code>
             prop is the cleanest approach for a design system.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why polymorphic + style map + hooks is optimal:</strong> The polymorphic
           <code>as</code> prop (following the pattern popularized by Radix UI and
           styled-components) allows a single component to serve as button, link, or any
@@ -260,7 +261,7 @@ export default function ReusableButtonSystemArticle() {
           encapsulate interaction logic (debounce, ARIA, ripple) so the component remains
           a pure render function. This separation of concerns makes the system testable,
           composable, and maintainable at scale.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -272,7 +273,7 @@ export default function ReusableButtonSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Type Definitions (<code>button-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Defines the core type system: <code>ButtonVariant</code> union
             (<code>primary | secondary | tertiary | danger | link</code>),
             <code>ButtonSize</code> union (<code>xs | sm | md | lg | xl</code>),
@@ -281,12 +282,12 @@ export default function ReusableButtonSystemArticle() {
             inference. Also exports <code>PolymorphicRef</code> for correct ref typing
             with the <code>as</code> prop. See the Example tab for the complete type
             definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Style Maps (<code>button-styles.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Contains the variant-to-Tailwind-class mappings. Each variant has classes for
             base styling, hover state, active state, focus ring, disabled state, and
             loading state. Size maps control padding, font size, min-height, and icon
@@ -294,7 +295,7 @@ export default function ReusableButtonSystemArticle() {
             Size maps follow <code>{`{ size: { padding, fontSize, minHeight, iconSize } }`}</code>.
             This is the single source of truth for visual appearance. See the
             Example tab for the complete style maps.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -311,14 +312,14 @@ export default function ReusableButtonSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. Interaction Hook (<code>use-button-interactions.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Custom hook that wraps the <code>onClick</code> handler with loading-state
             guarding (prevents clicks during loading), optional debounce, keyboard event
             handling (Enter and Space activation for non-button elements), and ripple
             trigger integration. Returns a merged handler object with
             <code>onClick</code>, <code>onMouseDown</code>, <code>onKeyDown</code>, and
             a <code>ref</code> callback for ripple container access.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -334,14 +335,14 @@ export default function ReusableButtonSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Button Component (<code>button.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The main polymorphic component. Uses <code>React.forwardRef</code> with
             generic typing for the <code>as</code> prop. Resolves variant and size to
             Tailwind classes via the style map. Renders leading icon, trailing icon,
             spinner (when loading), children text, and ripple container. Delegates
             interaction handling to <code>useButtonInteractions</code> and ARIA computation
             to <code>useButtonAria</code>. See the Example tab for the complete component.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -373,11 +374,11 @@ export default function ReusableButtonSystemArticle() {
           (first, last, middle, only) to child buttons for border styling. This keeps the
           component pure and predictable.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The interaction hook manages a debounce timer internally (via
           <code>useRef</code>), but this is an implementation detail — the component does
           not expose debounce state. The ARIA hook is purely computational with no state.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -416,40 +417,40 @@ export default function ReusableButtonSystemArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional pattern: props flow into the
           Button component, hooks compute derived values (ARIA attributes, merged
           event handlers), and the rendered output is a pure function of props and
           derived state. No internal state mutations trigger re-renders except for
           ripple DOM manipulation (which is outside React&apos;s render cycle).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Disabled + loading:</strong> The component checks
             <code>disabled</code> first. If true, <code>loading</code> is ignored — no
             spinner renders, <code>aria-busy</code> is not set. This prevents conflicting
             ARIA states.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Icon-only without aria-label:</strong> In development mode
             (<code>process.env.NODE_ENV !== &apos;production&apos;</code>), a console
             warning fires if <code>children</code> is absent and <code>aria-label</code>
             is not provided. This catches accessibility regressions early.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Polymorphic as=&quot;a&quot; without href:</strong> Development warning
             fires. The rendered element is an anchor without an href, which browsers treat
             as a placeholder link. Screen readers announce it as &quot;clickable&quot; but
             with no destination — confusing for users.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ripple during unmount:</strong> The ripple utility&apos;s cleanup
             function is called in a <code>useEffect</code> cleanup. If the button unmounts
             mid-animation, the ripple DOM node is removed as part of the parent&apos;s
             unmount, preventing orphaned elements.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>ButtonGroup border sharing:</strong> The ButtonGroup context assigns
             each child a position (<code>first | middle | last | only</code>). CSS classes
@@ -470,7 +471,7 @@ export default function ReusableButtonSystemArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The complete, production-ready implementation consists of 10 files:
             TypeScript interfaces and polymorphic ref types, variant-based Tailwind style
             maps, ripple animation utility, interaction hook with debounce and keyboard
@@ -479,11 +480,11 @@ export default function ReusableButtonSystemArticle() {
             component, and a full EXPLANATION.md walkthrough. Click the{" "}
             <strong>Example</strong> toggle at the top of the article to view all source
             files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Type Definitions (button-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines <code>ButtonVariant</code> as a union of five string literals,
           <code>ButtonSize</code> as five size levels, and <code>ButtonProps</code> as a
           polymorphic interface using <code>React.ComponentPropsWithoutRef</code> and
@@ -492,7 +493,7 @@ export default function ReusableButtonSystemArticle() {
           for the rendered element. Constants for default values (default variant is
           &quot;primary&quot;, default size is &quot;md&quot;) are exported for consumers
           who need them.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Style Maps (button-styles.ts)</h3>
         <p>
@@ -516,14 +517,14 @@ export default function ReusableButtonSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Interaction Hook (use-button-interactions.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Accepts <code>onClick</code>, <code>loading</code>, <code>disabled</code>,
           <code>ripple</code>, and <code>debounceMs</code> props. Returns merged event
           handlers. The <code>onClick</code> wrapper checks loading/disabled guards first,
           triggers ripple if enabled, and applies debounce via <code>setTimeout</code>
           with cleanup. The <code>onKeyDown</code> handler activates the button on Enter
           and Space for non-button elements (preventing default Space scroll behavior).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: ARIA Hook (use-button-aria.ts)</h3>
         <p>
@@ -536,7 +537,7 @@ export default function ReusableButtonSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Button Component (button.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uses <code>React.forwardRef</code> with a generic <code>as</code> prop typed
           via <code>React.ElementType</code>. Resolves the component via
           <code>as || &apos;button&apos;</code>. Computes the Tailwind class string by
@@ -545,7 +546,7 @@ export default function ReusableButtonSystemArticle() {
           flex container with icons and spinner. The ripple container is an absolutely
           positioned <code>&lt;span&gt;</code> with <code>pointer-events: none</code>
           and <code>overflow: hidden</code>.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: ButtonIcon (button-icon.tsx)</h3>
         <p>
@@ -564,7 +565,7 @@ export default function ReusableButtonSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: ButtonGroup (button-group.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A compound component using React context. Renders a flex container with
           <code>orientation</code> (horizontal or vertical). Clones each child button
           via <code>React.Children.map</code> and <code>React.cloneElement</code>,
@@ -572,7 +573,7 @@ export default function ReusableButtonSystemArticle() {
           used for border-radius and shared border styling. The context also propagates
           the parent&apos;s <code>variant</code> and <code>size</code> as defaults for
           children that don&apos;t specify their own.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -626,35 +627,35 @@ export default function ReusableButtonSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ripple DOM accumulation:</strong> If rapid clicks occur faster than
             the 600ms animation duration, ripple elements accumulate. Mitigation: the
             ripple utility caps concurrent ripples per button at 5. Older ripples are
             forcibly removed when the cap is reached.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>ButtonGroup cloneElement:</strong> <code>React.cloneElement</code>
             creates a new React element on every render. For large groups, this causes
             unnecessary allocations. Mitigation: use <code>React.memo</code> on the
             ButtonGroup wrapper and ensure child buttons are memoized.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Tailwind class string concatenation:</strong> Merging multiple class
             strings (variant + size + fullWidth + custom className) on every render is
             a micro-optimization target. Mitigation: use <code>useMemo</code> to memoize
             the computed class string, recalculating only when variant, size, or fullWidth
             changes.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>useMemo for class computation:</strong> Wrap the Tailwind class string
             computation in <code>useMemo</code> with dependencies on
             <code>[variant, size, fullWidth, className]</code>. This prevents redundant
             string concatenation on parent re-renders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>React.memo on Button:</strong> Wrap the Button export in
             <code>React.memo</code> with a custom comparator that shallow-compares props.
@@ -665,11 +666,11 @@ export default function ReusableButtonSystemArticle() {
             <code>transform</code> and <code>opacity</code> — GPU-composited properties
             that run on the compositor thread. No JavaScript animation frames are consumed.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Tree-shaking:</strong> All modules use named exports. Unused variants
             and hooks are eliminated by bundlers during tree-shaking. The style map can
             be further optimized by using dynamic imports if bundle size is critical.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -678,7 +679,7 @@ export default function ReusableButtonSystemArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Button children can be arbitrary React nodes, including user-generated content.
           If children contain unsanitized HTML (e.g., via <code>dangerouslySetInnerHTML</code>
           in a parent component), they become XSS vectors. The Button component itself
@@ -686,7 +687,7 @@ export default function ReusableButtonSystemArticle() {
           automatically escapes. However, if the <code>as</code> prop renders an anchor
           with a user-controlled <code>href</code>, it must be validated to prevent
           <code>javascript:</code> URI schemes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -701,29 +702,29 @@ export default function ReusableButtonSystemArticle() {
               the component adds <code>tabIndex={0}</code> and handles Enter/Space via
               the <code>onKeyDown</code> handler, preventing default Space scroll behavior.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The focus ring uses <code>focus-visible</code> (not <code>focus</code>) to
               show the ring only for keyboard navigation, hiding it for mouse clicks.
               This follows the CSS <code>:focus-visible</code> pseudo-class behavior.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Loading buttons set <code>aria-busy=&quot;true&quot;</code> to signal that
               an operation is in progress. Screen readers announce this as &quot;busy&quot;
               or &quot;loading&quot;.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="crucial">
               Disabled buttons set <code>aria-disabled=&quot;true&quot;</code>. Note that
               the native <code>disabled</code> attribute removes the element from the tab
               order entirely. Using <code>aria-disabled</code> keeps it focusable while
               indicating non-interactivity — the component uses the native
               <code>disabled</code> attribute for true disabled state.
-            </li>
+            </HighlightBlock>
             <li>
               Icon-only buttons require <code>aria-label</code>. Without it, screen readers
               announce nothing (or the SVG markup). The development warning catches this
@@ -734,7 +735,7 @@ export default function ReusableButtonSystemArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Native <code>&lt;button&gt;</code> elements have implicit
             <code>role=&quot;button&quot;</code>. When the component renders as a
             non-button element (e.g., <code>as=&quot;div&quot;</code> or
@@ -743,7 +744,7 @@ export default function ReusableButtonSystemArticle() {
             <code>aria-busy</code> and <code>aria-disabled</code> attributes are
             computed dynamically based on the loading and disabled props. See the
             Example tab for the exact attribute computation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Href Validation for Anchor Buttons</h3>
@@ -771,25 +772,25 @@ export default function ReusableButtonSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Variant rendering:</strong> For each variant (primary, secondary,
             tertiary, danger, link), render the Button and assert the correct Tailwind
             class string is present in the className.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Size rendering:</strong> For each size (xs, sm, md, lg, xl), assert
             the correct padding, font-size, and min-height classes are applied.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Loading state:</strong> Render with <code>loading={true}</code>,
             assert spinner is present, assert <code>aria-busy=&quot;true&quot;</code>,
             assert click handler is NOT called on click.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Disabled state:</strong> Render with <code>disabled={true}</code>,
             assert <code>aria-disabled=&quot;true&quot;</code>, assert click handler is
             NOT called, assert button has native <code>disabled</code> attribute.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Polymorphic rendering:</strong> Render with <code>as=&quot;a&quot;</code>
             and <code>href</code>, assert the rendered element is an anchor. Render with
@@ -821,11 +822,11 @@ export default function ReusableButtonSystemArticle() {
             corners, last child has right rounded corners, assert shared borders between
             adjacent buttons.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard activation:</strong> Focus a non-button element
             (<code>as=&quot;div&quot;</code>), press Enter, assert onClick fires. Press
             Space, assert onClick fires and page does NOT scroll.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
@@ -841,11 +842,11 @@ export default function ReusableButtonSystemArticle() {
             Rapid-fire 20 clicks: verify onClick fires only once (or once per debounce
             interval), ripple cap prevents more than 5 concurrent ripples.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks, verify focus ring visibility,
             aria-busy during loading, aria-disabled for disabled state, and screen reader
             announcement of icon-only buttons with aria-label.
-          </li>
+          </HighlightBlock>
           <li>
             SSR rendering: verify Button renders correctly during SSR (no window/document
             access in render path). Ripple creation must be guarded by
@@ -866,18 +867,18 @@ export default function ReusableButtonSystemArticle() {
             from firing. This leads to duplicate form submissions. The loading state must
             act as a guard on the click handler, not just a visual indicator.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using focus instead of focus-visible:</strong> A visible focus ring on
             every click (mouse users) is a poor UX pattern. Interviewers look for
             candidates who know the difference between <code>:focus</code> and
             <code>:focus-visible</code> and apply the ring only for keyboard navigation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting icon-only accessibility:</strong> A button with only an
             icon and no <code>aria-label</code> is invisible to screen readers. This is
             one of the most common accessibility bugs in production. Candidates should
             proactively mention the <code>aria-label</code> requirement.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Animating ripple with top/left instead of transform:</strong>
             Positioning the ripple via <code>top</code> and <code>left</code> during
@@ -902,7 +903,7 @@ export default function ReusableButtonSystemArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Style Map vs CSS-in-JS vs CVA</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A plain TypeScript style map (our approach) has zero runtime cost, is
             tree-shakeable, and works seamlessly with Tailwind&aposs compile-time class
             detection. CSS-in-JS (styled-components, Emotion) provides dynamic theming but
@@ -911,12 +912,12 @@ export default function ReusableButtonSystemArticle() {
             but introduces a dependency. For a button with a fixed set of variants, a
             style map is the simplest correct answer. CVA is the answer if the team already
             uses it. CSS-in-JS is overkill for this use case.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Native disabled vs aria-disabled</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The native <code>disabled</code> attribute removes the element from the tab
             order and prevents all interaction. <code>aria-disabled</code> keeps the element
             focusable but signals non-interactivity to assistive technology. For form
@@ -926,7 +927,7 @@ export default function ReusableButtonSystemArticle() {
             <code>aria-disabled</code> with a tooltip explaining the reason is better UX.
             Our component uses native <code>disabled</code> for the disabled prop and adds
             <code>aria-disabled</code> for the loading state.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -944,7 +945,7 @@ export default function ReusableButtonSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">cloneElement vs Render Props for ButtonGroup</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <code>React.cloneElement</code> allows ButtonGroup to inject props (position,
             shared variant) into children transparently. The alternative is a render prop
             pattern where children receive context via a function. cloneElement provides a
@@ -953,7 +954,7 @@ export default function ReusableButtonSystemArticle() {
             more flexible but more verbose. For a button group where children are always
             Button components, cloneElement is the pragmatic choice. React 19&apos;s
             context API improvements may shift this trade-off in the future.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>

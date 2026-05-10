@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Per-field merge policy model for settings sync conflicts">
+  <title>Settings Merge Policies</title>
+  <desc>Illustrates different merge policies for different setting types: last-write-wins, monotonic opt-out, and confirm-required for risky fields.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="70" width="1080" height="120" />
+  <text class="label bold" x="90" y="120">Settings are heterogeneous</text>
+  <text class="label small" x="90" y="150">Different fields require different merge semantics to preserve trust and compliance.</text>
+
+  <rect class="muted" x="60" y="230" width="340" height="260" />
+  <text class="label bold" x="90" y="275">Last-write-wins</text>
+  <text class="label small" x="90" y="305">theme, locale, UI density</text>
+  <text class="label small" x="90" y="330">use timestamps + device id</text>
+  <text class="label small" x="90" y="355">good enough for UX prefs</text>
+
+  <rect class="warn" x="430" y="230" width="340" height="260" />
+  <text class="label bold" x="460" y="275">Monotonic rules</text>
+  <text class="label small" x="460" y="305">email/SMS opt-out</text>
+  <text class="label small" x="460" y="330">do not silently revert</text>
+  <text class="label small" x="460" y="355">audit changes</text>
+
+  <rect class="ok" x="800" y="230" width="340" height="260" />
+  <text class="label bold" x="830" y="275">Confirm-required</text>
+  <text class="label small" x="830" y="305">high-risk privacy toggles</text>
+  <text class="label small" x="830" y="330">requires explicit user intent</text>
+  <text class="label small" x="830" y="355">surface conflict UI</text>
+
+  <path class="arrow" d="M400 360 L430 360" />
+  <path class="arrow" d="M770 360 L800 360" />
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="580">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Progressive Enhancement: Layers &amp; Feature Detection</text>
+
+  <!-- PE Pyramid -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Enhancement Pyramid</text>
+
+    <!-- Bottom: HTML -->
+    <polygon points="30,440 410,440 340,360 100,360" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="220" y="405" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e40af">HTML — Baseline</text>
+    <text x="220" y="425" font-size="10" text-anchor="middle" fill="#374151">Semantic markup, content accessible to all</text>
+
+    <!-- Middle: CSS -->
+    <polygon points="100,360 340,360 280,280 160,280" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+    <text x="220" y="325" font-size="13" font-weight="bold" text-anchor="middle" fill="#065f46">CSS — Layout &amp; Style</text>
+    <text x="220" y="343" font-size="10" text-anchor="middle" fill="#374151">Responsive design, readable without JS</text>
+
+    <!-- Top: JS -->
+    <polygon points="160,280 280,280 220,200" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="220" y="248" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">JS — Enhancement</text>
+    <text x="220" y="264" font-size="10" text-anchor="middle" fill="#374151">Interactive features, offline</text>
+
+    <!-- Tip: PWA -->
+    <polygon points="200,200 240,200 220,160" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="220" y="175" font-size="10" font-weight="bold" text-anchor="middle" fill="#581c87">PWA</text>
+
+    <!-- Labels -->
+    <text x="50" y="455" font-size="9" fill="#6b7280">Works everywhere</text>
+    <text x="165" y="295" font-size="9" fill="#6b7280">Most browsers</text>
+    <text x="215" y="145" font-size="9" text-anchor="middle" fill="#6b7280">Modern</text>
+  </g>
+
+  <!-- Feature Detection -->
+  <g>
+    <text x="640" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Feature Detection Patterns</text>
+
+    <rect x="450" y="75" width="620" height="200" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="760" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Detect Before Use</text>
+    <text x="465" y="122" font-size="10" fill="#374151">if ('serviceWorker' in navigator) {"{"} /* register SW */ {"}"}</text>
+    <text x="465" y="140" font-size="10" fill="#374151">if ('IntersectionObserver' in window) {"{"} /* lazy load */ {"}"}</text>
+    <text x="465" y="158" font-size="10" fill="#374151">if ('storage' in navigator) {"{"} /* persistent */ {"}"}</text>
+    <text x="465" y="176" font-size="10" fill="#374151">CSS: @supports (display: grid) {"{"} ... {"}"}</text>
+    <text x="465" y="194" font-size="10" fill="#374151">HTML: &lt;input type="date"&gt; falls back to text</text>
+    <text x="465" y="214" font-size="11" font-weight="bold" fill="#374151">Strategy: Detect → enhance → provide fallback</text>
+    <text x="465" y="232" font-size="10" fill="#374151">Never assume — always check capability at runtime</text>
+    <text x="465" y="252" font-size="9" fill="#a855f7">Avoid UA sniffing — unreliable. Feature detection is authoritative.</text>
+
+    <rect x="450" y="290" width="300" height="180" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="600" y="315" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Core vs Enhanced UX</text>
+    <text x="465" y="338" font-size="10" fill="#374151">Form submit:</text>
+    <text x="465" y="356" font-size="10" fill="#374151">  Core: standard POST (works w/o JS)</text>
+    <text x="465" y="374" font-size="10" fill="#374151">  Enhanced: fetch + optimistic update</text>
+    <text x="465" y="396" font-size="10" fill="#374151">Navigation:</text>
+    <text x="465" y="414" font-size="10" fill="#374151">  Core: &lt;a href&gt; full page loads</text>
+    <text x="465" y="432" font-size="10" fill="#374151">  Enhanced: SPA client routing</text>
+    <text x="465" y="458" font-size="9" fill="#3b82f6">Core works; JS layers additional value</text>
+
+    <rect x="770" y="290" width="300" height="180" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="920" y="315" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Offline Enhancement</text>
+    <text x="785" y="338" font-size="10" fill="#374151">Level 0: Fails gracefully (error page)</text>
+    <text x="785" y="356" font-size="10" fill="#374151">Level 1: Custom offline page (SW)</text>
+    <text x="785" y="374" font-size="10" fill="#374151">Level 2: Cached content (stale)</text>
+    <text x="785" y="392" font-size="10" fill="#374151">Level 3: Full offline CRUD (IndexedDB)</text>
+    <text x="785" y="410" font-size="10" fill="#374151">Level 4: Background sync (CRDT)</text>
+    <text x="785" y="432" font-size="10" fill="#374151">Each level builds on the previous</text>
+    <text x="785" y="458" font-size="9" fill="#10b981">Implement as deep as your use case requires</text>
+  </g>
+
+  <!-- Graceful Degradation vs PE -->
+  <g>
+    <text x="220" y="490" font-size="14" font-weight="bold" fill="#1a1a1a">PE vs Graceful Degradation</text>
+
+    <rect x="30" y="505" width="400" height="65" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+    <text x="45" y="525" font-size="10" fill="#374151"><tspan font-weight="bold">Progressive Enhancement:</tspan> Start with core (HTML), add layers. All users get content.</text>
+    <text x="45" y="543" font-size="10" fill="#374151"><tspan font-weight="bold">Graceful Degradation:</tspan> Start with full feature, ensure fallback. Modern-first.</text>
+    <text x="45" y="558" font-size="9" fill="#6b7280">PE is preferred — content and function guaranteed from the start.</text>
+  </g>
+</svg>

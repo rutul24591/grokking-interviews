@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Maps-based delivery tracking application architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .chip { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .chip { fill: #111827; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Delivery Tracking: Snapshot + Stream, Privacy-scoped Token</text>
+  <text class="t muted" x="40" y="78" font-size="13">Client smooths updates and shows freshness</text>
+
+  <rect class="box" x="40" y="120" width="300" height="340" rx="14"/>
+  <text class="t h" x="60" y="150" font-size="16">Client</text>
+  <rect class="chip" x="60" y="170" width="260" height="70" rx="10"/>
+  <text class="t" x="74" y="196" font-size="13">Map renderer</text>
+  <text class="t muted" x="74" y="216" font-size="12">Marker + route layers</text>
+  <rect class="chip" x="60" y="254" width="260" height="90" rx="10"/>
+  <text class="t" x="74" y="280" font-size="13">Tracking subscription</text>
+  <text class="t muted" x="74" y="300" font-size="12">Stream with polling fallback</text>
+  <text class="t muted" x="74" y="318" font-size="12">Smoothing + staleness detection</text>
+
+  <rect class="box" x="390" y="160" width="240" height="150" rx="14"/>
+  <text class="t h" x="410" y="190" font-size="15">Tracking Service</text>
+  <text class="t muted" x="410" y="214" font-size="12">Delivery snapshot + location deltas</text>
+  <text class="t muted" x="410" y="234" font-size="12">Access via expiring token</text>
+
+  <rect class="box" x="680" y="160" width="240" height="150" rx="14"/>
+  <text class="t h" x="700" y="190" font-size="15">Realtime Relay</text>
+  <text class="t muted" x="700" y="214" font-size="12">Batched updates to viewers</text>
+  <text class="t muted" x="700" y="234" font-size="12">Fallback to polling if down</text>
+
+  <rect class="box" x="680" y="330" width="240" height="130" rx="14"/>
+  <text class="t h" x="700" y="360" font-size="15">Map Tiles CDN</text>
+  <text class="t muted" x="700" y="384" font-size="12">Tile caching + throttling</text>
+
+  <path class="line" d="M340 240 L380 240" />
+  <polygon class="arrow" points="380,240 372,236 372,244"/>
+  <path class="line" d="M630 230 L670 230" />
+  <polygon class="arrow" points="670,230 662,226 662,234"/>
+</svg>
+

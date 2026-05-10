@@ -1,0 +1,105 @@
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="420" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Background Sync System — Queue, Retry, and Recovery Flow</text>
+
+  <!-- ONLINE PATH: top row -->
+  <!-- Step 1: Request Fails -->
+  <rect x="20" y="55" width="140" height="70" rx="6" fill="#ffebee" stroke="#e53935" stroke-width="2"/>
+  <text x="90" y="81" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">Request Fails</text>
+  <text x="90" y="97" text-anchor="middle" font-size="10" fill="#c62828">Network error</text>
+  <text x="90" y="112" text-anchor="middle" font-size="10" fill="#c62828">or server 5xx</text>
+
+  <line x1="160" y1="90" x2="188" y2="90" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step 2: Queue in IndexedDB -->
+  <rect x="190" y="55" width="150" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="265" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Queue in IndexedDB</text>
+  <text x="265" y="95" text-anchor="middle" font-size="10" fill="#bf360c">• UUID idempotency key</text>
+  <text x="265" y="110" text-anchor="middle" font-size="10" fill="#bf360c">• Priority + timestamp</text>
+
+  <line x1="340" y1="90" x2="368" y2="90" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step 3: Notify User -->
+  <rect x="370" y="55" width="150" height="70" rx="6" fill="#ede7f6" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="445" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="#4a148c">Notify User</text>
+  <text x="445" y="95" text-anchor="middle" font-size="10" fill="#6a1b9a">"Will send when</text>
+  <text x="445" y="110" text-anchor="middle" font-size="10" fill="#6a1b9a">back online"</text>
+
+  <!-- Offline indicator -->
+  <rect x="550" y="55" width="140" height="70" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="620" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Service Worker</text>
+  <text x="620" y="95" text-anchor="middle" font-size="10" fill="#1565c0">Polls every 5s</text>
+  <text x="620" y="110" text-anchor="middle" font-size="10" fill="#1565c0">while offline</text>
+
+  <!-- RECOVERY: middle section -->
+  <rect x="20" y="175" width="820" height="2" fill="#e0e0e0"/>
+  <text x="430" y="200" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">Network Recovery Detected →</text>
+
+  <!-- Recovery flow -->
+  <rect x="20" y="215" width="150" height="70" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="95" y="239" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Probe Request</text>
+  <text x="95" y="255" text-anchor="middle" font-size="10" fill="#2e7d32">HTTP HEAD to verify</text>
+  <text x="95" y="270" text-anchor="middle" font-size="10" fill="#2e7d32">actual connectivity</text>
+
+  <line x1="170" y1="250" x2="198" y2="250" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="200" y="215" width="150" height="70" rx="6" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+  <text x="275" y="239" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Sort Queue</text>
+  <text x="275" y="255" text-anchor="middle" font-size="10" fill="#2e7d32">Priority: critical</text>
+  <text x="275" y="270" text-anchor="middle" font-size="10" fill="#2e7d32">→ normal → low</text>
+
+  <line x1="350" y1="250" x2="378" y2="250" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="380" y="215" width="150" height="70" rx="6" fill="#e8f5e9" stroke="#43a047" stroke-width="2"/>
+  <text x="455" y="239" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Retry Request</text>
+  <text x="455" y="255" text-anchor="middle" font-size="10" fill="#2e7d32">Backoff: 300ms</text>
+  <text x="455" y="270" text-anchor="middle" font-size="10" fill="#2e7d32">→ 600ms → 1.2s…</text>
+
+  <line x1="530" y1="250" x2="558" y2="250" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Decision diamond -->
+  <polygon points="630,220 700,250 630,280 560,250" fill="#fff9c4" stroke="#f9a825" stroke-width="2"/>
+  <text x="630" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Response</text>
+  <text x="630" y="261" text-anchor="middle" font-size="11" fill="#e65100">Status?</text>
+
+  <!-- Success branch -->
+  <line x1="700" y1="250" x2="720" y2="250" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="722" y="225" width="120" height="50" rx="6" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="782" y="246" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">2xx Success</text>
+  <text x="782" y="262" text-anchor="middle" font-size="10" fill="#2e7d32">Remove from queue</text>
+  <text x="714" y="244" text-anchor="middle" font-size="9" fill="#2e7d32">2xx</text>
+
+  <!-- 4xx branch (permanent fail) -->
+  <line x1="630" y1="280" x2="630" y2="305" stroke="#e53935" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="565" y="307" width="130" height="50" rx="6" fill="#ffcdd2" stroke="#e53935" stroke-width="2"/>
+  <text x="630" y="328" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">4xx — Permanent</text>
+  <text x="630" y="344" text-anchor="middle" font-size="10" fill="#c62828">Move to failed, notify</text>
+  <text x="638" y="302" text-anchor="middle" font-size="9" fill="#e53935">4xx</text>
+
+  <!-- 5xx branch (re-queue) -->
+  <line x1="455" y1="285" x2="455" y2="305" stroke="#f57c00" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="380" y="307" width="150" height="50" rx="6" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+  <text x="455" y="328" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">5xx — Re-queue</text>
+  <text x="455" y="344" text-anchor="middle" font-size="10" fill="#bf360c">Increment retry count</text>
+  <text x="463" y="302" text-anchor="middle" font-size="9" fill="#f57c00">5xx</text>
+
+  <!-- Idempotency box -->
+  <rect x="20" y="310" width="340" height="80" rx="6" fill="#fafafa" stroke="#9e9e9e" stroke-width="1.5"/>
+  <text x="190" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#424242">Idempotency Key (UUID)</text>
+  <text x="190" y="348" text-anchor="middle" font-size="10" fill="#616161">Sent as header with every request</text>
+  <text x="190" y="364" text-anchor="middle" font-size="10" fill="#616161">Server deduplicates: same key → same result</text>
+  <text x="190" y="380" text-anchor="middle" font-size="10" fill="#616161">Prevents double-charge, duplicate account creation</text>
+
+  <!-- Storage note -->
+  <rect x="710" y="307" width="130" height="80" rx="6" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
+  <text x="775" y="327" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a237e">Persistence</text>
+  <text x="775" y="345" text-anchor="middle" font-size="10" fill="#283593">IndexedDB</text>
+  <text x="775" y="361" text-anchor="middle" font-size="10" fill="#283593">Survives SW restart</text>
+  <text x="775" y="377" text-anchor="middle" font-size="10" fill="#283593">Cleaned after 30d</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

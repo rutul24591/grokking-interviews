@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Privacy and consent gating for analytics capture and send">
+  <title>Consent and Privacy Gating</title>
+  <desc>Shows consent check before capture, redaction/allowlist, and re-check before send with revocation dropping queued data.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .good { fill: #052018; stroke: #34d399; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="muted" x="60" y="90" width="350" height="160" />
+  <text class="label bold" x="90" y="135">Consent state</text>
+  <text class="label small" x="90" y="165">granted / denied</text>
+  <text class="label small" x="90" y="190">purpose scoped</text>
+  <text class="label small" x="90" y="215">revocation supported</text>
+
+  <rect class="accent" x="450" y="70" width="340" height="200" />
+  <text class="label bold" x="480" y="115">Capture gate</text>
+  <text class="label small" x="480" y="145">if denied: do not enqueue</text>
+  <text class="label small" x="480" y="170">if granted: allowlist properties</text>
+  <text class="label small" x="480" y="195">redact sensitive fields</text>
+  <text class="label small" x="480" y="220">attach consent metadata</text>
+
+  <rect class="good" x="830" y="70" width="310" height="200" />
+  <text class="label bold" x="860" y="115">Queue + send</text>
+  <text class="label small" x="860" y="145">bounded offline queue</text>
+  <text class="label small" x="860" y="170">re-check consent before send</text>
+  <text class="label small" x="860" y="195">drop queued events on revoke</text>
+
+  <path class="arrow" d="M410 170 L450 170" />
+  <path class="arrow" d="M790 170 L830 170" />
+
+  <rect class="warn" x="60" y="330" width="1080" height="160" />
+  <text class="label bold" x="90" y="375">Revocation behavior</text>
+  <text class="label small" x="90" y="405">stop capture immediately</text>
+  <text class="label small" x="90" y="430">drop queued events not yet sent</text>
+  <text class="label small" x="90" y="455">reset identifiers if required by policy</text>
+</svg>
+

@@ -1,0 +1,86 @@
+<svg viewBox="0 0 860 390" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="390" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Telemetry / Analytics Pipeline — Collection, Batching, Sampling, and Dashboards</text>
+
+  <!-- Collection pipeline -->
+  <rect x="20" y="45" width="820" height="85" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="65" font-size="11" font-weight="bold" fill="#0d47a1">Event Collection Pipeline</text>
+
+  <rect x="30" y="73" width="145" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="102" y="93" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">User Action</text>
+  <text x="102" y="108" text-anchor="middle" font-size="9" fill="#1565c0">click, view, search, purchase</text>
+  <line x1="175" y1="98" x2="193" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="195" y="73" width="145" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="267" y="93" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">SDK track()</text>
+  <text x="267" y="108" text-anchor="middle" font-size="9" fill="#1565c0">Event in memory queue</text>
+  <line x1="340" y1="98" x2="358" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="360" y="73" width="145" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="432" y="93" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Batch + Send</text>
+  <text x="432" y="108" text-anchor="middle" font-size="9" fill="#1565c0">100 events OR 30s → flush</text>
+  <line x1="505" y1="98" x2="523" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="525" y="73" width="145" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="597" y="93" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Ingestion API</text>
+  <text x="597" y="108" text-anchor="middle" font-size="9" fill="#1565c0">Validate + enqueue (Kafka)</text>
+  <line x1="670" y1="98" x2="688" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="690" y="73" width="140" height="50" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="760" y="93" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">Data Warehouse</text>
+  <text x="760" y="108" text-anchor="middle" font-size="9" fill="#2e7d32">BigQuery / Redshift</text>
+
+  <!-- Sampling + enrichment -->
+  <rect x="20" y="150" width="405" height="220" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="30" y="170" font-size="12" font-weight="bold" fill="#1b5e20">Sampling and Enrichment</text>
+
+  <rect x="30" y="180" width="380" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="220" y="200" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Sampling Strategy</text>
+  <text x="220" y="215" text-anchor="middle" font-size="10" fill="#2e7d32">High-volume events (page_view): 10% sample</text>
+  <text x="220" y="230" text-anchor="middle" font-size="10" fill="#2e7d32">Low-volume events (purchase): 100% capture</text>
+
+  <rect x="30" y="245" width="183" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="121" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Context Enrichment</text>
+  <text x="121" y="280" text-anchor="middle" font-size="10" fill="#2e7d32">Auto-attach: sessionId, userId</text>
+  <text x="121" y="295" text-anchor="middle" font-size="10" fill="#2e7d32">pageUrl, viewport, timestamp</text>
+
+  <rect x="223" y="245" width="188" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="317" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Session Attribution</text>
+  <text x="317" y="280" text-anchor="middle" font-size="10" fill="#2e7d32">UTM params → campaign</text>
+  <text x="317" y="295" text-anchor="middle" font-size="10" fill="#2e7d32">Referrer URL chain</text>
+
+  <rect x="30" y="310" width="380" height="50" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="220" y="329" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Privacy Controls</text>
+  <text x="220" y="344" text-anchor="middle" font-size="10" fill="#2e7d32">Respect Do-Not-Track header and cookie consent</text>
+  <text x="220" y="359" text-anchor="middle" font-size="10" fill="#2e7d32">PII stripping: hash userId, remove email from events</text>
+
+  <!-- Dashboard + reliability -->
+  <rect x="440" y="150" width="400" height="220" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="450" y="170" font-size="12" font-weight="bold" fill="#e65100">Real-time Dashboard and Reliability</text>
+
+  <rect x="450" y="180" width="375" height="55" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="637" y="200" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Real-time Metrics (ClickHouse)</text>
+  <text x="637" y="215" text-anchor="middle" font-size="10" fill="#bf360c">DAU, conversion funnel, error rate, p99 latency</text>
+  <text x="637" y="230" text-anchor="middle" font-size="10" fill="#bf360c">Materialized views updated every minute</text>
+
+  <rect x="450" y="245" width="183" height="60" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="541" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Beacon on Unload</text>
+  <text x="541" y="280" text-anchor="middle" font-size="10" fill="#bf360c">navigator.sendBeacon</text>
+  <text x="541" y="295" text-anchor="middle" font-size="10" fill="#bf360c">Flush queue on page close</text>
+
+  <rect x="643" y="245" width="183" height="60" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="734" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Retry on Failure</text>
+  <text x="734" y="280" text-anchor="middle" font-size="10" fill="#bf360c">Failed batches in IndexedDB</text>
+  <text x="734" y="295" text-anchor="middle" font-size="10" fill="#bf360c">Retry next session (non-critical)</text>
+
+  <rect x="450" y="315" width="375" height="45" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="637" y="334" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Event Schema Registry</text>
+  <text x="637" y="349" text-anchor="middle" font-size="10" fill="#bf360c">Validate event shape before enqueue — prevents schema drift</text>
+  <text x="637" y="363" text-anchor="middle" font-size="10" fill="#bf360c">Backward-compatible changes only (never remove fields)</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function RichTextEditorArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable rich text editor component for a large-scale
           React application. The editor must support standard formatting operations
           (bold, italic, underline, headings, lists, links, code blocks), inline
@@ -50,7 +51,7 @@ export default function RichTextEditorArticle() {
           undo/redo history stack, serialize its internal document model to HTML,
           JSON, and Markdown, and meet accessibility standards for keyboard navigation
           and screen reader announcements.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -58,19 +59,19 @@ export default function RichTextEditorArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The editor operates on a single document at a time. Multi-document
             editing is out of scope.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The content model uses a block-based structure (blocks, inlines, text
             leaves) rather than raw HTML strings. This enables structured manipulation
             and serialization.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The editor uses a <code>contentEditable</code> div as its rendering surface,
             not a textarea or custom canvas.
-          </li>
+          </HighlightBlock>
           <li>
             Image uploads are handled via a configurable upload endpoint. The editor
             displays inline placeholders with progress indicators during upload.
@@ -82,10 +83,10 @@ export default function RichTextEditorArticle() {
           <li>
             The editor must support both light and dark mode.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Documents may grow large (thousands of blocks). Performance optimizations
             such as virtualized rendering and debounced state updates are required.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -95,24 +96,24 @@ export default function RichTextEditorArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Formatting Toolbar:</strong> Bold, italic, underline, headings
             (H1–H4), ordered/unordered lists, links, and code blocks. Active formatting
             state must be reflected in the toolbar (e.g., bold button highlighted when
             cursor is inside bold text).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mentions:</strong> Typing <code>@</code> followed by characters
             triggers an autocomplete dropdown with matching usernames. The dropdown
             supports keyboard navigation (arrow keys, Enter to select, Escape to dismiss)
             and inserts the mention at the cursor position as an inline node.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Image Upload:</strong> Users can drag and drop images onto the editor
             or paste images from the clipboard. Images render as inline placeholders during
             upload, showing progress. On completion, the placeholder is replaced with the
             actual image. Failed uploads show a retry button.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Collaborative Editing Hooks:</strong> The editor exposes extension
             points for CRDT/OT integration, including remote operation application,
@@ -128,21 +129,21 @@ export default function RichTextEditorArticle() {
             (for rendering), JSON (for storage and collaborative editing), and Markdown
             (for export and interoperability).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> The toolbar is fully keyboard-navigable.
             Screen readers announce formatting changes, mention insertions, and image
             upload progress.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Performance:</strong> Typing should feel instantaneous (less than
             16ms per keystroke). Large documents (500+ blocks) should use virtualized
             rendering to maintain 60fps scrolling. State updates are debounced (default:
             150ms) to avoid excessive re-renders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> The editor should handle documents with
             10,000+ blocks without memory leaks. History stack is bounded (default:
@@ -204,7 +205,7 @@ export default function RichTextEditorArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>document model</strong> (a structured
           tree of blocks, inlines, and text leaves) from the <strong>rendering surface</strong>
           (a <code>contentEditable</code> div) and the <strong>state management</strong>
@@ -212,7 +213,7 @@ export default function RichTextEditorArticle() {
           is the single source of truth — all formatting operations, mention insertions,
           and image uploads mutate the model, and the rendering surface reflects the model
           state. Serialization transforms the model into HTML, JSON, or Markdown on demand.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
@@ -223,29 +224,29 @@ export default function RichTextEditorArticle() {
             HTML to detect mentions, extract images, or apply collaborative edits
             requires fragile DOM traversal. Not suitable for production-scale editors.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Textarea with Markdown syntax:</strong> Lightweight and predictable
             but lacks rich formatting feedback (users cannot see bold/italic visually
             while typing). Mention autocomplete and image inline rendering are impossible
             in a plain textarea. Suitable for developer-focused tools but not for general
             WYSIWYG use cases.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Canvas-based rendering:</strong> Complete control over rendering but
             reinvents text layout, selection, and accessibility. Extremely high
             implementation cost. Only justified for specialized editors (e.g., Figma-like
             design tools).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Existing library (Slate, ProseMirror, TipTap):</strong> Production-ready
             with battle-tested document models, serialization, and plugin ecosystems.
             The trade-off is reduced control over internals and dependency on library
             evolution. For this LLD, we implement a simplified version to demonstrate
             architectural understanding, but in production, using an existing library
             is the recommended approach.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why block-based content model + contentEditable is optimal:</strong>
           A block-based model (where each paragraph, heading, list item, or image is a
           discrete node) enables structured manipulation, efficient serialization, and
@@ -253,7 +254,7 @@ export default function RichTextEditorArticle() {
           leverages the browser&apos;s native text layout, selection, and IME support,
           avoiding the massive implementation cost of custom rendering. This pattern is
           used by production editors like Slate, ProseMirror, and Notion&apos;s editor.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -280,7 +281,7 @@ export default function RichTextEditorArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Editor Store (<code>editor-store.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A Zustand store managing the editor state, undo/redo history stack, and
             current selection. The store exposes actions for applying operations (format
             text, insert mention, insert image, update block type), pushing history
@@ -288,7 +289,7 @@ export default function RichTextEditorArticle() {
             entries) to prevent unbounded memory growth. Selection state tracks the current
             cursor position and active formatting, enabling the toolbar to reflect real-time
             state. See the Example tab for the complete Zustand store implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -373,40 +374,40 @@ export default function RichTextEditorArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">9. Toolbar Component (<code>toolbar.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Renders the formatting toolbar with buttons for each formatting action. Each
             button reflects its active state (highlighted when the current selection has
             that format applied). The toolbar is keyboard-accessible — all buttons are
             native <code>&lt;button&gt;</code> elements with proper ARIA labels. See the
             Example tab for the complete toolbar component implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">10. MentionDropdown Component (<code>mention-dropdown.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Renders the <code>@username</code> autocomplete dropdown with keyboard
             navigation (arrow keys, Enter to select, Escape to dismiss). The dropdown
             positions itself relative to the cursor using the bounding rectangle computed
             by the mention engine. It renders a scrollable list of matching users with
             avatars and display names. See the Example tab for the complete mention
             dropdown component implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">11. ImagePlaceholder Component (<code>image-placeholder.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Renders an inline image placeholder with an upload progress indicator. During
             upload, it displays a progress bar with the percentage complete. On completion,
             it renders the actual image. On failure, it displays an error message and a
             retry button. See the Example tab for the complete image placeholder component
             implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Zustand store is the single source of truth for editor state. It maintains
           the document tree (root block node with child blocks), the undo/redo history
           stack (array of serialized document snapshots), the current selection range
@@ -415,7 +416,7 @@ export default function RichTextEditorArticle() {
           push a history snapshot before applying the mutation. Undo pops the last
           snapshot from the history stack and restores it; redo pushes the current state
           onto a redo stack and applies the next snapshot.
-        </p>
+        </HighlightBlock>
         <p>
           The selection state is updated on every <code>selectionchange</code> event from
           the browser. The store computes active formats by inspecting the DOM nodes
@@ -473,7 +474,7 @@ export default function RichTextEditorArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. User interactions
           (typing, clicking toolbar, dropping images, selecting mentions) are captured by
           event handlers in the <code>useEditor</code> hook. These handlers dispatch actions
@@ -481,57 +482,57 @@ export default function RichTextEditorArticle() {
           and notifies subscribers. The React components (RichTextEditor, Toolbar,
           MentionDropdown, ImagePlaceholder) subscribe to the store and re-render when
           their selected state changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mention dropdown at viewport edge:</strong> The mention engine computes
             the dropdown position using <code>getBoundingClientRect()</code> of the text
             node at the cursor. If the dropdown would overflow the viewport, it flips its
             position (above/below the cursor, left/right of the cursor) to remain visible.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>HTML paste sanitization:</strong> When the user pastes HTML content,
             the editor sanitizes it by stripping dangerous tags (script, iframe, object)
             and converting the remaining HTML to the internal block model. This prevents
             XSS attacks and ensures content conforms to the document model.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Concurrent image uploads:</strong> Each image dropped or pasted gets a
             unique ID and uploads independently. The editor does not block typing while
             images upload — the placeholders render inline and the user can continue editing
             around them.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>History stack bounds:</strong> The store caps the history stack at 100
             entries. When the limit is reached, the oldest entry is discarded before pushing
             a new snapshot. This prevents unbounded memory growth during long editing
             sessions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SSR safety:</strong> The RichTextEditor component checks
             <code>typeof window === &apos;undefined&apos;</code> during render. If true,
             it returns a loading placeholder. On the client, a <code>useEffect</code>
             triggers the full editor mount. This prevents hydration mismatches.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Debounced state updates:</strong> The editor debounces document model
             updates at 150ms to avoid excessive store mutations during rapid typing. The
             visual feedback (character appearing in the editor) is immediate via the
             browser&apos;s native <code>contentEditable</code> behavior; the debounce
             applies only to the structured document model synchronization.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
@@ -558,7 +559,7 @@ export default function RichTextEditorArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Editor Store (editor-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Zustand store manages the document tree, history stack (bounded at 100
           entries), selection state, and active formats. Key actions include
           <code>applyOperation</code> (mutates the document and pushes a history snapshot),
@@ -567,7 +568,7 @@ export default function RichTextEditorArticle() {
           <code>updateSelection</code> (updates cursor position and recomputes active
           formats), and <code>setActiveFormats</code> (updates the active format set for
           toolbar reflection).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Content Model (content-model.ts)</h3>
         <p>
@@ -591,7 +592,7 @@ export default function RichTextEditorArticle() {
           </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Image Handler (image-handler.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Handles <code>drop</code> and <code>paste</code> events to extract image files.
           Creates <code>ImageData</code> objects with unique IDs and initial
           <code>pending</code> status. Uploads images via a configurable endpoint using
@@ -600,7 +601,7 @@ export default function RichTextEditorArticle() {
           progress percentage, then to <code>complete</code> with the final URL on success,
           or <code>failed</code> with an error message on failure. Exposes a retry callback
           for failed uploads.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: useEditor Hook (use-editor.ts)</h3>
         <p>
@@ -632,13 +633,13 @@ export default function RichTextEditorArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: Toolbar Component (toolbar.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Renders buttons for each formatting action (bold, italic, underline, H1–H4,
           ordered list, unordered list, link, code block, undo, redo). Each button uses
           the <code>useToolbar</code> hook to determine its active state and dispatch
           actions on click. All buttons are native <code>&lt;button&gt;</code> elements
           with ARIA labels for accessibility.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 10: MentionDropdown Component (mention-dropdown.tsx)</h3>
         <p>
@@ -650,12 +651,12 @@ export default function RichTextEditorArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 11: ImagePlaceholder Component (image-placeholder.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders an inline image placeholder with a progress bar during upload. On
           completion, renders the actual image using an <code>&lt;img&gt;</code> tag. On
           failure, renders an error message and a retry button. The component is styled
           with TailwindCSS to integrate seamlessly with the editor&apos;s visual design.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -723,19 +724,19 @@ export default function RichTextEditorArticle() {
             large documents (5000+ blocks), this could degrade. Mitigation: maintain a flat
             index mapping block IDs to their positions in the tree for O(1) lookup.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>History snapshot size:</strong> Each history entry is a full document
             snapshot, which is O(n) space. With 100 entries and a 10,000-node document,
             the history stack consumes significant memory. Mitigation: use differential
             snapshots (store only the changed nodes) or a CRDT-based approach for
             collaborative editors.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Selection change frequency:</strong> The <code>selectionchange</code>
             event fires on every cursor movement, which can be dozens of times per second
             during text selection. Mitigation: debounce the selection handler at 50ms and
             only update the store when the active formats actually change.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>contentEditable re-render cost:</strong> Updating the
             <code>contentEditable</code> div&apos;s innerHTML triggers browser layout
@@ -743,28 +744,28 @@ export default function RichTextEditorArticle() {
             programmatically (e.g., undo, mention insertion, image upload). User typing
             updates the DOM natively; the model syncs asynchronously.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mention dropdown repositioning:</strong> If the cursor moves while the
             dropdown is open, the dropdown position must update. Mitigation: recompute the
             position on every input event when the dropdown is visible. Use
             <code>requestAnimationFrame</code> to batch DOM reads and writes.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualized rendering:</strong> For documents with 500+ blocks, render
             only the blocks visible in the viewport using a virtualization library (e.g.,
             react-virtuoso or a custom implementation). This reduces the DOM node count and
             keeps scrolling at 60fps.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced model sync:</strong> User typing updates the DOM immediately
             (native browser behavior) but the structured document model syncs after a 150ms
             debounce. This avoids excessive store mutations during rapid typing while
             maintaining responsive visual feedback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Selector-based store subscriptions:</strong> Each component subscribes
             only to the slice of state it needs (e.g., Toolbar subscribes to activeFormats
@@ -790,7 +791,7 @@ export default function RichTextEditorArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">XSS Prevention</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The editor handles user-generated content that may be rendered as HTML. When
           pasting HTML from external sources or serializing the document model back to
           HTML, there is a risk of XSS attacks via injected <code>&lt;script&gt;</code>
@@ -800,17 +801,17 @@ export default function RichTextEditorArticle() {
           using <code>textContent</code> or a sanitization library like DOMPurify. Links
           are validated to ensure they use safe protocols (http, https, mailto) and reject
           <code>javascript:</code> URLs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Image Upload Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Image uploads must validate file types (only image/png, image/jpeg, image/gif,
           image/webp), enforce file size limits (e.g., 10MB maximum), and scan uploaded
           files for malware on the server side. The editor should not trust the uploaded
           image URL — it should be served from a trusted CDN with proper Content-Security-Policy
           headers. Inline image placeholders should use <code>blob:</code> URLs during
           upload to avoid exposing temporary file paths.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -839,10 +840,10 @@ export default function RichTextEditorArticle() {
               The <code>contentEditable</code> div has <code>role=&quot;textbox&quot;</code>
               and <code>aria-multiline=&quot;true&quot;</code>.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               When formatting is applied, an <code>aria-live=&quot;polite&quot;</code> region
               announces the change (e.g., &quot;Bold applied&quot;).
-            </li>
+            </HighlightBlock>
             <li>
               When a mention is inserted, the screen reader announces the mention text
               (e.g., &quot;Mention: John Doe inserted&quot;).
@@ -851,23 +852,23 @@ export default function RichTextEditorArticle() {
               During image upload, the screen reader announces the progress
               (e.g., &quot;Image upload: 45 percent complete&quot;).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The mention dropdown has <code>role=&quot;listbox&quot;</code> with each
               option having <code>role=&quot;option&quot;</code> and
               <code>aria-selected</code> reflecting the current highlight.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Collaborative Editing Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When integrating with a CRDT/OT backend, all operations must be authenticated
           and authorized. The editor should verify that the user has write permission for
           the document before applying remote operations. Presence data (cursor positions
           of other users) should only be shared with users who have access to the document.
           Operation transforms must be validated to prevent malicious operations that could
           corrupt the document state.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 9: Testing Strategy */}
@@ -881,27 +882,27 @@ export default function RichTextEditorArticle() {
             and update. Test inline mention insertion and text leaf format application.
             Verify that the tree structure remains valid after each operation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Serialization:</strong> Test serializeToHTML, serializeToJSON, and
             serializeToMarkdown against known document models. Verify that serializing
             and deserializing produces an equivalent model (round-trip consistency).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store actions:</strong> Test applyOperation mutates the document and
             pushes a history snapshot. Test undo restores the previous state. Test redo
             re-applies the undone state. Test that the history stack is bounded at the
             configured limit.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Mention engine:</strong> Test detection of <code>@</code> triggers
             at various cursor positions. Test filtering logic with partial queries. Test
             mention insertion replaces the <code>@query</code> text with the mention node.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Image handler:</strong> Test image extraction from drop and paste
             events. Test upload progress tracking. Test status transitions
             (pending → uploading → complete/failed). Test retry logic for failed uploads.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
@@ -945,14 +946,14 @@ export default function RichTextEditorArticle() {
             100+ image uploads simultaneously: verify no memory leaks, all progress
             indicators render correctly, and the editor remains responsive.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on the rendered editor, verify
             ARIA roles, live regions, keyboard navigation, and screen reader announcements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Large document (5000+ blocks): verify virtualized rendering maintains 60fps
             scrolling and typing remains responsive.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -996,18 +997,18 @@ export default function RichTextEditorArticle() {
             sanitization is an XSS vulnerability. Interviewers expect candidates to discuss
             content sanitization as a non-negotiable security requirement.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Overlooking accessibility:</strong> Building a rich text editor without
             ARIA roles, live regions, and keyboard navigation excludes users who rely on
             assistive technology. This is a critical oversight in production systems and
             a red flag in interviews.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">contentEditable vs Custom Rendering</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Using <code>contentEditable</code> leverages the browser&apos;s native text
             layout, selection, and IME (Input Method Editor) support for East Asian
             languages. The trade-off is inconsistent behavior across browsers (Chrome,
@@ -1017,7 +1018,7 @@ export default function RichTextEditorArticle() {
             and IME support from scratch — a massive engineering effort. For most
             applications, contentEditable is the pragmatic choice, with browser-specific
             quirks handled via normalization layers.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1035,7 +1036,7 @@ export default function RichTextEditorArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">execCommand vs Custom Formatting</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             <code>document.execCommand</code> is deprecated but still supported by all
             major browsers. It provides a simple API for applying formatting (bold, italic,
             headings) to the current selection. The trade-off is inconsistent behavior
@@ -1046,12 +1047,12 @@ export default function RichTextEditorArticle() {
             formatting where browser support is reliable, and use custom logic for custom
             nodes (mentions, images, code blocks). Production editors like Slate have moved
             entirely to custom formatting to avoid execCommand&apos;s inconsistencies.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">CRDT vs OT for Collaborative Editing</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             CRDTs (Conflict-free Replicated Data Types, e.g., Yjs, Automerge) are
             peer-to-peer and do not require a central server for conflict resolution. They
             are simpler to integrate as extension points but consume more memory (store
@@ -1062,7 +1063,7 @@ export default function RichTextEditorArticle() {
             <code>getLocalOperations</code> function. The actual CRDT/OT implementation
             is external. Interviewers expect candidates to understand the trade-offs and
             articulate why one might be chosen over the other for a given use case.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -1152,7 +1153,7 @@ export default function RichTextEditorArticle() {
             <p className="font-semibold">
               Q: How would you handle extremely large documents (100,000+ blocks)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Implement virtualized rendering — only render the blocks visible in the
               viewport (plus a small buffer above and below). Use a block index (flat map
               of block ID to position) for O(1) block lookup. Implement lazy loading —
@@ -1161,7 +1162,7 @@ export default function RichTextEditorArticle() {
               as lazy references. When the user scrolls to an unloaded region, the editor
               fetches and materializes the blocks. This keeps memory usage constant
               regardless of total document size.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

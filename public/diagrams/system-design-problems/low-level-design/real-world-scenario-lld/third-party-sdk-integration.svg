@@ -1,0 +1,88 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Third-Party SDK Integration — Loading, Isolation, Error Boundaries, and Fallbacks</text>
+
+  <!-- Loading strategy -->
+  <rect x="20" y="45" width="260" height="310" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">SDK Loading Strategy</text>
+
+  <rect x="35" y="78" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Async / Deferred Load</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">&lt;script async defer&gt;</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">Never block critical render path</text>
+  <text x="150" y="142" text-anchor="middle" font-size="10" fill="#1565c0">Load after first user interaction</text>
+
+  <rect x="35" y="153" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Stub Pattern</text>
+  <text x="150" y="188" text-anchor="middle" font-size="10" fill="#1565c0">window.analytics = queue stub</text>
+  <text x="150" y="203" text-anchor="middle" font-size="10" fill="#1565c0">Calls buffered until SDK loads</text>
+  <text x="150" y="218" text-anchor="middle" font-size="10" fill="#1565c0">SDK replays queue on init</text>
+
+  <rect x="35" y="228" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Load Timeout</text>
+  <text x="150" y="263" text-anchor="middle" font-size="10" fill="#1565c0">If SDK not loaded in 5s</text>
+  <text x="150" y="278" text-anchor="middle" font-size="10" fill="#1565c0">Mark as failed → use fallback</text>
+  <text x="150" y="292" text-anchor="middle" font-size="10" fill="#1565c0">Don't block UX on 3rd party</text>
+
+  <rect x="35" y="303" width="230" height="42" rx="4" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="150" y="322" text-anchor="middle" font-size="10" fill="#0d47a1">Subresource Integrity (SRI)</text>
+  <text x="150" y="335" text-anchor="middle" font-size="10" fill="#1565c0">Hash check on script load</text>
+
+  <!-- Isolation + error -->
+  <rect x="295" y="45" width="280" height="310" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">Isolation and Error Boundaries</text>
+
+  <rect x="310" y="78" width="250" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">React Error Boundary</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#c62828">Wrap each SDK widget component</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#c62828">SDK crash → fallback UI shown</text>
+  <text x="435" y="142" text-anchor="middle" font-size="10" fill="#c62828">Rest of page stays functional</text>
+
+  <rect x="310" y="153" width="250" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="435" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Sandboxed Iframe</text>
+  <text x="435" y="188" text-anchor="middle" font-size="10" fill="#c62828">Chat widgets in &lt;iframe sandbox&gt;</text>
+  <text x="435" y="203" text-anchor="middle" font-size="10" fill="#c62828">No DOM or cookie access</text>
+  <text x="435" y="218" text-anchor="middle" font-size="10" fill="#c62828">postMessage API for comms</text>
+
+  <rect x="310" y="228" width="250" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">CSP Headers</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#c62828">Allowlist trusted SDK domains</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#c62828">Prevent unintended script loads</text>
+  <text x="435" y="293" text-anchor="middle" font-size="10" fill="#c62828">Report-only mode first</text>
+
+  <rect x="310" y="303" width="250" height="42" rx="4" fill="#ffcdd2" stroke="#e53935" stroke-width="1"/>
+  <text x="435" y="322" text-anchor="middle" font-size="10" fill="#b71c1c">Performance budget: SDK ≤ 50KB gzip</text>
+  <text x="435" y="335" text-anchor="middle" font-size="10" fill="#c62828">Monitor Core Web Vitals impact</text>
+
+  <!-- Versioning + fallback -->
+  <rect x="590" y="45" width="250" height="310" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Versioning and Fallbacks</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Pin SDK Version</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">Use specific semver — never "latest"</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">Test before upgrading</text>
+  <text x="715" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">Self-host critical SDKs if needed</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Graceful Degradation</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">Analytics fail: log to console only</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Chat fail: show email link</text>
+  <text x="715" y="218" text-anchor="middle" font-size="10" fill="#2e7d32">Maps fail: show static image</text>
+
+  <rect x="605" y="228" width="220" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="715" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">API Key Management</text>
+  <text x="715" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">Public SDK key: domain-allowlisted</text>
+  <text x="715" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">Separate keys per env</text>
+  <text x="715" y="293" text-anchor="middle" font-size="10" fill="#2e7d32">Rotate on suspected exposure</text>
+
+  <rect x="605" y="303" width="220" height="42" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="715" y="322" text-anchor="middle" font-size="10" fill="#1b5e20">Monitoring: alert if SDK error rate</text>
+  <text x="715" y="335" text-anchor="middle" font-size="10" fill="#2e7d32">exceeds 1% of page loads</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

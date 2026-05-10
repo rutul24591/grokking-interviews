@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="User workflow for RUM dashboard from aggregate metrics to dimension narrowing to session drill down and correlation to backend traces">
+  <title>Metrics to Drill-down Workflow</title>
+  <desc>Shows a repeatable investigation path: detect regression, narrow by dimensions, identify top issues, drill into sessions, and correlate with backend traces and releases.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .good{fill:#052018;stroke:#34d399}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <text class="label bold" x="60" y="70">Investigation should follow a predictable path</text>
+
+  <rect class="accent" x="60" y="110" width="300" height="110"/>
+  <text class="label bold" x="90" y="150">Detect</text>
+  <text class="label small" x="90" y="175">p95 load regression</text>
+  <text class="label small" x="90" y="198">error spike</text>
+
+  <rect class="muted" x="390" y="110" width="300" height="110"/>
+  <text class="label bold" x="420" y="150">Narrow</text>
+  <text class="label small" x="420" y="175">service / route</text>
+  <text class="label small" x="420" y="198">release / device</text>
+
+  <rect class="muted" x="720" y="110" width="300" height="110"/>
+  <text class="label bold" x="750" y="150">Rank</text>
+  <text class="label small" x="750" y="175">top errors</text>
+  <text class="label small" x="750" y="198">slow resources</text>
+
+  <rect class="good" x="870" y="260" width="270" height="110"/>
+  <text class="label bold" x="900" y="300">Drill-down</text>
+  <text class="label small" x="900" y="325">sampled sessions</text>
+  <text class="label small" x="900" y="348">timeline + stacks</text>
+
+  <rect class="accent" x="540" y="260" width="300" height="110"/>
+  <text class="label bold" x="570" y="300">Correlate</text>
+  <text class="label small" x="570" y="325">trace id link</text>
+  <text class="label small" x="570" y="348">backend latency</text>
+
+  <rect class="box" x="60" y="430" width="1080" height="170"/>
+  <text class="label bold" x="90" y="470">What the UI must do</text>
+  <text class="label small" x="90" y="500">Default to bounded time ranges and low-cardinality filters to keep queries fast</text>
+  <text class="label small" x="90" y="525">Always show sampling information when moving from aggregates to sessions</text>
+  <text class="label small" x="90" y="550">Keep context: filters and hypothesis carry through across views</text>
+
+  <path class="arrow" d="M360 165 L390 165"/>
+  <path class="arrow" d="M690 165 L720 165"/>
+  <path class="arrow" d="M870 220 L870 260"/>
+  <path class="arrow" d="M720 165 L720 260"/>
+  <path class="arrow" d="M840 315 L870 315"/>
+</svg>
+

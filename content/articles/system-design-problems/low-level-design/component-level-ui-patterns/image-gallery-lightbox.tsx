@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function ImageGalleryLightboxArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable image gallery and lightbox system for a
           large-scale React application. The gallery displays a responsive grid of
           images with lazy loading and placeholder previews. Clicking any image opens
@@ -51,7 +52,7 @@ export default function ImageGalleryLightboxArticle() {
           (hundreds of images), accessible (focus trap, ARIA attributes, screen reader
           support), and handle real-world constraints like varying image aspect ratios,
           slow network conditions, and memory management for high-resolution images.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -59,10 +60,10 @@ export default function ImageGalleryLightboxArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Images are hosted on a CDN and accessible via URL. Multiple resolutions
             may be available (thumbnail, medium, full).
-          </li>
+          </HighlightBlock>
           <li>
             The gallery may contain anywhere from a dozen to several hundred images.
           </li>
@@ -76,14 +77,14 @@ export default function ImageGalleryLightboxArticle() {
             Desktop users must support mouse wheel zoom, click-to-zoom, and keyboard
             navigation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The lightbox must trap focus while open and restore focus to the triggering
             element on close.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Adjacent images (previous + next) are preloaded when the lightbox is open
             to ensure smooth transitions.
-          </li>
+          </HighlightBlock>
           <li>
             The application may run in both light and dark mode.
           </li>
@@ -108,15 +109,15 @@ export default function ImageGalleryLightboxArticle() {
             <strong>Lightbox Open:</strong> Clicking any gallery image opens a full-screen
             lightbox overlay with that image displayed at fit-to-screen size.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Navigation:</strong> Previous/Next buttons, swipe gestures (touch),
             and keyboard arrows (Left/Right) navigate between images.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Zoom:</strong> Pinch-to-zoom on touch devices, double-click or scroll
             wheel on desktop, +/- keys. Zoom supports panning when zoom level exceeds
             1x (drag to pan on desktop, two-finger pan on touch).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Thumbnail Strip:</strong> A horizontal strip of mini thumbnails at the
             bottom of the lightbox for quick navigation, with an active indicator.
@@ -142,21 +143,21 @@ export default function ImageGalleryLightboxArticle() {
             Lazy loading ensures only visible images are fetched. Lightbox transitions
             must run at 60fps using GPU-accelerated properties (transform, opacity).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Management:</strong> High-resolution images consume significant
             GPU memory. The system must evict decoded images that are far from the current
             index to prevent out-of-memory crashes on mobile devices.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Network Efficiency:</strong> Load appropriately sized images based on
             viewport. Thumbnails for the gallery grid, medium resolution for lightbox at
             1x zoom, full resolution only when zoomed in beyond 2x.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Focus trap within lightbox, aria-label for
             each image, role="dialog" for the lightbox, keyboard navigation, screen
             reader announcements for image changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for GalleryImage,
             LightboxState, ZoomState, and all component props.
@@ -199,7 +200,7 @@ export default function ImageGalleryLightboxArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate the <strong>gallery rendering</strong> from the
           <strong>lightbox state management</strong> using a global store (Zustand) and
           a portal-based lightbox rendering strategy. The gallery grid handles lazy
@@ -207,30 +208,30 @@ export default function ImageGalleryLightboxArticle() {
           calculations, swipe detection, image preloading, keyboard navigation, and
           focus management. Zoom state (scale, translateX, translateY) is managed
           independently from lightbox state (isOpen, currentIndex) to avoid coupling.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Native CSS scroll-snap gallery:</strong> Works well for simple
             carousels but lacks zoom, pan, and thumbnail strip. Insufficient for our
             requirements.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Third-party library (e.g., PhotoSwipe, react-image-lightbox):</strong>
             Production-ready but adds significant bundle size and removes control over
             accessibility, customization, and state management. For a large application
             that needs tight integration with existing state (Zustand), a custom
             implementation is preferable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Canvas-based rendering:</strong> Could handle zoom/pan at the pixel
             level but adds complexity, loses native image decoding optimizations, and
             makes accessibility significantly harder.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + CSS Transform + Portal is optimal:</strong> Zustand
           provides a lightweight, selector-based global store for lightbox state. CSS
           transforms (scale + translate) handle zoom and pan on the GPU compositor thread,
@@ -239,7 +240,7 @@ export default function ImageGalleryLightboxArticle() {
           dedicated swipe detector module that calculates velocity and direction, while
           zoom is managed by a separate zoom-manager module that computes the transform
           matrix from pinch distance ratios.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -251,14 +252,14 @@ export default function ImageGalleryLightboxArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Gallery Types &amp; Interfaces (<code>gallery-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>GalleryImage</code> interface with fields for id, src,
             thumbnailSrc, fullSrc, blurhash, width, height, title, description,
             photographer, and aspectRatio. The <code>LightboxState</code> interface
             tracks isOpen, currentIndex, and transitionDirection. The <code>ZoomState</code>
             interface tracks scale, translateX, translateY, and panBounds. See the
             Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -313,14 +314,14 @@ export default function ImageGalleryLightboxArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Blurhash Utilities (<code>blurhash-utils.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Handles blurhash decode/encode for placeholder previews. Blurhash is a
             compact representation of a blurred image (typically 20-30 characters) that
             can be decoded into a small canvas pixel buffer. The module exposes
             <code>decodeBlurhash(hash, width, height)</code> which returns a data URL
             suitable as an <code>&lt;img&gt;</code> src. Falls back to a solid color
             extracted from the blurhash if decoding fails.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -360,12 +361,12 @@ export default function ImageGalleryLightboxArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">7. Image Preload Hook (<code>use-image-preload.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Custom React hook that preloads adjacent images when the lightbox currentIndex
             changes. Uses <code>new Image()</code> to preload the full-resolution images
             at N-1 and N+1 into the browser cache. Cleans up references when the index
             changes to prevent memory leaks from holding decoded image data.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component Tree</h3>
@@ -391,14 +392,14 @@ export default function ImageGalleryLightboxArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Zustand store holds lightbox state (isOpen, currentIndex, zoom). The
           gallery grid itself is stateless — it receives the images array as props and
           renders cards. Each card uses the lazy loading hook independently. When the
           lightbox opens, the preload hook activates and begins loading adjacent images.
           Zoom state is decoupled from navigation state — navigating to a different
           image resets zoom to 1x and centers the image.
-        </p>
+        </HighlightBlock>
         <p>
           The most complex interaction is zoom + pan bounds calculation. When the image
           is zoomed to scale S, the rendered dimensions become originalWidth * S and
@@ -449,69 +450,69 @@ export default function ImageGalleryLightboxArticle() {
             ratio, updates zoom state, LightboxImage applies CSS transform: scale(S)
             translate(X, Y).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             User presses Escape: store calls closeLightbox(), portal unmounts, focus
             returns to the triggering image card.
-          </li>
+          </HighlightBlock>
         </ol>
       </section>
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. Gallery rendering
           flows from the images array prop through IntersectionObserver-triggered lazy
           loading. Lightbox state flows through the Zustand store, and all rendering
           flows from store subscriptions. This ensures predictable behavior and makes
           the system testable in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Image load failure:</strong> If an image fails to load (404, network
             error), the LightboxImage component catches the onError event and renders an
             error placeholder with a retry button. The retry triggers a fresh fetch with
             cache busting.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rapid navigation:</strong> When the user swipes rapidly, the store
             updates currentIndex immediately. The LightboxImage component uses a CSS
             transition with <code>transition: transform 300ms ease-out</code>. If a new
             navigation occurs during the transition, the previous transition is cancelled
             and the new one begins. This is acceptable — the user perceives smooth motion.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Viewport resize during lightbox:</strong> A resize listener recalculates
             pan bounds and re-centers the image. The zoom scale is preserved but translate
             offsets are clamped to the new bounds.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory pressure on mobile:</strong> The preload hook maintains a
             maximum cache size (default: 5 images — current, ±2 adjacent). When the index
             moves beyond this range, images outside the window are dereferenced, allowing
             the browser to garbage-collect the decoded bitmap data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Route change with open lightbox:</strong> The Lightbox component
             registers a cleanup effect that closes the lightbox on unmount. This ensures
             the portal is removed and focus is restored even during navigation.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The complete, production-ready implementation consists of 15 files: type
             definitions, Zustand store with zoom management, blurhash utilities, swipe
             detector, zoom manager, lazy loading hook, image preload hook, gallery grid,
@@ -519,26 +520,26 @@ export default function ImageGalleryLightboxArticle() {
             strip, image caption overlay, and a full EXPLANATION.md walkthrough. Click
             the <strong>Example</strong> toggle at the top of the article to view all
             source files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Gallery Types (gallery-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the <code>GalleryImage</code> interface with multiple URL variants
           (thumbnail, medium, full), blurhash placeholder, dimensions, and metadata.
           The <code>ZoomState</code> interface tracks scale (min: 1, max: 5), translateX,
           and translateY. The <code>LightboxState</code> interface tracks open/close
           state and current index.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (gallery-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages lightbox open/close, current image index, navigation, and
           zoom state. Key design decisions include: resetting zoom to 1x on every
           navigation (prevents disorientation), clamping currentIndex within bounds,
           and providing a <code>setZoom</code> action that merges partial updates for
           ergonomic zoom manipulation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Blurhash Utilities (blurhash-utils.ts)</h3>
         <p>
@@ -599,12 +600,12 @@ export default function ImageGalleryLightboxArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 10: Lightbox Container (lightbox.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full-screen lightbox rendered via React Portal. Handles backdrop click to
           close, focus trap (Tab/Shift-Tab cycles within lightbox), keyboard event
           listeners (arrows, escape, +/-), and renders the thumbnail strip and caption
           overlay. Uses <code>useEffect</code> for SSR-safe mounting.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 11: Lightbox Image (lightbox-image.tsx)</h3>
         <p>
@@ -677,30 +678,30 @@ export default function ImageGalleryLightboxArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>k</code> is the preload window size (typically 2) and <code>n</code>
           is the total number of images in the gallery. All store operations are O(1).
           The gallery grid scales linearly with the number of images, but only visible
           images consume memory and network bandwidth.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Image decoding at high zoom:</strong> Browsers decode images to
             bitmap buffers in main memory. A 10000x8000 image at 32-bit color depth
             consumes ~320 MB. Zooming beyond 3x on large images can trigger memory
             pressure on mobile devices. Mitigation: serve progressive JPEGs or WebP
             with multiple resolution tiers, and only load full resolution when zoom
             exceeds 2x.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Gallery grid with 500+ images:</strong> Even with lazy loading,
             rendering 500+ DOM nodes causes initial paint delay. Mitigation: virtualize
             the grid using a windowing library (react-window) or implement custom
             virtualization — only render DOM nodes for images within the viewport plus
             a buffer.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Swipe gesture on low-end devices:</strong> Touch event handlers
             running on the main thread can cause scroll jank. Mitigation: use
@@ -734,17 +735,17 @@ export default function ImageGalleryLightboxArticle() {
             <code>{"<link rel='preload' as='image'>"}</code> for the adjacent images
             to signal browser priority. For the current image, use <code>fetchpriority="high"</code>.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory eviction:</strong> The preload hook evicts images that fall
             outside the ±2 window. On memory pressure events (detectable via
             <code>performance.memory</code> in Chrome), aggressively evict all cached
             images except the current one.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced resize:</strong> The resize listener that recalculates
             pan bounds is debounced at 100ms to avoid thrashing during continuous
             resize (e.g., window drag-resize).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -753,13 +754,13 @@ export default function ImageGalleryLightboxArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Image URL Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Image URLs sourced from user-generated content (e.g., user-uploaded photos)
           must be validated to prevent open redirect or XSS via malicious URLs. Ensure
           all image URLs point to trusted CDN domains or pass through a URL allowlist.
           Never use <code>dangerouslySetInnerHTML</code> with image URLs or metadata
           from untrusted sources.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Content Security Policy</h3>
         <p>
@@ -798,31 +799,31 @@ export default function ImageGalleryLightboxArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               The lightbox uses <code>role="dialog"</code> with <code>aria-modal="true"</code>
               to signal to assistive technologies that this is a modal overlay.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The current image has <code>aria-label</code> set to the image title and
               description. When navigating, the new image's <code>aria-label</code> is
               updated, triggering a screen reader announcement.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The lightbox has <code>aria-labelledby</code> pointing to the caption
               title element, providing context when the dialog opens.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Focus Management</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             When the lightbox opens, focus moves to the lightbox container. A focus trap
             ensures that Tab and Shift+Tab cycle only within the lightbox elements
             (navigation buttons, thumbnail strip, close button). On close, focus returns
             to the gallery image card that triggered the lightbox. This is essential for
             keyboard users to maintain their position in the gallery.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Privacy</h3>
@@ -861,11 +862,11 @@ export default function ImageGalleryLightboxArticle() {
             and velocities. Assert that swipe-left fires when deltaX exceeds threshold
             moving left, and does not fire for small movements.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Blurhash decode:</strong> Test decode with valid blurhash strings
             returns a valid data URL. Test with invalid input returns a solid color
             fallback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lazy loading hook:</strong> Mock IntersectionObserver, trigger
             intersect callbacks, verify that the image src is set only after intersection.
@@ -874,16 +875,16 @@ export default function ImageGalleryLightboxArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Gallery to lightbox flow:</strong> Render ImageGallery with 10 images,
             click the 5th image card, assert lightbox opens with the correct image,
             assert focus is within the lightbox.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Lightbox navigation:</strong> Open lightbox, press ArrowRight, assert
             currentIndex is 6, assert image src updated. Press Escape, assert lightbox
             is closed and focus returned to the 5th card.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Zoom interaction:</strong> Open lightbox, simulate wheel event with
             positive delta, assert zoom scale increased. Simulate drag after zoom, assert
@@ -902,18 +903,18 @@ export default function ImageGalleryLightboxArticle() {
             SSR rendering: verify Lightbox returns null during SSR and mounts correctly
             on hydration.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Image load failure: replace image URL with a 404 endpoint, assert error
             placeholder renders with retry button.
-          </li>
+          </HighlightBlock>
           <li>
             Rapid navigation: fire 10 next() calls in 100ms, assert currentIndex is
             correct and no crashes occur.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Accessibility: run axe-core automated checks on the lightbox, verify
             role="dialog", aria-modal, focus trap, and aria-label on images.
-          </li>
+          </HighlightBlock>
           <li>
             Touch gestures: use Playwright's device emulation to simulate swipe and
             pinch-to-zoom on mobile viewports.
@@ -946,27 +947,27 @@ export default function ImageGalleryLightboxArticle() {
             candidates who know to use CSS <code>transform: scale() translate()</code> for
             zoom and pan, which runs on the GPU compositor.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring focus trap in lightbox:</strong> Without a focus trap, Tab
             key can focus elements behind the lightbox, confusing keyboard users. This is
             a critical accessibility oversight.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No image preloading:</strong> Without preloading adjacent images, the
             user sees a loading spinner on every navigation. Interviewers expect candidates
             to discuss preloading strategies (adjacent N images, progressive loading).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory leaks from decoded images:</strong> Keeping references to all
             preloaded <code>Image()</code> objects prevents garbage collection. Candidates
             should discuss eviction strategies (LRU cache, window-based eviction).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">CSS Grid vs Masonry Layout</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             CSS Grid with <code>auto-fill</code> creates a uniform grid where all cells in
             a row have the same height. For images with varying aspect ratios, this means
             cropping or letterboxing. CSS Masonry (available in Firefox behind a flag,
@@ -977,7 +978,7 @@ export default function ImageGalleryLightboxArticle() {
             For a gallery where preserving the full image is important, masonry is
             preferred. For uniform thumbnails (e.g., all cropped to 4:3), CSS Grid is
             simpler and faster.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -997,7 +998,7 @@ export default function ImageGalleryLightboxArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Pinch-to-Zoom: CSS Transform vs Canvas</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             CSS <code>transform: scale()</code> leverages the browser's image decoding and
             GPU compositing. The browser automatically handles bilinear filtering and
             quality at different zoom levels. The limitation is that the browser loads the
@@ -1010,7 +1011,7 @@ export default function ImageGalleryLightboxArticle() {
             CSS transforms are the right choice. Canvas/tiling is justified only for
             extremely high-resolution images (e.g., art galleries, medical imaging) where
             zoom levels exceed 10x.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -1080,7 +1081,7 @@ export default function ImageGalleryLightboxArticle() {
             <p className="font-semibold">
               Q: How would you implement gesture-based image rotation?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Extend the zoom manager to track two-finger rotation angle. On touchmove
               with two fingers, compute the angle between the current finger positions and
               the initial positions. Apply <code>transform: rotate(deg) scale(S)
@@ -1090,7 +1091,7 @@ export default function ImageGalleryLightboxArticle() {
               rotation via a UI slider or keyboard shortcut. Be aware that rotation
               changes the pan bounds calculation — the bounding rectangle of a rotated
               image is larger than the unbounded rectangle.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

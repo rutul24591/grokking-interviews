@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,23 +38,23 @@ export default function ResizableSplitPaneArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a resizable split pane component that divides a container
           into two panels separated by a draggable divider. Users can drag the divider
           to resize panel widths (horizontal split) or heights (vertical split). The
           system must enforce minimum and maximum panel sizes, persist user-adjusted
           sizes across sessions, support nested splits for complex multi-pane layouts,
           and be fully keyboard-accessible.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>The container has a fixed or percentage-based size. Pane sizes are computed relative to the container.</li>
+          <HighlightBlock as="li" tier="important">The container has a fixed or percentage-based size. Pane sizes are computed relative to the container.</HighlightBlock>
           <li>Each pane has configurable minimum and maximum sizes (in pixels or percentages).</li>
           <li>Pane sizes are persisted to localStorage and restored on remount.</li>
           <li>Nested splits are supported (e.g., left pane contains its own vertical split).</li>
-          <li>Double-clicking the divider collapses the first pane to its minimum size; double-clicking again restores the previous size.</li>
+          <HighlightBlock as="li" tier="important">Double-clicking the divider collapses the first pane to its minimum size; double-clicking again restores the previous size.</HighlightBlock>
           <li>The component is used in a React 19+ SPA.</li>
         </ul>
       </section>
@@ -63,12 +64,12 @@ export default function ResizableSplitPaneArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Drag Resize:</strong> Pointer-based drag on the divider resizes both panels simultaneously. Movement delta is applied to the divider position.</li>
-          <li><strong>Min/Max Constraints:</strong> Each panel has minimum and maximum size constraints. Dragging beyond constraints stops the divider.</li>
+          <HighlightBlock as="li" tier="important"><strong>Drag Resize:</strong> Pointer-based drag on the divider resizes both panels simultaneously. Movement delta is applied to the divider position.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Min/Max Constraints:</strong> Each panel has minimum and maximum size constraints. Dragging beyond constraints stops the divider.</HighlightBlock>
           <li><strong>Orientation:</strong> Supports horizontal (left/right) and vertical (top/bottom) splits.</li>
           <li><strong>Persistence:</strong> Pane sizes are saved to localStorage and restored on remount.</li>
-          <li><strong>Nested Splits:</strong> A pane can contain another SplitPane, enabling arbitrary multi-pane layouts.</li>
-          <li><strong>Collapse/Restore:</strong> Double-clicking the divider collapses the first pane to minimum. Double-clicking again restores the previous size.</li>
+          <HighlightBlock as="li" tier="important"><strong>Nested Splits:</strong> A pane can contain another SplitPane, enabling arbitrary multi-pane layouts.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Collapse/Restore:</strong> Double-clicking the divider collapses the first pane to minimum. Double-clicking again restores the previous size.</HighlightBlock>
           <li><strong>Keyboard Resize:</strong> When the divider is focused, Arrow keys resize by 10px increments.</li>
           <li><strong>Cursor Feedback:</strong> Divider shows col-resize or row-resize cursor based on orientation.</li>
         </ul>
@@ -77,7 +78,7 @@ export default function ResizableSplitPaneArticle() {
         <ul className="space-y-2">
           <li><strong>Performance:</strong> Drag updates use requestAnimationFrame for smooth 60fps resizing. No layout thrashing during drag.</li>
           <li><strong>Responsiveness:</strong> Pane sizes recompute on container resize (ResizeObserver).</li>
-          <li><strong>Accessibility:</strong> Divider has role=&quot;separator&quot;, aria-orientation, aria-valuenow, and keyboard support.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Divider has role=&quot;separator&quot;, aria-orientation, aria-valuenow, and keyboard support.</HighlightBlock>
           <li><strong>Type Safety:</strong> Full TypeScript for pane configuration, size types, and persistence schema.</li>
         </ul>
 
@@ -93,24 +94,24 @@ export default function ResizableSplitPaneArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to manage the divider position as a single source of truth
           (a pixel value or percentage), with each panel&apos;s size derived from it.
           Pointer events on the divider compute movement deltas, constrained by each
           panel&apos;s min/max bounds. A Zustand store persists sizes to localStorage
           and restores them on mount. Nested splits work by recursively rendering
           SplitPane components within panes, each with independent state.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches:</strong>
         </p>
         <ul className="space-y-2">
-          <li><strong>CSS-only with resize property:</strong> CSS <code>resize: horizontal</code> on panels works for simple cases but lacks min/max enforcement, persistence, nested support, and keyboard accessibility.</li>
-          <li><strong>Third-party library (react-resizable-panels, react-split-pane):</strong> Battle-tested but adds bundle weight and limits customization (e.g., custom collapse behavior, persistence schema).</li>
+          <HighlightBlock as="li" tier="crucial"><strong>CSS-only with resize property:</strong> CSS <code>resize: horizontal</code> on panels works for simple cases but lacks min/max enforcement, persistence, nested support, and keyboard accessibility.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Third-party library (react-resizable-panels, react-split-pane):</strong> Battle-tested but adds bundle weight and limits customization (e.g., custom collapse behavior, persistence schema).</HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why custom implementation is optimal:</strong> Full control over drag mechanics, persistence strategy, nested layout support, and ARIA compliance. The pointer-event-based approach works on both mouse and touch devices, and the store-based persistence is decoupled from the rendering layer.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -121,7 +122,7 @@ export default function ResizableSplitPaneArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Types &amp; Interfaces (<code>split-pane-types.ts</code>)</h4>
-          <p>Defines <code>SplitPaneOrientation</code> (horizontal | vertical), <code>PaneSize</code> (pixels or percentage), <code>PaneConfig</code> (min, max, initial size), and <code>SplitPaneState</code> (divider position, collapsed state, persisted size).</p>
+          <HighlightBlock as="p" tier="important">Defines <code>SplitPaneOrientation</code> (horizontal | vertical), <code>PaneSize</code> (pixels or percentage), <code>PaneConfig</code> (min, max, initial size), and <code>SplitPaneState</code> (divider position, collapsed state, persisted size).</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -136,7 +137,7 @@ export default function ResizableSplitPaneArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. Pointer Drag Handler (<code>pointer-drag-handler.ts</code>)</h4>
-          <p>Pointer event lifecycle: pointerdown on divider captures pointer, pointermove on document computes delta, pointerup releases. Movement is restricted to the split axis (X for horizontal, Y for vertical). Cursor is set via CSS during drag.</p>
+          <HighlightBlock as="p" tier="important">Pointer event lifecycle: pointerdown on divider captures pointer, pointermove on document computes delta, pointerup releases. Movement is restricted to the split axis (X for horizontal, Y for vertical). Cursor is set via CSS during drag.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -146,22 +147,22 @@ export default function ResizableSplitPaneArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. usePaneKeyboard Hook (<code>use-pane-keyboard.ts</code>)</h4>
-          <p>Keyboard handler on the divider: ArrowLeft/Right (horizontal) or ArrowUp/Down (vertical) adjust divider position by 10px increments. Home/End jump to min/max positions. Enter toggles collapse.</p>
+          <HighlightBlock as="p" tier="important">Keyboard handler on the divider: ArrowLeft/Right (horizontal) or ArrowUp/Down (vertical) adjust divider position by 10px increments. Home/End jump to min/max positions. Enter toggles collapse.</HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">7. usePanePersistence Hook (<code>use-pane-persistence.ts</code>)</h4>
-          <p>Saves divider position to localStorage on change (debounced at 300ms). On mount, reads saved position and validates against current container size. Handles corrupted or stale data (version mismatch) by falling back to defaults.</p>
+          <HighlightBlock as="p" tier="crucial">Saves divider position to localStorage on change (debounced at 300ms). On mount, reads saved position and validates against current container size. Handles corrupted or stale data (version mismatch) by falling back to defaults.</HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each SplitPane instance has its own Zustand store (factory pattern). The store
           holds the divider position in pixels, collapsed state, and previous size (for
           restore). Persistence is handled by a separate hook that debounces writes to
           localStorage. Container size changes trigger a recalculation via ResizeObserver,
           which updates the divider position proportionally.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/resizable-split-pane-architecture.svg"
@@ -184,19 +185,19 @@ export default function ResizableSplitPaneArticle() {
 
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The data flow is unidirectional: user interaction (drag, keyboard, double-click)
           → store update → size recalculation → panel style update → persistence (debounced).
           Container resize events (ResizeObserver) trigger a proportional recalculation of
           the divider position.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li><strong>Pointer leaves window:</strong> Document-level pointermove/pointerup listeners ensure drag continues even when the cursor exits the browser viewport. Pointer capture prevents other elements from receiving events.</li>
-          <li><strong>Container shrinks below min sizes:</strong> The pane size calculator clamps the divider to the closest valid position. Panels may overflow the container, but the divider remains draggable to restore valid proportions.</li>
-          <li><strong>localStorage unavailable:</strong> The persistence hook catches QuotaExceededError and Storage access denied errors. It falls back to in-memory defaults and logs a warning in development mode.</li>
-          <li><strong>Nested split resize:</strong> When a parent pane resizes, the child SplitPane&apos;s container changes size. The child&apos;s ResizeObserver fires, and the divider position is recomputed proportionally to maintain the user&apos;s relative split.</li>
+          <HighlightBlock as="li" tier="important"><strong>Pointer leaves window:</strong> Document-level pointermove/pointerup listeners ensure drag continues even when the cursor exits the browser viewport. Pointer capture prevents other elements from receiving events.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Container shrinks below min sizes:</strong> The pane size calculator clamps the divider to the closest valid position. Panels may overflow the container, but the divider remains draggable to restore valid proportions.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>localStorage unavailable:</strong> The persistence hook catches QuotaExceededError and Storage access denied errors. It falls back to in-memory defaults and logs a warning in development mode.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Nested split resize:</strong> When a parent pane resizes, the child SplitPane&apos;s container changes size. The child&apos;s ResizeObserver fires, and the divider position is recomputed proportionally to maintain the user&apos;s relative split.</HighlightBlock>
         </ul>
       </section>
 
@@ -209,37 +210,37 @@ export default function ResizableSplitPaneArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Complete production-ready implementation includes:
             Zustand store with persistence, pointer-based drag handler,
             ResizeObserver integration, keyboard resize, collapse/restore,
             nested pane support, and full ARIA compliance.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Types &amp; Interfaces</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the orientation enum, PaneSize type (pixels or percentage), PaneConfig
           with min/max/initial, SplitPaneState with divider position and collapse flag,
           and the component props interface accepting children, orientation, min sizes,
           persistence key, and optional callbacks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Split Pane Store</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Factory function creates a Zustand store per SplitPane instance. State includes
           divider position (pixels), collapsed boolean, previous size (for restore), and
           container size. Actions: setDividerPosition, toggleCollapse, restore, reset,
           setContainerSize. Each store is independent to support nested splits.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Pane Size Calculator</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pure functions: <code>clampPosition</code> enforces min/max bounds on the divider
           position. <code>computeFlexBasis</code> converts pixel position to CSS flex-basis
           for each panel. <code>handleOverflow</code> detects when min sizes exceed container
           size and clamps to the nearest valid position.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Pointer Drag Handler</h3>
         <p>
@@ -259,13 +260,13 @@ export default function ResizableSplitPaneArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Keyboard &amp; Persistence Hooks</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The keyboard hook listens for Arrow keys on the focused divider, adjusting position
           by 10px per press. Home/End jump to min/max. Enter toggles collapse. The
           persistence hook debounces position writes to localStorage at 300ms, validates
           restored data against the current container size, and handles version mismatches
           by falling back to default positions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -308,15 +309,15 @@ export default function ResizableSplitPaneArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li><strong>Frequent re-renders during drag:</strong> Each pointermove event triggers a store update. At 60fps, that is 60 re-renders per second. Mitigation: use CSS custom properties (--pane-1-size, --pane-2-size) updated via style attribute, avoiding React re-renders entirely during drag. Only commit the final position to the store on pointerup.</li>
-          <li><strong>Nested ResizeObserver cascades:</strong> Resizing a parent triggers child ResizeObservers, which trigger their own recalculations. Mitigation: debounce child recalculations with requestAnimationFrame coalescing.</li>
-          <li><strong>localStorage writes blocking main thread:</strong> Large payloads or slow storage can cause jank. Mitigation: debounce at 300ms, store only the pixel position (small JSON), and wrap in try/catch for silent failure.</li>
+          <HighlightBlock as="li" tier="important"><strong>Frequent re-renders during drag:</strong> Each pointermove event triggers a store update. At 60fps, that is 60 re-renders per second. Mitigation: use CSS custom properties (--pane-1-size, --pane-2-size) updated via style attribute, avoiding React re-renders entirely during drag. Only commit the final position to the store on pointerup.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Nested ResizeObserver cascades:</strong> Resizing a parent triggers child ResizeObservers, which trigger their own recalculations. Mitigation: debounce child recalculations with requestAnimationFrame coalescing.</HighlightBlock>
+          <HighlightBlock as="li" tier="crucial"><strong>localStorage writes blocking main thread:</strong> Large payloads or slow storage can cause jank. Mitigation: debounce at 300ms, store only the pixel position (small JSON), and wrap in try/catch for silent failure.</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li><strong>CSS custom properties during drag:</strong> Update <code>--pane-size</code> directly on the container element during pointermove. This avoids React re-renders and runs entirely on the style layer.</li>
-          <li><strong>requestAnimationFrame coalescing:</strong> Batch multiple ResizeObserver callbacks into a single recalculation using rAF.</li>
+          <HighlightBlock as="li" tier="important"><strong>CSS custom properties during drag:</strong> Update <code>--pane-size</code> directly on the container element during pointermove. This avoids React re-renders and runs entirely on the style layer.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>requestAnimationFrame coalescing:</strong> Batch multiple ResizeObserver callbacks into a single recalculation using rAF.</HighlightBlock>
           <li><strong>Stable store references:</strong> Use useRef to hold the Zustand store instance, preventing recreation on re-renders.</li>
         </ul>
       </section>
@@ -325,12 +326,12 @@ export default function ResizableSplitPaneArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Pane size values from localStorage are validated on restore: they must be
           positive numbers within the current container bounds. Malformed or out-of-range
           values are discarded and defaults are used. This prevents corrupted storage
           data from breaking the layout.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -347,15 +348,15 @@ export default function ResizableSplitPaneArticle() {
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
           <ul className="space-y-2">
             <li>The divider has <code>role=&quot;separator&quot;</code> and <code>aria-orientation</code> matching the split direction.</li>
-            <li><code>aria-valuenow</code>, <code>aria-valuemin</code>, and <code>aria-valuemax</code> communicate the current split position as a percentage.</li>
+            <HighlightBlock as="li" tier="important"><code>aria-valuenow</code>, <code>aria-valuemin</code>, and <code>aria-valuemax</code> communicate the current split position as a percentage.</HighlightBlock>
             <li><code>aria-label</code> describes the separator (e.g., &quot;Resize left and right panels&quot;).</li>
           </ul>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
         <ul className="space-y-2">
-          <li><strong>Pointer capture limits:</strong> During drag, pointer capture prevents other elements from receiving events. On pointerup or window blur, capture is released to prevent stuck states.</li>
-          <li><strong>localStorage quota:</strong> The persistence key uses a namespaced format (<code>split-pane:{'${componentId}'}</code>) to avoid collisions. On QuotaExceededError, the hook clears stale data and falls back to defaults.</li>
+          <HighlightBlock as="li" tier="important"><strong>Pointer capture limits:</strong> During drag, pointer capture prevents other elements from receiving events. On pointerup or window blur, capture is released to prevent stuck states.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>localStorage quota:</strong> The persistence key uses a namespaced format (<code>split-pane:{'${componentId}'}</code>) to avoid collisions. On QuotaExceededError, the hook clears stale data and falls back to defaults.</HighlightBlock>
         </ul>
       </section>
 
@@ -364,16 +365,16 @@ export default function ResizableSplitPaneArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li><strong>Pane size calculator:</strong> Test clampPosition with positions below min, above max, and within bounds. Test overflow handling when min sizes exceed container.</li>
-          <li><strong>Pointer drag handler:</strong> Simulate pointerdown/move/up events, verify delta computation, verify axis-restricted movement (X for horizontal, Y for vertical).</li>
-          <li><strong>Persistence hook:</strong> Mock localStorage, test save on position change, test restore on mount, test version mismatch fallback, test error handling (QuotaExceededError).</li>
+          <HighlightBlock as="li" tier="important"><strong>Pane size calculator:</strong> Test clampPosition with positions below min, above max, and within bounds. Test overflow handling when min sizes exceed container.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Pointer drag handler:</strong> Simulate pointerdown/move/up events, verify delta computation, verify axis-restricted movement (X for horizontal, Y for vertical).</HighlightBlock>
+          <HighlightBlock as="li" tier="crucial"><strong>Persistence hook:</strong> Mock localStorage, test save on position change, test restore on mount, test version mismatch fallback, test error handling (QuotaExceededError).</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
           <li><strong>Drag resize flow:</strong> Render SplitPane, simulate drag via pointer events, verify panel widths change proportionally, verify divider position updates.</li>
           <li><strong>Collapse/restore:</strong> Double-click divider, verify first panel collapses to min size. Double-click again, verify it restores to previous size.</li>
-          <li><strong>Keyboard resize:</strong> Focus divider, press ArrowRight 5 times, verify divider moved 50px. Press Home, verify it jumped to min position.</li>
+          <HighlightBlock as="li" tier="important"><strong>Keyboard resize:</strong> Focus divider, press ArrowRight 5 times, verify divider moved 50px. Press Home, verify it jumped to min position.</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
@@ -381,7 +382,7 @@ export default function ResizableSplitPaneArticle() {
           <li>Pointer leaves browser window during drag: verify drag continues via document-level listeners.</li>
           <li>Container resizes: verify panels recompute proportions via ResizeObserver.</li>
           <li>Nested splits: verify parent resize triggers child recalculation.</li>
-          <li>Accessibility: run axe-core, verify separator role, aria attributes, and keyboard navigation.</li>
+          <HighlightBlock as="li" tier="important">Accessibility: run axe-core, verify separator role, aria attributes, and keyboard navigation.</HighlightBlock>
         </ul>
       </section>
 
@@ -394,13 +395,13 @@ export default function ResizableSplitPaneArticle() {
           <li><strong>No min/max enforcement:</strong> Without constraints, a panel can be resized to zero or negative size, breaking the layout. Candidates must mention clamping logic.</li>
           <li><strong>Re-rendering on every pointermove:</strong> Triggering a React re-render on every pointermove event at 60fps causes jank. Interviewers expect CSS custom properties or requestAnimationFrame batching.</li>
           <li><strong>No persistence:</strong> Losing user-adjusted sizes on page reload is a poor UX. Candidates should mention localStorage or a similar mechanism.</li>
-          <li><strong>Ignoring accessibility:</strong> A draggable divider is completely inaccessible without keyboard support and ARIA attributes. This is a common oversight.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Ignoring accessibility:</strong> A draggable divider is completely inaccessible without keyboard support and ARIA attributes. This is a common oversight.</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">CSS Custom Properties vs React State During Drag</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Using React state for panel sizes during drag triggers a re-render on every
             pointermove (60fps). This is expensive. CSS custom properties
             (<code>--pane-1-size</code>) updated via <code>element.style.setProperty()</code>
@@ -408,7 +409,7 @@ export default function ResizableSplitPaneArticle() {
             are not reactive — other components cannot subscribe to size changes. For
             split panes, this is acceptable because only the panel elements need the size.
             Commit the final position to React state on pointerup for persistence.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -427,24 +428,24 @@ export default function ResizableSplitPaneArticle() {
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you support more than two panes (e.g., three-column layout)?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Two approaches. (1) Nested SplitPanes: the left and center+right panels
               are in a horizontal split, and the center+right panels are in another
               horizontal split inside the second pane. (2) Multi-divider: a single
               SplitPane with N panes has N-1 dividers. Each divider position is tracked
               independently. Approach (1) is simpler to implement. Approach (2) is more
               flexible but requires managing interdependent divider constraints.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle smooth animations during collapse/restore?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Apply a CSS transition to the panel&apos;s flex-basis property during
               collapse/restore (<code>transition: flex-basis 0.2s ease</code>). Remove
               the transition class during drag to prevent lag. Use a ref to track whether
               a drag is in progress and conditionally apply the transition class.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -480,14 +481,14 @@ export default function ResizableSplitPaneArticle() {
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle SSR for a component that depends on container size?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: During SSR, render panels with default proportions (e.g., 50/50). On
               client mount, use a useEffect + ResizeObserver to measure the actual
               container size and set the divider position. This causes a single hydration
               mismatch, which React tolerates if the server and client render the same
               DOM structure (just different style values). Suppress the warning with a
               suppressHydrationWarning on the container.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

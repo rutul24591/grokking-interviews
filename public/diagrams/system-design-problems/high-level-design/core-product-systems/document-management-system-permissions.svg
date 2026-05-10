@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Permission boundaries and caching model for document management">
+  <title>Permissions and Caching Boundaries</title>
+  <desc>Shows tenant boundary, per-document authorization, signed URLs, and safe caching of preview artifacts.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="70" width="1080" height="120" />
+  <text class="label bold" x="90" y="120">Tenant boundary</text>
+  <text class="label small" x="90" y="150">All caching and authorization decisions must prevent cross-tenant mixing.</text>
+
+  <rect class="warn" x="60" y="230" width="520" height="260" />
+  <text class="label bold" x="90" y="275">Privileged content</text>
+  <text class="label small" x="90" y="305">document bytes, sensitive metadata</text>
+  <text class="label small" x="90" y="330">avoid shared caching</text>
+  <text class="label small" x="90" y="355">short-lived signed URLs</text>
+
+  <rect class="muted" x="620" y="230" width="520" height="260" />
+  <text class="label bold" x="650" y="275">Preview artifacts</text>
+  <text class="label small" x="650" y="305">tiles/thumbnails</text>
+  <text class="label small" x="650" y="330">cache per tenant boundary</text>
+  <text class="label small" x="650" y="355">revoke on permission change</text>
+
+  <path class="arrow" d="M580 360 L620 360" />
+</svg>

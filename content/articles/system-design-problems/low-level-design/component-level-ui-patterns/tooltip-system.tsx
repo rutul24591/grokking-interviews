@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function TooltipSystemArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable tooltip system for a large-scale React
           application. The system must display small contextual information bubbles
           when users interact with trigger elements via hover, focus, or touch. Tooltips
@@ -50,7 +51,7 @@ export default function TooltipSystemArticle() {
           render via React Portal to escape overflow constraints of parent elements, and
           announce content to screen readers for full accessibility compliance. Only one
           tooltip may be visible globally at any time.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -58,28 +59,28 @@ export default function TooltipSystemArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Tooltips are triggered by hover (mouse enter/leave), focus (focusin/focusout),
             and touch (long-press on mobile devices).
-          </li>
+          </HighlightBlock>
           <li>
             Default show delay is 300ms, hide delay is 100ms — both configurable per tooltip.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Only one tooltip can be open at a time globally. Opening a new tooltip immediately
             closes any existing one.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Tooltip content supports plain text, formatted text with rich markup, small images,
             and keyboard shortcut hints.
-          </li>
+          </HighlightBlock>
           <li>
             Each tooltip has a triangular arrow pointing toward the trigger element.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The system supports both controlled mode (external show/hide state) and uncontrolled
             mode (internal hover/focus management).
-          </li>
+          </HighlightBlock>
           <li>
             The application runs in both light and dark mode.
           </li>
@@ -92,35 +93,35 @@ export default function TooltipSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trigger Events:</strong> Tooltips activate on mouse enter (show) and
             mouse leave (hide), focusin (show) and focusout (hide), and long-press touch
             events on mobile (approximately 500ms press).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>12-Position Placement:</strong> Each tooltip supports top, bottom,
             left, and right placements, each with start, center, and end variants
             (e.g., top-start, top-center, top-end).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Auto-Flip on Boundary Collision:</strong> If the preferred placement
             would overflow the viewport, the system automatically flips to the opposite
             side (top becomes bottom, left becomes right) and recalculates position.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Show/Hide Delay:</strong> A 300ms show delay prevents tooltips from
             appearing during brief cursor passes. A 100ms hide delay prevents flicker when
             the cursor briefly leaves and re-enters the trigger area.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Portal Rendering:</strong> Tooltip content renders through a React
             Portal attached to document.body, escaping any overflow:hidden or z-index
             constraints of ancestor elements.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rich Content:</strong> Tooltips support plain text, formatted text with
             inline styling, small thumbnail images, and keyboard shortcut badges.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Arrow Indicator:</strong> A triangular arrow on the tooltip bubble points
             toward the trigger element, positioned to align with the trigger center.
@@ -152,12 +153,12 @@ export default function TooltipSystemArticle() {
             a single page without attaching expensive event listeners to each one. Event
             delegation is preferred.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Tooltips must be announced to screen readers via
             <code>aria-describedby</code> linking the trigger to the tooltip content.
             Keyboard users must see tooltips on focus-visible. Touch users must see tooltips
             on long-press.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for placement types,
             configuration options, and content types.
@@ -204,7 +205,7 @@ export default function TooltipSystemArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate <strong>tooltip state management</strong> from
           <strong>tooltip positioning</strong> and <strong>tooltip rendering</strong> using
           a global Zustand store, a dedicated position engine, and a portal-based rendering
@@ -214,39 +215,39 @@ export default function TooltipSystemArticle() {
           bounding rectangle, the preferred placement, and the viewport dimensions. The
           rendering layer subscribes to the store, renders the active tooltip through a
           portal, and applies entrance/exit animations.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API + useReducer:</strong> Viable for a single-provider tooltip
             system but introduces coupling to the component tree. Every tooltip trigger would
             need to be a descendant of the provider. Zustand provides the same functionality
             with less boilerplate and allows imperative show/hide calls from anywhere in the
             application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>CSS-only tooltips (title attribute):</strong> Native browser tooltips are
             inaccessible to screen readers, cannot be styled, do not support rich content,
             and offer no positioning control. Not suitable for production applications.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Floating UI (formerly Popper.js) as a dependency:</strong> A mature
             library that handles positioning, auto-flip, and arrow placement. Using it reduces
             implementation effort significantly. However, in an LLD interview, candidates are
             expected to understand and implement the underlying positioning logic themselves
             to demonstrate depth of knowledge.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + Portal + Custom Position Engine is optimal:</strong> Zustand
           provides a lightweight global store with selector-based subscriptions. The portal
           ensures tooltips render outside the application&apos;s DOM subtree, avoiding
           overflow and z-index issues. A custom position engine demonstrates understanding of
           bounding-box geometry, viewport collision detection, and flip logic — all common
           interview discussion points.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -258,7 +259,7 @@ export default function TooltipSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Tooltip Types (<code>tooltip-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the <code>TooltipPlacement</code> union type with 12 values:
             <code>top-start</code>, <code>top-center</code>, <code>top-end</code>,
             <code>bottom-start</code>, <code>bottom-center</code>, <code>bottom-end</code>,
@@ -268,7 +269,7 @@ export default function TooltipSystemArticle() {
             hideDelay (default 100ms), placement, disabled flag, and content type. The
             <code>TooltipState</code> interface tracks the active tooltip ID, trigger
             element reference, computed placement, and visibility state.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -297,35 +298,35 @@ export default function TooltipSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Position Engine (<code>tooltip-position-engine.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Pure functions that compute tooltip position given the trigger bounding rectangle,
             the preferred placement, the tooltip dimensions, and the viewport dimensions.
             Returns the top/left coordinates for the tooltip, the computed placement (after
             auto-flip), and the arrow position. Handles all 12 placement variants and
             boundary collision detection with flip logic.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. Delay Manager (<code>tooltip-delay-manager.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Manages show and hide delays using <code>setTimeout</code>. The show delay
             (300ms default) prevents tooltips from appearing during brief cursor passes. The
             hide delay (100ms default) prevents flicker when the cursor briefly leaves the
             trigger. The delay manager tracks pending timers, supports cancellation, and
             ensures that rapid hover changes do not cause multiple overlapping timers.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Trigger Hook (<code>use-tooltip-trigger.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Custom React hook that attaches mouse enter/leave, focus/blur, and touch event
             handlers to a trigger element. Integrates with the delay manager to schedule
             show/hide operations. Handles the controlled vs uncontrolled distinction — in
             controlled mode, events call the external <code>onOpenChange</code> callback;
             in uncontrolled mode, they dispatch directly to the store.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -359,14 +360,14 @@ export default function TooltipSystemArticle() {
           bottom) and recalculates. The arrow position is then computed to point at the
           trigger&apos;s center along the appropriate edge.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For the 12 placement variants: the primary axis (top/bottom/left/right) determines
           which edge of the trigger the tooltip appears on. The secondary axis (start/center/end)
           determines alignment along that edge. For <code>top-start</code>, the tooltip aligns
           its left edge with the trigger&apos;s left edge. For <code>top-end</code>, the
           tooltip aligns its right edge with the trigger&apos;s right edge. For
           <code>top-center</code>, the tooltip centers horizontally on the trigger.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/tooltip-system-architecture.svg"
@@ -413,38 +414,38 @@ export default function TooltipSystemArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The execution flow follows a unidirectional pattern. All state mutations flow
           through the Zustand store, and all rendering flows from store subscriptions.
           The delay manager acts as an intermediary between user events and store mutations,
           ensuring that rapid interactions are debounced correctly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rapid hover across multiple triggers:</strong> Each mouseEnter schedules
             a show timer. Each mouseLeave cancels the pending show timer for that trigger.
             Only the last-hovered trigger&apos;s timer completes, ensuring only one tooltip
             appears.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Viewport boundary collision:</strong> The position engine checks if the
             computed tooltip rectangle exceeds viewport bounds. If it does, the primary
             placement flips (top to bottom, left to right). The secondary alignment (start,
             center, end) is preserved. If the flipped placement also collides, the tooltip
             falls back to the placement with the most available space.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Trigger removal during tooltip visibility:</strong> The visibility hook
             uses a MutationObserver on the trigger element. If the element is removed from
             the DOM, the observer fires and the store force-dismisses the tooltip.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR safety:</strong> The TooltipProvider uses a useEffect to confirm
             client-side mounting before registering any event listeners or creating portals.
             During SSR, the provider renders a null placeholder.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scroll handling:</strong> An IntersectionObserver on the trigger element
             detects when the trigger scrolls out of view. When the intersection ratio drops
@@ -457,10 +458,10 @@ export default function TooltipSystemArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
@@ -476,7 +477,7 @@ export default function TooltipSystemArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Type Definitions (tooltip-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the <code>TooltipPlacement</code> union with 12 literal values covering
           all combinations of primary axis (top, bottom, left, right) and secondary alignment
           (start, center, end). The <code>TooltipConfig</code> interface specifies
@@ -485,7 +486,7 @@ export default function TooltipSystemArticle() {
           reference, content, computed placement, and arrow position. The
           <code>TooltipContentData</code> type supports plain string, ReactNode, or a
           structured object with title, description, image, and keyboard shortcut fields.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (tooltip-store.ts)</h3>
         <p>
@@ -510,14 +511,14 @@ export default function TooltipSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Delay Manager (tooltip-delay-manager.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Manages two independent timers per tooltip trigger: one for show delay and one
           for hide delay. The show timer (300ms default) is cancelled if the user leaves
           the trigger before it fires. The hide timer (100ms default) is cancelled if the
           user re-enters before it fires. The delay manager tracks pending timer IDs in a
           Map, provides clear methods for cleanup, and ensures that no two timers for the
           same trigger overlap.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Trigger Hook (use-tooltip-trigger.ts)</h3>
         <p>
@@ -549,17 +550,17 @@ export default function TooltipSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: TooltipTrigger Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Wrapper component that clones its child element and attaches the event handlers
           returned by <code>useTooltipTrigger</code>. Also attaches <code>aria-describedby</code>
           linking to the tooltip&apos;s generated ID for screen reader accessibility. Supports
           both controlled (<code>open</code>, <code>onOpenChange</code>) and uncontrolled
           usage. Renders the child as-is, adding only the necessary ARIA attributes and
           event handlers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: TooltipContent Component</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The tooltip bubble itself. Renders via portal, computes position via the position
           engine, and applies fade-in/scale-up or fade-out/scale-down CSS transitions.
           Includes a triangular SVG arrow positioned to point at the trigger element.
@@ -567,7 +568,7 @@ export default function TooltipSystemArticle() {
           thumbnail images, and keyboard shortcut badges. The component uses
           <code>useLayoutEffect</code> to measure tooltip dimensions after render and
           reposition if necessary (to account for dynamic content sizing).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 10: TooltipProvider Component</h3>
         <p>
@@ -622,35 +623,35 @@ export default function TooltipSystemArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           All operations are O(1) because only one tooltip is active at any time. The
           position engine performs a fixed number of arithmetic operations regardless of
           page complexity. For pages with 200+ tooltip triggers, the only per-trigger
           overhead is the event handler attachment (handled efficiently by React&apos;s
           synthetic event delegation).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>getBoundingClientRect calls:</strong> Reading layout properties forces
             the browser to flush pending style and layout calculations, which can be
             expensive if done frequently. Mitigation: batch all reads together, cache
             results, and avoid interleaving reads with writes. The position engine performs
             all reads upfront before any DOM writes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Scroll repositioning:</strong> Repositioning the tooltip on every scroll
             event is a performance anti-pattern. Mitigation: use IntersectionObserver instead
             of scroll event listeners. The observer fires only when the trigger&apos;s
             visibility changes, not on every scroll tick.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Portal re-creation:</strong> Creating and destroying the portal container
             on every tooltip show/hide adds DOM manipulation overhead. Mitigation: maintain
             a single persistent portal container that is reused across tooltip show/hide
             cycles. Only the content inside changes.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -673,12 +674,12 @@ export default function TooltipSystemArticle() {
             This keeps animation work on the compositor thread, independent of the main
             thread&apos;s JavaScript execution.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Event delegation for triggers:</strong> Instead of attaching individual
             event listeners to each trigger element, attach a single listener at the provider
             level and use event.target matching. This reduces memory usage on pages with
             hundreds of triggers.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -687,33 +688,33 @@ export default function TooltipSystemArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tooltip content may originate from server responses or user input (e.g.,
           descriptions, help text). If rendered as HTML via <code>dangerouslySetInnerHTML</code>
           or custom React nodes, tooltips become XSS vectors. Always sanitize HTML content
           before rendering. Prefer rendering strings as plain text content, which React
           escapes by default. Only allow rich React nodes from trusted internal sources.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               The trigger element receives <code>aria-describedby</code> pointing to the
               tooltip content element&apos;s ID. This creates an implicit association so
               screen readers announce the tooltip content when the trigger receives focus.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The tooltip content element has <code>role=&quot;tooltip&quot;</code> and a
               unique <code>id</code> attribute that matches the trigger&apos;s
               <code>aria-describedby</code> value.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               For keyboard users, the tooltip appears on <code>focus-visible</code> (not
               just focus), ensuring that mouse users navigating via tab do not see
               unexpected tooltips.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -728,11 +729,11 @@ export default function TooltipSystemArticle() {
               Pressing <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">Escape</kbd>
               dismisses any open tooltip (handled by the TooltipProvider).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The trigger element must be keyboard-focusable. If the trigger is a
               non-interactive element (e.g., a span), it should receive
               <code>tabindex=&quot;0&quot;</code>.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -773,18 +774,18 @@ export default function TooltipSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Position engine:</strong> Test all 12 placements with a fixed trigger
             rectangle and viewport. Verify computed coordinates match expected values. Test
             auto-flip: place trigger at top edge with preferred placement &quot;top-center&quot;,
             verify the engine returns &quot;bottom-center&quot;. Test arrow positioning for
             each placement variant.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Delay manager:</strong> Test that show timer fires after 300ms, that
             clearing before 300ms prevents the callback, and that rapid show/hide cycles
             result in only the final timer completing. Test hide delay similarly.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store actions:</strong> Test that showTooltip sets active state, that
             calling showTooltip again replaces the previous active tooltip (singleton
@@ -794,23 +795,23 @@ export default function TooltipSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Full tooltip lifecycle:</strong> Render TooltipProvider + TooltipTrigger
             + TooltipContent. Fire mouseEnter on trigger, advance timers by 300ms, assert
             tooltip is rendered in the portal container. Fire mouseLeave, advance timers by
             100ms, assert tooltip is removed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Positioning in DOM:</strong> Render a trigger near the top edge of the
             viewport with preferred placement &quot;top-center&quot;. Fire mouseEnter,
             advance timers, assert the tooltip renders below the trigger (auto-flipped to
             bottom-center) by checking its computed style.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Verify the trigger has aria-describedby pointing
             to the tooltip ID. Verify the tooltip has role=&quot;tooltip&quot; and matching
             ID. Test keyboard focus triggers tooltip visibility. Test Escape key dismisses it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Portal rendering:</strong> Assert the tooltip renders as a direct child
             of document.body, not nested inside the trigger&apos;s component tree.
@@ -834,10 +835,10 @@ export default function TooltipSystemArticle() {
             SSR rendering: verify TooltipProvider returns null placeholder during SSR and
             mounts correctly on hydration.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Accessibility: run axe-core automated checks on rendered tooltips, verify
             aria-describedby linkage, role attributes, and keyboard dismiss.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -864,11 +865,11 @@ export default function TooltipSystemArticle() {
             boundaries. Interviewers look for candidates who discuss boundary detection
             and auto-flip logic.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring accessibility:</strong> Tooltips that are invisible to screen
             readers fail WCAG requirements. Candidates must mention aria-describedby linkage
             and keyboard accessibility.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Allowing multiple simultaneous tooltips:</strong> Without a singleton
             constraint, multiple tooltips can overlap and create a confusing experience.
@@ -884,7 +885,7 @@ export default function TooltipSystemArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Custom Position Engine vs Floating UI (Popper.js)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Building a custom position engine demonstrates deep understanding of bounding-box
             geometry, viewport collision detection, and flip logic. However, Floating UI
             (the successor to Popper.js) is a battle-tested library that handles edge cases
@@ -892,7 +893,7 @@ export default function TooltipSystemArticle() {
             than a custom implementation. In production, use Floating UI. In an interview,
             implement the core logic yourself to show you understand it, then mention that
             you would use Floating UI in a real application.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -922,7 +923,7 @@ export default function TooltipSystemArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">IntersectionObserver vs Scroll Event Listener</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Listening to scroll events and repositioning the tooltip on every scroll tick
             is a performance anti-pattern — scroll events fire at 60+ Hz and each
             repositioning call triggers layout reads. IntersectionObserver fires only when
@@ -931,7 +932,7 @@ export default function TooltipSystemArticle() {
             IntersectionObserver does not tell you the exact scroll offset — only whether
             the element is in view. For tooltips, this is sufficient: dismiss when out of
             view, do not attempt to follow the element during scroll.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -957,7 +958,7 @@ export default function TooltipSystemArticle() {
             <p className="font-semibold">
               Q: How would you implement tooltip animations without CSS transitions?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use Framer Motion&apos;s <code>AnimatePresence</code> and <code>motion.div</code>
               with initial/animate/exit variants. The initial state sets opacity to 0 and
               scale to 0.96. The animate state sets opacity to 1 and scale to 1.0. The exit
@@ -965,21 +966,21 @@ export default function TooltipSystemArticle() {
               waiting for the exit animation to complete before unmounting. The trade-off is
               bundle size — Framer Motion adds approximately 30 KB, whereas CSS transitions
               are free.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How would you support tooltips that follow the cursor (e.g., color pickers)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Add a <code>followCursor</code> flag to the TooltipConfig. When enabled,
               attach a mousemove listener to the trigger element that continuously updates
               the tooltip position to the cursor coordinates plus a fixed offset. Use
               requestAnimationFrame to throttle position updates to 60fps. The tooltip
               placement property is ignored in this mode — the tooltip always appears at
               the cursor position with a slight offset to avoid occlusion.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

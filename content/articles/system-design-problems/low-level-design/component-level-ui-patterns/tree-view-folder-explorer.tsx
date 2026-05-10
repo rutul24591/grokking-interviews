@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +39,7 @@ export default function TreeViewFolderExplorerArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable tree view / folder explorer component for a
           large-scale React application. The component must display hierarchical data
           (files, folders, organizational units) with expand/collapse functionality,
@@ -50,7 +51,7 @@ export default function TreeViewFolderExplorerArticle() {
           navigation. The component must handle arbitrary nesting depth without performance
           degradation and display a breadcrumb trail showing the current path for any
           selected node.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -58,22 +59,22 @@ export default function TreeViewFolderExplorerArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Tree nodes represent files and folders, each with a unique ID, name, type
             (file/folder), and optional metadata (size, modified date, extension).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The tree can contain thousands of nodes; not all are loaded upfront. Children
             are fetched on-demand when a parent folder is expanded.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Drag-and-drop must prevent circular references (e.g., dropping a folder into
             one of its own descendants).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Multi-select supports Ctrl+Click for individual toggles and Shift+Click for
             range selection.
-          </li>
+          </HighlightBlock>
           <li>
             Search filters the tree in real-time, showing only matching nodes and their
             ancestor paths.
@@ -95,11 +96,11 @@ export default function TreeViewFolderExplorerArticle() {
             expand/collapse toggle. Support arbitrary nesting depth. Each node has an
             icon (folder open/closed, file type by extension).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy Loading:</strong> When a folder node is expanded for the first
             time, fetch its children from an API. Show a loading indicator per node
             during fetch. Cache loaded children to avoid redundant fetches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Selection:</strong> Single-select by click. Multi-select via
             Ctrl+Click (toggle individual). Range select via Shift+Click (select all
@@ -125,11 +126,11 @@ export default function TreeViewFolderExplorerArticle() {
             Matching nodes and their full ancestor paths remain visible. Non-matching
             branches are hidden. Match text is highlighted.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard Navigation:</strong> ArrowRight expands, ArrowLeft collapses.
             Enter selects node. Space toggles checkbox (multi-select mode). Home/End
             navigate to first/last visible node.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Breadcrumb:</strong> Display the full path from root to the currently
             selected node. Each breadcrumb segment is clickable to navigate to that
@@ -143,26 +144,26 @@ export default function TreeViewFolderExplorerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Initial render should not mount all DOM nodes.
             Use virtualization for large visible lists. Expand/collapse should not cause
             visible jank.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> The component should handle trees with 10,000+
             total nodes (mostly lazy-loaded) without memory leaks. Visible nodes at any
             depth should render smoothly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reliability:</strong> Circular reference detection must be O(d) where
             d is the tree depth, not O(n) full-tree traversal. Move/copy operations must
             be atomic — failure rolls back the entire operation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Full keyboard navigation, ARIA treegrid roles,
             screen reader announcements for expand/collapse, selection changes, and
             drag-and-drop outcomes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for TreeNode,
             TreeAction, SelectionState, ContextMenuAction types.
@@ -205,7 +206,7 @@ export default function TreeViewFolderExplorerArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>tree state management</strong> from
           the <strong>tree rendering</strong> using a global store (Zustand) and a
           recursive component rendering strategy. The store manages the flat node map
@@ -214,30 +215,30 @@ export default function TreeViewFolderExplorerArticle() {
           rendering layer builds the visual tree from the flat map using parent-child
           relationships, renders each node with its icon, label, checkbox, and handles
           user interactions (click, right-click, drag).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Nested object tree (recursive structure):</strong> Intuitive but
             makes operations like move, copy, and find-by-ID require full tree traversal.
             Updating nested state immutably is complex and error-prone. Flat map with
             parent pointers simplifies all operations to O(1) or O(d).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Local state per TreeNode component:</strong> Each node manages its own
             expanded state. This works for small trees but makes cross-cutting concerns
             (multi-select, search, drag-and-drop validation) extremely difficult because
             state is scattered across components. A centralized store is necessary.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Redux:</strong> Viable but adds significant boilerplate for what is
             essentially a local UI component. Zustand provides the same global
             accessibility with less overhead and better selector-based performance.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Flat Map + Zustand is optimal:</strong> Storing nodes in a flat
           Map&lt;id, TreeNode&gt; with parent pointers enables O(1) lookups, O(d) ancestor
           traversal for cycle detection, and simple immutable updates. The tree hierarchy
@@ -245,7 +246,7 @@ export default function TreeViewFolderExplorerArticle() {
           provides selector-based subscriptions so only affected TreeNode components
           re-render on state changes. This pattern is used by production tree components
           in file explorers, IDE project panels, and org-chart renderers.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -257,7 +258,7 @@ export default function TreeViewFolderExplorerArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Tree Types &amp; Interfaces (<code>tree-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Defines the <code>TreeNode</code> interface with fields for id, name, type
             (file/folder), parentId, children (array of child IDs, lazy-loaded), isExpanded,
             isLoading, isLoaded, isSelected, metadata (size, extension, modifiedAt). The
@@ -267,7 +268,7 @@ export default function TreeViewFolderExplorerArticle() {
             search). The <code>ContextMenuAction</code> union covers rename, delete, move,
             copy, paste, newFolder, newFile. See the Example tab for the complete type
             definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -399,24 +400,24 @@ export default function TreeViewFolderExplorerArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Zustand store is the single source of truth. Nodes are stored in a flat Map
           for O(1) lookup. The tree hierarchy is implicit via parentId references. When a
           folder is expanded, the store checks if children are already loaded. If not, it
           sets a loading flag, calls the fetch function, and on success inserts children
           into the node map and adds their IDs to the parent&apos;s children array.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Selection uses a Set for O(1) add/remove/has operations. Shift+Click range
           selection computes the range by finding all visible nodes between the
           lastSelectedId and the current clicked node in the visible node order.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Move operations validate the target: the target must be a folder, and the
           dragged node must not be an ancestor of the target (cycle detection). Cycle
           detection walks the target&apos;s ancestor chain (following parentId pointers)
           and checks if any ancestor matches the dragged node ID — O(d) where d is depth.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -430,10 +431,10 @@ export default function TreeViewFolderExplorerArticle() {
           <li>
             User clicks expand chevron on a folder. useTreeNode calls store.expandNode(id).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Store checks if node.isLoaded. If not, sets loading flag, calls fetch API,
             receives child nodes, inserts into map, marks as loaded.
-          </li>
+          </HighlightBlock>
           <li>
             Store adds node ID to expandedIds. Zustand notifies subscribers.
           </li>
@@ -459,35 +460,35 @@ export default function TreeViewFolderExplorerArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions. This ensures predictable behavior and makes the system testable
           in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Lazy Load Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           When a folder is expanded for the first time, the store sets the node&apos;s
           loading flag and triggers the fetch. The TreeNode component subscribes to the
           loading flag and renders a spinner. On fetch success, children are inserted into
           the node map, the parent&apos;s children array is updated, and the loading flag
           is cleared. The TreeNodeList for the parent re-renders with the new children.
           On fetch failure, an error state is set and a retry button is rendered.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Cycle Detection Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When attempting to move node A into folder B, the store calls
           <code>detectCircularRef(A.id, B.id, nodes)</code>. This function starts at B
           and follows parentId pointers upward, checking at each step if the current
           ancestor equals A.id. If a match is found, the move is rejected. If the root
           is reached without a match, the move is allowed. This is O(d) where d is the
           depth of B in the tree, avoiding full-tree traversal.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Search Filter Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When the user types in the search bar, the query is debounced (300ms). The
           store iterates all loaded nodes, checks if the node name includes the query
           (case-insensitive), and marks matching IDs. For each match, all ancestors are
@@ -495,16 +496,16 @@ export default function TreeViewFolderExplorerArticle() {
           filters its rendering to only show nodes in the visible set. Matching text
           within node names is highlighted using a split-and-wrap approach: the name is
           split by the query, and matching segments are wrapped in a highlight span.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy load failure:</strong> The store sets an error state on the node
             and clears the loading flag. The TreeNode renders a retry button that calls
             the fetch function again. The expandedIds set is not cleared so the user sees
             the error state within the expanded folder.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Drag into descendant:</strong> Cycle detection rejects the move and
             the drop target shows a red highlight with a tooltip &quot;Cannot move folder
@@ -528,10 +529,10 @@ export default function TreeViewFolderExplorerArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
@@ -546,7 +547,7 @@ export default function TreeViewFolderExplorerArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Tree Types (tree-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the <code>TreeNode</code> interface with id, name, type (&quot;file&quot;
           or &quot;folder&quot;), parentId, children array (child IDs), metadata (size,
           extension, modifiedAt), isExpanded, isLoading, isLoaded, isSelected. The
@@ -554,16 +555,16 @@ export default function TreeViewFolderExplorerArticle() {
           and selection mode. The <code>TreeAction</code> discriminated union covers all
           possible operations. The <code>ContextMenuAction</code> union covers rename,
           delete, move, copy, paste, newFolder, newFile.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Tree Store (tree-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages the flat node map, expanded state, selection, loading state,
           and search results. Key design decisions include: using a Map for O(1) node
           lookup, cycle detection via ancestor traversal (O(d)), deep clone for copy
           operations with ID regeneration, atomic move operations (validate then apply),
           and lazy-load caching (children fetched once, stored in map).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Tree Utilities (tree-utils.ts)</h3>
         <p>
@@ -576,17 +577,17 @@ export default function TreeViewFolderExplorerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Custom Hooks</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <code>useTreeNode</code> encapsulates per-node behavior: expand/collapse with
           lazy load trigger, selection state, context menu position, drag source setup.
           <code>useTreeSelection</code> manages multi-select with Ctrl/Shift modifiers
           and range computation. <code>useTreeDrag</code> handles drag source and drop
           target logic with cycle detection on drop. <code>useTreeSearch</code> provides
           debounced search with highlight extraction.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <code>TreeView</code> is the root container with global keyboard navigation
           (ArrowLeft/Right for expand/collapse, Enter for select, Space for checkbox).
           <code>TreeNodeList</code> renders nodes at a given depth with proper indentation
@@ -596,7 +597,7 @@ export default function TreeViewFolderExplorerArticle() {
           positioned menu with action items. <code>TreeBreadcrumb</code> shows the path
           from root to selected node. <code>TreeSearchBar</code> provides a search input
           with real-time filtering.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -671,24 +672,24 @@ export default function TreeViewFolderExplorerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Search over large loaded trees:</strong> O(n) scan of all loaded nodes
             on every keystroke (after debounce). For 5,000+ loaded nodes, this can take
             5-10ms. Mitigation: use a trie or fuzzy-search index (e.g., Fuse.js) for
             O(log n) search. For most use cases, the flat scan is fast enough.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-render cascades on expand:</strong> Expanding a folder with many
             children causes all TreeNodeList and TreeNode children to mount and render.
             Mitigation: use virtualization (e.g., @tanstack/react-virtual) for the visible
             node list. Only render nodes within the viewport.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Deep copy of large subtrees:</strong> Copying a folder with 500
             descendants requires cloning all nodes and regenerating IDs. O(s) operation
             that blocks the main thread. Mitigation: perform copy in a Web Worker for
             large subtrees, or use structuredClone for off-main-thread cloning.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -698,15 +699,15 @@ export default function TreeViewFolderExplorerArticle() {
             its own node by ID via Zustand selector. Expanding one folder does not
             re-render unrelated nodes. This is critical for trees with 1,000+ loaded nodes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualization:</strong> For flat lists of visible nodes at any depth,
             use windowing to render only visible items. Compute a flat visible node array
             (via BFS from rootIds through expanded nodes) and pass to a virtualizer.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced search:</strong> 300ms debounce prevents search computation
             on every keystroke. Combined with O(n) scan, this keeps search responsive.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stable node IDs:</strong> Use unique, server-assigned IDs. Avoid
             generating IDs client-side during copy — use <code>crypto.randomUUID()</code>{" "}
@@ -720,14 +721,14 @@ export default function TreeViewFolderExplorerArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Node names may contain user-generated content (e.g., file names from a shared
           drive). When rendering node names, always render as text content (React&apos;s
           default escaping) rather than using <code>dangerouslySetInnerHTML</code>.
           Search highlighting should use text splitting and wrapping, not HTML injection.
           Rename operations should validate against reserved characters (/, \, :, *, ?,
           &quot;, &lt;, &gt;, |) that are invalid in file systems.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Drag-and-Drop Security</h3>
         <p>
@@ -743,10 +744,10 @@ export default function TreeViewFolderExplorerArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Keyboard Navigation</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               ArrowRight expands a collapsed folder; ArrowLeft collapses an expanded
               folder (or moves focus to parent if already collapsed).
-            </li>
+            </HighlightBlock>
             <li>
               Enter selects the focused node. Space toggles the checkbox in multi-select
               mode.
@@ -757,16 +758,16 @@ export default function TreeViewFolderExplorerArticle() {
             <li>
               Home/End moves focus to the first/last visible node.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Context menu is triggered via a dedicated button (not just right-click) for
               keyboard users, typically triggered by the Menu key or Shift+F10.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The tree uses <code>role=&quot;treegrid&quot;</code> for the container (if
             tabular data like size/type is shown) or <code>role=&quot;tree&quot;</code>{" "}
             for a simple hierarchical list. Each node has <code>role=&quot;treeitem&quot;</code>{" "}
@@ -775,17 +776,17 @@ export default function TreeViewFolderExplorerArticle() {
             readers announce &quot;folder, collapsed&quot; or &quot;expanded, 5 items&quot;{" "}
             on expand. Selection changes are announced via <code>aria-live</code> regions.
             See the Example tab for the exact markup.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Authorization</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           In a real file system, not all nodes may be accessible to the current user.
           The API that serves lazy-loaded children must enforce access control. The
           client should not display nodes the user doesn&apos;t have permission to see.
           Move/copy operations must also be authorized — the server should reject moves
           to restricted parent folders.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 9: Testing Strategy */}
@@ -794,13 +795,13 @@ export default function TreeViewFolderExplorerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Tree utilities:</strong> Test buildTree produces correct nested
             structure from flat list. Test findNode returns correct node. Test getPath
             returns ancestor chain. Test detectCircularRef correctly identifies cycles
             (A is ancestor of B) and non-cycles. Test filterTree returns correct visible
             IDs for various search queries.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store actions:</strong> Test expandNode triggers lazy load when not
             loaded, marks as expanded when loaded. Test moveNode validates cycle detection
@@ -817,11 +818,11 @@ export default function TreeViewFolderExplorerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Lazy load lifecycle:</strong> Render TreeView, expand a folder, assert
             loading spinner appears, mock API resolves, assert children render. Test
             retry on failure.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Drag and drop:</strong> Render tree with nested folders, drag a node
             onto a valid folder, assert node moves. Drag a folder onto its own descendant,
@@ -849,19 +850,19 @@ export default function TreeViewFolderExplorerArticle() {
             Very deep tree (50+ levels): verify indentation doesn&apos;t cause horizontal
             overflow, breadcrumb handles overflow with truncation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Rapid expand/collapse: verify loading state doesn&apos;t flicker, duplicate
             API calls are prevented (idempotent expand).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Bulk delete of 100 selected nodes: verify all descendants are removed, store
             state is consistent, no memory leaks.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered tree, verify
             treegrid/tree roles, aria-expanded, aria-selected, keyboard navigation, and
             screen reader announcements.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -895,17 +896,17 @@ export default function TreeViewFolderExplorerArticle() {
             state per node leads to duplicate API calls when a user rapidly clicks
             expand/collapse. The store must track loadingIds and prevent duplicate fetches.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Forgetting accessibility:</strong> Tree views have well-defined ARIA
             patterns (tree/treeitem/treegrid). Rendering plain divs without roles,
             aria-expanded, aria-level, and keyboard support is a critical oversight.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Flat Map vs Nested Tree</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             A nested tree structure (children as nested arrays) is intuitive for rendering
             but makes mutations expensive. Moving a node requires finding it in the nested
             structure (O(n)), removing it, and inserting it at the new location. A flat
@@ -914,12 +915,12 @@ export default function TreeViewFolderExplorerArticle() {
             is a simple O(n) filter operation. For trees under 10,000 nodes, the flat map
             is strictly superior. For rendering optimization, the flat visible array can
             be memoized and passed to a virtualizer.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Recursive Components vs Flat List with Indentation</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Recursive TreeNode components (each node renders its children) are simple to
             write but create deep component trees that are harder to virtualize. A flat
             list approach (compute a flat array of visible nodes via BFS, then render with
@@ -928,7 +929,7 @@ export default function TreeViewFolderExplorerArticle() {
             handle expand/collapse through React&apos;s tree reconciliation, while flat
             lists require explicit visibility computation. For production file explorers
             with 1,000+ visible nodes, flat list + virtualization is the right choice.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1008,7 +1009,7 @@ export default function TreeViewFolderExplorerArticle() {
             <p className="font-semibold">
               Q: How would you handle concurrent edits (two users modifying the same tree)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use Operational Transformation (OT) or Conflict-free Replicated Data
               Types (CRDTs) for eventual consistency. Each operation gets a unique
               timestamp and user ID. The server merges operations and broadcasts the
@@ -1017,14 +1018,14 @@ export default function TreeViewFolderExplorerArticle() {
               version. If the server version differs, reject and re-sync the affected
               subtree. For file explorers, server-authoritative with optimistic client
               updates and conflict resolution on sync is the standard approach.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How would you add file preview when hovering over a file node?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: On mouse enter of a file node, start a debounced (500ms) preview fetch.
               Fetch a lightweight preview (thumbnail for images, first page for PDFs, code
               snippet for source files) and render it in an absolutely positioned tooltip
@@ -1032,7 +1033,7 @@ export default function TreeViewFolderExplorerArticle() {
               the fetch on mouse leave. Cache previews in a Map to avoid redundant fetches.
               For large files, the server should generate previews asynchronously and serve
               pre-computed thumbnails.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

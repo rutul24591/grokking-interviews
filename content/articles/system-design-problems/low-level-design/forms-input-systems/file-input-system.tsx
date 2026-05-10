@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -26,7 +28,7 @@ export default function FileInputArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a File Input control: a form-friendly
           component that accepts files via picker, drag-and-drop,
           paste, or camera capture; validates type, size, and count;
@@ -37,8 +39,8 @@ export default function FileInputArticle() {
           paste, capture) into a clean, validated list of file
           references that downstream subsystems (an upload pipeline,
           an image editor, a form submission) can consume.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are accessibility (drag-drop is famously
           hostile to keyboard and assistive tech), preview
           generation without freezing the main thread, deduplication
@@ -49,10 +51,10 @@ export default function FileInputArticle() {
           dependable, accessible, fast widget that drops into any
           form. Done poorly, it becomes the place where forms feel
           broken.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           End users upload documents (passports, receipts), photos
           (profile, evidence), and bulk attachments (claim
           packets). They use mobile and desktop, with vastly
@@ -62,10 +64,10 @@ export default function FileInputArticle() {
           who require keyboard parity, and engineers who consume
           this control inside a Form Builder via a registered
           field type.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The network upload pipeline is a separate system
           (chunked, resumable, queue-based) that the file input
           hands off to. The control surfaces a clean list of
@@ -76,24 +78,24 @@ export default function FileInputArticle() {
           configurable per instance. Modern browsers (Chromium,
           Firefox, Safari) are supported; older IE-era APIs are
           not.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server-side storage, CDN strategy, virus scanning, and
           chunked transport are not concerns of this control.
           Image editing, cropping, and rotation are delegated to
           specialized components that consume the file list as
           input. We do not implement an explicit upload queue or
           retry logic here — that lives in the uploader.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Native file picker (click and keyboard activation),
           drag-and-drop zone, paste-from-clipboard. MIME, extension,
           max-size, min-count, and max-count validation, with
@@ -105,10 +107,10 @@ export default function FileInputArticle() {
           (e.g. user drops the same file twice). Per-file status
           and progress indicator when integrated with an
           uploader.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Camera capture on mobile via the
           <code> capture</code> attribute. Folder upload with
           nested directory traversal via
@@ -116,23 +118,23 @@ export default function FileInputArticle() {
           dimension and aspect ratio validation. Hash-based
           deduplication so files renamed but identical are
           recognized.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Background upload, resume after disconnect, and
           bandwidth throttling are concerns of the uploader. PDF
           page preview, video first-frame extraction, and rich
           editing UI are concerns of specialized field types
           built on top of this one.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Previews must generate without freezing the main thread.
           Image thumbnails go through
           <code> createImageBitmap</code> and are resized off-main
@@ -140,29 +142,29 @@ export default function FileInputArticle() {
           virtualizes when count exceeds ~50. Hash-based dedup
           runs in a Web Worker so even large files don&rsquo;t
           block input.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Invalid files are rejected with clear reasons and never
           break the form. Object URLs created for previews are
           revoked promptly to avoid memory leaks. Adding a file
           while a previous file is still being previewed must not
           desync the UI.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client validation is UX, not authorization — the server
           re-validates everything. Filename and metadata render as
           text, never as HTML; we treat user-supplied filenames as
           potentially hostile (a filename like
           <code> {`<img onerror=...>.png`}</code> must not execute).
           Object URLs are session-scoped and revoked on unmount.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Drop zone fully keyboard-operable. Drag-drop status
           announces only meaningful changes (drag entered, drag
           left, drop accepted/rejected). Per-file remove buttons
@@ -170,15 +172,15 @@ export default function FileInputArticle() {
           file list is rendered as a real list with structural
           markup. Errors associate with the offending file via
           <code> aria-describedby</code>.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validation logic is decoupled from UI: pure validator
           functions emit per-file issues. Preview generators are a
           registry keyed by MIME, so adding a PDF or video
           preview is a one-file addition.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -192,7 +194,7 @@ export default function FileInputArticle() {
           remains testable and the UI stays predictable even when
           one phase is in progress.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>ingest</strong>, a unified pipeline accepts
           files from any source — picker, drop, paste,
           capture, folder traversal — and normalizes them into
@@ -210,8 +212,8 @@ export default function FileInputArticle() {
           files and
           <code> ClipboardEvent.clipboardData.items</code> for
           image data URIs that we materialize into Blobs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>validate</strong>, the control runs each file
           through a chain of pure validators: size, MIME, extension,
           count, custom predicates (e.g. minimum image dimensions,
@@ -227,8 +229,8 @@ export default function FileInputArticle() {
           incoming file matches any already-accepted file by
           (name, size) for cheap dedup or by content hash when
           enabled.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>preview</strong>, accepted files get a
           preview generated lazily. Image previews use
           <code> createImageBitmap</code> off-main when possible
@@ -244,7 +246,7 @@ export default function FileInputArticle() {
           rich previews are pluggable: a registered generator
           for the MIME runs in a worker and produces a
           thumbnail.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>handoff</strong>, the form value emitted is a
           list of <code>FileEntry</code> objects, not raw
@@ -257,7 +259,7 @@ export default function FileInputArticle() {
           accordingly. This split — file input owns ingestion;
           uploader owns transport — keeps each component coherent.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Drag-and-drop accessibility</strong> deserves
           explicit attention because it&rsquo;s the most common
           place to get wrong. The drop zone is rendered as a
@@ -274,7 +276,7 @@ export default function FileInputArticle() {
           native input pattern is what makes the drop zone
           actually accessible without reinventing assistive
           technology integration.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Folder traversal</strong> uses
           <code> DataTransferItem.webkitGetAsEntry</code> recursively.
@@ -285,7 +287,7 @@ export default function FileInputArticle() {
           triggers so users understand why some files were
           ignored.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Hash-based deduplication</strong> uses the
           SubtleCrypto API in a Web Worker. The cost is real
           (hashing a 100 MB file takes a few seconds), so we make
@@ -295,7 +297,7 @@ export default function FileInputArticle() {
           forms, name+size dedup is sufficient; hash dedup is for
           flows where users genuinely re-upload identical files
           and the noise matters.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -311,13 +313,13 @@ export default function FileInputArticle() {
           responsible for label/error association, integration with
           the form runtime, and rendering DropZone + FileList.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>DropZone</strong> handles drag/drop UI states and
           click-to-open. It hosts the visible interactive surface
           and renders empty-state messaging including the active
           constraint set (&ldquo;PNG, JPG, up to 10 MB&rdquo;).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>FilePicker</strong> is a hidden native
           <code> {`<input type="file">`}</code> with the
           appropriate <code>accept</code>,
@@ -327,24 +329,24 @@ export default function FileInputArticle() {
           native input is what gives us platform-correct picker
           UX (file system on desktop, photo library / camera /
           documents on mobile).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>FileList</strong> renders accepted files as a
           virtualized list (when count exceeds ~50). Each row is a
           <strong> FileTile</strong> showing thumbnail or icon,
           name, size, status, and per-file actions.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Validators</strong> are pure functions composed
           into a chain: size, MIME, extension, count, custom. Each
           emits Issue objects keyed for i18n.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>PreviewRegistry</strong> maps MIME to preview
           generator. Built-in generators handle images
           (<code> createImageBitmap</code> off-main) and a
           fallback icon set; PDF, video, audio generators plug in.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>HashWorker</strong> handles SubtleCrypto-based
           dedup off the main thread. It&rsquo;s an optional
@@ -356,7 +358,7 @@ export default function FileInputArticle() {
           with depth and count caps when folder upload is
           enabled.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The architectural patterns are <strong>headless control
           with skinnable UI</strong> (the control emits state and
           events; the UI is replaceable),
@@ -365,37 +367,45 @@ export default function FileInputArticle() {
           preview generators per MIME), and <strong>off-main
           processing</strong> (workers for hashing and large-image
           decoding).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Local state in the FileInput owns:
-          <code> {`{ files: FileEntry[], rejected: RejectedEntry[], isDragOver, isHashing }`}</code>.
-          Each entry carries its lifecycle: ingested → validated →
-          previewing → ready → uploading → uploaded / failed.
-          State transitions are explicit; the FileTile renders a
+        <HighlightBlock as="p" tier="crucial">
+          Model file selection as a lifecycle state machine (ingested → validated → previewing → ready → uploading → uploaded/failed)
+          so UI, retry, and dedupe logic stay deterministic.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Local state in the FileInput owns
+          <code>{`{ files: FileEntry[], rejected: RejectedEntry[], isDragOver, isHashing }`}</code>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Each entry carries its lifecycle and immutable identity so uploads can resume/retry without duplicating UI rows.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">State transitions are explicit; the FileTile renders a
           variant based on the current state. The form value
           emitted to the form runtime is the
           <code> files</code> list (just IDs and metadata + the
           File blob); status mutations from the uploader flow
           through the form runtime back into the FileInput via
-          subscription.
-        </p>
+          subscription.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs to the control:
-          <code> accept</code>, <code>maxSize</code>,
-          <code> minCount</code>, <code>maxCount</code>,
-          <code> multiple</code>, <code>capture</code>,
-          <code> allowFolders</code>, <code>hashDedup</code>,
-          <code> previewGenerators</code>,
-          <code> value</code>, <code>onChange</code>.
-          Outputs: <code>onChange(files, issues)</code>,
+        <HighlightBlock as="p" tier="crucial">
+          The contract must be explicit about validation and partial failure: the control should report accepted files and rejected issues together so forms can render
+          correct, actionable error UI.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Inputs include <code>accept</code>, <code>maxSize</code>, <code>minCount</code>, <code>maxCount</code>, <code>multiple</code>, <code>capture</code>,
+          <code>allowFolders</code>, <code>hashDedup</code>, <code>previewGenerators</code>, <code>value</code>, <code>onChange</code>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Keep identity stable: entries should have ids decoupled from array index so reorder/remove doesn&rsquo;t break in-flight uploads.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">Outputs: <code>onChange(files, issues)</code>,
           <code> onError(issues)</code>,
           <code> onRemove(id)</code>,
           <code> onReorder(ids)</code>. The form contract is
@@ -403,20 +413,15 @@ export default function FileInputArticle() {
           <code> FileEntry</code>, not raw bytes; downstream
           submission serializes by extracting
           <code> entry.file</code> and uploading via the
-          uploader.
-        </p>
+          uploader.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance Strategy</h2>
-        <p>
-          Image previews use <code>createObjectURL</code> for
-          immediate display; for files above a threshold (say,
-          5 MB), we generate a smaller bitmap via
-          <code> createImageBitmap</code> with explicit
-          <code> resizeWidth</code> and
-          <code> resizeHeight</code> options so the browser
-          decodes at thumbnail size, never at full size. Decoding
+        <HighlightBlock as="p" tier="important">Image previews use createObjectURL for immediate display; for files above a threshold</HighlightBlock>
+<HighlightBlock as="p" tier="important">(say, 5 MB), we generate a smaller bitmap via createImageBitmap with explicit</HighlightBlock>
+<HighlightBlock as="p" tier="important">resizeWidth and resizeHeight options so the browser decodes at thumbnail size, never at full size.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Decoding
           happens off-main when supported via a worker that
           fetches the file, decodes it, transfers an
           <code> ImageBitmap</code> back to the main thread via
@@ -425,46 +430,41 @@ export default function FileInputArticle() {
           DOM size bounded. Object URLs are tracked in a Map
           keyed by entry id and revoked when the entry is
           removed or the component unmounts; without this we
-          accumulate URL leaks proportional to file count.
-        </p>
+          accumulate URL leaks proportional to file count.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX Considerations</h2>
-        <p>
-          The DropZone has distinct visual states for
+        <HighlightBlock as="p" tier="important">The DropZone has distinct visual states for
           drag-over, drag-rejecting (e.g. wrong file type),
           drop-active. Empty state lists active constraints
           (&ldquo;PNG, JPG, up to 10 MB&rdquo;) so users know
           what&rsquo;s allowed before they try. Per-file remove
           buttons are reachable by Tab and labeled
-          &ldquo;Remove [filename]&rdquo;. Bulk actions (clear all,
+          &ldquo;Remove [filename]&rdquo;.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Bulk actions (clear all,
           accept all rejected if remediable) are available when
           file count exceeds a threshold. Errors per file
           render inline; a top-level summary appears when many
           files fail at once. On mobile, the picker offers
           &ldquo;Take Photo&rdquo; and &ldquo;Photo Library&rdquo;
           via the <code>capture</code> attribute and large tap
-          targets for the drop zone.
-        </p>
-        <p>
+          targets for the drop zone.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Reorder uses a drag handle on each FileTile plus
           keyboard shortcuts (Ctrl+Shift+Up/Down) for users who
           can&rsquo;t drag. Reorder updates the form value
           immediately so submitted order matches displayed
           order.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          The drop zone is a button reachable by Tab; Enter or
-          Space invokes the native picker via
-          <code> ref.current.click()</code>. Drag-over visual state
-          is decorative; the live announcement happens only on
-          drop with a summary (&ldquo;3 files added; 1 rejected:
-          file too large&rdquo;). The file list uses
+        <HighlightBlock as="p" tier="important">The drop zone is a button reachable by Tab; Enter or Space invokes the native picker via</HighlightBlock>
+<HighlightBlock as="p" tier="important">ref.current.click() . Drag-over visual state is decorative; the live announcement</HighlightBlock>
+<HighlightBlock as="p" tier="important">happens only on drop with a summary (&ldquo;3 files added; 1 rejected: file too large&rdquo;).</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">The file list uses
           <code> {`<ul>`}</code> with each item as
           <code> {`<li>`}</code>; remove buttons are explicitly
           labeled with the filename so screen reader users know
@@ -472,27 +472,24 @@ export default function FileInputArticle() {
           their FileTile via <code>aria-describedby</code>;
           screen readers announce them when the file is
           focused. Reorder is operable via keyboard with
-          announced position changes.
-        </p>
+          announced position changes.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Client validation is UX; the server is the security
+        <HighlightBlock as="p" tier="important">Client validation is UX; the server is the security
           boundary. We do not trust extension or MIME from the
           client. Filenames render as text — a filename
-          containing HTML or script characters cannot execute.
-          Object URLs are session-scoped (created with
+          containing HTML or script characters cannot execute.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Object URLs are session-scoped (created with
           <code> URL.createObjectURL</code>) and revoked on
           remove or unmount; we never persist them across
           sessions, which would create dangling reference
           leaks. We cap the total bytes ingested in memory and
           warn the user if the cap is approached, so a malicious
           or accidentally huge drop doesn&rsquo;t exhaust browser
-          memory. Folder traversal caps depth and count.
-        </p>
-        <p>
+          memory. Folder traversal caps depth and count.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           For especially security-sensitive flows (signing PDFs,
           uploading to financial systems), we recommend
           server-side virus scanning before storage and
@@ -500,92 +497,57 @@ export default function FileInputArticle() {
           to keep file bytes off the application server. The
           file input is agnostic to those choices; it just
           surfaces the bytes.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Unit tests cover validators (size, MIME, extension,
-          count) against canonical inputs, the folder traverser
-          against nested test fixtures, and the dedup logic for
-          name+size and hash modes. Integration tests exercise
-          the full pipeline: drop a mix of valid and invalid
-          files; assert accepted and rejected lists, preview
-          generation, and removed entries. We run keyboard-only
-          flows: Tab to drop zone, Enter to open picker,
-          select files, verify focus returns appropriately.
-          We test the worker code paths (hash, preview) in
-          isolation. End-to-end tests in real browsers verify
-          drag-and-drop correctness because synthetic drag
-          events in jsdom are notoriously unfaithful.
-        </p>
+        <HighlightBlock as="p" tier="crucial">We run keyboard-only flows: Tab to drop zone, Enter to open picker, select files, verify focus returns</HighlightBlock>
+<HighlightBlock as="p" tier="important">appropriately. We test the worker code paths (hash, preview) in isolation. End-to-end tests in real</HighlightBlock>
+<HighlightBlock as="p" tier="important">browsers verify drag-and-drop correctness because synthetic drag events in jsdom are notoriously unfaithful.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
-          User drops a folder: traverse with depth and file count
-          caps; surface a warning if the cap triggers. Same file
-          dropped twice: dedup by name+size (or hash if enabled);
-          mark the duplicate with a soft note rather than
-          silently dropping it. Mixed valid and invalid drop:
-          accept valid, list rejected with reasons; never reject
-          the entire batch. Browser autofill into a file
-          input: rare but possible (some accessibility tools
-          do this); treat as a normal user action. iOS Safari
-          quirks with <code>capture</code> attribute: test
-          camera vs library paths explicitly. Very large image
-          previews exhaust memory: cap thumbnail dimension and
-          release the original blob from JS reference once the
-          thumbnail is generated. User removes a file mid-upload:
-          notify the uploader to abort that file&rsquo;s in-flight
-          request. Drag-leave fires when entering a child
-          element of the drop zone (the
-          <code> dragenter/dragleave</code> bubbling quirk):
-          track entered targets in a Set to determine real
-          leave. Pasting an image from a screenshot (no
-          filename): synthesize a name from the timestamp and
-          MIME.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Very large image previews exhaust memory: cap thumbnail dimension and release the original blob from JS reference once the thumbnail is generated. User removes a file</HighlightBlock>
+<HighlightBlock as="p" tier="important">mid-upload: notify the uploader to abort that file&rsquo;s in-flight request. Drag-leave fires when entering a child element of the drop zone (the dragenter/dragleave</HighlightBlock>
+<HighlightBlock as="p" tier="important">bubbling quirk): track entered targets in a Set to determine real leave. Pasting an image from a screenshot (no filename): synthesize a name from the timestamp and MIME.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          The PreviewRegistry is the primary extension point —
+        <HighlightBlock as="p" tier="crucial">The PreviewRegistry is the primary extension point —
           new MIME types plug in with a single registration.
           Custom validators add via the validator chain. The
           FileInput exposes a headless mode (renders nothing,
           exposes refs and state) so teams can build entirely
           custom UIs while reusing the ingestion and validation
-          logic. Theming is design-token-driven; each subcomponent
-          accepts <code>className</code> overrides for surgical
+          logic.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Theming is design-token-driven; each subcomponent
+          accepts </Highlight><code>className</code> overrides for surgical
           customization. The control plugs into any form
           runtime that supports a custom field type
-          contract.
-        </p>
+          contract.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Constraint messages and error text resolve through the
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Constraint messages and error text resolve through the
           host&rsquo;s i18n function. File sizes format via
-          <code> Intl.NumberFormat</code> with byte units
-          appropriate to the locale. Reorder position
+          </Highlight><code> Intl.NumberFormat</code> with byte units
+          appropriate to the locale.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Reorder position
           announcements (&ldquo;Moved file to position 3 of 7&rdquo;)
           go through i18n with parameter bags. RTL layout flips
           via CSS logical properties; the file tile alignment
-          adapts naturally without separate code paths.
-        </p>
+          adapts naturally without separate code paths.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
 
         <h3>Hidden native input vs fully custom drop zone</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hidden native input plus a styled button is the right
           balance. The native input gives us platform-correct
           picker UX (file system, camera, photo library) and
@@ -594,10 +556,10 @@ export default function FileInputArticle() {
           custom drop zone without a native input is harder to
           make accessible and loses platform integration; we
           avoid it.
-        </p>
+        </HighlightBlock>
 
         <h3>Hash dedup vs name+size dedup</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Name+size dedup is essentially free and catches the
           common case (same file dropped twice). Hash dedup is
           accurate but costs CPU (seconds for large files). We
@@ -607,10 +569,10 @@ export default function FileInputArticle() {
           before the user can do anything is a worse experience
           than occasionally accepting two files that turn out
           to be identical.
-        </p>
+        </HighlightBlock>
 
         <h3>Folder upload vs files only</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Folder upload is powerful for legitimate use cases
           (uploading a project, a media library) but cross-browser
           support varies and accidental drops can be
@@ -618,10 +580,10 @@ export default function FileInputArticle() {
           aggressive depth and count caps. The default is
           files-only; folder upload is opt-in with explicit UX
           (&ldquo;Drop a folder or files&rdquo;).
-        </p>
+        </HighlightBlock>
 
         <h3>Upload here vs upload elsewhere</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We deliberately do not implement upload in this
           control. The uploader is a separate system with its
           own concerns (chunking, resume, retry, queue
@@ -630,10 +592,10 @@ export default function FileInputArticle() {
           about. The clean handoff via FileEntry list is the
           architectural seam that keeps both components
           coherent.
-        </p>
+        </HighlightBlock>
 
         <h3>Strict client validation vs permissive</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Strict validation reduces wasted upload bandwidth and
           gives immediate feedback. Permissive validation (let
           the server reject) is simpler but makes for a
@@ -642,18 +604,15 @@ export default function FileInputArticle() {
           enforced client-side — while always re-validating on
           the server because client validation is UX, not
           authorization.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          OPFS-backed staging would let us write incoming files
-          to a private origin file system before upload,
-          handling truly massive files (multi-GB) without
-          memory pressure. Service-Worker-driven background
-          processing would let hashing and preview generation
-          continue even after a tab is backgrounded. Direct-to-S3
+        <HighlightBlock as="p" tier="important">OPFS-backed staging would let us write incoming files to a private origin file system before</HighlightBlock>
+<HighlightBlock as="p" tier="important">upload, handling truly massive files (multi-GB) without memory pressure. Service-Worker-driven</HighlightBlock>
+<HighlightBlock as="p" tier="important">background processing would let hashing and preview generation continue even after a tab is backgrounded.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Direct-to-S3
           presigned-URL upload integration via the uploader
           would close the loop on common cloud storage
           patterns. Server-side image preview generation (via a
@@ -661,14 +620,13 @@ export default function FileInputArticle() {
           would offload preview cost for very large images.
           Better OS-level integration on mobile (selecting from
           a cloud drive directly) would close the gap with
-          native apps.
-        </p>
+          native apps.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>1. How is the drop zone made keyboard accessible?</strong>{" "}
           Render it as a button reachable by Tab; Enter or
           Space activates it; activation invokes a hidden
@@ -676,9 +634,9 @@ export default function FileInputArticle() {
           <code> ref.current.click()</code>. The native input
           provides platform-correct picker accessibility for
           free; the visible button is just a styled trigger.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. Why hide the native input but keep it in the
           DOM?</strong> Hiding (via <code>display:none</code> or
           <code> visibility:hidden</code>) is fine because we
@@ -687,7 +645,7 @@ export default function FileInputArticle() {
           accessibility integration, which would be very hard to
           re-implement. Removing it and rebuilding the picker
           UX is a common mistake.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. How do you generate previews without freezing the
@@ -709,7 +667,7 @@ export default function FileInputArticle() {
           files, so it&rsquo;s not the default.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. What client validation do you trust, and what do
           you defer to server?</strong> Trust nothing
           authoritatively from the client. Client validation is
@@ -717,7 +675,7 @@ export default function FileInputArticle() {
           re-validates everything. Files passing client
           validation may still be rejected server-side after
           virus scan or content inspection.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>6. How do you handle folder drops?</strong>{" "}
@@ -729,7 +687,7 @@ export default function FileInputArticle() {
           because cross-browser support varies.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How is memory leak prevented with object URLs?</strong>{" "}
           Track URLs in a Map keyed by file entry id; revoke on
           remove or unmount. Without explicit revocation, object
@@ -737,9 +695,9 @@ export default function FileInputArticle() {
           accumulates leaks proportional to file count. The
           control owns this lifecycle so consumers
           don&rsquo;t have to remember.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How does this integrate into a Form Builder&rsquo;s
           value model?</strong> The control registers as a custom
           field type. Its emitted value is an array of
@@ -750,25 +708,21 @@ export default function FileInputArticle() {
           subscribes to status changes and renders accordingly.
           The clean separation between ingestion and transport
           is what keeps both components coherent.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          The file input is a <strong>headless ingestion control</strong>{" "}
-          that turns user intent (pick, drop, paste, capture)
-          into a clean, validated list of file references. The
-          four-phase pipeline — ingest, validate, preview,
-          handoff — keeps responsibilities sharp and the UI
-          predictable. The hidden native input pattern delivers
+        <HighlightBlock as="p" tier="important">The file input is a headless ingestion control that turns user intent (pick, drop,</HighlightBlock>
+<HighlightBlock as="p" tier="important">paste, capture) into a clean, validated list of file references. The four-phase pipeline —</HighlightBlock>
+<HighlightBlock as="p" tier="important">ingest, validate, preview, handoff — keeps responsibilities sharp and the UI predictable.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">The hidden native input pattern delivers
           accessibility for free; off-main preview and hash
           generation keep the main thread free; clean handoff to
           a separate upload subsystem keeps both components
           coherent. The control should feel boring and reliable
           in any form, leaving the interesting work to whichever
-          subsystem actually does something with the bytes.
-        </p>
+          subsystem actually does something with the bytes.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

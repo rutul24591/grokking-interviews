@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 550" width="1200" height="550">
+  <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Rate-Limited Autocomplete: Architecture</text>
+
+  <!-- User Input Flow -->
+  <g>
+    <text x="100" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Autocomplete Request Pipeline</text>
+
+    <!-- User types -->
+    <rect x="50" y="100" width="120" height="60" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="110" y="137" font-size="11" font-weight="bold" text-anchor="middle" fill="#1e40af">User types:</text>
+    <text x="110" y="152" font-size="10" text-anchor="middle" fill="#1e40af">"hel"</text>
+
+    <!-- Arrow -->
+    <path d="M 170 130 L 210 130" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+
+    <!-- Debounce -->
+    <rect x="210" y="100" width="120" height="60" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="270" y="130" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">Debounce</text>
+    <text x="270" y="152" font-size="9" text-anchor="middle" fill="#92400e">(300ms wait)</text>
+
+    <!-- Arrow -->
+    <path d="M 330 130 L 370 130" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+    <!-- Throttle -->
+    <rect x="370" y="100" width="120" height="60" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="4"/>
+    <text x="430" y="130" font-size="11" font-weight="bold" text-anchor="middle" fill="#312e81">Throttle</text>
+    <text x="430" y="152" font-size="9" text-anchor="middle" fill="#312e81">(Max 1/sec)</text>
+
+    <!-- Arrow -->
+    <path d="M 490 130 L 530 130" stroke="#6366f1" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+
+    <!-- Request Dedup -->
+    <rect x="530" y="100" width="120" height="60" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="590" y="130" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">Dedup</text>
+    <text x="590" y="152" font-size="9" text-anchor="middle" fill="#065f46">(Cache recent)</text>
+
+    <!-- Arrow -->
+    <path d="M 650 130 L 690 130" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>
+
+    <!-- Network -->
+    <rect x="690" y="100" width="120" height="60" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="750" y="135" font-size="11" font-weight="bold" text-anchor="middle" fill="#991b1b">Network</text>
+    <text x="750" y="152" font-size="9" text-anchor="middle" fill="#991b1b">1 request sent</text>
+
+    <!-- Arrow -->
+    <path d="M 810 130 L 850 130" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrow5)"/>
+
+    <!-- Response -->
+    <rect x="850" y="100" width="120" height="60" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="910" y="130" font-size="11" font-weight="bold" text-anchor="middle" fill="#581c87">Response</text>
+    <text x="910" y="152" font-size="9" text-anchor="middle" fill="#581c87">5 suggestions</text>
+
+    <!-- Arrow -->
+    <path d="M 970 130 L 1010 130" stroke="#a855f7" stroke-width="2" fill="none" marker-end="url(#arrow6)"/>
+
+    <!-- UI Update -->
+    <rect x="1010" y="100" width="120" height="60" fill="#e0fdf4" stroke="#065f46" stroke-width="2" rx="4"/>
+    <text x="1070" y="130" font-size="11" font-weight="bold" text-anchor="middle" fill="#047857">UI Display</text>
+    <text x="1070" y="152" font-size="9" text-anchor="middle" fill="#065f46">Show options</text>
+  </g>
+
+  <!-- Implementation Details -->
+  <g>
+    <text x="100" y="210" font-size="14" font-weight="bold" fill="#1a1a1a">Rate-Limiting Techniques</text>
+
+    <!-- Debounce -->
+    <rect x="50" y="240" width="280" height="130" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="190" y="265" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Debounce (300ms)</text>
+    <text x="60" y="290" font-size="10" fill="#374151">• Waits for user to pause typing</text>
+    <text x="60" y="306" font-size="10" fill="#374151">• Cancels previous timer on input</text>
+    <line x1="60" y1="325" x2="310" y2="325" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2,2"/>
+    <text x="130" y="340" font-size="9" fill="#374151">Keydown Keydown Keydown</text>
+    <text x="130" y="354" font-size="9" fill="#374151">300ms quiet...</text>
+    <circle cx="220" cy="325" r="4" fill="#f59e0b"/>
+    <text x="220" y="340" font-size="9" text-anchor="middle" fill="#374151">Request</text>
+
+    <!-- Throttle -->
+    <rect x="360" y="240" width="280" height="130" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="500" y="265" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Throttle (100ms)</text>
+    <text x="370" y="290" font-size="10" fill="#374151">• Max 1 request per 100ms</text>
+    <text x="370" y="306" font-size="10" fill="#374151">• Dropped inputs queued</text>
+    <line x1="370" y1="325" x2="620" y2="325" stroke="#3b82f6" stroke-width="1"/>
+    <circle cx="380" cy="325" r="3" fill="#3b82f6"/>
+    <circle cx="420" cy="325" r="3" fill="#3b82f6"/>
+    <circle cx="460" cy="325" r="3" fill="#3b82f6"/>
+    <circle cx="500" cy="325" r="3" fill="#3b82f6"/>
+    <circle cx="540" cy="325" r="3" fill="#3b82f6"/>
+    <circle cx="580" cy="325" r="3" fill="#3b82f6"/>
+    <text x="480" y="345" font-size="9" text-anchor="middle" fill="#374151">100ms intervals</text>
+
+    <!-- Caching -->
+    <rect x="670" y="240" width="280" height="130" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="810" y="265" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Response Caching</text>
+    <text x="680" y="290" font-size="10" fill="#374151">• Cache results for common prefixes</text>
+    <text x="680" y="306" font-size="10" fill="#374151">• Instant display for cached queries</text>
+    <text x="680" y="325" font-size="10" fill="#374151">Example: "hel" → cached</text>
+    <text x="680" y="340" font-size="10" fill="#374151">"hello" → match cached + filter</text>
+    <text x="680" y="355" font-size="10" fill="#374151">TTL: 5 minutes per entry</text>
+  </g>
+
+  <!-- Performance Metrics -->
+  <g>
+    <text x="100" y="420" font-size="14" font-weight="bold" fill="#1a1a1a">Performance Targets</text>
+
+    <rect x="50" y="450" width="1100" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
+    <text x="70" y="475" font-size="11" fill="#374151"><tspan font-weight="bold">Debounce delay:</tspan> 200-400ms. Balances responsiveness vs API load. Too low = many requests. Too high = perceived lag.</text>
+    <text x="70" y="498" font-size="11" fill="#374151"><tspan font-weight="bold">Display latency:</tspan> &lt;50ms from user input to suggestions visible (debounce + network + render). Perceived as instant.</text>
+    <text x="70" y="521" font-size="11" fill="#374151"><tspan font-weight="bold">Cache hit rate:</tspan> 60-80% of requests served from cache. Reduces backend load. Improves perceived performance.</text>
+  </g>
+
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#6366f1"/>
+    </marker>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arrow5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow6" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#a855f7"/>
+    </marker>
+  </defs>
+</svg>

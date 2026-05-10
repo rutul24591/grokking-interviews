@@ -1,0 +1,102 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="400" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Clipboard API System — Copy, Paste, Permissions, and Formats</text>
+
+  <!-- COPY FLOW -->
+  <rect x="20" y="50" width="820" height="145" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="30" y="70" font-size="12" font-weight="bold" fill="#1b5e20">Copy Flow</text>
+
+  <rect x="35" y="80" width="130" height="95" rx="5" fill="white" stroke="#43a047" stroke-width="1.5"/>
+  <text x="100" y="101" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">User Triggers Copy</text>
+  <text x="100" y="117" text-anchor="middle" font-size="10" fill="#388e3c">Ctrl+C keyboard</text>
+  <text x="100" y="131" text-anchor="middle" font-size="10" fill="#388e3c">Button click</text>
+  <text x="100" y="145" text-anchor="middle" font-size="10" fill="#388e3c">Context menu</text>
+  <text x="100" y="162" text-anchor="middle" font-size="10" fill="#388e3c">Programmatic call</text>
+
+  <line x1="165" y1="127" x2="195" y2="127" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="197" y="80" width="145" height="95" rx="5" fill="white" stroke="#43a047" stroke-width="1.5"/>
+  <text x="270" y="101" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Permissions Check</text>
+  <text x="270" y="117" text-anchor="middle" font-size="10" fill="#388e3c">Async Clipboard API</text>
+  <text x="270" y="131" text-anchor="middle" font-size="10" fill="#388e3c">navigator.permissions</text>
+  <text x="270" y="145" text-anchor="middle" font-size="10" fill="#388e3c">.query("clipboard-write")</text>
+  <text x="270" y="162" text-anchor="middle" font-size="10" fill="#388e3c">Granted / Prompt / Denied</text>
+
+  <line x1="342" y1="127" x2="372" y2="127" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="374" y="80" width="155" height="95" rx="5" fill="white" stroke="#43a047" stroke-width="1.5"/>
+  <text x="451" y="101" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Build ClipboardItem</text>
+  <text x="451" y="117" text-anchor="middle" font-size="10" fill="#388e3c">text/plain</text>
+  <text x="451" y="131" text-anchor="middle" font-size="10" fill="#388e3c">text/html (rich text)</text>
+  <text x="451" y="145" text-anchor="middle" font-size="10" fill="#388e3c">image/png</text>
+  <text x="451" y="162" text-anchor="middle" font-size="10" fill="#388e3c">Custom MIME types</text>
+
+  <line x1="529" y1="127" x2="559" y2="127" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="561" y="80" width="135" height="95" rx="5" fill="white" stroke="#43a047" stroke-width="1.5"/>
+  <text x="628" y="101" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Write to Clipboard</text>
+  <text x="628" y="117" text-anchor="middle" font-size="10" fill="#388e3c">navigator.clipboard</text>
+  <text x="628" y="131" text-anchor="middle" font-size="10" fill="#388e3c">.write([item])</text>
+  <text x="628" y="145" text-anchor="middle" font-size="10" fill="#388e3c">or .writeText(str)</text>
+  <text x="628" y="162" text-anchor="middle" font-size="10" fill="#388e3c">Returns Promise</text>
+
+  <line x1="696" y1="127" x2="726" y2="127" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="728" y="80" width="100" height="95" rx="5" fill="#c8e6c9" stroke="#43a047" stroke-width="1.5"/>
+  <text x="778" y="105" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Success</text>
+  <text x="778" y="121" text-anchor="middle" font-size="10" fill="#2e7d32">Show toast:</text>
+  <text x="778" y="136" text-anchor="middle" font-size="10" fill="#2e7d32">"Copied!"</text>
+  <text x="778" y="152" text-anchor="middle" font-size="10" fill="#2e7d32">Update button</text>
+  <text x="778" y="167" text-anchor="middle" font-size="10" fill="#2e7d32">state 2s</text>
+
+  <!-- PASTE FLOW -->
+  <rect x="20" y="215" width="820" height="130" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="235" font-size="12" font-weight="bold" fill="#0d47a1">Paste Flow</text>
+
+  <rect x="35" y="245" width="140" height="85" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="105" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">User Pastes</text>
+  <text x="105" y="281" text-anchor="middle" font-size="10" fill="#1565c0">Ctrl+V keyboard</text>
+  <text x="105" y="296" text-anchor="middle" font-size="10" fill="#1565c0">Paste event on input</text>
+  <text x="105" y="313" text-anchor="middle" font-size="10" fill="#1565c0">Programmatic read</text>
+
+  <line x1="175" y1="287" x2="205" y2="287" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="207" y="245" width="145" height="85" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="279" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Read Permission</text>
+  <text x="279" y="281" text-anchor="middle" font-size="10" fill="#1565c0">clipboard-read</text>
+  <text x="279" y="296" text-anchor="middle" font-size="10" fill="#1565c0">Requires user gesture</text>
+  <text x="279" y="311" text-anchor="middle" font-size="10" fill="#1565c0">Browser prompt shown</text>
+
+  <line x1="352" y1="287" x2="382" y2="287" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="384" y="245" width="155" height="85" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="461" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Read Clipboard</text>
+  <text x="461" y="281" text-anchor="middle" font-size="10" fill="#1565c0">navigator.clipboard.read()</text>
+  <text x="461" y="296" text-anchor="middle" font-size="10" fill="#1565c0">Detect MIME type</text>
+  <text x="461" y="311" text-anchor="middle" font-size="10" fill="#1565c0">item.getType("text/plain")</text>
+
+  <line x1="539" y1="287" x2="569" y2="287" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="571" y="245" width="140" height="85" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="641" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Sanitize Input</text>
+  <text x="641" y="281" text-anchor="middle" font-size="10" fill="#1565c0">Strip script tags</text>
+  <text x="641" y="296" text-anchor="middle" font-size="10" fill="#1565c0">DOMPurify for HTML</text>
+  <text x="641" y="311" text-anchor="middle" font-size="10" fill="#1565c0">Validate MIME before use</text>
+
+  <line x1="711" y1="287" x2="741" y2="287" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="743" y="245" width="85" height="85" rx="5" fill="#bbdefb" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="785" y="271" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Inject</text>
+  <text x="785" y="287" text-anchor="middle" font-size="10" fill="#1565c0">Into editor</text>
+  <text x="785" y="302" text-anchor="middle" font-size="10" fill="#1565c0">or field</text>
+
+  <!-- Fallback note -->
+  <rect x="20" y="362" width="820" height="28" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="430" y="381" text-anchor="middle" font-size="11" fill="#e65100">Fallback: document.execCommand("copy") for older browsers — synchronous, no MIME control, deprecated but widely supported</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

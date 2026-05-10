@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,7 @@ export default function FileExplorerUIArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We need to design a reusable file explorer UI component for a large-scale
           web application. The file explorer allows users to browse, manage, and
           interact with files and folders in a hierarchical directory structure. It
@@ -51,8 +52,8 @@ export default function FileExplorerUIArticle() {
           by IntersectionObserver to avoid rendering off-screen thumbnails. Right-clicking
           on any item opens a context menu with operations like open, rename, delete,
           move, copy, download, and view properties.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The explorer must support multi-selection: single click selects one item,
           Ctrl+click (Cmd+click on Mac) toggles individual items, Shift+click selects
           a range from the last clicked item to the current one, and Ctrl+A selects
@@ -68,7 +69,7 @@ export default function FileExplorerUIArticle() {
           remove, and F2 to rename. The component must be fully accessible with proper
           ARIA roles, aria-selected states, and live region announcements for screen
           readers.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -76,18 +77,18 @@ export default function FileExplorerUIArticle() {
           <li>
             The application is a React 19+ SPA with Zustand for state management.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             File metadata (name, size, type, modified date, thumbnail URL) is provided
             by a backend API or a local file system abstraction.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The explorer operates on a single directory at a time. Navigating into a
             folder replaces the current file list.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Maximum visible items in grid/list view is governed by the viewport and
             virtualization is optional for directories with 1000+ items.
-          </li>
+          </HighlightBlock>
           <li>
             Bulk operations (delete, move, copy, download) are asynchronous and report
             progress via a progress indicator.
@@ -164,35 +165,35 @@ export default function FileExplorerUIArticle() {
             representation of the dragged items. Drop targets (folders) highlight on drag
             over.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard Navigation:</strong> Arrow keys move the selection focus up,
             down, left, or right through the grid/list. Enter opens the focused item.
             Delete removes the selected items. F2 initiates inline rename. Escape cancels
             the current operation (context menu, rename input, selection).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Grid view uses <code>role=&quot;grid&quot;</code>
             with <code>role=&quot;gridcell&quot;</code> for each item. List view uses
             <code>role=&quot;treegrid&quot;</code> or <code>role=&quot;row&quot;</code>.
             Each item has <code>aria-selected</code> reflecting its selection state.
             Screen readers announce selection changes, navigation, and operation results
             via <code>aria-live</code> regions.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Rendering 500+ items should not cause visible
             jank. Thumbnails use lazy loading. Sorting and filtering should complete within
             100ms for up to 5000 items. Grid/list re-renders use React memo and key
             stabilization.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Scalability:</strong> The system should handle directories with 10,000+
             items. Virtualization (windowing) is recommended for list view beyond 500 items.
             Grid view should paginate or virtualize beyond the viewport capacity.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reliability:</strong> Bulk operations must be atomic where possible —
             if a bulk delete partially fails, the UI reflects which items were deleted and
@@ -207,10 +208,10 @@ export default function FileExplorerUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Directory with 10,000+ files — rendering all thumbnails at once would freeze
             the main thread. Lazy loading and virtualization are mandatory.
-          </li>
+          </HighlightBlock>
           <li>
             User selects items, navigates into a folder, then navigates back — should
             the previous selection be restored or cleared? (Assumption: cleared on
@@ -242,39 +243,39 @@ export default function FileExplorerUIArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The file explorer is composed of several cooperating modules, each responsible
           for a distinct concern. The <strong>Zustand store</strong> holds the canonical
           state: the current file list, view mode (grid or list), selection state, sort
           configuration, search and filter criteria, context menu state (open/closed,
           position, target item), and breadcrumb path. Derived state (filtered and sorted
           file list) is computed via store selectors to avoid stale or redundant data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>rendering layer</strong> consists of a root explorer component that
           composes the toolbar (view toggle, search input, sort dropdown, bulk action
           buttons), breadcrumb navigation, and either the file grid or file list based on
           the current view mode. Each file item in the grid or list renders a thumbnail
           component that handles lazy loading via IntersectionObserver and falls back to
           a file-type icon for non-image files.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>React Context + useReducer:</strong> Viable for the store, but the
             file explorer has many independent slices of state (selection, sort, filter,
             context menu, breadcrumbs) that change at different frequencies. Context
             triggers re-renders for all consumers when any part of the value changes,
             unless split into multiple contexts. Zustand&apos;s selector-based subscriptions
             prevent unnecessary re-renders more elegantly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Redux Toolkit:</strong> Provides excellent DevTools and middleware
             support but introduces significant boilerplate (slices, thunks, selectors)
             for a single-component feature. Overkill for a localized UI pattern.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Local component state:</strong> Would tightly couple all explorer
             sub-components and make sharing state (e.g., selection count in the toolbar,
@@ -282,14 +283,14 @@ export default function FileExplorerUIArticle() {
             drilling or callback chains.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand is optimal:</strong> The file explorer is a self-contained
           feature with complex, interdependent state. Zustand provides a lightweight,
           selector-based global store with zero boilerplate. Each sub-component subscribes
           only to the state slice it needs, minimizing re-renders. The store can be scoped
           to a single explorer instance (supporting multiple explorers on the same page)
           via store factories or context-wrapped store providers.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -359,7 +360,7 @@ export default function FileExplorerUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. File Utilities (<code>file-utils.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Pure utility functions for file operations. <code>detectFileType()</code> maps
             file extensions to categories (image, document, video, audio, archive, code,
             spreadsheet, presentation, font, executable, other). <code>getFileIcon()</code>
@@ -368,12 +369,12 @@ export default function FileExplorerUIArticle() {
             (B, KB, MB, GB, TB) with appropriate precision. <code>generateThumbnailUrl()</code>
             constructs the thumbnail URL for a given file, applying size constraints and
             fallback logic.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. Bulk Operations (<code>bulk-operations.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Handles multi-file operations with progress tracking. <code>bulkDelete()</code>
             removes selected files sequentially or in parallel, reporting progress as a
             percentage. <code>bulkMove()</code> relocates files to a target directory.
@@ -382,7 +383,7 @@ export default function FileExplorerUIArticle() {
             based on bytes processed. Each operation returns an abort controller so the UI
             can cancel mid-operation. Results include success and failure counts with
             per-item error details.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -399,14 +400,14 @@ export default function FileExplorerUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Sort Hook (<code>use-file-sort.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Takes the file list and sort configuration, returns a sorted copy. Sorting is
             stable via <code>Array.prototype.toSorted()</code> with a comparison function
             that handles the sort key (string comparison for name/type, numeric for size,
             timestamp for dateModified). Folders are pinned to the top regardless of sort
             key, then files follow. The hook memoizes its output so re-sorting only occurs
             when the input list or sort config changes.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -450,7 +451,7 @@ export default function FileExplorerUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">10. Context Menu (<code>file-context-menu.tsx</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Renders a positioned context menu when open. The menu subscribes to the
             store&apos;s contextMenu state. It computes its position to stay within the
             viewport (flipping to the left if overflowing the right edge, flipping up if
@@ -458,7 +459,7 @@ export default function FileExplorerUIArticle() {
             Move to, Copy to, Download, and Properties. Keyboard navigation (arrow keys,
             Enter, Escape) is supported. The menu closes on outside click or Escape key
             via a useEffect with event listeners.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
@@ -495,10 +496,10 @@ export default function FileExplorerUIArticle() {
             FileGrid or FileList renders based on viewMode. Each item renders a
             FileThumbnail. IntersectionObserver begins tracking off-screen thumbnails.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             User clicks an item. useFileSelection.handleClick dispatches to the store,
             which updates the selection Set. The item&apos;s aria-selected updates.
-          </li>
+          </HighlightBlock>
           <li>
             User right-clicks an item. Store opens the context menu at the cursor
             position with the item as target. ContextMenu renders.
@@ -534,16 +535,16 @@ export default function FileExplorerUIArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The file explorer follows a unidirectional data flow. All user interactions
           dispatch actions to the Zustand store. The store updates its state and notifies
           subscribers. Components re-render based on their selectors. Derived data
           (filtered and sorted list) flows through custom hooks that memoize their output,
           preventing unnecessary computation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Data Pipeline: Filter then Sort</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The data pipeline processes the raw file list in two stages. First, the filter
           hook applies all active filter criteria (text, type, date, size) using AND logic,
           producing a subset of the original list. Second, the sort hook takes the
@@ -552,11 +553,11 @@ export default function FileExplorerUIArticle() {
           faster, and the sort result is what the user sees rendered. Both stages are
           memoized, so if neither the input list nor the criteria change, the cached
           result is returned without computation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Large directories (10,000+ items):</strong> Rendering all items at
             once would block the main thread. The list view uses virtualization (react-window
             or a custom implementation) to render only visible rows plus a buffer. The grid
@@ -564,20 +565,20 @@ export default function FileExplorerUIArticle() {
             virtualize for extreme cases. Filter and sort operations use
             <code>toSorted()</code> and <code>filter()</code> which are optimized in
             modern JavaScript engines — 10,000 items sort in under 50ms on modern hardware.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Selection during navigation:</strong> When the user navigates into a
             folder, the selection clears because the previous selection IDs are no longer
             in the current file list. On navigating back (via breadcrumb or back button),
             the explorer can restore the previous selection if it stores navigation history
             with selection snapshots.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Thumbnail 404 fallback:</strong> If a thumbnail image fails to load
             (network error, corrupted file), the &lt;img&gt; onError handler swaps the
             rendering to the file-type icon fallback. This ensures the UI never shows
             broken image placeholders.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Context menu viewport overflow:</strong> The context menu calculates
             its position relative to the viewport dimensions. If the menu would render
@@ -630,14 +631,14 @@ export default function FileExplorerUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Zustand Store (explorer-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The store manages all explorer state. Key design decisions include: using
           <code>Set</code> for selected IDs for O(1) add/remove/has operations, storing
           the sort config as a simple object to enable shallow comparison selectors,
           and keeping the context menu state separate from the file list to avoid
           coupling. The store is factory-created so multiple explorer instances can
           coexist on the same page without state collision.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: File Utilities (file-utils.ts)</h3>
         <p>
@@ -695,7 +696,7 @@ export default function FileExplorerUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: Drag and Drop Hook (use-drag-drop.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Wraps the native HTML Drag and Drop API. <code>onDragStart</code> sets
           <code>event.dataTransfer.setData</code> with the dragged item IDs as JSON and
           configures the drag effect. A custom drag image can be set via
@@ -706,10 +707,10 @@ export default function FileExplorerUIArticle() {
           desktop), and dispatches the appropriate action. The hook exposes
           <code>isDragging</code>, <code>dragSource</code>, and <code>dropTarget</code>
           state for visual feedback.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: Thumbnail Component (file-thumbnail.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Uses IntersectionObserver in a useEffect to lazy-load images. The observer has
           a rootMargin of &quot;200px&quot; to start loading slightly before the image
           enters the viewport. A loading state renders a skeleton placeholder. On load
@@ -717,10 +718,10 @@ export default function FileExplorerUIArticle() {
           icon. The component accepts size variants (small, medium, large) for use in
           both grid and list views. For the list view, thumbnails are smaller (32x32)
           while grid view uses larger thumbnails (128x128 or responsive).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 10: Context Menu (file-context-menu.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders a fixed-position div at the stored x/y coordinates. Uses a useEffect
           to attach outside-click and Escape key listeners for dismissal. Menu items
           render as buttons with appropriate icons and labels. Each menu item&apos;s
@@ -728,16 +729,16 @@ export default function FileExplorerUIArticle() {
           &quot;Move to&quot; showing recent folders) render on hover or arrow key
           navigation. The menu uses <code>role=&quot;menu&quot;</code> with
           <code>role=&quot;menuitem&quot;</code> for accessibility.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 11: Explorer Toolbar (explorer-toolbar.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders the view mode toggle (grid/list icons), search input with debounced
           text entry, sort dropdown (selecting key and direction), and bulk action buttons
           (visible only when items are selected). The search input uses a debounced value
           (300ms) to avoid filtering on every keystroke. The sort dropdown shows the
           current sort key and toggles direction on click.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 12: Bulk Action Bar (bulk-action-bar.tsx)</h3>
         <p>
@@ -806,22 +807,22 @@ export default function FileExplorerUIArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Where <code>n</code> is the total file list size, <code>k</code> is the filtered
           list size, <code>s</code> is the number of selected items, and <code>r</code> is
           the range size. For 5000 items, filter + sort completes in under 100ms on modern
           hardware.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rendering large file lists:</strong> Rendering 1000+ DOM nodes for a
             directory causes layout thrashing and paint delays. Mitigation: use
             virtualization (react-window or react-virtuoso) for the list view. For grid
             view, use CSS grid with lazy thumbnail loading via IntersectionObserver. Only
             render items within or near the viewport.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Thumbnail image loading:</strong> Loading 500+ image thumbnails
             simultaneously saturates the network and blocks the main thread with decode
@@ -829,12 +830,12 @@ export default function FileExplorerUIArticle() {
             images load only when about to enter the viewport. Server-side thumbnail
             generation with size query parameters reduces payload size.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Filter + sort on every keystroke:</strong> If the filter hook re-runs
             on every render, typing in the search bar triggers unnecessary computation.
             Mitigation: debounce the search input (300ms) and memoize the filter and sort
             outputs with useMemo keyed on their inputs.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Re-render cascades from store updates:</strong> If components select
             the entire store state, any update triggers a re-render of all subscribers.
@@ -847,23 +848,23 @@ export default function FileExplorerUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualization:</strong> For directories with 500+ items, wrap the
             list view in a virtualized scroller that renders only the visible rows plus a
             small buffer (e.g., 5 rows above and below). This reduces DOM node count from
             thousands to tens.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Stable keys:</strong> Use <code>fileItem.id</code> as the React key
             for list/grid items. Avoid array index keys, which cause incorrect selection
             state and animation bugs when the list reorders.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>React.memo on item components:</strong> Wrap FileGridItem and
             FileListItem in React.memo with a custom comparison function that checks if
             the item data and selection state changed. This prevents re-rendering unchanged
             items when only one item&apos;s selection state changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Web Worker for heavy sorting:</strong> For directories exceeding 10,000
             items, offload sort and filter operations to a Web Worker to avoid blocking
@@ -894,14 +895,14 @@ export default function FileExplorerUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">XSS via Thumbnail URLs</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Thumbnail URLs are set as <code>src</code> attributes on <code>&lt;img&gt;</code>
           tags. If the URL comes from user-controlled input (e.g., a user-uploaded file
           with a malicious URL), it could point to a tracking pixel or an XSS vector.
           Validate that thumbnail URLs originate from a trusted CDN or storage bucket.
           Use Content Security Policy (CSP) headers to restrict image sources to
           whitelisted domains.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Drag and Drop from External Sources</h3>
         <p>
@@ -952,12 +953,12 @@ export default function FileExplorerUIArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Grid view uses <code>role=&quot;grid&quot;</code> on the container,
               <code>role=&quot;row&quot;</code> on each row (or implicit rows via CSS
               grid), and <code>role=&quot;gridcell&quot;</code> on each cell. Each cell
               has <code>aria-selected</code> reflecting its selection state.
-            </li>
+            </HighlightBlock>
             <li>
               List view uses <code>role=&quot;treegrid&quot;</code> if folders are
               expandable inline, or <code>role=&quot;row&quot;</code> with
@@ -967,11 +968,11 @@ export default function FileExplorerUIArticle() {
               The context menu uses <code>role=&quot;menu&quot;</code> with
               <code>role=&quot;menuitem&quot;</code> for each action item.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               An <code>aria-live=&quot;polite&quot;</code> region announces selection
               changes (&quot;3 items selected&quot;), navigation (&quot;Entered Documents
               folder&quot;), and operation results (&quot;5 files deleted&quot;).
-            </li>
+            </HighlightBlock>
             <li>
               The bulk action bar uses <code>role=&quot;toolbar&quot;</code> with
               <code>aria-label</code> describing the available actions.
@@ -981,22 +982,22 @@ export default function FileExplorerUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bulk Operation Safety</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Delete confirmation:</strong> Bulk delete requires a confirmation
             dialog showing the count of items to be deleted. This prevents accidental mass
             deletion from a mis-click or keyboard shortcut.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Move/Copy validation:</strong> Before moving or copying files, verify
             that the target directory exists and the user has write permissions. If a file
             with the same name exists at the target, prompt the user with a conflict
             resolution dialog (overwrite, rename with suffix, skip).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Download as Zip size limits:</strong> Cap the maximum archive size
             (e.g., 2GB) to prevent memory exhaustion. If the selected files exceed the
             limit, show an error message suggesting the user select fewer files.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -1006,23 +1007,23 @@ export default function FileExplorerUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>File utilities:</strong> Test detectFileType for common extensions
             (.jpg, .pdf, .mp4, .zip, .js, .docx). Test formatFileSize for boundary
             values (0 bytes, 1023 bytes, 1024 bytes, 1 GB). Test getFileIcon returns
             the correct SVG path for each category.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Sort hook:</strong> Test ascending and descending sort for each key
             (name, size, type, dateModified). Verify folders pin to the top. Verify
             stability — items with equal sort keys retain their original order.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Filter hook:</strong> Test text filter with case variations, partial
             matches, and no matches. Test type filter for each category. Test date range
             filter with boundary dates. Test size range with min/max. Test compound
             filters (text + type + date + size).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Selection hook:</strong> Test single click sets selection to one
             item. Test Ctrl+click toggles. Test Shift+click selects the correct range.
@@ -1091,16 +1092,16 @@ export default function FileExplorerUIArticle() {
             Bulk delete with 100 selected items: assert the progress bar updates, the
             operation completes, and all items are removed from the store.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Keyboard navigation: focus the grid, press arrow keys, assert focus moves
             correctly. Press Enter on a folder, assert navigation occurs. Press F2,
             assert rename input appears.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on the rendered explorer. Verify
             aria-selected states, role attributes, and aria-live announcements. Test with
             a screen reader (VoiceOver, NVDA) for announcement correctness.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -1138,12 +1139,12 @@ export default function FileExplorerUIArticle() {
             If the user filtered the list, Shift+click should select the range within the
             visible items, not the hidden ones.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Forgetting accessibility:</strong> File explorers are heavily used by
             keyboard users (developers, power users). Rendering a grid of divs without
             keyboard navigation, ARIA roles, or screen reader announcements is a critical
             oversight.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Context menu positioning:</strong> Rendering the context menu at the
             raw mouse event coordinates without checking viewport bounds causes it to
@@ -1154,7 +1155,7 @@ export default function FileExplorerUIArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Grid View vs List View</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Grid view excels at visual browsing — users can quickly scan image thumbnails
             and visually identify files. List view excels at detailed inspection — users
             can compare file sizes, types, and dates, and sort by any column. The trade-off
@@ -1162,12 +1163,12 @@ export default function FileExplorerUIArticle() {
             (Finder, Explorer, Google Drive) offer both because different tasks benefit
             from different views. Grid view is better for media files; list view is better
             for code, documents, and administrative tasks.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Client-Side vs Server-Side Filtering</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Client-side filtering is fast and responsive for directories with up to 5000
             items — no network round trip, instant feedback. Beyond 5000 items, the
             filtering cost grows and the memory footprint of storing all file metadata
@@ -1178,12 +1179,12 @@ export default function FileExplorerUIArticle() {
             directories rarely exceed a few hundred items. Server-side filtering is
             appropriate for cloud storage platforms (Google Drive, Dropbox) where users
             may have hundreds of thousands of files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Virtualization vs Pagination</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Virtualization (windowing) renders only the visible items plus a buffer,
             providing seamless scrolling with a constant DOM size. Pagination renders a
             fixed page of items with navigation controls, requiring explicit page changes.
@@ -1193,7 +1194,7 @@ export default function FileExplorerUIArticle() {
             of browsing files in a directory. The trade-off is implementation complexity
             (virtualization requires precise height calculations and scroll position
             tracking) versus UX familiarity.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1248,7 +1249,7 @@ export default function FileExplorerUIArticle() {
               Q: How would you add collaborative editing indicators (showing who is
               currently viewing/editing a file)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Add a presence layer to the store. Each connected user broadcasts their
               current location (which file or folder they have open) via WebSocket. The
               store maintains a map of fileId to user IDs currently viewing it. The UI
@@ -1256,7 +1257,7 @@ export default function FileExplorerUIArticle() {
               Clicking an avatar shows the viewer&apos;s name and last activity timestamp.
               Presence updates are debounced to avoid network spam, and stale entries
               (no heartbeat for 30 seconds) are automatically removed.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

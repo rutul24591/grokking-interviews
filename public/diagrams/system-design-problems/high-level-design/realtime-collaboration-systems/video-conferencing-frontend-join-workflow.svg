@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-label="Join workflow for WebRTC conferencing including permissions, signaling, ICE, and first media">
+  <title>Video Conferencing Join Workflow</title>
+  <desc>Shows deterministic join checkpoints: token, device permissions, local track creation, signaling, ICE, SFU subscribe, and first remote audio.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="620" />
+
+  <rect class="box" x="60" y="70" width="320" height="150" />
+  <text class="label bold" x="90" y="115">Pre-join</text>
+  <text class="label small" x="90" y="145">fetch token</text>
+  <text class="label small" x="90" y="170">enumerate devices</text>
+  <text class="label small" x="90" y="195">select defaults</text>
+
+  <rect class="accent" x="420" y="70" width="350" height="150" />
+  <text class="label bold" x="450" y="115">Permissions + tracks</text>
+  <text class="label small" x="450" y="145">request mic/cam</text>
+  <text class="label small" x="450" y="170">create local tracks</text>
+  <text class="label small" x="450" y="195">show preview</text>
+
+  <rect class="box" x="810" y="70" width="330" height="150" />
+  <text class="label bold" x="840" y="115">Signaling</text>
+  <text class="label small" x="840" y="145">offer/answer</text>
+  <text class="label small" x="840" y="170">ICE candidates</text>
+  <text class="label small" x="840" y="195">permissions enforced</text>
+
+  <path class="arrow" d="M380 145 L420 145" />
+  <path class="arrow" d="M770 145 L810 145" />
+
+  <rect class="muted" x="60" y="280" width="510" height="150" />
+  <text class="label bold" x="90" y="325">Connectivity</text>
+  <text class="label small" x="90" y="355">ICE connected</text>
+  <text class="label small" x="90" y="380">fallback / TURN as needed</text>
+  <text class="label small" x="90" y="405">emit join checkpoint</text>
+
+  <rect class="accent" x="610" y="280" width="530" height="150" />
+  <text class="label bold" x="640" y="325">Media routing (SFU)</text>
+  <text class="label small" x="640" y="355">publish local tracks</text>
+  <text class="label small" x="640" y="380">subscribe to remote tracks</text>
+  <text class="label small" x="640" y="405">apply subscription policy</text>
+
+  <path class="arrow" d="M975 220 C975 260 940 265 940 280" />
+  <path class="arrow" d="M570 355 L610 355" />
+
+  <rect class="box" x="60" y="470" width="1080" height="110" />
+  <text class="label bold" x="90" y="515">First remote audio rendered</text>
+  <text class="label small" x="90" y="545">meeting is usable even if video tiles are still loading</text>
+</svg>
+

@@ -1,0 +1,83 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Settings Page System — Storage, Validation, Defaults, and Rollback</text>
+
+  <!-- Settings taxonomy -->
+  <rect x="20" y="45" width="260" height="310" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Settings Taxonomy</text>
+
+  <rect x="35" y="78" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">User Preferences</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">theme, language, timezone</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">notification prefs, display density</text>
+  <text x="150" y="142" text-anchor="middle" font-size="10" fill="#1565c0">Stored: server + localStorage sync</text>
+
+  <rect x="35" y="153" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Account Settings</text>
+  <text x="150" y="188" text-anchor="middle" font-size="10" fill="#1565c0">email, password, 2FA, billing</text>
+  <text x="150" y="203" text-anchor="middle" font-size="10" fill="#1565c0">Require re-auth for sensitive</text>
+
+  <rect x="35" y="228" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Workspace Settings</text>
+  <text x="150" y="263" text-anchor="middle" font-size="10" fill="#1565c0">SSO, domain allowlist, seat limits</text>
+  <text x="150" y="278" text-anchor="middle" font-size="10" fill="#1565c0">Admin-only, audited changes</text>
+
+  <rect x="35" y="303" width="230" height="42" rx="4" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="150" y="322" text-anchor="middle" font-size="10" fill="#0d47a1">Navigation: sidebar sections</text>
+  <text x="150" y="335" text-anchor="middle" font-size="10" fill="#1565c0">scroll-spy highlights active section</text>
+
+  <!-- Save strategy -->
+  <rect x="295" y="45" width="280" height="310" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Save Strategy</text>
+
+  <rect x="310" y="78" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Optimistic Immediate Save</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">Toggle, select: save on change</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">Revert on error with toast</text>
+  <text x="435" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">No "Save" button needed</text>
+
+  <rect x="310" y="153" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Explicit Save (Forms)</text>
+  <text x="435" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">Profile fields: Save button</text>
+  <text x="435" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Unsaved change warning on nav</text>
+
+  <rect x="310" y="228" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Server Sync</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">PATCH /settings (partial update)</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">ETag-based conflict detection</text>
+
+  <rect x="310" y="303" width="250" height="42" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="435" y="322" text-anchor="middle" font-size="10" fill="#1b5e20">Defaults: server provides defaults</text>
+  <text x="435" y="335" text-anchor="middle" font-size="10" fill="#2e7d32">merge(serverDefaults, userPrefs)</text>
+
+  <!-- Validation + dangerous settings -->
+  <rect x="590" y="45" width="250" height="310" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Validation and Danger Zone</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Field Validation</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#bf360c">Email: format + uniqueness check</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#bf360c">Password: strength meter</text>
+  <text x="715" y="142" text-anchor="middle" font-size="10" fill="#bf360c">Inline errors below fields</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Re-authentication Gate</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#bf360c">Email/password change: confirm</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#bf360c">current password first</text>
+  <text x="715" y="218" text-anchor="middle" font-size="10" fill="#bf360c">2FA change: require 2FA token</text>
+
+  <rect x="605" y="228" width="220" height="80" rx="4" fill="#ffcdd2" stroke="#e53935" stroke-width="2"/>
+  <text x="715" y="248" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Danger Zone</text>
+  <text x="715" y="264" text-anchor="middle" font-size="10" fill="#c62828">Delete account: 2-step confirm</text>
+  <text x="715" y="279" text-anchor="middle" font-size="10" fill="#c62828">Type org name to confirm</text>
+  <text x="715" y="294" text-anchor="middle" font-size="10" fill="#c62828">Async: 30-day deferred delete</text>
+
+  <rect x="605" y="318" width="220" height="27" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1"/>
+  <text x="715" y="336" text-anchor="middle" font-size="10" fill="#e65100">Audit all setting changes in log</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

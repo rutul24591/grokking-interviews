@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,36 +26,35 @@ export default function MapBasedUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a map-based UI — an interactive map component with markers
           for points of interest, marker clustering for dense areas, geofencing
           (visual boundaries), search within the current viewport, and integration
           with a mapping provider (Mapbox or Google Maps).
-        </p>
-        <p>
-          <strong>Assumptions:</strong> The map displays geographic data with interactive
-          markers. Clustering groups nearby markers when zoomed out. Geofencing draws
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important"><strong>Assumptions:</strong> The map displays geographic data with interactive
+          markers. Clustering groups nearby markers when zoomed out.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Geofencing draws
           polygon boundaries on the map. Viewport search filters markers visible in the
-          current map bounds. The component is used in a React 19+ SPA.
-        </p>
+          current map bounds. The component is used in a React 19+ SPA.</HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Map Display:</strong> Interactive map with pan, zoom, and tile rendering via Mapbox GL or Google Maps.</li>
+          <HighlightBlock as="li" tier="important"><strong>Map Display:</strong> Interactive map with pan, zoom, and tile rendering via Mapbox GL or Google Maps.</HighlightBlock>
           <li><strong>Markers:</strong> Custom marker icons at geographic coordinates, click handler for info popup.</li>
-          <li><strong>Clustering:</strong> Nearby markers grouped into clusters when zoomed out. Cluster shows count. Clicking cluster zooms in.</li>
+          <HighlightBlock as="li" tier="important"><strong>Clustering:</strong> Nearby markers grouped into clusters when zoomed out. Cluster shows count. Clicking cluster zooms in.</HighlightBlock>
           <li><strong>Geofencing:</strong> Draw polygon boundaries on the map (e.g., delivery zones, service areas).</li>
-          <li><strong>Viewport Search:</strong> Filter markers based on current map bounds. Update results as user pans/zooms.</li>
+          <HighlightBlock as="li" tier="important"><strong>Viewport Search:</strong> Filter markers based on current map bounds. Update results as user pans/zooms.</HighlightBlock>
           <li><strong>Info Popup:</strong> Click marker shows popup with details, action buttons, and close control.</li>
           <li><strong>Search Bar:</strong> Geocoding search — type address, get marker location on map.</li>
         </ul>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
           <li><strong>Performance:</strong> 10,000+ markers render smoothly. Clustering at 60fps during zoom.</li>
-          <li><strong>Accessibility:</strong> Keyboard navigation between markers, screen reader announces marker details.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Keyboard navigation between markers, screen reader announces marker details.</HighlightBlock>
           <li><strong>Offline:</strong> Cached tiles for previously viewed areas. Markers stored locally.</li>
         </ul>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
@@ -66,14 +67,13 @@ export default function MapBasedUIArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          The core idea is a <strong>map wrapper component</strong> that initializes a
+        <HighlightBlock as="p" tier="important">The core idea is a <Highlight tier="important"><strong>map wrapper component</strong></Highlight> that initializes a
           Mapbox GL or Google Maps instance and manages markers, clusters, and geofences
-          as map layers. A <strong>Zustand store</strong> manages the marker data,
+          as map layers.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">A <strong>Zustand store</strong> manages the marker data,
           current viewport bounds, selected marker, and active geofence. Marker
           clustering uses a grid-based algorithm (supercluster) that groups markers
-          within a pixel radius at each zoom level.
-        </p>
+          within a pixel radius at each zoom level.</HighlightBlock>
       </section>
 
       <section>
@@ -81,19 +81,19 @@ export default function MapBasedUIArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Types &amp; Store</h4>
-          <p><code>Marker</code> (id, lat, lng, title, icon, data), <code>Geofence</code> (id, name, polygon coordinates, color). Store: markers array, viewport bounds, selected marker, active geofences.</p>
+          <HighlightBlock as="p" tier="crucial"><code>Marker</code> (id, lat, lng, title, icon, data), <code>Geofence</code> (id, name, polygon coordinates, color). Store: markers array, viewport bounds, selected marker, active geofences.</HighlightBlock>
         </div>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Marker Manager</h4>
-          <p>Adds/removes/updates markers on the map. Handles marker click events, info popup rendering, and marker offset for overlapping coordinates.</p>
+          <HighlightBlock as="p" tier="important">Adds/removes/updates markers on the map. Handles marker click events, info popup rendering, and marker offset for overlapping coordinates.</HighlightBlock>
         </div>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Cluster Engine</h4>
-          <p>Uses supercluster algorithm: grid-based clustering with configurable radius and zoom-dependent grouping. Returns clusters with marker counts.</p>
+          <HighlightBlock as="p" tier="important">Uses supercluster algorithm: grid-based clustering with configurable radius and zoom-dependent grouping. Returns clusters with marker counts.</HighlightBlock>
         </div>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">4. Viewport Search</h4>
-          <p>On map moveend/zoomend, gets current bounds, filters markers within bounds, triggers re-render of visible markers.</p>
+          <HighlightBlock as="p" tier="important">On map moveend/zoomend, gets current bounds, filters markers within bounds, triggers re-render of visible markers.</HighlightBlock>
         </div>
 
         <ArticleImage
@@ -108,7 +108,7 @@ export default function MapBasedUIArticle() {
           <li>Markers loaded from API, added to map as point features.</li>
           <li>Cluster engine groups markers at current zoom level.</li>
           <li>User zooms out: clusters recompute, markers replaced with cluster circles showing count.</li>
-          <li>User clicks cluster: map zooms in to cluster bounds, clusters expand to individual markers.</li>
+          <HighlightBlock as="li" tier="important">User clicks cluster: map zooms in to cluster bounds, clusters expand to individual markers.</HighlightBlock>
           <li>User clicks marker: info popup renders with marker details.</li>
           <li>User pans map: viewport search filters visible markers, sidebar updates.</li>
         </ol>
@@ -116,26 +116,26 @@ export default function MapBasedUIArticle() {
 
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Data flow: API fetch → store markers → cluster engine computes clusters →
           map renders → user interaction (zoom/pan/click) → viewport search → UI update.
-        </p>
+        </HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling</h3>
         <ul className="space-y-3">
-          <li><strong>Overlapping markers:</strong> Markers at the same coordinate are offset by a small random amount (jitter) within a 10px radius. The info popup lists all markers at that location.</li>
-          <li><strong>Antimeridian crossing:</strong> Polygon coordinates are normalized to -180 to 180 range. If a polygon crosses the antimeridian, it is split into two polygons (one on each side).</li>
-          <li><strong>Hidden container:</strong> Use ResizeObserver on the map container. When the container size changes from 0 to non-zero, call map.resize().</li>
+          <HighlightBlock as="li" tier="important"><strong>Overlapping markers:</strong> Markers at the same coordinate are offset by a small random amount (jitter) within a 10px radius. The info popup lists all markers at that location.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Antimeridian crossing:</strong> Polygon coordinates are normalized to -180 to 180 range. If a polygon crosses the antimeridian, it is split into two polygons (one on each side).</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Hidden container:</strong> Use ResizeObserver on the map container. When the container size changes from 0 to non-zero, call map.resize().</HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Implementation</h2>
-        <p>
-          The full production implementation is available in the <strong>Example tab</strong>.
-          Key approach: Mapbox GL JS for map rendering (GPU-accelerated vector tiles),
-          supercluster for marker clustering, viewport-based marker filtering, and
-          geofence polygon rendering with GeoJSON.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The full production implementation is available in the <strong>Example tab</strong>.
+          Key</HighlightBlock>
+<HighlightBlock as="p" tier="important">approach: Mapbox GL JS for map rendering (GPU-accelerated vector tiles),
+          supercluster for marker</HighlightBlock>
+<HighlightBlock as="p" tier="important">clustering, viewport-based marker filtering, and
+          geofence polygon rendering with GeoJSON.</HighlightBlock>
       </section>
 
       <section>
@@ -144,7 +144,7 @@ export default function MapBasedUIArticle() {
           <table className="w-full border-collapse text-sm">
             <thead><tr className="border-b border-theme"><th className="p-2 text-left">Operation</th><th className="p-2 text-left">Time</th><th className="p-2 text-left">Space</th></tr></thead>
             <tbody className="divide-y divide-theme">
-              <tr><td className="p-2">Clustering</td><td className="p-2">O(n) — supercluster linear scan</td><td className="p-2">O(n) — cluster tree</td></tr>
+              <HighlightBlock as="tr" tier="crucial"><td className="p-2">Clustering</td><td className="p-2">O(n) — supercluster linear scan</td><td className="p-2">O(n) — cluster tree</td></HighlightBlock>
               <tr><td className="p-2">Viewport search</td><td className="p-2">O(n) — bounds check per marker</td><td className="p-2">O(m) — m visible markers</td></tr>
               <tr><td className="p-2">Marker render</td><td className="p-2">O(m) — m visible markers</td><td className="p-2">O(m)</td></tr>
             </tbody>
@@ -152,28 +152,27 @@ export default function MapBasedUIArticle() {
         </div>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks &amp; Optimizations</h3>
         <ul className="space-y-2">
-          <li><strong>10,000+ markers:</strong> Use map&apos;s native symbol layer (GPU-rendered) instead of DOM markers. Mapbox GL renders 100K+ points smoothly.</li>
-          <li><strong>Clustering during zoom:</strong> Supercluster precomputes the cluster tree. Zoom changes only traverse the tree — no recalculation needed.</li>
+          <HighlightBlock as="li" tier="important"><strong>10,000+ markers:</strong> Use map&apos;s native symbol layer (GPU-rendered) instead of DOM markers. Mapbox GL renders 100K+ points smoothly.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Clustering during zoom:</strong> Supercluster precomputes the cluster tree. Zoom changes only traverse the tree — no recalculation needed.</HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>Security Considerations &amp; Accessibility</h2>
-        <p>
-          Map tiles are loaded from trusted CDN. Geocoding search queries are sanitized
+        <HighlightBlock as="p" tier="crucial">Map tiles are loaded from trusted CDN. Geocoding search queries are sanitized
           before sending to the API. For accessibility, provide a list view alternative
-          (markers as a sortable/filterable table for screen reader users). Keyboard
+          (markers as a sortable/filterable table for screen reader users).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Keyboard
           navigation: Tab cycles through markers, Enter opens info popup. Announce
-          marker details via aria-live regions.
-        </p>
+          marker details via aria-live regions.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>Testing Strategy</h2>
         <ul className="space-y-2">
-          <li><strong>Unit:</strong> Clustering algorithm — test with known marker positions, verify cluster grouping at different zoom levels. Viewport search — test bounds containment.</li>
-          <li><strong>Integration:</strong> Pan map, verify viewport search updates. Zoom out, verify clusters form. Click cluster, verify zoom to bounds.</li>
-          <li><strong>Accessibility:</strong> Keyboard navigation between markers, screen reader announces marker details, list view alternative renders correctly.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Unit:</strong> Clustering algorithm — test with known marker positions, verify cluster grouping at different zoom levels. Viewport search — test bounds containment.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Integration:</strong> Pan map, verify viewport search updates. Zoom out, verify clusters form. Click cluster, verify zoom to bounds.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Accessibility:</strong> Keyboard navigation between markers, screen reader announces marker details, list view alternative renders correctly.</HighlightBlock>
         </ul>
       </section>
 
@@ -183,46 +182,46 @@ export default function MapBasedUIArticle() {
         <ul className="space-y-3">
           <li><strong>DOM markers for large datasets:</strong> Rendering 10,000 markers as DOM elements causes severe jank. Native symbol layers (GPU) are essential.</li>
           <li><strong>No clustering:</strong> Dense marker areas are unreadable. Clustering is mandatory for datasets exceeding 100 markers.</li>
-          <li><strong>No list view alternative:</strong> Maps are inherently inaccessible to screen reader users. A parallel list/table view is essential for accessibility.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>No list view alternative:</strong> Maps are inherently inaccessible to screen reader users. A parallel list/table view is essential for accessibility.</HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you implement real-time marker updates (e.g., live vehicle tracking)?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use WebSocket to receive position updates. For smooth movement,
               interpolate between the old and new positions using CSS transitions or
               requestAnimationFrame. Batch updates at 1-second intervals to avoid
               overwhelming the rendering pipeline.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you implement route drawing between two markers?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use a routing API (Mapbox Directions, Google Directions) to get the
               route geometry (GeoJSON LineString). Render as a polyline layer on the
               map with a distinct color and width. Show turn-by-turn instructions in a
               sidebar panel.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you handle offline map usage?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Cache map tiles in IndexedDB as the user pans/zooms. Store marker data
               locally. When offline, serve cached tiles and local markers. Use a Service
               Worker to intercept tile requests and respond from cache. Show an &quot;offline
               mode&quot; indicator.
-            </p>
+            </HighlightBlock>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How would you implement heat maps for marker density?</p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use the map&apos;s heatmap layer (Mapbox GL supports this natively).
               Convert marker positions to a point dataset. The heatmap layer computes
               kernel density estimation and renders a color gradient. Configure radius,
               weight, and color stops for the desired visual effect.
-            </p>
+            </HighlightBlock>
           </div>
         </div>
       </section>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Security ladder for session continuity tokens">
+  <title>Continuity Security Ladder</title>
+  <desc>Shows least-privilege scoping, TTL, binding, one-time redemption, step-up auth, and audit logging for sensitive continuity flows.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="ok" x="70" y="70" width="520" height="170" />
+  <text class="label bold" x="100" y="115">Baseline controls</text>
+  <text class="label small" x="100" y="145">scoped token (workflow + user)</text>
+  <text class="label small" x="100" y="170">short TTL</text>
+  <text class="label small" x="100" y="195">idempotent redemption</text>
+
+  <rect class="warn" x="640" y="70" width="490" height="170" />
+  <text class="label bold" x="670" y="115">High-risk add-ons</text>
+  <text class="label small" x="670" y="145">one-time / invalidate-after-success</text>
+  <text class="label small" x="670" y="170">device signal binding</text>
+  <text class="label small" x="670" y="195">step-up authentication</text>
+
+  <path class="arrow" d="M590 155 L640 155" />
+
+  <rect class="box" x="70" y="300" width="520" height="180" />
+  <text class="label bold" x="100" y="345">Auditability</text>
+  <text class="label small" x="100" y="375">log creation + redemption</text>
+  <text class="label small" x="100" y="400">workflow type + outcome</text>
+  <text class="label small" x="100" y="425">detect abuse spikes</text>
+  <text class="label small" x="100" y="450">supports incident response</text>
+
+  <rect class="box" x="640" y="300" width="490" height="180" />
+  <text class="label bold" x="670" y="345">Data minimization</text>
+  <text class="label small" x="670" y="375">token carries pointers only</text>
+  <text class="label small" x="670" y="400">server authorizes referenced state</text>
+  <text class="label small" x="670" y="425">no sensitive data in URLs</text>
+  <text class="label small" x="670" y="450">safe errors</text>
+
+  <path class="arrow" d="M590 390 L640 390" />
+</svg>

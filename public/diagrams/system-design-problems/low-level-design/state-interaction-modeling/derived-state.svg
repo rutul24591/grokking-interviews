@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="560">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Derived State System: Computation &amp; Memoization</text>
+
+  <!-- Source vs Derived -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Source vs Derived State</text>
+
+    <rect x="30" y="75" width="380" height="160" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="220" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Source State (Store)</text>
+    <text x="45" y="122" font-size="10" fill="#374151">items: CartItem[]         ← raw data</text>
+    <text x="45" y="140" font-size="10" fill="#374151">discountCode: string      ← raw data</text>
+    <text x="45" y="158" font-size="10" fill="#374151">taxRate: number           ← raw data</text>
+    <text x="45" y="176" font-size="10" fill="#374151">userId: string            ← raw data</text>
+    <text x="45" y="198" font-size="11" font-weight="bold" fill="#374151">Rule: store minimum facts needed</text>
+    <text x="45" y="216" font-size="10" fill="#374151">Never store what can be computed from stored data</text>
+    <text x="45" y="228" font-size="9" fill="#3b82f6">Storing derived = duplication = sync bugs = stale data</text>
+
+    <!-- Arrow down -->
+    <path d="M 220 235 L 220 258" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#adsG)"/>
+    <text x="240" y="252" font-size="10" fill="#374151">compute</text>
+
+    <rect x="30" y="258" width="380" height="145" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="220" y="283" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Derived State (Computed)</text>
+    <text x="45" y="305" font-size="10" fill="#374151">subtotal = items.reduce((sum, i) =&gt; sum + i.price * i.qty, 0)</text>
+    <text x="45" y="323" font-size="10" fill="#374151">discount = applyCode(subtotal, discountCode)</text>
+    <text x="45" y="341" font-size="10" fill="#374151">tax = (subtotal - discount) * taxRate</text>
+    <text x="45" y="359" font-size="10" fill="#374151">total = subtotal - discount + tax</text>
+    <text x="45" y="377" font-size="10" fill="#374151">itemCount = items.reduce((n, i) =&gt; n + i.qty, 0)</text>
+    <text x="45" y="393" font-size="9" fill="#10b981">Always consistent — computed fresh from source. Cannot be stale.</text>
+  </g>
+
+  <!-- Memoization -->
+  <g>
+    <text x="740" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Memoization &amp; Performance</text>
+
+    <rect x="450" y="75" width="620" height="190" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="760" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Memoization Strategies</text>
+    <text x="465" y="122" font-size="10" fill="#374151">useMemo (React): recompute only when deps change</text>
+    <text x="465" y="140" font-size="10" fill="#374151">  const total = useMemo(() =&gt; computeTotal(items), [items])</text>
+    <text x="465" y="160" font-size="10" fill="#374151">Reselect (Redux): createSelector with input/output selectors</text>
+    <text x="465" y="178" font-size="10" fill="#374151">  const selectTotal = createSelector(selectItems, computeTotal)</text>
+    <text x="465" y="198" font-size="10" fill="#374151">Jotai: derived atoms — auto-tracked dependencies</text>
+    <text x="465" y="216" font-size="10" fill="#374151">  const totalAtom = atom((get) =&gt; computeTotal(get(itemsAtom)))</text>
+    <text x="465" y="236" font-size="10" fill="#374151">Zustand: selector memoized with shallow equality check</text>
+    <text x="465" y="252" font-size="9" fill="#f59e0b">Memoize expensive derivations. Skip for O(1) computations — overhead not worth it.</text>
+
+    <rect x="450" y="280" width="620" height="145" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="760" y="305" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Dependency Graph</text>
+    <text x="465" y="327" font-size="10" fill="#374151">Derived values form a DAG (directed acyclic graph)</text>
+    <text x="465" y="345" font-size="10" fill="#374151">  items → subtotal → discount → tax → total</text>
+    <text x="465" y="363" font-size="10" fill="#374151">Fine-grained: only recompute affected branch on change</text>
+    <text x="465" y="381" font-size="10" fill="#374151">Circular dependencies = infinite loop (prevent with DAG constraint)</text>
+    <text x="465" y="399" font-size="10" fill="#374151">Reactive systems (MobX, Signals): auto-track dependencies</text>
+    <text x="465" y="417" font-size="9" fill="#a855f7">MobX: computed(() =&gt; ...) — only recalcs when observed deps change</text>
+
+    <rect x="450" y="440" width="620" height="115" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="760" y="465" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Common Mistakes</text>
+    <text x="465" y="487" font-size="10" fill="#374151">Storing derived state in Redux (double source of truth)</text>
+    <text x="465" y="505" font-size="10" fill="#374151">Recomputing on every render (missing memoization)</text>
+    <text x="465" y="523" font-size="10" fill="#374151">Over-memoizing: useMemo on cheap computations (premature optimization)</text>
+    <text x="465" y="541" font-size="9" fill="#ef4444">Missing deps in useMemo/useCallback = stale closure bugs</text>
+  </g>
+
+  <rect x="30" y="430" width="400" height="58" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="450" font-size="11" fill="#374151"><tspan font-weight="bold">Principle:</tspan> Source state = raw facts. Derived state = computed on demand.</text>
+  <text x="50" y="468" font-size="11" fill="#374151"><tspan font-weight="bold">Memoize:</tspan> Only when computation is expensive (&gt;1ms or called on every render).</text>
+  <text x="50" y="483" font-size="9" fill="#6b7280">Signals (Angular/Vue/Solid): reactive system tracks derivation graph automatically.</text>
+
+  <defs>
+    <marker id="adsG" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#6b7280"/></marker>
+  </defs>
+</svg>

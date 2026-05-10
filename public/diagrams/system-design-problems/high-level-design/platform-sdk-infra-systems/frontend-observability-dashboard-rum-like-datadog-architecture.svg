@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Architecture of a RUM dashboard with SDK capture, ingestion, sampling, aggregate metrics store, raw session store, and dashboard query layer">
+  <title>RUM Dashboard Architecture</title>
+  <desc>Shows two pipelines: aggregates for fast percentiles and time series, and sampled raw sessions for drill-down. Includes privacy enforcement and tenant isolation.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .dash{stroke-dasharray:7 6}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .good{fill:#052018;stroke:#34d399}
+      .warn{fill:#2a1606;stroke:#fb923c}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <rect class="box" x="60" y="80" width="420" height="210"/>
+  <text class="label bold" x="90" y="125">Customer app + SDK</text>
+  <text class="label small" x="90" y="155">performance timings</text>
+  <text class="label small" x="90" y="180">errors + network failures</text>
+  <text class="label small" x="90" y="205">session id + trace correlation</text>
+  <text class="label small" x="90" y="230">capture-time redaction</text>
+  <text class="label small" x="90" y="255">adaptive sampling hints</text>
+
+  <rect class="warn" x="520" y="80" width="320" height="210"/>
+  <text class="label bold" x="550" y="125">Ingestion gateway</text>
+  <text class="label small" x="550" y="155">tenant scoping</text>
+  <text class="label small" x="550" y="180">validation + dedupe</text>
+  <text class="label small" x="550" y="205">PII scrub (again)</text>
+  <text class="label small" x="550" y="230">sampling decision recorded</text>
+  <text class="label small" x="550" y="255">routing to pipelines</text>
+
+  <rect class="good" x="880" y="60" width="260" height="115"/>
+  <text class="label bold" x="910" y="105">Aggregate store</text>
+  <text class="label small" x="910" y="135">percentiles + time series</text>
+
+  <rect class="accent" x="880" y="195" width="260" height="115"/>
+  <text class="label bold" x="910" y="240">Raw sessions</text>
+  <text class="label small" x="910" y="270">sampled events</text>
+
+  <rect class="muted" x="60" y="330" width="1080" height="160"/>
+  <text class="label bold" x="90" y="370">Dashboard query layer</text>
+  <text class="label small" x="90" y="400">guided workflows (top errors, slow pages, regressions)</text>
+  <text class="label small" x="90" y="425">filters + facets tuned for low-cardinality dimensions</text>
+  <text class="label small" x="90" y="450">drill-down to sessions with explicit sampling disclosure</text>
+
+  <rect class="box" x="60" y="520" width="1080" height="90"/>
+  <text class="label bold" x="90" y="560">Key design choice</text>
+  <text class="label small" x="90" y="585">Split aggregates from raw sessions to keep monitoring fast while preserving debuggability.</text>
+
+  <path class="arrow" d="M480 185 L520 185"/>
+  <path class="arrow" d="M840 140 L880 115"/>
+  <path class="arrow" d="M840 230 L880 250"/>
+  <path class="arrow dash" d="M1010 310 L1010 330"/>
+</svg>
+

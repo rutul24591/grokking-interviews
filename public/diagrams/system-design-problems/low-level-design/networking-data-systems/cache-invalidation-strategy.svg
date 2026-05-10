@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700">
+  <!-- Title -->
+  <text x="500" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
+    Cache Invalidation Strategies After Mutations
+  </text>
+
+  <!-- Section 1: Write-Through -->
+  <g>
+    <text x="150" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Write-Through Pattern</text>
+
+    <!-- Flow diagram -->
+    <rect x="50" y="90" width="200" height="120" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" rx="4"/>
+
+    <g>
+      <text x="70" y="110" font-size="12" font-weight="bold" fill="#1e40af">1. App calls mutate()</text>
+      <text x="70" y="130" font-size="11" fill="#374151">↓</text>
+      <text x="70" y="150" font-size="12" font-weight="bold" fill="#1e40af">2. Write to server</text>
+      <text x="70" y="170" font-size="11" fill="#374151">↓</text>
+      <text x="70" y="190" font-size="12" font-weight="bold" fill="#1e40af">3. Invalidate cache</text>
+    </g>
+
+    <text x="150" y="230" font-size="10" text-anchor="middle" fill="#059669">Fast, consistent</text>
+    <text x="150" y="245" font-size="10" text-anchor="middle" fill="#059669">Requires server call</text>
+  </g>
+
+  <!-- Section 2: Write-Back (Optimistic) -->
+  <g>
+    <text x="450" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Write-Back Pattern (Optimistic)</text>
+
+    <!-- Flow diagram -->
+    <rect x="350" y="90" width="200" height="120" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+
+    <g>
+      <text x="370" y="110" font-size="12" font-weight="bold" fill="#92400e">1. Update cache optimistically</text>
+      <text x="370" y="130" font-size="11" fill="#374151">↓</text>
+      <text x="370" y="150" font-size="12" font-weight="bold" fill="#92400e">2. Write to server async</text>
+      <text x="370" y="170" font-size="11" fill="#374151">↓</text>
+      <text x="370" y="190" font-size="12" font-weight="bold" fill="#92400e">3. Rollback if failed</text>
+    </g>
+
+    <text x="450" y="230" font-size="10" text-anchor="middle" fill="#d97706">Instant feedback</text>
+    <text x="450" y="245" font-size="10" text-anchor="middle" fill="#d97706">Risk of divergence</text>
+  </g>
+
+  <!-- Section 3: Event-Based Invalidation -->
+  <g>
+    <text x="750" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Event-Based Invalidation</text>
+
+    <!-- Flow diagram -->
+    <rect x="650" y="90" width="300" height="120" fill="#f0fdf4" stroke="#10b981" stroke-width="2" rx="4"/>
+
+    <g>
+      <text x="670" y="110" font-size="12" font-weight="bold" fill="#065f46">1. Server mutation succeeds</text>
+      <text x="670" y="130" font-size="11" fill="#374151">↓</text>
+      <text x="670" y="150" font-size="12" font-weight="bold" fill="#065f46">2. Emit invalidation event</text>
+      <text x="670" y="170" font-size="11" fill="#374151">↓</text>
+      <text x="670" y="190" font-size="12" font-weight="bold" fill="#065f46">3. Clients receive & revalidate</text>
+    </g>
+
+    <text x="800" y="230" font-size="10" text-anchor="middle" fill="#059669">Decoupled, real-time</text>
+    <text x="800" y="245" font-size="10" text-anchor="middle" fill="#059669">Requires pub/sub</text>
+  </g>
+
+  <!-- Cache Invalidation Strategies -->
+  <g>
+    <text x="500" y="300" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Invalidation Strategies</text>
+
+    <!-- TTL -->
+    <rect x="50" y="320" width="150" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+    <text x="125" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">TTL-Based</text>
+    <text x="60" y="365" font-size="10" fill="#374151">Cache expires after</text>
+    <text x="60" y="380" font-size="10" fill="#374151">fixed duration</text>
+    <text x="60" y="395" font-size="10" fill="#374151">Simple, no deps</text>
+
+    <!-- Explicit Invalidation -->
+    <rect x="220" y="320" width="150" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+    <text x="295" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Explicit Tags</text>
+    <text x="230" y="365" font-size="10" fill="#374151">Mark cache with tags</text>
+    <text x="230" y="380" font-size="10" fill="#374151">Invalidate by tag</text>
+    <text x="230" y="395" font-size="10" fill="#374151">Precise control</text>
+
+    <!-- Dependency Graph -->
+    <rect x="390" y="320" width="150" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+    <text x="465" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Dependency Graph</text>
+    <text x="400" y="365" font-size="10" fill="#374151">Track cache deps</text>
+    <text x="400" y="380" font-size="10" fill="#374151">Auto-invalidate on</text>
+    <text x="400" y="395" font-size="10" fill="#374151">dependency changes</text>
+
+    <!-- Selective Revalidation -->
+    <rect x="560" y="320" width="150" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+    <text x="635" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Revalidate</text>
+    <text x="570" y="365" font-size="10" fill="#374151">Lazy refresh cache</text>
+    <text x="570" y="380" font-size="10" fill="#374151">on next read</text>
+    <text x="570" y="395" font-size="10" fill="#374151">Reduces overhead</text>
+
+    <!-- Versioning -->
+    <rect x="730" y="320" width="150" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+    <text x="805" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Versioning</text>
+    <text x="740" y="365" font-size="10" fill="#374151">Version cache keys</text>
+    <text x="740" y="380" font-size="10" fill="#374151">Increment on change</text>
+    <text x="740" y="395" font-size="10" fill="#374151">No deletion needed</text>
+  </g>
+
+  <!-- Mutation Flow with Cache -->
+  <g>
+    <text x="500" y="450" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Complete Mutation Flow</text>
+
+    <!-- Client Side -->
+    <rect x="50" y="470" width="400" height="180" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2" rx="4"/>
+    <text x="250" y="490" font-size="13" font-weight="bold" fill="#1a1a1a">Client Side</text>
+
+    <g>
+      <text x="70" y="515" font-size="11" fill="#374151">1. User action triggers mutation</text>
+      <text x="70" y="535" font-size="11" fill="#374151">2. Optimistically update local cache</text>
+      <text x="70" y="555" font-size="11" fill="#374151">3. Send request to server</text>
+      <text x="70" y="575" font-size="11" fill="#374151">4. On success: confirm cache change</text>
+      <text x="70" y="595" font-size="11" fill="#374151">5. On error: rollback optimistic update</text>
+      <text x="70" y="615" font-size="11" fill="#374151">6. Listen for server invalidation events</text>
+    </g>
+
+    <!-- Server Side -->
+    <rect x="550" y="470" width="400" height="180" fill="#f9fafb" stroke="#e5e7eb" stroke-width="2" rx="4"/>
+    <text x="750" y="490" font-size="13" font-weight="bold" fill="#1a1a1a">Server Side</text>
+
+    <g>
+      <text x="570" y="515" font-size="11" fill="#374151">1. Receive mutation request</text>
+      <text x="570" y="535" font-size="11" fill="#374151">2. Validate & update database</text>
+      <text x="570" y="555" font-size="11" fill="#374151">3. Invalidate cache (Redis/CDN)</text>
+      <text x="570" y="575" font-size="11" fill="#374151">4. Send success response to client</text>
+      <text x="570" y="595" font-size="11" fill="#374151">5. Broadcast invalidation event (WebSocket)</text>
+      <text x="570" y="615" font-size="11" fill="#374151">6. Other clients revalidate cache</text>
+    </g>
+  </g>
+
+  <!-- Best Practices -->
+  <g>
+    <rect x="50" y="680" width="900" height="15" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="2"/>
+    <text x="70" y="692" font-size="11" fill="#92400e" font-weight="bold">✓ Best Practice: Combine strategies - Use TTL as safety net + explicit invalidation for critical data + event-based for real-time</text>
+  </g>
+</svg>

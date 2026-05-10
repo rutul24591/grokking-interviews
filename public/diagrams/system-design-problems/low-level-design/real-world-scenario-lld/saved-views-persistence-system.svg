@@ -1,0 +1,76 @@
+<svg viewBox="0 0 860 370" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="370" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Saved Views Persistence System — Filters, Sorting, URL Sync, and Sharing</text>
+
+  <!-- View schema -->
+  <rect x="20" y="45" width="260" height="300" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">View Schema</text>
+
+  <rect x="35" y="78" width="230" height="100" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Saved View Record</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">viewId: UUID</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">name: "Q1 Open Issues"</text>
+  <text x="150" y="143" text-anchor="middle" font-size="10" fill="#1565c0">filters: [{field, op, value}]</text>
+  <text x="150" y="158" text-anchor="middle" font-size="10" fill="#1565c0">sort: {field, direction}</text>
+  <text x="150" y="173" text-anchor="middle" font-size="10" fill="#1565c0">columns: [id, name, status]</text>
+
+  <rect x="35" y="188" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="207" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Visibility Levels</text>
+  <text x="150" y="223" text-anchor="middle" font-size="10" fill="#1565c0">Personal: only creator sees</text>
+  <text x="150" y="238" text-anchor="middle" font-size="10" fill="#1565c0">Shared: all team members</text>
+  <text x="150" y="252" text-anchor="middle" font-size="10" fill="#1565c0">Default: pre-loaded for new users</text>
+
+  <rect x="35" y="263" width="230" height="72" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Default View</text>
+  <text x="150" y="298" text-anchor="middle" font-size="10" fill="#1565c0">Each user has a default view</text>
+  <text x="150" y="313" text-anchor="middle" font-size="10" fill="#1565c0">Org admin can set team default</text>
+  <text x="150" y="327" text-anchor="middle" font-size="10" fill="#1565c0">User override persists in prefs</text>
+
+  <!-- URL sync -->
+  <rect x="295" y="45" width="280" height="300" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">URL State Sync</text>
+
+  <rect x="310" y="78" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Encode Filters in URL</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">?filter=status:open,priority:high</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">&amp;sort=createdAt:desc&amp;view=viewId</text>
+
+  <rect x="310" y="153" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Share by URL</text>
+  <text x="435" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">Copy URL → exact same view</text>
+  <text x="435" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Bookmark → restores on open</text>
+
+  <rect x="310" y="228" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Sync Strategy</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">URL is source of truth for current state</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">useSearchParams hook reads/writes</text>
+  <text x="435" y="293" text-anchor="middle" font-size="10" fill="#2e7d32">replaceState (no back-button history)</text>
+
+  <!-- CRUD + perf -->
+  <rect x="590" y="45" width="250" height="300" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Management and Performance</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">CRUD Operations</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#bf360c">Save: POST /views (current state)</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#bf360c">Update: PATCH /views/:id</text>
+  <text x="715" y="143" text-anchor="middle" font-size="10" fill="#bf360c">Delete: soft delete, not hard</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Client-side Caching</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#bf360c">Cache view list in React Query</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#bf360c">Stale-while-revalidate pattern</text>
+  <text x="715" y="218" text-anchor="middle" font-size="10" fill="#bf360c">Invalidate on save/delete</text>
+
+  <rect x="605" y="228" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Cross-device Sync</text>
+  <text x="715" y="263" text-anchor="middle" font-size="10" fill="#bf360c">Views stored server-side</text>
+  <text x="715" y="278" text-anchor="middle" font-size="10" fill="#bf360c">Same view across laptop + mobile</text>
+  <text x="715" y="293" text-anchor="middle" font-size="10" fill="#bf360c">No localStorage dependency for views</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

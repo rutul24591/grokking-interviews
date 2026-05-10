@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,7 +37,7 @@ export default function InlineEditingSystemArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing an inline editing system — the
           interaction layer that lets users edit cell or
           row values directly in a Data Table without
@@ -50,8 +52,8 @@ export default function InlineEditingSystemArticle() {
           optimistic save with server confirmation,
           rollback on failure, undo across edits, and
           conflict resolution for concurrent users.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: managing per-cell edit
           state without coupling it to the table&rsquo;s
           rendering layer; running validation as users
@@ -63,10 +65,10 @@ export default function InlineEditingSystemArticle() {
           touch the same cell; and accessibility — every
           editor must be keyboard-operable with proper
           ARIA roles.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Power users in operational contexts make many
           small edits per session. They expect Excel-like
           fluency: double-click to edit, Enter commits,
@@ -77,10 +79,10 @@ export default function InlineEditingSystemArticle() {
           the Data Table: declare which cells are editable
           and provide a save handler; the inline editing
           runtime handles the rest.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Data Table provides cell rendering and
           selection. The Form Validation Engine is
           available for type-aware validation. The Client-
@@ -91,10 +93,10 @@ export default function InlineEditingSystemArticle() {
           fields). Modern browsers; we use
           contenteditable for some text editors and
           regular form controls for others.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement spreadsheet semantics
           (formulas, copy-paste regions, drag-fill) —
           those are the Spreadsheet Grid&rsquo;s job. We
@@ -102,14 +104,14 @@ export default function InlineEditingSystemArticle() {
           (selecting a range and editing all at once is
           a separate flow). We do not implement
           field-level locking on the backend.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Per-cell edit mode triggered by double-click or
           F2. Type-aware editors (text input, number
           input, select, date picker, etc.) per column
@@ -124,10 +126,10 @@ export default function InlineEditingSystemArticle() {
           state for cells in edit mode, dirty cells
           (changed but not saved), error cells, and
           conflict cells.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Concurrent-edit detection: when another user
           modifies the same row, surface a conflict.
           Field-level permissions: some users can edit
@@ -136,64 +138,64 @@ export default function InlineEditingSystemArticle() {
           per column. Bulk edit (select multiple rows,
           edit one cell, apply to all). Audit log per
           cell. Edit history: see who changed what.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spreadsheet formulas, range editing, real-time
           collaborative editing of the same cell. Server-
           side validation rules (the validation engine
           mirrors them but the server is authoritative).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Edit mode entry under 50 ms. Typing has no
           perceivable lag; validation runs in microtasks.
           Optimistic save commit under 50 ms (UI
           updates instantly). Server confirmation
           typically arrives in 100–500 ms.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimistic updates always have a clean
           rollback path. Validation prevents most
           invalid edits from reaching the server. Server
           failures don&rsquo;t corrupt local state.
           Conflict detection surfaces real conflicts
           rather than silently overwriting.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Per-field permission enforced server-side; the
           UI reflects the server&rsquo;s authoritative
           decision. Edit payloads sanitized at the
           server boundary. Rate limiting prevents abuse.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Edit mode announces (&ldquo;Editing customer
           name&rdquo;). Editor controls are real form
           inputs with proper labels. Validation errors
           announce. Tab navigation through editable
           cells works correctly.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Editor types in a registry; new types are
           one-file additions. Validation reuses the
           form validation engine. Optimistic updates
           flow through the normalization layer&rsquo;s
           mutation API.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -223,7 +225,7 @@ export default function InlineEditingSystemArticle() {
           value as initial. Exiting: Enter commits via
           the optimistic pipeline; Escape cancels.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>editor registry</strong> maps column
           types to editor components. A <code>text</code>{" "}
           column uses <code>TextEditor</code>; a
@@ -238,8 +240,8 @@ export default function InlineEditingSystemArticle() {
           handle their own keyboard interactions
           (Enter, Escape, Tab). Custom editor types
           plug into the registry.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>optimistic mutation pipeline</strong>{" "}
           flows through the data normalization layer.
           On commit, the system: validates the new
@@ -254,7 +256,7 @@ export default function InlineEditingSystemArticle() {
           surfaces an error toast. The whole flow
           feels instant to users while respecting
           server authority.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>undo stack</strong> uses the
           command pattern. Each commit pushes a
@@ -266,7 +268,7 @@ export default function InlineEditingSystemArticle() {
           per-table by default; consumers can scope to
           per-row or app-wide depending on need.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Tab navigation</strong>: when the user
           presses Tab in edit mode, the system commits
           the current edit and moves edit mode to the
@@ -275,8 +277,8 @@ export default function InlineEditingSystemArticle() {
           row end). Shift-Tab moves backward. This
           keyboard fluency is what power users expect
           from spreadsheet-like editing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Validation</strong> runs as the user
           types via the form validation engine&rsquo;s
           single-field mode. Errors render inline below
@@ -286,7 +288,7 @@ export default function InlineEditingSystemArticle() {
           short debounce. Invalid values block commit
           (Enter does nothing if invalid; Escape
           cancels with no save).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Conflict detection</strong>: each row
           carries a version (server-issued ETag or
@@ -300,7 +302,7 @@ export default function InlineEditingSystemArticle() {
           common multi-user case where two people edit
           the same row at near-simultaneous times.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Visual states</strong>: cells in edit
           mode have a clear focus ring. Dirty cells
           (changed but pending server confirmation) have
@@ -308,226 +310,199 @@ export default function InlineEditingSystemArticle() {
           red indicator. Conflict cells have a yellow
           warning. These states give users immediate
           feedback on the lifecycle of each edit.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>EditController</strong> manages edit
+        <HighlightBlock as="p" tier="crucial"><strong>EditController</strong> manages edit
           state across the table.
           <strong> EditorRegistry</strong> maps column
           types to editor components.
           <strong> OptimisticMutationPipeline</strong>{" "}
           handles validate → apply → mutate → confirm /
-          rollback. <strong>UndoStack</strong>{" "}
+          rollback.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong>UndoStack</strong></Highlight>{" "}
           implements command-pattern undo.
           <strong> ConflictHandler</strong> detects and
           surfaces concurrent edits.
           <strong> Editor components</strong>{" "}
           (TextEditor, NumberEditor, etc.) are
-          consumer-supplied or built-in.
-        </p>
+          consumer-supplied or built-in.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Edit state lives in a small external store —
-          one active editor at a time. Cell-level dirty
-          and error state lives in the data
+        <HighlightBlock as="p" tier="crucial">Edit state lives in a small external store —
+          one active editor at a time. Cell-level dirty</HighlightBlock>
+<HighlightBlock as="p" tier="important">and error state lives in the data
           normalization layer (so it&rsquo;s
-          consistent across views of the same entity).
+          consistent across</HighlightBlock>
+<HighlightBlock as="p" tier="important">views of the same entity).
           Undo stack is its own store. Subscribers
-          read via selectors.
-        </p>
+          read via selectors.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Column definition adds an
-          <code> editable: true</code> flag plus an
-          editor type. Save handler:
-          <code>{` (cellId, newValue, version) => Promise<{ value, version }> `}</code>.
-          Validation declared per column via the
-          standard validation engine. Edit lifecycle:
-          enter → typing/validation → commit (Enter or
-          Tab) or cancel (Escape) → optimistic apply →
-          server mutation → confirm/rollback.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The data-flow contract must be versioned and conflict-aware: edits include an entity/cell id plus a version
+          so the server can reject stale writes and the UI can surface a conflict instead of silently overwriting.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Column definition enables inline edit via <code>editable: true</code> plus an editor type. A typical save handler
+          shape is <code>{`(cellId, newValue, version) => Promise<{ value, version }>`}</code>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Validation is declared per column via the shared validation engine. Edit lifecycle: enter → typing/validation →
+          commit (Enter/Tab) or cancel (Escape) → optimistic apply → server mutation → confirm/rollback.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance</h2>
-        <p>
-          Edit state is per-table singleton; cells not
+        <HighlightBlock as="p" tier="crucial">Edit state is per-table singleton; cells not
           in edit mode render their value via memoized
           renderers. Optimistic updates flow through
           the normalization layer with referential
           equality preservation; only the affected cell
-          re-renders. Validation runs in microtasks so
+          re-renders.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Validation runs in microtasks so
           it doesn&rsquo;t block typing. Server
           mutation is async and doesn&rsquo;t block
-          the optimistic apply.
-        </p>
+          the optimistic apply.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Edit mode entry is unmistakable: the cell
-          shows a focus ring and the editor mounts.
-          Typing feels native. Validation errors render
-          below the editor immediately, but only after
-          the first blur or commit attempt to avoid
-          flickering errors mid-typing. Cancel via
+        <HighlightBlock as="p" tier="important">Edit mode entry is unmistakable: the cell shows a focus ring and the editor</HighlightBlock>
+<HighlightBlock as="p" tier="important">mounts. Typing feels native. Validation errors render below the editor immediately, but</HighlightBlock>
+<HighlightBlock as="p" tier="important">only after the first blur or commit attempt to avoid flickering errors mid-typing.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Cancel via
           Escape is reversible (undo can restore the
           edit if needed). Optimistic saves feel
           instant; on rollback, a toast explains the
           failure with a Retry button. Conflict banner
           is informative, not blocking — users can
-          continue editing other cells.
-        </p>
+          continue editing other cells.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Each editor is a real form control with
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Each editor is a real form control with
           proper labels and ARIA. Edit mode entry
           announces (&ldquo;Editing customer
           name&rdquo;). Validation errors render in
-          alert regions. Tab navigation through
+          alert regions.</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Tab navigation through
           editable cells works correctly. Conflict
           banner is accessible and actionable.
           Undo/redo announce with the action that was
           reverted (&ldquo;Reverted edit to customer
-          name&rdquo;).
-        </p>
+          name&rdquo;).</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Per-field permissions enforced server-side;
+        <HighlightBlock as="p" tier="crucial">Per-field permissions enforced server-side;
           the UI reflects what&rsquo;s editable based on
           server data. Edit payloads carry version
-          fields for optimistic locking. Server
+          fields for optimistic locking.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Server
           re-validates every edit; client validation
           is UX. Edits are rate-limited to prevent
-          abuse.
-        </p>
+          abuse.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for the optimistic pipeline
+        <HighlightBlock as="p" tier="crucial">Unit tests for the optimistic pipeline
           (apply, confirm, rollback). Integration tests:
           edit a cell, verify optimistic update,
           mock server success, verify confirmed state;
-          mock server failure, verify rollback. Tab
+          mock server failure, verify rollback.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Tab
           navigation tests. Conflict detection tests
           with version mismatch. Accessibility tests
-          for editor controls.
-        </p>
+          for editor controls.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          User starts editing, a real-time update from
-          another user arrives for the same cell: we
-          can either preserve the local edit (user&rsquo;s
-          intent wins) or surface a conflict prompt.
-          Default: preserve local; on commit, server
-          rejects (version mismatch) → conflict
-          handler kicks in. User Tabs from an invalid
-          cell: stays in the cell with the error
-          shown (Tab doesn&rsquo;t commit invalid
-          values). User edits multiple cells, fails
-          server save on the third: the third rolls
-          back, the first two are confirmed; partial
-          undo lets the user revert specifically. Cell
-          becomes uneditable mid-session (permission
-          revoked): edit mode exits with a message;
-          no save is attempted. Network offline mid-
-          edit: optimistic update applies; mutation
-          queues (via the normalization mutation
-          system); when online, mutation flushes;
-          subsequent mutations build on the queued one.
-          Editor unmounts during edit (parent re-
-          render): edit state preserved if the cell
-          remounts; otherwise the edit is lost. Long
-          text in a small cell: editor expands or
-          becomes a popover for adequate input space.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Cell becomes uneditable mid-session (permission revoked): edit mode exits with a message; no save is attempted. Network offline mid- edit: optimistic update applies;</HighlightBlock>
+<HighlightBlock as="p" tier="important">mutation queues (via the normalization mutation system); when online, mutation flushes; subsequent mutations build on the queued one. Editor unmounts during edit (parent</HighlightBlock>
+<HighlightBlock as="p" tier="important">re- render): edit state preserved if the cell remounts; otherwise the edit is lost. Long text in a small cell: editor expands or becomes a popover for adequate input space.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          The editor registry is generic; new editor
+        <HighlightBlock as="p" tier="crucial">The editor registry is generic; new editor
           types add cleanly. The pipeline reuses
           existing subsystems (validation, normalization,
-          undo) — minimal new code per editor type. The
+          undo) — minimal new code per editor type.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">The
           pattern extends to row-level editing,
           form-style row detail editing, and other
-          contexts.
-        </p>
+          contexts.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Editor placeholders, error messages, conflict
-          banners, undo announcements all via i18n.
-          Locale-aware editors (date, number) use
-          <code> Intl</code> for parsing and formatting.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          Locale-sensitive input is the hard part: store canonical values, parse/format at the
+          edges, and keep validation rules locale-aware.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Editor placeholders, errors, conflict banners, and undo announcements come from i18n
+          with stable keys so the UX is consistent across screens.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Locale-aware editors (date, number, currency) use <code>Intl</code> for parsing/formatting,
+          and should preserve user intent (grouping separators, decimal symbols) rather than
+          silently coercing.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Optimistic vs confirmed-first updates</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimistic feels instant; rollback handles
           failures. Confirmed-first feels slow but
           never shows wrong state. Optimistic is the
           right default for edit-heavy UX; confirmed-
           first is for high-stakes changes.
-        </p>
+        </HighlightBlock>
 
         <h3>Inline vs side-panel detail editing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Inline is fast for many small edits; side-
           panel is better for forms with many related
           fields. Many products offer both, with inline
           for quick edits and a side-panel for full
           detail. Inline editing is opt-in per column.
-        </p>
+        </HighlightBlock>
 
         <h3>Auto-save on blur vs explicit commit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-save on blur is faster but can save
           half-typed values. Explicit commit (Enter)
           is safer. We default to explicit commit;
           auto-save is opt-in per column for
           appropriate cases.
-        </p>
+        </HighlightBlock>
 
         <h3>Conflict resolution UX</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-overwrite is silent and risky. Always-
           prompt is annoying. We surface conflicts
           only when versions actually mismatch and
           give the user explicit options.
-        </p>
+        </HighlightBlock>
 
         <h3>Per-cell vs per-row commit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-cell commits as soon as the user moves
           on; per-row batches all changes in a row
           and saves on row blur. Per-cell is simpler
@@ -535,25 +510,24 @@ export default function InlineEditingSystemArticle() {
           batched but more complex. We default per-
           cell; per-row is opt-in for products with
           high edit volume.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Range editing (apply one value to many cells).
+        <HighlightBlock as="p" tier="crucial">Range editing (apply one value to many cells).
           Real-time collaborative editing of the same
-          cell with CRDTs. Offline-first editing with
+          cell with CRDTs.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Offline-first editing with
           IndexedDB queue. AI-assisted edit
           suggestions. Voice input for cell values.
-          Cross-cell formulas in a constrained way.
-        </p>
+          Cross-cell formulas in a constrained way.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How does optimistic updating
           work?</strong> The cell visually updates on
           commit; the mutation runs in background.
@@ -562,7 +536,7 @@ export default function InlineEditingSystemArticle() {
           the prior value with an error toast. The
           flow is tracked through the normalization
           layer&rsquo;s mutation API.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>2. How is undo implemented?</strong>{" "}
@@ -592,7 +566,7 @@ export default function InlineEditingSystemArticle() {
           the current cell if the value is invalid.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. How is validation
           integrated?</strong> Through the form
           validation engine. Per-column validation
@@ -600,9 +574,9 @@ export default function InlineEditingSystemArticle() {
           runs as the user types (deferred to blur
           for first-time errors). Invalid values
           block commit.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How are visual states
           communicated?</strong> Edit-mode focus ring,
           dirty-state background tint, error indicator,
@@ -610,9 +584,9 @@ export default function InlineEditingSystemArticle() {
           distinctive visual that&rsquo;s also
           accessible (text equivalents, not color
           alone).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How does this work with the
           normalization layer?</strong> Optimistic
           updates apply to the normalization store;
@@ -620,33 +594,27 @@ export default function InlineEditingSystemArticle() {
           re-render. Server confirmation merges; on
           failure, rollback restores. Undo flows
           through the same path.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How is this accessible?</strong>{" "}
           Real form controls; edit mode and validation
           state announce; Tab navigation works; conflict
           banners are actionable and accessible. Every
           mouse interaction has a keyboard
           equivalent.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          An inline editing system is{" "}
-          <strong>per-cell edit state + editor registry +
-          optimistic mutation pipeline + command-pattern
-          undo</strong>. The pipeline reuses validation,
-          normalization, and conflict detection; new
-          editor types plug into a registry; visual
-          states communicate the lifecycle of each
-          edit. The result feels Excel-fluent — fast
+        <HighlightBlock as="p" tier="important">An inline editing system is per-cell edit state + editor registry + optimistic mutation</HighlightBlock>
+<HighlightBlock as="p" tier="important">pipeline + command-pattern undo . The pipeline reuses validation, normalization, and conflict</HighlightBlock>
+<HighlightBlock as="p" tier="important">detection; new editor types plug into a registry; visual states communicate the lifecycle of each edit.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">The result feels Excel-fluent — fast
           edits, instant feedback, clean rollback on
           failure, undo across the session — while
-          preserving server-side authority.
-        </p>
+          preserving server-side authority.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

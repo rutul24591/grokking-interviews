@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Conflict resolution strategies by data type for offline sync">
+  <title>Offline Sync Conflict Strategies</title>
+  <desc>Shows three conflict handling options and when to apply them: auto-merge, last-write-wins, and user resolution with recoverability.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="ok" x="70" y="70" width="520" height="170" />
+  <text class="label bold" x="100" y="115">Auto-merge</text>
+  <text class="label small" x="100" y="145">safe structured fields</text>
+  <text class="label small" x="100" y="170">convergent models (CRDT/OT)</text>
+  <text class="label small" x="100" y="195">minimize user friction</text>
+
+  <rect class="muted" x="640" y="70" width="490" height="170" />
+  <text class="label bold" x="670" y="115">Last-write-wins</text>
+  <text class="label small" x="670" y="145">acceptable for some prefs</text>
+  <text class="label small" x="670" y="170">simple but can lose work</text>
+  <text class="label small" x="670" y="195">use carefully</text>
+
+  <path class="arrow" d="M590 155 L640 155" />
+
+  <rect class="warn" x="70" y="300" width="520" height="180" />
+  <text class="label bold" x="100" y="345">User resolution</text>
+  <text class="label small" x="100" y="375">semantic conflicts</text>
+  <text class="label small" x="100" y="400">always preserve both versions</text>
+  <text class="label small" x="100" y="425">explicit UX</text>
+
+  <rect class="box" x="640" y="300" width="490" height="180" />
+  <text class="label bold" x="670" y="345">Recoverability</text>
+  <text class="label small" x="670" y="375">undo or version history</text>
+  <text class="label small" x="670" y="400">keep backups for high-risk edits</text>
+  <text class="label small" x="670" y="425">avoid irreversible loss</text>
+
+  <path class="arrow" d="M590 390 L640 390" />
+</svg>

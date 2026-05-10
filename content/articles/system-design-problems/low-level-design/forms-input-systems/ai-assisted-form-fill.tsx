@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function AIAssistedFormFillArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a system that uses an LLM to suggest
           values for fields in a form, based on context the user
           provides — an uploaded document, prior submissions,
@@ -42,8 +44,8 @@ export default function AIAssistedFormFillArticle() {
           trusted with sensitive forms, and unambiguous enough that
           users always know whether a value is theirs or the
           AI&rsquo;s.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are: streaming suggestions without UI
           thrash; reconciling AI suggestions with concurrent user
           input (the user is editing field 3 while a suggestion
@@ -55,10 +57,10 @@ export default function AIAssistedFormFillArticle() {
           turns a 20-minute form into a 3-minute one; done poorly,
           it leaks data, surprises users, and erodes trust faster
           than it speeds them up.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           End users fill long, repetitive forms — insurance claims,
           intake at a clinic, expense reports, government
           applications. They have source data they&rsquo;d like to
@@ -69,10 +71,10 @@ export default function AIAssistedFormFillArticle() {
           conversion lift, and accessibility specialists who
           insist that AI features remain operable by keyboard
           and screen reader.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend service exposes a streaming JSON endpoint that
           returns per-field suggestions with confidence scores
           and source attribution. The schema is known to the
@@ -85,10 +87,10 @@ export default function AIAssistedFormFillArticle() {
           marked as eligible for AI fill or excluded entirely
           (some forms are too sensitive or too compliance-heavy
           for AI assistance).
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The LLM stack itself — model choice, prompt engineering,
           retrieval-augmented generation — is treated as a
           service. We design the client-side surface, not the
@@ -97,14 +99,14 @@ export default function AIAssistedFormFillArticle() {
           the user submits. Cross-form learning from user
           corrections (an active learning loop) lives in the
           telemetry stack, not in the runtime.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Triggers: explicit &ldquo;Auto-fill&rdquo; button, or an
           implicit trigger on file upload (when the form schema
           enables it). Streaming suggestions with progressive UI
@@ -116,30 +118,30 @@ export default function AIAssistedFormFillArticle() {
           accept so users can adjust without rejecting outright.
           Per-field undo within the session. Cancel an in-flight
           run.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Re-prompt for a single field if the user wasn&rsquo;t
           satisfied. Voice-input form fill via streaming
           transcription. Multilingual sources translated as
           needed. A summary of all changes the AI proposed at
           the end of a session for audit purposes.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-session learning from user corrections, model
           training, prompt customization by end users, and AI
           submission of the form.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           First suggestion visible within ~1 second of trigger;
           subsequent suggestions arrive progressively. The
           rendering pipeline must not block user typing — if the
@@ -147,19 +149,19 @@ export default function AIAssistedFormFillArticle() {
           their keystrokes win every time. Stream parsing happens
           in microtasks; UI updates use React 19 transitions for
           non-urgent rendering.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Errors during streaming do not corrupt user-entered
           values; partial streams that fail mid-way leave the
           form in a coherent state. Schema-violating suggestions
           are silently rejected client-side rather than ever
           reaching the form value.
-        </p>
+        </HighlightBlock>
 
         <h3>Security &amp; Privacy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           PII never leaves the client without explicit, scoped
           consent. Client-side redaction strips obvious PII
           patterns before sending source material; server-side
@@ -169,29 +171,29 @@ export default function AIAssistedFormFillArticle() {
           only for the duration of the request, with audited
           access logs. Output is sanitized — AI cannot inject
           HTML or execute scripts; values render as text.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Suggestion appearances announce via polite live region.
           Per-field accept/reject reachable by keyboard, with
           well-defined shortcut bindings. Confidence and source
           have text equivalents for screen readers. AI-origin
           markers are perceivable without color alone.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clear contract between AI service and form runtime;
           adapter pattern for swapping providers. The suggestion
           state lives in a separate plane from form values, so
           form runtime code doesn&rsquo;t need to know about AI.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The architecture rests on three core ideas:
           <strong> two parallel state planes</strong> (form values
           vs suggestions), <strong>streaming with an explicit
@@ -199,7 +201,7 @@ export default function AIAssistedFormFillArticle() {
           <strong> never auto-applying anything</strong>. Together
           these produce a system that feels fast, never overwrites
           user work, and remains trustworthy under partial failure.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Two parallel state planes</strong> means the form
           store still owns the canonical form values — the user&rsquo;s
@@ -215,7 +217,7 @@ export default function AIAssistedFormFillArticle() {
           suggestion store remembers the proposal for undo
           purposes but no longer drives field rendering.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>trigger</strong>, the SuggestionController
           collects sources (uploaded files, prior submissions
           referenced by the user, profile data the user has
@@ -229,7 +231,7 @@ export default function AIAssistedFormFillArticle() {
           streaming endpoint with the redacted payload and the
           schema id; the server returns a stream of JSON-lines
           messages, each describing a suggestion for one field.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Streaming parsing</strong> reads the response
           via <code>fetch</code>&rsquo;s
@@ -249,7 +251,7 @@ export default function AIAssistedFormFillArticle() {
           update; the suggestion update is non-urgent and waits
           its turn.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>per-field state machine</strong> tracks
           where each field is in the suggestion lifecycle:
           <code> idle → pending → proposed → accepted /
@@ -267,7 +269,7 @@ export default function AIAssistedFormFillArticle() {
           field while a suggestion was in flight, so the
           suggestion is no longer applicable and is silently
           discarded when it arrives.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Concurrent user input handling</strong> is the
           subtle correctness concern. If the user is editing
@@ -285,7 +287,7 @@ export default function AIAssistedFormFillArticle() {
           types or edits the field after the AI fill was
           triggered and reset on the next trigger.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Schema validation</strong> happens on every
           incoming suggestion. The form runtime exposes a
           <code> validateSuggestion(field, value)</code> helper;
@@ -297,7 +299,7 @@ export default function AIAssistedFormFillArticle() {
           log; the user never sees a broken suggestion. This
           protects users from LLM hallucinations and makes the
           system resilient to occasional model drift.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>accept</strong> (per-field or bulk), the
           suggestion writes into the form store via the same
@@ -343,7 +345,7 @@ export default function AIAssistedFormFillArticle() {
           because the user might still want to act on what
           arrived.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Privacy boundary</strong>: the redaction layer
           runs client-side on a configurable rule set (regex for
           SSN, card numbers, etc., plus an optional ML-based
@@ -359,7 +361,7 @@ export default function AIAssistedFormFillArticle() {
           run on first use per form and per data type, with
           explicit opt-in for sources beyond the user&rsquo;s
           own current upload.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -376,19 +378,19 @@ export default function AIAssistedFormFillArticle() {
           start streaming, parse, dispatch. Owns the
           AbortController.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>SuggestionStore</strong> holds per-field
           suggestion state (the parallel plane). Exposes
           selectors so field UIs can subscribe to one
           field&rsquo;s suggestion slice; updates are
           fine-grained the same way the form store is.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>FieldOverlay</strong> renders next to a field
           input when a suggestion exists, showing the proposed
           value as a ghost, a confidence chip, a source link,
           and accept / reject / edit affordances.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>BulkActionsBar</strong> appears when at least
           one suggestion exists, offering Accept all, Reject
@@ -400,27 +402,27 @@ export default function AIAssistedFormFillArticle() {
           cover SSNs, credit card numbers, and obvious
           patterns. ML-based detector is opt-in.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>StreamParser</strong> splits the response
           stream on newlines and parses each line as JSON.
           Buffers partial lines across chunks. Handles parse
           errors by skipping the malformed line with a
           telemetry event.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>FormEngineAdapter</strong> bridges to the form
           runtime: validates suggestions against schema, writes
           accepted values via the standard
           <code> setValue</code> path, listens for user-touch
           events to mark superseded suggestions.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>UndoController</strong> tracks recently
           accepted suggestions with their prior values; offers
           revert per field and bulk; expires entries after
           TTL.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The architectural patterns are{" "}
           <strong>parallel state planes</strong> (form vs
           suggestions),
@@ -429,67 +431,68 @@ export default function AIAssistedFormFillArticle() {
           <strong>defense in depth</strong> for redaction
           (client + server), and <strong>provider adapter</strong>{" "}
           for swapping AI services without UI changes.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          The form value plane is the form runtime&rsquo;s store,
+        <HighlightBlock as="p" tier="important">The form value plane is the form runtime&rsquo;s store,
           unchanged by the AI feature. The suggestion plane is
           the SuggestionStore, an external store keyed by
           field name. Each entry holds:{" "}
-          <code>{`{ status, proposedValue, confidence, source, priorValue?, supersededAt? }`}</code>.
+          <code>{`{ status, proposedValue, confidence, source, priorValue?, supersededAt?</HighlightBlock>
+<HighlightBlock as="p" tier="important">}`}</code>.
           Field UIs subscribe to both stores (form value via
           existing form runtime hooks, suggestion via
           <code> useSuggestion(name)</code>); they render the
           form value as primary and overlay suggestion if
-          present.
-        </p>
-        <p>
+          present.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Subscriptions are fine-grained per field, the same
           way the form store works, so a streaming suggestion
           for field 47 doesn&rsquo;t re-render fields 1–46.
           Updates during streaming are wrapped in
           <code> startTransition</code> so React treats them
           as non-urgent and yields to user input.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Client → Server payload:
-          <code>{` { schemaId, sources: [{ kind, content, redactionMap }], options }`}</code>.
-          Server → Client stream: JSON-lines messages, each
-          shape{" "}
-          <code>{` { type: "suggestion", field, value, confidence, source }`}</code>{" "}
-          plus terminal messages like <code>done</code> or
-          <code> error</code>. Per-field actions:
-          <code> accept</code>, <code>reject</code>,
-          <code> edit</code>, <code>regenerate</code>, all
-          dispatched to the SuggestionController which
-          routes to the SuggestionStore and, on accept, to
-          the form runtime via the FormEngineAdapter.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The contract must preserve provenance and privacy: every suggestion includes source metadata and a redaction map
+          so the UI can show citations without leaking sensitive input into logs or prompts.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Client → Server payload shape:
+          <code>{`{ schemaId, sources: [{ kind, content, redactionMap }], options }`}</code>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Server → Client stream is JSON-lines messages such as
+          <code>{`{ type: "suggestion", field, value, confidence, source }`}</code>,
+          plus terminal signals like <code>done</code> or <code>error</code>.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
+          Per-field actions (<code>accept</code>, <code>reject</code>, <code>edit</code>, <code>regenerate</code>) dispatch to the
+          SuggestionController, which routes to the SuggestionStore and, on accept, to the form runtime via the FormEngineAdapter.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance &amp; Streaming</h2>
-        <p>
-          We use <code>fetch</code> with a
+        <HighlightBlock as="p" tier="important">We use <code>fetch</code> with a
           <code> ReadableStream</code> body for streaming
           responses. The StreamParser buffers across chunks,
           finds newlines, parses complete JSON lines, and
-          dispatches one action per parsed line. Updates wrap
+          dispatches one action per parsed line.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Updates wrap
           in <code>startTransition</code> so streaming never
           competes with input. The first suggestion typically
           arrives well under a second; subsequent ones flow
           progressively. We cancel via
           <code> AbortController</code> when the user clicks
-          Cancel or navigates away.
-        </p>
-        <p>
+          Cancel or navigates away.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Parsing happens in microtasks via
           <code> queueMicrotask</code>; we don&rsquo;t process
           all chunks synchronously because a fast stream
@@ -497,46 +500,41 @@ export default function AIAssistedFormFillArticle() {
           we surface a visible streaming indicator so users
           know the system is working; we never let the UI
           appear frozen.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX Considerations</h2>
-        <p>
-          Suggestions render as ghost text in the field or a
+        <HighlightBlock as="p" tier="important">Suggestions render as ghost text in the field or a
           chip beside the field, distinctly styled from user
           input — never auto-committed. Confidence renders as
           a colored badge with text label (low / medium / high),
           never as a numeric percentage exposed to non-power
           users. Source attribution shows which input or
           document snippet produced the value, with a click-to-
-          reveal link. Per-field accept/reject buttons sit
+          reveal link.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Per-field accept/reject buttons sit
           adjacent to the field; Tab order goes input →
           accept → reject so keyboard users land on actions
           quickly. Bulk accept/reject is a top-of-form bar
           that appears when at least one suggestion exists.
-          Undo bar after bulk accept gives users a safety net.
-        </p>
-        <p>
+          Undo bar after bulk accept gives users a safety net.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           AI origin is always perceivable: a sparkle icon, a
           distinct background tint, the word
           &ldquo;Suggested&rdquo; — all together, not relying
           on color alone. Screenshots taken from the form
           should make it obvious which values are AI-suggested
           and which are user-entered.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Suggestions announce via polite live region:
-          &ldquo;Suggestion available for Address: 221B Baker
-          Street, confidence high.&rdquo; We don&rsquo;t announce
-          every suggestion individually if many arrive in a
-          burst — we batch into &ldquo;5 new suggestions
-          available&rdquo; with a separate landmark for
-          screen reader users to navigate. Per-field accept and
+        <HighlightBlock as="p" tier="important">Suggestions announce via polite live region: &ldquo;Suggestion available for Address: 221B Baker Street,</HighlightBlock>
+<HighlightBlock as="p" tier="important">confidence high.&rdquo; We don&rsquo;t announce every suggestion individually if many arrive in a burst — we</HighlightBlock>
+<HighlightBlock as="p" tier="important">batch into &ldquo;5 new suggestions available&rdquo; with a separate landmark for screen reader users to navigate.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Per-field accept and
           reject are keyboard-shortcut-bound (Alt+Enter to
           accept, Alt+Backspace to reject, configurable);
           keyboard users can act on suggestions without
@@ -544,13 +542,12 @@ export default function AIAssistedFormFillArticle() {
           equivalents (the badge announces &ldquo;high
           confidence&rdquo; via aria-label, not just by
           color). Source attribution links are reachable via
-          Tab and read out their target.
-        </p>
+          Tab and read out their target.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security &amp; Privacy</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client-side redaction strips obvious PII before sending
           source material. The redaction rule set is
           configurable per form and per data type; defaults
@@ -562,8 +559,8 @@ export default function AIAssistedFormFillArticle() {
           marked in the schema are excluded from the request
           payload — passwords, security questions, and
           payment details never participate in AI fill.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Source documents on the server: ephemeral retention
           (request duration only), audited access. Audit logs
           record who triggered an AI fill, what schema, what
@@ -573,57 +570,38 @@ export default function AIAssistedFormFillArticle() {
           submission is always a user action with all the
           standard CSRF and idempotency protections of the
           form runtime.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Output sanitization: AI-produced values render as
           text. Even if the model produced HTML, our renderer
           treats it as plain text. This protects against
           prompt injection attacks where source material
           contains instructions to the model to inject
           malicious output.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Unit tests cover the per-field state machine
-          transitions, the stream parser against canonical
-          JSON-lines fixtures and malformed inputs, the
-          redaction rule set against representative PII
-          patterns, and the schema validation of incoming
-          suggestions. Integration tests interleave streaming
-          with simulated user typing: a suggestion for field
-          5 must be marked superseded if the user types into
-          field 5 first; bulk Accept all must skip
-          user-edited fields. Failure-mode tests inject
+        <HighlightBlock as="p" tier="important">Unit tests cover the per-field state machine transitions, the stream parser against canonical JSON-lines fixtures and malformed inputs, the redaction</HighlightBlock>
+<HighlightBlock as="p" tier="important">rule set against representative PII patterns, and the schema validation of incoming suggestions. Integration tests interleave streaming with</HighlightBlock>
+<HighlightBlock as="p" tier="important">simulated user typing: a suggestion for field 5 must be marked superseded if the user types into field 5 first; bulk Accept all must skip user-edited fields.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Failure-mode tests inject
           server errors mid-stream and verify the form
           remains in a coherent editable state. End-to-end
           tests in real browsers exercise the keyboard
           accept/reject flow with a screen reader stub.
           Privacy tests verify that sensitive fields are
           excluded from the request payload and that
-          redaction strips known PII from sources.
-        </p>
+          redaction strips known PII from sources.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
-          User edits a field while its suggestion is in
-          flight: mark the incoming suggestion as
-          <code> superseded</code> and silently drop. Stream
-          truncates mid-response: mark unprocessed fields as
-          failed; offer Regenerate; user&rsquo;s already-
-          received suggestions remain actionable. Server
-          returns a malformed line: skip with telemetry; do
-          not break the rest of the stream. Suggestion
-          violates schema (bad enum, type mismatch): silently
-          reject with telemetry; never surface an invalid
-          suggestion. Cross-field consistency violations
-          (suggested city doesn&rsquo;t match suggested zip):
-          accept-all applies independently passing fields
-          and surfaces the conflict for the rest. Sensitive
+        <HighlightBlock as="p" tier="important">User edits a field while its suggestion is in flight: mark the incoming suggestion as superseded and silently drop. Stream truncates mid-response: mark unprocessed fields as failed; offer Regenerate; user&rsquo;s</HighlightBlock>
+<HighlightBlock as="p" tier="important">already- received suggestions remain actionable. Server returns a malformed line: skip with telemetry; do not break the rest of the stream. Suggestion violates schema (bad enum, type mismatch): silently reject with</HighlightBlock>
+<HighlightBlock as="p" tier="important">telemetry; never surface an invalid suggestion. Cross-field consistency violations (suggested city doesn&rsquo;t match suggested zip): accept-all applies independently passing fields and surfaces the conflict for the rest.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Sensitive
           field configured incorrectly (schema lacks the
           flag but should have it): the system has no way
           to know; we mitigate via reviewable schema
@@ -636,49 +614,28 @@ export default function AIAssistedFormFillArticle() {
           offline mid-stream: suggestions stop arriving;
           surface an inline retry option; user&rsquo;s
           existing suggestions and form values remain
-          intact.
-        </p>
+          intact.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          The provider adapter abstracts the AI service so
-          consumers can swap providers (different LLM
-          vendors, on-premises deployments) without
-          touching UI. The redaction rule set is a registry;
-          adding a custom PII pattern is a one-line addition.
-          The state machine, store, and UI components are
-          all separately consumable: a product can adopt
-          just the streaming parser, just the suggestion
-          UI, or the full stack. The form-engine integration
-          is via a small adapter; the system works with any
-          form runtime that supports a custom field
-          extension.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The state machine, store, and UI components are all separately consumable: a product can adopt</HighlightBlock>
+<HighlightBlock as="p" tier="important">just the streaming parser, just the suggestion UI, or the full stack. The form-engine integration is</HighlightBlock>
+<HighlightBlock as="p" tier="important">via a small adapter; the system works with any form runtime that supports a custom field extension.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Suggestions arrive in the user&rsquo;s configured
-          language; the backend normalizes formatting (dates,
-          numbers) per locale. UI strings (badges, labels,
-          live region announcements) resolve through the
-          host&rsquo;s i18n function. RTL layouts flip via
-          CSS logical properties; the suggestion ghost
-          alignment adapts naturally. For multilingual
-          sources, the backend handles translation and
-          marks the source-language metadata so the UI can
-          surface it if needed.
-        </p>
+        <HighlightBlock as="p" tier="crucial">RTL layouts flip via CSS logical properties; the suggestion ghost alignment</HighlightBlock>
+<HighlightBlock as="p" tier="important">adapts naturally. For multilingual sources, the backend handles</HighlightBlock>
+<HighlightBlock as="p" tier="important">translation and marks the source-language metadata so the UI can surface it if needed.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
 
         <h3>Auto-apply vs explicit accept</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-apply is faster and feels magical but erodes
           trust the moment the AI is wrong, which it
           inevitably is. Explicit accept respects user
@@ -689,10 +646,10 @@ export default function AIAssistedFormFillArticle() {
           chose explicit accept; the cost is a few extra
           clicks per session and the win is durable
           trust.
-        </p>
+        </HighlightBlock>
 
         <h3>Stream vs batch</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Streaming makes perceived latency much better —
           users see something immediately instead of
           waiting for the whole response. The cost is more
@@ -703,10 +660,10 @@ export default function AIAssistedFormFillArticle() {
           doesn&rsquo;t matter much. We default to
           streaming because the architecture is forwards-
           compatible.
-        </p>
+        </HighlightBlock>
 
         <h3>Client-side vs server-only redaction</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defense in depth: do both. Client-side prevents
           obvious PII from ever leaving the browser;
           server-side catches what the client missed and
@@ -714,10 +671,10 @@ export default function AIAssistedFormFillArticle() {
           cost is code duplication; the win is real
           privacy posture rather than a single point of
           failure.
-        </p>
+        </HighlightBlock>
 
         <h3>Confidence threshold gating</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Low-confidence suggestions can be more harmful
           than helpful — users may accept them out of
           inertia, then submit wrong values. We hide low-
@@ -726,10 +683,10 @@ export default function AIAssistedFormFillArticle() {
           automatically. The cost is some loss of recall
           for power users who want every signal; the win
           is fewer foot-gun suggestions for casual users.
-        </p>
+        </HighlightBlock>
 
         <h3>Two state planes vs single merged state</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Two planes (form values + suggestions) means
           slightly more code and explicit reconciliation,
           but it preserves the invariant that the form
@@ -740,33 +697,20 @@ export default function AIAssistedFormFillArticle() {
           check and the form silently submits an AI value
           as if the user typed it). We chose two planes;
           the cost is small in absolute terms.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          On-device models for sensitive forms would
-          eliminate the data-leaves-device concern; with
-          modern WebGPU and efficient small models this is
-          becoming feasible. Active learning from user
-          corrections (with explicit consent) would
-          improve the model on a per-organization basis
-          over time. Voice-input form fill via streaming
-          transcription extends the source kinds. A
-          regenerate-this-field action that re-prompts the
-          model with a refined context would help when the
-          AI was close but not quite right. Cross-form
-          context — &ldquo;you filled this same field in
-          your last claim with X&rdquo; — could turn
-          fill into a copilot for repeated workflows.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Voice-input form fill via streaming transcription extends the source kinds. A regenerate-this-field action that</HighlightBlock>
+<HighlightBlock as="p" tier="important">re-prompts the model with a refined context would help when the AI was close but not quite right. Cross-form context —</HighlightBlock>
+<HighlightBlock as="p" tier="important">&ldquo;you filled this same field in your last claim with X&rdquo; — could turn fill into a copilot for repeated workflows.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How do suggestions and user input coexist
           without trampling each other?</strong> Two parallel
           state planes: the form store owns user values
@@ -776,7 +720,7 @@ export default function AIAssistedFormFillArticle() {
           affordances. If a user types while a suggestion
           is in flight, the incoming suggestion is marked
           superseded and discarded.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>2. How is streaming parsed and rendered without
@@ -813,7 +757,7 @@ export default function AIAssistedFormFillArticle() {
           durable trust.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. How do you handle suggestions that violate
           schema?</strong> Validate every incoming suggestion
           against schema and per-field validators before
@@ -821,9 +765,9 @@ export default function AIAssistedFormFillArticle() {
           are silently rejected with telemetry; users
           never see a malformed suggestion. This protects
           against LLM hallucinations and model drift.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How do you avoid leaking suggestions across
           users in a shared cache?</strong> Suggestions are
           stored in user-scoped client state and never
@@ -832,9 +776,9 @@ export default function AIAssistedFormFillArticle() {
           confirm that. Sensitive fields are excluded
           regardless. On logout, suggestion state clears
           alongside form draft state.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How do you make accept/reject keyboard
           accessible?</strong> Per-field shortcut bindings (Alt
           +Enter accept, Alt+Backspace reject) in addition
@@ -842,9 +786,9 @@ export default function AIAssistedFormFillArticle() {
           accept → reject so keyboard users land on action
           buttons quickly. Live region announces
           suggestions and accept/reject results.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How would you add a regenerate-this-field
           action?</strong> The suggestion controller already
           supports field-scoped requests via the same
@@ -854,26 +798,14 @@ export default function AIAssistedFormFillArticle() {
           replaces the prior suggestion. The state machine
           handles this naturally: the new proposal
           supersedes the old.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          AI-assisted form fill should be a{" "}
-          <strong>parallel advisory plane</strong>, never a
-          silent auto-writer. Stream per-field suggestions
-          with explicit per-field state machines, give
-          users keyboard-accessible accept and reject with
-          clear confidence and source attribution, redact
-          PII at the boundary, and never auto-apply. The
-          system&rsquo;s job is to save users typing, not to
-          take ownership of their values. Build for trust
-          first; speed second. Get the trust right and
-          users will ask for more AI features; get it
-          wrong and they&rsquo;ll turn it off and never
-          come back.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The system&rsquo;s job is to save users typing, not to take ownership of their</HighlightBlock>
+<HighlightBlock as="p" tier="important">values. Build for trust first; speed second. Get the trust right and users will ask</HighlightBlock>
+<HighlightBlock as="p" tier="important">for more AI features; get it wrong and they&rsquo;ll turn it off and never come back.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

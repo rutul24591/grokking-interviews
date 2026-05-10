@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="560">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">AI Feedback Loop UI: Collection, Storage &amp; Training Pipeline</text>
+
+  <!-- Feedback Collection UI -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Feedback Collection</text>
+
+    <rect x="30" y="75" width="380" height="340" fill="#f9fafb" stroke="#d1d5db" stroke-width="2" rx="6"/>
+
+    <!-- AI response card -->
+    <rect x="45" y="90" width="350" height="90" fill="white" stroke="#e2e8f0" stroke-width="1" rx="4"/>
+    <text x="60" y="112" font-size="10" font-weight="bold" fill="#581c87">✦ AI Response</text>
+    <text x="60" y="130" font-size="10" fill="#374151">The capital of France is Paris. It has been</text>
+    <text x="60" y="147" font-size="10" fill="#374151">the capital since 987 CE and is home to...</text>
+
+    <!-- Quick feedback -->
+    <text x="60" y="200" font-size="10" font-weight="bold" fill="#374151">Was this helpful?</text>
+    <rect x="60" y="210" width="70" height="28" fill="#dcfce7" stroke="#10b981" stroke-width="1" rx="3"/>
+    <text x="95" y="229" font-size="11" text-anchor="middle" fill="#065f46">👍 Yes</text>
+    <rect x="140" y="210" width="65" height="28" fill="#fee2e2" stroke="#ef4444" stroke-width="1" rx="3"/>
+    <text x="172" y="229" font-size="11" text-anchor="middle" fill="#991b1b">👎 No</text>
+    <rect x="215" y="210" width="80" height="28" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1" rx="3"/>
+    <text x="255" y="229" font-size="11" text-anchor="middle" fill="#374151">↻ Retry</text>
+
+    <!-- Detailed feedback (shown on thumbs down) -->
+    <text x="60" y="268" font-size="10" font-weight="bold" fill="#374151">What went wrong? (optional)</text>
+    <rect x="60" y="276" width="80" height="26" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+    <text x="100" y="293" font-size="9" text-anchor="middle" fill="#92400e">Inaccurate</text>
+    <rect x="148" y="276" width="80" height="26" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+    <text x="188" y="293" font-size="9" text-anchor="middle" fill="#92400e">Incomplete</text>
+    <rect x="236" y="276" width="80" height="26" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+    <text x="276" y="293" font-size="9" text-anchor="middle" fill="#92400e">Off-topic</text>
+
+    <!-- Correct answer input -->
+    <text x="60" y="325" font-size="10" font-weight="bold" fill="#374151">Better answer (optional):</text>
+    <rect x="60" y="333" width="300" height="45" fill="white" stroke="#d1d5db" stroke-width="1" rx="3"/>
+    <text x="75" y="353" font-size="9" fill="#9ca3af">Type a better response...</text>
+
+    <text x="220" y="400" font-size="9" text-anchor="middle" fill="#6b7280">Feedback stored anonymously. Never used to identify users.</text>
+  </g>
+
+  <!-- Pipeline -->
+  <g>
+    <text x="740" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Feedback → Training Pipeline</text>
+
+    <rect x="450" y="75" width="620" height="195" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="760" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Data Pipeline</text>
+    <text x="465" y="122" font-size="10" fill="#374151">1. Collect: thumbs up/down, category, corrected answer</text>
+    <text x="465" y="140" font-size="10" fill="#374151">2. Store: {sessionId, prompt, response, rating, correction, ts}</text>
+    <text x="465" y="158" font-size="10" fill="#374151">3. Aggregate: batch nightly — compute win rate per prompt version</text>
+    <text x="465" y="176" font-size="10" fill="#374151">4. Label: human review flagged low-rating responses</text>
+    <text x="465" y="194" font-size="10" fill="#374151">5. Prepare: format as RLHF preference pairs (preferred vs rejected)</text>
+    <text x="465" y="212" font-size="10" fill="#374151">6. Fine-tune: update model weights or prompt (weekly/monthly cycle)</text>
+    <text x="465" y="230" font-size="10" fill="#374151">7. Evaluate: A/B test new model vs baseline on hold-out set</text>
+    <text x="465" y="248" font-size="10" fill="#374151">8. Deploy: promote if win rate improves significantly</text>
+    <text x="465" y="262" font-size="9" fill="#a855f7">RLHF (Reinforcement Learning from Human Feedback) — ChatGPT used this approach</text>
+
+    <rect x="450" y="285" width="300" height="175" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="600" y="310" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Feedback Schema</text>
+    <text x="465" y="332" font-size="10" fill="#374151">feedbackId: uuid</text>
+    <text x="465" y="350" font-size="10" fill="#374151">conversationId: string</text>
+    <text x="465" y="368" font-size="10" fill="#374151">messageId: string</text>
+    <text x="465" y="386" font-size="10" fill="#374151">rating: 'thumbsUp' | 'thumbsDown'</text>
+    <text x="465" y="404" font-size="10" fill="#374151">category: string[]</text>
+    <text x="465" y="422" font-size="10" fill="#374151">correction: string?</text>
+    <text x="465" y="440" font-size="10" fill="#374151">model: string, promptVersion: string</text>
+    <text x="465" y="454" font-size="9" fill="#3b82f6">sessionId: anonymized (no user PII)</text>
+
+    <rect x="770" y="285" width="300" height="175" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="920" y="310" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Analytics Dashboard</text>
+    <text x="785" y="332" font-size="10" fill="#374151">Win rate by prompt version</text>
+    <text x="785" y="350" font-size="10" fill="#374151">Category distribution (error types)</text>
+    <text x="785" y="368" font-size="10" fill="#374151">Feedback rate (% of responses rated)</text>
+    <text x="785" y="386" font-size="10" fill="#374151">Trend over time (improving?)</text>
+    <text x="785" y="404" font-size="10" fill="#374151">Topic clusters of bad responses</text>
+    <text x="785" y="422" font-size="10" fill="#374151">P90 quality score</text>
+    <text x="785" y="440" font-size="10" fill="#374151">Correction coverage rate</text>
+    <text x="785" y="454" font-size="9" fill="#10b981">Surface regressions after model updates</text>
+
+    <rect x="450" y="475" width="620" height="75" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="760" y="498" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">Implicit vs Explicit Feedback</text>
+    <text x="465" y="520" font-size="10" fill="#374151">Explicit: thumbs, correction forms. Explicit is high-signal but low-volume (few users bother).</text>
+    <text x="465" y="538" font-size="10" fill="#374151">Implicit: follow-up questions, copy/paste rate, re-generates, session abandonment — higher volume.</text>
+  </g>
+
+  <rect x="30" y="440" width="400" height="100" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="460" font-size="11" fill="#374151"><tspan font-weight="bold">Feedback flywheel:</tspan> More usage → more feedback → better model → more usage.</text>
+  <text x="50" y="478" font-size="11" fill="#374151"><tspan font-weight="bold">Privacy:</tspan> Anonymize sessions. Offer opt-out. Never use PII for training.</text>
+  <text x="50" y="496" font-size="11" fill="#374151"><tspan font-weight="bold">Volume:</tspan> Need 1000s of examples for meaningful fine-tuning.</text>
+  <text x="50" y="514" font-size="9" fill="#6b7280">Prioritize: collect corrections for frequent failure categories first.</text>
+  <text x="50" y="530" font-size="9" fill="#6b7280">Low feedback rate? Make it one-click. Friction kills collection volume.</text>
+</svg>

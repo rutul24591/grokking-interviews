@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Architecture for internal developer platform frontend with shell app, plugins, catalog, workflows, and integrations">
+  <title>IDP Frontend Architecture</title>
+  <desc>Shows shell app providing identity and RBAC, plugin routes and widgets, catalog service and workflow engine, and integration adapters to external systems.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .dash { stroke-dasharray: 7 6; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" width="1200" height="640" />
+
+  <rect class="box" x="60" y="90" width="420" height="210" />
+  <text class="label bold" x="90" y="135">Frontend shell</text>
+  <text class="label small" x="90" y="165">identity + session</text>
+  <text class="label small" x="90" y="190">RBAC context</text>
+  <text class="label small" x="90" y="215">navigation + search</text>
+  <text class="label small" x="90" y="240">telemetry</text>
+
+  <rect class="accent" x="520" y="90" width="300" height="210" />
+  <text class="label bold" x="550" y="135">Plugins</text>
+  <text class="label small" x="550" y="165">routes + panels</text>
+  <text class="label small" x="550" y="190">workflows</text>
+  <text class="label small" x="550" y="215">integrations UI</text>
+  <text class="label small" x="550" y="240">versioned APIs</text>
+
+  <rect class="good" x="860" y="70" width="280" height="110" />
+  <text class="label bold" x="890" y="115">Catalog service</text>
+  <text class="label small" x="890" y="145">entities + ownership</text>
+
+  <rect class="muted" x="860" y="200" width="280" height="110" />
+  <text class="label bold" x="890" y="245">Workflow engine</text>
+  <text class="label small" x="890" y="275">jobs + audit</text>
+
+  <rect class="muted" x="860" y="330" width="280" height="110" />
+  <text class="label bold" x="890" y="375">Adapters</text>
+  <text class="label small" x="890" y="405">CI/CD, infra, alerts</text>
+
+  <path class="arrow" d="M480 195 L520 195" />
+  <path class="arrow" d="M820 160 L860 125" />
+  <path class="arrow" d="M820 200 L860 255" />
+  <path class="arrow" d="M820 240 L860 385" />
+
+  <rect class="warn" x="60" y="350" width="760" height="200" />
+  <text class="label bold" x="90" y="395">Platform invariants</text>
+  <text class="label small" x="90" y="425">consistent authZ across plugins</text>
+  <text class="label small" x="90" y="450">design system compliance</text>
+  <text class="label small" x="90" y="475">performance budgets</text>
+  <text class="label small" x="90" y="500">audit for privileged workflows</text>
+</svg>
+

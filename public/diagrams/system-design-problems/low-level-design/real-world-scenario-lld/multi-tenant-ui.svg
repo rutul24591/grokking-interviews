@@ -1,0 +1,85 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Multi-Tenant UI — Org Switching, RBAC, Theme Isolation, and Data Boundaries</text>
+
+  <!-- Org context -->
+  <rect x="20" y="45" width="260" height="310" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Organization Context</text>
+
+  <rect x="35" y="78" width="230" height="70" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Auth Token Claims</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">orgId, orgSlug in JWT</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">roles: ["admin", "editor"]</text>
+  <text x="150" y="143" text-anchor="middle" font-size="10" fill="#1565c0">All API requests tagged with orgId</text>
+
+  <rect x="35" y="158" width="230" height="70" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="177" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Org Switcher</text>
+  <text x="150" y="193" text-anchor="middle" font-size="10" fill="#1565c0">Dropdown in navbar</text>
+  <text x="150" y="208" text-anchor="middle" font-size="10" fill="#1565c0">Switch → clear cache → re-auth</text>
+  <text x="150" y="223" text-anchor="middle" font-size="10" fill="#1565c0">Navigate to org home, not prev page</text>
+
+  <rect x="35" y="238" width="230" height="70" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="257" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">URL Scoping</text>
+  <text x="150" y="273" text-anchor="middle" font-size="10" fill="#1565c0">/org/acme/dashboard</text>
+  <text x="150" y="288" text-anchor="middle" font-size="10" fill="#1565c0">orgSlug in URL → shareable</text>
+  <text x="150" y="303" text-anchor="middle" font-size="10" fill="#1565c0">Wrong org in URL → 403 redirect</text>
+
+  <rect x="35" y="318" width="230" height="27" rx="4" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="150" y="336" text-anchor="middle" font-size="10" fill="#0d47a1">Never mix data between tenants</text>
+
+  <!-- RBAC -->
+  <rect x="295" y="45" width="280" height="310" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">RBAC and Permissions UI</text>
+
+  <rect x="310" y="78" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Role Hierarchy</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">Owner &gt; Admin &gt; Editor &gt; Viewer</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">Per-resource permissions (can.read)</text>
+
+  <rect x="310" y="153" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">UI Permission Gates</text>
+  <text x="435" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">&lt;Can do="edit"&gt; wraps buttons</text>
+  <text x="435" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Hide or disable based on role</text>
+  <text x="435" y="218" text-anchor="middle" font-size="10" fill="#2e7d32">Server enforces — UI is hint only</text>
+
+  <rect x="310" y="228" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Member Management</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">Invite by email → pending state</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">Role assignment per member</text>
+  <text x="435" y="293" text-anchor="middle" font-size="10" fill="#2e7d32">Revoke access → immediate token invalidate</text>
+
+  <rect x="310" y="303" width="250" height="42" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="435" y="322" text-anchor="middle" font-size="10" fill="#1b5e20">Permission context via React Context</text>
+  <text x="435" y="335" text-anchor="middle" font-size="10" fill="#2e7d32">Loaded once, not per-component fetch</text>
+
+  <!-- Theming + isolation -->
+  <rect x="590" y="45" width="250" height="310" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Theming and Isolation</text>
+
+  <rect x="605" y="78" width="220" height="70" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">White-label Theming</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#bf360c">CSS variables per org</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#bf360c">--brand-primary, --brand-logo</text>
+  <text x="715" y="143" text-anchor="middle" font-size="10" fill="#bf360c">Load org theme on org context set</text>
+
+  <rect x="605" y="158" width="220" height="70" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="177" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Data Isolation</text>
+  <text x="715" y="193" text-anchor="middle" font-size="10" fill="#bf360c">All queries: WHERE orgId=:orgId</text>
+  <text x="715" y="208" text-anchor="middle" font-size="10" fill="#bf360c">Clear React Query cache on switch</text>
+  <text x="715" y="223" text-anchor="middle" font-size="10" fill="#bf360c">Clear localStorage key-space</text>
+
+  <rect x="605" y="238" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="257" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Subdomain Routing</text>
+  <text x="715" y="273" text-anchor="middle" font-size="10" fill="#bf360c">acme.app.com → orgId lookup</text>
+  <text x="715" y="288" text-anchor="middle" font-size="10" fill="#bf360c">Custom domain CNAME support</text>
+  <text x="715" y="303" text-anchor="middle" font-size="10" fill="#bf360c">TLS cert per domain (Let's Encrypt)</text>
+
+  <rect x="605" y="313" width="220" height="27" rx="4" fill="#ffecb3" stroke="#f9a825" stroke-width="1"/>
+  <text x="715" y="331" text-anchor="middle" font-size="10" fill="#e65100">Audit all cross-org access attempts</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

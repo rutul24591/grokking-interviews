@@ -128,7 +128,59 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
           string,
           unknown
         >;
-        const rawData = manifest[manifestKey];
+        let rawData = manifest[manifestKey];
+
+        if (!rawData && metadata.category === "low-level-design") {
+          const subcategoryAliases: Record<string, string[]> = {
+            "ai-modern-systems": ["ai-modern-systems-lld"],
+            "offline-advanced-ux": ["offline-advanced-ux-systems"],
+            "state-management-data-architecture": ["architecture-system-level-lld"],
+          };
+
+          const candidates = subcategoryAliases[metadata.subcategory] ?? [];
+          for (const alias of candidates) {
+            const candidateKey = `${metadata.category}/${alias}/${metadata.slug}`;
+            const candidate = manifest[candidateKey];
+            if (candidate) {
+              rawData = candidate;
+              break;
+            }
+          }
+        }
+
+        if (!rawData && metadata.category === "high-level-design") {
+          const subcategoryAliases: Record<string, string[]> = {
+            "security-auth-privacy-systems": ["security-auth-and-privacy-systems"],
+            "media-rich-content-systems": ["media-and-rich-content-systems"],
+            "cross-platform-mobile-systems": ["cross-platform-and-mobile-systems"],
+            "knowledge-content-systems": ["knowledge-and-content-systems"],
+            "emerging-future-systems": ["emerging-and-future-systems"],
+            "ecommerce-marketplace": ["e-commerce-and-marketplace"],
+            "social-engagement": ["social-and-engagement"],
+            "messaging-communication": ["messaging-and-communication"],
+            "platform-sdk-infra-systems": ["platform-sdk-infra-systems"],
+            "realtime-collaboration-systems": ["realtime-and-collaboration-systems"],
+            "file-storage-cloud-drive-systems": ["file-storage-cloud-drive-systems"],
+            "maps-location-intelligence": ["maps-and-location-intelligence"],
+            "data-heavy-systems": ["data-heavy-systems"],
+            "data-import-export-systems": ["data-import-export-systems"],
+            "notification-delivery-platform": ["notification-delivery-platform"],
+            "payments-fintech-systems": ["payments-and-fintech-systems"],
+            "feature-configuration-admin-systems": [
+              "feature-configuration-admin-systems",
+            ],
+          };
+
+          const candidates = subcategoryAliases[metadata.subcategory] ?? [];
+          for (const alias of candidates) {
+            const candidateKey = `${metadata.category}/${alias}/${metadata.slug}`;
+            const candidate = manifest[candidateKey];
+            if (candidate) {
+              rawData = candidate;
+              break;
+            }
+          }
+        }
 
         // Normalize the data to match ExampleGroup type
         const articleExamples: ExampleGroup[] = Array.isArray(rawData)

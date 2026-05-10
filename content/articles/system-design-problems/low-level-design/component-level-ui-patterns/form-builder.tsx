@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -40,7 +41,7 @@ export default function FormBuilderArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We need to design a reusable form builder system for a large-scale React
           application. The form builder must render forms dynamically from a JSON schema
           definition, support multiple field types (text, email, number, select, checkbox,
@@ -53,8 +54,8 @@ export default function FormBuilderArticle() {
           step-level validation gates that prevent advancing until the current step is
           valid, and a comprehensive form state model tracking per-field value, touched
           state, dirty state, error messages, and async validation status.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The system must also support draft saving and restoring — users should be able
           to save their progress to localStorage or a remote API and resume later. Form
           submission must collect all field values, run a final validation pass across all
@@ -62,7 +63,7 @@ export default function FormBuilderArticle() {
           Accessibility is non-negotiable: proper label associations, error announcements
           to screen readers, step progress indicators announced via ARIA live regions, and
           full keyboard navigation.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -71,10 +72,10 @@ export default function FormBuilderArticle() {
             The application is a React 19+ SPA with TypeScript and Zustand for state
             management.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Form schemas are defined as JSON objects and may be fetched from a CMS or
             configuration service at runtime.
-          </li>
+          </HighlightBlock>
           <li>
             The form builder must handle forms with 50+ fields without performance
             degradation.
@@ -83,14 +84,14 @@ export default function FormBuilderArticle() {
             Conditional field rules may reference multiple fields with compound logical
             expressions (AND, OR, NOT).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Async validators may take up to 5 seconds; the UI must show a loading
             indicator during validation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Draft saves occur on every field change (debounced) and on explicit
             user action (Save Draft button).
-          </li>
+          </HighlightBlock>
           <li>
             Multi-step forms can have 2–10 steps, each with its own subset of fields.
           </li>
@@ -106,22 +107,22 @@ export default function FormBuilderArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Schema-Driven Rendering:</strong> Forms are defined via a JSON schema
             that declares field types, labels, default values, validation rules, and
             conditional visibility. The renderer consumes this schema and produces the
             appropriate field components.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Field Type Support:</strong> The system must support text, email,
             number, select, checkbox, radio, date, and file input types. Each type maps
             to a specific native or custom input component with appropriate attributes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Dynamic Field Addition/Removal:</strong> Users can add or remove
             fields at runtime (e.g., adding an additional phone number, removing an
             address line). The schema must support repeatable field groups.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Conditional Visibility:</strong> Fields can declare visibility rules
             based on other field values. A rule might state: show the &quot;Company&quot;
@@ -145,23 +146,23 @@ export default function FormBuilderArticle() {
             (user has visited the field), dirty (value changed from initial), error
             (validation message), and validating (async validation in progress) state.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Draft Persistence:</strong> Auto-save form state to localStorage
             (debounced at 500ms) and support explicit draft save/restore via API. On
             page load, check for a saved draft and prompt the user to restore.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Form Submission:</strong> On submit, run full validation across all
             fields (including async validators), collect all values into a single payload
             object, and invoke a configurable submit callback. Show a loading state
             during submission and handle errors gracefully.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> All fields must have properly associated
             labels, error messages must be announced to screen readers via ARIA
             live regions, step progress must be announced, and the form must be fully
             navigable via keyboard.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
@@ -176,11 +177,11 @@ export default function FormBuilderArticle() {
             <strong>Scalability:</strong> The system should handle forms with 100+ fields
             and 10+ steps without memory leaks or state corruption.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Reliability:</strong> Draft saves must be resilient to network
             failures (retry with exponential backoff for API saves). Form state must
             survive page refreshes when using localStorage drafts.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for field definitions,
             validation rules, form state, and step configurations. Generic types should
@@ -223,7 +224,7 @@ export default function FormBuilderArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate the <strong>form schema definition</strong>, the
           <strong>form state management</strong>, and the <strong>form rendering</strong>
           into three independent layers. The schema is a pure JSON structure describing
@@ -232,12 +233,12 @@ export default function FormBuilderArticle() {
           flags, step state, and draft persistence. The rendering layer consumes the
           schema and state to produce field components, step wrappers, a stepper
           indicator, and conditional visibility evaluators.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>React Hook Form:</strong> A mature library with excellent performance
             (uncontrolled inputs, minimal re-renders). However, it does not natively
             support JSON schema-driven rendering, conditional field visibility based on
@@ -245,28 +246,28 @@ export default function FormBuilderArticle() {
             need to build substantial abstractions on top of it. For a form builder that
             must render entirely from a schema, a custom Zustand-based approach provides
             more control over the rendering and state lifecycle.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Formik:</strong> Similar to React Hook Form but uses controlled
             inputs, which causes more re-renders for large forms. Lacks native schema
             support and multi-step navigation. Heavier bundle size.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>JSON Schema + AJV Validator:</strong> Using JSON Schema as the
             definition format and AJV for validation is a strong choice for the validation
             layer. However, JSON Schema alone does not cover conditional visibility,
             multi-step flows, or draft persistence. We use JSON Schema as the format for
             field definitions but build our own rendering and state layers.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + Schema-Driven Rendering is optimal:</strong> Zustand
           provides fine-grained selector subscriptions so individual field components
           only re-render when their own state changes. The schema-driven approach means
           the entire form is a data structure — forms can be defined in a CMS, stored
           in a database, or generated dynamically without code changes. This pattern
           is used by production form builders like React JSON Schema Form and Formio.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -278,7 +279,7 @@ export default function FormBuilderArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Form Types &amp; Interfaces (<code>form-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the core type system that underpins the entire form builder. The
             <code>FieldType</code> union covers all supported input types. The
             <code>FieldDefinition</code> interface describes a single field&apos;s schema:
@@ -294,12 +295,12 @@ export default function FormBuilderArticle() {
             state, and current step. The <code>Step</code> interface defines a step in a
             multi-step form: id, title, description, field names belonging to this step,
             and validation status. See the Example tab for complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Validation Engine (<code>validation-engine.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A pure-function validation pipeline that executes rules against field values
             and returns error messages. Sync validators run immediately and return a
             string error or null. Async validators return a Promise that resolves to an
@@ -309,12 +310,12 @@ export default function FormBuilderArticle() {
             to avoid excessive API calls during rapid typing. Error aggregation collects
             all field errors into a single record for form-level validity checks. See the
             Example tab for the complete validation pipeline implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Form Store (<code>form-store.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
           The Zustand store is the single source of truth for all form state. It
             maintains a registry of field definitions (from the schema), per-field state
             (value, touched, dirty, error, validating), step state (current step index,
@@ -325,7 +326,7 @@ export default function FormBuilderArticle() {
             localStorage is handled via a debounced subscription that serializes field
             values (excluding File objects) and writes to storage on every change. See the
             Example tab for the complete store implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -401,7 +402,7 @@ export default function FormBuilderArticle() {
           map from step ID to boolean. Submission state tracks whether the form is idle,
           currently submitting, successfully submitted, or errored.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Draft persistence works via a Zustand middleware or a useEffect subscription
           that debounces field value changes at 500ms and serializes the values to
           localStorage under a key derived from the form ID. On initialization, the store
@@ -409,7 +410,7 @@ export default function FormBuilderArticle() {
           (new fields get their defaults, removed fields are dropped, existing fields
           retain their saved values). File-type fields are excluded from draft
           serialization since File objects are not JSON-serializable.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/form-builder-architecture.svg"
@@ -449,10 +450,10 @@ export default function FormBuilderArticle() {
             during execution, showing a spinner. On completion, the error is updated
             and validating is set to false.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The debounced draft subscription fires after 500ms of inactivity, serializes
             field values (excluding files), and writes to localStorage.
-          </li>
+          </HighlightBlock>
           <li>
             User clicks &quot;Next&quot; on a multi-step form. FormStep runs validation
             on all fields in the current step. If all pass, it advances the current step
@@ -470,15 +471,15 @@ export default function FormBuilderArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions via the useField and useForm hooks. This ensures predictable
           behavior and makes the system testable in isolation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Conditional Visibility Evaluation Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Conditional visibility is evaluated as a boolean expression tree. Each rule node
           in the tree references a source field, an operator (equals, not equals, contains,
           greater than, less than, is empty, is not empty), and a target value. Compound
@@ -488,33 +489,33 @@ export default function FormBuilderArticle() {
           field is rendered and registered with the store. If it changes from true to
           false, the field is unmounted and its value is optionally cleared from the store
           (configurable per field).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Async validation during step navigation:</strong> Before advancing to
             the next step, the FormStep component checks for any fields with
             <code>validating: true</code> in the current step. If found, it waits for the
             validating flag to become false (by subscribing to the store) before
             proceeding. If the async validator ultimately returns an error, navigation is
             blocked.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Schema changes between draft saves:</strong> When a draft is restored
             against a new schema, the merge algorithm iterates the new schema&apos;s field
             definitions. For each field, it checks if a saved value exists. If yes, it
             uses the saved value (with type coercion if the field type changed). If no,
             it uses the field&apos;s default value. Fields in the draft but not in the new
             schema are dropped. A warning is logged for any type coercion failures.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>File fields and draft persistence:</strong> File objects are
             non-serializable. The draft subscription filters out fields of type
             <code>&quot;file&quot;</code> before serialization. On draft restore, file
             fields retain their default value (null). A user-facing message informs them
             that file attachments must be re-uploaded.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Mass conditional visibility changes:</strong> When a field value
             changes and triggers a rule that affects 20+ other fields, the store batches
@@ -534,10 +535,10 @@ export default function FormBuilderArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
@@ -554,7 +555,7 @@ export default function FormBuilderArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Form Types (form-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the complete type system: <code>FieldType</code> union for all input
           types, <code>FieldDefinition</code> for schema-driven field declarations with
           nested <code>ValidationRule</code> and <code>ConditionRule</code> types,
@@ -562,10 +563,10 @@ export default function FormBuilderArticle() {
           aggregate form state, and <code>Step</code> for multi-step configuration. Uses
           TypeScript generics (<code>FormState&lt;TValues&gt;</code>) so consumers can
           type their form values end-to-end.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Validation Engine (validation-engine.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A pure-function pipeline that executes sync validators in sequence (first
           failure short-circuits) and async validators with configurable debounce (default
           300ms). Each validator is a function accepting a field value and optional
@@ -574,10 +575,10 @@ export default function FormBuilderArticle() {
           so the store can gate step navigation and submission on pending validations.
           Built-in validators cover required, minLength, maxLength, pattern (regex), min,
           max, email, and custom functions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Form Store (form-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Zustand store with actions for field registration (batch-register from
           schema), value updates (setFieldValue marks dirty and triggers validation),
           blur handling (sets touched flag), step navigation (validates current step
@@ -586,7 +587,7 @@ export default function FormBuilderArticle() {
           load from localStorage with schema merge). The store uses selectors for
           granular subscriptions so individual field components only re-render when their
           own state changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: useField Hook (use-field.ts)</h3>
         <p>
@@ -643,7 +644,7 @@ export default function FormBuilderArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: FormStepper Component (form-stepper.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders a horizontal step indicator with three visual states: completed
           (checkmark icon, muted color), current (highlighted circle with step number,
           accent color), and upcoming (dimmed circle, gray). Each step displays its title
@@ -651,7 +652,7 @@ export default function FormBuilderArticle() {
           Includes an <code>aria-live=&quot;polite&quot;</code> region that announces the
           current step title and number (e.g., &quot;Step 2 of 4: Personal Details&quot;)
           when the step changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 10: FieldConditions Component (field-conditions.tsx)</h3>
         <p>
@@ -731,27 +732,27 @@ export default function FormBuilderArticle() {
             subscribe each FormField to only its own field state. Only the changed field
             re-renders.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Async validator debounce lag:</strong> With a 300ms debounce, rapid
             typing delays validation feedback. Users may type for 2 seconds before seeing
             the first async error. Mitigation: reduce debounce to 150ms for short fields
             (username, email) and keep 300ms for longer fields. Use a trailing-edge
             debounce to validate after the user stops typing.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Conditional rule explosion:</strong> Forms with 100+ conditional rules
             evaluated on every field change can become expensive. Mitigation: build a
             dependency graph mapping each field to the rules that reference it. Only
             evaluate rules whose dependencies changed. This reduces evaluation from O(all
             rules) to O(affected rules).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>localStorage write latency:</strong> Serializing and writing large
             form state to localStorage on every change can block the main thread.
             Mitigation: debounce at 500ms, use requestIdleCallback for the write
             operation, and limit draft size (exclude file fields, truncate long text
             values).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -767,18 +768,18 @@ export default function FormBuilderArticle() {
             field value, error, and validating state are unchanged. Prevents re-renders
             when unrelated form state changes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Dependency graph for conditions:</strong> Pre-compute a reverse
             dependency map from the schema: for each field, list the fields whose
             visibility depends on it. On value change, only re-evaluate conditions for
             dependent fields rather than scanning all rules.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtual scrolling for large forms:</strong> For forms with 100+ fields
             in a single step, use virtual scrolling (react-window) to render only the
             fields visible in the viewport. This reduces DOM node count and improves
             scroll performance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>AbortController for async validators:</strong> When a field value
             changes while an async validator is still running, abort the previous request
@@ -793,7 +794,7 @@ export default function FormBuilderArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Field values are user input and must be treated as potentially malicious. When
           rendering field values back to the user (e.g., in error messages, helper text,
           or preview panels), always escape HTML entities. React&apos;s default string
@@ -801,17 +802,17 @@ export default function FormBuilderArticle() {
           for rich text fields, sanitize with DOMPurify first. Form submission payloads
           should be validated server-side — client-side validation is for UX only and
           must never be trusted for security decisions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Async Validator Trust</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Async validators often make API calls (e.g., checking username availability).
           These calls should include anti-CSRF tokens if the API is authenticated. Rate
           limit async validator calls on the server side to prevent abuse (e.g., a script
           triggering thousands of username-check requests). On the client, debounce
           prevents excessive requests but is not a security measure — server-side rate
           limiting is required.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -838,15 +839,15 @@ export default function FormBuilderArticle() {
               <code>role=&quot;alert&quot;</code> and <code>aria-live=&quot;assertive&quot;</code>,
               ensuring screen readers announce errors immediately.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The input element has <code>aria-describedby</code> pointing to the error
               message element, so screen readers read the error when the field is focused.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               On form submission with errors, focus moves to the first invalid field
               and a summary message announces the total number of errors via an
               <code>aria-live=&quot;assertive&quot;</code> region at the form top.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -878,12 +879,12 @@ export default function FormBuilderArticle() {
             disable draft persistence entirely or use session storage (cleared on tab
             close).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Schema tampering:</strong> If form schemas are fetched from a
             server and cached client-side, an attacker could modify the cached schema to
             add/remove fields or disable validators. Always validate submitted data
             server-side against the authoritative schema on the server.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -893,25 +894,25 @@ export default function FormBuilderArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Validation engine:</strong> Test each sync validator (required,
             minLength, maxLength, pattern, email) with valid and invalid inputs. Test
             async validators with mocked API responses (success and failure). Test
             debounce behavior — validator should not fire until the debounce period
             elapses. Test that rapid value changes abort previous pending async calls.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Store actions:</strong> Test setFieldValue updates value and marks
             dirty, setFieldTouched marks touched, nextStep validates current step and
             advances only if valid, submit runs all validations and invokes callback.
             Test draft save serializes values correctly and draft load merges with schema
             defaults.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Conditional evaluation:</strong> Test simple rules (equals, not
             equals, is empty), compound rules (AND, OR, NOT nesting), and edge cases
             (referencing a field that does not exist, circular dependencies).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
@@ -944,10 +945,10 @@ export default function FormBuilderArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             100-field form: verify rendering completes within 200ms, field changes do
             not cause jank, memory usage remains stable.
-          </li>
+          </HighlightBlock>
           <li>
             Async validator with 5-second response time: verify loading indicator shows,
             submit waits for completion, AbortController cancels on value change.
@@ -956,11 +957,11 @@ export default function FormBuilderArticle() {
             Schema change between draft saves: add a new field, remove an old field,
             change a field type. Verify draft restore handles all three cases correctly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on rendered form, verify label
             associations, aria-live regions, keyboard navigation through all fields and
             step controls, and screen reader announcements.
-          </li>
+          </HighlightBlock>
           <li>
             File field handling: verify file values are excluded from draft serialization,
             restore prompt warns about file re-upload, file validation (size, type) runs
@@ -1021,7 +1022,7 @@ export default function FormBuilderArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Controlled vs Uncontrolled Inputs</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Controlled inputs (value from state, onChange updates state) provide
             predictable state management and make validation straightforward. However,
             every keystroke triggers a React re-render. For 50+ fields, this can cause
@@ -1031,12 +1032,12 @@ export default function FormBuilderArticle() {
             (controlled) but uses <code>React.memo</code> and selector subscriptions to
             ensure only the changed field re-renders. For extremely large forms (200+
             fields), consider uncontrolled inputs with ref-based validation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">localStorage vs Server-Side Drafts</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             localStorage drafts are fast, offline-capable, and require no server
             infrastructure. However, they are origin-scoped (not available across
             devices), vulnerable to XSS (any script on the origin can read them), and
@@ -1045,12 +1046,12 @@ export default function FormBuilderArticle() {
             draft). The trade-off is latency (network round-trip), complexity (API
             endpoints, auth), and cost (storage). A hybrid approach saves to localStorage
             for immediate feedback and periodically syncs to the server for persistence.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Eager vs Lazy Validation</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Eager validation runs on every keystroke, providing immediate feedback but
             potentially annoying users (seeing &quot;Email is invalid&quot; while still
             typing). Lazy validation runs on blur, waiting until the user leaves the
@@ -1058,12 +1059,12 @@ export default function FormBuilderArticle() {
             keystroke), async validators run on blur with debounce, and all validators
             run on step navigation and submission. This avoids false positives during
             typing while ensuring errors are caught promptly.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">JSON Schema vs Custom Schema Format</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Using JSON Schema (draft-07+) as the field definition format provides
             interoperability — schemas can be shared with backend validators, generated
             from OpenAPI specs, and validated with AJV. However, JSON Schema does not
@@ -1072,7 +1073,7 @@ export default function FormBuilderArticle() {
             <code>x-step</code>) or a parallel schema. A custom schema format gives full
             control but sacrifices interoperability. For internal tools, a custom format
             is often simpler. For public APIs, JSON Schema with extensions is preferred.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -1115,7 +1116,7 @@ export default function FormBuilderArticle() {
               Q: How would you handle form versioning (schema evolves while users have
               saved drafts)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Add a <code>version</code> field to the schema and to each saved draft.
               When restoring a draft, compare the draft version with the current schema
               version. If they differ, run a migration function that maps old field names
@@ -1123,7 +1124,7 @@ export default function FormBuilderArticle() {
               migrations as a series of version-to-version transforms (v1 to v2, v2 to
               v3) so drafts from any version can be migrated forward. If migration fails,
               prompt the user to start fresh.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

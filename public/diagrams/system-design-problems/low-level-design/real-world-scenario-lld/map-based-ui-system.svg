@@ -1,0 +1,87 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Map-Based UI System — Markers, Clustering, Viewport Queries, and Performance</text>
+
+  <!-- Marker + clustering -->
+  <rect x="20" y="45" width="260" height="310" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Markers and Clustering</text>
+
+  <rect x="35" y="78" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Marker Schema</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">id, lat, lng, type, metadata</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">icon URL (type-based)</text>
+  <text x="150" y="142" text-anchor="middle" font-size="10" fill="#1565c0">priority (render order)</text>
+
+  <rect x="35" y="153" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Supercluster Algorithm</text>
+  <text x="150" y="188" text-anchor="middle" font-size="10" fill="#1565c0">Grid-based clustering per zoom</text>
+  <text x="150" y="203" text-anchor="middle" font-size="10" fill="#1565c0">Expand cluster on click</text>
+  <text x="150" y="218" text-anchor="middle" font-size="10" fill="#1565c0">Cluster count badge on icon</text>
+
+  <rect x="35" y="228" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Custom Marker Renderer</text>
+  <text x="150" y="263" text-anchor="middle" font-size="10" fill="#1565c0">CanvasLayer for 10k+ markers</text>
+  <text x="150" y="278" text-anchor="middle" font-size="10" fill="#1565c0">DOM markers for &lt;500 (interactive)</text>
+  <text x="150" y="293" text-anchor="middle" font-size="10" fill="#1565c0">React-portaled popups on click</text>
+
+  <rect x="35" y="303" width="230" height="42" rx="4" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="150" y="322" text-anchor="middle" font-size="10" fill="#0d47a1">Marker animations: use CSS transitions</text>
+  <text x="150" y="335" text-anchor="middle" font-size="10" fill="#1565c0">not JS rAF — offloads to GPU</text>
+
+  <!-- Viewport queries -->
+  <rect x="295" y="45" width="280" height="310" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Viewport Queries</text>
+
+  <rect x="310" y="78" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Bounding Box Query</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">GET /markers?bbox=latSW,lngSW,latNE,lngNE</text>
+  <text x="435" y="128" text2-anchor="middle" font-size="10" fill="#2e7d32">Server: geospatial index (PostGIS)</text>
+  <text x="435" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">Only fetch markers in current view</text>
+
+  <rect x="310" y="153" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Debounced Refetch</text>
+  <text x="435" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">Debounce 300ms on pan/zoom end</text>
+  <text x="435" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Cancel prev request on new viewport</text>
+
+  <rect x="310" y="228" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Tile Cache</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">Cache marker data per tile grid</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">Reuse cached tiles on pan-back</text>
+  <text x="435" y="293" text-anchor="middle" font-size="10" fill="#2e7d32">Invalidate on real-time update</text>
+
+  <rect x="310" y="303" width="250" height="42" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="435" y="322" text-anchor="middle" font-size="10" fill="#1b5e20">Real-time: WebSocket pushes new</text>
+  <text x="435" y="335" text-anchor="middle" font-size="10" fill="#2e7d32">markers if in current viewport bbox</text>
+
+  <!-- Performance + accessibility -->
+  <rect x="590" y="45" width="250" height="310" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Performance and Accessibility</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Lazy Load Map Library</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#bf360c">Load Mapbox/Leaflet async</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#bf360c">Static image placeholder first</text>
+  <text x="715" y="143" text-anchor="middle" font-size="10" fill="#bf360c">~600KB → load on interaction</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">WebGL Rendering</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#bf360c">Mapbox GL JS: GPU-accelerated</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#bf360c">Deck.gl layers for data viz</text>
+  <text x="715" y="218" text-anchor="middle" font-size="10" fill="#bf360c">60fps with 100k data points</text>
+
+  <rect x="605" y="228" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Accessibility</text>
+  <text x="715" y="263" text-anchor="middle" font-size="10" fill="#bf360c">Keyboard: arrow key pan/zoom</text>
+  <text x="715" y="278" text-anchor="middle" font-size="10" fill="#bf360c">List view alternative for screen readers</text>
+  <text x="715" y="293" text-anchor="middle" font-size="10" fill="#bf360c">ARIA live region for marker count</text>
+
+  <rect x="605" y="303" width="220" height="42" rx="4" fill="#ffecb3" stroke="#f9a825" stroke-width="1"/>
+  <text x="715" y="322" text-anchor="middle" font-size="10" fill="#e65100">Privacy: user location requires</text>
+  <text x="715" y="335" text-anchor="middle" font-size="10" fill="#bf360c">explicit permission — ask in context</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

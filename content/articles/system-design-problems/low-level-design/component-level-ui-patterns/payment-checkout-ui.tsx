@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function PaymentCheckoutUIArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a production-grade payment/checkout UI for an e-commerce
           application. The checkout flow must collect payment details (card number,
           expiry, CVV, cardholder name), validate input in real time using the Luhn
@@ -50,7 +51,7 @@ export default function PaymentCheckoutUIArticle() {
           tax calculation, and handle payment errors gracefully with retry logic. The
           entire flow must be accessible, mobile-optimized, and follow security best
           practices around PCI-DSS compliance.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -58,14 +59,14 @@ export default function PaymentCheckoutUIArticle() {
           <li>
             The application is a React 19+ SPA with Zustand for state management.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Payment processing is handled through a third-party gateway (e.g., Stripe,
             Adyen) — we never touch raw card data on our servers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The checkout is a single-page flow (not multi-step) for simplicity, but the
             design should support multi-step as an extension.
-          </li>
+          </HighlightBlock>
           <li>
             The system must support both test and production gateway environments.
           </li>
@@ -103,11 +104,11 @@ export default function PaymentCheckoutUIArticle() {
             after month, validates that the date is in the future and not more than 10
             years ahead.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CVV Input:</strong> Accepts 3 digits for most cards, 4 digits for
             American Express. Masks input for security. Shows appropriate maxlength
             based on detected card type.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cardholder Name:</strong> Free-text input for the name as it appears
             on the card. Trimmed and validated for minimum length (2 characters).
@@ -122,11 +123,11 @@ export default function PaymentCheckoutUIArticle() {
             unit price, subtotal, tax calculation, shipping cost, discounts, and final
             total.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Payment Submission:</strong> Submits payment details to the gateway,
             shows processing state, handles success/failure responses, and supports
             retry on transient network errors.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>3D Secure Flow:</strong> Redirects or opens a modal for bank
             verification when the gateway requires it. Handles the redirect back to
@@ -146,21 +147,21 @@ export default function PaymentCheckoutUIArticle() {
             Use iframe-hosted fields (Stripe Elements) or a payment SDK that tokenizes
             card data client-side before submission.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Form validation must be instantaneous (under
             50ms). Payment submission should show loading state within 100ms to prevent
             double-submission.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> All inputs must have associated labels,
             errors must be announced to screen readers via aria-live, and the form must
             be fully navigable via keyboard (Tab order matches visual order).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mobile Optimization:</strong> Card number input triggers numeric
             keyboard. Expiry and CVV inputs use appropriate inputMode. Autofill
             attributes support browser auto-completion.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support for all data shapes
             (CardData, PaymentStatus, OrderSummary, Address).
@@ -199,7 +200,7 @@ export default function PaymentCheckoutUIArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The core idea is to separate <strong>card input formatting</strong>,{" "}
           <strong>validation logic</strong>, <strong>payment state</strong>, and{" "}
           <strong>gateway communication</strong> into distinct modules. A Zustand store
@@ -207,38 +208,38 @@ export default function PaymentCheckoutUIArticle() {
           Custom hooks encapsulate form state management and payment submission logic.
           Individual input components handle formatting and real-time validation,
           communicating with the store via actions.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>React Hook Form + Zod:</strong> Excellent for general form validation
             with schema-based rules. However, payment forms have unique needs (Luhn
             validation, BIN-based card detection, PCI-compliant tokenization) that
             require custom logic beyond what schemas provide. React Hook Form can still
             be used as the underlying form engine, with custom resolvers for payment-
             specific validation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Redux:</strong> Overkill for a single checkout form. Adds boilerplate
             (actions, reducers, middleware) and introduces global state that is
             unnecessary when the form is isolated to a single route.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Component-local state:</strong> Simple but makes cross-component
             validation (e.g., card type detection affecting CVV maxlength) cumbersome.
             Requires prop drilling or context. Zustand provides cleaner cross-component
             reactivity.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + custom hooks is optimal:</strong> Zustand provides
           lightweight, selector-based state management with zero boilerplate. Custom
           hooks encapsulate the complex form logic (formatting, validation, submission)
           while keeping components focused on rendering. This pattern is used by
           production checkout flows at companies like Stripe and Shopify.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -250,7 +251,7 @@ export default function PaymentCheckoutUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Payment Types (<code>payment-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the core TypeScript interfaces: <code>CardData</code> (number, expiry,
             cvv, name, detectedType), <code>PaymentStatus</code> union (<code>idle |
             validating | processing | three-ds-required | success | failed |
@@ -259,7 +260,7 @@ export default function PaymentCheckoutUIArticle() {
             country), <code>PaymentError</code> (code, message, retryable), and{" "}
             <code>CardType</code> union (<code>visa | mastercard | amex | discover |
             unknown</code>). See the Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -311,7 +312,7 @@ export default function PaymentCheckoutUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">6. Custom Hooks</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             <code>useCardForm</code> — Manages card input state, runs real-time validation
             on each field change, detects card type from BIN, and exposes formatted
             values and per-field errors. <code>usePaymentProcessing</code> — Handles
@@ -319,25 +320,25 @@ export default function PaymentCheckoutUIArticle() {
             tokenizes card, confirms payment, handles 3D Secure redirect/modal, and
             manages retry logic on failure. See the Example tab for the complete hook
             implementations.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Zustand store is the single source of truth. Card data, addresses, and
           order summary are stored as normalized objects. Validation errors are stored
           as a map keyed by field name, allowing per-field error display. Payment status
           is a union type that drives UI rendering (showing processing spinner, success
           confirmation, or error with retry).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The most critical design decision is <strong>when to validate</strong>. Each
           field validates on change for format errors (e.g., non-numeric characters in
           card number) and on blur for semantic errors (e.g., Luhn check, expiry in the
           past). This provides immediate feedback for typos while avoiding premature
           errors (e.g., showing &quot;invalid card&quot; while the user is still typing
           the number).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/payment-checkout-ui-architecture.svg"
@@ -377,10 +378,10 @@ export default function PaymentCheckoutUIArticle() {
             If gateway requires 3D Secure, status becomes <code>three-ds-required</code>,
             modal/redirect opens. User completes bank verification.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Payment confirms. Status becomes <code>success</code> or <code>failed</code>.
             On failure with retryable error, user can retry with the same intent.
-          </li>
+          </HighlightBlock>
           <li>
             On success, order confirmation renders with transaction ID and receipt.
           </li>
@@ -390,40 +391,40 @@ export default function PaymentCheckoutUIArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional pattern: user input triggers
           formatting, formatting updates the store, the store triggers validation,
           validation updates error state, and the UI reflects both values and errors.
           Payment submission is a separate flow that reads from the store, calls the
           gateway API, and updates payment status.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Pasted card number with formatting:</strong> The CardInput component
             strips all non-digit characters from pasted content before formatting and
             validation. A pasted value of <code>4242 4242 4242 4242</code> becomes{" "}
             <code>4242424242424242</code> for validation, then is re-formatted for
             display.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Expiry edge case (end of month):</strong> A card with expiry{" "}
             <code>02/25</code> is valid through the last day of February 2025. Validation
             compares against the last day of the expiry month, not the first.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>3D Secure abandonment:</strong> If the user closes the 3D Secure
             modal without completing verification, the status is set to{" "}
             <code>abandoned</code> (not <code>failed</code>), allowing the user to retry
             without an error message.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Double-submission prevention:</strong> The Pay button is disabled
             when status is <code>processing</code> or <code>three-ds-required</code>.
             Additionally, the store tracks a <code>submitting</code> flag that prevents
             concurrent submissions.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Navigation guard:</strong> If the user attempts to navigate away
             during payment processing, a beforeunload listener (on desktop) or a route
@@ -435,10 +436,10 @@ export default function PaymentCheckoutUIArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
@@ -453,14 +454,14 @@ export default function PaymentCheckoutUIArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Payment Types (payment-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the core data shapes: <code>CardData</code> with number, expiry, cvv,
           name, and detectedType; <code>PaymentStatus</code> union covering the full
           payment lifecycle; <code>OrderSummary</code> with line items and cost
           breakdown; <code>Address</code> with standard address fields;{" "}
           <code>PaymentError</code> with error code, user-facing message, and retryable
           flag; and <code>CardType</code> union for card type detection.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Card Validation (card-validation.ts)</h3>
         <p>
@@ -514,14 +515,14 @@ export default function PaymentCheckoutUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: usePaymentProcessing Hook</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Custom hook handling the payment submission flow. <code>submitPayment()</code>{" "}
           validates all fields via the store, creates a payment intent, tokenizes card
           data, and confirms the payment. If the gateway returns a 3D Secure challenge,
           it opens the verification modal and awaits the result. On network error, it
           sets a retryable error and exposes <code>retryPayment()</code> which reuses
           the existing intent. Maximum 3 retries before marking as non-retryable.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: Checkout Page (components/checkout-page.tsx)</h3>
         <p>
@@ -533,12 +534,12 @@ export default function PaymentCheckoutUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 9: Card Input (components/card-input.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Card number input with real-time formatting, BIN-based card type detection,
           card icon display, Luhn validation on blur, and appropriate inputMode for
           mobile numeric keyboard. Autocomplete attribute set to <code>cc-number</code>{" "}
           for browser autofill support.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Modules 10–11: Expiry and CVV Inputs</h3>
         <p>
@@ -565,14 +566,14 @@ export default function PaymentCheckoutUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 14: Payment Status (components/payment-status.tsx)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Renders different UI based on payment status: a spinner with &quot;Processing
           payment...&quot; during <code>processing</code>, a success message with
           transaction ID and receipt link on <code>success</code>, an error message
           with specific guidance and a retry button on <code>failed</code>, and a
           neutral &quot;Payment was not completed&quot; message on{" "}
           <code>abandoned</code>.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -618,26 +619,26 @@ export default function PaymentCheckoutUIArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           All validation operations are effectively O(1) given the bounded input sizes
           (card numbers are 13–19 digits, expiry is always 4 digits, CVV is 3–4 digits).
           The Luhn algorithm is the most computationally intensive operation, but with
           16 digits it completes in under 1 microsecond.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-render cascades:</strong> If the store subscriber selects the
             entire state object, every field change re-renders all checkout components.
             Mitigation: use Zustand selectors to subscribe to specific fields, so only
             the affected input component re-renders.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Gateway API latency:</strong> Payment confirmation can take 2–10
             seconds depending on the gateway and network conditions. The UI must show
             a loading state and prevent double-submission during this window.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>3D Secure redirect:</strong> Opening a redirect-based 3D Secure flow
             unmounts the checkout page, losing form state. Mitigation: use the modal-
@@ -654,17 +655,17 @@ export default function PaymentCheckoutUIArticle() {
             re-render the expiry or CVV inputs (unless the detected card type changes,
             which affects CVV maxlength).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced validation:</strong> For Luhn validation, debounce by 300ms
             during typing to avoid running the algorithm on every keystroke. Run
             immediately on blur for final validation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>State persistence:</strong> Persist the order summary and billing
             address to sessionStorage so that if the user accidentally navigates away
             and returns, their data is preserved (card number and CVV are never persisted
             for security reasons).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -673,12 +674,12 @@ export default function PaymentCheckoutUIArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">PCI-DSS Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The Payment Card Industry Data Security Standard (PCI-DSS) is the most
           critical security requirement for any payment form. The key rule is:{" "}
           <strong>raw card data must never touch your servers</strong>. There are three
           approaches to achieving compliance:
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Approach 1: iframe-Hosted Fields (Recommended)</h4>
@@ -707,14 +708,14 @@ export default function PaymentCheckoutUIArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Approach 3: Server-Side Processing (NOT Recommended)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Sending raw card data to your own backend for processing requires full
             PCI-DSS compliance (SAQ-D), which is expensive and complex. Your servers
             must be audited annually, card data must be encrypted at rest, and access
             must be strictly controlled. This approach is only used by payment processors
             themselves (Stripe, Adyen) and large enterprises with dedicated security
             teams.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Security</h3>
@@ -740,13 +741,13 @@ export default function PaymentCheckoutUIArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">3D Secure and SCA</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The Revised Payment Services Directive (PSD2) in the European Union requires
           Strong Customer Authentication (SCA) for most online payments. 3D Secure 2.0
           (3DS2) is the protocol used to implement SCA. It adds an additional
           authentication step where the cardholder verifies their identity with their
           bank (via OTP, biometrics, or a banking app challenge). The flow is:
-        </p>
+        </HighlightBlock>
         <ol className="space-y-2 list-decimal list-inside">
           <li>
             Your application submits the payment to the gateway.
@@ -774,10 +775,10 @@ export default function PaymentCheckoutUIArticle() {
               Every input has an associated <code>&lt;label&gt;</code> element with a{" "}
               <code>htmlFor</code> attribute matching the input&apos;s <code>id</code>.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Error messages are linked to their inputs via{" "}
               <code>aria-describedby</code>, pointing to the error element&apos;s ID.
-            </li>
+            </HighlightBlock>
             <li>
               Invalid inputs have <code>aria-invalid=&quot;true&quot;</code> set when
               errors are present.
@@ -788,11 +789,11 @@ export default function PaymentCheckoutUIArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Validation errors are announced via an{" "}
               <code>aria-live=&quot;assertive&quot;</code> region when the user submits
               with errors.
-            </li>
+            </HighlightBlock>
             <li>
               Payment status changes are announced via an{" "}
               <code>aria-live=&quot;polite&quot;</code> region (e.g., &quot;Payment
@@ -842,12 +843,12 @@ export default function PaymentCheckoutUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Luhn algorithm:</strong> Test with valid numbers (Visa test:{" "}
             <code>4242424242424242</code>, MC test: <code>5555555555554444</code>),
             invalid numbers (wrong checksum), edge cases (all zeros, single digit),
             and Amex test numbers (<code>378282246310005</code>).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>BIN detection:</strong> Test each card type with known prefixes.
             Test ambiguous prefixes (e.g., a number starting with 4 that is too short
@@ -883,16 +884,16 @@ export default function PaymentCheckoutUIArticle() {
             a 3DS challenge, assert the modal opens, simulate user completing the
             challenge, assert payment completes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Error handling:</strong> Submit with invalid card number, assert
             Luhn error displays. Submit with expired date, assert expiry error displays.
             Mock gateway decline, assert error message with retry button appears.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Retry logic:</strong> Mock a network error on first submission,
             click retry, mock success on second attempt, assert payment completes
             with the same idempotency key.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
@@ -901,18 +902,18 @@ export default function PaymentCheckoutUIArticle() {
             Paste a formatted card number with spaces and dashes — verify it is
             normalized and validated correctly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Enter card number slowly (one digit at a time) — verify BIN detection
             updates progressively as more digits are entered.
-          </li>
+          </HighlightBlock>
           <li>
             Toggle same-as-billing on and off — verify shipping fields enable/disable
             correctly and data is preserved when toggling off.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Accessibility: run axe-core on the checkout page, verify all inputs have
             labels, errors are announced, and tab order is correct.
-          </li>
+          </HighlightBlock>
           <li>
             Mobile: test on iOS Safari and Android Chrome — verify numeric keyboards
             appear for card inputs, autofill populates fields correctly, and the layout
@@ -944,31 +945,31 @@ export default function PaymentCheckoutUIArticle() {
             9 when the doubled digit exceeds 9, or processing digits from left to right
             instead of right to left. Practice the algorithm before the interview.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Not handling 3D Secure:</strong> In markets subject to PSD2/SCA,
             3D Secure is mandatory. Candidates who skip this demonstrate a lack of
             production payment experience. Even mentioning that 3DS adds friction to
             the checkout flow (and the trade-off between compliance and conversion rate)
             shows depth.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Validating on every keystroke:</strong> Running Luhn validation on
             every keystroke while the user is still typing the card number produces
             premature errors. Interviewers expect validation on blur (for semantic
             checks) and debounced validation during typing (for format checks).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Ignoring idempotency:</strong> Without idempotency keys, a network
             retry creates a duplicate charge. This is a critical production issue.
             Candidates should mention idempotency as part of the payment submission
             flow.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">iframe-Hosted Fields vs Client-Side SDK</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             iframe-hosted fields (Stripe Elements) provide the strongest security
             guarantee — raw card data never enters your application context. The trade-
             off is reduced customization: the gateway controls the iframe styling, and
@@ -977,12 +978,12 @@ export default function PaymentCheckoutUIArticle() {
             load the SDK into your page context, increasing your PCI scope. For most
             applications, iframe-hosted fields are the right choice because security
             outweighs pixel-perfect UI control.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Single-Page vs Multi-Step Checkout</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             A single-page checkout (all fields on one page) reduces friction and
             abandonment rate — the user sees the total and the payment form
             simultaneously. However, for complex checkouts (guest checkout, account
@@ -991,7 +992,7 @@ export default function PaymentCheckoutUIArticle() {
             users cannot see the total while filling payment details. Most modern
             e-commerce platforms (Shopify, Stripe Checkout) use a single-page layout
             with collapsible sections for better UX.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1031,7 +1032,7 @@ export default function PaymentCheckoutUIArticle() {
             <p className="font-semibold">
               Q: How would you handle saved payment methods (returning users)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Store payment method tokens (not card numbers) in the user&apos;s
               profile via the payment gateway&apos;s customer object. On checkout,
               display saved payment methods (last 4 digits, card type, expiry) as
@@ -1039,7 +1040,7 @@ export default function PaymentCheckoutUIArticle() {
               form entirely and use the stored token for payment. The user can still
               add a new card. CVV re-collection may be required by the gateway for
               security even for saved cards.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

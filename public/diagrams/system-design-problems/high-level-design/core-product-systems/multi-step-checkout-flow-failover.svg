@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Failover and graceful degradation ladder for checkout">
+  <title>Checkout Failover and Degradation</title>
+  <desc>Shows dependency failures isolated to steps, preservation of progress, conflict handling via re-quote, and safe retry with idempotency.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="70" y="70" width="520" height="170" />
+  <text class="label bold" x="100" y="115">Preserve progress</text>
+  <text class="label small" x="100" y="145">server session is authoritative</text>
+  <text class="label small" x="100" y="170">local drafts survive refresh</text>
+  <text class="label small" x="100" y="195">step-scoped errors do not reset flow</text>
+
+  <rect class="warn" x="640" y="70" width="490" height="170" />
+  <text class="label bold" x="670" y="115">Dependency degraded</text>
+  <text class="label small" x="670" y="145">promotions slow: show last quote + recalculating</text>
+  <text class="label small" x="670" y="170">address verify down: allow manual entry with warning</text>
+  <text class="label small" x="670" y="195">payment provider issue: retry safely, keep session</text>
+
+  <path class="arrow" d="M590 155 L640 155" />
+
+  <rect class="ok" x="70" y="310" width="520" height="170" />
+  <text class="label bold" x="100" y="355">Conflict handling</text>
+  <text class="label small" x="100" y="385">inventory/promo changes return conflict payload</text>
+  <text class="label small" x="100" y="410">UI forces review and re-acceptance</text>
+  <text class="label small" x="100" y="435">quote version gates order placement</text>
+
+  <rect class="box" x="640" y="310" width="490" height="170" />
+  <text class="label bold" x="670" y="355">Safe retries</text>
+  <text class="label small" x="670" y="385">idempotent op ids prevent duplicates</text>
+  <text class="label small" x="670" y="410">bounded backoff + jitter for transient errors</text>
+  <text class="label small" x="670" y="435">inline retry, no destructive refresh loops</text>
+
+  <path class="arrow" d="M590 395 L640 395" />
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Versioning and rollout strategy for third-party SDKs with pinned majors and gradual rollout of minors">
+  <title>SDK Versioning and Rollout</title>
+  <desc>Shows pinned major versions, auto-updating minors/patches, telemetry by version, and rollback lever.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="90" width="350" height="150" />
+  <text class="label bold" x="90" y="135">Pinned major</text>
+  <text class="label small" x="90" y="165">customers choose v1 or v2</text>
+  <text class="label small" x="90" y="190">long deprecation window</text>
+
+  <rect class="good" x="450" y="90" width="350" height="150" />
+  <text class="label bold" x="480" y="135">Auto-updating minor</text>
+  <text class="label small" x="480" y="165">security fixes propagate</text>
+  <text class="label small" x="480" y="190">backwards compatible changes</text>
+
+  <rect class="accent" x="840" y="90" width="300" height="150" />
+  <text class="label bold" x="870" y="135">Telemetry</text>
+  <text class="label small" x="870" y="165">error rates by version</text>
+  <text class="label small" x="870" y="190">rollout health signals</text>
+
+  <path class="arrow" d="M410 165 L450 165" />
+  <path class="arrow" d="M800 165 L840 165" />
+
+  <rect class="warn" x="60" y="310" width="1080" height="170" />
+  <text class="label bold" x="90" y="355">Rollback lever</text>
+  <text class="label small" x="90" y="385">if errors spike for a minor release, stop rollout or roll back the served version</text>
+  <text class="label small" x="90" y="410">requires strong compatibility discipline and monitoring</text>
+</svg>
+

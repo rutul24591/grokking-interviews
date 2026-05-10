@@ -1,6 +1,7 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,7 +38,7 @@ export default function DateTimePickerArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable Date/Time Picker component for a large-scale
           web application. The component must allow users to select dates via a
           calendar grid, pick times with hour/minute/second precision, handle time
@@ -46,7 +47,7 @@ export default function DateTimePickerArticle() {
           fully keyboard accessible. The component must work correctly in server-side
           rendering contexts — no browser APIs during SSR — and mount gracefully on
           the client.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -54,24 +55,24 @@ export default function DateTimePickerArticle() {
           <li>
             The application is a React 19+ SPA with support for concurrent features.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The component will be used across multiple pages and forms (booking systems,
             scheduling dashboards, admin panels).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Users span multiple geographic regions and must be able to select and view
             times in different time zones.
-          </li>
+          </HighlightBlock>
           <li>
             The application supports both light and dark mode.
           </li>
           <li>
             Maximum date range is configurable (e.g., +/- 5 years from current date).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Some dates may be disabled (past dates, holidays, unavailable slots) via a
             custom disable function.
-          </li>
+          </HighlightBlock>
           <li>
             The component must be screen-reader friendly and fully navigable via keyboard.
           </li>
@@ -119,19 +120,19 @@ export default function DateTimePickerArticle() {
             disable functions (e.g., disable weekends, disable specific holidays). Disabled
             cells must be visually distinct and non-interactive.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard Navigation:</strong> Tab navigates between input, calendar
             trigger, and timezone display. Arrow keys move selection within the calendar
             grid. Enter selects the focused date. Escape closes the calendar dropdown.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Calendar grid generation must be O(1) — computed
             from month/year, not iterated. Month navigation should not cause visible jank.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SSR Safety:</strong> No browser APIs (Intl, Date, localStorage) during
             server-side rendering. The component must render a minimal input during SSR and
@@ -141,18 +142,18 @@ export default function DateTimePickerArticle() {
             <strong>Type Safety:</strong> Full TypeScript support for all state types
             (DatePickerState, TimePickerState, TimeZone, DateFormat) and utility functions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Screen readers must announce each date cell
             with a meaningful label (e.g., &quot;Monday, April 7, 2026&quot;). The grid
             must use <code>role=&quot;grid&quot;</code> and each cell must use
             <code>role=&quot;gridcell&quot;</code> with <code>aria-selected</code> and
             <code>aria-disabled</code> attributes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Reliability:</strong> Date parsing must handle edge cases — invalid
             input, leap years, DST transitions, timezone offsets with half-hour increments
             (e.g., India Standard Time, UTC+5:30).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
@@ -177,17 +178,17 @@ export default function DateTimePickerArticle() {
             User selects a time like 23:59:59 and switches from 24h to 12h format — the
             display must correctly convert to 11:59:59 PM without losing precision.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             SSR rendering — <code>Intl.DateTimeFormat</code> may behave differently on
             Node.js vs browser. The component must produce consistent output.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate the <strong>date picker state</strong>,{" "}
           <strong>time picker state</strong>, and <strong>timezone state</strong> into
           independent Zustand stores, each managing its own domain logic. The calendar
@@ -200,39 +201,39 @@ export default function DateTimePickerArticle() {
           (hour/minute/second inputs with AM/PM toggle), a timezone selector (dropdown
           with UTC offset display), and a date input (typed input with auto-formatting
           and validation).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Single monolithic store:</strong> Combining all state (calendar,
             time, timezone, format, range) into one Zustand store creates a single
             source of truth but leads to a large, complex state shape with many unrelated
             fields. Updates to one domain (e.g., changing timezone) trigger re-renders
             of unrelated components (e.g., calendar grid). Splitting stores minimizes
             re-render cascades.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API + useReducer:</strong> Viable but requires wrapping the
             component tree in a Provider and consuming context in every sub-component.
             Adds coupling. Zustand provides the same functionality with less boilerplate
             and better performance via selectors.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Uncontrolled inputs with ref-based state:</strong> Simpler for basic
             use cases but makes range selection, timezone conversion, and format switching
             significantly harder because the source of truth is scattered across DOM
             nodes. Centralized state is necessary for this level of complexity.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + computed grid is optimal:</strong> Zustand provides
           lightweight, selector-based global stores with zero boilerplate. The calendar
           grid is a pure function of (month, year, selectedDate, hoverDate) — no side
           effects, no external API calls. This pattern is used by production date picker
           libraries like react-day-picker and date-fns.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -244,7 +245,7 @@ export default function DateTimePickerArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Type Definitions (<code>datetime-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the core interfaces used throughout the system. The{" "}
             <code>DatePickerState</code> interface tracks the current month, current year,
             selected date, selected range (start/end), hover date (for range highlighting),
@@ -254,12 +255,12 @@ export default function DateTimePickerArticle() {
             display label, UTC offset string, and DST status. The <code>DateFormat</code>{" "}
             type is a union of supported format strings (&quot;MM/DD/YYYY&quot; | &quot;DD/MM/YYYY&quot;
             | &quot;YYYY-MM-DD&quot;). See the Example tab for the complete type definitions.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">2. Date/Time Utilities (<code>datetime-utils.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Pure functions for date formatting, timezone conversion, DST detection,
             locale-aware formatting, and date parsing. Key functions include{" "}
             <code>formatDate()</code> which takes a Date and a DateFormat string and
@@ -270,12 +271,12 @@ export default function DateTimePickerArticle() {
             for a specific timezone. These functions are pure — no side effects, no external
             state — making them trivially testable. See the Example tab for the complete
             implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Date Picker Store (<code>date-picker-store.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Zustand store managing calendar state. State includes <code>currentMonth</code>,{" "}
             <code>currentYear</code>, <code>selectedDate</code>, <code>rangeStart</code>,{" "}
             <code>rangeEnd</code>, <code>hoverDate</code>, and <code>isOpen</code>. Actions
@@ -284,7 +285,7 @@ export default function DateTimePickerArticle() {
             preview, and toggling the dropdown open/closed. The store is initialized with
             the current month/year derived from <code>new Date()</code> — but only on the
             client (SSR-safe).
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -321,11 +322,11 @@ export default function DateTimePickerArticle() {
               dropdown trigger, timezone display, and time picker. Manages click-outside
               detection to close the dropdown.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <code>CalendarGrid</code> — Renders the 7-column month view with weekday
               headers (localized), day cells with range highlighting, and disabled date
               styling. Uses <code>role=&quot;grid&quot;</code> for accessibility.
-            </li>
+            </HighlightBlock>
             <li>
               <code>CalendarHeader</code> — Renders the month/year navigation bar with
               prev/next arrows and dropdowns for jumping to any month/year within the
@@ -350,7 +351,7 @@ export default function DateTimePickerArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Two independent Zustand stores serve as the source of truth. The date picker
           store manages all calendar-related state (current view, selection, range,
           dropdown open state). The time picker store manages time state (hour, minute,
@@ -359,7 +360,7 @@ export default function DateTimePickerArticle() {
           This separation ensures that changing the timezone does not cause the calendar
           grid to re-render, and changing the selected date does not cause the time picker
           to re-render.
-        </p>
+        </HighlightBlock>
         <p>
           The calendar grid is computed on each render from (currentMonth, currentYear).
           It generates a 6-row x 7-column array (42 cells) that includes trailing days
@@ -412,42 +413,42 @@ export default function DateTimePickerArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand stores, and all rendering flows from store
           subscriptions. Calendar grid computation is a pure render-side calculation,
           not stored in state. Timezone conversion happens on-demand when the timezone
           changes, not on every render.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Leap year February 29:</strong> When navigating from a leap year to
             a non-leap year with February 29 selected, the selected date is clamped to
             February 28. The <code>clampDate()</code> utility checks if the target month
             has fewer days than the selected day and adjusts accordingly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>DST ambiguous times:</strong> When the user selects 2:00 AM on a DST
             transition day, <code>Intl.DateTimeFormat</code> resolves the ambiguity based
             on the IANA timezone database. The component displays a warning badge indicating
             the time is ambiguous and offers the user the choice between the two possible
             interpretations (before/after DST shift).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Invalid typed input:</strong> If the user types &quot;02/30/2026&quot;,
             <code>parseDate()</code> returns <code>Invalid Date</code>. The DateInput
             component displays a red border and an error message. The store is not updated
             with invalid dates.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR safety:</strong> The stores initialize their date-dependent state
             (current month/year, current time) inside a <code>useEffect</code> on the root
             component. During SSR, the stores return default values (January 2026, 00:00:00).
             On client hydration, the stores are re-initialized with actual values. This
             prevents hydration mismatches.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Half-hour timezone offsets:</strong> Timezones like IST (UTC+5:30) and
             NPT (UTC+5:45) are correctly handled by <code>Intl.DateTimeFormat</code> with
@@ -460,10 +461,10 @@ export default function DateTimePickerArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">&#128230; Switch to the Example Tab</h3>
@@ -477,7 +478,7 @@ export default function DateTimePickerArticle() {
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Type Definitions (datetime-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines <code>DatePickerState</code> with fields for currentMonth, currentYear,
           selectedDate, rangeStart, rangeEnd, hoverDate, and isOpen. Defines{" "}
           <code>TimePickerState</code> with hour, minute, second, isPM, and format.
@@ -485,10 +486,10 @@ export default function DateTimePickerArticle() {
           Defines <code>DateFormat</code> as a string union. The <code>DisabledDateFn</code>{" "}
           type is a predicate function taking a Date and returning boolean. All types are
           strictly typed — no <code>any</code>, no <code>unknown</code> without narrowing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Date/Time Utilities (datetime-utils.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pure functions leveraging the <code>Intl</code> API. <code>formatDate()</code>{" "}
           uses <code>Intl.DateTimeFormat</code> with locale-aware options.{" "}
           <code>parseDate()</code> handles multiple input formats with regex-based parsing
@@ -497,7 +498,7 @@ export default function DateTimePickerArticle() {
           of a date in January vs July for the target timezone to determine DST status.
           <code>getDaysInMonth()</code>, <code>getFirstDayOfMonth()</code>, and{" "}
           <code>generateCalendarGrid()</code> are pure calendar math functions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Date Picker Store (date-picker-store.ts)</h3>
         <p>
@@ -511,7 +512,7 @@ export default function DateTimePickerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Time Picker Store (time-picker-store.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zustand store managing time state. Actions include <code>setHour()</code>,{" "}
           <code>setMinute()</code>, <code>setSecond()</code>, <code>toggleAmPm()</code>,
           and <code>setFormat()</code>. The <code>setFormat()</code> action handles the
@@ -519,7 +520,7 @@ export default function DateTimePickerArticle() {
           (14 &rarr; 2, isPM &rarr; true); when switching from 12h to 24h, PM hours have
           12 added (2 PM &rarr; 14). Hour, minute, and second setters include clamping
           to valid ranges.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Custom Hooks</h3>
         <p>
@@ -533,7 +534,7 @@ export default function DateTimePickerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Components</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <code>DatePicker</code> is the root component, composing all sub-components. It
           manages click-outside detection via a <code>useEffect</code> with a ref and
           document-level click listener. <code>CalendarGrid</code> renders the accessible
@@ -541,7 +542,7 @@ export default function DateTimePickerArticle() {
           dropdowns. <code>TimePicker</code> renders time inputs with format support.
           <code>TimezoneSelector</code> provides timezone conversion display.{" "}
           <code>DateInput</code> handles typed input with auto-formatting and validation.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -592,35 +593,35 @@ export default function DateTimePickerArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="important">
           All operations are O(1). The calendar grid is always 42 cells regardless of
           month. Date formatting and timezone conversion use native <code>Intl</code> API
           calls which are optimized at the engine level. Store actions are direct field
           assignments with no iteration.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timezone list rendering:</strong> The full IANA timezone list contains
             400+ entries. Rendering all as dropdown options causes initial render lag.
             Mitigation: virtualize the dropdown list (window only 20 visible items at a
             time) or group timezones by region (Americas, Europe, Asia, etc.) with
             collapsible sections.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Re-render cascades on month change:</strong> Changing currentMonth
             triggers a full re-render of the CalendarGrid (42 cells). While 42 is small,
             each cell computes its disabled/selected/range status. Mitigation: memoize
             individual CalendarDay cells with <code>React.memo</code> and compare only
             their specific date&apos;s status.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong><code>Intl.DateTimeFormat</code> instantiation:</strong> Creating a new
             <code>Intl.DateTimeFormat</code> on every render is expensive. Mitigation:
             cache formatters using <code>useMemo</code> or a module-level Map keyed by
             (locale, timezone, options).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -640,11 +641,11 @@ export default function DateTimePickerArticle() {
             <code>{"const formatters = new Map<string, Intl.DateTimeFormat>()"}</code>.
             Reuse existing formatters instead of creating new ones.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Virtualized timezone dropdown:</strong> For the timezone selector, use
             windowing to render only visible options. This reduces DOM nodes from 400+ to
             ~20 at any time.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -653,13 +654,13 @@ export default function DateTimePickerArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The DateInput component accepts free-text user input. While the parsed output
           is a Date object (not rendered as HTML), the raw input string should be sanitized
           before display in error messages to prevent XSS if the error message is reflected
           elsewhere. Use <code>textContent</code> instead of <code>innerHTML</code> for
           error messages.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -698,35 +699,35 @@ export default function DateTimePickerArticle() {
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Each day cell has <code>aria-label</code> with the full date (e.g., &quot;Monday,
               April 7, 2026&quot;) so screen readers announce the complete date, not just
               the number.
-            </li>
+            </HighlightBlock>
             <li>
               Selected cells have <code>aria-selected=&quot;true&quot;</code>. Disabled cells
               have <code>aria-disabled=&quot;true&quot;</code>.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               The calendar grid has <code>aria-label=&quot;Calendar&quot;</code> and{" "}
               <code>aria-multiselectable=&quot;false&quot;</code> (or &quot;true&quot; for
               range mode).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The timezone selector displays the converted time in a visually hidden but
               screen-reader-accessible span.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Focus Management</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             When the calendar dropdown opens, focus is moved to the currently selected
             date (or today&apos;s date if nothing is selected). When the dropdown closes
             (Escape or outside click), focus returns to the date input. This prevents
             focus from being lost in the DOM, which is a common accessibility bug.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Server-Side Validation</h3>
@@ -745,26 +746,26 @@ export default function DateTimePickerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Utility functions:</strong> Test <code>formatDate()</code> with
             various Date objects and formats, verify correct output. Test{" "}
             <code>parseDate()</code> with valid and invalid strings, verify correct
             parsing and error detection. Test <code>convertTimezone()</code> with known
             timezone pairs and expected offsets. Test <code>isDST()</code> with dates
             known to be in/out of DST for specific timezones.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Store actions:</strong> Test <code>navigateMonth()</code> wraps year
             boundaries correctly (December + 1 = January next year, January - 1 = December
             previous year). Test <code>selectDate()</code> sets selectedDate in single
             mode and rangeStart/rangeEnd in range mode. Test <code>setFormat()</code>{" "}
             converts hours correctly between 12h and 24h.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Grid generation:</strong> Test <code>generateCalendarGrid()</code>{" "}
             produces exactly 42 cells for every month of every year from 2020 to 2030.
             Verify the first row includes trailing days from the previous month.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
@@ -773,11 +774,11 @@ export default function DateTimePickerArticle() {
             <strong>Full selection flow:</strong> Render DatePicker, click input to open
             dropdown, click a date cell, assert selectedDate updates and dropdown closes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Range selection:</strong> Enable range mode, click first date (assert
             rangeStart set), click second date (assert rangeEnd set), assert all cells
             between rangeStart and rangeEnd have the range highlight class.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Timezone conversion:</strong> Select a date and time, change timezone,
             assert the converted time display updates with the correct offset.
@@ -807,10 +808,10 @@ export default function DateTimePickerArticle() {
             DST transition: select 2:00 AM on a DST change date, verify the component
             handles the ambiguous time gracefully.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Accessibility: run axe-core automated checks on the calendar grid, verify
             aria-labels on all day cells, role attributes, and keyboard navigation.
-          </li>
+          </HighlightBlock>
           <li>
             Invalid input: type &quot;abc&quot; in the DateInput, blur, assert error state
             is displayed and the store is not updated.
@@ -838,19 +839,19 @@ export default function DateTimePickerArticle() {
             at least acknowledge this and propose a strategy (e.g., use <code>Intl</code>{" "}
             API, display a warning).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Using <code>Date.parse()</code> for user input:</strong>{" "}
             <code>Date.parse()</code> is inconsistent across browsers for non-ISO formats.
             Interviewers look for candidates who know to use regex-based parsing with
             explicit format matching or the <code>Intl</code> API.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Ignoring accessibility on the calendar grid:</strong> Rendering a grid
             of <code>&lt;div&gt;</code> elements without ARIA roles means screen reader
             users cannot navigate the calendar. Interviewers expect <code>role=&quot;grid&quot;</code>,{" "}
             <code>role=&quot;gridcell&quot;</code>, arrow key navigation, and meaningful
             <code>aria-label</code> on each cell.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not considering SSR:</strong> Using <code>new Date()</code> during
             module initialization causes hydration mismatches between server and client.
@@ -867,7 +868,7 @@ export default function DateTimePickerArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Two Stores vs One Store</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Splitting date picker state and time picker state into two Zustand stores
             minimizes re-render cascades but adds complexity in coordinating the combined
             Date/Time value. A single store simplifies coordination but causes every
@@ -876,12 +877,12 @@ export default function DateTimePickerArticle() {
             on one form, time-only picker on another). For a tightly coupled component,
             a single store is simpler. Interviewers expect you to articulate this trade-off
             and pick based on your use case.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Intl API vs date-fns / moment.js / day.js</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             The native <code>Intl</code> API is zero-dependency, well-supported in modern
             browsers, and handles timezones and locale-aware formatting natively. However,
             it lacks some features (e.g., date arithmetic, duration formatting) and has
@@ -890,7 +891,7 @@ export default function DateTimePickerArticle() {
             The trade-off is bundle size (date-fns adds ~10KB gzipped) and an external
             dependency. For a component that needs deep timezone support, the <code>Intl</code>{" "}
             API is sufficient; for complex date arithmetic, date-fns is worth the cost.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -930,7 +931,7 @@ export default function DateTimePickerArticle() {
               Q: How would you handle date picker performance when rendering 100+ date
               pickers on a page (e.g., a scheduling grid)?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
               A: The key bottleneck is the timezone list and Intl formatter creation. For
               bulk rendering, share a single Intl formatter cache across all pickers (module-level
               Map). Virtualize the timezone dropdown. Lazy-load the calendar dropdown only
@@ -938,7 +939,7 @@ export default function DateTimePickerArticle() {
               <code>React.memo</code> on each picker component to prevent re-renders when
               unrelated pickers change. If the grid is static (no interactivity), consider
               rendering a simplified read-only date display instead of full pickers.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

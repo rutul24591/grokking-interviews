@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -38,7 +40,7 @@ export default function TreeViewFolderExplorerArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We are designing a Tree View — the hierarchical
           navigator that powers folder explorers, file
           managers, organizational charts, taxonomies,
@@ -54,8 +56,8 @@ export default function TreeViewFolderExplorerArticle() {
           errors). Done well, the tree feels native to the
           OS (Finder, File Explorer); done poorly, it
           becomes a usability bottleneck.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are: virtualizing a flattened
           tree where nodes can expand and collapse
           dynamically; lazy-loading children on expand
@@ -68,10 +70,10 @@ export default function TreeViewFolderExplorerArticle() {
           expanding ancestors on the way); and keyboard
           navigation through the ARIA tree pattern with
           arrow keys, expand/collapse, and type-to-search.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users navigate folders, select files, drag to
           move or copy, rename, delete. Internal users browse
           configuration trees, organizational hierarchies, or
@@ -80,10 +82,10 @@ export default function TreeViewFolderExplorerArticle() {
           tree directly), provide a node renderer, and let
           the tree handle expand/collapse, virtualization,
           and accessibility.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Trees can be deep (10+ levels) and wide (thousands
           of children per node). Children of a node may be
           unknown until the node expands (lazy-loading from
@@ -93,10 +95,10 @@ export default function TreeViewFolderExplorerArticle() {
           for measured node heights, and the HTML5 drag-and-
           drop API for cross-component drag (with custom
           handling for accessibility).
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement file content viewing — that&rsquo;s
           the consumer&rsquo;s responsibility on row click.
           We do not implement server-side bulk operations
@@ -104,14 +106,14 @@ export default function TreeViewFolderExplorerArticle() {
           collaborative tree editing (two users dragging at
           once) is out of scope; we support optimistic
           single-user edits with eventual sync.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Render a tree from a hierarchical data source,
           showing only expanded nodes&rsquo; children. Expand
           and collapse via click on a chevron or
@@ -129,10 +131,10 @@ export default function TreeViewFolderExplorerArticle() {
           keys (up/down move; right expands or moves into;
           left collapses or moves out), Home/End,
           type-to-search, Space/Enter for select.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tri-state checkboxes for hierarchical multi-select
           (parent state derived from children).
           Expand-all / Collapse-all actions. Filter the tree
@@ -141,50 +143,50 @@ export default function TreeViewFolderExplorerArticle() {
           at the top. Custom icons per node type. Inline
           actions on hover (rename, delete buttons).
           Undo/redo for tree edits.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           File content rendering, image previews, rich
           context menus beyond a small action set, real-time
           collaborative edits.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Smooth scroll at 60 fps even when 100k nodes are
           loaded across the tree. Expand action under 100 ms
           (excluding network for lazy-load).
           Type-to-search response under 50 ms.
           Drag-and-drop drag-over feedback under 16 ms per
           frame.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Lazy-load failures don&rsquo;t corrupt the tree
           state — failed nodes show an error and a retry.
           Drag-and-drop is transactional: optimistic UI
           shows the new position, server confirms or
           reverts. Concurrent edits across tabs converge
           via broadcast.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Node names render as text; HTML opt-in per node
           type with sanitizer. Drag-and-drop respects
           server-side authorization: the server rejects
           moves the user can&rsquo;t make, and the UI
           reverts.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ARIA tree pattern: <code>role=&quot;tree&quot;</code>,{" "}
           <code>role=&quot;treeitem&quot;</code>,
           <code> aria-expanded</code>,
@@ -193,15 +195,15 @@ export default function TreeViewFolderExplorerArticle() {
           arrow-key navigation; Home/End; type-to-search.
           Loading states and error states announce via live
           region.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Node renderer is consumer-supplied. Data source is
           adapter-based (in-memory tree, lazy server
           source, hybrid). Drag-and-drop and multi-select
           are plugins.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -212,7 +214,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The tree is structured around a <strong>tree
           source adapter</strong> (uniform interface over
           eager and lazy tree data), a <strong>tree engine</strong>{" "}
@@ -220,8 +222,8 @@ export default function TreeViewFolderExplorerArticle() {
           state, a <strong>virtualizer</strong> over the
           flattened list, and <strong>plugin systems</strong>{" "}
           for selection, drag-and-drop, and search.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>tree engine</strong> maintains the
           expand state per node (a Set of expanded node
           ids) and computes the flattened visible list on
@@ -234,7 +236,7 @@ export default function TreeViewFolderExplorerArticle() {
           slice of the flattened list incrementally — only
           the descendants of the changed node need to be
           inserted or removed.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Lazy loading</strong>: when a user expands
           a node whose children aren&rsquo;t loaded, the
@@ -247,7 +249,7 @@ export default function TreeViewFolderExplorerArticle() {
           action; the parent stays expanded so the user can
           retry without re-expanding.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Virtualization</strong> works on the
           flattened list as a 1D virtualizer: visible
           window plus overscan, mounted nodes only. Node
@@ -259,7 +261,7 @@ export default function TreeViewFolderExplorerArticle() {
           since virtualization windowing is by index, the
           insertion is just a list update; the virtualizer
           recomputes the visible window naturally.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Indentation</strong> is rendered via CSS
           padding-left proportional to node depth. The
@@ -284,7 +286,7 @@ export default function TreeViewFolderExplorerArticle() {
           parents thinking they&rsquo;re selecting just the
           parent.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Drag-and-drop</strong>: when the user
           starts dragging a node (or a multi-selection),
           the engine enters drag mode. As the user drags
@@ -300,7 +302,7 @@ export default function TreeViewFolderExplorerArticle() {
           alternative: Cut (Ctrl-X), navigate to target,
           Paste (Ctrl-V) — this gives keyboard users
           parity with mouse drag.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Search and reveal</strong>: a search input
           filters nodes by name. As the user types, the
@@ -313,7 +315,7 @@ export default function TreeViewFolderExplorerArticle() {
           a list of paths that the engine traverses to
           expand.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>keyboard navigation</strong>: the focused
           node is the single tabstop. Up/Down move through
           the flattened visible list. Right expands a
@@ -324,151 +326,103 @@ export default function TreeViewFolderExplorerArticle() {
           node. Type-to-search jumps to the next node
           whose name matches the typed prefix.
           Space/Enter activate (select or open).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>TreeProvider</strong> instantiates the
-          engine, source adapter, virtualizer, and plugins.
-          <strong> TreeEngine</strong> manages expand state
-          and flattened-list computation.
-          <strong> TreeSource</strong> is the adapter;
-          built-ins include
-          <code> EagerTreeSource</code> (full tree in
-          memory) and <code>LazyServerSource</code>
-          (children fetched on demand).
-          <strong> TreeVirtualizer</strong> handles 1D
-          virtualization over the flattened list.
-          <strong> TreeNode</strong> renders one node with
-          chevron, indent, label, hover actions.
-          <strong> SelectionPlugin</strong> tracks selected
-          ids. <strong>DragDropPlugin</strong> handles
-          drag-and-drop with valid-target detection.
-          <strong> SearchPlugin</strong> handles search and
-          reveal.
-        </p>
+        <HighlightBlock as="p" tier="crucial">TreeVirtualizer handles 1D virtualization over the flattened list. TreeNode renders one node</HighlightBlock>
+<HighlightBlock as="p" tier="important">with chevron, indent, label, hover actions. SelectionPlugin tracks selected ids.</HighlightBlock>
+<HighlightBlock as="p" tier="important">DragDropPlugin handles drag-and-drop with valid-target detection. SearchPlugin handles search and reveal.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          The engine&rsquo;s state — expand set, flattened
+        <HighlightBlock as="p" tier="crucial">The engine&rsquo;s state — expand set, flattened
           list, focused node id — lives in an external
           store. Per-node data lives in a node cache keyed
-          by id. Selection, drag, and search state are
+          by id.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Selection, drag, and search state are
           plugin-owned slices. Lazy-load status per node
           (loading, loaded, error) lives alongside the
-          node cache so renderers can show the right state.
-        </p>
+          node cache so renderers can show the right state.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs:{" "}
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Inputs:{" "}
           <code>source</code> (adapter),
-          <code> renderNode(node, props)</code>,
+          </Highlight><code> renderNode(node, props)</code>,
           <code> defaultExpanded</code>,
           <code> onSelect</code>,
           <code> onMove(source, target)</code>,
-          <code> onRename(node, newName)</code>. Node
+          <code> onRename(node, newName)</code>.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Node
           shape:{" "}
           <code>{` { id, name, parentId?, hasChildren?, ...customFields } `}</code>.
           Stable ids are required; without them,
-          virtualization and reconciliation break.
-        </p>
+          virtualization and reconciliation break.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance</h2>
-        <p>
-          Virtualization scopes mounted DOM to ~30 nodes.
+        <HighlightBlock as="p" tier="crucial">Virtualization scopes mounted DOM to ~30 nodes.
           Node components memoize by (node id, expand
           state, selection state). The flattened list is
           recomputed incrementally on expand/collapse:
           only the affected subtree is re-flattened, not
-          the whole tree. Indentation is CSS-only, no JS
+          the whole tree.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Indentation is CSS-only, no JS
           per render. Drag-over highlights use a single
           CSS overlay on the target node, not per-node
-          state, to avoid re-renders during drag.
-        </p>
+          state, to avoid re-renders during drag.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX</h2>
-        <p>
-          Chevron rotates on expand/collapse with a short
-          animation. Loading state shows a small spinner
-          inside the parent node where children would
-          appear. Error state shows an inline message with
-          Retry. Drag-over indicators are clear (a
-          highlight on the drop target plus an indicator
-          line for &ldquo;before&rdquo; or &ldquo;inside&rdquo;
-          drops). Multi-select with parent confirmation
-          prevents accidental bulk selection. Inline
-          rename: double-click the name, edit in place,
-          Enter commits, Escape cancels.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Drag-over indicators are clear (a highlight on the drop target plus an indicator line for</HighlightBlock>
+<HighlightBlock as="p" tier="important">&ldquo;before&rdquo; or &ldquo;inside&rdquo; drops). Multi-select with parent confirmation prevents accidental</HighlightBlock>
+<HighlightBlock as="p" tier="important">bulk selection. Inline rename: double-click the name, edit in place, Enter commits, Escape cancels.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          ARIA tree pattern: tree role, treeitem role,
-          <code> aria-expanded</code> on parent nodes,
-          <code> aria-level</code> indicating depth,
-          <code> aria-selected</code> on selected nodes,
-          <code> aria-setsize</code> and
-          <code> aria-posinset</code> for context. Single
-          tabstop on the focused node; others
-          <code> tabIndex=-1</code>. Arrow-key navigation
-          per pattern. Drag-and-drop is keyboard-accessible
-          via Cut/Paste shortcuts. Selection and expand
-          state announce via live region. Loading and
-          error states announce.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Single tabstop on the focused node; others tabIndex=-1 . Arrow-key navigation</HighlightBlock>
+<HighlightBlock as="p" tier="important">per pattern. Drag-and-drop is keyboard-accessible via Cut/Paste shortcuts.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Selection and expand state announce via live region. Loading and error states announce.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Node names render as text; HTML opt-in per node
-          type with sanitizer. Server-side authorization is
+        <HighlightBlock as="p" tier="crucial">Node names render as text; HTML opt-in per node
+          type with sanitizer. Server-side authorization</HighlightBlock>
+<HighlightBlock as="p" tier="important">is
           authoritative — the client&rsquo;s drag-and-drop
-          might appear to succeed but the server rejects
+          might appear to succeed</HighlightBlock>
+<HighlightBlock as="p" tier="important">but the server rejects
           and the UI reverts. CSRF tokens on every move
-          request.
-        </p>
+          request.</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for the engine: flatten correctness,
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Unit tests for the engine: flatten correctness,
           incremental flatten on expand/collapse, lazy-
-          load state machine. Integration tests: expand
+          load state machine.</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Integration tests: expand
           and verify children appear, drag-and-drop with
           mock server, search-and-reveal, multi-select
           with parent confirmation. Accessibility tests
           for ARIA attributes and keyboard navigation
-          parity. Performance tests on 100k-node trees.
-        </p>
+          parity. Performance tests on 100k-node trees.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          User expands a node, navigates away before the
-          children load, comes back: the load completes
-          and the children appear, with the user&rsquo;s
-          intent preserved. User collapses a node mid-
-          load: the load completes silently into the
-          cache; on next expand, children render
-          immediately. Drag a node into one of its
-          descendants: rejected by valid-target detection.
-          Drag a multi-selection containing a parent and
+        <HighlightBlock as="p" tier="important">User expands a node, navigates away before the children load, comes back: the load completes and the children appear,</HighlightBlock>
+<HighlightBlock as="p" tier="important">with the user&rsquo;s intent preserved. User collapses a node mid- load: the load completes silently into the cache; on</HighlightBlock>
+<HighlightBlock as="p" tier="important">next expand, children render immediately. Drag a node into one of its descendants: rejected by valid-target detection.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">Drag a multi-selection containing a parent and
           one of its descendants: the descendant is
           implicitly part of the parent move; we drop
           only the parent and let the descendants follow.
@@ -477,39 +431,37 @@ export default function TreeViewFolderExplorerArticle() {
           tree (10+ levels): indentation works as long
           as we cap depth indication; beyond a threshold,
           we switch to a path-breadcrumb display to keep
-          the visual structure usable.
-        </p>
+          the visual structure usable.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          The tree engine is generic over node type. The
+        <HighlightBlock as="p" tier="crucial">The tree engine is generic over node type. The
           source adapter pattern lets consumers wire any
-          backend. Node renderer is consumer-supplied, so
+          backend.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Node renderer is consumer-supplied, so
           the same engine powers folder explorers,
           taxonomy editors, organizational charts, and
-          configuration browsers without modification.
-        </p>
+          configuration browsers without modification.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Node labels and action strings via i18n. RTL
-          flips indentation direction (padding-inline-start
+        <HighlightBlock as="p" tier="crucial">Node labels and action strings via i18n. RTL
+          flips indentation direction</HighlightBlock>
+<HighlightBlock as="p" tier="important">(padding-inline-start
           via CSS logical properties). Type-to-search uses
-          locale-aware string matching via
+          locale-aware</HighlightBlock>
+<HighlightBlock as="p" tier="important">string matching via
           <code> Intl.Collator</code> for consistent
-          comparison.
-        </p>
+          comparison.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Eager vs lazy data source</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Eager (full tree in memory) is simple and
           handles search-and-filter well; lazy is
           essential for trees larger than client memory.
@@ -517,87 +469,86 @@ export default function TreeViewFolderExplorerArticle() {
           medium trees, hybrid (a top-level eager fetch
           plus lazy children at deep levels) is often
           right.
-        </p>
+        </HighlightBlock>
 
         <h3>Tri-state vs single checkboxes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tri-state respects hierarchy intuitively but
           adds complexity. We default to single checkboxes
           with an explicit &ldquo;Select all
           descendants&rdquo; affordance; tri-state is
           opt-in for products where hierarchical selection
           is core.
-        </p>
+        </HighlightBlock>
 
         <h3>Drag-and-drop optimistic vs confirmed-first</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimistic feels fast but requires revert on
           failure. Confirmed-first feels slow but never
           shows a wrong state. Optimistic is the right
           default with prompt revert; confirmed-first is
           for high-stakes operations.
-        </p>
+        </HighlightBlock>
 
         <h3>Virtualize the flattened list, not the tree</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The tree is hierarchical; the visible content is
           a flat list of expanded nodes. Virtualizing the
           flattened list is straightforward 1D
           virtualization; trying to virtualize the
           hierarchy directly would be more complex without
           benefit.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Server-side search with full-text indexing.
+        <HighlightBlock as="p" tier="crucial">Server-side search with full-text indexing.
           Filter that hides non-matching nodes while
           preserving ancestor context. Bulk operations
-          (move many nodes at once). Real-time
+          (move many nodes at once).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Real-time
           collaborative tree editing via CRDTs. Offline
           mode with sync on reconnect. Custom node groups
-          and pinned favorites.
-        </p>
+          and pinned favorites.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How is the tree virtualized?</strong> By
           flattening the visible (expanded) tree to a 1D
           list, then applying standard 1D virtualization.
           Expand and collapse update the flattened list
           incrementally.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How do you handle lazy loading?</strong>{" "}
           On expand, if children aren&rsquo;t loaded, ask
           the source. Show a placeholder while loading.
           Replace with real children on response; show
           error with retry on failure. Parent stays
           expanded throughout.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>3. How is drag-and-drop made
           accessible?</strong> Keyboard-accessible via
           Cut/Paste shortcuts. The drag flow is mirrored:
           select the source, navigate to target, paste.
           ARIA announcements update the user on progress.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How do you prevent dropping a node into
           its descendant?</strong> Valid-target detection at
           drag-over time: walk up from the candidate target
           to the root; if the dragged node is encountered,
           reject. The visual indicator reflects the
           decision in real time.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How does search and reveal work?</strong>{" "}
@@ -617,14 +568,14 @@ export default function TreeViewFolderExplorerArticle() {
           selection.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How is keyboard navigation handled?</strong>{" "}
           ARIA tree pattern: arrow keys move through the
           visible flattened list (Up/Down), expand/collapse
           (Right/Left), and Home/End. Type-to-search jumps
           to matching nodes. Single tabstop on the focused
           node.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. How does this scale to a million
@@ -639,21 +590,9 @@ export default function TreeViewFolderExplorerArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A Tree View is a{" "}
-          <strong>flattened-list virtualization</strong>{" "}
-          over a hierarchy, with lazy loading on expand,
-          drag-and-drop with valid-target detection,
-          multi-select with parent-confirmation semantics,
-          and full ARIA tree pattern keyboard support. The
-          adapter pattern handles eager and lazy data
-          sources interchangeably. Virtualizing the
-          flattened list (not the hierarchy) is the
-          architectural insight that makes everything
-          tractable. Done well, the tree feels like the
-          OS file explorer — instant, predictable,
-          accessible.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The adapter pattern handles eager and lazy data sources interchangeably. Virtualizing the</HighlightBlock>
+<HighlightBlock as="p" tier="important">flattened list (not the hierarchy) is the architectural insight that makes everything</HighlightBlock>
+<HighlightBlock as="p" tier="important">tractable. Done well, the tree feels like the OS file explorer — instant, predictable, accessible.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

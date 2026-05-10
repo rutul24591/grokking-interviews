@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -31,7 +32,7 @@ export default function FormBuilderArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a Form Builder — a runtime engine that consumes a
           declarative schema (typically JSON-like) and produces a fully
           functional, accessible, validated, and performant form in a React /
@@ -43,8 +44,8 @@ export default function FormBuilderArticle() {
           super-linearly. A schema-driven engine reduces every new form to an
           authoring task rather than an engineering task while keeping a single
           well-tested runtime as the source of truth for behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The system is not just &ldquo;render fields from JSON&rdquo;. The hard parts
           are: keeping renders surgical so a 200-field form does not re-render
           on every keystroke; orchestrating sync and async validation
@@ -55,10 +56,10 @@ export default function FormBuilderArticle() {
           types without forking the engine. Done well, this becomes a
           load-bearing platform component; done poorly, it becomes the
           slowest part of the application and the most fragile.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           There are three distinct user personas that the design must serve.
           The <strong>end user</strong> is filling the form on a mix of
           devices, often on mediocre networks, sometimes interrupted; they
@@ -73,7 +74,7 @@ export default function FormBuilderArticle() {
           cares about a stable contract, decent TypeScript ergonomics, ability
           to override styling, and an escape hatch when a screen needs custom
           behavior.
-        </p>
+        </HighlightBlock>
         <p>
           Data sources can be: hard-coded schemas shipped with the app,
           schemas fetched at runtime from a CMS or backend service, or
@@ -84,7 +85,7 @@ export default function FormBuilderArticle() {
         </p>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We assume forms in the 10–200 field range, with multi-step flows up
           to roughly ten steps. Submissions are network calls to a JSON API
           that returns either a success payload or a structured error map.
@@ -99,10 +100,10 @@ export default function FormBuilderArticle() {
           provides an i18n function we can plug into for label and message
           resolution, and that telemetry / experimentation hooks are
           available globally.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A visual drag-and-drop schema editor is explicitly out of scope —
           that is a separate system that produces our schema as output.
           Server-side persistence and versioning of form definitions is also
@@ -113,14 +114,14 @@ export default function FormBuilderArticle() {
           Finally, we treat draft persistence, AI auto-fill, and form-level
           analytics as separate concerns that integrate via well-defined
           extension hooks, not features baked into the engine.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The engine must be able to render the standard set of inputs —
           text, number, password, textarea, select, multi-select, radio,
           checkbox, switch, date, time, file — from schema, and additionally
@@ -132,8 +133,8 @@ export default function FormBuilderArticle() {
           per field, in composable rule chains, with deterministic priority
           ordering so that the user always sees the most informative error
           first rather than a flickering sequence.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Conditional behavior is core: the engine must support
           schema-declared visibility, enablement, and requiredness predicates
           that depend on other field values, evaluated reactively. Multi-step
@@ -148,10 +149,10 @@ export default function FormBuilderArticle() {
           payload transformation, optimistic UI hooks, and a server-error
           ingestion path that maps API errors back to specific fields and
           surfaces a top-of-form summary when appropriate.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Field-level autosave and draft persistence ride on top of the
           engine via subscription hooks; the engine should expose a
           <code>onChange(name, value, allValues)</code> firehose plus a
@@ -163,24 +164,24 @@ export default function FormBuilderArticle() {
           (field focus, error shown, submit attempted, time-to-fill) should
           be emitted from a single place so analytics can subscribe without
           patching every field.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           AI auto-fill, A/B testing scaffolding, and content-management
           integration are explicit non-goals. They each deserve their own
           subsystem and contract; folding them into the engine would create
           a god-object that is impossible to evolve. Server-side schema
           migration and lifecycle (publish, archive, version) is the
           responsibility of the schema authoring system.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Performance is the first NFR because it is the most expensive
           mistake to fix later. The non-negotiable invariant is: typing in
           field A must not re-render fields B through N. Concretely, this
@@ -195,10 +196,10 @@ export default function FormBuilderArticle() {
           eager evaluation of every conditional rule on mount and forces
           us to build a dependency graph that runs only the relevant
           predicates.
-        </p>
+        </HighlightBlock>
 
         <h3>Scalability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The engine must scale linearly with field count and rule count.
           This implies that conditional evaluation runs only on the inputs
           that actually changed and propagates only along observed
@@ -208,10 +209,10 @@ export default function FormBuilderArticle() {
           <code>content-visibility: auto</code> on sectional containers —
           so memory and layout cost stay proportional to what the user is
           looking at.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Submission must be idempotent. We attach a client-generated
           request id (UUID v7) to every submit so the server can dedupe
           retries. Network failures during submission must not destroy
@@ -222,10 +223,10 @@ export default function FormBuilderArticle() {
           field as valid or invalid; we surface the inconclusive state and
           let the user proceed at submission time, where the server will
           re-validate.
-        </p>
+        </HighlightBlock>
 
         <h3>Security (Light)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The engine renders schema values as text by default;
           <code>dangerouslySetInnerHTML</code> is forbidden inside the
           runtime. If the product needs rich-text labels, sanitization
@@ -236,10 +237,10 @@ export default function FormBuilderArticle() {
           <code>includes</code>); no host access, no arbitrary functions,
           no <code>eval</code>. This is what lets schemas be served from a
           CMS without becoming a remote code execution vector.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility (Important)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every field has a programmatic label associated via
           <code>htmlFor</code>; required state is exposed both visually and
           via <code>aria-required</code>; errors are placed in a region
@@ -252,7 +253,7 @@ export default function FormBuilderArticle() {
           fields appear and disappear due to conditional rules — and screen
           reader users should be able to discover newly visible fields
           without reloading the form.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability &amp; Extensibility</h3>
         <p>
@@ -267,7 +268,7 @@ export default function FormBuilderArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The end-to-end design treats a form as four cooperating layers: a
           <strong> schema layer</strong> (declarative, serializable description),
           a <strong>compilation layer</strong> (one-time parsing into a
@@ -279,8 +280,8 @@ export default function FormBuilderArticle() {
           mapping — are all addressed by keeping these four layers
           strictly separated and routing every state change through a
           single writer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>mount</strong>, <code>FormProvider</code> compiles the
           schema once: it walks each field, parses validator descriptors
           into a rule chain, parses each conditional predicate into an AST
@@ -297,7 +298,7 @@ export default function FormBuilderArticle() {
           conditional predicates run an initial pass to populate
           visibility / required / disabled flags before first paint, so
           users never see fields appear and disappear during hydration.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>render</strong>, <code>FormRenderer</code> walks the
           schema tree and emits a structure of layout primitives, ending
@@ -313,7 +314,7 @@ export default function FormBuilderArticle() {
           (schema, registry, locale) to JSX, so it memoizes cleanly and
           re-runs only when its inputs change.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On a <strong>keystroke</strong> in a free-text field, the DOM
           input updates its own value (uncontrolled-during-typing), and a
           debounced or blur-triggered handler dispatches
@@ -335,8 +336,8 @@ export default function FormBuilderArticle() {
           state. Fields that consume only their own slice — i.e. most
           fields — re-render exactly once; fields that consume nothing
           changed do not re-render at all.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>blur</strong>, the field commits any uncommitted DOM
           value to the store, marks itself <code>touched</code>, and
           triggers its blur-mode validators. On <strong>step
@@ -348,8 +349,8 @@ export default function FormBuilderArticle() {
           machine, not in component state, so deep-link reconciliation
           (e.g. landing on step 3 directly via URL) is a single
           authoritative check.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           On <strong>submit</strong>, the
           <code> SubmitController</code> takes over. It runs a full
           validation pass synchronously, awaits any pending async
@@ -371,7 +372,7 @@ export default function FormBuilderArticle() {
           editable state with a retryable banner. Any subsequent
           edit on a field with a server error clears that error so
           users never fight stale messages.
-        </p>
+        </HighlightBlock>
         <p>
           External integrations — draft persistence, telemetry, AI
           auto-fill — never reach into the store directly. They
@@ -406,7 +407,7 @@ export default function FormBuilderArticle() {
           subscriptions happen via selector hooks that read directly from
           the store.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>FormRenderer</strong> is the schema walker. It traverses
           the schema tree and emits a tree of layout primitives — Step,
           Section, Row, Field — without owning any state itself. It is a
@@ -416,8 +417,8 @@ export default function FormBuilderArticle() {
           Keeping it stateless is what allows us to lazy-load step
           components and section content without entangling state
           management with rendering concerns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Field</strong> is the most important component for
           performance. It is a thin wrapper that subscribes to exactly one
           slice of the store — that field&rsquo;s
@@ -432,7 +433,7 @@ export default function FormBuilderArticle() {
           underlying input&rsquo;s
           <code>value</code> /
           <code>onChange</code>.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>FieldControl</strong> implementations are the visual
           atoms — a TextInput, a Select, a Checkbox, etc. They are
@@ -443,7 +444,7 @@ export default function FormBuilderArticle() {
           enables a fully headless mode for teams that want to ship
           custom UIs.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>StepNavigator</strong> and
           <strong> SubmitController</strong> sit alongside the renderer
           rather than inside it. The navigator owns the current step,
@@ -452,10 +453,10 @@ export default function FormBuilderArticle() {
           full validation pass, payload transformation, network request
           with idempotency key, optimistic state if requested, and
           server-error mapping.
-        </p>
+        </HighlightBlock>
 
         <h3>Design Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The architecture leans on three patterns. First,
           <strong> headless core + skinnable controls</strong>: the engine
           has zero opinions about visuals; visuals are plugged in via the
@@ -470,8 +471,8 @@ export default function FormBuilderArticle() {
           underneath; teams pick the one that fits their use case. Third,
           <strong> plugin registries</strong> for field types, validators,
           and layout primitives: extensions are first-class, not patches.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           We also make a deliberate choice that looks counterintuitive at
           first: the engine is <em>controlled at the engine level</em> but
           <em> uncontrolled at the DOM level</em> for hot-typed text inputs.
@@ -482,14 +483,14 @@ export default function FormBuilderArticle() {
           reactivity, which is the majority. Fields with cross-field
           dependencies opt back into per-keystroke commit by declaring
           themselves <em>reactive</em> in the schema.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management Strategy</h2>
 
         <h3>State Classification</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Three distinct kinds of state coexist in any non-trivial form,
           and conflating them is the most common cause of bad form
           architecture. <strong>Local UI state</strong> (focus, hover,
@@ -501,10 +502,10 @@ export default function FormBuilderArticle() {
           state</strong> (option lists fetched for selects, async validation
           responses, submitted record echo) lives in React Query / SWR,
           keyed by query, never duplicated into the form store.
-        </p>
+        </HighlightBlock>
 
         <h3>Data Ownership</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           One store per <code>FormProvider</code>. We deliberately do not
           use a global singleton — nested forms (think a modal form inside
           a page form) and unmount cleanup both become trivial when scope
@@ -517,10 +518,10 @@ export default function FormBuilderArticle() {
           <code> useFieldStatus(name)</code>) that subscribe with
           <code>useSyncExternalStore</code> for tear-free reads under
           concurrent rendering.
-        </p>
+        </HighlightBlock>
 
         <h3>State Flow Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The flow on every keystroke or blur is intentionally narrow.
           The DOM input dispatches to a thin handler in the Field
           component, which calls
@@ -535,10 +536,10 @@ export default function FormBuilderArticle() {
           store. Errors and pending status update through the same
           single-writer path so subscribers never observe inconsistent
           intermediate states.
-        </p>
+        </HighlightBlock>
 
         <h3>Trade-offs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           External store versus React Context: we chose the store because
           the cost of a context value change scales with consumer count,
           and our consumer count is the field count. The downside is an
@@ -553,14 +554,14 @@ export default function FormBuilderArticle() {
           form into the main form) needs an explicit bus, which is a
           feature, not a bug — implicit coupling is what we want to
           avoid.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
 
         <h3>Inputs and Outputs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The runtime accepts a small number of well-typed props. The
           <code>schema</code> is the declarative tree describing steps,
           sections, and fields with their type, name, validators, and
@@ -572,18 +573,18 @@ export default function FormBuilderArticle() {
           server-validated). <code>onError</code> exposes parsed-but-failed
           submissions; <code>mode</code> controls when validation runs
           (<code>onBlur</code>, <code>onChange</code>, <code>onSubmit</code>).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The runtime emits structured events: <code>onChange(name, value)</code>
           for telemetry, <code>onStepChange(from, to)</code> for analytics
           and route side effects, and a low-level <code>subscribe</code>
           primitive that takes a selector. Anything outside the runtime
           that needs to react — drafts, analytics, AI auto-fill —
           subscribes; the runtime never has to know about them.
-        </p>
+        </HighlightBlock>
 
         <h3>Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The flow is rigorously one-way. The schema and current store
           state project to a tree of components. User events dispatch
           actions to the store, which recomputes derived state and
@@ -592,10 +593,10 @@ export default function FormBuilderArticle() {
           read Field B, it does so by reading from the store, never by
           prop-passing through a parent. This consistency is what keeps
           the system understandable as it grows.
-        </p>
+        </HighlightBlock>
 
         <h3>Contracts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Field <code>name</code> is unique within a form and supports
           dotted paths (<code>address.zip</code>) for nested structures
           and bracketed indices (<code>contacts[0].email</code>) for
@@ -613,14 +614,14 @@ export default function FormBuilderArticle() {
           client validators, with the rule that any user edit on a
           field clears the server error for that field, so users do not
           fight stale messages.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance Strategy</h2>
 
         <h3>Rendering Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In a Next.js application, the host page is server-rendered or
           statically generated as usual. The form runtime itself is a
           Client Component island — it must be, because forms are
@@ -633,10 +634,10 @@ export default function FormBuilderArticle() {
           schema arrives. For React Server Component–heavy apps, the
           page tree above and below the form remains server-rendered;
           only the form island is client-bound.
-        </p>
+        </HighlightBlock>
 
         <h3>Re-render Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The selector-subscription pattern is the primary lever:
           a Field re-renders when its slice changes, not when sibling
           slices change. <code>FieldControl</code> is wrapped in
@@ -652,10 +653,10 @@ export default function FormBuilderArticle() {
           blur or after a short debounce. Cross-field-reactive fields
           opt out of this optimization because they need every value
           change to propagate.
-        </p>
+        </HighlightBlock>
 
         <h3>Large Data Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For very large forms — think tax forms with hundreds of
           fields — sectional virtualization is necessary. The cheapest
           win is to apply <code>content-visibility: auto</code> with a
@@ -668,10 +669,10 @@ export default function FormBuilderArticle() {
           a generous root-margin viewport so the user never sees a
           flash. Multi-step layouts get this for free because only one
           step is mounted at a time.
-        </p>
+        </HighlightBlock>
 
         <h3>Loading Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Heavy field types — rich text editors, signature pads, file
           uploaders — are lazy-loaded via <code>React.lazy</code> with a
           stable skeleton placeholder so the form layout does not
@@ -680,12 +681,12 @@ export default function FormBuilderArticle() {
           renderer can also be split per step: only the active
           step&rsquo;s field components are in the initial chunk,
           and likely-next steps are prefetched on idle.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UI/UX &amp; Interaction Design</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The default validation strategy is <em>onBlur first, onChange
           after error</em>. Validating on every keystroke creates noisy,
           flickering errors that feel hostile; validating only on
@@ -695,29 +696,28 @@ export default function FormBuilderArticle() {
           state, switches to live validation so the user gets immediate
           feedback as they fix it. This is a small detail with a
           disproportionate impact on perceived quality.
-        </p>
-        <p>
-          Errors are shown inline beneath the field, never as
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">Errors are shown inline beneath the field, never as
           <code>alert()</code> dialogs. On submit failure with multiple
           errors, we render a summary at the top of the form with
           anchor links to each erroneous field; clicking the anchor
           scrolls and focuses the field. The submit button is disabled
           only while submitting, not while invalid; disabling on
           invalid hides the cause and prevents users from learning what
-          to fix. Conditional fields animate their entrance — a short
+          to fix.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Conditional fields animate their entrance — a short
           height transition with a small fade — so the form feels
           alive but not jumpy; the animation is bypassed under
           <code>prefers-reduced-motion</code>. Optimistic UI patterns
           are exposed as a hook on the submit controller so a host
           screen can transition immediately while the request is in
           flight, with the form re-entering an editable state if the
-          server rejects.
-        </p>
+          server rejects.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Accessibility cannot be retrofitted into a form engine; it
           has to be a baked-in invariant. Every input ships with a
           programmatic label tied via <code>htmlFor</code>; even
@@ -729,14 +729,14 @@ export default function FormBuilderArticle() {
           when an error appears it&rsquo;s announced through
           <code>role="alert"</code> so screen readers do not have to
           re-scan to discover it.
-        </p>
-        <p>
-          Grouped controls (a set of radios, a checkbox group) are
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">Grouped controls (a set of radios, a checkbox group) are
           wrapped in <code>{`<fieldset>`}</code> with a
           <code>{`<legend>`}</code>; visually similar but semantically
           flat <code>{`<div>`}</code> wrappers are not acceptable.
           Conditional fields are inserted in DOM order, not appended at
-          the end, so tab order remains logical. Step changes announce
+          the end, so tab order remains logical.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Step changes announce
           via a polite live region (&ldquo;Step 2 of 4: Address&rdquo;)
           and move focus to the step heading, not to the first input,
           because focusing an input on entry is disorienting; the user
@@ -745,29 +745,27 @@ export default function FormBuilderArticle() {
           for context. We test this end-to-end with real screen readers
           (VoiceOver and NVDA at minimum) on every release because
           axe-core alone catches only a subset of real-world a11y
-          regressions.
-        </p>
+          regressions.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security Considerations</h2>
-        <p>
-          Schema-driven systems are tempting injection surfaces. We
+        <HighlightBlock as="p" tier="important">Schema-driven systems are tempting injection surfaces. We
           neutralize them by treating schema as data with a strict
           shape. Labels, descriptions, and error messages render as
           text by default; if a product needs richer formatting, we
           allow a sanitized markdown subset run through DOMPurify at
           the boundary, never <code>dangerouslySetInnerHTML</code> from
-          a raw string. Predicates for conditional logic are evaluated
+          a raw string.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Predicates for conditional logic are evaluated
           by a small expression DSL — the language has comparison,
           boolean logic, membership, and a small set of host-provided
           built-ins; it has no function definition, no property
           traversal beyond field references, and no host access. This
           is materially safer than Function/eval, and it&rsquo;s safer
           than even &ldquo;sandboxed&rdquo; approaches that still expose
-          a JavaScript surface.
-        </p>
-        <p>
+          a JavaScript surface.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Submission endpoints attach CSRF tokens at the fetch layer
           (handled outside the form engine) and idempotency keys
           generated by the engine. We never store credentials,
@@ -778,22 +776,15 @@ export default function FormBuilderArticle() {
           persistence by default. File uploads have their own MIME and
           size validation in the schema, but we treat client
           validation as UX; the server is the authority.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing Strategy</h2>
-        <p>
-          Testing covers four layers. <strong>Unit tests</strong> verify
-          the building blocks: validator composition produces the right
-          ordered error list; the dependency graph extracts references
-          correctly from predicates; the store reducer handles edge
-          cases like setting the same value twice or transitioning
-          submit state. <strong>Component tests</strong> exercise Field
-          and FieldControl in isolation: a controlled input round-trips
-          values; an async validator transitions from pending to
-          invalid; a server error appears, is announced, and clears
-          on edit. <strong>Integration tests</strong> mount the full
+        <HighlightBlock as="p" tier="important">Testing covers four layers. Unit tests verify the building blocks: validator composition produces the right ordered error list; the dependency graph extracts references</HighlightBlock>
+<HighlightBlock as="p" tier="important">correctly from predicates; the store reducer handles edge cases like setting the same value twice or transitioning submit state. Component tests exercise Field and</HighlightBlock>
+<HighlightBlock as="p" tier="important">FieldControl in isolation: a controlled input round-trips values; an async validator transitions from pending to invalid; a server error appears, is announced, and clears on edit.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial"><strong>Integration tests</strong> mount the full
           runtime with realistic schemas and exercise multi-step
           flows, conditional show/hide cascades, and submission with
           server errors mapped back to fields; React Testing Library
@@ -803,76 +794,29 @@ export default function FormBuilderArticle() {
           flow per release as a regression check. Performance tests
           (rendering benchmarks under a 200-field schema) run in CI
           with budgets for keystroke long-task and initial render
-          time; budget regressions fail the build.
-        </p>
+          time; budget regressions fail the build.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases &amp; Failure Handling</h2>
-        <p>
-          Real forms fail in interesting ways. <strong>Async race
-          conditions</strong>: two consecutive edits trigger two async
-          validations; the first request is slower than the second.
-          We solve this with abortable tokens — only the latest
-          token writes its result. <strong>Conditional value
-          retention</strong>: a field becomes hidden because of a
-          conditional rule; do we keep its value or clear it? Default
-          is clear, because keeping leaks stale answers into
-          submissions; opt-in preserve mode is available for cases
-          where the user toggles a parent field accidentally and
-          shouldn&rsquo;t lose downstream input. <strong>Partial
-          server failure</strong>: the API returns 200 with a per-field
-          error map; the engine merges these into field errors and
-          surfaces a top-level error if any cross-field error came
-          back. <strong>Network offline at submit</strong>: the engine
-          surfaces an inline retry banner and, if a draft persistence
-          layer is wired up, ensures the in-flight payload is queued
-          for replay. <strong>Cyclic conditional dependencies</strong>:
-          detected at schema compile time; the engine throws with the
-          cycle path so authors can fix them rather than discovering
-          a hung UI in production. <strong>Deep-linking into a
-          specific step</strong>: the navigator validates prior steps
-          before accepting the deep link; otherwise it redirects to
-          the earliest invalid step and announces the redirect.
-          <strong> Browser autofill</strong> for password managers
-          writes directly to DOM, which bypasses React; we listen for
-          <code>input</code> events on each control and reconcile the
-          store with whatever the DOM now holds.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Network offline at submit : the engine surfaces an inline retry banner and, if a draft persistence layer is wired up, ensures the in-flight payload is queued for replay. Cyclic conditional dependencies : detected at schema compile time;</HighlightBlock>
+<HighlightBlock as="p" tier="important">the engine throws with the cycle path so authors can fix them rather than discovering a hung UI in production. Deep-linking into a specific step : the navigator validates prior steps before accepting the deep link; otherwise it redirects to</HighlightBlock>
+<HighlightBlock as="p" tier="important">the earliest invalid step and announces the redirect. Browser autofill for password managers writes directly to DOM, which bypasses React; we listen for input events on each control and reconcile the store with whatever the DOM now holds.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability &amp; Extensibility</h2>
-        <p>
-          Reusability comes from clear extension surfaces. Custom
-          field types implement a small interface and register either
-          globally or per-form, so a marketing surface and an admin
-          tool can share an engine but ship different libraries of
-          field types. Theming is design-token-driven via CSS custom
-          properties; controls accept <code>className</code> and
-          <code>style</code> overrides for surgical customization
-          without forking the component. Validator factories
-          (<code>required()</code>, <code>min(n)</code>,
-          <code>matches(regex)</code>, <code>asyncUnique(endpoint)</code>)
-          compose into rule chains and can be combined and shared
-          across forms. Schema versioning is supported via a
-          <code>schemaVersion</code> field and a registry of upgrade
-          functions: when the engine encounters an old version, it
-          runs the upgrade chain to produce a current-shaped schema
-          and logs the migration so we can monitor stale clients.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Validator factories ( required() , min(n) , matches(regex) , asyncUnique(endpoint) ) compose into rule chains and can be combined and</HighlightBlock>
+<HighlightBlock as="p" tier="important">shared across forms. Schema versioning is supported via a schemaVersion field and a registry of upgrade functions: when the engine</HighlightBlock>
+<HighlightBlock as="p" tier="important">encounters an old version, it runs the upgrade chain to produce a current-shaped schema and logs the migration so we can monitor stale clients.</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Labels and validation messages never travel as raw strings
-          inside the engine. A validator emits an
-          <code>Issue</code> with a stable <code>key</code> and a
-          <code>params</code> bag; the host app&rsquo;s i18n function
-          resolves <code>key</code> against the active locale and
-          interpolates parameters using ICU MessageFormat for plurals
-          and gender. RTL is handled by relying on CSS logical
+        <HighlightBlock as="p" tier="important">Labels and validation messages never travel as raw strings inside the engine. A validator emits</HighlightBlock>
+<HighlightBlock as="p" tier="important">an Issue with a stable key and a params bag; the host app&rsquo;s i18n function resolves key</HighlightBlock>
+<HighlightBlock as="p" tier="important">against the active locale and interpolates parameters using ICU MessageFormat for plurals and gender.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">RTL is handled by relying on CSS logical
           properties (<code>margin-inline-start</code>,
           <code>padding-inline-end</code>) rather than left/right
           analogues, so the same stylesheet flips correctly under
@@ -880,15 +824,14 @@ export default function FormBuilderArticle() {
           through <code>Intl.DateTimeFormat</code> and
           <code>Intl.NumberFormat</code> with the active locale and
           the form&rsquo;s configured time zone, never with naive
-          string formatting.
-        </p>
+          string formatting.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
 
         <h3>External store vs React Context for form state</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We chose an external store because Context updates trigger
           re-renders in every consumer, and our consumer count is
           field count — typing in one field would re-render hundreds
@@ -898,10 +841,10 @@ export default function FormBuilderArticle() {
           for new contributors; we mitigate by hiding the store
           behind selector hooks so day-to-day code looks like ordinary
           React.
-        </p>
+        </HighlightBlock>
 
         <h3>Schema-driven vs JSX-driven authoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We support both. Schema-driven excels for forms authored by
           non-engineers, A/B tested at runtime, or generated by
           tooling; JSX-driven excels when a screen needs bespoke
@@ -912,10 +855,10 @@ export default function FormBuilderArticle() {
           single schema-only API would be cleaner, but in practice
           forces awkward workarounds for the &ldquo;long tail&rdquo;
           forms that always exist.
-        </p>
+        </HighlightBlock>
 
         <h3>Sync-then-async validation orchestration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We run sync validators first synchronously and only fire async
           validators when sync validators all pass for a field. This
           eliminates the visual flicker of an async error displacing a
@@ -925,10 +868,10 @@ export default function FormBuilderArticle() {
           rejects on rules that the client doesn&rsquo;t know about;
           the server-error ingestion path handles this cleanly so
           it&rsquo;s not a real downside in practice.
-        </p>
+        </HighlightBlock>
 
         <h3>Hide-and-clear vs hide-and-preserve for conditional fields</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hide-and-clear is the default because submitted payloads
           should not contain stale answers from branches the user
           isn&rsquo;t in. Hide-and-preserve is opt-in for cases like
@@ -938,10 +881,10 @@ export default function FormBuilderArticle() {
           engine respects it. The downside is that schema authors
           must think about this for each field; we give them a
           sensible default so the cost is only paid where it matters.
-        </p>
+        </HighlightBlock>
 
         <h3>Per-form state store vs global registry</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-form scoping makes nested forms, modal forms, and
           unmount cleanup all behave correctly without special
           cases. A global registry would simplify cross-form data
@@ -952,40 +895,28 @@ export default function FormBuilderArticle() {
           but that ends up being a feature: implicit cross-form
           coupling is exactly what causes platform-form pain in
           mature apps.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          A WASM-compiled validator core becomes attractive when forms
-          push past a few hundred fields with rich validation,
-          especially for complex regex and decimal arithmetic that JS
-          handles awkwardly. Form-level telemetry — time-to-fill per
-          field, drop-off rates, error rates by validator — is a
-          natural next layer; it lives outside the engine and consumes
-          the existing event firehose. Cross-tab synchronization for
-          partially filled forms (so opening the same form in another
-          tab picks up where the user left off) plugs in via
-          <code>BroadcastChannel</code> on top of the draft
-          persistence layer. Finally, an AI auto-fill layer can
-          subscribe to the same event stream and propose values; the
-          engine itself stays out of that complexity.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Cross-tab synchronization for partially filled forms (so opening the same form in another tab picks up where</HighlightBlock>
+<HighlightBlock as="p" tier="important">the user left off) plugs in via BroadcastChannel on top of the draft persistence layer. Finally, an AI auto-fill</HighlightBlock>
+<HighlightBlock as="p" tier="important">layer can subscribe to the same event stream and propose values; the engine itself stays out of that complexity.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How do you prevent re-rendering 100 fields when one
           changes?</strong> Use an external store with per-field selector
           subscriptions and <code>useSyncExternalStore</code>. Treat
           context as a carrier for stable references only. Memoize
           field controls with primitive props.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>2. How would you implement conditional fields whose
           predicates depend on multiple other fields?</strong> Build a
           dependency graph at schema compile time by walking each
@@ -994,7 +925,7 @@ export default function FormBuilderArticle() {
           inverse index, evaluate them in topological order, and emit
           the resulting visibility / required / disabled effects to
           the store. Detect cycles at compile time and fail fast.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. Sync vs async validation — orchestration order and
@@ -1006,7 +937,7 @@ export default function FormBuilderArticle() {
           flight.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does submission flow map server errors back to
           fields?</strong> Define a normalized server-error shape
           (<code>fieldErrors</code> map plus an optional
@@ -1014,7 +945,7 @@ export default function FormBuilderArticle() {
           <code>fieldErrors</code> into the same error pipeline as
           client validators. Editing a field clears its server error
           so users do not fight stale messages.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How would you support nested array fields (for
@@ -1027,7 +958,7 @@ export default function FormBuilderArticle() {
           validators; both contribute to the same error map.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How do you make this SSR-friendly when default
           values come from cookies?</strong> Read cookies on the server,
           pass them as <code>defaultValues</code>; the form is a
@@ -1036,9 +967,9 @@ export default function FormBuilderArticle() {
           <code>useMemo</code> so the hydrated tree matches the
           server-rendered tree on first paint and avoids hydration
           mismatch warnings.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. Compare schema-driven vs React Hook Form / Formik.
           Why pick yours?</strong> Hook Form and Formik are excellent
           field-level state libraries, but they leave structural
@@ -1048,7 +979,7 @@ export default function FormBuilderArticle() {
           a schema is a complete description of behavior, not a
           starting point. For organizations with many forms, that is
           a much better leverage point.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. How would you migrate to React Server Components?</strong>
@@ -1065,27 +996,26 @@ export default function FormBuilderArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A robust Form Builder is a <strong>headless engine plus a
+        <HighlightBlock as="p" tier="important">A robust Form Builder is a <strong>headless engine plus a
           plugin renderer</strong> driven by a declarative schema. The
           engine owns one store per form, exposes selector-based
           subscriptions to keep renders local, and orchestrates sync
           and async validation, conditional behavior, and multi-step
-          flows deterministically. Schema-as-data with a safe
+          flows deterministically.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Schema-as-data with a safe
           predicate DSL keeps the surface secure even when schemas
           arrive from a CMS. The right invariants — DOM-order
           conditional insertion, abortable async validators, per-form
           state scoping, server-error ingestion — separate a
           forgettable form library from a load-bearing platform
-          component.
-        </p>
-        <p>
+          component.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Use this approach when forms are numerous, change
           frequently, or are authored by non-engineers; prefer
           hand-rolled forms when you have a small number with bespoke
           interaction patterns where the cost of a runtime engine
           exceeds the marginal value of consistency.
-        </p>
+        </HighlightBlock>
       </section>
     </ArticleLayout>
   );

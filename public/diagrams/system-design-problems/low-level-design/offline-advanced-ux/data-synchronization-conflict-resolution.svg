@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Data Sync &amp; Conflict Resolution for Offline Edits</text>
+
+  <!-- Sync Flow -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Sync Flow (3-Way Merge)</text>
+
+    <!-- Base version -->
+    <rect x="100" y="80" width="240" height="45" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
+    <text x="220" y="100" font-size="11" font-weight="bold" text-anchor="middle" fill="#374151">Base Version (last synced)</text>
+    <text x="220" y="117" font-size="10" text-anchor="middle" fill="#6b7280">title: "Draft", status: "pending", v: 5</text>
+
+    <path d="M 160 125 L 100 155" stroke="#6b7280" stroke-width="1.5" fill="none"/>
+    <path d="M 280 125 L 340 155" stroke="#6b7280" stroke-width="1.5" fill="none"/>
+
+    <!-- Client fork -->
+    <rect x="30" y="155" width="200" height="55" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="130" y="175" font-size="11" font-weight="bold" text-anchor="middle" fill="#1e40af">Client Edit (offline)</text>
+    <text x="130" y="192" font-size="10" text-anchor="middle" fill="#374151">title: "Final Draft"</text>
+    <text x="130" y="207" font-size="10" text-anchor="middle" fill="#374151">status: unchanged</text>
+
+    <!-- Server fork -->
+    <rect x="310" y="155" width="200" height="55" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="410" y="175" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">Server Edit (concurrent)</text>
+    <text x="410" y="192" font-size="10" text-anchor="middle" fill="#374151">title: unchanged</text>
+    <text x="410" y="207" font-size="10" text-anchor="middle" fill="#374151">status: "approved"</text>
+
+    <path d="M 130 210 L 210 250" stroke="#6b7280" stroke-width="1.5" fill="none"/>
+    <path d="M 410 210 L 330 250" stroke="#6b7280" stroke-width="1.5" fill="none"/>
+
+    <!-- Merge result -->
+    <rect x="140" y="250" width="260" height="55" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="270" y="270" font-size="11" font-weight="bold" text-anchor="middle" fill="#581c87">3-Way Merge Result</text>
+    <text x="270" y="287" font-size="10" text-anchor="middle" fill="#374151">title: "Final Draft"</text>
+    <text x="270" y="303" font-size="10" text-anchor="middle" fill="#374151">status: "approved" ← no conflict!</text>
+
+    <text x="270" y="332" font-size="9" text-anchor="middle" fill="#6b7280">Changes to different fields → auto-merge</text>
+    <text x="270" y="348" font-size="9" text-anchor="middle" fill="#ef4444">Same field changed → conflict → resolve</text>
+  </g>
+
+  <!-- Resolution Strategies -->
+  <g>
+    <text x="740" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Conflict Resolution Strategies</text>
+
+    <rect x="470" y="75" width="600" height="120" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="770" y="98" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">Last-Write-Wins (LWW)</text>
+    <text x="485" y="120" font-size="10" fill="#374151">Compare timestamps: client.updatedAt vs server.updatedAt</text>
+    <text x="485" y="138" font-size="10" fill="#374151">Whichever is newer wins (overwrites the other)</text>
+    <text x="485" y="156" font-size="10" fill="#374151">Simple, but loses one party's changes silently</text>
+    <text x="485" y="173" font-size="9" fill="#f59e0b">Good for: simple fields (status, title). Bad for: collaborative text.</text>
+
+    <rect x="470" y="210" width="600" height="120" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="770" y="233" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">CRDT (Conflict-free Replicated Data Types)</text>
+    <text x="485" y="255" font-size="10" fill="#374151">Data structures mathematically guaranteed to merge without conflicts</text>
+    <text x="485" y="273" font-size="10" fill="#374151">LWW-Register: last writer wins per field</text>
+    <text x="485" y="291" font-size="10" fill="#374151">G-Counter / PN-Counter: distributed increment/decrement</text>
+    <text x="485" y="309" font-size="10" fill="#374151">Sequence CRDT (Yjs, Automerge): collaborative text editing</text>
+    <text x="485" y="322" font-size="9" fill="#3b82f6">No coordination needed — merge is always deterministic</text>
+
+    <rect x="470" y="345" width="600" height="110" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="770" y="368" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">User-Prompted Resolution</text>
+    <text x="485" y="390" font-size="10" fill="#374151">Show diff: "Server version vs Your version"</text>
+    <text x="485" y="408" font-size="10" fill="#374151">Let user pick: "Keep mine / Take theirs / Merge manually"</text>
+    <text x="485" y="426" font-size="10" fill="#374151">Field-level: user resolves each conflicting field separately</text>
+    <text x="485" y="444" font-size="10" fill="#374151">Fork: save both as separate versions (documents, notes)</text>
+    <text x="485" y="456" font-size="9" fill="#ef4444">Use for high-value data where silent overwrite is unacceptable</text>
+
+    <rect x="470" y="470" width="600" height="80" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="770" y="493" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Operational Transform (OT)</text>
+    <text x="485" y="515" font-size="10" fill="#374151">Track operations (insert/delete at position) not state snapshots</text>
+    <text x="485" y="533" font-size="10" fill="#374151">Transform concurrent ops so they commute correctly. Used in Google Docs.</text>
+  </g>
+
+  <!-- Version Vector -->
+  <g>
+    <text x="220" y="400" font-size="14" font-weight="bold" fill="#1a1a1a">Version Tracking</text>
+
+    <rect x="30" y="415" width="420" height="150" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="240" y="440" font-size="12" font-weight="bold" text-anchor="middle" fill="#581c87">Vector Clocks / Version Vectors</text>
+    <text x="45" y="462" font-size="10" fill="#374151">Each node tracks: {nodeId: counter}</text>
+    <text x="45" y="480" font-size="10" fill="#374151">Causality: A &gt; B if A's vector dominates B's</text>
+    <text x="45" y="498" font-size="10" fill="#374151">Concurrent: neither dominates → conflict detected</text>
+    <text x="45" y="516" font-size="10" fill="#374151">Simple: single monotonic version (etag / revision field)</text>
+    <text x="45" y="540" font-size="9" fill="#a855f7">Include version in mutation: server rejects stale writes (412 Precondition Failed)</text>
+  </g>
+
+  <defs>
+    <marker id="asc" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#6b7280"/></marker>
+  </defs>
+</svg>

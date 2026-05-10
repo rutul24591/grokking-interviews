@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Workflow for whiteboard interaction preview and commit with realtime fanout">
+  <title>Whiteboard Interaction Workflow</title>
+  <desc>Shows join via snapshot, viewport subscriptions, local-first interaction, sampled preview updates, and final commit for convergence.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640" />
+
+  <rect class="box" x="60" y="70" width="360" height="160" />
+  <text class="label bold" x="90" y="115">Join board</text>
+  <text class="label small" x="90" y="145">fetch snapshot (chunked)</text>
+  <text class="label small" x="90" y="170">subscribe to viewport</text>
+  <text class="label small" x="90" y="195">render canvas</text>
+
+  <rect class="accent" x="460" y="70" width="320" height="160" />
+  <text class="label bold" x="490" y="115">Realtime channel</text>
+  <text class="label small" x="490" y="145">room + viewport routing</text>
+  <text class="label small" x="490" y="170">validate + dedupe</text>
+  <text class="label small" x="490" y="195">fanout to relevant viewers</text>
+
+  <rect class="box" x="820" y="70" width="320" height="160" />
+  <text class="label bold" x="850" y="115">Remote observers</text>
+  <text class="label small" x="850" y="145">apply updates to store</text>
+  <text class="label small" x="850" y="170">incremental re-render</text>
+  <text class="label small" x="850" y="195">keep UI smooth</text>
+
+  <path class="arrow" d="M420 150 L460 150" />
+  <path class="arrow" d="M780 150 L820 150" />
+
+  <rect class="box" x="60" y="300" width="520" height="150" />
+  <text class="label bold" x="90" y="345">Continuous interaction</text>
+  <text class="label small" x="90" y="375">local prediction at 60 fps</text>
+  <text class="label small" x="90" y="400">sample remote preview (10–20 Hz)</text>
+  <text class="label small" x="90" y="425">do not persist every point</text>
+
+  <rect class="muted" x="620" y="300" width="520" height="150" />
+  <text class="label bold" x="650" y="345">Preview rendering</text>
+  <text class="label small" x="650" y="375">overlay layer for in-progress moves</text>
+  <text class="label small" x="650" y="400">safe to drop under load</text>
+  <text class="label small" x="650" y="425">final commit updates durable state</text>
+
+  <path class="arrow" d="M700 230 C700 255 400 255 360 300" />
+  <path class="arrow" d="M700 230 C700 260 900 260 900 300" />
+
+  <rect class="warn" x="60" y="510" width="1080" height="100" />
+  <text class="label bold" x="90" y="552">Commit</text>
+  <text class="label small" x="90" y="580">send final authoritative position, persist, broadcast to converge all replicas</text>
+</svg>
+

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Deployment lifecycle state machine for a hosting platform dashboard with stages and failure handling">
+  <title>Deployment Lifecycle UX State Machine</title>
+  <desc>Shows explicit deploy stages: queued, building, uploading artifacts, routing, ready, and terminal failure states. Highlights safe actions per state.</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
+    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
+    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
+    .bad{fill:#fef2f2;stroke:#dc2626;stroke-width:2;rx:14}
+    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
+    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
+    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
+    .small{font-size:14px;fill:#334155}
+    .bold{font-weight:700}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#0b1220}
+      .box{fill:#0f172a;stroke:#e5e7eb}
+      .accent{fill:#0b1b3a;stroke:#60a5fa}
+      .good{fill:#052018;stroke:#34d399}
+      .bad{fill:#2a0f12;stroke:#f87171}
+      .muted{fill:#0b1220;stroke:#64748b}
+      .arrow{stroke:#e5e7eb}
+      .label{fill:#e5e7eb}
+      .small{fill:#cbd5e1}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640"/>
+
+  <text class="label bold" x="60" y="70">Immutable deployment artifact lifecycle (what the UI must never lie about)</text>
+
+  <rect class="muted" x="60" y="110" width="240" height="90"/>
+  <text class="label bold" x="90" y="150">Queued</text>
+  <text class="label small" x="90" y="175">safe: cancel</text>
+
+  <rect class="accent" x="330" y="110" width="240" height="90"/>
+  <text class="label bold" x="360" y="150">Building</text>
+  <text class="label small" x="360" y="175">safe: view logs</text>
+
+  <rect class="accent" x="600" y="110" width="240" height="90"/>
+  <text class="label bold" x="630" y="150">Uploading</text>
+  <text class="label small" x="630" y="175">safe: retry</text>
+
+  <rect class="accent" x="870" y="110" width="270" height="90"/>
+  <text class="label bold" x="900" y="150">Routing / Warmup</text>
+  <text class="label small" x="900" y="175">safe: wait / verify</text>
+
+  <rect class="good" x="870" y="240" width="270" height="90"/>
+  <text class="label bold" x="900" y="280">Ready</text>
+  <text class="label small" x="900" y="305">safe: promote / rollback</text>
+
+  <rect class="bad" x="600" y="240" width="240" height="90"/>
+  <text class="label bold" x="630" y="280">Failed</text>
+  <text class="label small" x="630" y="305">safe: retry / inspect</text>
+
+  <rect class="box" x="60" y="380" width="1080" height="200"/>
+  <text class="label bold" x="90" y="425">UI design contract</text>
+  <text class="label small" x="90" y="455">Show stage-specific progress, not a single “deploying” spinner</text>
+  <text class="label small" x="90" y="480">Map each state to exactly one safe next action (cancel, retry, promote, rollback)</text>
+  <text class="label small" x="90" y="505">Handle superseding deploys: older deploy becomes “superseded” and cannot promote</text>
+  <text class="label small" x="90" y="530">Converge via snapshots when events are missed; keep timestamps and versions visible</text>
+
+  <path class="arrow" d="M300 155 L330 155"/>
+  <path class="arrow" d="M570 155 L600 155"/>
+  <path class="arrow" d="M840 155 L870 155"/>
+  <path class="arrow" d="M1005 200 L1005 240"/>
+
+  <path class="arrow" d="M720 200 L720 240"/>
+  <path class="arrow" d="M840 285 L870 285"/>
+</svg>
+

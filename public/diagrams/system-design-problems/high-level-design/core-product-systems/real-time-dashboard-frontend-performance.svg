@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Backpressure ladder and performance trade-offs for realtime dashboards">
+  <title>Dashboard Backpressure and Performance</title>
+  <desc>Shows a ladder of actions the UI takes to stay responsive under bursty updates and partial failures.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="ok" x="70" y="70" width="520" height="160" />
+  <text class="label bold" x="100" y="115">Normal mode</text>
+  <text class="label small" x="100" y="145">batch updates (tick cadence)</text>
+  <text class="label small" x="100" y="170">incremental chart updates</text>
+  <text class="label small" x="100" y="195">virtualize tables</text>
+
+  <rect class="warn" x="640" y="70" width="490" height="160" />
+  <text class="label bold" x="670" y="115">Behind detected</text>
+  <text class="label small" x="670" y="145">queue depth rises / render time exceeds budget</text>
+  <text class="label small" x="670" y="170">coalesce latest per series</text>
+  <text class="label small" x="670" y="195">drop intermediate deltas</text>
+
+  <path class="arrow" d="M590 150 L640 150" />
+
+  <rect class="warn" x="70" y="300" width="520" height="180" />
+  <text class="label bold" x="100" y="345">Degraded mode</text>
+  <text class="label small" x="100" y="375">reduce update frequency</text>
+  <text class="label small" x="100" y="400">reduce chart fidelity (decimation)</text>
+  <text class="label small" x="100" y="425">deprioritize non-critical widgets</text>
+  <text class="label small" x="100" y="450">show watermark + “data delayed”</text>
+
+  <rect class="box" x="640" y="300" width="490" height="180" />
+  <text class="label bold" x="670" y="345">Fallback mode</text>
+  <text class="label small" x="670" y="375">stream unstable → polling fallback</text>
+  <text class="label small" x="670" y="400">increase poll interval under errors</text>
+  <text class="label small" x="670" y="425">keep UI usable with partial widget failures</text>
+  <text class="label small" x="670" y="450">make mode visible to users</text>
+
+  <path class="arrow" d="M885 230 C885 275 430 275 430 300" />
+  <path class="arrow" d="M590 390 L640 390" />
+</svg>

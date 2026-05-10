@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Document management system architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Document Management: Preview, Versions, Annotations</text>
+  <text class="t muted" x="40" y="78" font-size="13">Signed access + incremental previews; versions and annotations separate</text>
+
+  <rect class="box" x="40" y="130" width="280" height="320" rx="14"/>
+  <text class="t h" x="60" y="160" font-size="16">Client</text>
+  <text class="t muted" x="60" y="190" font-size="12">Browser, search, viewer, overlays</text>
+
+  <rect class="box" x="360" y="130" width="260" height="140" rx="14"/>
+  <text class="t h" x="380" y="160" font-size="15">Metadata + Search</text>
+  <text class="t muted" x="380" y="188" font-size="12">Folders, permissions, discovery</text>
+
+  <rect class="box" x="360" y="290" width="260" height="160" rx="14"/>
+  <text class="t h" x="380" y="320" font-size="15">Preview / Render Service</text>
+  <text class="t muted" x="380" y="348" font-size="12">Returns tile/page manifest</text>
+  <text class="t muted" x="380" y="368" font-size="12">First page prioritized</text>
+
+  <rect class="box" x="660" y="130" width="260" height="140" rx="14"/>
+  <text class="t h" x="680" y="160" font-size="15">Content Storage + CDN</text>
+  <text class="t muted" x="680" y="188" font-size="12">Signed URLs for bytes/tiles</text>
+
+  <rect class="box" x="660" y="290" width="260" height="160" rx="14"/>
+  <text class="t h" x="680" y="320" font-size="15">Annotations + Versions</text>
+  <text class="t muted" x="680" y="348" font-size="12">Append-only versions</text>
+  <text class="t muted" x="680" y="368" font-size="12">Retryable annotation writes</text>
+
+  <path class="line" d="M320 240 L350 240" />
+  <polygon class="arrow" points="350,240 342,236 342,244"/>
+  <path class="line" d="M620 240 L650 240" />
+  <polygon class="arrow" points="650,240 642,236 642,244"/>
+  <path class="line" d="M620 370 L650 370" />
+  <polygon class="arrow" points="650,370 642,366 642,374"/>
+</svg>
+

@@ -1,0 +1,82 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Notifications Badge System — Real-time Count, Read State, Multi-device</text>
+
+  <!-- Delivery pipeline -->
+  <rect x="20" y="45" width="820" height="80" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="65" font-size="11" font-weight="bold" fill="#0d47a1">Notification Delivery Pipeline</text>
+
+  <rect x="30" y="72" width="120" height="45" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="90" y="91" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Server Event</text>
+  <text x="90" y="106" text-anchor="middle" font-size="9" fill="#1565c0">new message, like, etc</text>
+  <line x1="150" y1="95" x2="168" y2="95" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="170" y="72" width="140" height="45" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="240" y="91" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Notification Service</text>
+  <text x="240" y="106" text-anchor="middle" font-size="9" fill="#1565c0">Create record, determine channels</text>
+  <line x1="310" y1="95" x2="328" y2="95" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="330" y="72" width="140" height="45" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="400" y="91" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">WebSocket / SSE Push</text>
+  <text x="400" y="106" text-anchor="middle" font-size="9" fill="#1565c0">Real-time to active tabs</text>
+  <line x1="470" y1="95" x2="488" y2="95" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="490" y="72" width="140" height="45" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="560" y="91" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">Badge Counter Update</text>
+  <text x="560" y="106" text-anchor="middle" font-size="9" fill="#1565c0">Increment unread in UI state</text>
+  <line x1="630" y1="95" x2="648" y2="95" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="650" y="72" width="175" height="45" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="737" y="91" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">Push Notification (inactive)</text>
+  <text x="737" y="106" text-anchor="middle" font-size="9" fill="#2e7d32">Browser push when tab not visible</text>
+
+  <!-- Badge + read state -->
+  <rect x="20" y="145" width="400" height="215" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="30" y="165" font-size="12" font-weight="bold" fill="#1b5e20">Badge and Read State</text>
+
+  <rect x="30" y="175" width="375" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="217" y="195" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Unread Count Model</text>
+  <text x="217" y="210" text-anchor="middle" font-size="10" fill="#2e7d32">Server: SELECT COUNT(*) WHERE userId=X AND readAt IS NULL</text>
+  <text x="217" y="225" text-anchor="middle" font-size="10" fill="#2e7d32">Client: optimistic decrement on open, reconcile with server</text>
+
+  <rect x="30" y="240" width="180" height="60" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="120" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Mark as Read</text>
+  <text x="120" y="276" text-anchor="middle" font-size="10" fill="#2e7d32">On panel open → mark visible</text>
+  <text x="120" y="291" text-anchor="middle" font-size="10" fill="#2e7d32">Batch PATCH (not per-item)</text>
+
+  <rect x="220" y="240" width="185" height="60" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="312" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Mark All Read</text>
+  <text x="312" y="276" text-anchor="middle" font-size="10" fill="#2e7d32">Single API call: timestamp</text>
+  <text x="312" y="291" text-anchor="middle" font-size="10" fill="#2e7d32">All older than T = read</text>
+
+  <rect x="30" y="310" width="375" height="40" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="217" y="330" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">Badge display: show 99+ when count &gt; 99 to prevent layout break</text>
+
+  <!-- Multi-device + grouping -->
+  <rect x="435" y="145" width="405" height="215" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="445" y="165" font-size="12" font-weight="bold" fill="#e65100">Multi-Device Sync and Grouping</text>
+
+  <rect x="445" y="175" width="380" height="55" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="635" y="195" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Cross-Device Read Sync</text>
+  <text x="635" y="210" text-anchor="middle" font-size="10" fill="#bf360c">Read on mobile → BroadcastChannel + server update</text>
+  <text x="635" y="225" text-anchor="middle" font-size="10" fill="#bf360c">Desktop tab SSE receives read event → decrement badge</text>
+
+  <rect x="445" y="240" width="180" height="60" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="535" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Grouping Logic</text>
+  <text x="535" y="276" text-anchor="middle" font-size="10" fill="#bf360c">Same type + 5min window</text>
+  <text x="535" y="291" text-anchor="middle" font-size="10" fill="#bf360c">→ aggregate into one</text>
+
+  <rect x="635" y="240" width="185" height="60" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="727" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Notification Types</text>
+  <text x="727" y="276" text-anchor="middle" font-size="10" fill="#bf360c">system / social / transact</text>
+  <text x="727" y="291" text-anchor="middle" font-size="10" fill="#bf360c">Per-type filter + mute</text>
+
+  <rect x="445" y="310" width="380" height="40" rx="4" fill="#fff3e0" stroke="#f57c00" stroke-width="1"/>
+  <text x="635" y="330" text-anchor="middle" font-size="10" fill="#e65100">Tab title update: "Inbox (3)" — browser title reflects unread count for background tabs</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

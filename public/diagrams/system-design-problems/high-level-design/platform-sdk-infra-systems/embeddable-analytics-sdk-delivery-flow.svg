@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Delivery flow for analytics events with batching, retry, and idempotent deduplication">
+  <title>Analytics Delivery Flow</title>
+  <desc>Shows capture, enqueue, batch send, retry with backoff, ingestion dedupe, and success acknowledgement.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="80" width="330" height="150" />
+  <text class="label bold" x="90" y="125">Capture</text>
+  <text class="label small" x="90" y="155">create event</text>
+  <text class="label small" x="90" y="180">add idempotency id</text>
+  <text class="label small" x="90" y="205">apply redaction</text>
+
+  <rect class="muted" x="430" y="80" width="340" height="150" />
+  <text class="label bold" x="460" y="125">Enqueue</text>
+  <text class="label small" x="460" y="155">bounded queue</text>
+  <text class="label small" x="460" y="180">TTL + size caps</text>
+  <text class="label small" x="460" y="205">drop policy</text>
+
+  <rect class="accent" x="810" y="80" width="330" height="150" />
+  <text class="label bold" x="840" y="125">Batch send</text>
+  <text class="label small" x="840" y="155">compress</text>
+  <text class="label small" x="840" y="180">backoff + jitter</text>
+  <text class="label small" x="840" y="205">ack on success</text>
+
+  <path class="arrow" d="M390 155 L430 155" />
+  <path class="arrow" d="M770 155 L810 155" />
+
+  <rect class="accent" x="430" y="300" width="340" height="160" />
+  <text class="label bold" x="460" y="345">Ingestion</text>
+  <text class="label small" x="460" y="375">validate schema</text>
+  <text class="label small" x="460" y="400">dedupe by id</text>
+  <text class="label small" x="460" y="425">store + process</text>
+
+  <rect class="warn" x="60" y="300" width="330" height="160" />
+  <text class="label bold" x="90" y="345">Network fail</text>
+  <text class="label small" x="90" y="375">retry later</text>
+  <text class="label small" x="90" y="400">queue remains bounded</text>
+
+  <rect class="box" x="810" y="300" width="330" height="160" />
+  <text class="label bold" x="840" y="345">Success</text>
+  <text class="label small" x="840" y="375">ack clears batch</text>
+  <text class="label small" x="840" y="400">metrics emitted</text>
+
+  <path class="arrow" d="M975 230 C975 270 640 270 600 300" />
+  <path class="arrow" d="M770 380 L810 380" />
+  <path class="arrow" d="M390 380 L430 380" />
+</svg>
+

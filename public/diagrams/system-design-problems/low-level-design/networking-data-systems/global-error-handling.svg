@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 550" width="1200" height="550">
+  <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Global API Error Handling: Centralized Strategy</text>
+
+  <!-- Error Boundary -->
+  <g>
+    <text x="100" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Error Classification & Routing</text>
+
+    <rect x="50" y="100" width="1100" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
+    <text x="70" y="125" font-size="11" fill="#374151"><tspan font-weight="bold">Classify error:</tspan> Network, Timeout, 4xx (client), 5xx (server), Parsing, Unknown</text>
+    <text x="70" y="148" font-size="11" fill="#374151"><tspan font-weight="bold">Route to handler:</tspan> Retry logic (5xx), User feedback (4xx), Fallback (network), Escalate (unknown)</text>
+    <text x="70" y="171" font-size="11" fill="#374151"><tspan font-weight="bold">Log to Sentry:</tspan> All errors with context (user, component, request, response). Severity level.</text>
+  </g>
+
+  <!-- Error Handler Types -->
+  <g>
+    <text x="100" y="230" font-size="14" font-weight="bold" fill="#1a1a1a">Handler Types & Strategies</text>
+
+    <!-- Network Errors -->
+    <rect x="50" y="260" width="220" height="140" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="160" y="285" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Network Errors</text>
+    <text x="60" y="310" font-size="10" fill="#374151">• Timeout: Retry with</text>
+    <text x="60" y="326" font-size="10" fill="#374151">  exponential backoff</text>
+    <text x="60" y="342" font-size="10" fill="#374151">• No internet: Show</text>
+    <text x="60" y="358" font-size="10" fill="#374151">  offline banner</text>
+    <text x="60" y="374" font-size="10" fill="#374151">• Max retries exceeded:</text>
+    <text x="60" y="390" font-size="10" fill="#374151">  Expose retry button</text>
+
+    <!-- 4xx Errors -->
+    <rect x="300" y="260" width="220" height="140" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="410" y="285" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">4xx Client Errors</text>
+    <text x="310" y="310" font-size="10" fill="#374151">• 400 Bad Request:</text>
+    <text x="310" y="326" font-size="10" fill="#374151">  User has invalid data</text>
+    <text x="310" y="342" font-size="10" fill="#374151">• 401 Unauthorized:</text>
+    <text x="310" y="358" font-size="10" fill="#374151">  Refresh token / logout</text>
+    <text x="310" y="374" font-size="10" fill="#374151">• 404 Not Found:</text>
+    <text x="310" y="390" font-size="10" fill="#374151">  Show 404 page</text>
+
+    <!-- 5xx Errors -->
+    <rect x="550" y="260" width="220" height="140" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="660" y="285" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">5xx Server Errors</text>
+    <text x="560" y="310" font-size="10" fill="#374151">• 500 Internal Error:</text>
+    <text x="560" y="326" font-size="10" fill="#374151">  Retry (transient)</text>
+    <text x="560" y="342" font-size="10" fill="#374151">• 503 Unavailable:</text>
+    <text x="560" y="358" font-size="10" fill="#374151">  Show maintenance msg</text>
+    <text x="560" y="374" font-size="10" fill="#374151">• 429 Rate Limited:</text>
+    <text x="560" y="390" font-size="10" fill="#374151">  Exponential backoff</text>
+
+    <!-- Unknown Errors -->
+    <rect x="800" y="260" width="220" height="140" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="4"/>
+    <text x="910" y="285" font-size="12" font-weight="bold" text-anchor="middle" fill="#312e81">Unknown Errors</text>
+    <text x="810" y="310" font-size="10" fill="#374151">• Parse error:</text>
+    <text x="810" y="326" font-size="10" fill="#374151">  API version mismatch</text>
+    <text x="810" y="342" font-size="10" fill="#374151">• Unexpected status:</text>
+    <text x="810" y="358" font-size="10" fill="#374151">  Log fully for analysis</text>
+    <text x="810" y="374" font-size="10" fill="#374151">• Show generic:</text>
+    <text x="810" y="390" font-size="10" fill="#374151">  "Something went wrong"</text>
+  </g>
+
+  <!-- Error Interceptor Pattern -->
+  <g>
+    <text x="100" y="450" font-size="14" font-weight="bold" fill="#1a1a1a">Interceptor Chain Pattern</text>
+
+    <!-- Request -->
+    <rect x="50" y="480" width="100" height="50" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="3"/>
+    <text x="100" y="513" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e40af">Request</text>
+
+    <!-- Arrow -->
+    <path d="M 150 505 L 190 505" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+
+    <!-- Fetch -->
+    <rect x="190" y="480" width="100" height="50" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="3"/>
+    <text x="240" y="513" font-size="10" font-weight="bold" text-anchor="middle" fill="#312e81">Fetch</text>
+
+    <!-- Arrow (success) -->
+    <path d="M 290 505 L 330 505" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+    <!-- Arrow (error) -->
+    <path d="M 290 520 L 330 520" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+
+    <!-- Response Handler -->
+    <rect x="330" y="480" width="100" height="50" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="3"/>
+    <text x="380" y="500" font-size="10" font-weight="bold" text-anchor="middle" fill="#065f46">Response</text>
+    <text x="380" y="517" font-size="9" text-anchor="middle" fill="#059669">OK</text>
+
+    <!-- Error Handler -->
+    <rect x="330" y="505" width="100" height="50" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="3"/>
+    <text x="380" y="525" font-size="10" font-weight="bold" text-anchor="middle" fill="#991b1b">Error</text>
+    <text x="380" y="542" font-size="9" text-anchor="middle" fill="#991b1b">Handler</text>
+
+    <!-- Arrow to result -->
+    <path d="M 430 505 L 470 505" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+    <path d="M 430 530 L 470 530" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+
+    <!-- Classify & Route -->
+    <rect x="470" y="480" width="140" height="50" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="3"/>
+    <text x="540" y="513" font-size="10" font-weight="bold" text-anchor="middle" fill="#581c87">Classify & Route</text>
+
+    <!-- Arrow to callback -->
+    <path d="M 610 505 L 650 505" stroke="#a855f7" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>
+
+    <!-- Callback -->
+    <rect x="650" y="480" width="100" height="50" fill="#fce7f3" stroke="#ec4899" stroke-width="2" rx="3"/>
+    <text x="700" y="513" font-size="10" font-weight="bold" text-anchor="middle" fill="#831843">Callback</text>
+
+    <!-- Arrow to result -->
+    <path d="M 750 505 L 790 505" stroke="#ec4899" stroke-width="2" fill="none" marker-end="url(#arrow5)"/>
+
+    <!-- Result -->
+    <rect x="790" y="480" width="100" height="50" fill="#e0fdf4" stroke="#065f46" stroke-width="2" rx="3"/>
+    <text x="840" y="513" font-size="10" font-weight="bold" text-anchor="middle" fill="#047857">Result</text>
+  </g>
+
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#a855f7"/>
+    </marker>
+    <marker id="arrow5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ec4899"/>
+    </marker>
+  </defs>
+</svg>

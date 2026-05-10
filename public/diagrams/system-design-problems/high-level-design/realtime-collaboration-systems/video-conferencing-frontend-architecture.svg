@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Video conferencing frontend architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Video Conferencing: Control Plane + Media Plane</text>
+  <text class="t muted" x="40" y="78" font-size="13">Signaling is separate; SFU handles multi-party fanout</text>
+
+  <rect class="box" x="40" y="150" width="280" height="300" rx="14"/>
+  <text class="t h" x="60" y="180" font-size="16">Client</text>
+  <text class="t muted" x="60" y="210" font-size="12">Call state machine</text>
+  <text class="t muted" x="60" y="232" font-size="12">Device manager</text>
+  <text class="t muted" x="60" y="254" font-size="12">QoE telemetry</text>
+
+  <rect class="box" x="360" y="150" width="260" height="140" rx="14"/>
+  <text class="t h" x="380" y="180" font-size="16">Signaling Service</text>
+  <text class="t muted" x="380" y="210" font-size="12">SDP exchange + auth</text>
+
+  <rect class="box" x="660" y="150" width="260" height="140" rx="14"/>
+  <text class="t h" x="680" y="180" font-size="16">SFU (Media)</text>
+  <text class="t muted" x="680" y="210" font-size="12">Selective forwarding</text>
+
+  <rect class="box" x="360" y="310" width="560" height="140" rx="14"/>
+  <text class="t h" x="380" y="340" font-size="16">TURN/STUN + Network Edge</text>
+  <text class="t muted" x="380" y="370" font-size="12">Connectivity + rate controls</text>
+
+  <path class="line" d="M320 240 L350 240" />
+  <polygon class="arrow" points="350,240 342,236 342,244"/>
+  <path class="line" d="M620 220 L650 220" />
+  <polygon class="arrow" points="650,220 642,216 642,224"/>
+</svg>
+

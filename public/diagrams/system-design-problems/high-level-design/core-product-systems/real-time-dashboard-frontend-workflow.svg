@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Workflow for baseline query and streaming deltas in a realtime dashboard">
+  <title>Real-time Dashboard Workflow</title>
+  <desc>Shows baseline query then streaming deltas, plus backpressure and time-range switching behavior.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="70" width="320" height="150" />
+  <text class="label bold" x="90" y="115">Load dashboard</text>
+  <text class="label small" x="90" y="145">fetch definition + permissions</text>
+  <text class="label small" x="90" y="170">select time range</text>
+  <text class="label small" x="90" y="195">run baseline queries</text>
+
+  <rect class="accent" x="440" y="70" width="340" height="150" />
+  <text class="label bold" x="470" y="115">Baseline render</text>
+  <text class="label small" x="470" y="145">deterministic snapshot</text>
+  <text class="label small" x="470" y="170">watermark + freshness metadata</text>
+  <text class="label small" x="470" y="195">widgets rendered</text>
+
+  <rect class="box" x="840" y="70" width="300" height="150" />
+  <text class="label bold" x="870" y="115">Subscribe deltas</text>
+  <text class="label small" x="870" y="145">batched stream (e.g., 1s)</text>
+  <text class="label small" x="870" y="170">apply backpressure</text>
+  <text class="label small" x="870" y="195">incremental updates</text>
+
+  <path class="arrow" d="M380 145 L440 145" />
+  <path class="arrow" d="M780 145 L840 145" />
+
+  <rect class="muted" x="120" y="300" width="420" height="190" />
+  <text class="label bold" x="150" y="345">Backpressure</text>
+  <text class="label small" x="150" y="375">batch renders</text>
+  <text class="label small" x="150" y="400">coalesce latest per series</text>
+  <text class="label small" x="150" y="425">drop intermediate updates when behind</text>
+  <text class="label small" x="150" y="450">degraded mode if needed</text>
+
+  <rect class="muted" x="600" y="300" width="480" height="190" />
+  <text class="label bold" x="630" y="345">Time range change</text>
+  <text class="label small" x="630" y="375">pause stream</text>
+  <text class="label small" x="630" y="400">query new baseline</text>
+  <text class="label small" x="630" y="425">resubscribe with new key</text>
+  <text class="label small" x="630" y="450">avoid mixing live + historical</text>
+
+  <path class="arrow" d="M990 220 C990 270 820 270 820 300" />
+  <path class="arrow" d="M540 395 L600 395" />
+</svg>

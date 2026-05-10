@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function ComponentLibraryArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable component library for a large-scale
           organization that maintains multiple web and mobile applications. The
           library must provide a consistent set of UI components (buttons, inputs,
@@ -48,8 +49,8 @@ export default function ComponentLibraryArticle() {
           The system must expose design tokens — the atomic visual decisions such as
           colors, typography scales, spacing units, shadow levels, and border radii
           — in a structured format consumable by any platform (web, iOS, Android).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The component library serves as the single source of truth for UI
           patterns. Every component must have a well-defined API with consistent prop
           patterns, support compound component composition, and optionally accept
@@ -58,7 +59,7 @@ export default function ComponentLibraryArticle() {
           guidelines, do/don't examples), automated accessibility testing, visual
           regression testing, and semantic versioning with migration guides for
           breaking changes.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -67,19 +68,19 @@ export default function ComponentLibraryArticle() {
             The library targets React 19+ web applications using TypeScript with
             strict mode enabled.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Design tokens must be distributable in multiple formats: CSS custom
             properties, JavaScript/TypeScript exports, and JSON for cross-platform
             consumption (iOS, Android).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The library supports light/dark mode and brand-level customization via
             token overrides at runtime.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             All components must meet WCAG 2.1 AA accessibility standards minimum,
             including keyboard navigation and screen reader compatibility.
-          </li>
+          </HighlightBlock>
           <li>
             The library is published as an npm package with semantic versioning,
             tree-shaking support, and peer dependency on React.
@@ -108,23 +109,23 @@ export default function ComponentLibraryArticle() {
             programmatic access, and JSON for cross-platform consumption (iOS
             Style Dictionary, Android XML resources).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Component API Design:</strong> Every component exposes a
             consistent prop pattern (e.g., <code>variant</code>, <code>size</code>,
             <code>disabled</code>, <code>className</code>), supports compound
             component composition, and optionally accepts render props or
             polymorphic <code>as</code> props.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Theming:</strong> Support light/dark mode switching, brand-level
             customization via token overrides, and CSS variable runtime theming
             without re-renders.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility Compliance:</strong> All components meet WCAG 2.1
             AA minimum, are fully keyboard navigable, and tested with screen readers
             (NVDA, VoiceOver, TalkBack).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Documentation:</strong> Storybook with MDX docs, interactive
             playground with live prop controls, usage guidelines, and do/don't
@@ -154,22 +155,22 @@ export default function ComponentLibraryArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> The library must add minimal bundle
             overhead. Individual components should be importable without pulling
             in the entire library. Token resolution at runtime should be O(1) via
             CSS variable inheritance.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Type Safety:</strong> Full TypeScript support with strict mode.
             All component props, token types, theme overrides, and component metadata
             are strongly typed with no <code>any</code> usage.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Developer Experience:</strong> Components should provide helpful
             runtime warnings in development mode for misconfigurations (e.g., invalid
             prop combinations, missing required context, accessibility violations).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> The library must support 100+ components
             across multiple packages (core, data-display, forms, layout, overlay)
@@ -217,7 +218,7 @@ export default function ComponentLibraryArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core architecture separates the component library into three layers:
           a <strong>token layer</strong> (design tokens as structured data with
           multi-platform exporters), a <strong>theme layer</strong> (token-to-CSS-variable
@@ -226,33 +227,33 @@ export default function ComponentLibraryArticle() {
           variables and exposing consistent APIs). This separation ensures that visual
           changes are localized to tokens, theme changes are atomic via CSS variable
           swaps, and components remain agnostic to specific visual values.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS-in-JS (styled-components, Emotion):</strong> Provides dynamic
             theming via JavaScript objects and runtime style generation. The trade-off
             is runtime overhead (style recalculation on every render), larger bundle
             size (runtime library), and CSS extraction complexity for SSR. CSS custom
             properties have zero runtime cost and are natively supported by browsers.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Utility-first CSS only (pure Tailwind):</strong> Every component
             is composed of Tailwind utility classes. This works well for single
             applications but fails at the library level — consumers cannot easily
             override the visual language without forking every component. Tokens provide
             a single override point.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Static CSS with preprocessor variables (Sass/Less):</strong>
             Compile-time variables produce static CSS with no runtime theming capability.
             Theme switching requires swapping entire stylesheets. CSS custom properties
             enable atomic, instant theme switches without reloading stylesheets.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why CSS Custom Properties + Token Layer is optimal:</strong> CSS
           variables provide native runtime theming with zero JavaScript execution cost.
           The token layer ensures tokens are defined once in a structured format and
@@ -260,7 +261,7 @@ export default function ComponentLibraryArticle() {
           (e.g., <code>var(--color-primary)</code>), so theme swaps happen at the CSS
           level without React re-renders. This pattern is used by production design
           systems like Radix UI, GitHub Primer, and Shopify Polaris.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -272,7 +273,7 @@ export default function ComponentLibraryArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Type Definitions (<code>library-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Defines the core TypeScript interfaces used across the library. The
             <code>DesignToken</code> interface represents a single token with a name,
             value, type category, description, and optional alias (reference to another
@@ -282,7 +283,7 @@ export default function ComponentLibraryArticle() {
             values for a specific theme. The <code>ComponentMeta</code> interface tracks
             component name, version, accessibility status, deprecation state, and
             associated tokens.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -326,14 +327,14 @@ export default function ComponentLibraryArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Component Registry (<code>component-registry.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Tracks all registered components with their metadata: name, version,
             accessibility audit status, deprecation state, and associated tokens.
             Provides a lookup API for documentation tooling to enumerate all
             components, filter by category, and retrieve component metadata. Used by
             the documentation site and the development-only ComponentMeta component
             to display component information.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -354,7 +355,7 @@ export default function ComponentLibraryArticle() {
         />
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Token Resolution Flow</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tokens are resolved in a multi-step pipeline. First, token definitions are
           loaded from the source file. Second, aliases are resolved by following
           references (with circular dependency detection). Third, the theme builder
@@ -365,10 +366,10 @@ export default function ComponentLibraryArticle() {
           Finally, components reference CSS variables in their styles
           (<code>color: var(--color-primary)</code>), and the browser&apos;s CSS engine
           handles inheritance and cascading.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Component API Patterns</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Every component in the library follows consistent API patterns. The
           <code>variant</code> prop controls visual style (e.g., <code>primary</code>,
           <code>secondary</code>, <code>ghost</code>). The <code>size</code> prop
@@ -379,10 +380,10 @@ export default function ComponentLibraryArticle() {
           <code>{"<Dialog.Title>"}</code>, <code>{"<Dialog.Body>"}</code>,
           <code>{"<Dialog.Actions>"}</code>) connected via React Context to avoid
           prop drilling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Theming Architecture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Themes are constructed by the Theme Builder, which takes a base token set
           and applies consumer-specified overrides. The resulting theme object maps
           every token name to a resolved value. The TokenProvider component receives
@@ -392,20 +393,20 @@ export default function ComponentLibraryArticle() {
           rendering a different TokenProvider — no component re-renders are needed
           beyond the provider boundary because CSS variable changes are handled
           natively by the browser.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The execution flow follows a unidirectional token-to-CSS pipeline. Token
           definitions are the source of truth, the Theme Builder transforms them into
           theme objects, the TokenProvider injects them as CSS variables, and
           components consume them via CSS variable references. This ensures that visual
           changes propagate atomically through the CSS cascade without requiring React
           state updates or component re-renders.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Build-Time Flow</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -413,18 +414,18 @@ export default function ComponentLibraryArticle() {
             Token definitions are authored in <code>design-tokens.ts</code> as typed
             JavaScript objects.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             The Token Exporter runs at build time (or via a CLI script) to generate
             CSS variable files, JavaScript exports, and JSON for cross-platform use.
-          </li>
+          </HighlightBlock>
           <li>
             Generated CSS is included in the library&apos;s style output. Generated
             TypeScript types are included in the package&apos;s type declarations.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Components are compiled with references to CSS variable names (not raw
             token values), ensuring runtime theme compatibility.
-          </li>
+          </HighlightBlock>
           <li>
             The library is bundled with tree-shaking enabled, producing per-component
             ESM output.
@@ -449,11 +450,11 @@ export default function ComponentLibraryArticle() {
             Components within the provider tree reference CSS variables in their
             Tailwind or inline styles (e.g., <code>bg-[var(--color-bg-primary)]</code>).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             When the consumer switches themes, TokenProvider receives a new theme
             prop, updates the inline style CSS variable values, and the browser
             repaints affected elements without React re-rendering components.
-          </li>
+          </HighlightBlock>
         </ol>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
@@ -472,13 +473,13 @@ export default function ComponentLibraryArticle() {
             warning is logged in development and the violation is recorded in the
             theme metadata.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>SSR token injection:</strong> During server-side rendering, the
             TokenProvider renders the CSS variable style string inline on the
             container element. The HTML sent to the browser already carries correct
             styles. On hydration, React reattaches to the existing DOM without
             flash or mismatch.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Polymorphic prop typing:</strong> Components using the
             <code>as</code> prop use TypeScript generics with conditional types to
@@ -500,7 +501,7 @@ export default function ComponentLibraryArticle() {
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The complete, production-ready implementation consists of 12 files:
             TypeScript interfaces for all types, token definitions covering colors,
             typography, spacing, shadows, radii, and z-indices, a multi-platform token
@@ -511,11 +512,11 @@ export default function ComponentLibraryArticle() {
             playground with prop controls, and an MDX-based documentation page. Click
             the <strong>Example</strong> toggle at the top of the article to view all
             source files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Type Definitions (library-types.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Defines the foundational types for the entire library. The
           <code>DesignToken</code> interface carries <code>name</code>, <code>value</code>,
           <code>category</code> (typed union), <code>description</code>, and optional
@@ -525,7 +526,7 @@ export default function ComponentLibraryArticle() {
           status (pass/fail/pending), deprecation info, and an array of associated
           token names. The <code>ThemeOverride</code> type is a partial map allowing
           consumers to customize any subset of tokens.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Design Tokens (design-tokens.ts)</h3>
         <p>
@@ -574,27 +575,27 @@ export default function ComponentLibraryArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: Accessibility Checker (accessibility-checker.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Wraps axe-core&apos;s programmatic API to provide a simplified interface for
           running accessibility audits. The <code>runA11yCheck()</code> function
           accepts a DOM container, runs the full WCAG 2.1 AA rule set, and returns
           structured violation reports with rule ID, impact level (critical, serious,
           moderate, minor), affected element selector, and remediation guidance.
           Integrates into CI pipelines and development-mode component warnings.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Hooks: useTokenResolution and useThemeTokens</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>useTokenResolution</code> hook resolves a token name to its
           current theme value at runtime by looking up the CSS variable value from
           the computed style of the provider container. The <code>useThemeTokens</code>
           hook provides direct access to the current theme object within a component,
           enabling JavaScript-driven style decisions (e.g., canvas rendering, SVG
           generation) that cannot use CSS variables directly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Components: TokenProvider, ComponentMeta, Playground, Documentation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <code>TokenProvider</code> is the root of the theming system — it
           receives a theme, converts it to CSS variable declarations, and injects
           them as inline styles on a container element. The <code>ComponentMeta</code>
@@ -605,7 +606,7 @@ export default function ComponentLibraryArticle() {
           variants, sizes, and states. The <code>DocumentationPage</code> renders
           MDX-based documentation with live component examples, usage guidelines,
           and do/don't patterns.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 7: Performance & Scalability */}
@@ -623,11 +624,11 @@ export default function ComponentLibraryArticle() {
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">Token alias resolution</td>
                 <td className="p-2">O(n) — n tokens, single pass with cycle detection</td>
                 <td className="p-2">O(n) — resolved token map</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Theme build with overrides</td>
                 <td className="p-2">O(m) — m override keys merged into base</td>
@@ -638,11 +639,11 @@ export default function ComponentLibraryArticle() {
                 <td className="p-2">O(1) per color pair — relative luminance math</td>
                 <td className="p-2">O(c) — c color pairs checked</td>
               </tr>
-              <tr>
+              <HighlightBlock as="tr" tier="important">
                 <td className="p-2">CSS variable injection</td>
                 <td className="p-2">O(t) — string concatenation of t variables</td>
                 <td className="p-2">O(t) — inline style string length</td>
-              </tr>
+              </HighlightBlock>
               <tr>
                 <td className="p-2">Token lookup by name</td>
                 <td className="p-2">O(1) — Map or object key lookup</td>
@@ -675,21 +676,21 @@ export default function ComponentLibraryArticle() {
             (<code>{"import { Button } from '@org/ui/button'"}</code>) for maximum
             tree-shaking safety.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Large CSS variable injection strings:</strong> A mature design
             system may have 500+ CSS variables. Injecting them as inline styles on
             every TokenProvider creates large <code>style</code> attributes.
             Mitigation: inject CSS variables once at the document root via a
             <code>{"<style>"}</code> tag rather than inline styles, and use CSS
             variable inheritance for scoped theme overrides.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Contrast check computation at runtime:</strong> Running WCAG
             contrast checks on every theme switch adds computational overhead.
             Mitigation: run contrast checks at build time during theme construction,
             not at runtime. The runtime TokenProvider only injects pre-validated
             CSS variables.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
@@ -700,12 +701,12 @@ export default function ComponentLibraryArticle() {
             package.json to map subpath imports. This ensures bundlers can
             tree-shake unused components even when consumers use barrel imports.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>CSS variable inheritance for scoped themes:</strong> Instead of
             injecting 500 variables at every theme boundary, inject only the delta
             (overridden variables) at the scoped level. CSS inheritance handles the
             rest. This reduces style string size by 90%+ for partial theme overrides.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Build-time token generation:</strong> Generate CSS files, type
             declarations, and JSON at build time rather than runtime. This eliminates
@@ -727,14 +728,14 @@ export default function ComponentLibraryArticle() {
         <h2>Security &amp; Accessibility Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization in Component Content</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Components that accept user-generated content (e.g., button labels, input
           values, tooltip text) must sanitize HTML before rendering. React automatically
           escapes string content rendered as JSX children, but components that accept
           HTML strings via <code>dangerouslySetInnerHTML</code> or rich text props
           must run the content through a sanitizer like DOMPurify. Design tokens
           themselves are not user-generated and therefore are not XSS vectors.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility Compliance (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -745,30 +746,30 @@ export default function ComponentLibraryArticle() {
               contrast against its background. Large text (18pt+ or 14pt+ bold)
               requires 3:1. The Theme Builder validates this at build time.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               <strong>Keyboard navigation:</strong> Every interactive component
               (buttons, links, inputs, selects, menus, dialogs) must be fully
               operable via keyboard alone. Tab order must follow logical reading
               order. Focus must be visible (minimum 3:1 contrast for focus ring
               against adjacent colors).
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Screen reader testing:</strong> Components are tested with
               NVDA (Windows + Firefox/Chrome), VoiceOver (macOS + Safari), and
               TalkBack (Android + Chrome). ARIA roles, states, and properties must
               accurately describe component purpose and state.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               <strong>Focus management:</strong> Modal dialogs trap focus within
               their boundaries and restore focus to the triggering element on close.
               Skip links provide direct navigation to main content.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Automated A11y Testing Pipeline</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Every component story in Storybook is tested with axe-core via the
             Storybook test runner. Violations are categorized by impact level:
             critical (must fix before merge), serious (should fix), moderate, and
@@ -776,7 +777,7 @@ export default function ComponentLibraryArticle() {
             accessibility checker module provides the integration layer between
             axe-core and the test runner, reporting structured violation objects
             with selectors, rule IDs, and remediation steps.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Supply Chain Security</h3>
@@ -811,13 +812,13 @@ export default function ComponentLibraryArticle() {
             name, valid value, correct category, and description. Assert that aliased
             tokens reference valid target tokens that exist in the token map.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Token exporter:</strong> Test CSS output contains correctly
             formatted variable declarations. Test JS output is a plain object with
             all token names as keys. Test JSON output conforms to W3C Design Tokens
             schema. Test circular reference detection throws with a clear error
             message identifying the cycle.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Theme Builder:</strong> Test that overrides correctly merge with
             base theme (override values take precedence, non-overridden values
@@ -826,33 +827,33 @@ export default function ComponentLibraryArticle() {
             override types (e.g., number where string expected) produce validation
             errors.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Component registry:</strong> Test registration adds component
             to the registry with correct metadata. Test lookup APIs return expected
             results. Test duplicate registration is handled (either overwrite or
             throw, depending on design decision).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility checker:</strong> Test that it correctly identifies
             known violations (e.g., missing alt text, insufficient contrast, missing
             ARIA labels). Test clean components pass with zero violations.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>TokenProvider rendering:</strong> Render TokenProvider with a
             theme, assert the container element has inline styles containing all
             expected CSS variable declarations. Test theme switch updates the style
             attribute. Test scoped theme injection (nested providers).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Component consumption:</strong> Render a component within a
             TokenProvider, assert computed styles resolve to the expected CSS
             variable values. Test that changing the theme updates computed styles
             without re-rendering the component.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Playground interaction:</strong> Render the LibraryPlayground,
             select a component, adjust prop controls via UI, assert the component
@@ -921,13 +922,13 @@ export default function ComponentLibraryArticle() {
             Interviewers expect candidates to abstract these into tokens so the visual
             language can change without modifying component code.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Inconsistent component APIs:</strong> Each component uses different
             prop names for the same concept (e.g., one uses <code>variant</code>,
             another uses <code>type</code>, another uses <code>theme</code>). A
             component library must enforce consistent naming conventions across all
             components.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Ignoring tree-shaking:</strong> Publishing components as a single
             bundled file or using CommonJS exports prevents bundlers from eliminating
@@ -935,12 +936,12 @@ export default function ComponentLibraryArticle() {
             <code>sideEffects: false</code>, and the <code>exports</code> field in
             package.json.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Skipping accessibility:</strong> Building components without
             keyboard navigation, ARIA attributes, or contrast validation is a
             critical oversight. In production systems, inaccessible components
             exclude users and may violate legal requirements (ADA, EAA).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>No versioning strategy:</strong> Making breaking changes without
             semantic version bumps, migration guides, or deprecation periods breaks
@@ -952,7 +953,7 @@ export default function ComponentLibraryArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">CSS Custom Properties vs CSS-in-JS</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             CSS custom properties have zero runtime overhead, work natively in all
             modern browsers, and enable theme switching without React re-renders. The
             trade-off is that they cannot express dynamic values computed at runtime
@@ -964,7 +965,7 @@ export default function ComponentLibraryArticle() {
             because components should not depend on application state for their visual
             design. CSS-in-JS is appropriate for application-specific, data-driven
             visualizations.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1006,7 +1007,7 @@ export default function ComponentLibraryArticle() {
               Q: How would you handle a consumer needing a component variant that does
               not exist in the library?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: First, evaluate whether the variant is broadly useful. If yes, add it
               to the library with a minor version bump. If no, the consumer should
               compose the existing component with custom styling (CSS overrides, wrapper
@@ -1015,7 +1016,7 @@ export default function ComponentLibraryArticle() {
               compound component composition — so consumers can build custom variants
               without modifying library source. If the pattern becomes common across
               multiple consumers, promote it to the library.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -1040,7 +1041,7 @@ export default function ComponentLibraryArticle() {
               Q: How would you support multi-brand theming where a single application
               serves multiple organizations with distinct brand identities?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Use scoped TokenProviders. Each organization&apos;s section of the
               application is wrapped in a TokenProvider with that org&apos;s brand theme
               (token overrides). Because CSS variables cascade, only the org-specific
@@ -1049,7 +1050,7 @@ export default function ComponentLibraryArticle() {
               separation, the TokenProvider wraps the route handler. For mixed-brand
               pages (e.g., a marketplace showing multiple sellers), each seller card
               gets its own scoped provider with delta overrides.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

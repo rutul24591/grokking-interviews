@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" width="1100" height="560">
+  <text x="550" y="30" font-size="22" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Push Notification UX: Architecture &amp; Delivery Pipeline</text>
+
+  <!-- Push Flow -->
+  <g>
+    <text x="220" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Push Delivery Pipeline</text>
+
+    <rect x="30" y="75" width="380" height="50" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="220" y="97" font-size="11" font-weight="bold" text-anchor="middle" fill="#1e40af">1. Browser requests push subscription</text>
+    <text x="220" y="114" font-size="10" text-anchor="middle" fill="#374151">PushManager.subscribe({userVisibleOnly, applicationServerKey})</text>
+
+    <path d="M 220 125 L 220 143" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#apn)"/>
+
+    <rect x="30" y="143" width="380" height="50" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+    <text x="220" y="165" font-size="11" font-weight="bold" text-anchor="middle" fill="#92400e">2. Send subscription to server</text>
+    <text x="220" y="182" font-size="10" text-anchor="middle" fill="#374151">POST /push-subscriptions {endpoint, p256dh, auth}</text>
+
+    <path d="M 220 193 L 220 211" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#apn)"/>
+
+    <rect x="30" y="211" width="380" height="50" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="220" y="233" font-size="11" font-weight="bold" text-anchor="middle" fill="#065f46">3. Server sends push via Web Push Protocol</text>
+    <text x="220" y="250" font-size="10" text-anchor="middle" fill="#374151">Encrypt payload, send to push service (FCM/APNS)</text>
+
+    <path d="M 220 261 L 220 279" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#apn)"/>
+
+    <rect x="30" y="279" width="380" height="50" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="4"/>
+    <text x="220" y="301" font-size="11" font-weight="bold" text-anchor="middle" fill="#581c87">4. Service Worker receives push event</text>
+    <text x="220" y="318" font-size="10" text-anchor="middle" fill="#374151">push event → self.registration.showNotification()</text>
+
+    <path d="M 220 329 L 220 347" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#apn)"/>
+
+    <rect x="30" y="347" width="380" height="50" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="220" y="369" font-size="11" font-weight="bold" text-anchor="middle" fill="#991b1b">5. User sees OS notification</text>
+    <text x="220" y="386" font-size="10" text-anchor="middle" fill="#374151">notificationclick → open app / focus tab / deep link</text>
+  </g>
+
+  <!-- Permission UX -->
+  <g>
+    <text x="690" y="62" font-size="14" font-weight="bold" fill="#1a1a1a">Permission &amp; Preference UX</text>
+
+    <rect x="450" y="75" width="620" height="180" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+    <text x="760" y="100" font-size="12" font-weight="bold" text-anchor="middle" fill="#991b1b">Permission Request Best Practices</text>
+    <text x="465" y="122" font-size="10" fill="#374151">Don't request on page load — users dismiss immediately</text>
+    <text x="465" y="140" font-size="10" fill="#374151">Request after user action (click "Enable notifications")</text>
+    <text x="465" y="158" font-size="10" fill="#374151">Show custom UI first: "Get notified of updates?" [Yes / No]</text>
+    <text x="465" y="176" font-size="10" fill="#374151">If denied: provide manual re-enable instructions</text>
+    <text x="465" y="194" font-size="10" fill="#374151">Check Notification.permission before requesting</text>
+    <text x="465" y="212" font-size="10" fill="#374151">  'default' → request  'granted' → subscribe  'denied' → give up</text>
+    <text x="465" y="233" font-size="9" fill="#ef4444">iOS Safari: user must add to home screen for Web Push (PWA only)</text>
+
+    <rect x="450" y="270" width="620" height="150" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="4"/>
+    <text x="760" y="295" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e40af">Notification Preferences UI</text>
+    <text x="465" y="318" font-size="10" fill="#374151">Category toggles: Comments, Mentions, System alerts</text>
+    <text x="465" y="336" font-size="10" fill="#374151">Frequency: Immediate / Digest (daily/weekly)</text>
+    <text x="465" y="354" font-size="10" fill="#374151">Quiet hours: no notifications between 10pm–8am</text>
+    <text x="465" y="372" font-size="10" fill="#374151">Priority: only high-priority breaks quiet hours</text>
+    <text x="465" y="390" font-size="10" fill="#374151">Channel: push / email / in-app per category</text>
+    <text x="465" y="406" font-size="9" fill="#3b82f6">Store preferences server-side — apply across all devices</text>
+
+    <rect x="450" y="435" width="620" height="120" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>
+    <text x="760" y="458" font-size="12" font-weight="bold" text-anchor="middle" fill="#065f46">Notification Content Best Practices</text>
+    <text x="465" y="480" font-size="10" fill="#374151">title: &lt;50 chars. body: &lt;120 chars (truncated on mobile)</text>
+    <text x="465" y="498" font-size="10" fill="#374151">icon: app icon. badge: monochrome icon for status bar</text>
+    <text x="465" y="516" font-size="10" fill="#374151">actions: up to 2 action buttons (Reply, Dismiss)</text>
+    <text x="465" y="530" font-size="9" fill="#10b981">data: include URL and entity ID for deep linking on click</text>
+  </g>
+
+  <rect x="30" y="430" width="400" height="48" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="3"/>
+  <text x="50" y="450" font-size="11" fill="#374151"><tspan font-weight="bold">Architecture:</tspan> VAPID key pair for server auth.</text>
+  <text x="50" y="468" font-size="11" fill="#374151">Service Worker handles push even when app is closed.</text>
+
+  <defs>
+    <marker id="apn" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#6b7280"/></marker>
+  </defs>
+</svg>

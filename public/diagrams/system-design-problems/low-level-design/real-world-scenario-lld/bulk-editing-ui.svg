@@ -1,0 +1,87 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Bulk Editing UI — Selection, Batch Operations, Progress, and Rollback</text>
+
+  <!-- Selection model -->
+  <rect x="20" y="45" width="260" height="310" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Selection Model</text>
+
+  <rect x="35" y="78" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Selection State</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">selectedIds: Set&lt;string&gt;</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">selectAll: boolean (virtual set)</text>
+  <text x="150" y="142" text-anchor="middle" font-size="10" fill="#1565c0">excludedIds: Set (for selectAll mode)</text>
+
+  <rect x="35" y="153" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Range Select</text>
+  <text x="150" y="188" text-anchor="middle" font-size="10" fill="#1565c0">Shift+click: select A to B range</text>
+  <text x="150" y="203" text-anchor="middle" font-size="10" fill="#1565c0">Track lastClickedIndex</text>
+
+  <rect x="35" y="228" width="230" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Select All with N pages</text>
+  <text x="150" y="263" text-anchor="middle" font-size="10" fill="#1565c0">"Select 20 on page" vs</text>
+  <text x="150" y="278" text-anchor="middle" font-size="10" fill="#1565c0">"Select all 5,000 results"</text>
+  <text x="150" y="291" text-anchor="middle" font-size="10" fill="#1565c0">Server applies filter + batch op</text>
+
+  <rect x="35" y="303" width="230" height="42" rx="4" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="150" y="322" text-anchor="middle" font-size="10" fill="#0d47a1">Floating action bar appears</text>
+  <text x="150" y="336" text-anchor="middle" font-size="10" fill="#1565c0">when count &gt; 0</text>
+
+  <!-- Batch operations -->
+  <rect x="295" y="45" width="280" height="310" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Batch Operations</text>
+
+  <rect x="310" y="78" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Async Batch Execution</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">POST /items/batch {ids, action, params}</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">Server-side processing (not per-item)</text>
+  <text x="435" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">Returns jobId for progress polling</text>
+
+  <rect x="310" y="153" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Progress Tracking</text>
+  <text x="435" y="188" text-anchor="middle" font-size="10" fill="#2e7d32">Poll GET /jobs/:jobId every 2s</text>
+  <text x="435" y="203" text-anchor="middle" font-size="10" fill="#2e7d32">Progress bar: N/total processed</text>
+  <text x="435" y="218" text-anchor="middle" font-size="10" fill="#2e7d32">User can close panel (runs bg)</text>
+
+  <rect x="310" y="228" width="250" height="65" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Partial Success</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">Track succeeded + failed per item</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">Summary: "47/50 deleted, 3 failed"</text>
+  <text x="435" y="293" text-anchor="middle" font-size="10" fill="#2e7d32">Failed items listed for review</text>
+
+  <rect x="310" y="303" width="250" height="42" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="435" y="322" text-anchor="middle" font-size="10" fill="#1b5e20">Optimistic: remove items from list</text>
+  <text x="435" y="336" text-anchor="middle" font-size="10" fill="#2e7d32">immediately, restore on failure</text>
+
+  <!-- Undo + confirmation -->
+  <rect x="590" y="45" width="250" height="310" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Undo and Confirmation</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Destructive Action Guard</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#bf360c">Delete 500 items → confirm dialog</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#bf360c">Type count to confirm (GitHub model)</text>
+  <text x="715" y="142" text-anchor="middle" font-size="10" fill="#bf360c">Non-destructive: no confirm needed</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Undo Toast</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#bf360c">"Deleted 50 items. Undo?"</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#bf360c">5s window → then server commit</text>
+  <text x="715" y="218" text-anchor="middle" font-size="10" fill="#bf360c">Undo reverses entire batch</text>
+
+  <rect x="605" y="228" width="220" height="65" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="715" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Inline Edit Mode</text>
+  <text x="715" y="263" text-anchor="middle" font-size="10" fill="#bf360c">Edit shared field across selected</text>
+  <text x="715" y="278" text-anchor="middle" font-size="10" fill="#bf360c">Show "Mixed" for different values</text>
+  <text x="715" y="293" text-anchor="middle" font-size="10" fill="#bf360c">Apply fills all with new value</text>
+
+  <rect x="605" y="303" width="220" height="42" rx="4" fill="#ffecb3" stroke="#f9a825" stroke-width="1"/>
+  <text x="715" y="322" text-anchor="middle" font-size="10" fill="#e65100">Max batch size: 10,000 items</text>
+  <text x="715" y="336" text-anchor="middle" font-size="10" fill="#bf360c">Larger → queue + email on complete</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

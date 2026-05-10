@@ -1,0 +1,104 @@
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="420" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Geolocation &amp; Permissions — Request, Accuracy, and Privacy Model</text>
+
+  <!-- Permission Request flow -->
+  <rect x="20" y="50" width="820" height="110" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="30" y="70" font-size="12" font-weight="bold" fill="#1b5e20">Permission Request Lifecycle</text>
+
+  <rect x="30" y="78" width="120" height="70" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="90" y="98" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">App Calls</text>
+  <text x="90" y="114" text-anchor="middle" font-size="10" fill="#2e7d32">getCurrentPosition</text>
+  <text x="90" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">watchPosition</text>
+  <text x="90" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">(requires HTTPS)</text>
+
+  <line x1="150" y1="113" x2="178" y2="113" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Permission prompt -->
+  <rect x="180" y="78" width="140" height="70" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="250" y="98" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Browser Prompt</text>
+  <text x="250" y="114" text-anchor="middle" font-size="10" fill="#2e7d32">User sees dialog</text>
+  <text x="250" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">"Allow / Block"</text>
+  <text x="250" y="142" text-anchor="middle" font-size="10" fill="#2e7d32">One-time or persist</text>
+
+  <!-- Branch: Allow / Deny -->
+  <line x1="320" y1="100" x2="348" y2="85" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="320" y1="126" x2="348" y2="140" stroke="#e53935" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="350" y="68" width="120" height="45" rx="5" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="410" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Granted</text>
+  <text x="410" y="104" text-anchor="middle" font-size="10" fill="#2e7d32">Receive coordinates</text>
+
+  <rect x="350" y="120" width="120" height="45" rx="5" fill="#ffcdd2" stroke="#e53935" stroke-width="1.5"/>
+  <text x="410" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Denied</text>
+  <text x="410" y="155" text-anchor="middle" font-size="10" fill="#c62828">Error code 1 (DENIED)</text>
+
+  <!-- Check stored permission -->
+  <line x1="470" y1="90" x2="498" y2="90" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="500" y="68" width="155" height="45" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="577" y="86" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">navigator.permissions</text>
+  <text x="577" y="102" text-anchor="middle" font-size="10" fill="#2e7d32">.query({name:"geolocation"})</text>
+
+  <line x1="655" y1="90" x2="683" y2="90" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="685" y="68" width="140" height="45" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="755" y="86" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Cached State</text>
+  <text x="755" y="101" text-anchor="middle" font-size="10" fill="#2e7d32">granted / denied / prompt</text>
+
+  <!-- Accuracy section -->
+  <rect x="20" y="180" width="820" height="110" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="200" font-size="12" font-weight="bold" fill="#0d47a1">Accuracy Levels and Data Source</text>
+
+  <rect x="30" y="210" width="190" height="65" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="125" y="229" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">GPS (High Accuracy)</text>
+  <text x="125" y="244" text-anchor="middle" font-size="10" fill="#1565c0">enableHighAccuracy: true</text>
+  <text x="125" y="259" text-anchor="middle" font-size="10" fill="#1565c0">±5–15m, battery-intensive</text>
+  <text x="125" y="272" text-anchor="middle" font-size="10" fill="#1565c0">Mobile outdoor use</text>
+
+  <rect x="235" y="210" width="190" height="65" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="330" y="229" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Wi-Fi Triangulation</text>
+  <text x="330" y="244" text-anchor="middle" font-size="10" fill="#1565c0">Low accuracy mode</text>
+  <text x="330" y="259" text-anchor="middle" font-size="10" fill="#1565c0">±50–100m, energy-efficient</text>
+  <text x="330" y="272" text-anchor="middle" font-size="10" fill="#1565c0">Indoor/urban use</text>
+
+  <rect x="440" y="210" width="190" height="65" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="535" y="229" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">IP Geolocation</text>
+  <text x="535" y="244" text-anchor="middle" font-size="10" fill="#1565c0">Coarse fallback</text>
+  <text x="535" y="259" text-anchor="middle" font-size="10" fill="#1565c0">City-level only ±20km</text>
+  <text x="535" y="272" text-anchor="middle" font-size="10" fill="#1565c0">No permission required</text>
+
+  <rect x="645" y="210" width="185" height="65" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="737" y="229" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">accuracy field</text>
+  <text x="737" y="244" text-anchor="middle" font-size="10" fill="#1565c0">coords.accuracy (meters)</text>
+  <text x="737" y="259" text-anchor="middle" font-size="10" fill="#1565c0">Show ±radius on map</text>
+  <text x="737" y="272" text-anchor="middle" font-size="10" fill="#1565c0">Reject if &gt;1km for precision</text>
+
+  <!-- Tracking section -->
+  <rect x="20" y="308" width="820" height="95" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+  <text x="30" y="328" font-size="12" font-weight="bold" fill="#b71c1c">Continuous Tracking + Privacy</text>
+
+  <rect x="30" y="336" width="220" height="55" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="140" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">watchPosition()</text>
+  <text x="140" y="370" text-anchor="middle" font-size="10" fill="#c62828">Fires callback on every change</text>
+  <text x="140" y="384" text-anchor="middle" font-size="10" fill="#c62828">Store watchId → clearWatch on unmount</text>
+
+  <rect x="265" y="336" width="220" height="55" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="375" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Distance Threshold</text>
+  <text x="375" y="370" text-anchor="middle" font-size="10" fill="#c62828">Don't emit every GPS ping</text>
+  <text x="375" y="384" text-anchor="middle" font-size="10" fill="#c62828">Only update if Δdistance &gt; 50m</text>
+
+  <rect x="500" y="336" width="220" height="55" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="610" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Privacy Controls</text>
+  <text x="610" y="370" text-anchor="middle" font-size="10" fill="#c62828">Never persist raw coords to analytics</text>
+  <text x="610" y="384" text-anchor="middle" font-size="10" fill="#c62828">Fuzzing: truncate to 2 decimal places</text>
+
+  <rect x="735" y="336" width="95" height="55" rx="5" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="782" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Errors</text>
+  <text x="782" y="370" text-anchor="middle" font-size="10" fill="#c62828">code 1: denied</text>
+  <text x="782" y="384" text-anchor="middle" font-size="10" fill="#c62828">code 2: unavail</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

@@ -1202,7 +1202,7 @@
         •   Design a Comment Thread with nested replies, lazy-loading nested comments, and optimistic UI for posting.
         •   Design an Overlay Management System
 
-        2. Forms & Input Systems (10)
+        2. Forms & Input Systems
         •   Design a Form Builder supporting dynamic fields, validation, conditional fields, and multi-step flows
         •   Design a Wizard / Multi-step Form preserving state across steps and handling validation per-step.
         •   Design a Form Validation Engine that can be reused across components (sync/async rules).
@@ -1214,7 +1214,7 @@
         •   Design a Color Picker component with alpha support, saved palettes, and accessible contrast preview.
         •   Design an AI-assisted Form Fill system
 
-        3. Data-heavy UI Components (11)
+        3. Data-heavy UI Components
         •   Design a Data Table (sorting, filtering, pagination, column resizing, virtualization).
         •   Design an Infinite Scroll / Virtualized List and explain tradeoffs vs pagination.
         •   Design a Virtualized Grid (2D)
@@ -1228,7 +1228,7 @@
         •   Design Saved Views / Filters system
         •   Design an Inline Editing System (cell/row editing with validation + undo)
 
-        4. File, Media & Content Systems (9)
+        4. File, Media & Content Systems
         •   Design a File Upload system with chunked uploads, resumability, progress, and drag-and-drop.
         •   Design a File Explorer UI (thumbnails, context menus, bulk ops, search/filter).
         •   Design an Image Gallery / Lightbox with zoom, swipe, lazy loading and placeholders.
@@ -1239,13 +1239,13 @@
         •   Design a Code Editor Component (syntax highlighting, line numbers, bracket matching, minimap — when to embed Monaco vs build custom)
         •   Design a Streaming Markdown Renderer
 
-        5. Search & Discovery (4)
+        5. Search & Discovery
         •   Design a Search Autocomplete system with debounce, keyboard nav, highlighted suggestions, and result caching.
         •   Design a Full-text Search UI
         •   Design a RAG-based Search UI
         •   Design a Search Page (filters + facets + URL sync)
 
-        6. Communication & Collaboration (11)
+        6. Communication & Collaboration
         •   Design a Chat / Messaging UI (message grouping, read receipts, typing indicators, infinite scroll upward, media previews).
         •   Design a Notification Center / Inbox (read/unread, grouping, mark-all-read, real-time badge count).
         •   Design a Real-time Collaborative Editor
@@ -1259,7 +1259,7 @@
         •   Design a Threaded Conversation system
         •   Design a Real-time Notification Delivery System (sync + UI consistency)
 
-        7. Complex Interaction Systems (12)
+        7. Complex Interaction Systems
         •   Design a Drag & Drop system list with reordering and accessibility.
         •   Design a Kanban Board (drag across columns, swimlanes, real-time multi-user updates, optimistic reordering).
         •   Design a Calendar / Scheduler (drag events, collision detection, recurring events).
@@ -1273,7 +1273,7 @@
         •   Design a Gesture system
         •   Design a History Timeline UI
 
-        8. Networking & Data Systems (12)
+        8. Networking & Data Systems
         •   Design a Data Fetching Hook
         •   Design a Frontend Caching Layer
         •   Design an Optimistic UI system
@@ -1288,7 +1288,7 @@
         •   Design a Request Batching system
         •   Design a Cache Invalidation Strategy (after mutations)
 
-        9. Auth & User Systems (9)
+        9. Auth & User Systems
         •   Design a Login/Auth flow
         •   Design RBAC UI system
         •   Design User Onboarding / Guided Tour
@@ -1300,7 +1300,7 @@
         •   Design Permission Editor UI
         •   Design a Route / Component Access Guard System
 
-        10. Offline & Advanced UX Systems (8)
+        10. Offline & Advanced UX Systems
         •   Design an Offline-first app
         •   Design Network failure handling
         •   Design Push Notification UX
@@ -1310,7 +1310,7 @@
         •   Design Local-first architecture
         •   Design Conflict Visualization UI
 
-        11. State & Interaction Modeling (8)
+        11. State & Interaction Modeling
         •   Design Undo/Redo system
         •   Design State Machine for workflows
         •   Design Multi-step async workflow
@@ -1321,7 +1321,7 @@
         •   Design State Hydration/Rehydration system
         •   Design a Fine-grained Subscription System (avoid unnecessary re-renders)
 
-        12. AI / Modern Systems (6)
+        12. AI / Modern Systems
         •   Design Streaming Chat UI
         •   Design AI UI Generator
         •   Design AI-assisted Search / Q&A UI
@@ -1329,7 +1329,7 @@
         •   Design AI Feedback Loop UI
         •   Design Token Streaming Buffer system
 
-        13. Web Platform / Browser APIs (9)
+        13. Web Platform / Browser APIs
         •   Design IntersectionObserver-based lazy system
         •   Design Web Worker-based computation system
         •   Design Background Sync system
@@ -1340,7 +1340,7 @@
         •   Design Native Drag-and-Drop File system
         •   Design ResizeObserver-based layout system
 
-        14. Real-world Scenario LLD (17)
+        14. Real-world Scenario LLD
         •   Design a Shopping Cart system
         •   Design a Checkout flow
         •   Design Third-party SDK integration

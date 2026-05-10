@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Architecture for a third-party frontend SDK with bootstrap loader, runtime modules, and server-side token exchange">
+  <title>Third-Party Frontend SDK Architecture</title>
+  <desc>Shows tiny loader on host page, versioned SDK runtime and optional modules, API gateway and token service, and developer portal for allowlists and keys.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="640" />
+
+  <rect class="box" x="60" y="90" width="420" height="200" />
+  <text class="label bold" x="90" y="135">Host page</text>
+  <text class="label small" x="90" y="165">tiny loader</text>
+  <text class="label small" x="90" y="190">init + config</text>
+  <text class="label small" x="90" y="215">lazy-load modules</text>
+
+  <rect class="accent" x="520" y="70" width="320" height="240" />
+  <text class="label bold" x="550" y="115">SDK runtime</text>
+  <text class="label small" x="550" y="145">versioned API client</text>
+  <text class="label small" x="550" y="170">token handling</text>
+  <text class="label small" x="550" y="195">feature detection</text>
+  <text class="label small" x="550" y="220">optional modules</text>
+
+  <rect class="good" x="880" y="90" width="260" height="200" />
+  <text class="label bold" x="910" y="135">API gateway</text>
+  <text class="label small" x="910" y="165">rate limits</text>
+  <text class="label small" x="910" y="190">tenant scoping</text>
+  <text class="label small" x="910" y="215">authZ checks</text>
+
+  <path class="arrow" d="M480 190 L520 190" />
+  <path class="arrow" d="M840 190 L880 190" />
+
+  <rect class="muted" x="520" y="350" width="620" height="200" />
+  <text class="label bold" x="550" y="395">Platform control plane</text>
+  <text class="label small" x="550" y="425">token service (short-lived scoped tokens)</text>
+  <text class="label small" x="550" y="450">origin allowlists</text>
+  <text class="label small" x="550" y="475">telemetry + support diagnostics</text>
+  <text class="label small" x="550" y="500">developer portal (keys, configs, rollouts)</text>
+
+  <path class="arrow" d="M1010 290 L1010 350" />
+</svg>
+

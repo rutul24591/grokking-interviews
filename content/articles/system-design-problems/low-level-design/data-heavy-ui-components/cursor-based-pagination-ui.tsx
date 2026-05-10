@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +38,7 @@ export default function CursorBasedPaginationUIArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a cursor-based pagination UI —
           the front-end of a backend that serves data
           paginated by opaque cursors rather than offsets.
@@ -50,8 +52,8 @@ export default function CursorBasedPaginationUIArticle() {
           right pattern for feeds, search results, audit
           logs, and any large dataset where users browse
           by reading forward.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: navigation that feels
           natural (Next, Prev, Load More) on top of
           opaque tokens; deep linking when cursors are
@@ -64,10 +66,10 @@ export default function CursorBasedPaginationUIArticle() {
           cursor invalidation occurs (the cursor a user
           shared yesterday may be stale today if the
           underlying data has been deleted).
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users see Load More buttons or scroll
           through infinite feeds; they don&rsquo;t see
           cursors directly. Internal users (engineers)
@@ -77,10 +79,10 @@ export default function CursorBasedPaginationUIArticle() {
           that pagination doesn&rsquo;t leak technical
           concepts to users (no &ldquo;Page 173 of
           ?&rdquo; nonsense).
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend returns
           <code>{` { items, nextCursor, prevCursor? } `}</code>{" "}
           per fetch. Cursors are opaque strings (the
@@ -90,24 +92,24 @@ export default function CursorBasedPaginationUIArticle() {
           works for any total ordering. Modern browsers;
           we use the URL for deep linking and
           IntersectionObserver for triggers.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement offset-based pagination
           (different problem; appropriate for small
           datasets). We do not implement the backend
           cursor mechanism. We do not implement
           full-screen pagination UIs (Next 1 2 3 4 5
           Last) — those work for offset, not cursor.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Forward navigation via Next or Load More button.
           Backward navigation via Prev (when supported by
           the API). Infinite scroll mode: trigger fetch
@@ -117,69 +119,69 @@ export default function CursorBasedPaginationUIArticle() {
           state when no items. End-of-data state when
           cursor returns null. Loading and error states
           inline with retry.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Real-time insertion of new items at the top
           (subscribe to backend updates). &ldquo;X new
           items since you last looked&rdquo; banner.
           Cursor invalidation handling: shared link to a
           stale cursor refreshes with explanation. Page
           size configuration. Skeleton items during fetch.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend cursor implementation, virtualization
           (separate subsystem), table-style features
           (sort, filter UIs).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Fetch triggers complete before users see blank
           space. Page transitions feel instant in infinite
           mode (skeleton appears before fetch resolves).
           Memory bounded for long sessions via LRU
           eviction.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Concurrent fetches race-protected via tokens.
           Cursor invalidation handled gracefully. Real-
           time inserts merge without disrupting the
           user&rsquo;s scroll.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cursors are opaque server tokens; we don&rsquo;t
           inspect or modify them. Deep-link cursors carry
           no PII (server implementation responsibility,
           but we document the assumption).
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Load More buttons are keyboard-accessible.
           Infinite scroll integrates with the
           accessibility patterns from the Infinite Scroll
           Virtualized List subsystem. State changes
           announce.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The pagination engine is generic over item
           type. The fetch contract is small. Plugins
           (real-time, deep-link, gap-handling) compose.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -190,15 +192,15 @@ export default function CursorBasedPaginationUIArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The system has four parts: a <strong>cursor-aware
           fetcher</strong>, an <strong>ordered item cache</strong>{" "}
           (deduped by id), a <strong>navigation
           controller</strong> (Next, Prev, Load More
           modes), and a <strong>URL/deep-link
           integration</strong>.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>fetcher</strong> takes a cursor (or
           null for the first page) and returns items
           plus nextCursor and (optionally) prevCursor.
@@ -206,8 +208,8 @@ export default function CursorBasedPaginationUIArticle() {
           stale responses are discarded. The fetcher is
           consumer-supplied; the rest of the system is
           generic.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>item cache</strong> is an ordered list
           (chronological or whatever the API&rsquo;s
           ordering is) with a Set of seen ids for
@@ -218,8 +220,8 @@ export default function CursorBasedPaginationUIArticle() {
           cache (typically the top for chronological
           feeds). The cache supports LRU eviction to
           bound memory in long sessions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>navigation controller</strong> tracks
           the current cursor position and the next/prev
           cursors available. In Load More mode, the
@@ -231,8 +233,8 @@ export default function CursorBasedPaginationUIArticle() {
           infinite-scroll mode, the controller triggers
           fetches on scroll via the standard
           IntersectionObserver pattern.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Deep linking</strong>: the current cursor
           is encoded in the URL as a query parameter (e.g.
           <code> ?after=eyJpZCI6...</code>). On mount, the
@@ -242,7 +244,7 @@ export default function CursorBasedPaginationUIArticle() {
           server returns an error or empty), we fall back
           to the first page with a banner explaining
           the redirect.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Real-time inserts</strong>: a WebSocket
           connection delivers new items as they arrive.
@@ -276,163 +278,153 @@ export default function CursorBasedPaginationUIArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>PaginationProvider</strong> instantiates
+        <HighlightBlock as="p" tier="crucial"><strong>PaginationProvider</strong> instantiates
           the fetcher, cache, and controller.
           <strong> Fetcher</strong> is consumer-supplied.
           <strong> ItemCache</strong> is the ordered,
           deduped store. <strong>NavigationController</strong>{" "}
-          orchestrates Next/Prev/Load More.
-          <strong> URLBridge</strong> reads/writes the
+          orchestrates Next/Prev/Load More.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> URLBridge</strong></Highlight> reads/writes the
           cursor from/to the URL.
           <strong> RealtimeBridge</strong> handles
           WebSocket inserts (optional plugin).
           <strong> ItemRenderer</strong> is consumer-
-          supplied per item.
-        </p>
+          supplied per item.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          The cache and current-cursor state live in an
+        <HighlightBlock as="p" tier="crucial">The cache and current-cursor state live in an
           external store. The URL is the primary
-          observable for cursor position; the engine
+          observable</HighlightBlock>
+<HighlightBlock as="p" tier="important">for cursor position; the engine
           reconciles to the URL on mount and updates the
-          URL on navigation. Real-time state (incoming
+          URL on</HighlightBlock>
+<HighlightBlock as="p" tier="important">navigation. Real-time state (incoming
           buffer awaiting user acceptance) is a separate
-          slice.
-        </p>
+          slice.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Fetch contract:{" "}
-          <code>{` (cursor) => Promise<{ items, nextCursor, prevCursor? }> `}</code>.
-          Item contract:{" "}
-          <code>{` { id, ...content } `}</code> with stable id.
-          Mode prop selects Next/Prev, Load More, or
-          Infinite Scroll. URL contract: query parameter
-          <code> ?cursor=...</code>.
-        </p>
+        <HighlightBlock as="p" tier="crucial">The fetch contract accepts a cursor token and
+          returns a page of items plus paging cursors (next,
+          and optionally previous). Each item has a stable
+          ID used for deduplication and caching.</HighlightBlock>
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">The UI mode selects Next/Prev controls, Load More,
+          or Infinite Scroll. A common URL contract uses a
+          query parameter like </Highlight><code>?cursor=...</code> to
+          make pagination linkable and back-button friendly.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Rendering &amp; Performance</h2>
-        <p>
-          The cache is the single source of truth for
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">The cache is the single source of truth for
           rendered items; fetches append or prepend
           atomically. Subscribers re-render when their
-          slice changes. For infinite-scroll mode,
+          slice changes.</Highlight></HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">For infinite-scroll mode,
           virtualization is applied via the underlying
           virtualized list subsystem. Skeleton items
           during fetch maintain layout. The fetch token
-          prevents stale results from rendering.
-        </p>
+          prevents stale results from rendering.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Load More feels explicit and works for users
+        <HighlightBlock as="p" tier="crucial">Load More feels explicit and works for users
           who prefer paging through results. Next/Prev
           feels like classic pagination but without page
           numbers (because cursors don&rsquo;t map to
-          page numbers cleanly). Infinite scroll feels
+          page numbers cleanly).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Infinite scroll feels
           like a feed. Each mode has its own
           interaction style; we don&rsquo;t mix.
           Loading states are skeletons, not spinners,
           to preserve layout. Error states show inline
-          with Retry; loaded items remain.
-        </p>
+          with Retry; loaded items remain.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Load More is a real button reachable by Tab.
+        <HighlightBlock as="p" tier="crucial">Load More is a real button reachable by Tab.
           Next/Prev are buttons with accessible labels
-          (&ldquo;Next page of results&rdquo;). Infinite
+          (&ldquo;Next page of results&rdquo;).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Infinite
           scroll integrates with the patterns from the
           Infinite Scroll subsystem. Real-time banner is
           announced via polite live region. End-of-data
-          state announces.
-        </p>
+          state announces.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Cursors are opaque server-issued tokens; we
+        <HighlightBlock as="p" tier="crucial">Cursors are opaque server-issued tokens; we
           don&rsquo;t inspect or modify them. The server
           enforces authorization on every request; the
-          client trusts the server&rsquo;s decisions.
-          Cursor invalidation is handled gracefully
+          client trusts the server&rsquo;s decisions.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Cursor invalidation is handled gracefully
           (no information leakage about why a cursor is
-          invalid).
-        </p>
+          invalid).</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for the cache (append, prepend,
+        <HighlightBlock as="p" tier="crucial">Unit tests for the cache (append, prepend,
           dedup, LRU eviction), the navigation
           controller (forward/back transitions), and
-          fetch token races. Integration tests with
+          fetch token races.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Integration tests with
           mock fetchers, exercising deep-link
           restoration, real-time inserts, gap
           surfacing, cursor invalidation. End-to-end
-          tests in real browsers for URL behavior.
-        </p>
+          tests in real browsers for URL behavior.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          User clicks Load More twice rapidly: fetch
-          tokens prevent duplicate appends. User
-          navigates Next then Back: cached pages serve
-          the back-navigation instantly. Cursor
-          invalidation mid-session: clear and refetch
-          with banner. Real-time inserts arrive while
-          user is reading: banner, no auto-scroll.
-          Gap detected between known cursors: surface
-          the gap rather than silently merging. User
-          shares a deep-link to a cursor that&rsquo;s
-          since been invalidated: refetch from start
-          with banner. Empty result on first page:
-          empty state. Empty result on Next: end-of-
-          data state, leaving prior items intact.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Gap detected between known cursors: surface the gap rather than silently merging. User shares a</HighlightBlock>
+<HighlightBlock as="p" tier="important">deep-link to a cursor that&rsquo;s since been invalidated: refetch from start with banner. Empty</HighlightBlock>
+<HighlightBlock as="p" tier="important">result on first page: empty state. Empty result on Next: end-of- data state, leaving prior items intact.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Generic over item type and fetch logic. The
-          three modes (Load More, Next/Prev, Infinite
-          Scroll) cover the common patterns. Plugins
-          for real-time and deep-link integrate
-          declaratively.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The pagination primitive is generic over item type, fetch strategy, and
+          caching layer: it should not assume REST vs GraphQL or specific response shapes.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The three modes (Load More, Next/Prev, Infinite Scroll) cover most UX patterns;
+          keep them as configuration, not separate implementations.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Real-time inserts and deep-linking are opt-in plugins: the core stays small,
+          while higher-level behaviors compose.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Button labels, banner text, and state
-          messages via i18n. Item content i18n is the
-          consumer&rsquo;s concern.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          Button labels, banners, and state messages come from i18n; pagination UI must
+          be fully locale-driven (including pluralization).
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          RTL impacts affordances (chevrons, alignment, scroll direction); use CSS logical
+          properties and avoid hard-coded left/right assumptions.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Item content i18n remains the consumer&rsquo;s concern, but the paginator should
+          expose stable semantics (loading, end-of-list, error) so translations are consistent.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Cursor vs offset pagination</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Offset is simple and gives Page N affordances
           but breaks at large offsets (database scans
           past skipped rows) and shifts under real-time
@@ -441,50 +433,49 @@ export default function CursorBasedPaginationUIArticle() {
           but loses the &ldquo;jump to page N&rdquo;
           UX. We use cursor for large/real-time
           datasets and offset for small/static ones.
-        </p>
+        </HighlightBlock>
 
         <h3>Load More vs infinite scroll</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Load More gives explicit user control and
           works well for browse-and-evaluate flows.
           Infinite scroll feels effortless for feeds.
           Choose per use case; we support both via
           mode prop.
-        </p>
+        </HighlightBlock>
 
         <h3>URL deep-link vs in-memory cursor</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           URL deep-link is shareable, refresh-safe, and
           back-button-safe at the cost of URL parsing.
           In-memory is simpler but breaks all of those.
           We default to URL deep-link.
-        </p>
+        </HighlightBlock>
 
         <h3>Auto-scroll on real-time vs banner</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-scroll interrupts users; banner respects
           intent. We use banner unless the user is at
           the relevant edge (top of feed) where they&rsquo;d
           want auto-scroll anyway.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Predictive prefetch based on scroll velocity.
+        <HighlightBlock as="p" tier="crucial">Predictive prefetch based on scroll velocity.
           Service-worker offline cache so users see
-          cached items when offline. Cross-session
+          cached items when offline.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Cross-session
           cursor restoration (come back tomorrow,
           continue where you left off). Smarter gap
-          handling with diff visualization.
-        </p>
+          handling with diff visualization.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why cursor over offset
           pagination?</strong> Cursor scales to massive
           datasets without database scan cost. It&rsquo;s
@@ -492,9 +483,9 @@ export default function CursorBasedPaginationUIArticle() {
           point to records, not positions). Offset
           breaks at high page numbers and shifts under
           inserts.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How do deep links work with opaque
           cursors?</strong> The current cursor is encoded
           in a URL query parameter. On mount, the
@@ -502,16 +493,16 @@ export default function CursorBasedPaginationUIArticle() {
           cursor. Sharing the URL takes recipients to
           the same view. Stale cursors fall back to
           the first page with a banner.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How do you handle real-time
           inserts?</strong> A WebSocket delivers new
           items; they merge into the cache at the top.
           The UI surfaces a banner rather than auto-
           scrolling, unless the user is at the top
           where they want the new items immediately.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. How do you race-protect concurrent
@@ -537,7 +528,7 @@ export default function CursorBasedPaginationUIArticle() {
           shows a banner explaining the redirect.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How is this different from infinite
           scroll?</strong> Infinite scroll is one mode of
           this system. The other modes — Load More,
@@ -545,32 +536,22 @@ export default function CursorBasedPaginationUIArticle() {
           but present them differently. Infinite scroll
           uses the Virtualized List subsystem
           underneath.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How do you scale to millions of
           rows?</strong> Cursor pagination is the answer.
           The client never holds millions; it holds the
           pages it has fetched. LRU eviction bounds
           memory.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          Cursor-based pagination UI is{" "}
-          <strong>fetcher + cache + navigation
-          controller + URL bridge</strong>. It supports
-          three modes (Load More, Next/Prev, Infinite
-          Scroll) over the same cursor mechanics. Real-
-          time inserts surface as banners; deep links
-          encode the cursor; cursor invalidation falls
-          back gracefully. The pattern scales to massive
-          datasets where offset breaks down, and it&rsquo;s
-          the right choice for feeds, search results,
-          and audit logs at any non-trivial scale.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Real- time inserts surface as banners; deep links encode the cursor; cursor invalidation</HighlightBlock>
+<HighlightBlock as="p" tier="important">falls back gracefully. The pattern scales to massive datasets where offset breaks down, and</HighlightBlock>
+<HighlightBlock as="p" tier="important">it&rsquo;s the right choice for feeds, search results, and audit logs at any non-trivial scale.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

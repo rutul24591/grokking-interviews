@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Performance trade-offs for search UI">
+  <title>Search UI Performance Trade-offs</title>
+  <desc>Highlights where latency and cost come from in search UI: autocomplete rate, facet aggregation cost, rendering overhead, and caching.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #ea580c; stroke-width: 2; rx: 14; }
+    .ok { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .warn { fill: #2a1608; stroke: #fb923c; }
+      .ok { fill: #06232a; stroke: #22d3ee; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="warn" x="70" y="70" width="350" height="170" />
+  <text class="label bold" x="100" y="115">Autocomplete rate</text>
+  <text class="label small" x="100" y="145">keypress-per-request explodes QPS</text>
+  <text class="label small" x="100" y="170">debounce + cancel + dedupe</text>
+  <text class="label small" x="100" y="195">short TTL cache for prefixes</text>
+
+  <rect class="warn" x="460" y="70" width="350" height="170" />
+  <text class="label bold" x="490" y="115">Facet aggregation</text>
+  <text class="label small" x="490" y="145">counts are compute-heavy</text>
+  <text class="label small" x="490" y="170">stable facets while paging</text>
+  <text class="label small" x="490" y="195">refresh facets only on signature change</text>
+
+  <rect class="ok" x="850" y="70" width="300" height="170" />
+  <text class="label bold" x="880" y="115">Caching</text>
+  <text class="label small" x="880" y="145">keyed by query signature</text>
+  <text class="label small" x="880" y="170">back/forward feels instant</text>
+  <text class="label small" x="880" y="195">avoid long staleness</text>
+
+  <path class="arrow" d="M420 155 L460 155" />
+  <path class="arrow" d="M810 155 L850 155" />
+
+  <rect class="box" x="70" y="310" width="520" height="170" />
+  <text class="label bold" x="100" y="355">Rendering cost</text>
+  <text class="label small" x="100" y="385">virtualize long facet bucket lists</text>
+  <text class="label small" x="100" y="410">limit suggestion list size</text>
+  <text class="label small" x="100" y="435">avoid heavy highlight work on every keystroke</text>
+
+  <rect class="box" x="640" y="310" width="510" height="170" />
+  <text class="label bold" x="670" y="355">Correctness under change</text>
+  <text class="label small" x="670" y="385">cursor invalid → reset + banner</text>
+  <text class="label small" x="670" y="410">results render even if facets fail</text>
+  <text class="label small" x="670" y="435">avoid mixing local-only and URL state</text>
+</svg>

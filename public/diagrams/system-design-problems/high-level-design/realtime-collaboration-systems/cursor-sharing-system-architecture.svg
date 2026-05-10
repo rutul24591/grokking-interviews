@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Cursor sharing architecture">
+  <defs>
+    <style>
+      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
+      .muted { fill: #334155; }
+      .h { font-weight: 700; }
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
+      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
+      .arrow { fill: #64748b; }
+      @media (prefers-color-scheme: dark) {
+        .t { fill: #e5e7eb; }
+        .muted { fill: #cbd5e1; }
+        .box { fill: #0b1220; stroke: #334155; }
+        .line { stroke: #94a3b8; }
+        .arrow { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+  <text class="t h" x="40" y="54" font-size="22">Cursor Sharing: Coalesce + Interpolate</text>
+  <text class="t muted" x="40" y="78" font-size="13">High-frequency events are reduced to a stable cadence</text>
+
+  <rect class="box" x="40" y="190" width="280" height="220" rx="14"/>
+  <text class="t h" x="60" y="220" font-size="16">Sender</text>
+  <text class="t muted" x="60" y="250" font-size="12">Throttle to 10–20 Hz</text>
+  <text class="t muted" x="60" y="272" font-size="12">Send only latest state</text>
+
+  <rect class="box" x="360" y="170" width="260" height="140" rx="14"/>
+  <text class="t h" x="380" y="200" font-size="16">Realtime Relay</text>
+  <text class="t muted" x="380" y="230" font-size="12">Rate limits + viewport scope</text>
+
+  <rect class="box" x="660" y="190" width="260" height="220" rx="14"/>
+  <text class="t h" x="680" y="220" font-size="16">Receiver</text>
+  <text class="t muted" x="680" y="250" font-size="12">Interpolate motion</text>
+  <text class="t muted" x="680" y="272" font-size="12">Apply on animation frames</text>
+
+  <path class="line" d="M320 300 L350 300" />
+  <polygon class="arrow" points="350,300 342,296 342,304"/>
+  <path class="line" d="M620 300 L650 300" />
+  <polygon class="arrow" points="650,300 642,296 642,304"/>
+</svg>
+

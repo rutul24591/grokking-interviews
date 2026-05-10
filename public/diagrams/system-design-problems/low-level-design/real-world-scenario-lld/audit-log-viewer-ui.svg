@@ -1,0 +1,85 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Audit Log Viewer UI — Immutable Records, Filter, Search, and Compliance</text>
+
+  <!-- Log schema -->
+  <rect x="20" y="45" width="260" height="310" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Audit Event Schema</text>
+
+  <rect x="35" y="78" width="230" height="115" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Immutable Log Record</text>
+  <text x="150" y="113" text-anchor="middle" font-size="10" fill="#1565c0">eventId: UUID (monotonic)</text>
+  <text x="150" y="128" text-anchor="middle" font-size="10" fill="#1565c0">timestamp: ISO8601 + TZ</text>
+  <text x="150" y="143" text-anchor="middle" font-size="10" fill="#1565c0">actorId, actorType (user/system)</text>
+  <text x="150" y="158" text-anchor="middle" font-size="10" fill="#1565c0">action: "user.login" / "doc.delete"</text>
+  <text x="150" y="173" text-anchor="middle" font-size="10" fill="#1565c0">resourceId, resourceType</text>
+  <text x="150" y="188" text-anchor="middle" font-size="10" fill="#1565c0">before / after (JSON diff)</text>
+
+  <rect x="35" y="203" width="230" height="60" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="222" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Integrity Guarantee</text>
+  <text x="150" y="238" text-anchor="middle" font-size="10" fill="#1565c0">No UPDATE/DELETE on log table</text>
+  <text x="150" y="253" text-anchor="middle" font-size="10" fill="#1565c0">Hash chain (each event signs prev)</text>
+
+  <rect x="35" y="273" width="230" height="70" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="150" y="292" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Retention Policy</text>
+  <text x="150" y="308" text-anchor="middle" font-size="10" fill="#1565c0">Hot: last 90d (fast search)</text>
+  <text x="150" y="323" text-anchor="middle" font-size="10" fill="#1565c0">Cold: 90d–7yr (S3 archive)</text>
+  <text x="150" y="338" text-anchor="middle" font-size="10" fill="#1565c0">SOC2/HIPAA: 7yr minimum</text>
+
+  <!-- Filter + search -->
+  <rect x="295" y="45" width="280" height="310" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="435" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Filter and Search UI</text>
+
+  <rect x="310" y="78" width="250" height="70" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Faceted Filters</text>
+  <text x="435" y="113" text-anchor="middle" font-size="10" fill="#2e7d32">Actor (user dropdown)</text>
+  <text x="435" y="128" text-anchor="middle" font-size="10" fill="#2e7d32">Action type (multi-select)</text>
+  <text x="435" y="143" text-anchor="middle" font-size="10" fill="#2e7d32">Date range picker (presets)</text>
+
+  <rect x="310" y="158" width="250" height="60" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="177" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Full-text Search</text>
+  <text x="435" y="193" text-anchor="middle" font-size="10" fill="#2e7d32">Elasticsearch / OpenSearch backend</text>
+  <text x="435" y="208" text-anchor="middle" font-size="10" fill="#2e7d32">Highlight matching terms in results</text>
+
+  <rect x="310" y="228" width="250" height="60" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Cursor Pagination</text>
+  <text x="435" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">Stable under new inserts</text>
+  <text x="435" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">Load 50 rows / page</text>
+
+  <rect x="310" y="298" width="250" height="50" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="435" y="317" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Before/After Diff</text>
+  <text x="435" y="332" text-anchor="middle" font-size="10" fill="#2e7d32">Expandable row: side-by-side JSON diff</text>
+  <text x="435" y="347" text-anchor="middle" font-size="10" fill="#2e7d32">Highlight changed fields in green/red</text>
+
+  <!-- Access + compliance -->
+  <rect x="590" y="45" width="250" height="310" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="715" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">Access and Compliance</text>
+
+  <rect x="605" y="78" width="220" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="715" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">RBAC on Audit Logs</text>
+  <text x="715" y="113" text-anchor="middle" font-size="10" fill="#c62828">Admin: all events</text>
+  <text x="715" y="128" text-anchor="middle" font-size="10" fill="#c62828">Manager: own team events only</text>
+  <text x="715" y="141" text-anchor="middle" font-size="10" fill="#c62828">User: own events only</text>
+
+  <rect x="605" y="153" width="220" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="715" y="172" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Compliance Export</text>
+  <text x="715" y="188" text-anchor="middle" font-size="10" fill="#c62828">Download current filter as CSV/JSON</text>
+  <text x="715" y="203" text-anchor="middle" font-size="10" fill="#c62828">Timestamped + signed for audit</text>
+  <text x="715" y="217" text-anchor="middle" font-size="10" fill="#c62828">Requested by auditors / regulators</text>
+
+  <rect x="605" y="228" width="220" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="715" y="247" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Alert Rules</text>
+  <text x="715" y="263" text-anchor="middle" font-size="10" fill="#c62828">Alert: admin role grant</text>
+  <text x="715" y="278" text-anchor="middle" font-size="10" fill="#c62828">Alert: bulk delete &gt; 100 items</text>
+  <text x="715" y="292" text-anchor="middle" font-size="10" fill="#c62828">Alert: login from new country</text>
+
+  <rect x="605" y="303" width="220" height="42" rx="4" fill="#ffcdd2" stroke="#e53935" stroke-width="1"/>
+  <text x="715" y="322" text-anchor="middle" font-size="10" fill="#b71c1c">Audit log access itself is audited</text>
+  <text x="715" y="336" text-anchor="middle" font-size="10" fill="#c62828">Who read the logs is logged</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

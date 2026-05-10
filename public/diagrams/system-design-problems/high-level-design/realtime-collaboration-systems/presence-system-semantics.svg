@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Presence semantics showing TTL windows, multi-device aggregation, and last-seen">
+  <title>Presence Semantics</title>
+  <desc>Shows device sessions with TTL, aggregation rules for online and last-seen, and separation between durable last-seen and ephemeral typing signals.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
+    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
+    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
+    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
+    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
+    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
+    .small { font-size: 14px; fill: #334155; }
+    .bold { font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0b1220; }
+      .box { fill: #0f172a; stroke: #e5e7eb; }
+      .muted { fill: #0b1220; stroke: #64748b; }
+      .accent { fill: #06232a; stroke: #22d3ee; }
+      .good { fill: #052018; stroke: #34d399; }
+      .warn { fill: #2a140a; stroke: #fb923c; }
+      .arrow { stroke: #e5e7eb; }
+      .label { fill: #e5e7eb; }
+      .small { fill: #cbd5e1; }
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="560" />
+
+  <rect class="box" x="60" y="70" width="360" height="180" />
+  <text class="label bold" x="90" y="115">Device sessions</text>
+  <text class="label small" x="90" y="145">each device emits heartbeats</text>
+  <text class="label small" x="90" y="170">TTL record per device</text>
+  <text class="label small" x="90" y="195">interaction signals optional</text>
+
+  <rect class="good" x="90" y="210" width="150" height="90" />
+  <text class="label bold" x="115" y="250">Phone</text>
+  <text class="label small" x="115" y="275">TTL active</text>
+
+  <rect class="warn" x="260" y="210" width="150" height="90" />
+  <text class="label bold" x="285" y="250">Laptop</text>
+  <text class="label small" x="285" y="275">TTL expiring</text>
+
+  <rect class="accent" x="460" y="70" width="330" height="230" />
+  <text class="label bold" x="490" y="115">Aggregate user state</text>
+  <text class="label small" x="490" y="145">online if any device TTL active</text>
+  <text class="label small" x="490" y="170">last-seen = max(device last activity)</text>
+  <text class="label small" x="490" y="195">idle/away from interaction hints</text>
+  <text class="label small" x="490" y="220">hysteresis avoids flapping</text>
+
+  <rect class="muted" x="820" y="70" width="320" height="230" />
+  <text class="label bold" x="850" y="115">What the UI shows</text>
+  <text class="label small" x="850" y="145">online (TTL window)</text>
+  <text class="label small" x="850" y="170">active recently (grace window)</text>
+  <text class="label small" x="850" y="195">last seen (durable)</text>
+  <text class="label small" x="850" y="220">typing (short TTL, per surface)</text>
+
+  <path class="arrow" d="M420 170 L460 170" />
+  <path class="arrow" d="M790 170 L820 170" />
+
+  <rect class="box" x="60" y="360" width="520" height="150" />
+  <text class="label bold" x="90" y="405">Durable vs ephemeral split</text>
+  <text class="label small" x="90" y="435">durable: last-seen and coarse state for history</text>
+  <text class="label small" x="90" y="460">ephemeral: typing/cursors with short TTL and lossy delivery</text>
+
+  <rect class="muted" x="640" y="360" width="500" height="150" />
+  <text class="label bold" x="670" y="405">Why this matters</text>
+  <text class="label small" x="670" y="435">honest semantics reduce user distrust</text>
+  <text class="label small" x="670" y="460">cheap ephemerals keep presence from dominating cost</text>
+</svg>
+

@@ -1,0 +1,105 @@
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="420" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Web Workers &amp; Threading — Main Thread Offload and Communication</text>
+
+  <!-- Main Thread column -->
+  <rect x="20" y="45" width="235" height="340" rx="6" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+  <text x="137" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">Main Thread (UI)</text>
+  <text x="137" y="81" text-anchor="middle" font-size="10" fill="#c62828">Single-threaded, blocking</text>
+
+  <rect x="35" y="92" width="205" height="40" rx="4" fill="#ffcdd2" stroke="#e53935" stroke-width="1.5"/>
+  <text x="137" y="108" text-anchor="middle" font-size="10" font-weight="bold" fill="#b71c1c">Critical Path Work</text>
+  <text x="137" y="123" text-anchor="middle" font-size="10" fill="#c62828">DOM updates, event handlers, paint</text>
+
+  <rect x="35" y="142" width="205" height="40" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="137" y="158" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Offload to Worker</text>
+  <text x="137" y="172" text-anchor="middle" font-size="10" fill="#c62828">postMessage({type, payload})</text>
+
+  <line x1="240" y1="162" x2="285" y2="162" stroke="#1976d2" stroke-width="2" marker-end="url(#arr)" stroke-dasharray="5,2"/>
+  <text x="262" y="158" text-anchor="middle" font-size="9" fill="#1976d2">postMsg</text>
+
+  <!-- Structured clone note -->
+  <rect x="35" y="195" width="205" height="55" rx="4" fill="white" stroke="#9e9e9e" stroke-width="1.5"/>
+  <text x="137" y="213" text-anchor="middle" font-size="11" font-weight="bold" fill="#424242">Structured Clone</text>
+  <text x="137" y="228" text-anchor="middle" font-size="10" fill="#616161">Objects deep-copied on transfer</text>
+  <text x="137" y="242" text-anchor="middle" font-size="10" fill="#616161">Transferable (ArrayBuffer) = zero-copy</text>
+
+  <rect x="35" y="260" width="205" height="55" rx="4" fill="white" stroke="#9e9e9e" stroke-width="1.5"/>
+  <text x="137" y="279" text-anchor="middle" font-size="11" font-weight="bold" fill="#424242">Worker Types</text>
+  <text x="137" y="295" text-anchor="middle" font-size="10" fill="#616161">Dedicated: 1-to-1 with page</text>
+  <text x="137" y="310" text-anchor="middle" font-size="10" fill="#616161">Shared: multi-tab shared state</text>
+
+  <rect x="35" y="325" width="205" height="50" rx="4" fill="white" stroke="#9e9e9e" stroke-width="1.5"/>
+  <text x="137" y="344" text-anchor="middle" font-size="11" font-weight="bold" fill="#424242">WorkerPool Pattern</text>
+  <text x="137" y="359" text-anchor="middle" font-size="10" fill="#616161">N workers = hardwareConcurrency</text>
+  <text x="137" y="372" text-anchor="middle" font-size="10" fill="#616161">Task queue with semaphore</text>
+
+  <!-- Worker column -->
+  <rect x="290" y="45" width="245" height="340" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="412" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Web Worker (Background)</text>
+  <text x="412" y="81" text-anchor="middle" font-size="10" fill="#1976d2">Separate thread, no DOM access</text>
+
+  <rect x="305" y="92" width="215" height="40" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="412" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Heavy Compute Tasks</text>
+  <text x="412" y="123" text-anchor="middle" font-size="10" fill="#1565c0">Sorting/filtering large datasets</text>
+
+  <rect x="305" y="142" width="215" height="40" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="412" y="158" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">onmessage Handler</text>
+  <text x="412" y="172" text-anchor="middle" font-size="10" fill="#1565c0">Receive task, execute, postMessage result</text>
+
+  <line x1="305" y1="220" x2="258" y2="220" stroke="#2e7d32" stroke-width="2" marker-end="url(#arr2)" stroke-dasharray="5,2"/>
+  <text x="282" y="215" text-anchor="middle" font-size="9" fill="#2e7d32">result</text>
+
+  <rect x="305" y="195" width="215" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="412" y="214" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Worker Capabilities</text>
+  <text x="412" y="229" text-anchor="middle" font-size="10" fill="#1565c0">fetch, IndexedDB, WebSockets</text>
+  <text x="412" y="244" text-anchor="middle" font-size="10" fill="#1565c0">WASM, WebGL compute (OffscreenCanvas)</text>
+
+  <rect x="305" y="255" width="215" height="50" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="412" y="274" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">OffscreenCanvas</text>
+  <text x="412" y="289" text-anchor="middle" font-size="10" fill="#1565c0">Transfer canvas to worker</text>
+  <text x="412" y="304" text-anchor="middle" font-size="10" fill="#1565c0">Render WebGL/2D off main thread</text>
+
+  <rect x="305" y="315" width="215" height="60" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="412" y="334" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Comlink Pattern</text>
+  <text x="412" y="349" text-anchor="middle" font-size="10" fill="#1565c0">Proxy-based RPC over postMessage</text>
+  <text x="412" y="364" text-anchor="middle" font-size="10" fill="#1565c0">await worker.processData(arr)</text>
+  <text x="412" y="378" text-anchor="middle" font-size="10" fill="#1565c0">Handles transferables transparently</text>
+
+  <!-- Use cases column -->
+  <rect x="550" y="45" width="290" height="340" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="695" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Use Cases and Patterns</text>
+
+  <rect x="565" y="78" width="260" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="695" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Image Processing</text>
+  <text x="695" y="112" text-anchor="middle" font-size="10" fill="#2e7d32">Canvas → ArrayBuffer → worker</text>
+  <text x="695" y="126" text-anchor="middle" font-size="10" fill="#2e7d32">Apply filters (zero-copy transfer)</text>
+
+  <rect x="565" y="143" width="260" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="695" y="161" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Large Dataset Sort/Filter</text>
+  <text x="695" y="177" text-anchor="middle" font-size="10" fill="#2e7d32">100k row table: sort in worker</text>
+  <text x="695" y="191" text-anchor="middle" font-size="10" fill="#2e7d32">Avoid 500ms main-thread block</text>
+
+  <rect x="565" y="208" width="260" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="695" y="226" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Crypto / Hashing</text>
+  <text x="695" y="242" text-anchor="middle" font-size="10" fill="#2e7d32">PBKDF2, SHA-256 in worker</text>
+  <text x="695" y="256" text-anchor="middle" font-size="10" fill="#2e7d32">Never block auth form submission</text>
+
+  <rect x="565" y="273" width="260" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="695" y="291" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">WASM Computation</text>
+  <text x="695" y="307" text-anchor="middle" font-size="10" fill="#2e7d32">Near-native performance</text>
+  <text x="695" y="321" text-anchor="middle" font-size="10" fill="#2e7d32">Physics, ML inference, video codecs</text>
+
+  <rect x="565" y="338" width="260" height="40" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="695" y="356" text-anchor="middle" font-size="10" fill="#e65100">Limits: No DOM, no window, no localStorage</text>
+  <text x="695" y="370" text-anchor="middle" font-size="10" fill="#bf360c">Terminate worker on unmount to prevent leaks</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1976d2"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2e7d32"/>
+    </marker>
+  </defs>
+</svg>

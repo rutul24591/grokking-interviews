@@ -59,6 +59,24 @@ function main() {
     const files = findAllTsxFiles(fullDir);
 
     for (const file of files) {
+      const content = fs.readFileSync(file, "utf-8");
+      const trimmed = content.trim();
+      if (!trimmed) {
+        console.warn(
+          `⚠️  Skipping empty article file: ${path.relative(process.cwd(), file)}`,
+        );
+        continue;
+      }
+      if (!/\bexport\s+default\b/.test(trimmed)) {
+        console.warn(
+          `⚠️  Skipping non-module article file (missing 'export default'): ${path.relative(
+            process.cwd(),
+            file,
+          )}`,
+        );
+        continue;
+      }
+
       const relativePath = path.relative(fullDir, file).replace(/\.tsx$/, '');
       const parts = relativePath.split(path.sep);
 
@@ -73,7 +91,6 @@ function main() {
       count++;
 
       // Extract metadata for subcategory manifest
-      const content = fs.readFileSync(file, 'utf-8');
       const titleMatch = content.match(/title:\s*"([^"]*)"/);
       const descMatch = content.match(/description:\s*"([^"]*)"/);
 

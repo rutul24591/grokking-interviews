@@ -1,0 +1,85 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Debounced Auto-Save System — State, Conflict, and Recovery</text>
+
+  <!-- Save state machine -->
+  <rect x="20" y="45" width="820" height="70" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="65" font-size="11" font-weight="bold" fill="#0d47a1">Save State Machine</text>
+
+  <rect x="30" y="72" width="110" height="35" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="85" y="94" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">idle</text>
+  <line x1="140" y1="89" x2="158" y2="89" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="149" y="85" text-anchor="middle" font-size="8" fill="#555">change</text>
+
+  <rect x="160" y="72" width="110" height="35" rx="4" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="215" y="94" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">unsaved</text>
+  <line x1="270" y1="89" x2="288" y2="89" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="279" y="85" text-anchor="middle" font-size="8" fill="#555">2s quiet</text>
+
+  <rect x="290" y="72" width="110" height="35" rx="4" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="345" y="94" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d47a1">saving</text>
+  <line x1="400" y1="80" x2="418" y2="75" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="400" y1="97" x2="418" y2="103" stroke="#e53935" stroke-width="1.5" marker-end="url(#arrd)"/>
+
+  <rect x="420" y="60" width="110" height="35" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="475" y="82" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">saved ✓</text>
+  <text x="475" y="93" text-anchor="middle" font-size="9" fill="#2e7d32">"Saved 2s ago"</text>
+
+  <rect x="420" y="100" width="110" height="35" rx="4" fill="#ffcdd2" stroke="#e53935" stroke-width="1.5"/>
+  <text x="475" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#b71c1c">error</text>
+  <text x="475" y="131" text-anchor="middle" font-size="9" fill="#c62828">Retry / notify user</text>
+
+  <!-- Auto-retry from error back to saving -->
+  <path d="M 530 117 Q 570 117 570 89 L 540 89" stroke="#e65100" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#arrd2)"/>
+  <text x="572" y="106" font-size="8" fill="#e65100">retry 3x</text>
+
+  <!-- Debounce detail -->
+  <rect x="20" y="135" width="415" height="225" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="30" y="155" font-size="12" font-weight="bold" fill="#1b5e20">Debounce Strategy</text>
+
+  <rect x="30" y="163" width="390" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="225" y="183" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Standard: 2s trailing debounce</text>
+  <text x="225" y="198" text-anchor="middle" font-size="10" fill="#2e7d32">Every keystroke resets the 2s timer</text>
+  <text x="225" y="213" text-anchor="middle" font-size="10" fill="#2e7d32">Save fires 2s after last change — good for active typing</text>
+
+  <rect x="30" y="228" width="390" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="225" y="248" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Max Interval: force save at 30s</text>
+  <text x="225" y="263" text-anchor="middle" font-size="10" fill="#2e7d32">Even if user keeps typing, save every 30s max</text>
+  <text x="225" y="278" text-anchor="middle" font-size="10" fill="#2e7d32">Limits data loss window to 30s max</text>
+
+  <rect x="30" y="293" width="390" height="55" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="225" y="313" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Pre-unload Flush</text>
+  <text x="225" y="328" text-anchor="middle" font-size="10" fill="#2e7d32">beforeunload event → cancel debounce → save immediately</text>
+  <text x="225" y="343" text-anchor="middle" font-size="10" fill="#2e7d32">navigator.sendBeacon for async save on close</text>
+
+  <!-- Conflict resolution -->
+  <rect x="450" y="135" width="390" height="225" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="460" y="155" font-size="12" font-weight="bold" fill="#e65100">Conflict Detection and Recovery</text>
+
+  <rect x="460" y="163" width="365" height="60" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="642" y="183" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Version Vector (OCC)</text>
+  <text x="642" y="198" text-anchor="middle" font-size="10" fill="#bf360c">Save includes: version: lastKnownVersion</text>
+  <text x="642" y="213" text-anchor="middle" font-size="10" fill="#bf360c">Server 409 if version mismatch → fetch + merge prompt</text>
+
+  <rect x="460" y="233" width="365" height="55" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="642" y="252" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Offline Draft</text>
+  <text x="642" y="268" text-anchor="middle" font-size="10" fill="#bf360c">Changes stored in IndexedDB while offline</text>
+  <text x="642" y="282" text-anchor="middle" font-size="10" fill="#bf360c">On reconnect: sync draft → diff against server</text>
+
+  <rect x="460" y="298" width="365" height="52" rx="4" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="642" y="317" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Save Indicator UX</text>
+  <text x="642" y="332" text-anchor="middle" font-size="10" fill="#bf360c">"Saving…" → "Saved 3s ago" → "Save failed — Retry"</text>
+  <text x="642" y="347" text-anchor="middle" font-size="10" fill="#bf360c">Relative timestamp updated every 10s</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+    <marker id="arrd" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e53935"/>
+    </marker>
+    <marker id="arrd2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e65100"/>
+    </marker>
+  </defs>
+</svg>

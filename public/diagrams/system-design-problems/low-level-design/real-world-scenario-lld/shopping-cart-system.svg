@@ -1,0 +1,89 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="400" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Shopping Cart System — State, Sync, and Conflict Resolution</text>
+
+  <!-- Cart State Machine -->
+  <rect x="20" y="45" width="260" height="320" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="150" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">Cart State Machine</text>
+
+  <rect x="35" y="78" width="230" height="45" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="150" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Local State (Zustand/Redux)</text>
+  <text x="150" y="112" text-anchor="middle" font-size="10" fill="#2e7d32">items[], totalPrice, couponCode, status</text>
+
+  <line x1="150" y1="123" x2="150" y2="143" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="35" y="145" width="230" height="45" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="150" y="164" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Optimistic Update</text>
+  <text x="150" y="179" text-anchor="middle" font-size="10" fill="#2e7d32">Add item instantly (no wait for server)</text>
+
+  <line x1="150" y1="190" x2="150" y2="210" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="35" y="212" width="230" height="45" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="150" y="231" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Server Sync</text>
+  <text x="150" y="246" text-anchor="middle" font-size="10" fill="#2e7d32">Debounce 500ms → PATCH /cart</text>
+
+  <line x1="150" y1="257" x2="150" y2="277" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="35" y="279" width="230" height="45" rx="5" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="150" y="298" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Conflict Resolution</text>
+  <text x="150" y="313" text-anchor="middle" font-size="10" fill="#2e7d32">Server version wins → revert + notify</text>
+
+  <rect x="35" y="336" width="230" height="20" rx="4" fill="#c8e6c9" stroke="#388e3c" stroke-width="1"/>
+  <text x="150" y="350" text-anchor="middle" font-size="10" fill="#1b5e20">Persist: localStorage + server</text>
+
+  <!-- Sync scenarios -->
+  <rect x="295" y="45" width="285" height="320" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="437" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Multi-Device Sync</text>
+
+  <rect x="310" y="78" width="255" height="60" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="437" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Guest → Logged-in Merge</text>
+  <text x="437" y="112" text-anchor="middle" font-size="10" fill="#1565c0">Guest cart: stored in localStorage</text>
+  <text x="437" y="127" text-anchor="middle" font-size="10" fill="#1565c0">On login: merge into server cart</text>
+
+  <rect x="310" y="150" width="255" height="60" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="437" y="169" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Multi-Tab Sync</text>
+  <text x="437" y="184" text-anchor="middle" font-size="10" fill="#1565c0">BroadcastChannel "cart-updated"</text>
+  <text x="437" y="199" text-anchor="middle" font-size="10" fill="#1565c0">All tabs reflect same cart state</text>
+
+  <rect x="310" y="222" width="255" height="60" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="437" y="241" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Stock Validation</text>
+  <text x="437" y="256" text-anchor="middle" font-size="10" fill="#1565c0">Check on add + at checkout start</text>
+  <text x="437" y="271" text-anchor="middle" font-size="10" fill="#1565c0">Reduce qty if inventory decreased</text>
+
+  <rect x="310" y="294" width="255" height="60" rx="5" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="437" y="313" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Cart Abandonment</text>
+  <text x="437" y="329" text-anchor="middle" font-size="10" fill="#1565c0">TTL: 30-day cart expiry</text>
+  <text x="437" y="344" text-anchor="middle" font-size="10" fill="#1565c0">Email reminder at 1h, 24h, 7d</text>
+
+  <!-- Price + events -->
+  <rect x="595" y="45" width="245" height="320" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="717" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Price &amp; Events</text>
+
+  <rect x="610" y="78" width="215" height="70" rx="5" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="717" y="97" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Price Calculation</text>
+  <text x="717" y="112" text-anchor="middle" font-size="10" fill="#bf360c">subtotal = Σ(price × qty)</text>
+  <text x="717" y="127" text-anchor="middle" font-size="10" fill="#bf360c">discount from coupon (validate server)</text>
+  <text x="717" y="141" text-anchor="middle" font-size="10" fill="#bf360c">tax = subtotal × taxRate (by region)</text>
+
+  <rect x="610" y="160" width="215" height="70" rx="5" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="717" y="179" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Price Change Handling</text>
+  <text x="717" y="195" text-anchor="middle" font-size="10" fill="#bf360c">Server returns updated price</text>
+  <text x="717" y="210" text-anchor="middle" font-size="10" fill="#bf360c">Show inline "Price changed" warning</text>
+  <text x="717" y="224" text-anchor="middle" font-size="10" fill="#bf360c">User confirms at checkout</text>
+
+  <rect x="610" y="242" width="215" height="55" rx="5" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="717" y="261" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Analytics Events</text>
+  <text x="717" y="276" text-anchor="middle" font-size="10" fill="#bf360c">add_to_cart, remove_from_cart</text>
+  <text x="717" y="291" text-anchor="middle" font-size="10" fill="#bf360c">begin_checkout, purchase</text>
+
+  <rect x="610" y="309" width="215" height="50" rx="5" fill="white" stroke="#f57c00" stroke-width="1.5"/>
+  <text x="717" y="328" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Offline Support</text>
+  <text x="717" y="343" text-anchor="middle" font-size="10" fill="#bf360c">Add to cart works offline</text>
+  <text x="717" y="358" text-anchor="middle" font-size="10" fill="#bf360c">Background sync on reconnect</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

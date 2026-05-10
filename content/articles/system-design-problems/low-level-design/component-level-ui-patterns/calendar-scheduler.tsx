@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -39,7 +40,7 @@ export default function CalendarSchedulerArticle() {
       {/* Section 1: Problem Clarification */}
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We need to design a reusable calendar/scheduler component for a large-scale
           React application. The calendar must support multiple views (month grid, week
           time-grid, day detail, and agenda list), render events as colored blocks on
@@ -51,7 +52,7 @@ export default function CalendarSchedulerArticle() {
           accessibility. The calendar must be globally accessible through a Zustand store
           so that any component can query or modify the current view, date range, or
           event data without prop drilling.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
@@ -67,22 +68,22 @@ export default function CalendarSchedulerArticle() {
             Recurring events follow RRULE patterns (daily, weekly, monthly, yearly) with
             optional exception dates and an end date or occurrence count.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Multiple events can overlap in the same time slot. They must render
             side-by-side with proper column assignment.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Drag operations support both moving an event to a new time slot and resizing
             its duration by dragging the bottom edge.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             The calendar supports keyboard navigation: arrow keys move between cells,
             Enter creates a new event, Escape cancels an in-progress operation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Maximum event density per time slot is unbounded, but the collision layout
             algorithm must handle 10+ overlapping events gracefully.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -92,11 +93,11 @@ export default function CalendarSchedulerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Multi-view rendering:</strong> Support month view (7-column grid of
             days), week view (time slots with hour rows), day view (detailed single-day
             time grid), and agenda view (scrollable list of upcoming events).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Event rendering:</strong> Events render as colored blocks positioned
             on time slots. Multi-day events span multiple cells in month view with
@@ -129,34 +130,34 @@ export default function CalendarSchedulerArticle() {
             <strong>Navigation:</strong> Previous/next period buttons, today button, and
             a mini month calendar for quick date selection.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Keyboard navigation:</strong> Arrow keys navigate between cells,
             Enter creates an event on the focused cell, Escape cancels modal or drag
             operations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Time zone support:</strong> Events stored in UTC are converted to
             the user&apos;s configured time zone. A time zone selector is available in
             settings.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Accessibility:</strong> Calendar grid uses <code>role="grid"</code>,
             each cell has <code>aria-label</code> with the date, and all interactive
             elements are keyboard-accessible.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Month view with 200+ events (including
             expanded recurring occurrences) must render without jank. Virtualization
             should be considered for week/day views with dense event data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Scalability:</strong> The collision detection algorithm must handle
             50+ overlapping events in a single time slot within O(n log n) time.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reliability:</strong> Drag operations must not lose event data.
             Failed API updates should rollback the event to its pre-drag state.
@@ -203,7 +204,7 @@ export default function CalendarSchedulerArticle() {
       {/* Section 3: High-Level Approach */}
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The core idea is to separate the <strong>calendar state management</strong> from
           the <strong>view rendering</strong> and <strong>event computation</strong>. A
           Zustand store holds the current view type, active date range, event list,
@@ -211,40 +212,40 @@ export default function CalendarSchedulerArticle() {
           detection, recurring event expansion, and time slot generation. Each view
           component (month, week, day, agenda) subscribes to the store, computes its
           visible events, and renders them with appropriate layout.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Alternative approaches considered:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Context API + useReducer:</strong> Viable but the calendar has
             multiple independent state slices (view state, event data, drag state, modal
             state). A single context would cause unnecessary re-renders across all
             consumers. Zustand selectors allow each view component to subscribe only to
             the state it needs.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Full calendar library (FullCalendar, react-big-calendar):</strong>
             These provide out-of-the-box functionality but are heavy bundles (50KB+
             gzipped) and offer limited customization. For a design interview, building
             from scratch demonstrates understanding of the underlying algorithms
             (collision detection, recurring expansion, drag mechanics).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Server-side rendering of all views:</strong> Pre-computing all view
             layouts on the server eliminates client-side computation but increases
             bandwidth and makes interactive features (drag, resize) harder to implement.
             Client-side computation is the right trade-off for an interactive calendar.
-          </li>
+          </HighlightBlock>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Why Zustand + pure utilities is optimal:</strong> Zustand provides
           lightweight, selector-based state management. Collision detection and recurring
           expansion are pure functions — they take input (events, date range) and return
           output (collision groups, occurrence list) with no side effects. This makes
           them easy to test, memoize, and reason about. The view components are
           stateless renderers that receive computed data as props.
-        </p>
+        </HighlightBlock>
       </section>
 
       {/* Section 4: System Design (LLD) */}
@@ -256,7 +257,7 @@ export default function CalendarSchedulerArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">1. Calendar Types (<code>calendar-types.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             Defines the core type system: <code>CalendarEvent</code> with fields for id,
             title, start, end, color, description, recurring pattern, and exception dates;
             <code>CalendarView</code> union (`month` | `week` | `day` | `agenda`);
@@ -264,7 +265,7 @@ export default function CalendarSchedulerArticle() {
             <code>TimeSlot</code> with start time, duration, and snap granularity;
             <code>CollisionGroup</code> with events array, column assignment, and max
             columns. These types form the contract between all modules.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -280,7 +281,7 @@ export default function CalendarSchedulerArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">3. Event Collision Detector (<code>event-collision-detector.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Pure function that takes an array of events within a time range and returns
             collision groups. Uses a sweep-line algorithm: sort events by start time,
             maintain active event columns, assign each event to the first non-overlapping
@@ -288,7 +289,7 @@ export default function CalendarSchedulerArticle() {
             width calculation. Time complexity is O(n log n) due to sorting; column
             assignment is O(n * k) where k is max columns per group. See the Example tab
             for the complete algorithm implementation.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -305,13 +306,13 @@ export default function CalendarSchedulerArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">5. Time Slot Utilities (<code>time-slot-utils.ts</code>)</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Generates time slot arrays for week/day views at configurable granularities
             (15, 30, or 60 minutes). Provides snap-to-grid rounding for drag operations,
             duration calculation between two Date objects, and hour label formatting.
             Slots are pre-computed once per view render and reused across event
             positioning calculations.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -321,12 +322,12 @@ export default function CalendarSchedulerArticle() {
             range for each view type, handles prev/next/today navigation, and manages
             mini calendar date selection.
           </p>
-          <p className="mt-2">
+          <HighlightBlock as="p" tier="important" className="mt-2">
             <strong>`use-event-drag.ts`</strong> — Handles drag-to-move and drag-to-resize
             interactions. Computes the target time slot from mouse position, provides
             visual feedback via preview state, and detects collisions during drag for
             real-time collision preview.
-          </p>
+          </HighlightBlock>
           <p className="mt-2">
             <strong>`use-calendar-events.ts`</strong> — Filters events by the visible date
             range, expands recurring events into occurrences, and sorts them by start
@@ -431,10 +432,10 @@ export default function CalendarSchedulerArticle() {
             Collision detector groups overlapping events and assigns columns. Events
             render side-by-side with proportional widths.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             User drags an event to a new time slot. `useEventDrag` computes target slot,
             updates preview state, and shows collision preview.
-          </li>
+          </HighlightBlock>
           <li>
             On drop, store updates the event&apos;s start time. If the API call fails,
             event rolls back to original position.
@@ -449,13 +450,13 @@ export default function CalendarSchedulerArticle() {
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
         <h2>Data Flow / Execution Flow</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
           subscriptions. Pure utility functions (collision detection, recurring expansion)
           are called within memoized hooks to avoid recomputation on unrelated state
           changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Event Filtering and Expansion Pipeline</h3>
         <ol className="space-y-2 list-decimal list-inside">
@@ -471,10 +472,10 @@ export default function CalendarSchedulerArticle() {
             For single events, check if the event overlaps [start, end]. If yes, include
             it as a single occurrence.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Merge all occurrences (expanded recurring + single events), sort by start
             time. Memoize the result — recompute only when events or date range changes.
-          </li>
+          </HighlightBlock>
         </ol>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Collision Detection Pipeline (Week View)</h3>
@@ -502,24 +503,24 @@ export default function CalendarSchedulerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
         <ul className="space-y-3">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>DST transitions:</strong> When computing event times across a DST
             boundary, use the `Intl.DateTimeFormat` API with the user&apos;s time zone
             to correctly handle the offset shift. The stored UTC time is invariant; only
             the display time changes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Infinite recurring events:</strong> The recurring expander caps at
             730 occurrences (2 years). If an RRULE has no end date and no count, the
             expander generates occurrences from the visible range start up to 2 years
             from today, then stops.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Column overflow:</strong> If a collision group exceeds the maximum
             column count (default: 4), the remaining events stack below with an
             &quot;+N more&quot; indicator. This prevents columns from becoming too narrow
             to interact with.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Drag rollback:</strong> If the API call to update an event&apos;s time
             fails, the store restores the event to its original start/end times from the
@@ -538,14 +539,14 @@ export default function CalendarSchedulerArticle() {
       {/* Section 6: Implementation */}
       <section>
         <h2>Implementation</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
-        </p>
+        </HighlightBlock>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 text-lg font-semibold">Switch to the Example Tab</h3>
-          <p>
+          <HighlightBlock as="p" tier="crucial">
             The complete, production-ready implementation consists of 15 files:
             TypeScript interfaces for all types, Zustand store with navigation and drag
             state, collision detection algorithm with sweep-line column assignment,
@@ -554,7 +555,7 @@ export default function CalendarSchedulerArticle() {
             components, and a full EXPLANATION.md walkthrough. Click the
             <strong>Example</strong> toggle at the top of the article to view all source
             files.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Calendar Types (calendar-types.ts)</h3>
@@ -589,7 +590,7 @@ export default function CalendarSchedulerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 4: Recurring Event Expander (recurring-event-expander.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Takes a recurring event definition and a date range, then generates individual
           occurrence objects. For `DAILY` frequency, it advances by `interval` days from
           the event start. For `WEEKLY`, it advances by `interval` weeks. For `MONTHLY`,
@@ -598,17 +599,17 @@ export default function CalendarSchedulerArticle() {
           the exception dates array and the visible range. Occurrences outside the range
           or matching an exception are excluded. A hard cap of 730 occurrences prevents
           infinite loops.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 5: Time Slot Utilities (time-slot-utils.ts)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Provides `generateTimeSlots(granularity)` returning an array of time slot
           objects from 00:00 to 23:59 at 15, 30, or 60 minute intervals.
           `snapToGrid(date, granularity)` rounds a Date to the nearest grid boundary for
           drag positioning. `calculateDuration(start, end)` returns the duration in
           minutes. `formatHour(date)` returns a locale-aware hour label for the time
           axis. These utilities are pure functions with no external dependencies.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 6: useCalendarNavigation Hook</h3>
         <p>
@@ -621,7 +622,7 @@ export default function CalendarSchedulerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 7: useEventDrag Hook</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Handles drag-to-move and drag-to-resize interactions. On `mousedown` on an
           event&apos;s drag handle, it records the event ID, original position, and drag
           mode. On `mousemove`, it computes the target time slot from the mouse Y
@@ -629,7 +630,7 @@ export default function CalendarSchedulerArticle() {
           renders a ghost preview at the target position. On `mouseup`, it dispatches
           the update to the store. If the API call fails, the store rolls back to the
           original position. Pressing Escape during drag cancels the operation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module 8: useCalendarEvents Hook</h3>
         <p>
@@ -742,30 +743,30 @@ export default function CalendarSchedulerArticle() {
             </tbody>
           </table>
         </div>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Where <code>n</code> is the number of events in the visible range,
           <code>r</code> is the number of recurring event definitions, <code>k</code> is
           the max occurrences per recurring event (capped at 730), and <code>s</code> is
           the number of time slots per day (48 for 30-min granularity). For a typical
           week view with 200 events and 5 recurring definitions, total computation is
           well under 10ms.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Recurring expansion on every view change:</strong> Switching from
             month to week view triggers re-expansion of all recurring events. Mitigation:
             memoize occurrences keyed by (event-id, date-range). If the new range
             overlaps with the cached range, filter the cached array instead of
             re-expanding.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Collision detection on every render:</strong> Running the O(n log n)
             algorithm on every render is wasteful if events haven&apos;t changed.
             Mitigation: wrap the collision detector call in `useMemo` with dependencies
             on the occurrence array. Only recompute when events change.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Drag preview re-renders:</strong> `mousemove` fires at 60Hz. Updating
             Zustand store on every event would cause 60 re-renders per second. Mitigation:
@@ -782,11 +783,11 @@ export default function CalendarSchedulerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memoized event filtering:</strong> `useCalendarEvents` uses `useMemo`
             with dependencies on `events` and `dateRange`. Switching views without
             changing the date range returns the cached occurrence array.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Selector-based subscriptions:</strong> Each view component subscribes
             to only the store slices it needs. The month view doesn&apos;t subscribe to
@@ -802,11 +803,11 @@ export default function CalendarSchedulerArticle() {
             to the drag ghost element to promote it to its own compositor layer, avoiding
             layout recalculations during the drag animation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounced time zone changes:</strong> When the user changes the time
             zone, debounce the re-render by 50ms to avoid intermediate states during the
             dropdown selection.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -815,7 +816,7 @@ export default function CalendarSchedulerArticle() {
         <h2>Security Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event titles and descriptions may contain user-generated content. If rendered
           with <code>dangerouslySetInnerHTML</code> (e.g., rich text descriptions), they
           are XSS vectors. Always sanitize HTML content before rendering. Prefer rendering
@@ -823,7 +824,7 @@ export default function CalendarSchedulerArticle() {
           from trusted sources. Validate that start times are before end times, that date
           values are valid Date objects, and that RRULE patterns conform to the supported
           frequency set.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
@@ -845,34 +846,34 @@ export default function CalendarSchedulerArticle() {
             <li>
               <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">Escape</kbd> closes the modal or cancels an in-progress drag operation.
             </li>
-            <li>
+            <HighlightBlock as="li" tier="important">
               Drag operations also support keyboard: focus an event, press
               <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">Space</kbd> to grab it, arrow keys to move,
               <kbd className="px-1.5 py-0.5 rounded bg-panel text-xs">Space</kbd> to drop.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
           <ul className="space-y-2">
-            <li>
+            <HighlightBlock as="li" tier="important">
               Each grid cell has <code>aria-label</code> with the full date
               (e.g., &quot;Monday, April 7, 2026&quot;) and event count.
-            </li>
+            </HighlightBlock>
             <li>
               Events within cells have <code>aria-label</code> with title, start time,
               and end time (e.g., &quot;Team standup, 9:00 AM to 9:30 AM&quot;).
             </li>
-            <li>
+            <HighlightBlock as="li" tier="crucial">
               The event creation modal uses <code>role="dialog"</code> with
               <code>aria-modal="true"</code> and <code>aria-labelledby</code> pointing
               to the modal title. Focus is trapped within the modal while open.
-            </li>
-            <li>
+            </HighlightBlock>
+            <HighlightBlock as="li" tier="important">
               The mini calendar has <code>aria-label="Mini calendar for quick navigation"</code>
               and each day cell is a button with an accessible date label.
-            </li>
+            </HighlightBlock>
           </ul>
         </div>
 
@@ -902,12 +903,12 @@ export default function CalendarSchedulerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Collision detector:</strong> Test with 2 overlapping events (should
             assign columns 0 and 1), 3 events where events 1 and 2 overlap but event 3
             doesn&apos;t (should assign columns 0, 1, 0), and 10+ events to verify max
             column cap.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Recurring expander:</strong> Test daily recurrence generates correct
             occurrences within range, weekly recurrence with interval=2 skips alternate
@@ -915,11 +916,11 @@ export default function CalendarSchedulerArticle() {
             month), exception dates exclude specific occurrences, and infinite recurrence
             caps at 730.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Time slot utilities:</strong> Test `generateTimeSlots(30)` returns 48
             slots, `snapToGrid` rounds to nearest 30-min boundary, and `calculateDuration`
             returns correct minutes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Store actions:</strong> Test `navigate` advances/rewinds the active
             date correctly for each view, `addEvent` appends to the array, `updateEvent`
@@ -939,16 +940,16 @@ export default function CalendarSchedulerArticle() {
             the same day, render week view, assert they render side-by-side with correct
             column widths and positions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Drag and drop:</strong> Render an event in week view, simulate
             mousedown on the drag handle, mousemove to a different time slot, mouseup.
             Assert the event&apos;s start time in the store updates correctly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Event creation:</strong> Click an empty slot, assert the modal opens
             with pre-filled date. Fill in the form, submit, assert the event appears in
             the calendar.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Navigation:</strong> Click prev/next buttons, assert the visible date
             range updates. Click today, assert the calendar navigates to the current date.
@@ -976,10 +977,10 @@ export default function CalendarSchedulerArticle() {
           <li>
             Time zone change — verify all event times re-render with the new offset.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Accessibility: run axe-core automated checks on the calendar grid, verify
             aria-label on cells, role attributes, and keyboard navigation.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -1013,12 +1014,12 @@ export default function CalendarSchedulerArticle() {
             it is 25 hours. Event times must display correctly in the user&apos;s time
             zone regardless.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Forgetting accessibility:</strong> Rendering a calendar without
             <code>role="grid"</code>, <code>aria-label</code> on cells, and keyboard
             navigation makes it unusable for screen reader and keyboard-only users. This
             is a critical oversight in production systems.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Not implementing drag rollback:</strong> If the API call to update an
             event&apos;s time fails, the event should revert to its original position.
@@ -1030,7 +1031,7 @@ export default function CalendarSchedulerArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Client-side vs Server-side Recurring Expansion</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             Expanding recurring events on the client means the browser computes all
             occurrences within the visible range. This is fast for typical ranges (1
             week to 1 month) and enables instant view switches. The trade-off is that
@@ -1039,7 +1040,7 @@ export default function CalendarSchedulerArticle() {
             latency and makes view switches dependent on API round trips. The right
             approach is client-side expansion with caching — cache occurrences keyed
             by (event-id, date-range) and reuse them when the new range overlaps.
-          </p>
+          </HighlightBlock>
         </div>
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
@@ -1058,7 +1059,7 @@ export default function CalendarSchedulerArticle() {
 
         <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
           <h4 className="mb-3 font-semibold">Absolute Positioning vs CSS Grid for Event Placement</h4>
-          <p>
+          <HighlightBlock as="p" tier="important">
             In week view, events can be positioned using absolute positioning (top/left
             based on time) or CSS Grid (placing events in grid rows corresponding to
             time slots). Absolute positioning gives pixel-perfect placement and smooth
@@ -1068,7 +1069,7 @@ export default function CalendarSchedulerArticle() {
             that needs both precision and flexibility, absolute positioning with a
             collision detector is the better choice. CSS Grid works well for month view
             where events occupy whole-day cells.
-          </p>
+          </HighlightBlock>
         </div>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
@@ -1106,28 +1107,28 @@ export default function CalendarSchedulerArticle() {
             <p className="font-semibold">
               Q: How would you sync calendar state with a backend API?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: The store&apos;s event mutations (`addEvent`, `updateEvent`, `deleteEvent`)
               dispatch optimistic updates — immediately update local state, then make the
               API call. If the API succeeds, the local state is already correct. If it
               fails, rollback to the pre-mutation state. For initial load, fetch events
               for the visible date range on mount and on range change. Use pagination or
               cursor-based fetching for large ranges.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
               Q: How would you implement drag-and-drop accessibility for keyboard-only users?
             </p>
-            <p className="mt-2 text-sm">
+            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
               A: Provide a keyboard drag mode: focus an event, press Space to &quot;pick
               up&quot; the event (announced via `aria-live`), use arrow keys to move the
               event to adjacent cells (with visual highlight on the target cell), and
               press Space again to &quot;drop&quot; it. The target cell&apos;s new date/time
               is announced via `aria-live`. Pressing Escape cancels the drag. This mirrors
               the mouse drag interaction using only keyboard events.
-            </p>
+            </HighlightBlock>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -1,0 +1,102 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="860" height="380" fill="#f8f9fa"/>
+  <text x="430" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Feature Rollout System — Gradual Deployment, Targeting, Kill Switch</text>
+
+  <!-- Rollout stages -->
+  <rect x="20" y="45" width="820" height="80" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="30" y="65" font-size="12" font-weight="bold" fill="#1b5e20">Gradual Rollout Stages</text>
+
+  <rect x="30" y="73" width="100" height="42" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="80" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">0% — Dark</text>
+  <text x="80" y="104" text-anchor="middle" font-size="9" fill="#2e7d32">Code deployed</text>
+  <text x="80" y="116" text-anchor="middle" font-size="9" fill="#2e7d32">flag off</text>
+  <line x1="130" y1="94" x2="148" y2="94" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="150" y="73" width="105" height="42" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="202" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">1% Internal</text>
+  <text x="202" y="104" text-anchor="middle" font-size="9" fill="#2e7d32">Employees only</text>
+  <text x="202" y="116" text-anchor="middle" font-size="9" fill="#2e7d32">canary watch</text>
+  <line x1="255" y1="94" x2="273" y2="94" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="275" y="73" width="105" height="42" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="327" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">5% Beta</text>
+  <text x="327" y="104" text-anchor="middle" font-size="9" fill="#2e7d32">Opt-in users</text>
+  <text x="327" y="116" text-anchor="middle" font-size="9" fill="#2e7d32">monitor 24h</text>
+  <line x1="380" y1="94" x2="398" y2="94" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="400" y="73" width="105" height="42" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="452" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">25% Ramp</text>
+  <text x="452" y="104" text-anchor="middle" font-size="9" fill="#2e7d32">Check error rate</text>
+  <text x="452" y="116" text-anchor="middle" font-size="9" fill="#2e7d32">+ p99 latency</text>
+  <line x1="505" y1="94" x2="523" y2="94" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="525" y="73" width="100" height="42" rx="4" fill="white" stroke="#388e3c" stroke-width="1.5"/>
+  <text x="575" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">50% Ramp</text>
+  <text x="575" y="104" text-anchor="middle" font-size="9" fill="#2e7d32">A/B metrics</text>
+  <text x="575" y="116" text-anchor="middle" font-size="9" fill="#2e7d32">comparison</text>
+  <line x1="625" y1="94" x2="643" y2="94" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="645" y="73" width="100" height="42" rx="4" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="695" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#1b5e20">100% GA</text>
+  <text x="695" y="104" text-anchor="middle" font-size="9" fill="#1b5e20">All users</text>
+  <text x="695" y="116" text-anchor="middle" font-size="9" fill="#1b5e20">flag cleanup</text>
+  <line x1="745" y1="94" x2="763" y2="94" stroke="#e53935" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrd)"/>
+
+  <rect x="765" y="73" width="65" height="42" rx="4" fill="#ffcdd2" stroke="#e53935" stroke-width="2"/>
+  <text x="797" y="90" text-anchor="middle" font-size="10" font-weight="bold" fill="#b71c1c">KILL</text>
+  <text x="797" y="104" text-anchor="middle" font-size="9" fill="#c62828">any stage</text>
+  <text x="797" y="116" text-anchor="middle" font-size="9" fill="#c62828">→ 0%</text>
+
+  <!-- Targeting + hashing -->
+  <rect x="20" y="148" width="400" height="205" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="30" y="168" font-size="12" font-weight="bold" fill="#0d47a1">Targeting and Consistent Hashing</text>
+
+  <rect x="30" y="178" width="375" height="55" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="217" y="197" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Consistent Hash Assignment</text>
+  <text x="217" y="213" text-anchor="middle" font-size="10" fill="#1565c0">bucket = hash(featureKey + userId) % 100</text>
+  <text x="217" y="228" text-anchor="middle" font-size="10" fill="#1565c0">bucket &lt; rolloutPercent → enabled (same user always same result)</text>
+
+  <rect x="30" y="243" width="178" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="119" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Targeting Attributes</text>
+  <text x="119" y="278" text-anchor="middle" font-size="10" fill="#1565c0">userId, orgId, region</text>
+  <text x="119" y="293" text-anchor="middle" font-size="10" fill="#1565c0">plan, deviceType, appVersion</text>
+
+  <rect x="218" y="243" width="188" height="65" rx="4" fill="white" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="312" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d47a1">Allowlist Override</text>
+  <text x="312" y="278" text-anchor="middle" font-size="10" fill="#1565c0">Specific IDs always on</text>
+  <text x="312" y="293" text-anchor="middle" font-size="10" fill="#1565c0">Evaluated before % hash</text>
+
+  <rect x="30" y="318" width="375" height="25" rx="4" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+  <text x="217" y="334" text-anchor="middle" font-size="10" fill="#0d47a1">SDK evaluates fully client-side — no per-request server round-trip after bootstrap</text>
+
+  <!-- Kill switch + monitoring -->
+  <rect x="435" y="148" width="405" height="205" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+  <text x="445" y="168" font-size="12" font-weight="bold" fill="#b71c1c">Kill Switch and Auto-Rollback</text>
+
+  <rect x="445" y="178" width="380" height="55" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="635" y="197" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Auto-Rollback Trigger</text>
+  <text x="635" y="212" text-anchor="middle" font-size="10" fill="#c62828">Error rate &gt; 2× baseline OR p99 latency &gt; 3× baseline</text>
+  <text x="635" y="227" text-anchor="middle" font-size="10" fill="#c62828">Alert fires → automated flag disable → ops paged</text>
+
+  <rect x="445" y="243" width="180" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="535" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Manual Kill Switch</text>
+  <text x="535" y="278" text-anchor="middle" font-size="10" fill="#c62828">Ops dashboard toggle</text>
+  <text x="535" y="293" text-anchor="middle" font-size="10" fill="#c62828">Change propagates in &lt;5s via SSE</text>
+
+  <rect x="635" y="243" width="185" height="65" rx="4" fill="white" stroke="#e53935" stroke-width="1.5"/>
+  <text x="727" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">Flag Audit Log</text>
+  <text x="727" y="278" text-anchor="middle" font-size="10" fill="#c62828">Who changed, what, when</text>
+  <text x="727" y="293" text-anchor="middle" font-size="10" fill="#c62828">Immutable audit trail</text>
+
+  <rect x="445" y="318" width="380" height="25" rx="4" fill="#ffcdd2" stroke="#e53935" stroke-width="1"/>
+  <text x="635" y="334" text-anchor="middle" font-size="10" fill="#b71c1c">Never skip stages: 0% → 1% → 5% → 25%+ — each stage requires metrics sign-off</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+    <marker id="arrd" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e53935"/>
+    </marker>
+  </defs>
+</svg>
