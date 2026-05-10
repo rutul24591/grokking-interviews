@@ -4305,6 +4305,53 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Architecture for scalable user onboarding: progressive profiling, activation milestone tracking, personalization, A/B testing, fraud detection, and retention loop integration."
     }
   ],
+  "system-design-problems/high-level-design/realtime-collaboration-systems": [
+    {
+      "slug": "collaborative-editor",
+      "title": "Design a Collaborative Editor (Google Docs / Notion Style)",
+      "description": "Architecture for a real-time collaborative text editor: OT versus CRDT, cursor synchronization, conflict-free merging, offline support, and performance at scale."
+    },
+    {
+      "slug": "cursor-sharing-system",
+      "title": "Design a Cursor-Sharing System (Figma-Like)",
+      "description": "Architecture for real-time cursor sharing: high-frequency position broadcasting, interpolation, viewport transformation, identity display, and scaling to hundreds of simultaneous collaborators."
+    },
+    {
+      "slug": "embedded-chat-system",
+      "title": "Design an Embedded Chat System",
+      "description": "Architecture for an in-product chat system: message delivery, read receipts, threading, search, moderation, and scalable WebSocket fan-out."
+    },
+    {
+      "slug": "live-commenting-annotation-system",
+      "title": "Design a Live Commenting / Annotation System",
+      "description": "Architecture for inline comments and annotations on documents and media: anchor stability, real-time sync, thread resolution, and scale to millions of annotations."
+    },
+    {
+      "slug": "offline-realtime-sync-reconciliation-system",
+      "title": "Design an Offline + Realtime Sync Reconciliation System",
+      "description": "Architecture for offline-first sync: local operation queues, change logs with logical timestamps, conflict detection and resolution, reconnect protocols, and sync status UX."
+    },
+    {
+      "slug": "presence-system",
+      "title": "Design a Presence System (Online/Offline, Typing Indicators)",
+      "description": "Architecture for a real-time presence system: heartbeat-based online/offline detection, typing indicators, last-seen timestamps, privacy controls, and scalability to millions of users."
+    },
+    {
+      "slug": "real-time-collaborative-whiteboard",
+      "title": "Design a Real-Time Collaborative Whiteboard (Miro/Figma Style)",
+      "description": "Architecture for a multiplayer infinite canvas: CRDT-based conflict resolution, operational transform, WebSocket delivery, viewport culling, and performance at scale."
+    },
+    {
+      "slug": "real-time-multiplayer-game-lobby-and-matchmaking-ui",
+      "title": "Design a Real-Time Multiplayer Game Lobby & Matchmaking UI",
+      "description": "Architecture for a game lobby and matchmaking system: skill-based matching, lobby state machine, WebSocket sync, anti-cheat, and queue management at scale."
+    },
+    {
+      "slug": "video-conferencing-frontend",
+      "title": "Design a Video Conferencing Frontend (Zoom/Google Meet Style)",
+      "description": "Architecture for a browser-based video conferencing client: WebRTC mesh vs SFU, media negotiation, adaptive quality, layout management, and resilience under poor network conditions."
+    }
+  ],
   "system-design-problems/low-level-design/ai-modern-systems-lld": [
     {
       "slug": "ai-assisted-search-qa-ui",
