@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function WYSIWYGEmailBuilderArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a WYSIWYG email builder — the
           tool that lets marketers and ops users compose
           emails by dragging blocks (headers, text,
@@ -44,8 +46,8 @@ export default function WYSIWYGEmailBuilderArticle() {
           Apple Mail, mobile clients) — a notoriously
           hard target because mail clients support
           radically different CSS subsets.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: a block-based document
           model that&rsquo;s easier to author than raw
           HTML; mail-client-compatible HTML output
@@ -57,10 +59,10 @@ export default function WYSIWYGEmailBuilderArticle() {
           preview across device widths and dark mode;
           and undo/redo across drag-and-drop and
           block-content edits.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users are marketers and operations users
           composing transactional and marketing emails.
           They expect drag-and-drop fluency,
@@ -68,10 +70,10 @@ export default function WYSIWYGEmailBuilderArticle() {
           consistency, and reliable preview. Engineering
           teams provide the runtime; marketers compose
           and send via an integrated send pipeline.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The output target is HTML email; we generate
           either via MJML (the email-friendly markup
           language that compiles to robust HTML) or
@@ -82,23 +84,23 @@ export default function WYSIWYGEmailBuilderArticle() {
           Modern browsers for the editor; the
           generated emails target mail clients with
           appropriate compatibility.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the email send pipeline.
           We do not implement complex automation (drip
           campaigns, A/B testing of subject lines).
           We do not implement subscriber list
           management.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Drag blocks from a palette onto the canvas.
           Blocks: header, text, button, image, divider,
           spacer, columns (1, 2, 3 column layouts),
@@ -112,10 +114,10 @@ export default function WYSIWYGEmailBuilderArticle() {
           Duplicate, delete blocks. Undo/redo across
           all changes. Export as HTML (MJML-generated
           or hand-rolled). Save and load drafts.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Brand theme editor (colors, fonts, default
           paddings). Section templates (pre-built
           combinations of blocks). Block templates
@@ -124,38 +126,38 @@ export default function WYSIWYGEmailBuilderArticle() {
           condition is met). Test send to a
           recipient. Spam-check integration. AMP for
           Email support. Image library.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Email send infrastructure, subscriber
           management, advanced personalization
           engines, automation workflows.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag at 60 fps. Preview updates within 200
           ms of edit. Save debounced. Loading drafts
           under 200 ms.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Output HTML renders correctly across major
           mail clients (Gmail, Outlook, Apple Mail,
           iOS Mail, Android Gmail). Variables
           escape safely. Drafts persist reliably.
           Undo/redo never produces inconsistent
           state.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User-supplied content (text, image URLs,
           links) sanitized at output. Variables
           interpolate at send time, not at edit time
@@ -163,24 +165,24 @@ export default function WYSIWYGEmailBuilderArticle() {
           rendered emails). Tracking pixels and
           unsubscribe links handled by the send
           pipeline.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Editor is keyboard-accessible (drag has
           keyboard alternative). Blocks have
           accessible labels. Preview pane is
           accessible to screen readers (renders the
           generated HTML).
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Block types in a registry with clean
           schemas. Output renderer separate from
           editor; swappable (MJML vs hand-rolled).
           Brand themes separate from content.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -212,7 +214,7 @@ export default function WYSIWYGEmailBuilderArticle() {
           URL, button label/link). Style is type-
           specific overrides on top of brand theme.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>editor canvas</strong> renders
           the blocks in their authored order. Each
           block is interactive: hover shows edit
@@ -223,7 +225,7 @@ export default function WYSIWYGEmailBuilderArticle() {
           targets between blocks. The canvas
           re-renders on every edit; for performance,
           blocks memoize by (id, content, style).
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>inspector</strong> shows the
           selected block&rsquo;s editable
@@ -236,7 +238,7 @@ export default function WYSIWYGEmailBuilderArticle() {
           color pickers, font selectors, slider
           inputs for padding and spacing.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Variable insertion</strong>: a
           variable picker shows available variables
           (firstName, lastName, custom fields).
@@ -246,8 +248,8 @@ export default function WYSIWYGEmailBuilderArticle() {
           token as a styled chip while editing; the
           output preserves the token literally for
           the send pipeline to interpolate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>preview pane</strong> renders
           the current document via the output
           renderer. We toggle between desktop,
@@ -260,8 +262,8 @@ export default function WYSIWYGEmailBuilderArticle() {
           values during preview (typically the
           variable name in brackets) so the
           designer can see how text flows.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>output renderer</strong> is the
           most challenging part. Mail clients
           support different CSS subsets — Outlook
@@ -281,7 +283,7 @@ export default function WYSIWYGEmailBuilderArticle() {
           recommend MJML where possible; hand-rolled
           tables for the cases MJML doesn&rsquo;t
           cover.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Brand themes</strong> are
           configuration: primary color, secondary
@@ -298,223 +300,185 @@ export default function WYSIWYGEmailBuilderArticle() {
           add, reorder, content change, style
           change) is a command with apply/undo.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Persistence</strong>: drafts save
           debounced to the server. The shape is the
           serialized JSON document. On load,
           deserialize and render. Schema versioning
           handles evolution.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>BuilderProvider</strong> instantiates
-          document state, undo/redo, theme.
-          <strong> Palette</strong> renders draggable
-          block types. <strong>Canvas</strong>{" "}
-          renders blocks with edit handles.
-          <strong> Block</strong> renders one block
-          with selection state.
-          <strong> Inspector</strong> renders edit
+        <HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> Inspector</strong></Highlight> renders edit
           controls for the selected block.
           <strong> PreviewPane</strong> renders the
           generated HTML in an iframe at responsive
-          widths. <strong>OutputRenderer</strong>{" "}
+          widths.</HighlightBlock>
+<HighlightBlock as="p" tier="crucial"><strong>OutputRenderer</strong>{" "}
           translates document to MJML or HTML.
           <strong> ThemeEditor</strong> manages
           brand theme. <strong>VariablePicker</strong>{" "}
-          inserts variables.
-        </p>
+          inserts variables.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Document, selection, undo stack, theme — all
-          in external store. Palette, inspector,
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Document, selection, undo stack, theme <Highlight tier="important">— all
+          in external store. Palette,</Highlight> inspector,
           preview subscribe via selectors.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Document shape:{" "}
-          <code>{` { id, version, subject, preview, theme, blocks: [...] } `}</code>.
-          Block shape:{" "}
+        <HighlightBlock as="p" tier="crucial">Document shape:{" "}
+          <code>{` { id, version, subject, preview, theme, blocks: [...] } `}</code>.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Block shape:{" "}
           <code>{` { id, type, content, style? } `}</code>.
-          Output: HTML or MJML string. Variables
+          Output: HTML</HighlightBlock>
+<HighlightBlock as="p" tier="important">or MJML string. Variables
           schema:{" "}
-          <code>{` { name, type, defaultValue } `}</code>.
-        </p>
+          <code>{` { name, type, defaultValue } `}</code>.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Memoized block renders. Preview iframe
           updates throttled. Drag uses pointer events
-          with RAF-aligned updates. Save debounced.
-          Output rendering on demand (not on every
+          <Highlight tier="important">with RAF-aligned updates. Save debounced.
+          Output</Highlight> rendering on demand (not on every
           edit; on save and on preview).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Three-pane layout: palette on left, canvas
-          in middle, inspector on right. Preview
-          toggle. Device width buttons. Dark mode
-          toggle. Variable picker as a popover from
+        <HighlightBlock as="p" tier="crucial">Variable picker as a popover from
           text editors. Drop indicators during drag.
-          Empty canvas shows a guide
+          Empty canvas</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">shows a guide
           (&ldquo;Drag a block here&rdquo;).
-          Save status indicator. Test send button.
-        </p>
+          Save status indicator. Test send button.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag has keyboard alternative (focus a
-          block, Cut, navigate, Paste). Inspector
-          controls are real form fields. Preview
+          block, Cut, <Highlight tier="important">navigate, Paste). Inspector
+          controls are real</Highlight> form fields. Preview
           renders accessible HTML. Block selection
           announces.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          User-entered URLs validated (no
-          <code> javascript:</code> URLs). User-
-          entered HTML in text blocks sanitized.
-          Variables interpolate at send time only,
+        <HighlightBlock as="p" tier="crucial">Variables interpolate at send time only,
           not at preview time (preview shows
-          placeholders). Tracking and unsubscribe
+          placeholders).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Tracking and unsubscribe
           links are handled by the send pipeline,
-          not stored in the document.
-        </p>
+          not stored in the document.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for the document model
-          (add, reorder, edit), the renderer (output
-          matches expected HTML for known
-          documents). Visual regression tests of
+        <HighlightBlock as="p" tier="crucial">Visual regression tests of
           rendered output across mail clients
-          (using tools like Litmus or Email on
+          (using</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">tools like Litmus or Email on
           Acid). Drag-and-drop tests. Undo/redo
-          tests.
-        </p>
+          tests.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Block with very long content: editor allows
-          but warns if approaching mail-client size
-          limits. Image without alt text: warn (a11y
-          and rendering concerns). Variable referenced
-          but not in schema: warn. Malformed user
-          link: prompt to confirm. Outlook-specific
-          rendering bug (e.g. button line-height):
+        <HighlightBlock as="p" tier="crucial">button line-height):
           handled by the renderer&rsquo;s known
           quirks. Dark mode rendering: preview shows
-          accurately; user can adjust per-block. Test
+          accurately; user can adjust</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">per-block. Test
           send fails (invalid recipient): surface
           the error. Concurrent edits across tabs:
-          broadcast warns; user reloads.
-        </p>
+          broadcast warns; user reloads.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Block registry extensible. Themes
-          per-product. The renderer can target
-          different output formats (MJML, hand-rolled,
-          AMP). The pattern (document model + canvas
-          + preview + renderer) reuses across other
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">The pattern (document model + canvas
+          + preview + renderer) reuses across</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">other
           composer products (landing pages, push
-          notifications).
-        </p>
+          notifications).</HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          UI strings via i18n. Email content is the
-          marketer&rsquo;s own language;
-          variables can localize per recipient at
-          send time. RTL support requires per-block
+        <HighlightBlock as="p" tier="crucial">UI strings via i18n. Email content is the
+          marketer&rsquo;s own language;</HighlightBlock>
+<HighlightBlock as="p" tier="important">variables can localize per recipient at
+          send time. RTL support requires</HighlightBlock>
+<HighlightBlock as="p" tier="important">per-block
           direction config plus the renderer
-          handling RTL tables.
-        </p>
+          handling RTL tables.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>MJML vs hand-rolled tables</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           MJML abstracts mail-client quirks; output
           is robust. Hand-rolled gives finer
           control but requires deep mail-client
           expertise. We default to MJML and fall
           back to hand-rolled for cases MJML doesn&rsquo;t
           cover.
-        </p>
+        </HighlightBlock>
 
         <h3>Live preview vs on-demand</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Live preview reassures designers; on-demand
           is faster but breaks the WYSIWYG
           promise. We do live preview throttled to
           ~5 fps so it doesn&rsquo;t lag behind.
-        </p>
+        </HighlightBlock>
 
         <h3>iframe preview vs inline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           iframe sandboxes the preview HTML from
           the parent app&rsquo;s CSS. Inline would
           let parent CSS leak. We always use
           iframe for preview.
-        </p>
+        </HighlightBlock>
 
         <h3>Schema validation at edit vs send</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           At edit: catches errors early. At send:
           catches everything before delivery. We
           do both; edit catches obvious issues,
           send is the authoritative gate.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          AMP for Email support (interactive emails).
-          AI-generated content (subject lines, body
-          variations). A/B testing of subject lines.
-          Dynamic content blocks based on recipient
-          attributes. Spam score integration.
-          Real-time collaborative editing.
+        <HighlightBlock as="p" tier="crucial">Dynamic content blocks based on recipient
+          attributes. Spam score integration.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Real-time collaborative editing.
           Cross-channel (email + push + SMS) unified
-          composer.
-        </p>
+          composer.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why MJML?</strong> Mail clients
           render HTML inconsistently; tables and
           inline styles are required. MJML
@@ -522,17 +486,17 @@ export default function WYSIWYGEmailBuilderArticle() {
           semantic MJML, get robust output. It
           handles Outlook quirks, Gmail rules,
           mobile responsiveness, and dark mode.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does live preview work?</strong>{" "}
           Render the document to HTML/MJML, set as
           srcdoc on a sandboxed iframe at the
           chosen device width. Throttle updates to
           avoid stuttering on rapid edits.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>3. How are variables handled?</strong>{" "}
           Inserted as tokens
           (<code>{`{{ firstName }}`}</code>). At
@@ -540,16 +504,16 @@ export default function WYSIWYGEmailBuilderArticle() {
           preview time, render placeholder values.
           Interpolation happens at send time
           server-side.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does responsive preview
           work?</strong> Set the iframe width to
           desktop (640 px), tablet (480 px), or
           mobile (320 px). The output HTML uses
           MJML&rsquo;s responsive primitives so
           layout adapts.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How is undo/redo
@@ -559,7 +523,7 @@ export default function WYSIWYGEmailBuilderArticle() {
           undo pops and applies inverse.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How is dark mode handled?</strong>{" "}
           Mail clients vary — some auto-invert,
           some respect prefers-color-scheme. The
@@ -569,7 +533,7 @@ export default function WYSIWYGEmailBuilderArticle() {
           rule for clients that support it, and
           color schemes that look good when
           inverted for those that don&rsquo;t.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>7. How is the output
@@ -596,17 +560,12 @@ export default function WYSIWYGEmailBuilderArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A WYSIWYG email builder is a{" "}
-          <strong>block-based document model + drag-
-          drop canvas + responsive preview +
-          mail-client-compatible output renderer</strong>{" "}
-          (MJML or hand-rolled tables). Brand themes
+        <HighlightBlock as="p" tier="crucial">Brand themes
           parameterize visual style. Variables
-          interpolate at send time. The result is
+          interpolate at send time. The</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">result is
           marketers composing branded, reliable
-          emails without writing HTML.
-        </p>
+          emails without writing HTML.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

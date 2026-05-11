@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function BottomSheetDrawerArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a bottom sheet (mobile-
           first) and drawer (typically side, can
           be top/bottom/left/right) — the
@@ -44,8 +46,8 @@ export default function BottomSheetDrawerArticle() {
           proper focus trap and scroll handoff
           (the sheet&rsquo;s content scrolls when
           at full height; otherwise drag dismisses).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: snap points with
           smooth physics (drag past a midpoint
           snaps to the next position); scroll
@@ -56,40 +58,40 @@ export default function BottomSheetDrawerArticle() {
           works with the dismissible nature;
           accessibility for the modal-like
           behavior.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mobile users encounter bottom sheets
           ubiquitously (action sheets, detail
           panels, filters). Engineering teams
           plug in: provide content; runtime
           handles drag and snap.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern browsers; Pointer Events for
           drag, CSS transforms for movement,
           CSS overscroll-behavior for scroll
           handoff.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement modal dialogs
           (separate Modal component).
           End-to-end animation library; we use
           CSS transitions + JS for spring
           physics on drag.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Sheet slides up from bottom (or in
           from a side). Snap points: full-
           height, half-height, peek (or
@@ -102,43 +104,43 @@ export default function BottomSheetDrawerArticle() {
           height; otherwise drag moves sheet.
           Smooth spring animation between
           snaps.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Top/left/right drawer variants.
           Programmatic snap (open to half,
           etc.). Backdrop blur effect.
           Custom animations. Stack multiple
           sheets. Persistence of last snap.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Replace modal dialogs (Modal
           component handles those).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag at 60 fps via CSS transforms.
           Snap animations smooth. No layout
           thrash.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag never gets stuck. Scroll
           handoff feels native. Dismiss path
           always works.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Sheet uses{" "}
           <code>role=&quot;dialog&quot;</code> with
           <code> aria-modal=&quot;true&quot;</code>{" "}
@@ -149,19 +151,19 @@ export default function BottomSheetDrawerArticle() {
           modal. Escape closes. Keyboard
           alternative to drag (e.g. snap
           buttons).
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Snap points configurable. Variant
           (bottom, top, left, right) via prop.
           Content slot.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The sheet is a positioned element
           translated by a CSS transform. Snap
           points are configured Y positions
@@ -169,15 +171,15 @@ export default function BottomSheetDrawerArticle() {
           updates the transform; release
           snaps to the nearest snap based on
           velocity and position.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           On <strong>open</strong>: render the
           sheet. Animate from off-screen to
           the initial snap (typically peek or
           half). Backdrop fades in. Focus
           trap activates if modal.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>drag</strong> on the
           handle (or sheet body when scroll
           is at top): pointer-down captures;
@@ -185,8 +187,8 @@ export default function BottomSheetDrawerArticle() {
           On release, compute target snap from
           position and velocity (a fast flick
           carries past midpoint).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Scroll handoff</strong>: when
           the sheet contains a scrollable area,
           we use CSS{" "}
@@ -200,7 +202,7 @@ export default function BottomSheetDrawerArticle() {
           When scroll is mid-content, drag
           scrolls content. This handoff is
           subtle but expected from native iOS.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Snap physics</strong>: on
           release, compute target. If pointer
@@ -219,12 +221,12 @@ export default function BottomSheetDrawerArticle() {
           Escape dismisses. On dismiss,
           animate off-screen, then unmount.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Focus trap</strong>: same as
           modal. Move focus into sheet on
           open; trap inside; restore on
           close.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -235,176 +237,170 @@ export default function BottomSheetDrawerArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>SheetProvider</strong>{" "}
+        <HighlightBlock as="p" tier="crucial"><strong>SheetProvider</strong>{" "}
           (optional, for stacked sheets).
           <strong> Sheet</strong> renders the
           panel. <strong>Backdrop</strong>{" "}
-          renders the dimmed overlay.
-          <strong> DragHandle</strong>{" "}
+          renders the dimmed overlay.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> DragHandle</strong></Highlight>{" "}
           captures pointer.
           <strong> SnapController</strong>{" "}
           computes snap target.
           <strong> FocusTrap</strong> handles
-          focus while modal.
-        </p>
+          focus while modal.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Open state, current snap state,
-          drag state in component state.
-          Stacked sheets in a small store.
-        </p>
+          <Highlight tier="important">drag state in component state.
+          Stacked</Highlight> sheets in a small store.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>open</code>,
-          <code> onClose</code>,
+          </Highlight><code> onClose</code>,
           <code> snaps</code> (array of snap
-          points as percentage or pixels),
+          points as percentage or <Highlight tier="important">pixels),
           <code> initialSnap</code>,
           <code> variant</code> (bottom/top/
           left/right),
-          <code> modal</code> (true: focus
+          <code> modal</code></Highlight> (true: focus
           trap and backdrop modal; false:
           peek without trap).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CSS transforms are GPU-accelerated.
-          Pointer move handler minimal.
-          Backdrop is a single blur layer.
-        </p>
+          <Highlight tier="important">Pointer move handler minimal.
+          Backdrop is</Highlight> a single blur layer.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Visible drag handle at top. Smooth
-          snap with physics. Backdrop fades.
-          Drag-down dismiss intuitive.
+          <Highlight tier="important">snap with physics. Backdrop fades.
+          Drag-down</Highlight> dismiss intuitive.
           Reduced motion: snap is instant.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Dialog role with{" "}
-          <code>aria-modal</code> appropriate to
-          state. Focus trap when modal. Escape
-          closes. Snap buttons or keyboard
-          alternative for users who can&rsquo;t
-          drag. Screen-reader announces open
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Dialog role</Highlight> with{" "}
+          <Highlight tier="important">
+            <code>aria-modal</code>
+          </Highlight>{" "}
+          appropriate to state. Focus trap when modal.{" "}
+          <Highlight tier="important">Escape closes. Snap buttons or keyboard</Highlight>{" "}
+          alternative for users who can&rsquo;t drag. Screen-reader announces open
           and snap state changes.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Content sanitized at render. No
-          security surface beyond modal
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Content sanitized <Highlight tier="important">at render. No
+          security surface beyond</Highlight> modal
           patterns.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Drag and snap tests. Scroll handoff
-          tests. Focus trap tests. Reduced
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Drag and snap tests. <Highlight tier="important">Scroll handoff
+          tests. Focus trap tests.</Highlight> Reduced
           motion tests. Accessibility tests.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Drag while sheet content is
-          scrolled mid-content: scroll content,
-          not sheet. Drag at scroll-top:
-          sheet drags. Drag below peek:
-          dismiss. Modal sheet on small
+        <HighlightBlock as="p" tier="crucial">Modal sheet on small
           viewport: full-height by default.
-          Fast flick during snap animation:
+          Fast flick during</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">snap animation:
           interrupt; new drag wins. Reduced
-          motion: snap is instant.
-        </p>
+          motion: snap is instant.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Generic; works for action sheets,
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Generic; works for <Highlight tier="important">action sheets,
           detail panels, filters,
-          settings pages on mobile.
-        </p>
+          settings</Highlight> pages on mobile.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          UI strings via i18n. Drawer variant
-          (left/right) flips with RTL.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          UI strings <Highlight tier="important">via i18n. Drawer variant
+          (left/right) flips</Highlight> with RTL.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Snap points vs continuous</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Snap points feel native and
           predictable. Continuous (any
           position) feels free but lacks
           structure. Snap is right for
           content panels.
-        </p>
+        </HighlightBlock>
 
         <h3>Modal vs non-modal peek</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Modal traps focus and backdrops;
           right for full-attention sheets.
           Non-modal peek allows background
           interaction; right for ambient
           sheets (e.g. Apple Maps&rsquo;
           search).
-        </p>
+        </HighlightBlock>
 
         <h3>CSS transform vs JS animation
         library</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSS transform is simple and
           GPU-accelerated. JS animation
           libraries (Framer Motion, Spring)
           give richer physics. Use CSS for
           basic; library for complex.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Multi-sheet stacking. Custom
-          animations per use case. Voice
-          control of snap. Adaptive snaps
+          animations per <Highlight tier="important">use case. Voice
+          control of snap.</Highlight> Adaptive snaps
           based on content size.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. What is scroll
           handoff?</strong> When the sheet
           contains scrollable content,
@@ -414,32 +410,32 @@ export default function BottomSheetDrawerArticle() {
           down moves the sheet itself. CSS
           overscroll-behavior plus position
           tracking implement this.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How are snaps
           computed?</strong> On release,
           combine position and velocity. Fast
           flick: nearest snap in flick
           direction. Slow release: nearest
           snap by position.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How is focus
           trapped?</strong> When modal, focus
           moves into sheet on open; trap
           inside; restore on close. Same as
           modal pattern.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does dismiss
           work?</strong> Drag below lowest
           snap, backdrop tap, or Escape.
           Animate off-screen, unmount,
           restore focus.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How is reduced motion
@@ -450,14 +446,14 @@ export default function BottomSheetDrawerArticle() {
           media query.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>6. How is accessibility
           handled?</strong> Dialog role with
           appropriate aria-modal. Focus
           trap when modal. Escape closes.
           Snap buttons as keyboard
           alternative.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>7. How does this differ
@@ -480,19 +476,14 @@ export default function BottomSheetDrawerArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A bottom sheet / drawer is{" "}
-          <strong>positioned panel + pointer
-          drag with snap physics + scroll
-          handoff + focus trap (when
-          modal)</strong>. CSS transforms
+        <HighlightBlock as="p" tier="crucial">CSS transforms
           drive the smooth movement; CSS
           overscroll-behavior handles the
-          scroll handoff; standard modal
+          scroll</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">handoff; standard modal
           patterns cover focus and
           dismiss. Native-feeling on
-          mobile.
-        </p>
+          mobile.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

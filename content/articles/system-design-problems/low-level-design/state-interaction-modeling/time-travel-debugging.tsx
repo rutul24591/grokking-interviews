@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +26,18 @@ export default function TimeTravelDebuggingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A user reports that after adding three items to a cart, toggling a coupon code, and navigating away and back, the cart total is wrong. The developer cannot reproduce it locally. Even with browser DevTools, the bug only manifests after the full sequence of interactions — by the time the developer opens DevTools after the report, the state that caused the bug is gone. Debugging amounts to guessing which of the dozen state mutations along the path caused the corruption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Time-travel debugging solves this by recording every state mutation as it happens, allowing developers to replay the session from any point, inspect the exact state before and after each action, and compare state diffs between consecutive mutations. The recorded history can be exported and shared, letting a developer reproduce exact production state sequences in their local environment without needing the actual user session.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Beyond debugging, the same infrastructure enables powerful developer workflows: "skip to action 42 to test my fix without clicking through the entire flow," "disable this specific action to see what the UI looks like without it," and "record this session as a regression test case." Redux DevTools brought this capability to mainstream awareness, but the principles apply to any state management system with predictable, pure state transitions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> State transitions are pure — the same action applied to the same prior state always produces the same next state. Actions are serializable (can be stored as plain objects). The state tree is reasonably sized (not gigabytes — a typical application state is kilobytes to a few megabytes). Side effects (API calls, localStorage writes) need explicit handling during replay to avoid re-executing real operations.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -67,15 +69,15 @@ export default function TimeTravelDebuggingArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Memory overhead:</strong> History storage must be bounded. Default cap: the last 1000 actions and their state snapshots. Estimated budget: 50MB maximum for history in a typical application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Recording overhead:</strong> Instrumenting each action must add less than 5% to action processing time. For most applications, serializing state for snapshot takes &lt;1ms.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Jump latency:</strong> Jumping to action N should complete in under 100ms for histories up to 1000 actions, using checkpointing to avoid full replay from action 0.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>UI responsiveness:</strong> The DevTools panel must not block the main thread during history navigation; heavy diffs should run in a Web Worker.
           </li>
@@ -84,8 +86,8 @@ export default function TimeTravelDebuggingArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
           <li>Non-pure reducers (reading Date.now() or Math.random() inside a reducer) — replay produces different state, breaking determinism. Must be detected and enforced.</li>
-          <li>Async thunks — the state changes from an async operation depend on the API response timing, which differs between original and replay. Captured responses must be replayed, not re-fetched.</li>
-          <li>Large state trees (normalized entity cache with 50k records) — serializing full snapshots for every action is too expensive. Must use delta snapshots or structural sharing.</li>
+          <HighlightBlock as="li" tier="important">Async thunks — the state changes from an async operation depend on the API response timing, which differs between original and replay. Captured responses must be replayed, not re-fetched.</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Large state trees (normalized entity cache with 50k records) — serializing full snapshots for every action is too expensive. Must use delta snapshots or structural sharing.</HighlightBlock>
           <li>Circular references in state — JSON serialization fails. Must be detected and handled with a safe serializer.</li>
           <li>Private/sensitive data in state (tokens, PII) — exported histories must support redaction before sharing.</li>
         </ul>
@@ -93,15 +95,15 @@ export default function TimeTravelDebuggingArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The recording layer is a Redux middleware (or equivalent for Zustand, MobX, Jotai) that intercepts every dispatched action before and after the reducer runs. Before dispatch: record the action object and the current state (as a snapshot). After dispatch: record the next state. The pair (action, stateBefore, stateAfter) forms one history entry. Entries are stored in a circular buffer capped at N entries.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           For efficient jumping, periodic checkpoints are saved: every K actions (K=50 is a good default), the full state is saved as a checkpoint. Jumping to action N requires: find the nearest checkpoint at or before N, then replay only the actions from the checkpoint to N. Maximum replay chain is K actions, making jump O(K) regardless of total history size.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The DevTools UI (browser extension or in-app panel) reads from the history store and renders a timeline of actions. Clicking an action triggers a jump. The application's state management layer must support "locking" to an historical state, preventing live dispatches from modifying the currently displayed state during time-travel.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -117,9 +119,9 @@ export default function TimeTravelDebuggingArticle() {
         <p>
           The history store is a circular buffer of fixed capacity (N entries). Each entry contains: actionId (sequential integer), action (plain object with type and payload), stateBefore (reference or serialized snapshot), stateAfter (reference or serialized snapshot), timestamp, and processingDurationMs. When the buffer is full, the oldest entry is evicted. If checkpoints are evicted, the next available checkpoint (more recent) becomes the new replay starting point.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Memory optimization using structural sharing: rather than deep-cloning the entire state for every entry, use Immer's produce with patches. Immer generates a forward patch (array of change operations) and an inverse patch for every state transition. Snapshots need only be full copies for checkpoints; intermediate entries store only the forward and inverse patches. Jumping forward applies forward patches; jumping backward applies inverse patches. This reduces memory usage dramatically for large state trees with small per-action diffs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Checkpointing Strategy</h3>
         <p>
@@ -144,9 +146,9 @@ export default function TimeTravelDebuggingArticle() {
         <p>
           The skip feature marks specific history entries as disabled. When computing state for any point in history, skipped actions are excluded from replay. This allows developers to answer counterfactual questions: "what would the state look like if this action had never happened?" — invaluable for isolating which specific action caused a bug.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Implementing skip requires full replay from the most recent prior checkpoint, excluding the skipped action. The display state updates to reflect the "as-if" timeline. Skipping async actions requires care — if a subsequent action depends on state produced by the skipped action, skipping creates an inconsistent timeline that may cause downstream reducer errors. Graceful handling: detect reducer errors during skip-replay and surface them as warnings, not crashes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Diff Computation and Display</h3>
         <p>
@@ -157,12 +159,12 @@ export default function TimeTravelDebuggingArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Handling Async Actions and Side Effects</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Async thunks dispatch multiple actions (REQUEST, SUCCESS, FAILURE) over time. These are individually recorded as separate history entries. Replaying an async sequence requires either re-issuing the async operation (which has live side effects — real API calls) or replaying the captured sequence of dispatched actions without the async logic (just the action objects in order). The latter is the correct approach for debugging.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           For replay, the async operation itself is not re-executed. The recording captures each action that the thunk dispatched (REQUEST at time 0, SUCCESS at time 500ms). Replay dispatches these action objects in sequence, instantly (no artificial delays). This faithfully reconstructs the state transitions without the real side effects. API mock interceptors can be configured to return the captured responses for full-fidelity replay including async timing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Export, Import, and Regression Test Generation</h3>
         <p>
@@ -176,35 +178,34 @@ export default function TimeTravelDebuggingArticle() {
         <p>
           In production, time-travel debugging captures are valuable for reproducing user-reported bugs. However, full state history including user data cannot be shipped to a debugging endpoint without privacy controls. The recommended pattern: record action types and non-sensitive metadata in production, never the full state tree. When a user reports a bug, they can optionally consent to sharing their action log (types only, no payload content) to help engineers reproduce the sequence.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Session recording tools (LogRocket, FullStory) implement a variant of this by recording DOM mutations and network requests. Pairing their session replay with a corresponding Redux action log provides the dual perspective — visual and state-level — needed for efficient debugging.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory vs History Depth</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Full snapshot per action: maximum jump performance (O(1) for any target), but very high memory usage for large state trees. Patch-based storage: dramatically lower memory (patches are typically 10-100x smaller than full snapshots), but jump performance is O(K) where K is the checkpoint interval. For most applications, patch-based with K=50 is the right default. Full snapshots are appropriate only for applications with small state trees where debugging velocity matters more than memory.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Dev-Only vs Production Recording</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full-fidelity history recording including state snapshots is expensive (memory and CPU). Production builds should gate it behind a debug flag. Lightweight production recording (action types only, no state) costs nearly nothing and enables retrospective debugging when enabled on-demand for a specific user session with their consent.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Determinism Requirements</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Time-travel debugging only works reliably with pure reducers. Teams must enforce the purity constraint via linting rules (eslint-plugin-redux-saga, custom rules checking for Date.now() or Math.random() in reducers) and must move all non-deterministic computations to middleware or action creators. This is a prerequisite worth enforcing before investing in time-travel infrastructure — the infrastructure is worthless if replay produces different results than the original session.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Time-travel debugging transforms opaque state corruption bugs into navigable histories. The core design — recording middleware, circular buffer with periodic checkpoints, patch-based snapshot storage, and a locking mechanism for historical state display — enables O(K) jumps, action skip for counterfactual analysis, and session export for regression test generation. Redux DevTools is the reference implementation and ships this capability out of the box for Redux-managed state. The design extends to any state system with pure state transitions: Zustand with custom middleware, XState with state history actors, or Jotai with snapshot atoms. For staff-level engineers, the critical architectural decisions are: use patch-based storage for memory efficiency; implement checkpointing to bound replay cost; handle async actions as captured action sequences rather than re-executing async logic; enforce reducer purity as a prerequisite; and build export-to-test-fixture pipeline so debugging sessions generate regression coverage automatically.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">The design extends to any state system with pure state transitions: Zustand with custom middleware, XState with state history actors, or Jotai with snapshot atoms. For staff-level</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">engineers, the critical architectural decisions are: use patch-based storage for memory efficiency; implement checkpointing to bound replay cost; handle async actions as captured action sequences rather than re-executing async logic; enforce reducer purity as a prerequisite; and build export-to-test-fixture pipeline so debugging sessions generate regression coverage automatically.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -34,17 +36,17 @@ export default function PanZoomMinimapArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Large canvases (maps, diagrams, images) difficult to navigate. Users need to zoom in for detail and pan to explore. Key challenges: smooth zoom and pan interactions, minimap for global overview, and maintaining performance at large scales. Naive approach: full redraw on each zoom (slow). Better: efficient rendering with viewport tracking and minimap synchronization.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Assumptions:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>Canvas content large (1000x1000+ pixels).</li>
           <li>Smooth interactions required (60fps).</li>
           <li>Touch and mouse input both needed.</li>
-          <li>Minimap provides context (optional but helpful).</li>
+          <HighlightBlock as="li" tier="important">Minimap provides context (optional but helpful).</HighlightBlock>
           <li>Performance critical (avoid jank).</li>
         </ul>
       </section>
@@ -59,18 +61,18 @@ export default function PanZoomMinimapArticle() {
           <li>
             <strong>Zoom:</strong> Mouse wheel or pinch to zoom in/out.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimap:</strong> Small representation of full canvas.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Minimap Navigation:</strong> Click minimap to jump to area.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Viewport Indicator:</strong> Show current view rect on minimap.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Zoom Limits:</strong> Min/max zoom levels (prevent extreme).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reset View:</strong> Return to initial viewport.
           </li>
@@ -84,9 +86,9 @@ export default function PanZoomMinimapArticle() {
           <li>
             <strong>Responsiveness:</strong> Instant visual feedback on input.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Memory:</strong> Efficient for large canvases.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Compatibility:</strong> Touch and mouse, desktop and mobile.
           </li>
@@ -104,9 +106,9 @@ export default function PanZoomMinimapArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Track viewport (position, zoom level). On mouse/touch events, update viewport. Render only visible region (canvas clipping). Minimap shows full canvas at reduced scale. Viewport rect shows current view on minimap. Update minimap on viewport change.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Track viewport (position, zoom level). On mouse/touch events,</HighlightBlock>
+<HighlightBlock as="p" tier="important">update viewport. Render only visible region (canvas clipping).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Minimap shows full canvas at reduced scale. Viewport rect shows current view on minimap. Update minimap on viewport change.</HighlightBlock>
       </section>
 
       <section>
@@ -115,9 +117,9 @@ export default function PanZoomMinimapArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Viewport Model</h3>
         <p>Tracking view state.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Position:</strong> X, Y offsets (top-left of viewport).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Zoom Level:</strong> Scale factor (1.0 = 100%, 2.0 = 200%).
           </li>
@@ -161,9 +163,9 @@ export default function PanZoomMinimapArticle() {
           <li>
             <strong>Pinch Gesture:</strong> Two-finger pinch for touch.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Zoom Center:</strong> Zoom towards cursor position (intuitive).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Limits:</strong> Min 0.1x, max 5x (adjustable).
           </li>
@@ -171,9 +173,9 @@ export default function PanZoomMinimapArticle() {
             <strong>Smooth Zoom:</strong> Animate to target zoom (not instant).
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Zoom-Around-Cursor Technique:</strong> The most critical aspect of zoom interaction is maintaining the point under the cursor. Calculate the canvas coordinate at the cursor before zooming, apply the zoom level change, then adjust the viewport position so that same canvas point remains under the cursor. This creates intuitive zoom behavior where the user "zooms in on" the point they're hovering over. Without this, zoom appears to jump around, creating disorientation. The formula: before zoom, compute canvasPoint = (cursorScreenPos - viewportPos) / currentZoom. After zoom, calculate newViewportX = canvasPoint * newZoom - cursorScreenPos to restore the same canvas point under the cursor position.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/viewport-zoom-transformation.svg"
           alt="Zoom-around-cursor transformation showing how viewport adjusts to keep the cursor pointing at the same canvas position before and after zoom"
@@ -192,9 +194,9 @@ export default function PanZoomMinimapArticle() {
           <li>
             <strong>Content:</strong> Simplified rendering (lower res, no details).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Cached image or canvas rendering.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Update:</strong> Redraw when canvas content changes.
           </li>
@@ -295,9 +297,9 @@ export default function PanZoomMinimapArticle() {
           <li>
             <strong>Prevent Default:</strong> Disable native pan/zoom.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Visual Feedback:</strong> Cursor change, highlight on minimap interaction.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -305,45 +307,44 @@ export default function PanZoomMinimapArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Canvas Library</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTML5 Canvas for direct rendering. Three.js for 3D. SVG for vector content.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Performance Optimization</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Viewport clipping crucial. RequestAnimationFrame for 60fps. Minimize canvas size.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Test pan smoothness. Test zoom responsiveness. Test touch multi-touch. Test minimap sync.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Minimap Size vs Detail</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large minimap: more detail, takes space. Small: saves space, less detail.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Animation vs Instant</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Animated zoom: smooth but adds latency. Instant: responsive but jarring.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Momentum vs Control</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Momentum: natural feel, harder to control. Instant stop: precise control, less natural.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Pan and zoom enable navigation of large content areas. Essential aspects include viewport model (position, zoom level), pan interaction (drag to move), zoom interaction (mouse wheel or pinch), minimap rendering at reduced scale, viewport indicator on minimap, minimap navigation for jumping, efficient canvas rendering with clipping, animation with easing, and touch support for mobile. Real-world systems use transform-based animation for GPU acceleration, viewport clipping to avoid rendering off-screen content, and minimap updates synchronized with viewport changes.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Real-world systems use transform-based animation for GPU acceleration, viewport clipping to</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">avoid rendering off-screen content, and minimap updates synchronized with viewport changes.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

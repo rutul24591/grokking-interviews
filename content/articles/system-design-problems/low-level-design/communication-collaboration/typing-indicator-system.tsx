@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +31,7 @@ export default function TypingIndicatorSystemArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a typing indicator system —
           the UI that shows &ldquo;Alice is
           typing&hellip;&rdquo; or &ldquo;Alice and Bob
@@ -40,8 +42,8 @@ export default function TypingIndicatorSystemArticle() {
           imperceptibly fluid; done poorly it
           flickers or persists incorrectly after the
           user stopped typing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: debounced broadcast
           so we don&rsquo;t spam the server on every
           keystroke; reliable cleanup so the
@@ -52,36 +54,36 @@ export default function TypingIndicatorSystemArticle() {
           and 3 others are typing&rdquo;); accessibility
           (screen readers shouldn&rsquo;t announce
           typing on every change).
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users see indicators when others are
           typing. Engineering teams plug in: provide
           a transport (WebSocket, awareness channel)
           and the indicator handles UX.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Transport is a real-time channel. User
           metadata available. Modern browsers.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the underlying
           transport. We do not implement message
           delivery (separate Message Delivery State
           system).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Detect local typing (input change events).
           Broadcast typing-start; broadcast typing-
           stop on send, blur, or timeout. Receive
@@ -90,10 +92,10 @@ export default function TypingIndicatorSystemArticle() {
           Auto-clear stale indicators (timeout if
           no update). Per-conversation scope (only
           show typers in the current conversation).
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Indicator fade in/out animation.
           Per-typer dot animation in the bubble.
           Indicate typing in editor pane (which
@@ -101,57 +103,57 @@ export default function TypingIndicatorSystemArticle() {
           (don&rsquo;t announce immediately on every
           start; require a few hundred ms of typing
           first).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Transport, message delivery, presence
           (related but separate).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Broadcasts at most 1/sec per typer.
           Indicator renders without jank.
           Aggregation cheap.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Stale indicators clear after timeout
           (e.g. 5 s without renewal).
           Send/blur immediately clears local
           typing.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authenticated transport. Cross-room
           isolation server-enforced.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Indicator announces only on state
           transitions (not on every renew). Screen
           readers don&rsquo;t need per-typer
           updates.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pluggable transport. Aggregation
           customizable per product.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The system has three parts: <strong>local
           detector</strong> (broadcasts typing
           events with debounce), <strong>remote
@@ -159,8 +161,8 @@ export default function TypingIndicatorSystemArticle() {
           and renders indicator), and
           <strong> timeout cleanup</strong> (clears
           stale indicators).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>local detector</strong> listens
           to input events. On the first input, send
           a typing-start event. While typing, send
@@ -169,8 +171,8 @@ export default function TypingIndicatorSystemArticle() {
           seconds without input, send typing-stop.
           This pattern minimizes traffic while
           keeping indicators accurate.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>remote aggregator</strong>{" "}
           maintains a per-conversation set of
           currently-typing user ids with their
@@ -181,8 +183,8 @@ export default function TypingIndicatorSystemArticle() {
           (no renewal in &gt;5 s) and remove them.
           Render the indicator from the current
           set of typers.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Aggregation</strong>: 1 typer →
           &ldquo;[Name] is typing&hellip;&rdquo;. 2
           → &ldquo;[A] and [B] are
@@ -190,14 +192,14 @@ export default function TypingIndicatorSystemArticle() {
           [N] others are typing&hellip;&rdquo;.
           The string updates as the typer set
           changes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Stop on send</strong>: when the
           user sends a message, immediately
           broadcast typing-stop so the recipient&rsquo;s
           indicator clears before or as the
           message arrives.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Animation</strong>: bouncing-dots
           animation for visual feedback. Fades in
@@ -209,198 +211,188 @@ export default function TypingIndicatorSystemArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>TypingProvider</strong> instantiates
+        <HighlightBlock as="p" tier="crucial"><strong>TypingProvider</strong> instantiates
           detector and aggregator.
           <strong> LocalTypingDetector</strong>{" "}
-          watches input events.
-          <strong> RemoteAggregator</strong>{" "}
+          watches input events.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> RemoteAggregator</strong></Highlight>{" "}
           maintains typer set.
           <strong> TimeoutCleaner</strong> removes
           stale entries.
           <strong> TypingIndicator</strong> renders
-          the indicator UI.
-        </p>
+          the indicator UI.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Per-conversation typer set in external
-          store. Local typing state is component-
+        <HighlightBlock as="p" tier="crucial">Per-conversation typer set in external
+          store. Local typing state is</HighlightBlock>
+<HighlightBlock as="p" tier="important">component-
           local (whether we&rsquo;re currently
-          broadcasting typing). Subscribers (UI)
-          read aggregated set via selectors.
-        </p>
+          broadcasting</HighlightBlock>
+<HighlightBlock as="p" tier="important">typing). Subscribers (UI)
+          read aggregated set via selectors.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Events: <code>typing.start</code>,
-          <code> typing.renew</code>,
-          <code> typing.stop</code>. Each carries
+          </Highlight><code> typing.renew</code>,
+          <code> typing.stop</code>. <Highlight tier="important">Each carries
           conversationId, userId. Receiver
-          aggregates per conversation.
-        </p>
+          aggregates</Highlight> per conversation.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Throttle broadcast to 1/sec.
-          Aggregation is O(typers) per render.
-          Timeout cleanup runs once per second.
+          Aggregation is <Highlight tier="important">O(typers) per render.
+          Timeout cleanup runs</Highlight> once per second.
           Indicator rendering memoized.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Indicator at the bottom of the chat
-          thread (above the input). Subtle
-          animation. Aggregated text reads
+          thread <Highlight tier="important">(above the input). Subtle
+          animation. Aggregated</Highlight> text reads
           naturally. Disappears smoothly when
           typing stops.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Announce on state transition only:
+        <HighlightBlock as="p" tier="crucial">Announce on state transition only:
           when first appearing (&ldquo;Alice is
-          typing&rdquo;), and when going from
+          typing&rdquo;), and when</HighlightBlock>
+<HighlightBlock as="p" tier="important">going from
           typing to silent (&ldquo;Alice stopped
-          typing&rdquo;) — actually we don&rsquo;t
-          announce stops typically; just appearance.
+          typing&rdquo;) — actually we don&rsquo;t</HighlightBlock>
+<HighlightBlock as="p" tier="important">announce stops typically; just appearance.
           Don&rsquo;t announce on every renewal.
-          Live region polite.
-        </p>
+          Live region polite.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Transport authenticated; server
-          enforces conversation membership.
-          Typing events carry only ids and
+          enforces conversation <Highlight tier="important">membership.
+          Typing events carry only ids</Highlight> and
           timestamps; no leak risk.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for debounce timing.
-          Integration with mock transport:
-          start, renew, stop, timeout. Multi-
+          Integration with mock <Highlight tier="important">transport:
+          start, renew, stop, timeout. Multi-</Highlight>
           typer aggregation strings. Send
           immediately stops local typing.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Typer disconnects without sending stop:
-          timeout cleans up after 5 s. User
-          rapidly types then sends: typing-start
-          fires; typing-stop fires immediately on
-          send; indicator clears cleanly. Many
+        <HighlightBlock as="p" tier="crucial">Many
           typers (a busy group chat): aggregation
           handles via &ldquo;X and N others&rdquo;.
-          Typer in a different conversation: not
-          shown (per-conversation scope).
+          Typer in a different conversation: not</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">shown (per-conversation scope).
           Network drop mid-typing: broadcast
           fails silently; remote indicator
-          times out; on reconnect, fresh state.
-        </p>
+          times out; on reconnect, fresh state.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over transport. Aggregation
-          string customizable. Pattern reuses
-          across chat, editor (paragraph-level
+          <Highlight tier="important">string customizable. Pattern reuses
+          across chat,</Highlight> editor (paragraph-level
           typing), comments.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Aggregation strings via i18n with
-          plurals (ICU MessageFormat handles
-          &ldquo;is typing&rdquo; vs &ldquo;are
+          plurals <Highlight tier="important">(ICU MessageFormat handles
+          &ldquo;is typing&rdquo; vs</Highlight> &ldquo;are
           typing&rdquo;). Names display as
           authored.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Renew vs single send</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Renew (periodic re-broadcast)
           recovers from lost stop events. Single
           send is simpler but breaks if the
           stop is lost. Renew with timeout is
           the right approach.
-        </p>
+        </HighlightBlock>
 
         <h3>Immediate vs delayed start</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Immediate start may flicker for a
           two-keystroke typo. Slight delay (e.g.
           300 ms of typing before broadcasting
           start) reduces noise. We default to
           slight delay.
-        </p>
+        </HighlightBlock>
 
         <h3>Per-conversation vs global</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-conversation is correct (typing in
           conversation A shouldn&rsquo;t show in
           B). Global is simpler but wrong for
           multi-conversation apps.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Smart typing detection (don&rsquo;t
+        <HighlightBlock as="p" tier="crucial">Smart typing detection (don&rsquo;t
           broadcast for clearing the input or
           deletion). Cursor-attached typing in
-          editors. Smart hide when the typer
+          editors.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Smart hide when the typer
           hasn&rsquo;t added text in seconds.
           Pause indicators during longer
-          composition.
-        </p>
+          composition.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How is typing
           detected?</strong> Input events fire
           typing-start; renews periodically while
           typing; typing-stop on send, blur, or
           inactivity.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How are stale indicators
           cleaned up?</strong> Per-typer
           last-renewed timestamp. Periodic check
           (every second) removes entries older
           than 5 s without renewal.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. How is multi-user typing
@@ -410,20 +402,20 @@ export default function TypingIndicatorSystemArticle() {
           others are typing&rdquo;.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How do you avoid network
           flood?</strong> Renew at most once per
           second. Stop fires only on real state
           changes (send, blur, timeout).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>5. How is this
           accessible?</strong> Announce on
           transition only (when indicator
           appears). Don&rsquo;t announce per
           renewal. Live region polite.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>6. What if the network
@@ -439,29 +431,26 @@ export default function TypingIndicatorSystemArticle() {
           per-conversation typer set.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How does this integrate with
           chat?</strong> Typing indicator renders
           inside the chat thread, above the
           send input. Sending immediately broadcasts
           stop. The aggregator drives the
           indicator string.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A typing indicator is{" "}
-          <strong>debounced broadcast + aggregated
-          render + timeout cleanup</strong>. Renew
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Renew
           periodically to recover from lost stops;
           stop on send and blur; aggregate
-          multiple typers naturally; announce
+          multiple typers naturally;</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">announce
           only on transitions for accessibility.
           A small feature with outsized impact on
-          how alive a chat feels.
-        </p>
+          how alive a chat feels.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

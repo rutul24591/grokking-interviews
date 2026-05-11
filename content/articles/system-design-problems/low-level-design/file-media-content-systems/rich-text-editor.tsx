@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function RichTextEditorArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a rich text editor — the
           component that lets users write formatted
           content with bold, italic, links, lists,
@@ -43,8 +45,8 @@ export default function RichTextEditorArticle() {
           like Google Docs or Notion; done poorly it&rsquo;s
           a contenteditable mess of inconsistent
           behavior and lost data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are foundational:
           contenteditable&rsquo;s default behavior is
           inconsistent across browsers and produces
@@ -61,10 +63,10 @@ export default function RichTextEditorArticle() {
           transformation. Building this from scratch is
           a multi-year project; in practice we use
           ProseMirror or Lexical as the foundation.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users write content. Internal users
           (engineers integrating the editor) provide
           configuration: which features are enabled,
@@ -73,10 +75,10 @@ export default function RichTextEditorArticle() {
           expectations from Google Docs (keyboard
           shortcuts, paste-and-format, structural
           editing).
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ProseMirror or Lexical is the underlying
           editor framework — they handle the document
           model, selection, undo/redo, and rendering.
@@ -86,10 +88,10 @@ export default function RichTextEditorArticle() {
           API. Modern browsers; we use
           contenteditable under the hood (the framework
           manages it carefully).
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement a from-scratch document
           model — we use a battle-tested framework. We
           do not implement WYSIWYG email composition
@@ -97,14 +99,14 @@ export default function RichTextEditorArticle() {
           code editing (Code Editor Component).
           Real-time collaboration is hooks-only — the
           backend handles conflict resolution.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Inline formats: bold, italic, underline,
           strikethrough, code, link. Block formats:
           paragraph, headings (H1–H4), bulleted list,
@@ -125,10 +127,10 @@ export default function RichTextEditorArticle() {
           format. Slash command for inserting blocks
           (Notion-style). Placeholder text. Read-only
           mode.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tables, columns, callouts. Embedded code
           blocks with syntax highlighting. Real-time
           collaboration with cursors and presence.
@@ -137,61 +139,61 @@ export default function RichTextEditorArticle() {
           assistance (autocomplete, rephrase). Rich
           embeds (YouTube, Tweet, Loom). Custom
           extensions via a plugin API.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server-side conflict resolution, server
           storage, full WYSIWYG email rendering,
           monospace code editing.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Typing has zero perceptible lag on documents
           up to 100k characters. Mention dropdown
           opens within 50 ms of trigger. Image upload
           progress visible while inserted as a
           placeholder.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Undo/redo never produces inconsistent state.
           Paste from external sources never corrupts
           the document. Image upload failures revert
           gracefully.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           All paste content sanitized via DOMPurify
           before insertion. Mentions resolve only to
           authorized targets. Image URLs are CSP-
           compatible.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The editor is announced as a
           <code> role=&quot;textbox&quot;</code>.
           Format toolbar buttons are accessible.
           Mention dropdown is a real combobox.
           Keyboard shortcuts have accessible
           equivalents in menus.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ProseMirror/Lexical as a vendored dependency
           with a stable wrapper. Extensions for
           mentions, images, etc. are independent
           modules. Schema is explicit and versioned.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -222,7 +224,7 @@ export default function RichTextEditorArticle() {
           link). The schema is the single source of
           truth for what the editor accepts.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Editor state</strong> includes the
           document, the selection (cursor position or
           range), and the history (for undo/redo).
@@ -232,8 +234,8 @@ export default function RichTextEditorArticle() {
           it atomically, and history records the
           inverse for undo. Transactions are atomic;
           partial updates aren&rsquo;t observable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Plugins</strong> extend the editor.
           Built-in plugins: history (undo/redo),
           keymap (keyboard shortcuts), input rules
@@ -242,7 +244,7 @@ export default function RichTextEditorArticle() {
           collaborative cursors, comments. Plugins
           subscribe to transactions and can modify
           them or trigger side effects.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>typing</strong>, the framework
           captures the input event, generates a
@@ -253,7 +255,7 @@ export default function RichTextEditorArticle() {
           rendering or React node views (where each
           node maps to a React component).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Mentions</strong>: a plugin watches
           for the trigger character (&ldquo;@&rdquo;).
           When detected, it opens a dropdown anchored
@@ -264,8 +266,8 @@ export default function RichTextEditorArticle() {
           inline; the dropdown closes. Mention nodes
           are atomic — clicking selects the whole
           mention; backspace deletes it as a unit.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Image upload</strong>: drag or paste
           an image. The plugin inserts a placeholder
           image node with a temporary upload state.
@@ -275,8 +277,8 @@ export default function RichTextEditorArticle() {
           the server URL. On failure, the placeholder
           shows an error with retry. The user can
           continue typing while upload happens.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Paste sanitization</strong>: when
           the user pastes, we read both
           <code> text/html</code> and
@@ -289,7 +291,7 @@ export default function RichTextEditorArticle() {
           conversion that maps their structure to
           ours. If sanitization removes everything,
           fall back to plain text.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Markdown shortcuts</strong>: input
           rules detect patterns like
@@ -333,185 +335,139 @@ export default function RichTextEditorArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>EditorProvider</strong> instantiates
-          the editor instance.
-          <strong> Editor</strong> renders the
-          contenteditable area.
-          <strong> Toolbar</strong>,
-          <strong> FloatingMenu</strong>,
-          <strong> SlashMenu</strong>,
-          <strong> MentionDropdown</strong> are UI
-          elements that interact with the editor
-          via plugins. <strong>Plugins</strong>{" "}
-          (history, keymap, mentions, images, paste,
+        <HighlightBlock as="p" tier="crucial">
+          <strong>Plugins</strong> (history, keymap, mentions, images, paste,
           markdown rules) extend behavior.
-          <strong> NodeViews</strong> render
-          specific node types (image, mention,
-          embedded video) with custom React
-          components.
-        </p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="important"><strong>NodeViews</strong></Highlight>{" "}
+          render specific node types (image, mention, embedded video) with custom
+          React components.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          The editor instance holds the canonical
-          document state. React subscribes via the
-          framework&rsquo;s subscription API.
-          Toolbar state (current format) is derived
-          from the selection. Mention dropdown,
+        <HighlightBlock as="p" tier="crucial">Mention dropdown,
           slash menu state lives in plugin state.
-          Image upload status lives in plugin
+          Image upload status</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">lives in plugin
           state, joined with the file upload
-          system&rsquo;s progress.
-        </p>
+          system&rsquo;s progress.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
-          <code>initialDoc</code>, <code>schema</code>,
+          <code>initialDoc</code>, </Highlight><code>schema</code>,
           <code> plugins</code>,
           <code> mentionSource</code>,
           <code> uploadHandler</code>,
           <code> onChange</code>. Output:{" "}
-          <code>onChange(doc)</code> on every
-          change; the doc is a serialized JSON
+          <code>onChange(doc)</code> on <Highlight tier="important">every
+          change; the doc is a</Highlight> serialized JSON
           shape consumers can save.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
-          Incremental rendering: only changed nodes
-          re-render. Selection and toolbar updates
-          throttled. Mention dropdown debounces its
-          search. Image upload is async; the
-          placeholder doesn&rsquo;t block typing.
-          Long documents stay fast because the
-          framework&rsquo;s rendering is optimized.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Image upload is async; the
+          placeholder doesn&rsquo;t block typing.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Long documents stay fast because the
+          framework&rsquo;s rendering is optimized.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Toolbar always visible at top; floating
-          menu near cursor for quick format. Slash
-          menu opens on
-          <code> / </code> for block insertion.
-          Mention dropdown opens on
-          <code> @ </code> with avatars and
-          context. Paste from external sources
+        <HighlightBlock as="p" tier="crucial">Paste from{" "}
+          <Highlight tier="important">external sources</Highlight>
           preserves intended formatting where
-          possible. Markdown shortcuts feel
+          possible.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Markdown shortcuts feel
           natural. Placeholder text in empty
-          editor.
-        </p>
+          editor.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Editor uses
-          <code> role=&quot;textbox&quot;</code>
-          with
-          <code> aria-multiline</code>. Toolbar
-          buttons are real buttons with labels and
-          keyboard shortcuts in tooltips. Mention
+        <HighlightBlock as="p" tier="crucial">Mention
           dropdown is a real combobox with
           <code> aria-activedescendant</code>.
           Block insertions announce. Slash menu
-          accessible via keyboard. The frameworks
+          accessible</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">via keyboard. The frameworks
           (ProseMirror, Lexical) provide solid
           a11y foundations; we ensure our
-          extensions don&rsquo;t regress.
-        </p>
+          extensions don&rsquo;t regress.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          All paste content sanitized via
-          DOMPurify with a strict allowlist.
-          Mention targets resolved server-side
-          (don&rsquo;t trust client-side mention
-          ids). Image URLs validated. Custom
+        <HighlightBlock as="p" tier="crucial">Custom
           schema marks/nodes go through the same
           security review as any user-content
-          rendering. Output rendering (e.g.
+          rendering.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Output rendering (e.g.
           displaying the saved document) also runs
-          through a sanitizer at the read boundary.
-        </p>
+          through a sanitizer at the read boundary.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for plugin transactions
+        <HighlightBlock as="p" tier="crucial">Unit tests for plugin transactions
           (mention insertion, image placeholder
-          replacement). Integration tests for paste
+          replacement).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Integration tests for paste
           from various sources (Word, Google Docs,
-          plain text). Undo/redo correctness
+          plain text).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Undo/redo correctness
           tests. Markdown shortcut tests.
           Collaboration tests with two clients.
-          Accessibility tests.
-        </p>
+          Accessibility tests.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Paste a malicious HTML payload: sanitizer
-          strips. Paste an extremely large
-          document (megabytes of HTML): we
-          either accept and chunk-render or
-          surface a warning. Image upload fails:
-          placeholder shows error with retry; user
-          can delete to remove. Mention to a user
-          who no longer exists: render as a
-          plaintext fallback. Concurrent edits in
+        <HighlightBlock as="p" tier="crucial">Concurrent edits in
           collab mode: CRDT/OT engine handles;
           the user sees the merge. Undo across an
-          image upload: the upload continues but
-          the inserted node is removed; on
+          image upload: the upload continues but</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">the inserted node is removed; on
           completion, the orphan is canceled.
           Selection across nested formats: the
-          framework handles boundary cases.
-        </p>
+          framework handles boundary cases.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The wrapper around ProseMirror/Lexical is
-          reusable across products. Extensions
-          (mentions, images, embeds) are
+          reusable <Highlight tier="important">across products. Extensions
+          (mentions, images, embeds)</Highlight> are
           plug-and-play. Schema is per-product.
           Toolbar customizable.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Toolbar labels, placeholder text,
           accessibility announcements via i18n.
-          Document content is the user&rsquo;s
-          own language. Right-to-left support via
+          <Highlight tier="important">Document content is the user&rsquo;s
+          own</Highlight> language. Right-to-left support via
           the framework&rsquo;s native RTL
           handling.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>ProseMirror vs Lexical vs from-scratch</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           ProseMirror is mature, schema-driven, and
           extension-rich; Lexical (Meta) is
           newer, React-first, and easier to start.
@@ -520,54 +476,53 @@ export default function RichTextEditorArticle() {
           Lexical solve the foundational problems
           well; pick based on team familiarity and
           ecosystem fit.
-        </p>
+        </HighlightBlock>
 
         <h3>contenteditable vs custom DOM</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           contenteditable is the only practical
           way to get native text input behavior
           (cursor, IME, accessibility). Custom DOM
           would lose IME support and be a massive
           undertaking. We use contenteditable
           carefully managed by the framework.
-        </p>
+        </HighlightBlock>
 
         <h3>HTML serialization vs custom JSON</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Custom JSON (the framework&rsquo;s
           document model serialized) is precise
           and lossless. HTML round-trips lose
           structure. We store JSON server-side and
           render HTML on output.
-        </p>
+        </HighlightBlock>
 
         <h3>Mention dropdown as plugin vs separate</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Plugin integration with the framework
           gives proper selection coordination and
           atomic mention nodes. A separate
           dropdown would be harder to coordinate.
           Plugin is the right approach.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Real-time collaboration with CRDTs.
+        <HighlightBlock as="p" tier="crucial">Real-time collaboration with CRDTs.
           Comments anchored to text ranges with
           threading. Suggestion mode (track
-          changes). AI rewrite/summarize/expand.
+          changes).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">AI rewrite/summarize/expand.
           Rich embeds (Twitter, YouTube, Loom)
           via oEmbed. Tables with cell selection.
-          Custom voice input.
-        </p>
+          Custom voice input.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why use a framework like
           ProseMirror?</strong> The foundational
           problems (document model, selection,
@@ -575,9 +530,9 @@ export default function RichTextEditorArticle() {
           complex. Frameworks have years of work
           poured in. Building from scratch is
           rarely justified.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does paste sanitization
           work?</strong> Read HTML and plain text
           from clipboard. Run HTML through
@@ -585,18 +540,18 @@ export default function RichTextEditorArticle() {
           to document model. If sanitization
           empties content, fall back to plain
           text.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How are mentions
           implemented?</strong> A plugin watches
           for &ldquo;@&rdquo;. Opens a dropdown
           anchored to the cursor. Search query
           fetches candidates. On selection,
           inserts an atomic mention node inline.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>4. How does image upload
           integrate?</strong> Drag/paste inserts
           a placeholder node with upload state.
@@ -604,7 +559,7 @@ export default function RichTextEditorArticle() {
           On success, replace placeholder with
           final node. On failure, show error
           with retry.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How does undo/redo work?</strong>{" "}
@@ -632,7 +587,7 @@ export default function RichTextEditorArticle() {
           provide the integration points.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. What&rsquo;s the trade-off
           between ProseMirror and Lexical?</strong>{" "}
           ProseMirror is mature with rich
@@ -640,24 +595,17 @@ export default function RichTextEditorArticle() {
           newer. Both solve foundations well.
           Pick based on ecosystem fit and team
           familiarity.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A rich text editor wraps a battle-tested
-          framework (ProseMirror or Lexical) with
-          product-specific extensions: mentions,
-          image upload, paste sanitization,
-          markdown shortcuts, slash commands,
-          collaborative hooks. The framework
+        <HighlightBlock as="p" tier="crucial">The framework
           handles the foundations (document model,
-          selection, history, schema); our layer
-          adds the product-specific magic. The
+          selection, history, schema); our layer</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">adds the product-specific magic. The
           result is Google-Docs-class editing
-          embedded in your product.
-        </p>
+          embedded in your product.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

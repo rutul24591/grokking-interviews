@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function CollaborativeWhiteboardArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a collaborative whiteboard —
           a Figma/Miro/FigJam-style infinite canvas
           where multiple users draw shapes, write
@@ -40,8 +42,8 @@ export default function CollaborativeWhiteboardArticle() {
           The component combines a 2D rendering
           surface, vector graphics, multi-user CRDT
           sync, and the live cursor system.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: choosing the
           rendering technology (Canvas, SVG, WebGL);
           a CRDT model for vector shapes; smooth
@@ -50,43 +52,43 @@ export default function CollaborativeWhiteboardArticle() {
           group operations; offline-aware sync;
           performance at thousands of objects;
           accessibility for non-mouse users.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users brainstorm, diagram, and design
           collaboratively. They expect Figma-class
           fluency: instant drawing, smooth pan/zoom,
           live remote cursors. Engineering teams
           provide the canvas; this article covers
           the architecture.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A CRDT library (Yjs preferred). A
           rendering surface (Canvas 2D for moderate
           scale; WebGL for very large boards).
           Modern browsers; we use Pointer Events,
           Web Workers for hit-testing on large
           boards, IndexedDB for offline.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the CRDT internals.
           We do not implement video/audio
           collaboration. Voting and stickies
           beyond basic shapes are pluggable, not
           core.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Tools: select, freehand, line, rectangle,
           circle, text, eraser. Pan and zoom (mouse
           wheel, pinch, keyboard). Multi-select via
@@ -97,10 +99,10 @@ export default function CollaborativeWhiteboardArticle() {
           CRDT. Live cursors of other users.
           Auto-save and offline-aware. Export
           (image, PDF). Empty state and toolbar.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sticky notes. Connectors / arrows
           between objects. Templates (mind map,
           flowchart). Comments anchored to
@@ -108,20 +110,20 @@ export default function CollaborativeWhiteboardArticle() {
           (logical groupings). Version history.
           Search within board. Rich text in text
           objects.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           From-scratch CRDT, video chat,
           enterprise admin features.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Smooth pan/zoom at 60 fps on boards
           with thousands of objects. Drawing
           latency under 16 ms (drawn shape
@@ -130,42 +132,42 @@ export default function CollaborativeWhiteboardArticle() {
           end-to-end. Memory bounded for very
           large boards (virtualize off-canvas
           objects).
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CRDT convergence. Offline edits queue
           locally. Reconnect syncs. Disconnect
           doesn&rsquo;t lose work.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authenticated transport. Per-board
           access control. Object content
           (text in text objects) sanitized at
           render boundary.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Toolbar accessible. Selected object
           announces. Keyboard shortcuts for
           tools. Object positions accessible
           (read by screen reader on focus).
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CRDT library vendored. Tools as
           plugins. Renderer abstraction (Canvas
           / WebGL).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The whiteboard composes <strong>CRDT
           document</strong> (Yjs Y.Map of objects),
           <strong> rendering surface</strong>{" "}
@@ -177,7 +179,7 @@ export default function CollaborativeWhiteboardArticle() {
           Cursor system), and <strong>offline
           persistence</strong> (IndexedDB-backed
           CRDT).
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>document</strong> is a Yjs
           Y.Map keyed by object id. Each entry is a
@@ -187,7 +189,7 @@ export default function CollaborativeWhiteboardArticle() {
           Selection state is per-user awareness
           (ephemeral, not in document).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>renderer</strong> uses Canvas
           2D for typical boards; WebGL for very
           large boards (10k+ objects). On each
@@ -197,7 +199,7 @@ export default function CollaborativeWhiteboardArticle() {
           screen objects don&rsquo;t draw. Pan/zoom
           updates the viewport transform; objects
           stay in document coordinates.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>tool action</strong>: pointer
           events route to the active tool. Freehand
@@ -227,7 +229,7 @@ export default function CollaborativeWhiteboardArticle() {
           objects render with handles for resize
           and rotate.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>transform</strong> (move,
           resize, rotate): pointer drag updates
           object properties in the CRDT
@@ -235,7 +237,7 @@ export default function CollaborativeWhiteboardArticle() {
           smooth rendering. Other users see
           smooth interpolation via the awareness
           channel.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Pan and zoom</strong>: pan via
           space+drag or middle-mouse-drag; zoom
@@ -245,7 +247,7 @@ export default function CollaborativeWhiteboardArticle() {
           centered on the pointer for natural
           feel.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Hit testing</strong> on large
           boards: spatial indexing (R-tree or
           quadtree) for O(log n) hit tests. We
@@ -253,15 +255,15 @@ export default function CollaborativeWhiteboardArticle() {
           object changes. Without indexing, hit
           tests are O(n) which gets slow at
           thousands of objects.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Live cursors</strong> via the
           Live Cursor / Presence subsystem.
           Cursor positions in document
           coordinates so all users see them at
           correct logical positions regardless
           of their own pan/zoom.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Undo/redo</strong>: Yjs has a
           built-in UndoManager that records
@@ -279,151 +281,128 @@ export default function CollaborativeWhiteboardArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>WhiteboardProvider</strong>{" "}
-          instantiates CRDT, renderer, tool
-          system. <strong>Canvas</strong> is the
-          rendering surface.
-          <strong> ToolPalette</strong> renders
-          tool buttons. <strong>Toolbar</strong>{" "}
-          for actions (undo, group, etc.).
-          <strong> SpatialIndex</strong> for hit
-          testing.
-          <strong> CursorOverlay</strong> for live
-          cursors.
-          <strong> SelectionHandles</strong>{" "}
-          render around selected objects.
-          <strong> ToolImplementations</strong>{" "}
+        <HighlightBlock as="p" tier="crucial">
+          <strong>SpatialIndex</strong> for hit testing.{" "}
+          <strong>CursorOverlay</strong> for live cursors.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          <strong>SelectionHandles</strong> render around selected objects.{" "}
+          <Highlight tier="important"><strong>ToolImplementations</strong></Highlight>{" "}
           per tool type.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Document in CRDT. Local state (active
-          tool, selected objects, viewport
-          transform) in component state.
+          tool, <Highlight tier="important">selected objects, viewport
+          transform) in component</Highlight> state.
           Awareness for cursors and selections
           ephemeral.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Object schema:{" "}
+        <HighlightBlock as="p" tier="crucial">Object schema:{" "}
           <code>{` { id, type, transform, ...typeProps } `}</code>.
-          CRDT operations: add, update, delete.
-          Awareness: cursor positions, selection
+          CRDT operations: add, update, delete.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Awareness: cursor positions, selection
           ids per user. Tool contract:
-          <code>{` { onPointerDown, onPointerMove, onPointerUp, render? } `}</code>.
-        </p>
+          </Highlight><code>{` { onPointerDown, onPointerMove, onPointerUp, render? } `}</code>.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
-          Viewport virtualization: draw only
-          on-screen objects. Spatial index for
-          O(log n) hit tests. Dirty-rect
-          rendering: redraw only changed regions.
-          Web Worker for heavy hit tests.
-          RAF-aligned commits for transforms.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Viewport virtualization: draw only
+          on-screen objects. Spatial index for</HighlightBlock>
+<HighlightBlock as="p" tier="important">O(log n) hit tests. Dirty-rect
+          rendering: redraw only changed regions.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Web Worker for heavy hit tests.
+          RAF-aligned commits for transforms.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Familiar tools palette (Figma-style).
-          Smooth pan/zoom. Live cursors with
-          colored arrows. Selection handles for
-          transform. Snap to grid (optional).
-          Auto-save status indicator. Empty
-          state with template suggestions.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Familiar tools palette (Figma-style).
+          Smooth pan/zoom. Live cursors with</HighlightBlock>
+<HighlightBlock as="p" tier="important">colored arrows. Selection handles for
+          transform. Snap to grid (optional).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Auto-save status indicator. Empty
+          state with template suggestions.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Toolbar buttons accessible with
-          shortcuts. Object focus via Tab; arrow
-          keys move focused object. Selected
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Selected
           object announces (&ldquo;Rectangle, x
-          120 y 80, width 200 height 100&rdquo;).
+          120 y 80, width 200</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">height 100&rdquo;).
           Keyboard equivalents for all mouse
-          actions.
-        </p>
+          actions.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Authenticated transport. Per-board
-          authorization. Text content sanitized
-          at render. Rate-limit object creation
+          authorization. <Highlight tier="important">Text content sanitized
+          at render. Rate-limit</Highlight> object creation
           to prevent spam.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for hit testing,
+        <HighlightBlock as="p" tier="crucial">Unit tests for hit testing,
           transformations, spatial index.
-          Integration tests with simulated
+          Integration</HighlightBlock>
+<HighlightBlock as="p" tier="important">tests with simulated
           peers: collaborative draw converges.
-          Performance tests on 10k-object
+          Performance</HighlightBlock>
+<HighlightBlock as="p" tier="important">tests on 10k-object
           boards. Accessibility tests for
-          keyboard parity.
-        </p>
+          keyboard parity.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Very large boards (10k+ objects):
-          spatial index + virtualization keeps
-          performance. Massive freehand path:
-          may need simplification (Ramer-Douglas-
-          Peucker) before commit. Two users edit
+        <HighlightBlock as="p" tier="crucial">Two users edit
           the same object: CRDT converges; one
           user&rsquo;s position update wins
-          (last-writer-per-property typically).
-          Network drop during transform: local
+          (last-writer-per-property typically).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Network drop during transform: local
           updates continue; sync on reconnect.
           User with no GPU on a WebGL renderer:
-          fall back to Canvas 2D.
-        </p>
+          fall back to Canvas 2D.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          The pattern (CRDT + canvas + tools +
-          cursors) reuses for design tools,
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          The pattern (CRDT + canvas + <Highlight tier="important">tools +
+          cursors) reuses for design</Highlight> tools,
           mind maps, diagram editors,
           interactive whiteboards.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Toolbar labels via i18n. Text in text
-          objects is the user&rsquo;s. RTL
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Toolbar labels via i18n. Text in <Highlight tier="important">text
+          objects is the user&rsquo;s. RTL</Highlight>
           doesn&rsquo;t affect canvas geometry
           (positions are absolute).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Canvas vs WebGL vs SVG</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Canvas 2D: simple, sufficient for
           moderate boards. WebGL: scales to
           tens of thousands of objects, more
@@ -431,70 +410,70 @@ export default function CollaborativeWhiteboardArticle() {
           scale and limited animation. Default
           Canvas; switch to WebGL for very large
           boards.
-        </p>
+        </HighlightBlock>
 
         <h3>CRDT vs OT</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CRDT (Yjs) is the right default for
           new systems — offline-first, no central
           coordinator needed for correctness. OT
           requires central server.
-        </p>
+        </HighlightBlock>
 
         <h3>Document coordinates vs viewport
         coordinates</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Document coordinates (canonical) work
           across viewers with different pan/zoom.
           Viewport coordinates would need
           translation per viewer.
-        </p>
+        </HighlightBlock>
 
         <h3>Spatial index vs linear scan</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Linear scan is O(n); fine for small
           boards. R-tree / quadtree is O(log
           n); essential at scale. We always
           index for production boards.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           AI-assisted shape recognition (draw a
-          rough rectangle, get a perfect one).
-          Voice annotations. Templates. AR/VR
+          rough rectangle, <Highlight tier="important">get a perfect one).
+          Voice annotations.</Highlight> Templates. AR/VR
           whiteboard. Real-time path
           simplification for performance.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why CRDT for collab?</strong>{" "}
           Conflict-free convergence; offline-first
           works naturally; no central coordinator
           needed for correctness.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does pan/zoom scale to
           large boards?</strong> Viewport-based
           virtualization (draw only on-screen
           objects). Spatial index for O(log n)
           hit tests. Dirty-rect rendering.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How do live cursors work
           here?</strong> Same as Live Cursor /
           Presence: throttled broadcast, RAF
           interpolation, document coordinates,
           per-user color.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. How is freehand drawing
@@ -514,14 +493,14 @@ export default function CollaborativeWhiteboardArticle() {
           work.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How do you handle very large
           boards?</strong> WebGL rendering;
           spatial indexing; aggressive
           virtualization; simplification of
           dense paths. Memory bounded by
           on-screen objects.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>7. How is offline
@@ -531,30 +510,24 @@ export default function CollaborativeWhiteboardArticle() {
           convergence guaranteed.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How is accessibility
           handled?</strong> Toolbar with
           shortcuts. Object focus and keyboard
           movement. Selected object announces
           properties. Keyboard equivalents for
           all actions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A collaborative whiteboard is{" "}
-          <strong>CRDT document + Canvas/WebGL
-          renderer + tool system + spatial
-          index + live cursors + offline
-          persistence</strong>. Document
+        <HighlightBlock as="p" tier="crucial">Document
           coordinates are canonical; viewport
-          virtualization keeps performance
-          flat at scale; CRDT handles
+          virtualization keeps performance</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">flat at scale; CRDT handles
           collaboration. The result is
-          Figma-class boards in a web app.
-        </p>
+          Figma-class boards in a web app.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

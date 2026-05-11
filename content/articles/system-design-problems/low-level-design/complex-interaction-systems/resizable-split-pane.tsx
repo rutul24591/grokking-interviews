@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function ResizableSplitPaneArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We are designing a resizable split pane —
           two (or more) panels separated by a
           draggable divider that the user can drag
@@ -43,8 +45,8 @@ export default function ResizableSplitPaneArticle() {
           nested splits (a horizontal split with a
           vertical split inside), keyboard support,
           and accessibility.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are: smooth drag
           without layout thrash; persisting sizes
           across sessions; nested splits without
@@ -52,38 +54,38 @@ export default function ResizableSplitPaneArticle() {
           arrow keys; min/max constraints that
           feel natural; collapsing a pane to zero
           via double-click or button.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users adjust their workspace via
           drag. Power users expect persistence
           (their custom layout reappears on
           return). Engineering teams compose
           panes; runtime handles resize.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern browsers; we use Pointer Events,
           CSS Flexbox or Grid for the layout,
           localStorage or server for persistence.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement dashboard layouts
           (separate). We do not implement
           window-management beyond split panes
           (popouts, etc.).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Two or more panes with draggable
           dividers between them. Drag updates
           pane sizes proportionally. Min/max
@@ -95,43 +97,43 @@ export default function ResizableSplitPaneArticle() {
           Restore: button or shortcut.
           Horizontal and vertical orientations.
           Nested splits supported.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Snap to predefined sizes (e.g. 25%,
           50%, 75%). Animate collapse/expand.
           Lock divider (prevent resize). Reset
           to default sizes button.
           Visual indicator while dragging.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Movable panes (drag to reorder),
           floating panes, multi-window.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag at 60 fps. Pointer-move handler
           minimal work. CSS Flexbox handles
           layout natively.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Persistence across reload. Min/max
           enforcement always honored. Collapse/
           restore symmetric.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Divider is a real
           <code> role=&quot;separator&quot;</code>{" "}
           with{" "}
@@ -139,13 +141,13 @@ export default function ResizableSplitPaneArticle() {
           <code>aria-valuemin/max</code>{" "}
           (percentages). Keyboard control
           announces size changes.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generic component. Persistence
           adapter pluggable.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -156,7 +158,7 @@ export default function ResizableSplitPaneArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The split pane uses CSS Flexbox: a
           container with{" "}
           <code>flex-direction</code> matching
@@ -166,26 +168,26 @@ export default function ResizableSplitPaneArticle() {
           element between panes that captures
           pointer events. Drag updates the
           flex-basis of adjacent panes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>pointer down</strong> on a
           divider: capture pointer; record
           start position; record initial sizes
           of adjacent panes.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>pointer move</strong>:
           compute delta from start; apply to
           adjacent pane sizes (clamped to
           min/max). Use CSS to update sizes
           (flex-basis). Browser layout
           recalculates; smooth.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>pointer up</strong>: persist
           new sizes to localStorage (or
           server). Release capture.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>double-click</strong> on
           divider: collapse the adjacent pane
@@ -194,14 +196,14 @@ export default function ResizableSplitPaneArticle() {
           state so a subsequent double-click
           restores.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Keyboard</strong>: focus the
           divider via Tab. Arrow keys resize
           (left/up shrinks one pane; right/
           down grows it). Step size
           configurable. Live region announces
           new size.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Min/max constraints</strong>:
           clamp during drag. Visual feedback
@@ -227,192 +229,193 @@ export default function ResizableSplitPaneArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>SplitPane</strong> is the
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial"><strong>SplitPane</strong></Highlight> is the
           container. <strong>Pane</strong>{" "}
-          renders one pane.
+          renders one <Highlight tier="important">pane.
           <strong> Divider</strong> handles
-          drag. <strong>SizePersistence</strong>{" "}
+          drag. <strong>SizePersistence</strong>{" "}</Highlight>
           adapter.
           <strong> KeyboardController</strong>{" "}
           handles arrow keys.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Sizes per split in component state
-          (with persistence). Drag state
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Sizes per <Highlight tier="important">split in component state
+          (with persistence).</Highlight> Drag state
           ephemeral.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>panes</code> (children),
-          <code> orientation</code>,
+          </Highlight><code> orientation</code>,
           <code> defaultSizes</code>,
           <code> minSizes</code>,
           <code> maxSizes</code>,
-          <code> persistKey</code>.
-        </p>
+          <Highlight tier="important"><code>persistKey</code></Highlight>.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CSS Flexbox handles layout natively.
-          Pointer move handler updates
-          flex-basis (single style write).
+          <Highlight tier="important">Pointer move handler updates
+          flex-basis (single</Highlight> style write).
           Browser layout recalculates
           efficiently.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Divider visible on hover (subtle
-          line). Cursor changes to resize on
-          hover. Smooth drag. Snap-to-50%
+          line). Cursor changes <Highlight tier="important">to resize on
+          hover. Smooth drag.</Highlight> Snap-to-50%
           option for quick equalize. Visual
           indicator during drag.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Divider is{" "}
-          <code>role=&quot;separator&quot;</code>{" "}
-          with proper ARIA values.
-          Keyboard arrow resize. Live region
-          announces size changes
-          (&ldquo;Sidebar 30%&rdquo;).
-          Focus visible on divider.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Divider</Highlight> is{" "}
+          <Highlight tier="important">
+            <code>role=&quot;separator&quot;</code>
+          </Highlight>{" "}
+          with proper ARIA values.{" "}
+          <Highlight tier="important">Keyboard arrow resize. Live region announces</Highlight>{" "}
+          size changes (&ldquo;Sidebar 30%&rdquo;). Focus visible on divider.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          No security surface; sizes are
-          presentation only.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          No security surface; <Highlight tier="important">sizes</Highlight> are{" "}
+          <Highlight tier="important">presentation only</Highlight>.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Drag tests. Min/max constraint tests.
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Drag tests. Min/max constraint <Highlight tier="important">tests.
           Persistence load/save tests.
-          Keyboard resize tests. Nested split
+          Keyboard resize</Highlight> tests. Nested split
           tests.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Container resized smaller than min
-          sizes: clamp; some panes may collapse
+        <HighlightBlock as="p" tier="crucial">Container resized smaller than min
+          sizes: clamp; some panes may</HighlightBlock>
+<HighlightBlock as="p" tier="important">collapse
           temporarily. Persistence corrupted:
-          reset to defaults. Nested splits with
+          reset to defaults.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Nested splits with
           shared id: namespacing prevents
           collision. Drag during animation:
-          cancel animation; pointer wins.
-        </p>
+          cancel animation; pointer wins.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Generic primitive. Used everywhere
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Generic primitive.
+          <Highlight tier="important">Used everywhere</Highlight>{" "}
           IDE-like layouts apply.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          ARIA labels via i18n. Size
-          announcements via Intl. RTL flips
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          ARIA labels via i18n. <Highlight tier="important">Size
+          announcements via Intl. RTL flips</Highlight>
           horizontal direction; vertical
           unaffected.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Flexbox vs Grid vs JS layout</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Flexbox is simplest and natively
           handles flex-basis with constraints.
           Grid is alternative for complex
           layouts. JS layout is overkill for
           this simple case.
-        </p>
+        </HighlightBlock>
 
         <h3>Percentage vs pixel sizes</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Percentage works across viewport
           sizes. Pixel is rigid but precise.
           Percentage is the right default;
           pixel is opt-in.
-        </p>
+        </HighlightBlock>
 
         <h3>Persist vs ephemeral</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Persist by default for power users
           who customize. Ephemeral for cases
           where size doesn&rsquo;t carry
           across sessions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Animated resize. Snap to predefined
-          sizes. Cross-device sync of layout.
-          Voice control. Touch gestures for
+          <Highlight tier="important">sizes. Cross-device sync of layout.
+          Voice</Highlight> control. Touch gestures for
           collapse/expand.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How does the resize
           work?</strong> Pointer drag updates
           flex-basis on adjacent panes. CSS
           Flexbox handles layout.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How are constraints
           enforced?</strong> Clamp delta
           during pointer move. Visual
           feedback at min/max.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How is persistence
           handled?</strong> localStorage keyed
           by split id. Loaded on mount;
           written on resize end.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does keyboard work?</strong>{" "}
           Focus divider; arrow keys resize.
           Live region announces.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How does collapse
@@ -428,12 +431,12 @@ export default function ResizableSplitPaneArticle() {
           composes naturally via Flexbox.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How is this
           accessible?</strong> Separator
           role with ARIA values; keyboard
           control; live region.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. Why CSS Flexbox?</strong>{" "}
@@ -445,15 +448,14 @@ export default function ResizableSplitPaneArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A resizable split pane is{" "}
+        <HighlightBlock as="p" tier="crucial">A resizable split pane is{" "}
           <strong>Flexbox layout + pointer-
           drag divider + min/max constraints +
           localStorage persistence + keyboard
-          control</strong>. Native browser
+          control</strong>.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Native browser
           layout handles the heavy lifting;
-          we coordinate drag and persistence.
-        </p>
+          we coordinate drag and persistence.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

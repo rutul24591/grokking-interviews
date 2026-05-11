@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,33 +26,33 @@ export default function UndoRedoArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Users perform edits (delete text, move shape, change color). Without undo, mistakes are permanent. With undo, users can revert mistakes instantly. Key challenges: maintaining history (every edit), reverting state (how to go back?), redo (after undo, can redo), and selective undo (undo only specific action, not all).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Naive approach: store all previous states (expensive in memory). Better: store commands (edit description, not full state). Replay commands to reconstruct state. For collaborative editing, selective undo is complex (undo your change, not other users' changes).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key insight: undo is about reverting the effect of a command, not necessarily reverting state. Example: if user A inserts text, user B modifies it, user A's undo should remove the inserted text (adjusted for B's modification). This distinction becomes critical in collaborative systems where state is shared and mutations from different users are interleaved.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Text editors, design tools like Figma, spreadsheet applications, and IDEs all implement undo/redo. The design requirements differ significantly between single-user (simpler) and collaborative multi-user (requires operational transformation or CRDT) scenarios.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Commands are reversible (can compute inverse). History is linear (branching undo is complex). Undo depth is reasonable (100–1000 commands). Collaborative editing uses OT or CRDT for conflict resolution. The command pattern is the primary abstraction.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Undo:</strong> Revert last action (Ctrl+Z). Can undo multiple times, up to history limit.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Redo:</strong> Reapply undone action (Ctrl+Y / Ctrl+Shift+Z). Can redo multiple times.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>History Display:</strong> Show list of past actions in UI with descriptive labels.
           </li>
@@ -66,19 +68,19 @@ export default function UndoRedoArticle() {
           <li>
             <strong>History Branching:</strong> After undo, new action clears redo stack (linear history).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Undo Limits:</strong> Cap history size (memory management).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Memory:</strong> History limited to 100–1000 commands (configurable). Command objects are much smaller than full state snapshots.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency:</strong> Undo executes and reflects in UI within &lt;10ms for simple commands.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Responsiveness:</strong> UI updates immediately after undo/redo (no async operations in the critical path).
           </li>
@@ -99,12 +101,11 @@ export default function UndoRedoArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Implement the command pattern: each action is a Command object with execute() and undo() methods. Maintain two stacks: undo stack (executed commands) and redo stack (undone commands). On action: execute command, push to undo stack, clear redo stack. On undo: pop from undo stack, call command.undo(), push to redo stack. On redo: pop from redo stack, call command.execute(), push to undo stack.
-        </p>
-        <p>
+        <HighlightBlock as="p" tier="important">Implement the command pattern: each action is a Command object with execute() and undo() methods. Maintain two stacks: undo stack (executed commands) and redo stack (undone commands).</HighlightBlock>
+<HighlightBlock as="p" tier="important">On action: execute command, push to undo stack, clear redo stack. On undo: pop from undo stack, call command.undo(), push to redo stack. On redo: pop from redo stack, call command.execute(), push to undo stack.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           For collaborative editing, commands are tagged with the userId. Selective undo identifies the target user's most recent command, constructs its inverse, and transforms the inverse against all subsequent commands from other users before applying it. This is the operational transformation approach used in Google Docs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -131,9 +132,9 @@ export default function UndoRedoArticle() {
         <p>
           The UndoManager maintains two stacks: undoStack (Array of Commands) and redoStack (Array of Commands). The stacks have a maximum capacity (configurable, typically 100 for design tools, 1000 for text editors). When the undo stack is at capacity and a new command is pushed, the oldest command is dropped from the bottom of the stack.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The invariant "new action clears redo stack" is enforced by the UndoManager: every call to execute() calls redoStack.clear() after pushing to undoStack. This implements linear history — after undoing 5 steps and then making a new edit, those 5 redo steps are permanently gone. This matches user mental models ("I made a change, so redo is no longer valid") and is the design chosen by virtually all major applications.
-        </p>
+        </HighlightBlock>
         <p>
           For applications that want branching history (DAG of possible futures), a tree structure replaces the stack. Each node stores the command and pointers to children (possible redo branches). This is significantly more complex to implement and almost never expected by users, so it's generally reserved for specialized tools (version-control-aware editors, time-travel debugging systems).
         </p>
@@ -153,9 +154,9 @@ export default function UndoRedoArticle() {
         <p>
           Without merging, typing a 50-character sentence creates 50 individual InsertCharacter commands — each Ctrl+Z removes one character. Users expect typing to undo in word-level chunks. Command merging addresses this: when a new command is pushed to the undo stack, the UndoManager checks if it can merge with the top command via canMerge().
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           InsertCharacterCommand.canMerge(prevCommand): returns true if prevCommand is also an InsertCharacterCommand AND the insertion is adjacent (no cursor movement between characters) AND the time gap between commands is under a threshold (e.g., 500ms — a pause in typing signals a new undo unit). On merge, the top command's content is extended: prev.text = prev.text + this.text. The merged command represents the entire typed word or phrase.
-        </p>
+        </HighlightBlock>
         <p>
           This pattern extends to other continuous operations: drag-to-resize, brush strokes in a drawing tool, incremental slider adjustments. The merge condition checks spatial adjacency, temporal proximity, and command type compatibility. Merging happens at push time — the undo stack always contains the latest merged state.
         </p>
@@ -164,12 +165,12 @@ export default function UndoRedoArticle() {
         <p>
           The command pattern stores operations (reversible transformations). An alternative is the snapshot pattern: store the full application state before each operation. Undo = restore the previous snapshot. This is simpler to implement (no inverse computation, no merge logic) but memory-intensive for large application states.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The hybrid approach uses structural sharing (via Immer) to make snapshots cheap: only the changed subtree of the state is copied; unchanged subtrees share references with previous snapshots. An application with a 1MB state that changes 1KB per operation stores approximately 1KB per snapshot, not 1MB. This makes snapshot-based undo competitive with command-based undo for many applications.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The trade-off: snapshots require O(changed state size) per step, regardless of how conceptually simple the operation was. Command-based requires O(command parameters) per step, but requires implementing and testing the inverse for every command type. For applications with complex business logic and many command types, snapshots with structural sharing are often simpler overall.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Undoable Commands</h3>
         <p>
@@ -202,35 +203,34 @@ export default function UndoRedoArticle() {
         <p>
           The UndoManager exposes state to the UI: canUndo (undo stack non-empty), canRedo (redo stack non-empty), undoLabel (description of the top command: "Undo Set Title"), redoLabel (description of top redo command). These drive the enabled state and tooltip text of undo/redo buttons.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Keyboard shortcuts: Ctrl+Z (undo, macOS: Cmd+Z), Ctrl+Y or Ctrl+Shift+Z (redo, macOS: Cmd+Shift+Z). Register these globally (document-level keydown handler) rather than on individual components to ensure they work regardless of focus. Prevent default browser behavior (browser may have its own undo for textarea inputs — decide whether to intercept or delegate based on focus context).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Command Pattern vs Snapshot Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Command pattern is memory-efficient (stores only operation parameters, not full state) but requires implementing and testing inverses for every command type. Snapshot pattern with structural sharing is simpler to implement correctly (no inverse logic) but requires a structural-sharing state management system (Immer). For applications with complex, heterogeneous command types, snapshots with Immer is often the better ROI. For applications with a small, well-defined set of reversible operations, the command pattern is more efficient.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Linear vs Branching History</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Linear history (new action clears redo) matches user expectations in virtually every mainstream application. Branching history (redo tree) matches the mental model of developers using version control but is genuinely unfamiliar to most users. Unless your application's core value proposition involves non-linear history (a dedicated version-control tool, a time-travel debugging interface), use linear history. The complexity of branching history rarely pays off in user experience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory vs Depth</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A deeper undo history (1000 steps) is more forgiving for users but uses more memory. The right limit depends on the command size and application type. A text editor with merged word-level commands rarely needs more than 100 undo steps in practice. A design tool with individual shape operations may benefit from 500 steps. Profile the typical session's command count and memory usage to calibrate the limit, rather than using an arbitrary default.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Undo/redo systems enhance user experience by enabling mistake recovery with a familiar, expected interaction pattern. The design centers on the command pattern — each operation encapsulates its own inverse — combined with two stacks (undo and redo) and the invariant that new actions clear redo. Command grouping via transactions enables compound operations to appear as single undo steps. Command merging coalesces rapid-fire similar operations (typing, dragging) into meaningful units. For collaborative systems, selective undo requires per-command authorship tracking and operational transformation of the inverse against concurrent changes. The snapshot pattern with structural sharing (Immer) is a competitive alternative to command-based undo for applications with complex state trees and many heterogeneous command types. For staff-level engineers, the critical design decisions are: choose between command vs snapshot pattern based on the complexity of inverse computation vs state tree size; implement command merging before deploying to text-editing scenarios (per-character undo is a usability failure); handle non-undoable commands explicitly; and treat collaborative selective undo as a separate and significantly more complex subsystem requiring OT/CRDT infrastructure.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">The snapshot pattern with structural sharing (Immer) is a competitive alternative to command-based undo for applications with complex state trees and many heterogeneous command types. For staff-level engineers,</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">the critical design decisions are: choose between command vs snapshot pattern based on the complexity of inverse computation vs state tree size; implement command merging before deploying to text-editing scenarios (per-character undo is a usability failure); handle non-undoable commands explicitly; and treat collaborative selective undo as a separate and significantly more complex subsystem requiring OT/CRDT infrastructure.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

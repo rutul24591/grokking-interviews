@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,31 +38,31 @@ export default function FileUploadAPILayerArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           User uploads 500MB video. Naive: send entire file in one HTTP request. Problems: browser memory exhausted, network timeout after 10 minutes (entire upload lost), no progress feedback, can't resume or cancel. Better: chunk file (split into 10MB pieces), upload chunks independently, retry failed chunks, track progress, allow cancellation/resumption. If upload pauses mid-chunk, resume from next chunk (not from start).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Chunking benefits: (1) Memory efficient (process 10MB at a time, not 500MB). (2) Parallelizable (upload 4 chunks simultaneously on fast network). (3) Resumable (network fails after 400MB, resume from 410MB—not from start). (4) Progress trackable (show "410MB/500MB uploaded"). (5) Cancellable (user clicks cancel, in-flight chunks aborted).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Challenges: (1) Chunk size tuning (too small = overhead, too large = timeout risk). (2) Parallel vs sequential (parallel faster but riskier—congestion). (3) Server assembly (collect chunks, reassemble in order, verify integrity). (4) Resumability (server must remember which chunks received across sessions). (5) Deduplication (user uploads same file twice—reuse chunks?).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Files 1MB-1GB. Network unreliable. Progress/cancellation expected. Parallel upload desired. Chunk size ~5-10MB. Server supports resumable uploads (persistent state).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Chunking:</strong> Split file into chunks (e.g., 5MB each).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Resumability:</strong> Resume upload from last successful chunk if
             interrupted.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Progress Tracking:</strong> Report progress (bytes uploaded,
             percentage, ETA).
@@ -72,9 +74,9 @@ export default function FileUploadAPILayerArticle() {
             <strong>Parallel Uploads:</strong> Upload multiple chunks concurrently
             (e.g., 4 concurrent).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Chunk Retry:</strong> Retry failed chunks with exponential backoff.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Server Assembly:</strong> Server assembles chunks into final file.
           </li>
@@ -82,10 +84,10 @@ export default function FileUploadAPILayerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Efficient:</strong> Stream chunks, not load entire file
             into memory.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Bandwidth Efficient:</strong> Parallel uploads maximize throughput.
           </li>
@@ -100,7 +102,7 @@ export default function FileUploadAPILayerArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
         <ul className="space-y-2">
           <li>Network drops mid-upload → resume from last successful chunk.</li>
-          <li>Chunk retry exhausted → surface error, expose manual retry.</li>
+          <HighlightBlock as="li" tier="important">Chunk retry exhausted → surface error, expose manual retry.</HighlightBlock>
           <li>Browser crashes mid-upload → resume from persisted state on restart.</li>
           <li>Server has partial chunks → detect and skip already-uploaded chunks.</li>
         </ul>
@@ -108,15 +110,14 @@ export default function FileUploadAPILayerArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Split file into chunks (5-10MB each). Generate upload ID and chunk IDs.
+        <HighlightBlock as="p" tier="crucial">Split file into chunks (5-10MB each). Generate upload ID and chunk IDs.
           For each chunk, send HTTP POST request to server with chunk data and
           metadata. Upload multiple chunks in parallel (4 concurrent). If chunk fails,
-          retry with exponential backoff. Track progress and report to UI. On
+          retry with exponential backoff.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Track progress and report to UI. On
           completion, notify server to assemble chunks. For resumability, persist
           upload state (completed chunks) to localStorage. On page reload, resume
-          from persisted state.
-        </p>
+          from persisted state.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -127,10 +128,10 @@ export default function FileUploadAPILayerArticle() {
           Files are split into fixed-size chunks for upload.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Chunk Size:</strong> Configurable (default 5MB). Balance between
             memory usage and overhead.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Chunk ID:</strong> Sequential ID (0, 1, 2...) for ordering.
           </li>
@@ -202,10 +203,10 @@ export default function FileUploadAPILayerArticle() {
           <li>
             <strong>ETA:</strong> (remainingBytes / speed) in seconds.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Update Frequency:</strong> Emit progress every 500ms to avoid
             excessive updates.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Cancellation</h3>
@@ -227,13 +228,13 @@ export default function FileUploadAPILayerArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Retry Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retry failed chunks with exponential backoff.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Transient Failures:</strong> Network errors, timeouts. Retry.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Permanent Failures:</strong> 4xx errors. Don't retry.
           </li>
@@ -275,10 +276,10 @@ export default function FileUploadAPILayerArticle() {
           <li>
             <strong>Network Error:</strong> Connection failed. Retry or allow resume.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout:</strong> Chunk upload took too long. Retry or increase
             timeout.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>400 Bad Request:</strong> Chunk corrupted or invalid. Don't retry.
           </li>
@@ -312,28 +313,28 @@ export default function FileUploadAPILayerArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Browser APIs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use File API (File, Blob), Slice API for chunking, and AbortController for
           cancellation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Multipart Upload</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Alternative to manual chunking: use multipart/form-data with multiple file
           parts. Server handles assembly. Simpler but less control.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Large File Support</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For very large files (1GB+), consider streaming from disk (Node.js fs.streams)
           or using service workers on client.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Track upload success/failure rates, average chunk size, retry rates,
           cancellation rates.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -363,41 +364,41 @@ export default function FileUploadAPILayerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Chunk Size</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Detect network speed, adjust chunk size. Fast network → larger chunks
           (more throughput). Slow network → smaller chunks (more resilient).
           Monitor: if most uploads retry, chunks too large or network bad.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring Upload Metrics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Track: success rate, avg upload time, retry rate, cancel rate, resumption
           frequency. High cancel rate: upload too slow. High retry: network issues.
           Monitor S3/storage API quota—uploads can burn quota fast.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Large Uploads</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Test 100MB, 1GB uploads. Simulate network interruptions mid-chunk. Test
           resumption. Test checksum mismatch. Use fake network conditions (latency,
           packet loss). Performance test: doesn't block UI during upload.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Common: memory leak from timers/event listeners during upload. Another:
           upload succeeds on server but fails client-side validation (checksum
           mismatch). Another: resuming old partial upload from wrong session
           (security issue). Another: unbounded retry loop exhausts server storage.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Security Considerations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Validate file type server-side (MIME type checked). Limit file size to
           prevent DoS. Implement rate limiting per user (can't upload 1TB/second).
           Scan uploads for malware (integrate with antivirus service). Require
           authentication before upload.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Integration with Background Jobs</h3>
         <p>
@@ -414,41 +415,44 @@ export default function FileUploadAPILayerArticle() {
           src="/diagrams/system-design-problems/low-level-design/networking-data-systems/file-upload-progression.svg"
           alt="File upload phases and error handling strategies diagram"
         />
+
+        <HighlightBlock as="p" tier="crucial">
+          Interview signal: treat uploads as a state machine (init session → upload chunks → verify → complete → post-process). Every transition must be resumable and idempotent, otherwise retries create duplicates or corrupt state.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Resumability hinges on durable client state (chunk offsets/ETags in IndexedDB) and a server probe endpoint to reconcile what was received before continuing.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Error handling should be tiered: transient (retry with backoff + jitter), user-correctable (auth expired, file too large), and permanent (integrity mismatch) with clear UX actions (resume/cancel/restart).
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Simplicity vs Features</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Simple: single HTTP PUT. Complex: chunking, resumability, parallel. Choose
           based on file size and reliability needs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Server Complexity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chunking requires server-side logic to handle chunks and assembly. Simpler
           for single uploads.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Chunk Size</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Small chunks (1MB) = many requests, high overhead. Large chunks (50MB) = few
           requests but retry one large chunk is painful. 5-10MB is typical.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          A file upload API layer abstracts chunking, resumability, and progress
-          tracking for large file uploads. Key aspects include splitting files into
-          chunks, parallel concurrent uploads, progress reporting, cancellation,
-          resumability from persisted state, and retry logic. The system must handle
-          network interruptions gracefully and provide clear feedback to users. Real-world
-          implementations often use libraries like tus.io or Uppy, but understanding
-          the core design helps when building custom solutions or debugging issues.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">The system must handle network interruptions gracefully and provide clear feedback</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">to users. Real-world implementations often use libraries like tus.io or Uppy, but understanding the core design helps when building custom solutions or debugging issues.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

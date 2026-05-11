@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function NotificationCenterInboxArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing an in-app notification
           center — the dropdown or panel that
           surfaces notifications (mentions, replies,
@@ -41,8 +43,8 @@ export default function NotificationCenterInboxArticle() {
           ubiquitous in modern apps; getting it
           right means notifications feel timely
           without being overwhelming.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: real-time badge
           count updates without UI thrash; unread
           → read state transitions with optimistic
@@ -52,10 +54,10 @@ export default function NotificationCenterInboxArticle() {
           consistency (mark as read in one tab
           updates badge in others); accessibility
           for the notification list.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users see a bell icon with a badge
           count; clicking opens the inbox.
           Engineering teams provide a notification
@@ -63,10 +65,10 @@ export default function NotificationCenterInboxArticle() {
           runtime handles UI. Product wants
           notifications to feel timely but not
           spammy.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend exposes a list endpoint plus a
           WebSocket for new notifications. Each
           notification has id, type, content,
@@ -74,24 +76,24 @@ export default function NotificationCenterInboxArticle() {
           acted on), createdAt, readAt. Modern
           browsers; we use BroadcastChannel for
           cross-tab sync.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the notification
           backend or delivery pipeline (separate
           Real-time Notification Delivery System).
           We do not implement push notifications
           (browser/OS-level). We do not implement
           email/SMS notification preferences.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Bell icon with badge count showing
           unread total. Clicking opens the inbox
           panel. List of notifications, newest
@@ -104,10 +106,10 @@ export default function NotificationCenterInboxArticle() {
           Loading state. Cross-tab consistency:
           marking read in one tab updates other
           tabs.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Grouping (10 likes on a post → one
           grouped notification). Filter tabs (All,
           Unread, Mentions). Per-notification
@@ -117,57 +119,57 @@ export default function NotificationCenterInboxArticle() {
           (digest mode). Search notifications.
           Read receipts back to senders for
           mention notifications.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Browser push notifications, email/SMS,
           notification authoring tools, A/B
           testing of notification content.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Badge update under 100 ms of arrival.
           Inbox open under 100 ms. Mark-as-read
           under 50 ms (optimistic). Infinite
           scroll smooth.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Badge count accurate even with network
           blips. Optimistic mark-read rollback on
           server failure. Cross-tab consistency
           tight.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Notification content rendered as text;
           actors and targets validated. Server-
           enforced authorization (you only see
           your notifications).
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Bell icon labeled with badge count.
           Inbox dropdown is a real menu/dialog.
           Notifications are list items.
           Mark-read announces.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Notification source adapter. Renderers
           per notification type. Plugins for
           actions, filters.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -178,7 +180,7 @@ export default function NotificationCenterInboxArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The notification center has four parts:
           <strong> notification source adapter</strong>{" "}
           (WebSocket + REST), <strong>notification
@@ -188,7 +190,7 @@ export default function NotificationCenterInboxArticle() {
           with virtualized list and mark-read
           mechanics. Cross-tab consistency via
           BroadcastChannel.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>notification source adapter</strong>{" "}
           subscribes to a WebSocket for live
@@ -221,7 +223,7 @@ export default function NotificationCenterInboxArticle() {
           notifications arrive. Clicking opens
           the inbox panel.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>inbox panel</strong> renders
           the notification list, virtualized for
           long histories. Each notification shows
@@ -231,8 +233,8 @@ export default function NotificationCenterInboxArticle() {
           text, colored dot). Clicking a notification
           marks it read (optimistically) and
           navigates to its target.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>mark as read</strong> (single
           notification or all): optimistic update
           to the store; the badge count updates
@@ -240,7 +242,7 @@ export default function NotificationCenterInboxArticle() {
           background; on failure, rollback. Mark-
           all-read is one click that sets all
           unreads to read.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>real-time arrival</strong>:
           WebSocket delivers a new notification.
@@ -250,7 +252,7 @@ export default function NotificationCenterInboxArticle() {
           subtle animation. If closed, the bell
           gets a brief animation hint.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-tab consistency</strong>:
           BroadcastChannel broadcasts state changes.
           Tab A marks read; tab B receives the
@@ -259,7 +261,7 @@ export default function NotificationCenterInboxArticle() {
           stay in sync. Without this, users would
           see stale badge counts in background
           tabs.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Auto-mark-on-view</strong>: when
           the inbox is open and a notification
@@ -271,13 +273,13 @@ export default function NotificationCenterInboxArticle() {
           reading them. Configurable per product
           (some prefer explicit click).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Infinite scroll</strong>: standard
           downward infinite scroll for older
           notifications. Cursor-based; integrates
           with the Cursor-based Pagination UI
           patterns.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Filters</strong>: tabs at the top
           of the inbox (All, Unread, Mentions).
@@ -290,220 +292,196 @@ export default function NotificationCenterInboxArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>NotificationProvider</strong>{" "}
-          instantiates source adapter, store,
-          BroadcastChannel.
-          <strong> BellBadge</strong> renders the
-          bell with count. <strong>InboxPanel</strong>{" "}
-          renders the dropdown.
-          <strong> NotificationList</strong>{" "}
-          virtualizes the list.
-          <strong> NotificationItem</strong>{" "}
+        <HighlightBlock as="p" tier="crucial"><strong> NotificationItem</strong>{" "}
           renders one notification.
           <strong> FilterTabs</strong> renders
-          filter options.
-          <strong> MarkAllRead</strong> action.
+          filter options.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> MarkAllRead</strong></Highlight> action.
           <strong> Renderers per type</strong>{" "}
-          (mention, like, comment, follow, system).
-        </p>
+          (mention, like, comment, follow, system).</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Notification list, unread counts, filter
           state in external store. WebSocket
-          connection state in connection store.
-          BroadcastChannel synchronizes across
+          <Highlight tier="important">connection state in connection store.
+          BroadcastChannel</Highlight> synchronizes across
           tabs. Inbox open state local to the bell
           component.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Notification shape:{" "}
-          <code>{` { id, type, actorId, targetId, content, createdAt, readAt? } `}</code>.
-          Backend events:
-          <code> notification.new</code>,
-          <code> notification.read</code>,
-          <code> notification.deleted</code>.
-          REST: list with cursor pagination,
-          mark-read endpoint.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Notification shape:</Highlight>{" "}
+          <Highlight tier="important">
+            <code>{` { id, type, actorId, targetId, content, createdAt, readAt? } `}</code>
+          </Highlight>
+          . Backend events: <code>notification.new</code>,{" "}
+          <code>notification.read</code>, <code>notification.deleted</code>. REST:
+          list with cursor pagination, mark-read endpoint.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Virtualization for long lists.
-          Memoized notification items. Optimistic
-          mark-read. Badge count updates batched
+          Memoized notification items. <Highlight tier="important">Optimistic
+          mark-read. Badge count updates batched</Highlight>
           per tick to avoid flooding. Cross-tab
           broadcasts debounced.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Bell icon prominent. Badge clears when
-          inbox is opened. Unread items
-          distinguished visually. Grouped
-          notifications collapsed with a count.
-          Clicking navigates to context. Mark-
-          all-read action visible. Empty state
+        <HighlightBlock as="p" tier="crucial">Clicking navigates to context.{" "}
+          <Highlight tier="important">Mark-all-read action</Highlight>{" "}
+          visible. Empty</HighlightBlock>
+<HighlightBlock as="p" tier="important">state
           encouraging (&ldquo;You&rsquo;re all
-          caught up&rdquo;).
-        </p>
+          caught up&rdquo;).</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Bell icon labeled with current count
-          (&ldquo;Notifications, 5 unread&rdquo;).
-          Inbox is a dialog/menu with focus trap
-          (or proper menubar role). Each
+        <HighlightBlock as="p" tier="crucial">Bell icon labeled with current count
+          (&ldquo;Notifications, 5 unread&rdquo;).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Inbox is a dialog/menu with focus trap
+          (or proper menubar role).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Each
           notification is a focusable item; Enter
           activates. Mark-read announces. Filter
-          tabs are real tabs.
-        </p>
+          tabs are real tabs.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server enforces ownership. Notification
-          content rendered as text; rich content
-          opt-in via sanitizer. Cross-user data
+          content rendered <Highlight tier="important">as text; rich content
+          opt-in via</Highlight> sanitizer. Cross-user data
           (actor info) validated server-side.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for store (dedup, grouping,
-          mark-read). Cross-tab consistency tests.
+        <HighlightBlock as="p" tier="crucial">Unit tests for store (dedup, grouping,
+          mark-read). Cross-tab consistency</HighlightBlock>
+<HighlightBlock as="p" tier="important">tests.
           Integration with mock WebSocket: arrival
-          updates badge; mark-read updates count.
+          updates badge; mark-read</HighlightBlock>
+<HighlightBlock as="p" tier="important">updates count.
           Accessibility tests for live region and
-          focus.
-        </p>
+          focus.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Backend slow on mark-read: optimistic
-          UI plus retry. New notification arrives
-          while user is mid-mark-all: handle
-          gracefully (the new arrival stays
-          unread). Tab closed during mark-read:
-          server still receives via beacon.
-          Notification target deleted (the
+        <HighlightBlock as="p" tier="crucial">Notification target deleted (the
           comment was deleted): clicking shows
           a graceful fallback. Browser without
-          BroadcastChannel: tabs sync via
+          BroadcastChannel:</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">tabs sync via
           polling fallback. Very large
           unread count (10000+): cap display
-          (99+); store has the real number.
-        </p>
+          (99+); store has the real number.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over notification type. Renderers
-          per type. Source adapter pluggable.
-          Pattern reuses for activity feeds,
+          per <Highlight tier="important">type. Source adapter pluggable.
+          Pattern reuses</Highlight> for activity feeds,
           alert centers, audit logs.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Notification content typically pre-
-          translated server-side per recipient
-          locale. UI strings via i18n.
+          translated server-side per <Highlight tier="important">recipient
+          locale. UI strings via i18n.</Highlight>
           Timestamps via Intl.RelativeTimeFormat.
           RTL via CSS logical properties.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Auto-mark vs explicit click</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-mark on view matches user
           expectation; explicit gives more
           control. We default auto-mark with
           per-notification opt-out for actionable
           ones.
-        </p>
+        </HighlightBlock>
 
         <h3>Client-side vs server-side grouping</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client-side grouping adapts to live
           state. Server-side is consistent across
           clients. We do client-side for
           adaptability; server-side has its
           merits for high-volume notification
           systems.
-        </p>
+        </HighlightBlock>
 
         <h3>Optimistic mark-read vs confirmed</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimistic feels instant; rollback on
           failure. Confirmed-first feels slow.
           Optimistic is the right default.
-        </p>
+        </HighlightBlock>
 
         <h3>BroadcastChannel vs polling fallback</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           BroadcastChannel is instant and
           efficient. Polling is the fallback for
           older browsers. Most products only
           need BroadcastChannel.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          AI-prioritized notifications (most
-          important first). Smart digest mode
-          (batch low-priority into one
-          digest). Cross-device read sync via
+        <HighlightBlock as="p" tier="crucial">AI-prioritized notifications (most
+          important first). Smart digest mode</HighlightBlock>
+<HighlightBlock as="p" tier="important">(batch low-priority into one
+          digest). Cross-device read sync</HighlightBlock>
+<HighlightBlock as="p" tier="important">via
           push. Snooze with reminders. Custom
-          filters and pinning.
-        </p>
+          filters and pinning.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How is the badge count
           accurate in real time?</strong>{" "}
           WebSocket delivers new notifications;
           store updates; badge derives from
           unread count. BroadcastChannel
           synchronizes across tabs.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does mark-as-read
           work?</strong> Optimistic store update;
           badge updates immediately; server
           confirms in background. Failure rolls
           back.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. How is grouping
@@ -514,21 +492,21 @@ export default function NotificationCenterInboxArticle() {
           list.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How is cross-tab consistency
           maintained?</strong> BroadcastChannel
           broadcasts state changes (new, read,
           deleted). Tabs update their stores in
           response.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. How does infinite scroll
           work?</strong> Cursor-based pagination
           on REST. Trigger fetches near the
           bottom of the inbox. Integrates with
           Cursor-based Pagination UI patterns.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>6. How do you handle very high
@@ -547,31 +525,25 @@ export default function NotificationCenterInboxArticle() {
           Configurable per product.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How is this accessible?</strong>{" "}
           Bell icon labeled with count. Inbox
           is a dialog/menu with focus
           management. Notifications are
           focusable items. Mark-read announces.
           Filters are real tabs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A notification center is{" "}
-          <strong>WebSocket + store with grouping +
-          optimistic mark-read + BroadcastChannel
-          for cross-tab</strong>. Real-time updates
-          drive the badge; the inbox shows the
-          history; cross-tab consistency keeps
-          state aligned. Auto-mark-on-view
+        <HighlightBlock as="p" tier="important">Auto-mark-on-view
           handles the common case; explicit
-          mark-read covers the actionable ones.
+          mark-read covers the</HighlightBlock>
+<HighlightBlock as="p" tier="crucial">actionable ones.
           The result is timely, accurate,
-          accessible notifications.
-        </p>
+          <Highlight tier="important">accessible</Highlight>{" "}
+          notifications.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

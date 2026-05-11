@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,26 +37,26 @@ export default function ObserverAPIsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           DOM polling (setInterval checking visibility, size) expensive: wasteful
           CPU, batteries drained (mobile), janky UX. Observer APIs solve: monitor
           DOM asynchronously, fire callback only when change detected. Key
           challenges: efficient threshold handling (intersection), batching
           mutations, handling nested observers, and managing observer lifecycles
           (prevent memory leaks).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Need to detect visibility (element in viewport or hidden).</li>
-          <li>
+          <HighlightBlock as="li" tier="important">Need to detect visibility (element in viewport or hidden).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Need to detect DOM changes (attributes, text content, children).
-          </li>
-          <li>Need to detect size changes (responsive layout).</li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">Need to detect size changes (responsive layout).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Polling (setInterval) too expensive, need event-driven approach.
-          </li>
+          </HighlightBlock>
           <li>Performance-critical (optimize battery, CPU usage).</li>
         </ul>
       </section>
@@ -63,17 +65,17 @@ export default function ObserverAPIsArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Intersection Observer:</strong> Detect when element enters
             viewport.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Mutation Observer:</strong> Detect DOM changes (attribute,
             text, children).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Resize Observer:</strong> Detect element size changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Thresholds:</strong> Trigger at specific visibility %
             (0%, 50%, 100%).
@@ -94,9 +96,9 @@ export default function ObserverAPIsArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency:</strong> Callback fires within 100ms of change.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>CPU:</strong> Minimal overhead (event-driven, not polling).
           </li>
@@ -121,10 +123,10 @@ export default function ObserverAPIsArticle() {
             Nested observers (observer callbacks modify DOM). Risk infinite
             loop (careful).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Observer garbage collected while observing. Risk: callback never
             fires, memory leak.
-          </li>
+          </HighlightBlock>
           <li>
             Rapid mutations (add/remove 1000 elements). Observer batches, fires
             once.
@@ -134,21 +136,32 @@ export default function ObserverAPIsArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Observer APIs: register observer, watch elements asynchronously,
-          browser fires callback on change (batched, async). No polling. Three
+        <HighlightBlock as="p" tier="crucial">Observer APIs: register observer, watch elements asynchronously,
+          browser fires callback on change (batched, async). No polling.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Three
           main APIs: Intersection (visibility), Mutation (DOM changes), Resize
           (size changes). Unobserve when done (cleanup). Monitor multiple
-          elements efficiently.
-        </p>
+          elements efficiently.</Highlight></HighlightBlock>
       </section>
 
       <section>
-        <ArticleImage
+                <h2>Diagram Walkthrough</h2>
+
+<ArticleImage
           src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/observer-apis.svg"
           alt="Observer APIs showing IntersectionObserver, MutationObserver, and ResizeObserver patterns, use cases, and configuration options"
           caption="Observer APIs showing IntersectionObserver, MutationObserver, and ResizeObserver patterns, use cases, and configuration options"
         />
+
+        <HighlightBlock as="p" tier="crucial">
+          Interview signal: the diagram captures the end-to-end flow for <strong>Design Observer APIs</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
+        </HighlightBlock>
       </section>
 
       <section>
@@ -157,14 +170,14 @@ export default function ObserverAPIsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Intersection Observer</h3>
         <p>Detect when element enters/leaves viewport.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Use Case:</strong> Lazy loading images, infinite scroll,
             analytics tracking.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Configuration:</strong> root (viewport default), rootMargin
             (offset), threshold (visibility %).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Threshold:</strong> 0 (just visible), 0.5 (50% visible), 1
             (fully visible).
@@ -272,10 +285,10 @@ export default function ObserverAPIsArticle() {
             <strong>Unobserve Early:</strong> Stop watching after action taken
             (lazy load done).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce Callback:</strong> Resize observer fires frequently,
             debounce update.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Lazy Loading Pattern</h3>
@@ -319,10 +332,10 @@ export default function ObserverAPIsArticle() {
           <li>
             <strong>Update Sentinel:</strong> Move sentinel to new last item.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Benefits:</strong> Efficient pagination (no manual buttons),
             smooth UX.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Analytics Tracking</h3>
@@ -368,10 +381,10 @@ export default function ObserverAPIsArticle() {
           <li>
             <strong>Memory:</strong> Observer overhead (should be small).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency:</strong> Time from change to callback (should be
             &lt;100ms).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -379,25 +392,25 @@ export default function ObserverAPIsArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Browser Support</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Intersection Observer: modern browsers (IE 11 no). Mutation Observer:
           universal support. Resize Observer: modern browsers (IE no).
           Polyfills available for older browsers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">React Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           useEffect hook for lifecycle. useRef for element. Cleanup:
           unobserve/disconnect on unmount. Hook libraries (react-intersection-observer)
           abstract this.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Observers</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mock IntersectionObserver in tests (real browser integration tests
           needed). Simulate visibility changes, mutations, resizes. Verify
           callbacks fire.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -410,78 +423,65 @@ export default function ObserverAPIsArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Observer Pooling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reuse observer instances for many elements (single observer, observe
           multiple). Reduces memory, speeds up init.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">IntersectionObserver with Delay</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Don't load immediately on visibility. Debounce or delay: load only if
           visible for 2+ seconds (prevent preloading off-screen).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           1000 observed elements, rapid mutations. Verify callbacks don't
           block UI (no jank). Memory remains stable.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: forget disconnect() → memory leak (observers keep firing).
           Solution: cleanup in useEffect return. Another: mutation observer
           creates infinite loop. Solution: guard against self-modifications.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           High callback latency: check if callback does heavy work (defer to
           worker). Memory growing: verify disconnect() called. UI jank: profile
           callback time.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Precision vs Efficiency</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           High threshold precision (many values): fires often. Single threshold
           (0 or 1): fewer fires. Balance: use 0.5 for most use cases.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Root Margin Tradeoff</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large root margin: early load (smooth scrolling) but more prefetch.
           Small: accurate visibility but late load. Typical: 50px (start loading
           before visible).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Observer Overhead</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each observer has overhead. Reuse observers (single, watch many) vs
           unique (per element). Reuse more efficient.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Observer APIs critical for efficient DOM monitoring. For
-          staff/principal engineers, essential aspects include Intersection
-          Observer (lazy loading, infinite scroll, analytics), Mutation Observer
-          (DOM change detection, careful with nested mutations), Resize Observer
-          (responsive layouts), threshold tuning, and root margin for early
-          loading. Lifecycle management (observe, unobserve, disconnect) to
-          prevent memory leaks. Batching for efficiency (fires once per frame).
-          Monitoring callback latency and observer count. Testing with mocks
-          and integration tests. Common patterns: lazy loading images (LQIP +
-          Intersection), infinite scroll, ad impression tracking. Real-world
-          systems use observer pooling (reuse instances), cleanup in React
-          useEffect, and libraries (react-intersection-observer) for
-          abstraction.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Batching for efficiency (fires once per frame). Monitoring callback latency and observer count. Testing with mocks and</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">integration tests. Common patterns: lazy loading images (LQIP + Intersection), infinite scroll, ad impression tracking. Real-world systems use observer pooling (reuse instances), cleanup in React useEffect, and libraries (react-intersection-observer) for abstraction.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

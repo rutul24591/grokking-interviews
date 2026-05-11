@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +26,18 @@ export default function DerivedStateArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An e-commerce cart holds an array of line items: each with a productId, quantity, and unit price. The UI needs to display subtotal, discount amount (based on a coupon code), tax, and total. These are not stored — they are computed from the cart items and rate configuration. Every time any of these inputs changes, the displayed values must update instantly. The naive approach is to compute them inline in the React render function. This works until the cart has 200 items and the coupon lookup traverses a promotions catalog. Now every unrelated state change (hover state, tooltip open) triggers a full recomputation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Derived state is any value that can be deterministically computed from other state — it has no independent identity of its own. The design challenge is: how do we compute derived values efficiently, caching results across renders, and invalidating the cache only when the specific inputs the derivation depends on actually change? This is the selector problem, and it has nuanced failure modes at scale.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The problem compounds with depth: derived state can itself be used as input to further derivations (a selector DAG). A cart item's discounted price depends on the unit price and the applicable promotion. The subtotal depends on all items' discounted prices. The total depends on subtotal, tax rate, and shipping. Changes to a single item's quantity should invalidate only that item's discounted price and propagate up the DAG — not cause a full recomputation of every intermediate node.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Derived computations are pure functions (no side effects, no network calls). Dependencies are statically known or can be tracked automatically. Inputs are immutable values (standard in Redux, Zustand with structural sharing). The cache is per-selector-instance (not global), so components rendering the same selector with different arguments each get their own cache entry.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -45,18 +47,18 @@ export default function DerivedStateArticle() {
           <li>
             <strong>Compute:</strong> Derive output values from base state using pure transformation functions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Memoize:</strong> Cache the most recent result; return cached value if inputs are identical to the last call.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Dependency granularity:</strong> Only track the specific state slices a derivation reads, so changes to unrelated slices do not trigger recomputation.
           </li>
           <li>
             <strong>Composition:</strong> Derived selectors can reference other derived selectors as inputs, forming a computation graph.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Parameterization:</strong> Selectors can accept arguments (e.g., "posts by user ID") without defeating memoization — each argument combination caches independently.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Structural sharing:</strong> When a selector returns a new array/object that is deeply equal to its previous result, it should return the previous reference to prevent downstream re-renders.
           </li>
@@ -64,12 +66,12 @@ export default function DerivedStateArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Cache hit path must be O(n) where n is the number of input selector outputs to compare — typically constant or small.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory:</strong> Per-selector cache holds exactly one entry (last input→output pair) by default. Parameterized selectors need LRU caching with a configurable size.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Correctness:</strong> The cached value must be exactly equal to a freshly computed value for the same inputs. No stale reads.
           </li>
@@ -82,7 +84,7 @@ export default function DerivedStateArticle() {
         <ul className="space-y-2">
           <li>Selector receives structurally identical but reference-different input (e.g., a new empty array [] from a reducer — should this invalidate?). Reference equality would recompute; structural equality would not.</li>
           <li>Circular dependencies: Selector A depends on Selector B which depends on Selector A. Must be detected at construction time.</li>
-          <li>Very large outputs (e.g., a sorted list of 100k items) — memoization cost is the deep-equality check on the output for structural sharing, which is O(n) and may exceed the computation itself.</li>
+          <HighlightBlock as="li" tier="important">Very large outputs (e.g., a sorted list of 100k items) — memoization cost is the deep-equality check on the output for structural sharing, which is O(n) and may exceed the computation itself.</HighlightBlock>
           <li>Selector factory called inside a component render — creates a new memoized instance each render, defeating caching entirely.</li>
           <li>Time-dependent derivations (e.g., "items expiring in the next hour") — the same input produces different outputs over time, requiring explicit invalidation by real-time clock ticks.</li>
         </ul>
@@ -90,12 +92,11 @@ export default function DerivedStateArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          The selector pattern separates state access from computation. An input selector extracts a specific sub-tree from the store (fast, no transformation). A result function combines the outputs of one or more input selectors into the derived value. The memoization layer compares the input selector outputs using reference equality. If none changed, the cached result is returned. Only if at least one changed is the result function invoked and the new output cached.
-        </p>
-        <p>
+        <HighlightBlock as="p" tier="important">The selector pattern separates state access from computation. An input selector extracts a specific sub-tree from the store (fast, no transformation). A result function combines the outputs of one or more input selectors into the derived value.</HighlightBlock>
+<HighlightBlock as="p" tier="important">The memoization layer compares the input selector outputs using reference equality. If none changed, the cached result is returned. Only if at least one changed is the result function invoked and the new output cached.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           This is the Reselect model, which has been the de facto standard for Redux selector memoization since 2016. Redux Toolkit ships Reselect's createSelector and adds createEntityAdapter which generates pre-built selectors for normalized entity collections. For Jotai and other atomic state systems, atoms are inherently composable, making derived atoms the natural primitive instead of imperative selectors.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -114,9 +115,9 @@ export default function DerivedStateArticle() {
         <p>
           This structure provides automatic dependency tracking: the input selectors define precisely what the derivation depends on. If you add a new dependency, you add a new input selector — you cannot accidentally depend on state you didn't declare. This is intentional compared to Proxy-based auto-tracking (used in MobX, Valtio) which infers dependencies at runtime. Explicit declaration is safer in TypeScript projects and easier to reason about in code review.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Composition is recursive: a selector's result function can call another memoized selector. The inner selector's cache layer is hit first; if it returns the same reference as before, the outer selector's input hasn't changed and the outer cache is also preserved. This chain propagation is what makes deep selector DAGs efficient — a change to a leaf input only propagates up the DAG to selectors that directly or transitively depend on that leaf.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Equality Semantics: Reference vs Structural</h3>
         <p>
@@ -133,15 +134,15 @@ export default function DerivedStateArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Parameterized Selectors and Per-Instance Memoization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A common pattern is selecting a specific entity by ID: selectPostById(state, postId). If the selector is a single shared instance with one cache entry, any call with a different postId invalidates the cache for all components using the selector — defeating memoization entirely.
-        </p>
+        </HighlightBlock>
         <p>
           The solution is selector factories: a function that creates a new memoized selector instance. Each component that needs a per-ID selector creates its own instance, typically in useMemo or in the component's class property. The factory pattern ensures each component gets an independent cache entry keyed to the ID it uses.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reselect 5 and Redux Toolkit's createSelector with memoize option support configurable cache sizes. The weakMapMemoize option uses a WeakMap keyed on the argument reference, providing unlimited-size caching for object-argument selectors without explicit instance creation. For primitive arguments (string IDs), a bounded LRU cache of configurable size (default 1 in classic Reselect) is the right primitive.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Derived Atoms in Jotai and Recoil</h3>
         <p>
@@ -158,9 +159,9 @@ export default function DerivedStateArticle() {
         <p>
           For component-local derived state that doesn't need to be shared across the tree, React's useMemo hook is the appropriate tool. useMemo accepts a factory function and a dependency array; it recomputes only when one of the dependencies changes by reference. It follows the same reference-equality semantics as Reselect selectors.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           useMemo is often overused. React's documentation explicitly states it is a performance optimization, not a semantic guarantee — React may discard cached values in low-memory situations. For truly critical memoization (preventing expensive recomputation, not just render optimization), Reselect or a custom memoization utility outside the React lifecycle is more reliable.
-        </p>
+        </HighlightBlock>
         <p>
           A common mistake is putting object literals or array literals in a useMemo dependency array — these are always new references on each render, which means the useMemo always recomputes. The inputs to useMemo should be primitive values or stable references (state values from the store, refs, or other memoized values).
         </p>
@@ -185,35 +186,34 @@ export default function DerivedStateArticle() {
         <p>
           Add instrumentation to selectors in development mode: count recomputations, measure result function duration, and record cache hit rate. A selector with a 20% cache hit rate on a hot code path is a warning sign — investigate whether input selectors are returning new references unnecessarily.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Redux DevTools provides a selector recomputations counter that shows how many times each selector's result function was called. Reselect exposes recomputations() and resetRecomputations() on each selector for this purpose. In production, emit a sampling of selector recomputation counts to your metrics system to detect regressions after state schema changes.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Explicit vs Automatic Dependency Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reselect's explicit input selectors are verbose but predictable — the dependency graph is visible in code and easy to audit. Auto-tracking (MobX, Jotai) is more ergonomic but introduces risk of unintentional dependencies (reading a property you didn't intend to depend on triggers unnecessary recomputation). For large teams or complex domains, explicit is safer. For rapid prototyping or simpler apps, auto-tracking reduces boilerplate significantly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Single vs Multi-Entry Cache</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Classic Reselect's 1-entry cache is sufficient when a selector is used by at most one component at a time with a consistent argument. Multi-entry caching (LRU or WeakMap) is needed for lists of entities where many components simultaneously use the same selector factory with different IDs. The cost is higher memory usage and more complex cache management. Start with 1-entry, profile before increasing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Complexity of Derived Atom Graphs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Very deep derivation graphs (8+ levels) become hard to debug: a state change in a leaf node triggers a cascade of recomputations up the graph, and tracing which derived atoms were affected requires understanding the full graph topology. Periodic audits of the atom/selector dependency graph help identify unexpectedly long chains that could be simplified by materializing intermediate results as proper state.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Derived state systems are foundational to performant React applications. The core pattern — input selectors extracting dependencies + a memoized result function — ensures that expensive computations run only when their specific inputs change, not on every state update. Reference equality semantics work correctly only with immutable state updates (Immer, structural sharing). Parameterized selectors require per-instance memoization (selector factories or WeakMap caches) to avoid cache thrashing. Atomic libraries like Jotai offer auto-tracking as an ergonomic alternative to explicit input selectors. For staff-level engineers, the critical insights are: normalize entity state to enable granular cache invalidation; fix reference instability at the reducer level rather than using deep equality in selectors; profile selector recomputation rates in production; and treat time-dependent derived state by including external inputs as first-class state atoms rather than reading external state inside result functions.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Atomic libraries like Jotai offer auto-tracking as an ergonomic alternative to explicit input selectors. For staff-level engineers, the critical insights are: normalize</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">entity state to enable granular cache invalidation; fix reference instability at the reducer level rather than using deep equality in selectors; profile selector recomputation rates in production; and treat time-dependent derived state by including external inputs as first-class state atoms rather than reading external state inside result functions.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

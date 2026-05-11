@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function SearchAutocompleteArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a search autocomplete — the
           input that suggests results as the user types,
           letting them pick a suggestion or submit a
@@ -43,8 +45,8 @@ export default function SearchAutocompleteArticle() {
           feels invisible (results appear as fast as
           you type); done poorly it&rsquo;s a flickering,
           stale-result mess.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: debouncing input so we
           don&rsquo;t fire a request per keystroke;
           abortable requests so a slower earlier
@@ -56,10 +58,10 @@ export default function SearchAutocompleteArticle() {
           and client-side data sources; and ARIA
           combobox semantics so screen readers
           understand what&rsquo;s happening.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users type queries to find content,
           users, products, or commands. They expect
           suggestions to appear instantly as they
@@ -70,10 +72,10 @@ export default function SearchAutocompleteArticle() {
           render function for suggestions, an
           onSelect handler. The runtime handles
           everything else.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The data source is either a server endpoint
           (returning ranked suggestions per query) or
           a client-side dataset (small enough to
@@ -83,24 +85,24 @@ export default function SearchAutocompleteArticle() {
           cancellation, IntersectionObserver where
           applicable for lazy result loading, and the
           ARIA combobox pattern.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the search backend
           (consumer provides). We do not implement
           full search-results pages (separate Search
           Page). We do not implement RAG or
           semantic search (related but different
           patterns).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Input field with text entry. Suggestions
           dropdown opens as the user types (after a
           minimum query length, typically 1–2
@@ -122,10 +124,10 @@ export default function SearchAutocompleteArticle() {
           Selection commits a value (or fires
           onSelect callback for the consumer to
           decide).
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Grouped suggestions (categorized by type,
           e.g. People, Documents, Files). Rich
           previews on hover or on focus. Voice input.
@@ -136,49 +138,49 @@ export default function SearchAutocompleteArticle() {
           empty. Server-side personalization (results
           ranked per user). Multi-source results
           (federated search across multiple backends).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The search backend, full results page,
           analytics dashboards.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Suggestions appear within 300 ms of typing
           stop (debounce + network). For cached
           queries, instant. Keyboard navigation through
           suggestions has zero perceptible lag. The
           dropdown renders quickly even with many
           suggestions (virtualize beyond ~50).
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stale responses never overwrite fresh ones —
           token-based race protection. Network
           failures don&rsquo;t corrupt the dropdown;
           we surface an inline error and keep the
           last-good results. Cache eviction prevents
           unbounded memory growth.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Suggestion content rendered as text; HTML
           opt-in via sanitizer. Server enforces
           authorization (a user can only autocomplete
           across resources they have access to).
           Input rate-limited to prevent abuse.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full ARIA combobox pattern:
           <code> role=&quot;combobox&quot;</code>,
           <code> aria-expanded</code>,
@@ -189,15 +191,15 @@ export default function SearchAutocompleteArticle() {
           <code> role=&quot;listbox&quot;</code>.
           Screen readers announce result count and
           active suggestion.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The runtime is generic over data source
           and suggestion shape. Adapters for server
           and client sources. Renderers
           consumer-supplied.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -208,7 +210,7 @@ export default function SearchAutocompleteArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The component is built around four
           interlocking parts: <strong>debounced fetch
           orchestration</strong>, <strong>abortable
@@ -218,8 +220,8 @@ export default function SearchAutocompleteArticle() {
           UI</strong>. Each is well-understood
           individually; their interplay is what makes
           the autocomplete feel solid.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>typing</strong>, the runtime updates
           the input value immediately (uncontrolled
           from a fetching perspective; the value
@@ -228,8 +230,8 @@ export default function SearchAutocompleteArticle() {
           The debounce timer resets on each keystroke,
           so fast typing doesn&rsquo;t spam the
           server — the fetch fires once typing pauses.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>cache lookup</strong> (before
           fetching), check if we have results for the
           current query. The cache key is the query
@@ -241,7 +243,7 @@ export default function SearchAutocompleteArticle() {
           a configurable size (default 50 entries).
           Entries expire after a TTL (default 5
           minutes) to avoid serving stale results.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>fetch</strong>, the runtime issues
           a request with an AbortController. Before
@@ -269,7 +271,7 @@ export default function SearchAutocompleteArticle() {
           The dropdown opens if it isn&rsquo;t already
           open. Loading state clears.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           On <strong>keyboard navigation</strong>:
           ArrowDown moves focus to the next
           suggestion (wrapping to first after last);
@@ -283,8 +285,8 @@ export default function SearchAutocompleteArticle() {
           and the input has a value, submits the
           query as a search). Escape closes the
           dropdown without committing.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>focus and blur</strong>: focus on
           the input opens the dropdown if there&rsquo;s
           a query (showing cached or fetching new).
@@ -295,7 +297,7 @@ export default function SearchAutocompleteArticle() {
           listen for mousedown on suggestions and
           prevent default to keep focus on the input
           while still triggering selection on click.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>selection</strong>: clicking a
           suggestion (or pressing Enter on the
@@ -339,216 +341,167 @@ export default function SearchAutocompleteArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>Autocomplete</strong> is the top-level
-          component. <strong>Input</strong> is the
-          text field with ARIA combobox attributes.
-          <strong> Dropdown</strong> renders the
-          listbox of suggestions.
-          <strong> SuggestionItem</strong> renders one
-          suggestion with highlight.
-          <strong> FetchOrchestrator</strong> handles
+        <HighlightBlock as="p" tier="crucial"><strong> FetchOrchestrator</strong> handles
           debounce, cache, AbortController, tokens.
           <strong> SuggestionCache</strong> implements
-          LRU. <strong>RecentSearches</strong>{" "}
+          LRU.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong>RecentSearches</strong></Highlight>{" "}
           manages persisted recents.
           <strong> KeyboardController</strong>{" "}
-          handles arrow/enter/escape navigation.
-        </p>
+          handles arrow/enter/escape navigation.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Local state holds: input value, dropdown
-          open state, focused suggestion index,
-          loading state, results, error. Cache is a
+        <HighlightBlock as="p" tier="crucial">Cache is a
           ref-backed map (no React re-render on
-          cache writes). Recent searches in
+          cache writes).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Recent searches in
           localStorage with React state for current
-          render.
-        </p>
+          render.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs:{" "}
+        <HighlightBlock as="p" tier="crucial">Inputs:{" "}
           <code>fetcher</code> (query → Promise of
           suggestions),
-          <code> renderSuggestion</code>,
-          <code> onSelect</code>, optional
+          <code> renderSuggestion</code>,</HighlightBlock>
+<HighlightBlock as="p" tier="important"><code> onSelect</code>, optional
           <code> debounceMs</code>,
           <code> minQueryLength</code>,
-          <code> placeholder</code>. Suggestion
+          <code> placeholder</code>.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Suggestion
           shape:{" "}
           <code>{` { id, label, value, ...customFields } `}</code>{" "}
-          with stable id.
-        </p>
+          with stable id.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
-          Debounce prevents excessive fetches. Cache
-          serves backspaced queries instantly.
-          AbortController and tokens prevent stale
-          rendering. Virtualization for large result
-          sets (rare). Match highlighting computed at
+        <HighlightBlock as="p" tier="crucial">Match highlighting computed at
           render time but cheap (substring search).
-          Memoized SuggestionItem so unchanged
-          suggestions don&rsquo;t re-render on
+          Memoized SuggestionItem so unchanged</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">suggestions don&rsquo;t re-render on
           arrow-key navigation (only the focused
-          one re-renders for highlight change).
-        </p>
+          one re-renders for highlight change).</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Dropdown opens beneath the input; floating
-          UI library handles positioning so it
-          doesn&rsquo;t go off-screen. Loading state
-          is a subtle spinner inside the input or a
-          skeleton row in the dropdown. Empty state
+        <HighlightBlock as="p" tier="crucial">Empty state
           (&ldquo;No results for [query]&rdquo;) with
-          optional remediation. Recent searches when
-          empty give users a quick path to repeat.
+          optional remediation. Recent searches when</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">empty give users a quick path to repeat.
           Highlighted matches make scanning fast.
-          Hover affordances are subtle.
-        </p>
+          Hover affordances are subtle.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          ARIA combobox pattern fully:
-          <code> role=&quot;combobox&quot;</code> on
-          input,
-          <code> aria-expanded</code>,
-          <code> aria-controls</code> pointing to the
-          listbox,
-          <code> aria-activedescendant</code> pointing
-          to the focused option. Listbox is
+        <HighlightBlock as="p" tier="crucial">Listbox is
           <code> role=&quot;listbox&quot;</code> with
           <code> role=&quot;option&quot;</code>{" "}
-          children. Result count announces via
+          children. Result count</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">announces via
           live region (&ldquo;5 results&rdquo;).
           Focused suggestion announces. Keyboard
-          parity for all interactions.
-        </p>
+          parity for all interactions.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Suggestion content rendered as text by
-          default; HTML opt-in via consumer-supplied
-          sanitizer. Server enforces authorization.
-          Input rate-limited at the network layer.
+        <HighlightBlock as="p" tier="crucial">Suggestion content rendered as text by
+          default; HTML opt-in via consumer-supplied</HighlightBlock>
+<HighlightBlock as="p" tier="important">sanitizer. Server enforces authorization.
+          Input rate-limited at the</HighlightBlock>
+<HighlightBlock as="p" tier="important">network layer.
           Highlight rendering is text-only (no DOM
-          injection).
-        </p>
+          injection).</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for debounce timing, cache
-          hit/miss, abort behavior, token race
-          resolution. Integration tests: type, see
-          loading, see results; navigate with
-          arrows; select with Enter; close with
-          Escape. Accessibility tests for ARIA
-          attributes and live region announcements.
-          Stress test with rapid typing to verify
-          no stale results render.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Accessibility tests for ARIA
+          attributes and live region announcements.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Stress test with rapid typing to verify
+          no stale results render.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          User types fast and pauses for less than
-          debounce window: only one fetch fires.
-          User types past debounce, fetch goes out,
-          user keeps typing: prior fetch aborts; new
-          fetch fires after the next debounce. Slow
-          server returns a result that&rsquo;s no
-          longer current: token mismatch discards.
-          Backspace to a previously cached query:
-          instant from cache. Network failure: error
+        <HighlightBlock as="p" tier="crucial">Network failure: error
           state in the dropdown with retry; previous
           results retained until next successful
           fetch. Empty input focus: show recent
           searches. Suggestion clicked while input is
-          blurring (mousedown vs blur race): we
+          blurring (mousedown</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">vs blur race): we
           listen for mousedown first to commit
           before blur fires. Very long suggestions:
           truncate with ellipsis; tooltip on hover.
           Right-to-left input: ARIA still works;
-          arrow keys still navigate.
-        </p>
+          arrow keys still navigate.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over fetcher and suggestion shape.
-          Custom renderers per product. Cache and
-          recent searches pluggable. Works for
+          Custom renderers per product. Cache <Highlight tier="important">and
+          recent searches pluggable. Works for</Highlight>
           search bars, mention pickers (with @ as
           trigger), command palettes, tag inputs.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Placeholder, loading, empty, error strings
-          via i18n. RTL flips dropdown alignment
-          via CSS logical properties. Match
+          via i18n. RTL <Highlight tier="important">flips dropdown alignment
+          via CSS logical</Highlight> properties. Match
           highlighting works on Unicode (combining
           characters preserved).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Debounce vs throttle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Debounce waits for typing to pause —
           right for autocomplete because we don&rsquo;t
           want intermediate fetches. Throttle would
           fire periodically during typing — wrong for
           this use case.
-        </p>
+        </HighlightBlock>
 
         <h3>Abort + token vs abort only</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Abort handles most cases; tokens handle the
           corner where the response arrived before
           the abort took effect. Belt and suspenders;
           marginal cost.
-        </p>
+        </HighlightBlock>
 
         <h3>LRU cache vs no cache</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LRU cache makes backspaced queries
           instant — significant UX win at modest
           memory cost. We always cache.
-        </p>
+        </HighlightBlock>
 
         <h3>Server search vs client search</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server scales for large datasets; client is
           instant for small ones. The fetcher
           adapter abstracts the difference.
-        </p>
+        </HighlightBlock>
 
         <h3>Local merge of cache + server response</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Showing cached results immediately while
           server query is in flight gives the
           best perceived latency for repeat users
@@ -557,27 +510,23 @@ export default function SearchAutocompleteArticle() {
           (server only or cache only) is simpler
           but slower. We support local-first as
           opt-in.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Voice input. Personalized suggestions based
-          on observed usage. Offline-first via
-          service worker cache. Multi-source
-          federated search. AI-augmented suggestions
+        <HighlightBlock as="p" tier="crucial">AI-augmented suggestions
           (semantic understanding, not just
-          substring match). Predictive prefetch
+          substring match). Predictive</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">prefetch
           (start fetching before debounce completes
-          based on prefix patterns).
-        </p>
+          based on prefix patterns).</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why debounce typing?</strong> To
           avoid firing a request on every keystroke,
           which would waste bandwidth, server
@@ -585,7 +534,7 @@ export default function SearchAutocompleteArticle() {
           flickering as intermediate queries
           resolve). Debounce waits for typing to
           pause.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>2. How do you prevent stale results
@@ -597,16 +546,16 @@ export default function SearchAutocompleteArticle() {
           discard.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How does caching work?</strong>{" "}
           LRU cache keyed by normalized query
           string. Cache hits return instantly. TTL
           prevents stale results. Backspacing
           through previously typed queries is
           instant.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>4. How is keyboard navigation
           implemented?</strong> ArrowDown/Up move
           focus through suggestions with wrap.
@@ -615,9 +564,9 @@ export default function SearchAutocompleteArticle() {
           first/last.
           <code> aria-activedescendant</code> on the
           input points to the focused option.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. How is the ARIA combobox pattern
           implemented?</strong>{" "}
           <code>role=&quot;combobox&quot;</code> on
@@ -629,7 +578,7 @@ export default function SearchAutocompleteArticle() {
           <code> role=&quot;listbox&quot;</code> with
           <code> role=&quot;option&quot;</code>{" "}
           children.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>6. How do you handle the
@@ -650,30 +599,25 @@ export default function SearchAutocompleteArticle() {
           characters per the matcher.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How do you handle network
           errors?</strong> Surface an inline error
           in the dropdown with a Retry action.
           Retain previously-shown results until a
           successful fetch replaces them — don&rsquo;t
           clear context on failure.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A search autocomplete is{" "}
-          <strong>debounced fetch + abortable + token-
-          checked + cached</strong> with ARIA combobox
-          UI. The four mechanisms keep the experience
-          fast, race-resilient, and accessible. The
+        <HighlightBlock as="p" tier="crucial">The
           fetcher adapter pattern lets the same
           component drive server-side search,
-          client-side search, mention pickers,
+          client-side search,</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">mention pickers,
           command palettes, and tag inputs — anywhere
-          a typed query needs ranked suggestions.
-        </p>
+          a typed query needs ranked suggestions.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

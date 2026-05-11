@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,18 +38,18 @@ export default function PasswordResetArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Users inevitably forget passwords. The system must securely enable password recovery without compromising account security or exposing identity verification to attackers. Consider a real scenario: a user forgets their password and requests a reset. They receive an email with a link. If anyone with that link can change the password (attacker intercepts email, or user forwards email unsecurely), any account is compromised. If the reset link never expires, an attacker can use it weeks later. If the token is predictable (sequential numbers), attackers brute-force reset links for other users. If the same reset link works multiple times, an attacker keeps resetting passwords.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The challenge is balancing security (protect accounts from attackers) with usability (users can recover forgotten passwords quickly). The naive approach—send reset link in plaintext email, make it valid forever, require no confirmation—loses accounts to attackers. Better approach: cryptographically random token (unpredictable), short expiration (15 minutes), single-use (token invalidated after reset), rate limiting (prevent mass password resets), and immutable audit logging (track all resets for forensics).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key challenges: (1) token secrecy (token in email is visible to email providers, forward buttons expose it), (2) token expiration (too short frustrates users, too long increases attack surface), (3) token reuse prevention (same token can't reset twice), (4) multiple simultaneous requests (which reset link is valid?), (5) rate limiting without blocking legitimate users (someone accidentally requests 5 resets), (6) session termination (existing sessions may be from attacker), and (7) account takeover detection (if user receives many unexpected reset emails, account may be targeted).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> User requests reset via email (email as identity proof). System can send emails reliably. Tokens are generated cryptographically. Database supports transactions (atomic password + token updates). Redis/cache available for rate limiting. Email addresses are user identifiers (unique). Only latest reset token valid per user.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -56,21 +57,21 @@ export default function PasswordResetArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <li><strong>Reset Request Initiation:</strong> User provides email, system verifies it exists (silently if not found), generates reset token, sends link via email. Support bulk requests without revealing which emails exist (privacy by default).</li>
-          <li><strong>Token Generation and Security:</strong> Generate cryptographically random 32-byte token using crypto.randomBytes() or equivalent. Hash token before storage (irreversible). Prevent token guessing through entropy and hash algorithms.</li>
+          <HighlightBlock as="li" tier="important"><strong>Token Generation and Security:</strong> Generate cryptographically random 32-byte token using crypto.randomBytes() or equivalent. Hash token before storage (irreversible). Prevent token guessing through entropy and hash algorithms.</HighlightBlock>
           <li><strong>Token Validation on Reset:</strong> Verify token format, hash, expiration time (must be &lt; 15 min old), and not already used (single-use only). Return generic error ("Invalid or expired token") without details to prevent enumeration.</li>
           <li><strong>Password Update Atomicity:</strong> Update password hash and mark token used in single database transaction. Prevent partial updates where password changes but token isn't marked used (or vice versa).</li>
           <li><strong>Session Termination on Reset:</strong> Logout all active sessions for user immediately after password change. Send logout signal to all user's devices via push notification or broadcast. Invalidate refresh tokens.</li>
           <li><strong>Confirmation Email and Alerts:</strong> Send confirmation email with IP, location, timestamp. Include link to "If you didn't request this, secure your account." Detect and alert on suspicious patterns (multiple resets in one day).</li>
-          <li><strong>Rate Limiting:</strong> Enforce per-email (max 5 resets/hour), per-IP (max 10 resets/hour), and global (max 1000/second) rate limits. After limit exceeded, require CAPTCHA or cooldown period.</li>
+          <HighlightBlock as="li" tier="important"><strong>Rate Limiting:</strong> Enforce per-email (max 5 resets/hour), per-IP (max 10 resets/hour), and global (max 1000/second) rate limits. After limit exceeded, require CAPTCHA or cooldown period.</HighlightBlock>
           <li><strong>Backwards Invalidation:</strong> When user requests new reset, invalidate all previous reset tokens for that user. Only latest link is valid to prevent token reuse.</li>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
           <li><strong>Security:</strong> Token cryptographically random (no patterns), stored as hashes (irreversible), single-use, time-limited (15 min). No token leakage in logs, URLs, or error messages.</li>
-          <li><strong>Privacy and User Enumeration:</strong> Don't reveal if email exists in system. Return identical success response regardless of whether email found. Timing must be consistent (add random delay if needed) to prevent timing attacks.</li>
-          <li><strong>Latency:</strong> Reset request should respond within 2 seconds. Email queuing is asynchronous (don't wait for email delivery). Token validation &lt; 100ms.</li>
-          <li><strong>Reliability:</strong> Email delivery must be reliable (retries, fallback providers). If email fails, queue for retry. Alert if reset email delivery rate drops below 99%.</li>
+          <HighlightBlock as="li" tier="important"><strong>Privacy and User Enumeration:</strong> Don't reveal if email exists in system. Return identical success response regardless of whether email found. Timing must be consistent (add random delay if needed) to prevent timing attacks.</HighlightBlock>
+          <HighlightBlock as="li" tier="crucial"><strong>Latency:</strong> Reset request should respond within 2 seconds. Email queuing is asynchronous (don't wait for email delivery). Token validation &lt; 100ms.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Reliability:</strong> Email delivery must be reliable (retries, fallback providers). If email fails, queue for retry. Alert if reset email delivery rate drops below 99%.</HighlightBlock>
           <li><strong>Compliance:</strong> Audit logs for all password resets (immutable). SOC 2, GDPR-compliant handling of personal data (IP, location). Ability to export audit trail for investigations.</li>
         </ul>
 
@@ -88,21 +89,21 @@ export default function PasswordResetArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The password reset flow has three phases: request, email delivery, and confirmation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Phase 1 (Request): User enters email in forgot-password form. System applies rate limiting checks (per-email, per-IP). If user found in database, generates a 32-byte cryptographically random token and hashes it with bcrypt. Stores mapping: (token_hash, user_id, expires_at equals now plus 15 minutes, used_at equals NULL). Queues email job with a reset link that includes the token and email as query parameters (for example token equals RAW_TOKEN and email equals ENCODED_EMAIL). Returns success to user immediately (regardless of whether email found—privacy protection). Never reveals which emails exist.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phase 2 (Email Delivery): Email service sends reset link to user. If delivery fails, retries up to 3 times over 30 minutes. If all retries fail, alerts ops team. User receives email with reset link + expiration warning ("link valid for 15 minutes") + security notice ("if you didn't request this, ignore").
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phase 3 (Confirmation): User clicks reset link, lands on reset form. Provides new password. System: (1) hashes provided token, queries database for matching record; (2) verifies token not expired (expires_at &gt; now) and not used (used_at is NULL); (3) validates new password strength; (4) updates user.password_hash with bcrypt-hashed new password AND marks token.used_at=now in single database transaction (atomicity critical); (5) queries all active sessions for user_id and invalidates them (delete from Redis, mark as revoked); (6) sends confirmation email with timestamp, IP, location; (7) returns success with login redirect. User must re-login with new password.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server-side enforcement: Backend always validates token on every request. Client-side checks (token format validation) provide UX feedback but don't replace server validation.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -118,9 +119,9 @@ export default function PasswordResetArticle() {
         <p>
           When user submits forgot-password form with email, the system must accept legitimate requests while blocking attackers. The key challenge is rate limiting without revealing whether an email is registered (email enumeration attack).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implementation: enforce rate limits at multiple layers. First, apply a per-email limiter using a Redis key that incorporates a hashed or normalized email identifier. If more than five requests occur in the last hour, reject with a generic message. Second, apply a per-IP limiter with a separate Redis key; if more than ten requests occur in the last hour, reject. Third, enforce a global limiter using a Redis counter; if the system exceeds a threshold such as one thousand requests per second, return a 429 response. To reduce email enumeration risk, keep response timing consistent and add a small randomized delay for rate-limited requests. Then query the database for the user by email and, if found, proceed to token generation. Regardless of whether the user exists, return a success-style response to the client. Finally, log the request with timestamp and hashed identifiers for audit and forensics.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Generation, Hashing, and Storage</h3>
         <p>
@@ -143,9 +144,9 @@ export default function PasswordResetArticle() {
         <p>
           Email content should be clear and helpful: "Reset your password" (subject). Body includes: (1) "You requested to reset your password. Click the link below to set a new password." (2) Reset link (visually prominent, clickable) (3) "This link expires in 15 minutes." (4) "If you didn't request this, you can safely ignore this email. Your password will not change." (5) Optional: device info "Reset requested from Chrome on Windows 10 at 3:45 PM" helps user detect unauthorized requests. Footer: "If you have trouble, contact support."
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Delivery: Queue email job asynchronously (don't wait for email service response). Use reliable email provider (SendGrid, AWS SES, Mailgun) with high deliverability. Implement exponential backoff retry: first attempt immediately, then retry at 1min, 5min, 10min if failures. If all retries exhaust, alert ops (email delivery is critical). Track delivery metrics: % of emails delivered, bounced, complained. If delivery rate drops below 99%, page on-call.
-        </p>
+        </HighlightBlock>
         <p>
           Edge case: user requests reset 5 times in 10 minutes (fat-fingers the button). User receives 5 emails. Only latest token is valid; previous tokens are expired or invalidated. This is acceptable—user won't be confused, they'll use the latest link. Alternatively, invalidate all older tokens immediately when new reset is requested.
         </p>
@@ -179,9 +180,9 @@ export default function PasswordResetArticle() {
         <p>
           Implementation: Query sessions table for all active sessions where user_id = ? and is_active = true. For each session: (1) Delete from Redis cache (fast-path lookup). (2) Add to revocation blacklist (short TTL, 1 hour) to reject in-flight requests. (3) Mark in database as revoked (revoked_at=now). (4) Send push notification to user's devices: "Your password was changed. You've been logged out of all other devices. If this wasn't you, secure your account immediately." Use Firebase Cloud Messaging or similar for real-time notification.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Distributed systems consideration: In multi-region setup, session revocation must be fast and consistent. Use Redis with multi-region replication to propagate logout across regions (&lt;100ms). Don't rely on database-only approach (eventual consistency is too slow; attacker can replay old session token for ~1 second before database catches up).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Confirmation Email and Account Security</h3>
         <p>
@@ -206,44 +207,44 @@ export default function PasswordResetArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring, Alerting, and Debugging</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Monitor reset request volume and success rate. Metrics: (1) reset_requests/minute (total), (2) successful_resets/minute (tokens used), (3) reset_token_expiration_rate (% of tokens that expire unused), (4) reset_email_delivery_rate (% of emails delivered without bounce), (5) reset_request_latency (p50, p95, p99 milliseconds), (6) rate_limit_blocks/hour (abuse attempts).
-        </p>
+        </HighlightBlock>
         <p>
           Alert on anomalies: (1) success rate drops below 70% (indicates email delivery issue or UX problem with reset form). (2) Email delivery rate drops below 99% (email provider issue). (3) Reset request rate suddenly spikes to 10x baseline (possible attack or viral misconfiguration). (4) Average time from reset request to token usage &gt; 15 minutes (users can't find their email or reset link is broken).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Debugging: If user reports reset doesn't work, check: (1) rate limiting (user hitting per-email limit). (2) Email delivery logs (email queued, bounced, or flagged as spam). (3) IP geolocation mismatch (email provider rejecting IP as spam). (4) Password strength validation rejecting new password silently. (5) Session invalidation failing (user still logged in with old password). Implement detailed logging at each step: reset request accepted, email queued, email delivered, token validation passed/failed, password updated, sessions terminated.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token in URL vs In-App</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tokens in URL visible in browser history/logs. Alternative: generate short-lived
           code (6 digits) sent via SMS, verified in app. More secure but requires SMS
           provider.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">HTTPS Only</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reset links must be HTTPS only. If app served over HTTP, token vulnerable to
           MITM.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Expiration Time</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           15 minutes is balanced. Too short (5 min) frustrates users. Too long (1 hour)
           increases attack surface.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Password Reset</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Test: valid reset, expired token, token reuse, invalid email, rate limiting,
           session termination, race conditions (reset + login simultaneously).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -265,32 +266,32 @@ export default function PasswordResetArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Distributed Reset Token Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           At scale, reset token storage bottleneck. Use distributed cache (Redis Cluster)
           instead of database. Token validity checked in cache with instant expiration.
           Trade: memory vs latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">SMS-Based Reset Alternative</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For high-security apps, skip email reset (emails forwarded, compromised).
           Instead: reset request prompts user to verify via SMS code. SMS delivery more
           reliable, code shorter-lived (5 min). Trade: SMS cost, SMS delivery failures.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Password Reset History & Audit</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Log all password resets: timestamp, user_id, IP, success/failure, reset_token_id.
           Immutable audit log for compliance. Query: "show user all password changes for
           last year". Suspicious reset patterns visible in audit.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Reset at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Load test: 1000 reset requests/sec. Verify token generation doesn't collide,
           email queue doesn't overflow, database handles load. Chaos test: email service
           down, database slow, Redis down. Verify graceful handling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
         <p>
@@ -303,49 +304,49 @@ export default function PasswordResetArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response & Debugging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If users report unauthorized password resets, check: reset email logs (who sent
           reset emails?), IP geolocation (resets from suspicious countries?), audit trail
           (when was password changed?). Investigate whether account compromised or reset
           abused. Contact user, reset password again, require MFA re-setup.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Email vs SMS vs MFA-Based Reset</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Email-based reset (current approach) is convenient and widely adopted. Users check email frequently. But email is vulnerable: forwarded unsecurely, intercepted if email account compromised. SMS-based reset (OTP via text message) is more secure: SMS not forwarded, harder to intercept. Trade: SMS requires SMS provider (cost, reliability), users may not have SMS configured. MFA-based reset (authenticator app, security key) is most secure: user proves identity with MFA device. Trade: friction (users without MFA can't reset), higher support burden. Hybrid approach: offer multiple reset methods—email (default), SMS (if configured), MFA (if configured). User chooses. Banks often require MFA for reset of high-value accounts.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Expiration Window</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shorter expiration (5 minutes) limits attack window: token useful for only 5 minutes, reduces replay risk. But users miss the window (slow email, distracted). They must request new reset (annoying). Longer expiration (1 hour) more forgiving: user has plenty of time. But bigger attack window: token vulnerable for longer. 15 minutes is the practical sweet spot for most apps. Adjust based on user base: mobile-heavy app (users might not check email for hours) could use 30-60 min. High-security apps (banking, enterprise) use 5-15 min.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Session Termination Impact</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Terminating all sessions on password reset is secure (evicts attacker from existing sessions) but surprises users: they're suddenly logged out on their phone while using the web app. Alternative: only terminate suspicious sessions (sessions from unusual IPs, new devices). This preserves UX—trusted devices stay logged in. But gives attacker window if they compromised password from trusted IP. Conservative approach (terminate all) prioritizes security. Progressive approach (terminate suspicious) prioritizes UX. Choose based on security posture: consumer apps often use progressive. Banks always terminate all.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Email Privacy vs User Enumeration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Silently returning success for non-existent emails (good for security) breaks UX: user submits reset request, doesn't receive email, assumes email is wrong, requests again. Bad experience. Alternative: always send email (even for non-existent addresses, send "this email not registered"). UX benefit: user gets feedback. Security downside: attackers can enumerate which emails exist (reset endpoint reveals user base). Most apps go silent (don't confirm whether email exists) for security. Tradeoff: improve UX with explanatory message "If this email is registered, you'll receive a reset link shortly" (neutral, doesn't reveal).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Password reset is a critical security feature that balances account protection with user recovery needs. For staff/principal engineers implementing this at scale, key architectural aspects include: (1) Cryptographically random, single-use tokens with short TTL (15 minutes) to prevent replay attacks. (2) Token hashing before storage (prevent database breach from exposing reset tokens). (3) Atomic transaction combining password update and token invalidation—never allow partial updates. (4) Comprehensive session termination across all devices to evict attackers from existing sessions. (5) Rate limiting (per-email, per-IP, global) and CAPTCHA escalation to prevent mass account takeover attacks. (6) Account takeover detection via anomaly scoring (multiple resets, unusual IPs/locations, rapid email changes). (7) Immutable audit logging for compliance and forensics. (8) High-reliability email delivery with retries and alerting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At 1 million users, reset email volume is substantial (peak rates can exceed 1000 requests/second during outages). Implement asynchronous email queueing with backoff retry to avoid overloading email service. Monitor key metrics: reset success rate, email delivery rate, token usage rate (% of tokens used vs expired). Alert on anomalies (success rate &lt; 70%, delivery rate &lt; 99%, spike in reset requests).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world implementation patterns: (1) Email-based reset for consumer apps (simple, common). (2) SMS-based reset for high-security apps (more secure, requires SMS provider). (3) MFA-based reset for enterprise (strongest security, highest friction). (4) Hybrid approach: support multiple methods. Testing must cover security edge cases: token reuse (second use fails), expiration boundaries (token valid at T+14:59, invalid at T+15:01), concurrent reset + login race conditions, account lockout during resets, email failures. Integration with related systems critical: session management (terminating all sessions), MFA (using MFA to verify identity for reset), account lockout (after 5 failed resets, lock account), and device fingerprinting (detect stolen tokens used from different device). Balance security (strict controls, short expiration, session termination) vs UX (reliable email, reasonable expiration, minimal friction).
-        </p>
+        </HighlightBlock>
       </section>
     </ArticleLayout>
   );

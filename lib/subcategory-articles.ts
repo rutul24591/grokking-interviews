@@ -4233,6 +4233,48 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Comprehensive guide to API versioning, schema evolution, backward compatibility strategies, deprecation policies, and migration patterns for staff/principal engineer interviews."
     }
   ],
+  "system-design-problems/high-level-design/ai-modern-systems": [
+    {
+      "slug": "ai-chatbot-frontend",
+      "title": "Design a Frontend for an AI Chatbot (Streaming, History, Multimodal)",
+      "description": "Architecture for an AI chatbot UI: token streaming with ReadableStream, optimistic rendering, conversation history, context window management, multimodal input, and tool call visualization."
+    },
+    {
+      "slug": "ai-generated-content-moderation-ui",
+      "title": "Design an AI-Generated Content Moderation UI",
+      "description": "Architecture for a content moderation system: fast classifier + LLM scorer pipeline, policy-based routing, human review queue with SLA, appeal system, feedback-driven classifier retraining, and drift detection."
+    },
+    {
+      "slug": "ai-model-comparison-testing-interface",
+      "title": "Design an AI Model Comparison & Testing Interface",
+      "description": "Architecture for a model evaluation UI: parallel test execution, multi-dimensional scoring (LLM-as-judge + deterministic), side-by-side comparison, blind human preference voting with Elo, cost-quality Pareto analysis, and regression detection."
+    },
+    {
+      "slug": "ai-powered-search-interface",
+      "title": "Design an AI-Powered Search Interface",
+      "description": "Architecture for an AI search UI: hybrid retrieval (BM25 + ANN vector), query understanding, re-ranking, AI answer box with citations, conversational refinement, personalization signals, and zero-result handling."
+    },
+    {
+      "slug": "ai-prompt-management-ui",
+      "title": "Design an AI Prompt Management UI",
+      "description": "Architecture for a prompt management system: template library with variable schemas, version history with diff view, LLM-as-judge evaluation suites, A/B deployment with champion/challenger pattern, and cost observability."
+    },
+    {
+      "slug": "copilot-style-ai-assistant",
+      "title": "Design a Copilot-Style AI Assistant (Embedded in a Product)",
+      "description": "Architecture for a product-embedded AI copilot: context assembly from product state, intent classification, permission guarding, streaming answers, tool-calling with approval gates, and audit logging."
+    },
+    {
+      "slug": "multi-agent-workflow-ui",
+      "title": "Design a Multi-Agent Workflow UI",
+      "description": "Architecture for a multi-agent workflow UI: agent graph builder, orchestrator/sub-agent pattern, live run monitoring with SSE, human-in-the-loop gates, parallel agent waterfall view, and run observability."
+    },
+    {
+      "slug": "rag-based-ui-system",
+      "title": "Design a RAG-Based UI System",
+      "description": "Architecture for a retrieval-augmented generation UI: ingestion pipeline, vector retrieval strategies, re-ranking, citation rendering, confidence indicators, and hallucination guards."
+    }
+  ],
   "system-design-problems/high-level-design/core-product-systems": [
     {
       "slug": "cross-device-user-settings-sync",
@@ -4303,6 +4345,70 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "user-onboarding-and-activation-flow-at-scale",
       "title": "Design a User Onboarding & Activation Flow at Scale",
       "description": "Architecture for scalable user onboarding: progressive profiling, activation milestone tracking, personalization, A/B testing, fraud detection, and retention loop integration."
+    }
+  ],
+  "system-design-problems/high-level-design/media-rich-content-systems": [
+    {
+      "slug": "video-player-system",
+      "title": "Design a Video Player System (Adaptive Streaming, DRM)",
+      "description": "Architecture for a video player system: encoding pipeline with multi-rendition transcoding, HLS/DASH segmentation, AES-128 encryption, Widevine/FairPlay DRM, adaptive bitrate (ABR) logic with BOLA, buffer management, and QoE metrics."
+    }
+  ],
+  "system-design-problems/high-level-design/platform-sdk-infra-systems": [
+    {
+      "slug": "embeddable-analytics-sdk",
+      "title": "Design an Embeddable Analytics SDK",
+      "description": "Architecture for a client-side analytics SDK: event collection, batching, privacy compliance, delivery guarantees, and performance impact on host pages."
+    },
+    {
+      "slug": "feature-flag-management-system-ui",
+      "title": "Design a Feature Flag Management System UI",
+      "description": "Architecture for a feature flag management system: flag lifecycle, targeting rules, percentage rollouts, flag evaluation SDK, audit logging, and stale flag cleanup."
+    },
+    {
+      "slug": "frontend-architecture-for-an-internal-developer-platform",
+      "title": "Design a Frontend Architecture for an Internal Developer Platform",
+      "description": "Architecture for an internal developer platform frontend: service catalog, self-service provisioning, deployment pipeline visibility, scaffolding, and plugin extensibility."
+    },
+    {
+      "slug": "frontend-for-a-no-code-low-code-builder",
+      "title": "Design a Frontend for a No-Code / Low-Code Builder",
+      "description": "Architecture for a no-code / low-code builder: canvas rendering, drag-and-drop, component schema, live preview, formula engine, and extensibility for custom code."
+    },
+    {
+      "slug": "frontend-hosting-platform-dashboard-like-vercel",
+      "title": "Design a Frontend Hosting Platform Dashboard (Like Vercel)",
+      "description": "Architecture for a hosting platform dashboard: deployment pipeline visualization, preview environments, rollback, domain management, analytics, and team collaboration."
+    },
+    {
+      "slug": "frontend-observability-dashboard-rum-like-datadog",
+      "title": "Design a Frontend Observability Dashboard (RUM Like Datadog)",
+      "description": "Architecture for a real user monitoring dashboard: metric collection, session replay, Core Web Vitals, error tracking, sampling strategy, and privacy-safe data collection."
+    },
+    {
+      "slug": "frontend-sdk-for-third-party-developers",
+      "title": "Design a Frontend SDK for Third-Party Developers",
+      "description": "Architecture for a developer-facing frontend SDK: API design, versioning, iframe isolation, authentication delegation, bundle strategy, and developer experience."
+    },
+    {
+      "slug": "multi-app-monorepo-management-dashboard",
+      "title": "Design a Multi-App Monorepo Management Dashboard",
+      "description": "Architecture for a monorepo management dashboard: workspace graph, affected change detection, pipeline orchestration, release coordination, and cross-team dependency visibility."
+    },
+    {
+      "slug": "multi-brand-design-system",
+      "title": "Design a Multi-Brand Design System",
+      "description": "Architecture for a multi-brand design system: token layering, theme generation, brand-specific overrides, component versioning, and cross-team governance at scale."
+    },
+    {
+      "slug": "multi-tenant-saas-admin-dashboard",
+      "title": "Design a Multi-Tenant SaaS Admin Dashboard",
+      "description": "Architecture for a multi-tenant admin dashboard: tenant isolation, RBAC, bulk operations, audit logging, impersonation, and cross-tenant analytics at scale."
+    },
+    {
+      "slug": "plugin-extension-marketplace-ui",
+      "title": "Design a Plugin / Extension Marketplace UI",
+      "description": "Architecture for a plugin marketplace: plugin registry, trust and permissions model, installation workflow, sandboxed execution, versioning, and developer portal."
     }
   ],
   "system-design-problems/high-level-design/realtime-collaboration-systems": [

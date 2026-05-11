@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function RealTimeCollaborativeEditorArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We are designing a real-time collaborative
           editor — multiple users editing the same
           document concurrently, seeing each other&rsquo;s
@@ -44,8 +46,8 @@ export default function RealTimeCollaborativeEditorArticle() {
           users sync on reconnect, how do we minimize
           latency, how do we keep the document
           consistent regardless of network behavior.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are: choosing between
           CRDTs and Operational Transformation (OT) —
           both work; CRDTs are easier to reason about
@@ -59,10 +61,10 @@ export default function RealTimeCollaborativeEditorArticle() {
           across all clients; and accessibility for
           collaborative content (announcements when
           others edit).
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users edit shared documents. They
           expect changes to appear smoothly across
           all viewers, with their own changes feeling
@@ -71,10 +73,10 @@ export default function RealTimeCollaborativeEditorArticle() {
           Automerge, ShareJS), and the runtime
           handles connection lifecycle, presence,
           and integration.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend supports a real-time sync protocol
           (typically WebSocket with binary or JSON
           messages). A CRDT library (Yjs, Automerge)
@@ -83,24 +85,24 @@ export default function RealTimeCollaborativeEditorArticle() {
           for ProseMirror, Slate, Quill, etc.).
           Modern browsers; we use WebSocket and
           IndexedDB for offline buffering.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the CRDT or OT
           algorithm from scratch. We do not implement
           the base editor (Rich Text Editor). We do
           not implement video/audio collaboration.
           End-to-end encryption is out of scope but
           accommodatable.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Multiple users edit the same document
           concurrently. Local edits appear instantly.
           Remote edits stream in and apply
@@ -113,10 +115,10 @@ export default function RealTimeCollaborativeEditorArticle() {
           resolution is deterministic (CRDT
           guarantees convergence). Document loads
           quickly even with long edit histories.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comments anchored to text ranges. Suggestion
           mode (track changes). Version history with
           named versions. Restoring a previous
@@ -125,65 +127,65 @@ export default function RealTimeCollaborativeEditorArticle() {
           collaboration on rich content (images,
           embeds). Mention-driven invites.
           Read-only mode showing only viewers.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           From-scratch CRDT/OT implementation, the
           base editor, video/audio.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Local edits perceptibly instant. Remote
           edits apply within ~100 ms of arrival.
           Cursor updates at 60 fps. Document load
           under 2 s for typical sizes.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Convergence guaranteed: all clients
           eventually see the same document.
           Network blips don&rsquo;t lose edits.
           Disconnect/reconnect handled cleanly.
           Conflict resolution deterministic.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authenticated WebSocket. Per-document
           authorization. Server validates edits
           server-side. End-to-end encryption
           accommodated via consumer integration.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Remote edits announce subtly via live
           region (chunked, not per-keystroke).
           Cursors of others have accessible
           labels. Presence list accessible. The
           base editor&rsquo;s accessibility
           preserved.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CRDT library as a vendored dependency.
           Wrapper around base editor + CRDT
           binding. Plugins for cursors,
           comments, version history.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The editor uses a CRDT library (Yjs in
           our recommendation) as the underlying
           document model. The base editor (Rich
@@ -192,8 +194,8 @@ export default function RealTimeCollaborativeEditorArticle() {
           provider. The provider handles network
           sync; the editor stays unaware of
           collaboration.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The <strong>CRDT document</strong> represents
           the document as a tree of nodes and
           marks (matching the editor&rsquo;s
@@ -205,7 +207,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           of order — no central server is
           required for correctness, though one
           is used for relay and persistence.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>local edit</strong>, the editor
           generates a CRDT operation; the
@@ -215,7 +217,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           immediately (optimistic and deterministic
           since CRDTs commute).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>remote edit</strong>, the
           provider receives the operation, applies
           it to the CRDT, and the editor reflects
@@ -225,7 +227,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           the local cursor, the cursor
           intelligently shifts to maintain
           intent.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Offline buffering</strong>: edits
           queue in the CRDT locally. On
@@ -236,7 +238,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           backs the local CRDT for durability
           across reload.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Live cursors and presence</strong>{" "}
           ride alongside the document sync. The
           provider broadcasts cursor positions
@@ -246,7 +248,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           document. Presence list shows active
           users with avatars. Detail in the Live
           Cursor / Presence subsystem.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Connection lifecycle</strong>: the
           provider auto-reconnects with backoff.
@@ -256,7 +258,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           edits continue locally; on reconnect,
           sync resumes seamlessly.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Document loading</strong>: on
           mount, fetch the current document
           state from the server (or load from
@@ -266,7 +268,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           snapshotted current state plus recent
           operations; the client receives the
           snapshot and any subsequent ops.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Conflict resolution</strong> is
           mostly automatic via CRDT convergence
@@ -298,155 +300,135 @@ export default function RealTimeCollaborativeEditorArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>CollabEditorProvider</strong>{" "}
-          instantiates the CRDT, provider, base
-          editor binding.
-          <strong> EditorWrapper</strong> renders
-          the base editor with collab features.
-          <strong> CursorOverlay</strong> renders
-          remote cursors.
-          <strong> PresenceList</strong> renders
-          active users. <strong>ConnectionStatus</strong>{" "}
-          renders status indicator.
-          <strong> VersionHistory</strong> manages
-          version snapshots. <strong>SyncProvider</strong>{" "}
-          (Yjs WebSocket provider or similar)
-          handles network.
-        </p>
+        <HighlightBlock as="p" tier="crucial">
+          <strong>PresenceList</strong> renders active users.{" "}
+          <strong>ConnectionStatus</strong> renders status indicator.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          <strong>VersionHistory</strong> manages version snapshots.{" "}
+          <Highlight tier="important"><strong>SyncProvider</strong></Highlight>{" "}
+          (Yjs WebSocket provider or similar) handles network.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          CRDT document is the source of truth
-          for content. The base editor binds to
+        <HighlightBlock as="p" tier="crucial">CRDT document is the source of truth
+          for content. The base editor binds</HighlightBlock>
+<HighlightBlock as="p" tier="important">to
           it; React doesn&rsquo;t hold the
-          document in state directly. Presence,
+          document in state directly.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Presence,
           cursors, connection status in
           collaboration store. UI state (panel
-          open) in component state.
-        </p>
+          open) in component state.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CRDT operations: opaque to consumers;
           handled by the library. Sync messages:
-          the library&rsquo;s wire protocol.
-          Cursor messages:
-          <code>{` { userId, position, selection? } `}</code>.
+          <Highlight tier="important">the library&rsquo;s wire protocol.
+          Cursor messages:</Highlight>
+          </Highlight><code>{` { userId, position, selection? } `}</code>.
           Presence: user metadata broadcast.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CRDT operations are small and fast.
-          Updates batch within frames.
-          Library handles efficient serialization.
+          Updates batch <Highlight tier="important">within frames.
+          Library handles efficient serialization.</Highlight>
           Indexed offline storage for
           durability. Cursor updates throttled.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Local edits feel local. Remote edits
-          appear smoothly with subtle hint of
-          who edited (via cursor color
-          association). Presence list visible.
-          Status indicator subtle but informative.
-          Offline mode lets users keep editing;
-          reconnect surfaces &ldquo;Synced&rdquo;.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Presence list visible.
+          <Highlight tier="important">Status indicator</Highlight>{" "}
+          subtle but informative.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Offline mode lets users keep editing;
+          reconnect surfaces &ldquo;Synced&rdquo;.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Remote edits announce in chunks (not
-          per keystroke) via polite live region.
-          Presence list accessible (real list).
+          per keystroke) via <Highlight tier="important">polite live region.
+          Presence list accessible</Highlight> (real list).
           Cursor labels announce on focus.
           Status changes announce.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Authenticated WebSocket. Server-enforced
-          permissions. CRDT operations validated
+          permissions. CRDT operations <Highlight tier="important">validated
           server-side (no malicious clients
-          can corrupt). Audit log of edits per
+          can</Highlight> corrupt). Audit log of edits per
           user.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests via the CRDT library&rsquo;s
+        <HighlightBlock as="p" tier="crucial">Unit tests via the CRDT library&rsquo;s
           tests. Integration tests with multiple
           simulated clients: concurrent edits
-          converge. Offline/reconnect tests.
+          converge.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Offline/reconnect tests.
           Permission enforcement tests.
           Performance tests with large documents
-          and many edits.
-        </p>
+          and many edits.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          User edits offline for hours: queue is
-          large; sync works (CRDT scales).
-          Server is restored from backup (state
-          older than client knows about): server
-          accepts client&rsquo;s state and merges
-          (CRDT idempotent under merge).
-          Concurrent rename of the same field:
+        <HighlightBlock as="p" tier="crucial">Concurrent rename of the same field:
           CRDT picks deterministically; one
           name wins; users see consistently.
-          Permission changed during edit:
-          server rejects subsequent edits;
+          Permission changed during edit:</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">server rejects subsequent edits;
           client shows view-only banner. Very
           large document: snapshot+ops handles;
-          we compact periodically.
-        </p>
+          we compact periodically.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The collab wrapper around base editor
-          + CRDT works for any editor that has
-          a CRDT binding (ProseMirror, Slate,
+          + CRDT works for any <Highlight tier="important">editor that has
+          a CRDT binding</Highlight> (ProseMirror, Slate,
           Quill, custom). Pattern reuses for
           collaborative whiteboards, spreadsheets,
           design tools.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings via i18n. Document content
-          is the user&rsquo;s. Cursor labels
-          show user names which may be in any
+          is <Highlight tier="important">the user&rsquo;s. Cursor labels
+          show user</Highlight> names which may be in any
           language.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>CRDT vs OT</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CRDTs (Yjs, Automerge): conflict-free
           by construction; easier to reason about
           in distributed settings; offline-first
@@ -456,10 +438,10 @@ export default function RealTimeCollaborativeEditorArticle() {
           mature with Google Docs heritage. For
           new systems, CRDTs are usually the
           right choice.
-        </p>
+        </HighlightBlock>
 
         <h3>Yjs vs Automerge vs Loro</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Yjs is mature, has rich editor
           bindings, performance-tuned.
           Automerge is newer with strong
@@ -467,73 +449,72 @@ export default function RealTimeCollaborativeEditorArticle() {
           newer still with promising
           performance. Yjs is the safest pick
           today.
-        </p>
+        </HighlightBlock>
 
         <h3>Central server vs P2P</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Central server: simpler auth,
           persistence, history. P2P: lower
           latency between peers but harder to
           coordinate. We default to central
           (with P2P optimization possible
           later).
-        </p>
+        </HighlightBlock>
 
         <h3>Awareness state in CRDT vs separate</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Yjs has an &ldquo;awareness&rdquo;
           channel for ephemeral state (cursors,
           presence) separate from document
           state. This is the right pattern —
           presence shouldn&rsquo;t persist with
           the document.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          End-to-end encryption with CRDT
-          on encrypted state. P2P sync as an
-          optimization. Smart conflict
+        <HighlightBlock as="p" tier="crucial">End-to-end encryption with CRDT
+          on encrypted state. P2P sync as an</HighlightBlock>
+<HighlightBlock as="p" tier="important">optimization. Smart conflict
           resolution UIs for semantic
-          conflicts. AI-suggested merges.
+          conflicts.</HighlightBlock>
+<HighlightBlock as="p" tier="important">AI-suggested merges.
           Cross-document linking with live
-          updates.
-        </p>
+          updates.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. CRDT vs OT?</strong> CRDTs are
           conflict-free by construction and easier
           to reason about in distributed settings.
           OT is bandwidth-efficient but requires
           central server. For new systems, CRDTs
           are usually the right choice.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does offline-first
           work?</strong> Edits queue locally in
           the CRDT. IndexedDB persists the local
           state. On reconnect, sync resumes;
           CRDT ensures convergence regardless of
           how long offline.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>3. How are live cursors handled?</strong>{" "}
           The CRDT library&rsquo;s awareness
           channel broadcasts cursor positions
           (ephemeral, not in document state).
           Editor renders remote cursors with
           user color and label.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does the base editor
           integrate?</strong> Editor framework
           (ProseMirror, Lexical) has a CRDT
@@ -541,7 +522,7 @@ export default function RealTimeCollaborativeEditorArticle() {
           translates between editor operations
           and CRDT operations. The editor
           stays unaware of collaboration.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How are conflicts resolved?</strong>{" "}
@@ -563,14 +544,14 @@ export default function RealTimeCollaborativeEditorArticle() {
           and doesn&rsquo;t bloat the document.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How is permission
           enforcement handled?</strong> Server-side.
           Client UI reflects permissions
           (read-only editor for viewers). Server
           rejects edits from unauthorized users;
           UI shows banner.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. How does version history
@@ -584,19 +565,12 @@ export default function RealTimeCollaborativeEditorArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A real-time collaborative editor wraps a{" "}
-          <strong>base editor with a CRDT
-          (Yjs)</strong> bound via the editor&rsquo;s
-          provider, with a WebSocket sync layer,
-          offline-aware queuing in IndexedDB,
-          and ephemeral awareness for cursors and
-          presence. Convergence is automatic;
-          offline is first-class; presence rides
-          alongside. The pattern reuses for
+        <HighlightBlock as="p" tier="crucial">Convergence is automatic;
+          <Highlight tier="important">offline is first-class</Highlight>; presence rides
+          alongside.</HighlightBlock>
+<HighlightBlock as="p" tier="important">The pattern reuses for
           whiteboards, spreadsheets, and design
-          tools.
-        </p>
+          tools.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

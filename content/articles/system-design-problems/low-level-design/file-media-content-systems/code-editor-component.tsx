@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function CodeEditorComponentArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We are designing an embedded code editor
           component — VS-Code-like editing inside a web
           app, used in coding-focused products
@@ -45,8 +47,8 @@ export default function CodeEditorComponentArticle() {
           Monaco (the VS Code editor) for full
           features versus a lighter custom solution
           for simpler needs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are: rendering text
           efficiently with syntax highlighting at
           scale; handling text input with proper IME
@@ -56,10 +58,10 @@ export default function CodeEditorComponentArticle() {
           servers (LSP) for full IDE features; and
           configuration that gives consumers control
           without exposing every Monaco knob.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users are developers writing code in the
           browser. They expect VS-Code-class editing:
           fast typing, accurate autocomplete, syntax
@@ -67,10 +69,10 @@ export default function CodeEditorComponentArticle() {
           minimap. Engineering teams provide a
           language and source code; the runtime
           handles editing.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For VS-Code-class features, Monaco is the
           right embedded engine. For lighter needs
           (just syntax highlighting + basic
@@ -78,23 +80,23 @@ export default function CodeEditorComponentArticle() {
           We focus on Monaco given its feature
           completeness; the architecture applies to
           either.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement Monaco itself. We do not
           implement language servers (consumed via
           Monaco&rsquo;s LSP integration). We do not
           implement collaborative editing (Monaco
           supports it via plugins).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Text editing with cursor, selection,
           undo/redo. Syntax highlighting per language.
           Line numbers. Auto-indent. Find and replace
@@ -103,10 +105,10 @@ export default function CodeEditorComponentArticle() {
           Configurable theme (light, dark, custom).
           Read-only mode. Diff view. Configurable
           font, tab size, word wrap.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Language Server Protocol integration for
           full IDE features (go-to-definition,
           rename, diagnostics, hover info).
@@ -115,58 +117,58 @@ export default function CodeEditorComponentArticle() {
           markers. Format on save. Vim/Emacs key
           bindings. Collaborative editing via
           plugins.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           File system integration, project navigation
           (use a Tree View alongside), terminal
           integration, debugging.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Typing has zero perceptible lag on files up
           to 100k lines. Syntax highlighting lazy
           (off-main where possible). Autocomplete
           dropdown opens within 50 ms. Memory bounded
           for large files.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Undo/redo correct across all operations.
           Find-replace doesn&rsquo;t corrupt the
           document. Bracket matching accurate.
           Auto-format doesn&rsquo;t change semantics.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Code is data; we don&rsquo;t execute it. The
           editor doesn&rsquo;t fetch external
           resources. LSP servers (when integrated)
           run in sandboxed workers or remote.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Monaco/CodeMirror provide solid
           accessibility foundations (screen-reader
           mode, keyboard parity). We don&rsquo;t
           regress them via custom styling.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Wrapper around Monaco/CodeMirror with a
           stable API. Language registration extensible.
           Theme tokens map to editor theme.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -177,7 +179,7 @@ export default function CodeEditorComponentArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The component wraps Monaco (or CodeMirror)
           with a React-friendly API. The wrapper
           handles editor lifecycle (mount, unmount,
@@ -185,8 +187,8 @@ export default function CodeEditorComponentArticle() {
           React props pattern (value, onChange,
           language), and integrates with the host
           app&rsquo;s theme and shortcuts.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>mount</strong>, the wrapper imports
           Monaco lazily (it&rsquo;s a large bundle,
           ~1MB; we don&rsquo;t want it in the initial
@@ -196,8 +198,8 @@ export default function CodeEditorComponentArticle() {
           language, attaches the theme, and registers
           event handlers. The editor renders into the
           container with all its features.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Value sync</strong>: the editor&rsquo;s
           model is the source of truth for the text.
           The wrapper subscribes to model change
@@ -209,7 +211,7 @@ export default function CodeEditorComponentArticle() {
           two-way binding causing infinite loops by
           checking equality before applying external
           updates.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Language registration</strong>: Monaco
           ships with many built-in languages (JavaScript,
@@ -219,7 +221,7 @@ export default function CodeEditorComponentArticle() {
           wrapper exposes a registration API for
           consumers.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Theme</strong>: Monaco supports custom
           themes. We map host design tokens to
           Monaco theme properties (foreground,
@@ -228,7 +230,7 @@ export default function CodeEditorComponentArticle() {
           corresponding Monaco themes. Theme switches
           (e.g. user toggles light/dark in the host)
           propagate to the editor.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Autocomplete</strong>: built-in for
           standard languages; custom completion
@@ -272,7 +274,7 @@ export default function CodeEditorComponentArticle() {
           standard editor; it shows two models
           side-by-side with diff highlighting.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Custom commands and shortcuts</strong>:
           register commands via Monaco&rsquo;s API,
           bind to keyboard shortcuts. Don&rsquo;t
@@ -280,156 +282,138 @@ export default function CodeEditorComponentArticle() {
           handles this for common cases). The wrapper
           exposes a hook for consumers to register
           their own commands.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>EditorWrapper</strong> is the React
-          component. <strong>MonacoLoader</strong>{" "}
-          handles dynamic import.
-          <strong> EditorInstance</strong> manages the
-          Monaco editor instance lifecycle.
-          <strong> ThemeBridge</strong> maps host theme
+        <HighlightBlock as="p" tier="crucial"><strong> ThemeBridge</strong> maps host theme
           to Monaco theme.
           <strong> LanguageRegistry</strong> exposes
-          language registration.
-          <strong> CommandRegistry</strong> for custom
+          language registration.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> CommandRegistry</strong></Highlight> for custom
           commands. <strong>LSPBridge</strong> (optional
-          plugin) for language server integration.
-        </p>
+          plugin) for language server integration.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Monaco&rsquo;s model owns the text state. The
-          React wrapper holds a stable ref to the
-          editor instance; React doesn&rsquo;t re-render
-          on text changes (that would be wasteful).
+        <HighlightBlock as="p" tier="crucial">Monaco&rsquo;s model owns the text state. The
+          React wrapper holds a stable ref to the</HighlightBlock>
+<HighlightBlock as="p" tier="important">editor instance; React doesn&rsquo;t re-render
+          on text changes (that would be</HighlightBlock>
+<HighlightBlock as="p" tier="important">wasteful).
           Consumer subscribes to onChange for the
-          serialized text when needed.
-        </p>
+          serialized text when needed.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs:{" "}
-          <code>value</code>,{" "}
-          <code>onChange</code>,{" "}
-          <code>language</code>, <code>theme</code>,
-          <code> readOnly</code>,{" "}
-          <code>options</code> (forwarded to Monaco).
-          Optional plugins for LSP, vim, collab.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Inputs:</Highlight>{" "}
+          <code>value</code>, <code>onChange</code>, <code>language</code>,{" "}
+          <code>theme</code>,{" "}
+          <Highlight tier="important"><code>readOnly</code></Highlight>,{" "}
+          <code>options</code> (forwarded to Monaco). Optional plugins for LSP,
+          vim, collab.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
-          Monaco is highly optimized. Lazy loading
+        <HighlightBlock as="p" tier="crucial">Monaco is highly optimized. Lazy loading
           keeps initial bundle small. We don&rsquo;t
-          re-render React on text changes. Worker
+          re-render React on text changes.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Worker
           threads for syntax tokenization on long
           files. Memory bounded — Monaco handles
-          large files efficiently.
-        </p>
+          large files efficiently.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Editor renders with familiar VS-Code
-          feel. Toolbar in the host app for
-          actions (run, format, save). Status bar
-          for cursor position, language, indentation.
+        <HighlightBlock as="p" tier="crucial">Editor renders with familiar VS-Code
+          feel. Toolbar in the host app for</HighlightBlock>
+<HighlightBlock as="p" tier="important">actions (run, format, save). Status bar
+          for cursor position, language,</HighlightBlock>
+<HighlightBlock as="p" tier="important">indentation.
           Theme matches host. Loading state while
-          Monaco initializes.
-        </p>
+          Monaco initializes.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Monaco&rsquo;s accessibility mode is
-          enabled by default for screen readers.
-          Keyboard parity for all features.
-          Focus management on mount and unmount.
+        <HighlightBlock as="p" tier="crucial">Monaco&rsquo;s accessibility mode is
+          enabled by default for screen readers.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Keyboard parity for all features.
+          Focus management on mount and</HighlightBlock>
+<HighlightBlock as="p" tier="important">unmount.
           Custom UI around the editor (toolbars,
-          status) accessible.
-        </p>
+          status) accessible.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Code is data; we don&rsquo;t execute it.
-          LSP servers run sandboxed (in workers or
-          remote). User-entered code never causes
+          LSP servers run sandboxed (in <Highlight tier="important">workers or
+          remote). User-entered code never</Highlight> causes
           XSS in the host app because Monaco
           renders it as text.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for the wrapper (mount/unmount
-          correctness, value sync). Integration tests
+        <HighlightBlock as="p" tier="crucial">Unit tests for the wrapper (mount/unmount
+          correctness, value sync). Integration</HighlightBlock>
+<HighlightBlock as="p" tier="important">tests
           with mocked Monaco for behavior. Visual
-          regression on common languages and themes.
+          regression on common</HighlightBlock>
+<HighlightBlock as="p" tier="important">languages and themes.
           Accessibility tests with screen reader
-          simulators.
-        </p>
+          simulators.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          External value prop changes mid-edit: we
-          check equality and only update if
-          different. Very large files: Monaco
-          handles efficiently; we may show a
-          warning above some threshold. LSP server
+        <HighlightBlock as="p" tier="crucial">LSP server
           disconnect: features degrade gracefully
           (no autocomplete, no diagnostics) but
-          editing continues. Theme change: applies
-          to live editor. Component unmounts during
+          editing continues. Theme change: applies</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">to live editor. Component unmounts during
           edit: editor instance disposes cleanly.
           Multiple editors: each has independent
-          state.
-        </p>
+          state.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Wrapper around Monaco is reusable
           across products. CodeMirror equivalent
-          provides a lighter alternative when
-          full Monaco features aren&rsquo;t
+          provides <Highlight tier="important">a lighter alternative when
+          full Monaco</Highlight> features aren&rsquo;t
           needed. Plugins for LSP, vim, collab
           extend cleanly.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Monaco UI strings localized in many
-          languages. Code content is the user&rsquo;s
-          own. RTL doesn&rsquo;t apply to code (LTR
+          languages. <Highlight tier="important">Code content is the user&rsquo;s
+          own.</Highlight> RTL doesn&rsquo;t apply to code (LTR
           by convention).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Monaco vs CodeMirror vs custom</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Monaco: full VS-Code features, large
           bundle (~1MB), used by VS Code
           itself. CodeMirror 6: lighter, modular,
@@ -438,51 +422,51 @@ export default function CodeEditorComponentArticle() {
           specialized needs. We default to Monaco
           for IDE-like products, CodeMirror for
           embedded snippets.
-        </p>
+        </HighlightBlock>
 
         <h3>Lazy load vs eager</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Eager bloats initial bundle by ~1MB.
           Lazy delays editor render but keeps
           host app fast. We always lazy with a
           loading state.
-        </p>
+        </HighlightBlock>
 
         <h3>Controlled vs uncontrolled value</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Fully controlled (React owns value)
           fights Monaco&rsquo;s internal model and
           causes re-render storms. Uncontrolled
           (Monaco owns, emit onChange) matches
           the framework&rsquo;s grain. We do
           uncontrolled with onChange.
-        </p>
+        </HighlightBlock>
 
         <h3>LSP via WebSocket vs in-process</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket scales (server-side language
           servers). In-process via Web Workers
           is faster (no network) but limited.
           For full IDE features, WebSocket; for
           basic syntax/lint, in-process workers.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           AI-assisted completion (Copilot-style).
-          Real-time collaborative editing via
+          Real-time collaborative editing <Highlight tier="important">via
           plugins. Bring-your-own LSP (custom
-          languages). Better mobile editing
+          languages).</Highlight> Better mobile editing
           experience (Monaco is desktop-first).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Monaco vs CodeMirror?</strong>{" "}
           Monaco for full IDE features and
           VS-Code parity at the cost of bundle
@@ -490,15 +474,15 @@ export default function CodeEditorComponentArticle() {
           snippets. Both handle text editing
           fundamentals well; choose based on
           feature needs and bundle budget.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How is Monaco loaded?</strong>{" "}
           Lazy-loaded via dynamic import. Editor
           shows a loading state until Monaco
           initializes. Language workers also
           lazy-load.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. Why uncontrolled value?</strong>{" "}
@@ -524,46 +508,42 @@ export default function CodeEditorComponentArticle() {
           hover, etc. through the plugin.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How does this scale to large
           files?</strong> Monaco handles 100k+
           line files efficiently. Worker threads
           for tokenization. Virtual scrolling for
           rendering. Built-in optimizations.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How is accessibility
           handled?</strong> Monaco&rsquo;s
           accessibility mode for screen readers,
           keyboard parity for all features. The
           wrapper preserves this.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. When would you NOT use
           Monaco?</strong> When bundle size matters
           and only basic features are needed.
           When the product is mobile-first
           (Monaco is desktop-tuned). When custom
           rendering is required (rare).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A code editor component embeds{" "}
-          <strong>Monaco (or CodeMirror)</strong>{" "}
-          with a React-friendly wrapper. Lazy
+        <HighlightBlock as="p" tier="crucial">Lazy
           loading keeps initial bundle small;
           uncontrolled value avoids re-render
-          storms; theme bridge integrates with
-          host design system; LSP plugin enables
+          storms; theme bridge integrates with</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">host design system; LSP plugin enables
           full IDE features. The result is
           VS-Code-class editing inside any web
-          product.
-        </p>
+          product.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

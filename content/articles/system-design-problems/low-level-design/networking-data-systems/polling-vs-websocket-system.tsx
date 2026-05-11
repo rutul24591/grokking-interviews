@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,28 +37,28 @@ export default function PollingVsWebSocketSystemArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           App needs real-time updates. User opens chat (messages arrive instantly), stock ticker (prices update every second), email notifications (updates every minute). Three options: (1) Polling—frontend repeatedly asks server "any new messages?" every 1-30 seconds. Simpler, works over HTTP. Con: latency (up to 30s delay), wasted requests if no new data, high bandwidth. (2) WebSockets—persistent bidirectional connection. Server pushes updates instantly. Low latency, efficient. Con: complex (manage connections, fallbacks), more infrastructure required. (3) Server-Sent Events (SSE)—server pushes to client, simpler than WebSockets but one-way only.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Which to use? Chat needs sub-second latency → WebSocket. Email notifications can tolerate 1-minute delay → polling acceptable. Stock ticker needs 1-5 second updates → WebSocket better, but polling possible with careful tuning. Decision matrix: latency requirement, throughput, infrastructure support, complexity tolerance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Hybrid approach: WebSockets for critical real-time, polling fallback when WebSocket fails (network, browser doesn't support). Graceful degradation: if server doesn't support WebSockets, fall back to polling automatically.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Multiple features with different latency needs. Infrastructure can support both HTTP and WebSockets. Fallback handling needed. Network may be unreliable. Browser support for WebSockets assumed, but fallback needed for older browsers.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Polling Mode:</strong> Repeatedly fetch data via HTTP GET at
             configurable intervals.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>WebSocket Mode:</strong> Establish persistent connection, receive
             server-pushed updates.
@@ -65,10 +67,10 @@ export default function PollingVsWebSocketSystemArticle() {
             <strong>Adaptive Selection:</strong> Choose mode based on feature
             requirements, network conditions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Fallback Mechanism:</strong> If WebSocket fails, fall back to
             polling.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Reconnection:</strong> Auto-reconnect on connection loss with
             exponential backoff.
@@ -77,18 +79,18 @@ export default function PollingVsWebSocketSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Latency:</strong> Polling adds N seconds delay (poll interval).
             WebSockets add ~100ms (network RTT).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Throughput:</strong> WebSockets efficient for many updates.
             Polling wastes bandwidth on empty responses.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Resource Usage:</strong> WebSockets consume connection resources
             (file descriptors, memory). Polling stateless.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> WebSockets harder to scale (state on server).
             Polling scales horizontally.
@@ -99,22 +101,15 @@ export default function PollingVsWebSocketSystemArticle() {
         <ul className="space-y-2">
           <li>WebSocket connects but network becomes unstable → reconnect loop.</li>
           <li>Poll interval too aggressive → overwhelming backend. Too lazy → stale data.</li>
-          <li>Connection drops during update → re-fetch to ensure consistency.</li>
+          <HighlightBlock as="li" tier="important">Connection drops during update → re-fetch to ensure consistency.</HighlightBlock>
           <li>Server restarts while WebSocket connected → reconnect and resume.</li>
         </ul>
       </section>
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          The system abstracts both polling and WebSockets behind a unified interface.
-          For each feature, declare whether it needs real-time updates and target
-          latency. Based on this, select the appropriate transport. Polling makes HTTP
-          requests at fixed intervals (e.g., every 5 seconds). WebSockets establish a
-          persistent connection and listen for server-pushed updates. Implement
-          fallback: if WebSocket fails, switch to polling. Detect network changes and
-          reconnect intelligently.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Polling makes HTTP requests at fixed intervals (e.g., every 5 seconds). WebSockets</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">establish a persistent connection and listen for server-pushed updates. Implement fallback: if WebSocket fails, switch to polling. Detect network changes and reconnect intelligently.</HighlightBlock>
       </section>
 
       <section>
@@ -125,10 +120,10 @@ export default function PollingVsWebSocketSystemArticle() {
           Polling fetches data at fixed intervals via HTTP GET.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Poll Interval:</strong> Configurable (e.g., 5s, 30s). Shorter
             interval = lower latency but higher load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Exponential Backoff:</strong> If no new data in N consecutive
             polls, increase interval. Once data arrives, reset interval.
@@ -176,18 +171,18 @@ export default function PollingVsWebSocketSystemArticle() {
           Choose transport based on requirements.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Real-time Required (latency &lt; 1s):</strong> Use WebSocket, fall
             back to polling if unavailable.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Near Real-time (latency 1-30s):</strong> Use polling with 5-10s
             interval.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Low Frequency Updates (latency &gt; 30s):</strong> Use polling with
             30s+ interval or manual refresh.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Fallback Mechanism</h3>
@@ -198,10 +193,10 @@ export default function PollingVsWebSocketSystemArticle() {
           <li>
             <strong>Connection Attempt:</strong> Try WebSocket first. Set timeout (5s).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Failure Detection:</strong> If timeout or error, mark WebSocket
             unavailable.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Fallback to Polling:</strong> Start polling with default interval.
           </li>
@@ -275,28 +270,28 @@ export default function PollingVsWebSocketSystemArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Browser Support</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket is well-supported in modern browsers. Fallback via polling for
           legacy browsers.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Proxy Compatibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Some proxies/firewalls block WebSocket. Detect WebSocket unavailability
           (timeout, connection refused) and fall back to polling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Mock both transports. Test fallback by simulating WebSocket failure. Test
           reconnection via network condition simulation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Track which transport is active, reconnection attempts, and data freshness
           lag.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -312,12 +307,12 @@ export default function PollingVsWebSocketSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Hybrid Adaptive Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Detect network capability: fast connection with low packet loss → WebSocket.
           Slow/unstable → polling. Detect backend capability: server supports
           WebSocket → use it; proxy blocks → fallback. Implement seamless fallback
           with identical API so client code doesn't change.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Message Ordering & Delivery Guarantees</h3>
         <p>
@@ -327,19 +322,19 @@ export default function PollingVsWebSocketSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Backpressure & Flow Control</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If client sends more messages than server processes, queue grows.
           Implement backpressure: pause sending when queue large. WebSocket backpressure
           via socket.pause(). Polling inherently backpressured (client-initiated).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring & Observability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Track connection state (connected, reconnecting, disconnected). Monitor
           reconnection frequency (indicates network issues). Track message latency.
           For polling: track request frequency, response times. Alert on high
           reconnection or stale data age exceeding SLA.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Real-Time Systems</h3>
         <p>
@@ -350,19 +345,19 @@ export default function PollingVsWebSocketSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Multi-Region & CDN Considerations</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           WebSocket regional servers must coordinate (shared state via Redis).
           Geo-routing: route to nearest server. Polling geo-routing simpler (stateless).
           Cross-region data sync adds latency—real-time apps feel slow across regions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: WebSocket works in dev/office but fails in production (corporate
           proxy blocks). Fallback essential. Another: message queuing unbounded,
           app runs out of memory. Another: reconnection loop overwhelms server
           (thundering herd). Implement exponential backoff + jitter.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -373,48 +368,36 @@ export default function PollingVsWebSocketSystemArticle() {
           alt="Polling vs WebSocket architecture comparison and decision matrix"
         />
 
-        <p>
-          Polling architecture is simple: client repeatedly requests data at intervals. Server stateless. Works over standard HTTP. WebSocket maintains persistent connection—server pushes updates instantly. Requires connection management and stateful servers.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Polling architecture is simple: client repeatedly requests data at intervals. Server stateless. Works over standard HTTP.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">WebSocket maintains persistent connection—server pushes updates instantly. Requires connection management and stateful servers.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Latency vs Scalability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           WebSockets provide low latency but limit scalability (stateful connections).
           Polling scales horizontally but has higher latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Complexity vs Simplicity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           WebSocket adds complexity (connection management, heartbeat, reconnection).
           Polling is simpler but wastes resources.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Use Cases</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Chat, live scores, multiplayer games → WebSocket. Email, notifications →
           polling.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Choosing between polling and WebSockets is fundamental to real-time system
-          design. For staff/principal engineers, critical aspects include infrastructure
-          costs at 1M user scale, hybrid adaptive strategies, message ordering
-          guarantees, backpressure handling, and multi-region coordination. Real-world
-          systems often discover WebSocket blockage (corporate proxies) requiring
-          graceful fallback. Monitoring reconnection rates and message latency is
-          essential. At scale, infrastructure costs heavily favor polling (stateless),
-          while user experience favors WebSocket (low latency). Most production systems
-          implement both, intelligently detecting capabilities and switching seamlessly.
-          Understanding these patterns is crucial for building reliable real-time
-          applications.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Monitoring reconnection rates and message latency is essential. At scale, infrastructure costs heavily favor polling</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">(stateless), while user experience favors WebSocket (low latency). Most production systems implement both, intelligently detecting capabilities and switching seamlessly. Understanding these patterns is crucial for building reliable real-time applications.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

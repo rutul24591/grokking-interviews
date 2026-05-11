@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           We are designing a search page that combines
           query, filters, facets, sort, and pagination
           into a coherent, URL-shareable view. The page
@@ -43,8 +45,8 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           state stays consistent, URLs stay shareable,
           and history navigation works correctly is
           where it gets interesting.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The hard problems are: URL state encoding
           that&rsquo;s human-readable and
           back-button-safe; reconciling URL changes
@@ -55,10 +57,10 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           collapse on mobile); preserving scroll
           position on filter change vs new query;
           accessibility for the dynamic filtered view.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users browse-and-narrow: enter a query,
           apply filters, sort, paginate, share the URL
           with colleagues. Power users craft URLs
@@ -66,33 +68,33 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           teams plug in: provide the search backend
           (query + facets), the filter schema, the
           page wires it into a coherent experience.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend supports query + filters + sort +
           pagination + facets in a single request.
           The Full-text Search UI primitives are
           available. Modern browsers; we use the
           History API for URL updates. Routing
           framework (Next.js router) integrates.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the search backend. We
           do not implement individual primitive
           components (autocomplete, paginator) —
           we compose them. We do not implement
           analytics tracking; we expose hooks.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Query input (with optional autocomplete).
           Filters (typed: text, select, multi-select,
           range, date range). Facets sidebar with
@@ -103,10 +105,10 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           fetch. Empty state when no results. Result
           count display. Filter clear (per-filter and
           clear-all). Mobile-responsive layout.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Saved searches (named presets via the Saved
           Views system). Recent searches. Filter
           autocomplete (search within a multi-select
@@ -116,61 +118,61 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           (one-click common filters). Real-time
           updates (results refresh as backend data
           changes).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The search backend, individual primitive
           components.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Filter changes batched: changing 3 filters
           rapidly fires one search, not three.
           Initial render under 200 ms. Search
           response under 500 ms typical.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           URL is the source of truth; internal
           state never diverges. Stale searches don&rsquo;t
           render (token race protection). Browser
           history navigation always reflects URL.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Filter values escape into queries safely
           server-side. Server-enforced authorization.
           User input rate-limited.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Filter controls are real form fields with
           labels. Live region announces result counts
           and pagination changes. Mobile facets
           accessible via a panel. Skip-to-results
           link.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Filter schema declarative. URL serialization
           uses a small library function (not ad-hoc
           per filter). Backend adapter pattern.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The page is structured as a <strong>state
           coordinator</strong> that owns the unified
           search state (query, filters, sort, page),
@@ -183,8 +185,8 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           SortControl, Paginator, ResultsList) read
           state via selector hooks and dispatch state
           updates.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>state coordinator</strong> holds
           the canonical search state. State updates
           (e.g. user selects a facet value) go through
@@ -195,8 +197,8 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           fetch. This batching is what prevents the
           &ldquo;5 filters changed = 5 fetches&rdquo;
           bug.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>URL bridge</strong> serializes
           state to URL parameters and parses URL
           parameters into state. Serialization rules:
@@ -213,7 +215,7 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           omitted from URL for cleanliness. On URL
           change (initial load, browser back/forward),
           parse and seed state.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>fetch orchestrator</strong> watches
           state and fires a search request when
@@ -242,19 +244,19 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           preserve or reset to 1 depending on
           product. Filters and query preserve.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>pagination</strong>: only page
           changes; everything else preserves. Scroll
           to top of results on page change.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           On <strong>browser back/forward</strong>: URL
           changes; the URL bridge parses new state
           and the coordinator updates. The fetch
           orchestrator fires a new search if needed
           (or, if results are cached, restores from
           cache).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Active filter chips</strong>: at the
           top of results, each active filter shows
@@ -284,184 +286,151 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>SearchPageProvider</strong>{" "}
-          instantiates the coordinator, URL bridge,
-          fetch orchestrator.
-          <strong> QueryInput</strong> for query
-          entry. <strong>FacetsSidebar</strong>{" "}
-          renders facets. <strong>SortControl</strong>{" "}
-          renders sort. <strong>Paginator</strong>{" "}
-          renders pagination.
-          <strong> ResultsList</strong> renders
-          results. <strong>ActiveFilterChips</strong>{" "}
+        <HighlightBlock as="p" tier="crucial"><strong>ActiveFilterChips</strong>{" "}
           renders active filter chips.
           <strong> MobileFiltersPanel</strong> for
           mobile.
-          <strong> URLBridge</strong> handles URL
+          <strong> URLBridge</strong> handles</HighlightBlock>
+<HighlightBlock as="p" tier="important">URL
           serialization.
-          <strong> StateCoordinator</strong> owns
+          <Highlight tier="important"><strong> StateCoordinator</strong></Highlight> owns
           state.
           <strong> FetchOrchestrator</strong> handles
-          requests with batching and tokens.
-        </p>
+          requests with batching and tokens.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          State coordinator holds query, filters,
-          sort, page in a single store. UI components
-          subscribe via selectors. URL bridge mirrors
-          the store to URL parameters and vice versa.
-          Fetch orchestrator&rsquo;s state (loading,
-          error, results) is its own slice.
-        </p>
+        <HighlightBlock as="p" tier="crucial">URL bridge mirrors
+          the store to URL parameters and vice versa.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Fetch orchestrator&rsquo;s state (loading,
+          error, results) is its own slice.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Filter schema:{" "}
-          <code>{` { name, type, urlKey, options? } `}</code>.
-          Backend contract: takes
-          <code>{` { query, filters, sort, page } `}</code>{" "}
-          returns
-          <code>{` { results, facets, total } `}</code>.
-          URL serialization rules per filter type
-          documented and consistent.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Filter schema:</Highlight>{" "}
+          <code>{` { name, type, urlKey, options? } `}</code>. Backend contract: takes{" "}
+          <Highlight tier="important">
+            <code>{` { query, filters, sort, page } `}</code>
+          </Highlight>{" "}
+          returns <code>{` { results, facets, total } `}</code>. URL serialization
+          rules per filter type documented and consistent.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           State change batching prevents fetch
-          spam. Token-based race protection.
-          Result preservation during load avoids
+          spam. Token-based race <Highlight tier="important">protection.
+          Result preservation during load avoids</Highlight>
           flicker. Memoized result list. Cached
           recent searches for back-navigation.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Clear active-filter visibility (chips at
-          top, checkboxes in sidebar). Filter clear
-          buttons everywhere they make sense.
-          Skeleton loading. Empty state with
-          remediation suggestions
-          (&ldquo;No results. Try removing a
+        <HighlightBlock as="p" tier="crucial">Try removing a
           filter.&rdquo;). Result preservation
-          during load. Mobile-first responsive
-          layout. URL is human-readable
+          during load. Mobile-first responsive</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">layout. URL is human-readable
           (<code>?type=article&amp;sort=newest</code>,
-          not encoded blobs).
-        </p>
+          not encoded blobs).</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Filter controls are real form fields.
+        <HighlightBlock as="p" tier="crucial">Filter controls are real form fields.
           Result list is a proper list. Result
           count and pagination announce via live
-          region. Mobile filter panel is a modal
+          region.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Mobile filter panel is a modal
           dialog with focus trap. Skip-to-results
-          link. Keyboard navigation throughout.
-        </p>
+          link. Keyboard navigation throughout.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Filter values escape into backend queries
-          safely (parameterized, not interpolated).
-          Server-enforced authorization filters
-          results. URL parameters validated on
+        <HighlightBlock as="p" tier="crucial">Filter values escape into backend queries
+          safely (parameterized, not interpolated).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Server-enforced authorization filters
+          results. URL parameters</HighlightBlock>
+<HighlightBlock as="p" tier="important">validated on
           parse (unknown values dropped, malformed
-          ranges clamped).
-        </p>
+          ranges clamped).</HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for URL serialization round-
+        <HighlightBlock as="p" tier="crucial">Unit tests for URL serialization round-
           trip. State batching tests. Integration
-          tests: change filters, verify single
+          tests:</HighlightBlock>
+<HighlightBlock as="p" tier="important">change filters, verify single
           fetch; deep link from URL, verify state
-          and results. Browser back/forward tests.
+          and results.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Browser back/forward tests.
           Mobile filter panel tests. Accessibility
           tests for live region and focus
-          management.
-        </p>
+          management.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Deep link with invalid filter values:
-          drop unknown values, surface a banner.
-          Many filters selected: URL gets long but
-          still functional. Mobile user changes
-          filters with apply: state updates
-          atomically. Browser back from page 5 to
-          page 1: state and scroll restore.
-          Concurrent filter changes from external
+        <HighlightBlock as="p" tier="crucial">Concurrent filter changes from external
           source (e.g. saved views): handle as
           atomic state replacement. Server returns
-          unexpected facet structure: gracefully
-          handle (don&rsquo;t crash). User shares
+          unexpected facet structure: gracefully</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">handle (don&rsquo;t crash). User shares
           URL containing personal filters (e.g.
           their saved views): server-side
-          authorization handles ownership.
-        </p>
+          authorization handles ownership.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The coordinator + URL bridge + orchestrator
-          pattern works for any search-like page.
-          Filter schema is declarative. Backend
+          pattern works for any <Highlight tier="important">search-like page.
+          Filter schema is declarative.</Highlight> Backend
           adapter pluggable. The Saved Views system
           composes naturally on top.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Filter labels via i18n. Sort option
-          labels via i18n. Result count formatted
+          <Highlight tier="important">labels via i18n. Result count formatted</Highlight>
           via Intl. RTL via CSS logical
           properties.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>URL state vs in-memory only</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           URL state gives shareability, refresh
           safety, browser back/forward. In-memory
           loses all of those. URL is essential
           for any real search page.
-        </p>
+        </HighlightBlock>
 
         <h3>Batched fetch vs immediate per change</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Batching prevents fetch spam when users
           change multiple filters quickly. Immediate
           per-change is simpler but wastes requests.
           We always batch with a microtask.
-        </p>
+        </HighlightBlock>
 
         <h3>Apply button vs auto-apply</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Auto-apply (each filter change immediately
           fires a search) is fast and intuitive on
           desktop. Apply button (changes accumulate,
@@ -470,47 +439,46 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           accident in a small viewport). We default
           auto-apply on desktop, apply-button on
           mobile.
-        </p>
+        </HighlightBlock>
 
         <h3>Result preservation during load</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Preserving previous results during load
           maintains context; flashing to empty is
           jarring. We always preserve.
-        </p>
+        </HighlightBlock>
 
         <h3>Human-readable URLs vs encoded</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Human-readable
           (<code>?type=article&amp;sort=newest</code>)
           is better for sharing, debugging, and
           power users. Encoded blobs hide state
           but are less useful. Human-readable wins
           for typical use cases.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          AI-suggested filters based on query.
+        <HighlightBlock as="p" tier="crucial">AI-suggested filters based on query.
           Personalized default filters. Saved-
           search alerts (notify when results
-          change). Smart facet ranking (most
+          change).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Smart facet ranking (most
           useful facets first). Visual filter
-          presets (one-click common combinations).
-        </p>
+          presets (one-click common combinations).</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why URL state?</strong> Shareable
           searches, refresh-safe state, browser
           back/forward navigation. Users expect
           search URLs to behave like Google&rsquo;s.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>2. How do you batch state
@@ -528,7 +496,7 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           the product specifies otherwise.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does mobile filter UX
           differ?</strong> Facets collapse into a
           slide-in panel with Apply/Cancel buttons.
@@ -536,25 +504,25 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           commits and fires search. This avoids
           accidental multiple searches in a small
           viewport.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. How do you avoid flashing empty
           state during load?</strong> Result
           preservation: previous results stay
           visible (dimmed) during load. On response,
           results update. Skeletons overlay rather
           than replace.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>6. How is the URL parsed on deep
           link?</strong> The URL bridge reads
           parameters per the filter schema, validates
           values, drops unknowns, seeds the state
           coordinator. The fetch orchestrator then
           fires a search.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>7. How do you prevent stale
@@ -564,7 +532,7 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           current.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How do you compose with Saved
           Views?</strong> Saved Views capture the
           current state (query, filters, sort,
@@ -573,26 +541,19 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
           (which updates URL and triggers fetch).
           The state shape is the same; views are a
           thin layer on top.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A search page composes{" "}
-          <strong>query + filters + facets + sort +
-          pagination</strong> with URL as the source
-          of truth. The state coordinator unifies
-          state; the URL bridge serializes; the
-          fetch orchestrator batches and races
-          protect. Result preservation during load
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Result preservation during load
           maintains context. Mobile uses an
           Apply-pattern panel to avoid accidental
-          searches. The result is a search
+          searches.</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">The result is a search
           experience that feels native to the web —
           shareable, refresh-safe, navigable, and
-          accessible.
-        </p>
+          accessible.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

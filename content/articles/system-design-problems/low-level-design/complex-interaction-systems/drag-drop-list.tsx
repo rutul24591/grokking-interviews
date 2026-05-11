@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function DragDropListArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a drag-and-drop list — a
           sortable list where users can grab any
           item and drag it to a new position. Items
@@ -44,8 +46,8 @@ export default function DragDropListArticle() {
           tactile and predictable; done poorly it&rsquo;s
           jittery, breaks accessibility, and loses
           state on failure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: pointer-driven
           drag that feels native (the dragged
           item follows the cursor with no offset
@@ -60,20 +62,20 @@ export default function DragDropListArticle() {
           with the broader app (which list does
           this drag belong to? can items move
           between lists?).
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users reorder content via direct
           manipulation. Power users expect smooth
           drag with keyboard parity. Engineering
           teams provide a list and an onReorder
           handler; the runtime handles drag
           mechanics.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Items have stable ids. Items render at
           variable heights. Modern browsers; we
           use Pointer Events (which unify mouse,
@@ -81,10 +83,10 @@ export default function DragDropListArticle() {
           technique for smooth reorder, and
           IntersectionObserver for visibility
           tracking.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement cross-list
           drag-and-drop (the Kanban Board does
           this on top). We do not implement
@@ -92,14 +94,14 @@ export default function DragDropListArticle() {
           collaborative whiteboard handles
           that). We do not implement file-drop
           (file input system handles that).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Items render in a vertical (or
           horizontal) list. Pointer-down on an
           item or its drag handle initiates
@@ -116,10 +118,10 @@ export default function DragDropListArticle() {
           Escape (revert to original position).
           Visual indication of the dragged item
           and the drop target.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-select drag (move several items
           at once). Cross-list drag (move
           between lists). Group/section
@@ -130,46 +132,46 @@ export default function DragDropListArticle() {
           Undo recent reorder. Animated entry
           and exit for items being added or
           removed during a session.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           File drag-and-drop into the list,
           cross-document drag, complex spatial
           dragging.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Drag at 60 fps including reorder
           animation. Pointer-move handler under
           a few ms per event. Long lists
           (100+ items) drag smoothly via
           virtualization-aware techniques.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimistic order updates roll back
           on persistence failure. Drag never
           gets into an unrecoverable state
           (Escape always cancels). Touch and
           mouse interactions both reliable.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server enforces per-item permissions
           on reorder. Order updates rate-
           limited at the network layer.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Drag has keyboard parity with
           announced state changes. Drag handles
           have descriptive labels.
@@ -178,14 +180,14 @@ export default function DragDropListArticle() {
           drag mode (announce
           &ldquo;item picked up; arrow keys to
           move; Space to drop&rdquo;).
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pointer-event-based; one event
           system handles mouse, touch, and pen.
           Adapter for the persistence backend.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -196,7 +198,7 @@ export default function DragDropListArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The list is built around four parts:
           <strong> Pointer-driven drag controller</strong>{" "}
           (tracks pointer state and computes
@@ -209,7 +211,7 @@ export default function DragDropListArticle() {
           <strong> persistence pipeline</strong>{" "}
           (optimistic update with rollback on
           server failure).
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>pointer down</strong> on an
           item or drag handle: capture pointer
@@ -220,7 +222,7 @@ export default function DragDropListArticle() {
           drag-active state. Render the item
           with a slight elevation effect.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>pointer move</strong>: update
           the dragged item&rsquo;s position
           (via CSS transform — fast, GPU-
@@ -233,7 +235,7 @@ export default function DragDropListArticle() {
           inserted at the new index; siblings
           between old and new index shift one
           step.
-        </p>
+        </HighlightBlock>
         <p>
           The <strong>FLIP technique</strong>{" "}
           (First, Last, Invert, Play) gives
@@ -275,7 +277,7 @@ export default function DragDropListArticle() {
           to its original position. Revert any
           optimistic order changes.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Keyboard mode</strong>: focus
           a drag handle, press Space to pick
           up. The item enters keyboard-drag
@@ -289,8 +291,8 @@ export default function DragDropListArticle() {
           &ldquo;Dropped at position 5&rdquo;.
           This parallel state machine gives
           full parity with mouse drag.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Persistence with optimistic
           UI</strong>: on drop, the new order
           renders immediately. The persistence
@@ -300,8 +302,8 @@ export default function DragDropListArticle() {
           its original position and surface a
           banner. The optimistic flow makes
           drag feel instant.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Variable-height items</strong>:
           we cache bounding rects on each
           drag start (and update on resize via
@@ -313,7 +315,7 @@ export default function DragDropListArticle() {
           items don&rsquo;t change height
           during drag (only positions
           shift).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Touch support</strong>: Pointer
           Events unify touch and mouse. We
@@ -327,225 +329,189 @@ export default function DragDropListArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>SortableList</strong> is the
-          container. <strong>SortableItem</strong>{" "}
-          renders one item with its drag
-          handle. <strong>DragController</strong>{" "}
-          handles pointer events, target
-          computation. <strong>FlipAnimator</strong>{" "}
+        <HighlightBlock as="p" tier="crucial"><strong>FlipAnimator</strong>{" "}
           applies the animation technique.
           <strong> KeyboardController</strong>{" "}
-          handles keyboard mode.
-          <strong> AutoScroller</strong>{" "}
+          handles keyboard mode.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> AutoScroller</strong></Highlight>{" "}
           handles edge-scroll.
           <strong> PersistenceAdapter</strong>{" "}
-          for the onReorder callback.
-        </p>
+          for the onReorder callback.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           List order in external store.
           During drag, an ephemeral order
-          (optimistic) overrides the
-          committed order. On drop or cancel,
+          <Highlight tier="important">(optimistic) overrides the
+          committed order. On</Highlight> drop or cancel,
           the ephemeral resolves to committed
           or original.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>items</code> (with stable ids),
-          <code> renderItem</code>,
+          </Highlight><code> renderItem</code>,
           <code> onReorder(newOrder)</code>,
           optional{" "}
-          <code>direction</code> (vertical/
+          <code>direction</code> <Highlight tier="important">(vertical/
           horizontal), <code>handle</code>{" "}
-          (selector for drag handle).
+          (selector for</Highlight> drag handle).
           onReorder returns a Promise; rejection
           rolls back.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
-          CSS transform for the dragged item
-          (GPU-accelerated). FLIP animation
-          for siblings (also GPU-accelerated).
-          Cached bounding rects to avoid
-          per-pointer-move layout thrash.
-          Pointer move handler under a few ms.
-          Auto-scroll runs in RAF.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Cached bounding rects to avoid
+          per-pointer-move layout thrash.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Pointer move handler under a few ms.
+          Auto-scroll runs in RAF.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Dragged item slightly elevated and
-          semi-transparent. Drop indicator
-          (subtle line or highlight) shows
-          where the item will land. Smooth
+        <HighlightBlock as="p" tier="crucial">Smooth
           sibling shifts. Auto-scroll feels
-          natural. Cancel-on-Escape returns
+          natural. <Highlight tier="important">Cancel-on-Escape</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">returns
           item to origin gracefully.
-          Keyboard mode visually distinguished.
-        </p>
+          Keyboard mode visually distinguished.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Drag handle has descriptive label
-          (&ldquo;Drag to reorder Item
-          [Name]&rdquo;). Keyboard mode
-          announces state changes via polite
-          live region. Items have
+        <HighlightBlock as="p" tier="crucial">Items have
           <code> aria-grabbed</code> (legacy)
           or instructions in tooltips. Drop
-          target announces. Screen-reader-
-          friendly Drag mode announcements:
+          target announces. Screen-reader-</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">friendly Drag mode announcements:
           on pickup, on move (with
           target position), on drop, on
-          cancel.
-        </p>
+          cancel.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Server enforces per-item
-          permissions. Reorder requests
-          authenticated. Rate-limited.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Server enforces per-item permissions.
+          Reorder requests authenticated. <Highlight tier="important">Rate-limited</Highlight>.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for drop-target
+        <HighlightBlock as="p" tier="crucial">Unit tests for drop-target
           computation given pointer
           position. FLIP animation tests
-          (positions before and after).
-          Integration tests with simulated
+          (positions before and after).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Integration tests with simulated
           pointers: drag, drop, cancel.
           Keyboard mode tests. Failure
-          rollback tests.
-        </p>
+          rollback tests.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Pointer leaves the window during
-          drag: pointer capture keeps events
-          flowing. List virtualized with
-          drag mid-list and drop target off-
-          screen: auto-scroll brings target
-          into view. List re-renders during
-          drag (e.g. a new item arrives via
-          real-time): pause drag or
-          gracefully apply (depending on
-          policy). Rapid drops: queue
+        <HighlightBlock as="p" tier="crucial">Rapid drops: queue
           persistence calls; if a later one
           supersedes an earlier, cancel the
-          earlier. Single item list: drag is
-          a no-op. Item with content that
+          earlier. Single item list: drag is</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">a no-op. Item with content that
           captures pointer events
           (e.g. nested input): drag handle
-          isolates from interactive content.
-        </p>
+          isolates from interactive content.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over item shape. Direction
-          configurable. Handle selector
-          customizable. Pattern reuses for
+          <Highlight tier="important">configurable. Handle selector
+          customizable. Pattern reuses</Highlight> for
           to-do lists, playlists, ordered
           checklists.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag handle label and keyboard mode
-          announcements via i18n. Position
-          announcements via Intl. RTL flips
+          announcements <Highlight tier="important">via i18n. Position
+          announcements via Intl.</Highlight> RTL flips
           horizontal direction; vertical
           drag unaffected.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Pointer Events vs separate mouse/touch</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Pointer Events unify mouse, touch,
           pen. Separate handlers double the
           code. Pointer is the right default.
-        </p>
+        </HighlightBlock>
 
         <h3>FLIP vs JS-driven animation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           FLIP is GPU-accelerated and smooth.
           JS-driven (animating top/left)
           causes layout thrash. FLIP wins.
-        </p>
+        </HighlightBlock>
 
         <h3>HTML5 drag-and-drop API vs custom
         pointer drag</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTML5 API has accessibility and
           UX limitations (image-based drag
           preview, awkward events). Custom
           pointer drag gives full control
           and works on touch. Custom is
           right for any sortable list.
-        </p>
+        </HighlightBlock>
 
         <h3>Optimistic vs confirmed-first</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimistic feels instant; rollback
           handles failures. Confirmed-first
           feels slow. Optimistic is the right
           default.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Multi-select drag. Cross-list drag
-          via shared context (used by Kanban
-          Board). Magnetic snap to specific
+          via shared context (used <Highlight tier="important">by Kanban
+          Board). Magnetic snap to</Highlight> specific
           positions. Voice control of
           reorder. AI-suggested ordering.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why custom drag instead of
           HTML5 drag-and-drop?</strong> HTML5
           API is awkward and accessibility-
           limited. Custom Pointer Events
           unify mouse and touch with full
           control over visuals and a11y.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does FLIP work?</strong>{" "}
           First (record positions), Last
           (apply change), Invert (compute
@@ -553,16 +519,16 @@ export default function DragDropListArticle() {
           to make items appear in original
           positions), Play (animate transforms
           to zero). GPU-accelerated.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>3. How do you keyboard-
           drag?</strong> Focus handle, Space
           to pick up, arrows to move, Space
           to drop. Live region announces.
           Parallel state machine to mouse
           mode.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. How does auto-scroll
@@ -581,7 +547,7 @@ export default function DragDropListArticle() {
           banner.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How do you handle variable
           heights?</strong> Cache bounding
           rects on drag start (update via
@@ -589,9 +555,9 @@ export default function DragDropListArticle() {
           target computation uses cache,
           avoiding per-pointer-move layout
           thrash.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. How do you handle long
           lists?</strong> Virtualization-
           compatible drag: virtualizer keeps
@@ -601,7 +567,7 @@ export default function DragDropListArticle() {
           mounted items plus extrapolation
           for unmounted ones near the
           target.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. How is touch
@@ -615,19 +581,14 @@ export default function DragDropListArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A drag-and-drop list is{" "}
-          <strong>Pointer Events + FLIP
-          animation + keyboard parallel mode +
-          optimistic persistence</strong>.
-          Cached bounding rects keep
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Cached bounding rects keep
           pointer-move cheap; FLIP gives
           smooth sibling shifts; keyboard
-          mode gives accessibility parity.
+          mode gives</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">accessibility parity.
           The result is direct manipulation
           that feels native on every input
-          method.
-        </p>
+          method.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

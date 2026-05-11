@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,27 +26,27 @@ export default function CrossTabStateSyncArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern users routinely open web applications in multiple tabs simultaneously. When a user logs in on Tab A, Tab B still shows the login page. When they add an item to a cart on Tab A, Tab B's cart badge remains stale. When a session expires, only the tab where the expiry was detected redirects to login — the rest silently operate on an invalid session until the next request fails with a 401.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Cross-tab state synchronization solves this by establishing a messaging channel between same-origin browsing contexts. The challenge is doing it efficiently: not every state change warrants broadcasting (typing in a search box doesn't need to appear in other tabs), conflicts must be detected when two tabs independently modify the same data, and the solution must degrade gracefully in environments where modern APIs are unavailable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The problem extends beyond simple "notify other tabs" — a tab that was minimized for 30 minutes may have missed many updates and needs to reconcile its local state on re-focus. A tab may broadcast an update while another tab is in the middle of a form submission. The channel itself is synchronous from a messaging perspective but tabs process messages asynchronously, introducing subtle ordering issues.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Explicit assumptions:</strong> All tabs share the same origin (cross-origin is not addressable with BroadcastChannel). State changes are discrete, identifiable events — not continuous streams. Conflicts are infrequent in most applications (auth and notifications are the primary sync targets). The server remains the authoritative source of truth for persistent state; cross-tab sync is a UX optimization, not a consistency guarantee.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Broadcast:</strong> When Tab A mutates shared state (auth, cart, notifications), immediately publish the delta to all other open tabs on the same origin.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Receive and Apply:</strong> Receiving tabs apply the delta to their local store without triggering a server roundtrip.
           </li>
@@ -57,9 +59,9 @@ export default function CrossTabStateSyncArticle() {
           <li>
             <strong>Selective Sync:</strong> Only synchronize explicitly whitelisted state slices — UI-local state (modal open, scroll position) must never broadcast.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Catch-up on Focus:</strong> A tab returning from background/minimized state should request a full state snapshot from the leading tab.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Leader Election:</strong> One tab acts as the primary communicator with the server; other tabs sync through it to avoid duplicate polling/WebSocket connections.
           </li>
@@ -67,9 +69,9 @@ export default function CrossTabStateSyncArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Latency:</strong> A state change in Tab A must appear in Tab B within 50–100ms (BroadcastChannel delivers near-synchronously; the overhead is message serialization and React re-render).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Throughput:</strong> Must handle bursts of 100+ state changes per second without message loss (e.g., rapid-fire notifications arriving over WebSocket).
           </li>
@@ -86,8 +88,8 @@ export default function CrossTabStateSyncArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>Tab closed while another tab is waiting for a SYNC_RESPONSE — must timeout and fall back to fetching from server.</li>
-          <li>Two tabs simultaneously broadcast conflicting auth state (e.g., one logs out, one refreshes token).</li>
+          <HighlightBlock as="li" tier="important">Tab closed while another tab is waiting for a SYNC_RESPONSE — must timeout and fall back to fetching from server.</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Two tabs simultaneously broadcast conflicting auth state (e.g., one logs out, one refreshes token).</HighlightBlock>
           <li>Tab opens after the others have accumulated significant state history — needs full snapshot, not just deltas.</li>
           <li>Private/incognito tabs — localStorage may be isolated; BroadcastChannel still works within the same incognito window group.</li>
           <li>Multiple origins or iframes — BroadcastChannel is strictly same-origin; embedded third-party iframes cannot participate.</li>
@@ -96,15 +98,15 @@ export default function CrossTabStateSyncArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The primary mechanism is BroadcastChannel, a native browser API that creates a named message bus among all browsing contexts on the same origin. Every tab opens the same named channel on initialization. State management middleware intercepts mutations, serializes a delta message (type, payload, version, senderId), and posts it to the channel. Other tabs receive it via their onmessage handler, validate the version, and apply the delta to their local store.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           For environments where BroadcastChannel is unavailable (Safari pre-15.4, legacy Electron shells), localStorage events serve as a fallback. Writing a serialized event to a well-known localStorage key triggers a storage event in all other tabs. This approach is inherently lossy for rapid updates (writes overwrite before read) so a queue key with a counter suffix is used when backpressure is needed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Leader election using SharedWorker or a lightweight localStorage-based heartbeat allows one tab to own server communication (polling, WebSocket connection) and relay server-push events to other tabs, preventing N×connections for N open tabs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -123,17 +125,17 @@ export default function CrossTabStateSyncArticle() {
         <p>
           Message delivery is synchronous in the sense that posted messages are queued and delivered in FIFO order for each recipient tab. However, processing is asynchronous relative to the sender — the sender does not block. The structured clone algorithm is used for serialization, meaning you can pass complex objects (including ArrayBuffers) without manual JSON serialization, though for interop and debugging, explicit JSON is often preferred.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each message should carry: a type discriminant (AUTH_STATE_CHANGED, CART_UPDATED, NOTIFICATION_ARRIVED), the payload delta, a senderTabId (a UUID generated once per tab lifecycle stored in sessionStorage), a version or sequence number, and a timestamp. The senderTabId allows receiving tabs to track causality and avoid processing their own reflected messages in fallback scenarios.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">State Management Middleware Integration</h3>
         <p>
           The sync layer integrates as middleware in the state management stack (Redux middleware, Zustand subscribe, Jotai atom effect). Rather than requiring every action to manually trigger broadcasts, the middleware layer observes all state mutations and decides whether to broadcast based on a whitelist configuration.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The configuration specifies which state slices participate in cross-tab sync, the debounce interval for each slice, and the conflict resolution strategy. For auth state (changes are critical and infrequent), debounce is zero. For cart state (may change on item quantity adjustments), a 200ms debounce prevents flooding.
-        </p>
+        </HighlightBlock>
         <p>
           When the middleware broadcasts, it sends a delta rather than the full state: only the changed keys within the slice, along with the new values. This minimizes message size and reduces the risk of inadvertently overwriting changes the receiving tab made between the time the sender read its own state and the time the message arrives.
         </p>
@@ -153,9 +155,9 @@ export default function CrossTabStateSyncArticle() {
         <p>
           When a tab regains visibility (visibilityState changes from 'hidden' to 'visible'), it should assume its state may be stale. The protocol: the awakening tab broadcasts a SYNC_REQUEST message including its current version vector. Any responding tab that has a higher version for any slice responds with a SYNC_RESPONSE containing the authoritative snapshot of the relevant slices.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If no response arrives within a timeout (500ms is reasonable), the tab falls back to fetching fresh state from the server. This handles the case where all other tabs were also background or closed.
-        </p>
+        </HighlightBlock>
         <p>
           A complementary strategy is to track the "last confirmed server sync" timestamp. If the tab has been hidden for more than a threshold (e.g., 5 minutes), it skips the inter-tab catch-up entirely and directly refetches from the server, as other tabs' cached state may also be stale.
         </p>
@@ -186,9 +188,9 @@ export default function CrossTabStateSyncArticle() {
         <p>
           <strong>Shopping cart synchronization</strong> requires last-write-wins with optimistic merging. If Tab A adds item X and Tab B adds item Y independently (offline-style local mutations), both deltas should merge rather than overwrite. The merge strategy for shopping carts is typically additive: union of items. Conflicting quantities for the same item default to the higher value or prompt the user.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Session timeout</strong> is handled by one tab detecting idle timeout and broadcasting a SESSION_EXPIRED event. All tabs simultaneously show the re-auth dialog or redirect to login, preventing the jarring experience of some tabs silently returning 401 errors on subsequent requests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Debouncing and Batching</h3>
         <p>
@@ -199,9 +201,9 @@ export default function CrossTabStateSyncArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring and Observability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Instrument the sync layer with metrics: message count per type per minute (identify unexpectedly high broadcast frequency), inter-tab latency measured by echoing a timestamp in the message and recording delta on receipt, conflict rate per slice (high conflict rate indicates UX problem — users are actively editing the same state from multiple tabs), and catch-up frequency (how often tabs need to sync on focus — high rates indicate tabs are frequently stale).
-        </p>
+        </HighlightBlock>
         <p>
           Development tooling: a browser devtools panel showing the BroadcastChannel message stream is invaluable. Libraries like Zustand's devtools integration or a custom Redux middleware can log all cross-tab messages to the Redux DevTools extension, making it easy to replay multi-tab scenarios.
         </p>
@@ -211,31 +213,30 @@ export default function CrossTabStateSyncArticle() {
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Immediacy vs Bandwidth</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Broadcasting every state mutation provides the best UX consistency but generates high message volume for active applications. Debouncing reduces bandwidth at the cost of brief windows of inconsistency. The right balance is context-dependent: auth/session changes warrant zero debounce; typing indicators in a form warrant 500ms or more.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Selective vs Full Sync</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A whitelist approach (explicitly opt state slices into sync) is safer than a blacklist (opt out). New state slices are not synced by default, preventing accidental leakage of ephemeral UI state (e.g., open modals, tooltip hover state) to other tabs where it would be meaningless or confusing.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Server as Authority</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-tab sync is a performance and UX optimization, not a consistency guarantee. Any state that matters long-term (cart contents, user settings) must be persisted to the server. Cross-tab sync merely avoids requiring every tab to independently poll the server — it propagates already-committed server state or optimistic local mutations pending server confirmation. When a conflict cannot be resolved client-side, the server state wins.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Security Boundaries</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           BroadcastChannel is same-origin-restricted, which provides a natural security boundary. However, any code running in the same origin (including third-party scripts loaded via script tags) can open the same channel and listen. Sensitive data in sync messages (token values, PII) should be minimized — broadcast the fact of a change rather than the sensitive value itself when possible. Tabs that need the actual value can fetch it from a secure httpOnly cookie or server endpoint.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Cross-tab state synchronization is a critical UX feature for any application users open in multiple windows simultaneously. The design centers on BroadcastChannel for direct low-latency inter-tab messaging, with localStorage Storage events as a fallback. State management middleware provides transparent sync with a whitelist configuration, debouncing, and version-based conflict detection. Leader election via SharedWorker or localStorage heartbeat prevents N×server connections. The Visibility API drives catch-up synchronization for backgrounded tabs. Critical scenarios — auth, session timeout, token rotation — require zero-debounce immediate broadcast. For staff-level engineers, the key insights are: treat cross-tab sync as an eventually consistent optimization over server truth, not a distributed system consistency guarantee; use version vectors for causality tracking; invest in merge strategies per state slice rather than one-size-fits-all last-write-wins; and instrument the sync layer for conflict rate and catch-up frequency metrics that reveal real UX problems.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Critical scenarios — auth, session timeout, token rotation — require zero-debounce immediate broadcast. For staff-level engineers, the key insights are: treat cross-tab sync</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">as an eventually consistent optimization over server truth, not a distributed system consistency guarantee; use version vectors for causality tracking; invest in merge strategies per state slice rather than one-size-fits-all last-write-wins; and instrument the sync layer for conflict rate and catch-up frequency metrics that reveal real UX problems.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,23 +37,23 @@ export default function ClipboardAPIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Copy/paste critical for user experience: share content, duplicate
           data, move between apps. Key challenges: browser security (restrict
           clipboard access), permissions (ask user), format negotiation (copy
           HTML vs plain text), and cross-platform (some formats unsupported).
           Naive approach: use old clipboard APIs (deprecated, unreliable). Better:
           modern Clipboard API (async, permission-aware, format support).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Need to copy content to clipboard (share, export).</li>
-          <li>Need to paste from clipboard (import, bulk insert).</li>
-          <li>Support multiple formats (HTML, plain text, images, files).</li>
+          <HighlightBlock as="li" tier="important">Need to copy content to clipboard (share, export).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Need to paste from clipboard (import, bulk insert).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Support multiple formats (HTML, plain text, images, files).</HighlightBlock>
           <li>Handle permission requests (user consent).</li>
-          <li>Cross-browser compatibility (fallback for older browsers).</li>
+          <HighlightBlock as="li" tier="important">Cross-browser compatibility (fallback for older browsers).</HighlightBlock>
         </ul>
       </section>
 
@@ -59,10 +61,10 @@ export default function ClipboardAPIArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Copy to Clipboard:</strong> Copy text, HTML, images, files
             to system clipboard.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Paste from Clipboard:</strong> Read text, HTML, images, files
             from clipboard.
@@ -93,33 +95,33 @@ export default function ClipboardAPIArticle() {
           <li>
             <strong>Latency:</strong> Copy/paste &lt;100ms (instant feel).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Security:</strong> No silent clipboard access (user
             permission required).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Privacy:</strong> Don't expose clipboard without consent.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Compatibility:</strong> Work in all modern browsers
             (fallback for older).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Large data: copy 10MB file to clipboard. Handle gracefully (may
             fail on some browsers).
-          </li>
+          </HighlightBlock>
           <li>
             Async operations: copy takes time (user navigates away mid-copy).
             Handle cancellation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Permission denied: user blocks clipboard access. Show fallback (manual
             copy).
-          </li>
+          </HighlightBlock>
           <li>
             Mixed formats: copy as both HTML and plain text (paste chooses).
           </li>
@@ -132,14 +134,13 @@ export default function ClipboardAPIArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Use modern Clipboard API (navigator.clipboard). For copy: prepare
+        <HighlightBlock as="p" tier="crucial">Use modern Clipboard API (navigator.clipboard). For copy: prepare
           data, call writeText/write, handle async. For paste: request
-          permission, read data, parse formats. Fallback for older browsers:
+          permission, read data, parse formats.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Fallback for older browsers:
           document.execCommand('copy') or textarea workaround. Show feedback
           (toast: "Copied!"). Handle errors (permission denied, unsupported
-          format).
-        </p>
+          format).</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -186,14 +187,14 @@ export default function ClipboardAPIArticle() {
             <strong>Rich Formats:</strong> Create ClipboardItem with multiple
             MIME types (HTML, plain text).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Example:</strong> Copy HTML button, but fallback to plain
             text if HTML unsupported.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Feedback:</strong> Show "Copied!" toast on success (timeout
             3s).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Error Handling:</strong> NotAllowedError if permission
             denied, show message.
@@ -207,10 +208,10 @@ export default function ClipboardAPIArticle() {
             <strong>Simple Text:</strong> await navigator.clipboard.readText()
             gets pasted text.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Rich Data:</strong> navigator.clipboard.read() returns
             ClipboardItem array (multiple formats).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Format Check:</strong> item.types array lists available
             MIME types.
@@ -286,10 +287,10 @@ export default function ClipboardAPIArticle() {
             <strong>Icon:</strong> Show copy icon (📋) or change text
             temporarily ("Copied!").
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> ARIA label, keyboard support
             (Enter key).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Error:</strong> Permission denied → "Copy manually (Ctrl+C)"
             message.
@@ -349,10 +350,10 @@ export default function ClipboardAPIArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Security & Privacy</h3>
         <p>Protect user data.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>No Silent Access:</strong> App cannot read clipboard
             without permission (security).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>User Gesture:</strong> Copy/paste must be user-triggered
             (no async calls).
@@ -400,57 +401,57 @@ export default function ClipboardAPIArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">HTTPS Requirement</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Clipboard API only works on https:// (secure context). http://
           blocked for security. Localhost ok for dev.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">User Gesture</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Copy/paste must be triggered by user action (click, not async).
           Prevents malicious scripts from stealing clipboard.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Clipboard</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mock navigator.clipboard in unit tests (real clipboard access hard
           to test). Integration tests on real browser. Verify toast feedback.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Copy Link Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generate shareable link, copy to clipboard. Common: "Copy link" button
           for collaboration.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Code Snippet Copy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Show code block with copy button. Common in docs. Highlight on copy
           (visual feedback).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Rich Format Copy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Copy as both HTML (formatted) and plain text (compatibility). Paste
           chooses best format.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Copy very large text (10MB+): may fail on some systems. Test graceful
           failure. Permission edge cases.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Common: copy button not visible (accessibility). Solution: always
           visible, keyboard accessible. Another: no feedback. Solution: toast
           "Copied!" (3s timeout).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
         <p>
@@ -463,43 +464,30 @@ export default function ClipboardAPIArticle() {
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Convenience vs Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Silent copy: convenient but dangerous (malicious scripts steal
           clipboard). Permission: secure but friction. Browser restricts for
           security.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Format Support</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTML copy: better UX (formatted on paste) but less compatible. Plain
           text: always works. Copy both.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Compatibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern browsers: Clipboard API universal. Old browsers: use fallback
           (execCommand or manual instruction). Progressive enhancement:
           detect, provide best experience.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Clipboard API critical for copy/paste interactions. For
-          staff/principal engineers, essential aspects include writeText/write
-          (copy), readText/read (paste), permissions (clipboard-read,
-          clipboard-write), format support (text, HTML, images), and security
-          (HTTPS, user gesture required). Fallback for older browsers
-          (execCommand, manual copy instruction). Copy button pattern with
-          feedback toast. Paste event handling for rich editors (sanitize
-          HTML). User gesture requirement prevents silent clipboard access
-          (malicious scripts). Monitoring copy/paste rates, permission grant
-          rates, success rates. Testing with mocks and real browser. Real-world
-          systems implement copy-link buttons (collaboration), code snippet
-          copy (docs), and rich format copy (HTML + plain text), with graceful
-          degradation for unsupported browsers.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Paste event handling for rich editors (sanitize HTML). User gesture requirement prevents silent clipboard access (malicious scripts).</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">Monitoring copy/paste rates, permission grant rates, success rates. Testing with mocks and real browser. Real-world systems implement copy-link buttons (collaboration), code snippet copy (docs), and rich format copy (HTML + plain text), with graceful degradation for unsupported browsers.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

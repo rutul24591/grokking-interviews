@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,7 +37,7 @@ export default function GeolocationPermissionsArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Geolocation useful for location-aware services (maps, ride-sharing,
           local search). Key challenges: user privacy (must ask permission),
           accuracy varies (GPS ±5m, IP ±1km), and graceful degradation (user
@@ -43,19 +45,19 @@ export default function GeolocationPermissionsArticle() {
           suspicious). Better: explain why needed, handle denials, cache
           location (avoid repeated requests), and provide fallback
           (approximate location from IP).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             Need user location (accurate for maps, approximate for local
             search).
-          </li>
+          </HighlightBlock>
           <li>User may deny permission (respect privacy).</li>
-          <li>Location may be inaccurate or take time (especially GPS).</li>
-          <li>Need to request once, cache result (avoid repeated prompts).</li>
-          <li>Fallback to IP-based location (less accurate but always works).</li>
+          <HighlightBlock as="li" tier="important">Location may be inaccurate or take time (especially GPS).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Need to request once, cache result (avoid repeated prompts).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Fallback to IP-based location (less accurate but always works).</HighlightBlock>
         </ul>
       </section>
 
@@ -63,10 +65,10 @@ export default function GeolocationPermissionsArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Request Permission:</strong> Ask user for location access
             (popup).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Get Location:</strong> Obtain user coordinates (lat, long).
           </li>
@@ -77,14 +79,14 @@ export default function GeolocationPermissionsArticle() {
             <strong>Accuracy Options:</strong> High accuracy (GPS), low
             (network-based).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout Handling:</strong> Give up if location takes too
             long.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Location:</strong> Store result, avoid repeated
             requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Permission Status:</strong> Check if already granted/denied.
           </li>
@@ -113,17 +115,17 @@ export default function GeolocationPermissionsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
           <li>User denies permission: gracefully degrade (show message).</li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             Location takes 30s (GPS slow): timeout and use cached or fallback.
-          </li>
+          </HighlightBlock>
           <li>
             User changes mind: revoke permission in settings, app should
             re-request.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Multiple requests in-flight: cache first, return same promise
             (deduplication).
-          </li>
+          </HighlightBlock>
           <li>
             Permission changed: watch for permission change event (re-request
             if needed).
@@ -133,22 +135,33 @@ export default function GeolocationPermissionsArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Request permission via Geolocation API. On grant, get coordinates
+        <HighlightBlock as="p" tier="crucial">Request permission via Geolocation API. On grant, get coordinates
           (latitude, longitude, accuracy). Cache result (avoid repeated
-          requests, save battery). Implement timeout (fail gracefully if slow).
+          requests, save battery).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Implement timeout (fail gracefully if slow).
           Monitor permission changes. Handle denial (fallback to IP-based
           location). Watch location for tracking (with careful cleanup to save
-          battery).
-        </p>
+          battery).</Highlight></HighlightBlock>
       </section>
 
       <section>
-        <ArticleImage
+                <h2>Diagram Walkthrough</h2>
+
+<ArticleImage
           src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/geolocation-permissions.svg"
           alt="Geolocation and permissions system showing permission lifecycle, accuracy levels, location tracking, and privacy considerations"
           caption="Geolocation and permissions system showing permission lifecycle, accuracy levels, location tracking, and privacy considerations"
         />
+
+        <HighlightBlock as="p" tier="crucial">
+          Interview signal: the diagram captures the end-to-end flow for <strong>Design Geolocation &amp; Permissions</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
+        </HighlightBlock>
       </section>
 
       <section>
@@ -187,10 +200,10 @@ export default function GeolocationPermissionsArticle() {
             <strong>User Action:</strong> Allow → location access, Block →
             error.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Remember Choice:</strong> Browser caches decision (no
             re-prompt on next call).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Context:</strong> User must trust why location needed
             (explain in UI).
@@ -204,10 +217,10 @@ export default function GeolocationPermissionsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Accuracy Options</h3>
         <p>Trade-off: accuracy vs battery.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>High Accuracy (enableHighAccuracy: true):</strong> GPS +
             network (±5m, slow 10-30s, battery drain).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Low Accuracy (false):</strong> Network only (±1km, fast 1s,
             low battery).
@@ -228,14 +241,14 @@ export default function GeolocationPermissionsArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Timeout & Error Handling</h3>
         <p>Graceful failure.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout:</strong> Max wait (e.g., 10s). If no location,
             error.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>GPS Timeout:</strong> GPS slow outdoors, fail faster
             (5-10s) and fallback.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Permission Denied:</strong> User blocked, show message,
             offer instructions.
@@ -379,10 +392,10 @@ export default function GeolocationPermissionsArticle() {
             <strong>Location Accuracy:</strong> Average accuracy received
             (variance by device).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Request Latency:</strong> How long to get location? (high
             accuracy slower).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Cache Hit Rate:</strong> % requests served from cache (lower
             battery drain).
@@ -398,39 +411,39 @@ export default function GeolocationPermissionsArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Browser Support</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Geolocation: universal modern browser support. Permissions API: newer
           (check support). Fallback to try/catch.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">HTTPS Requirement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Geolocation only works on https:// (secure context). http:// blocked
           for privacy. Localhost ok for dev.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mock Geolocation API (return fixed coordinates). Test permission
           denied case. Test timeout handling. Real device testing (accuracy
           varies).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Progressive Enhancement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Feature works without location (fallback). Offer higher accuracy if
           user grants. Graceful degradation (no location = limited features).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Accuracy Escalation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Start low accuracy (fast, battery). If user action implies need (e.g.,
           starts navigation), escalate to high accuracy.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Background Tab Pause</h3>
         <p>
@@ -439,66 +452,53 @@ export default function GeolocationPermissionsArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Simulate permission denial (% of users). Simulate slow location
           (timeout handling). Verify cache efficiency (reduce API calls).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: forget to clearWatch() → battery drain. Solution: always
           cleanup in page unload. Another: use stale location (cached 1 day).
           Solution: shorter TTL (5-30 min).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Low permission grant rate: explain why needed (UI message). Location
           inaccurate: check accuracy option (may need high accuracy mode).
           Watch memory leak: verify clearWatch() called.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Accuracy vs Battery</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High accuracy: GPS (±5m) but battery drain. Low: network (±1km) but
           fast. Choose based on use case (maps need high, local search ok with
           low).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Caching vs Freshness</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cache location: save battery + requests. But stale data (user moved).
           TTL balances (5 min typical).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Privacy vs Convenience</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Ask permission: transparent but friction. IP-based fallback: automatic
           but less accurate. Offer both (user chooses).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Geolocation critical for location-aware services. For staff/principal
-          engineers, essential aspects include getCurrentPosition (one-time),
-          watchPosition (continuous tracking), accuracy options (high vs low),
-          timeout handling (graceful failure), permission request flow, and
-          caching strategy (avoid repeated requests). Permissions API to check
-          status without prompting. IP-based fallback for privacy-respecting
-          defaults. HTTPS requirement for security. Battery management (stop
-          watching when not needed, pause on background). Privacy best practices
-          (explain why, minimize data sharing). Monitoring permission grant
-          rates, location accuracy, latency, cache hits. Testing with mocked
-          API and real devices. Real-world systems cache locations (5-30 min
-          TTL), offer accuracy escalation (low then high), gracefully degrade
-          on denial (show message, offer IP-based fallback).
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">HTTPS requirement for security. Battery management (stop watching when not needed, pause on background). Privacy best practices (explain why,</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">minimize data sharing). Monitoring permission grant rates, location accuracy, latency, cache hits. Testing with mocked API and real devices. Real-world systems cache locations (5-30 min TTL), offer accuracy escalation (low then high), gracefully degrade on denial (show message, offer IP-based fallback).</HighlightBlock>
       </section>
     </ArticleLayout>
   );

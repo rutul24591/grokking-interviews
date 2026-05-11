@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +26,18 @@ export default function StreamingChatUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large language models generate responses token-by-token (a token is roughly a word fragment — 3–4 characters on average). At a typical generation speed of 20–60 tokens per second and a response length of 300–500 tokens, a user would wait 5–25 seconds to see anything if the system waited for a complete response before rendering. That latency is unacceptable and feels broken compared to human typing speed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Streaming chat UIs solve this by rendering tokens as they arrive. The user sees the first word within 200–500ms of submitting a message (the time to first token, TTFT), then watches the response appear incrementally — a reading experience that naturally paces with the generation speed. The perceived responsiveness improvement is dramatic even though the total generation time is identical.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The engineering challenges are non-trivial. Token arrival is bursty (network batches), not a smooth per-token stream. React's rendering must be batched to avoid 60 DOM updates per second. Markdown formatting is incomplete mid-stream (an unclosed code fence ``` renders as a literal backtick until the closing fence arrives). Large responses (10,000+ tokens) can exhaust memory if accumulated without virtualization. Users want to cancel mid-response. Multiple concurrent messages need independent stream management. Errors mid-stream need graceful degradation (show partial response, allow retry).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> The backend supports streaming via Server-Sent Events (SSE) or chunked transfer encoding. The browser's Fetch API with ReadableStream is available. Tokens in the stream are newline-delimited JSON objects with a delta text field (compatible with OpenAI and Anthropic streaming formats). The LLM may produce structured content (markdown, code blocks, tables) within the stream.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -60,31 +62,31 @@ export default function StreamingChatUIArticle() {
           <li>
             <strong>Regeneration:</strong> Allow re-submitting the last user message to get a different response, replacing the previous assistant message.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Error States:</strong> Display appropriate error UX for stream interruption, API errors, and rate limit responses.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Time to First Token (TTFT):</strong> First visible character within 500ms of message submission (network-dependent, UI must not add latency).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Rendering throughput:</strong> Handle 100+ tokens/second without janking the UI. This requires batched rendering — not per-token DOM updates.
           </li>
           <li>
             <strong>UI responsiveness:</strong> Streaming must not block user interactions — the input field, copy buttons, and feedback controls remain responsive during streaming.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Memory:</strong> A 10,000-token response must not cause memory exhaustion or visible slowdown. Virtual scrolling handles long conversation histories.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>Stream drops mid-response (network interruption) — show partial response, offer retry button.</li>
-          <li>Rate limit error (429) mid-stream — show rate limit message with retry-after countdown.</li>
+          <HighlightBlock as="li" tier="important">Stream drops mid-response (network interruption) — show partial response, offer retry button.</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Rate limit error (429) mid-stream — show rate limit message with retry-after countdown.</HighlightBlock>
           <li>User submits a new message before the current response finishes — cancel current stream, start new one.</li>
           <li>Code block spanning many tokens before closing fence — render as indeterminate code block until fence arrives.</li>
           <li>Response contains harmful content that triggers a mid-stream safety filter — stream stops abruptly, show safe messaging.</li>
@@ -93,12 +95,11 @@ export default function StreamingChatUIArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          The request flow: user submits message → add optimistic user message to conversation → create placeholder assistant message in "streaming" state → initiate fetch with AbortController signal → read response.body ReadableStream in a loop → decode each chunk, parse delta tokens → append deltas to the assistant message's text in state → on stream end, transition assistant message to "complete" state. If AbortController.abort() is called, the fetch rejects and the assistant message transitions to "stopped" state.
-        </p>
-        <p>
+        <HighlightBlock as="p" tier="important">The request flow: user submits message → add optimistic user message to conversation → create placeholder assistant message in "streaming" state → initiate fetch with AbortController signal → read response.body ReadableStream in a loop → decode each chunk, parse delta tokens → append deltas to the assistant message's text in state → on stream end, transition assistant message to "complete" state.</HighlightBlock>
+<HighlightBlock as="p" tier="important">If AbortController.abort() is called, the fetch rejects and the assistant message transitions to "stopped" state.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Batching: a time-based batch accumulator collects incoming token deltas and flushes them to React state every 50ms via a requestAnimationFrame callback. This ensures React gets at most one state update per animation frame regardless of token arrival rate, preventing layout thrashing while maintaining sub-100ms visual latency.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -122,20 +123,20 @@ export default function StreamingChatUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Message State Machine</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each message in the conversation has a status discriminated union: idle (sent, waiting for response), streaming (receiving tokens), complete (finished), stopped (user cancelled), error (stream failed). The UI renders different visual states for each: idle shows a loading skeleton, streaming shows a blinking cursor after the partial text, complete shows the final text, stopped shows the partial text with a "(response stopped)" indicator, error shows an error banner with retry.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The state machine transition is driven by stream events. On stream open: idle → streaming. On delta received: update text, remain streaming. On [DONE]: streaming → complete. On AbortError: streaming → stopped. On non-abort error: streaming → error. State transitions must be serialized — concurrent transitions (e.g., abort arriving simultaneously with [DONE]) are resolved by whichever transition fires first, with subsequent transitions ignored.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Batching for Render Performance</h3>
         <p>
           Token deltas arrive at 20–60 tokens/second over the network, but network batching often delivers them in larger bursts (10–20 tokens per network event). Calling React's setState on every delta triggers a reconciliation cycle per delta. At 100 tokens/second, this means 100 React reconciliations per second — each one checking if the assistant message component's text changed, triggering a DOM text node update. This causes measurable jank.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The batching strategy: maintain a mutable ref (tokenBuffer) outside React state. Each stream delta appends to tokenBuffer. A useEffect sets up a requestAnimationFrame loop that reads tokenBuffer, flushes it to React state if non-empty, and schedules the next frame. This ensures at most one React setState per 16ms (60fps), regardless of token arrival rate. The visual latency from delta to display is at most 16ms + React's render time, which is imperceptible.
-        </p>
+        </HighlightBlock>
         <p>
           For very fast streams (&gt;500 tokens/second, such as batch processing scenarios), even rAF-based flushing may accumulate large chunks. In these cases, count-based flushing (flush every 50 tokens) provides a cap on the amount of text that accumulates before rendering.
         </p>
@@ -168,9 +169,9 @@ export default function StreamingChatUIArticle() {
         <p>
           Completed messages (both user and assistant) are persisted to localStorage for in-session continuity and optionally to a backend for cross-device access. The persistence layer only activates for complete and stopped messages — streaming messages are transient. On page reload, the conversation history is restored from persistence, including any stopped partial messages, which are displayed with their stopped indicator.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Conversation context management: LLMs require the full conversation history in each request (they are stateless). Sending a growing history increases input token costs and latency. Implement context windowing: keep the last N message pairs in the request context. For very long conversations, summarize older messages into a compressed context prepended to the window. Expose the context window usage to the user ("Using 3,200 of 4,096 context tokens").
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Copy, Feedback, and Action Buttons</h3>
         <p>
@@ -178,35 +179,34 @@ export default function StreamingChatUIArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring and Observability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Key metrics: TTFT (time from request send to first token rendered) as P50/P90/P99; streaming throughput (tokens per second, by model and context length); cancellation rate (% of streams cancelled by user before completion, indicating overly long or irrelevant responses); error rate by error type (network, API, rate limit, safety filter); and context token usage distribution (are users hitting context limits?). TTFT regressions correlate directly with user satisfaction scores and are the primary health signal for a chat UI.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incremental Rendering vs Formatting Quality</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Rendering every token immediately maximizes perceived responsiveness but produces visually unstable output — formatting markers appearing and disappearing as structures complete. Buffering until complete blocks are parsed produces stable output but adds latency (a large code block doesn't appear until its closing fence arrives). Most production systems choose a middle path: stream prose immediately, buffer formatting-sensitive blocks. This requires a streaming-aware parser but produces the best user experience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">SSE vs WebSocket</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           SSE (via chunked fetch) is unidirectional (server → client) and maps naturally to the request-response-with-streaming pattern of LLM APIs. WebSocket is bidirectional and adds unnecessary complexity for single-stream chat. Use SSE/chunked fetch for LLM streaming. WebSocket is appropriate when the conversation requires server-initiated pushes without a client request (e.g., server sending unsolicited notifications while a conversation is open), but this is not the primary chat pattern.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Context Window Economics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sending the full conversation history with each message means input token costs scale O(n²) with conversation length (each message sends all previous messages). At 10-message conversations this is negligible. At 100-message conversations with long responses, input token costs can exceed the cost of the actual generation. Context summarization reduces costs but degrades quality (the model loses access to early conversation details). Track context token usage per conversation and prompt users to start new conversations rather than silently degrading.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Streaming chat UIs are the defining UX pattern for LLM-based applications. The design centers on chunked fetch with ReadableStream for transport, a message state machine (idle→streaming→complete/stopped/error), requestAnimationFrame-batched token rendering (at most one React update per frame), AbortController-based cancellation, and streaming-aware markdown rendering with code block buffering. Context window management prevents O(n²) token cost growth for long conversations. For staff-level engineers, the critical insights are: TTFT is the primary user satisfaction metric — optimize the server response path before optimizing client rendering; rAF batching is essential at any token throughput above 20/second; handle the code block buffering problem explicitly or accept formatting instability mid-stream; and treat context window management as a first-class product feature rather than an afterthought, as users in long conversations will hit limits in ways that appear as mysterious quality degradations.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">For staff-level engineers, the critical insights are: TTFT is the primary user satisfaction metric — optimize the server response path before optimizing client rendering; rAF</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">batching is essential at any token throughput above 20/second; handle the code block buffering problem explicitly or accept formatting instability mid-stream; and treat context window management as a first-class product feature rather than an afterthought, as users in long conversations will hit limits in ways that appear as mysterious quality degradations.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

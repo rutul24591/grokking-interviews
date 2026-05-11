@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,15 +25,15 @@ export default function SnapToGridAlignmentArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Design tools (Figma, Adobe XD) allow dragging elements. Without snapping, precise positioning difficult. Key challenges: detecting nearby grid lines or elements, smoothly snapping, showing alignment guides, and performance at many elements. Naive approach: snap to fixed grid (limited control). Better: snap to grid, snap to objects, and adaptive guides.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Assumptions:</strong>
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>Grid resolution configurable (8px, 16px).</li>
-          <li>Many elements on canvas (need efficient detection).</li>
+          <HighlightBlock as="li" tier="important">Many elements on canvas (need efficient detection).</HighlightBlock>
           <li>Visual guides helpful for alignment.</li>
           <li>Snap threshold tunable (within pixels).</li>
         </ul>
@@ -41,18 +43,18 @@ export default function SnapToGridAlignmentArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Grid Snapping:</strong> Snap to fixed grid (8px, 16px).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Object Snapping:</strong> Snap to edges of other elements.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Alignment Guides:</strong> Show lines when snapping.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Smart Guides:</strong> Guides for edges, centers, spacing.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Snap Threshold:</strong> Configurable snap distance.
           </li>
@@ -66,9 +68,9 @@ export default function SnapToGridAlignmentArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Performance:</strong> Fast snap detection (10ms or less).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Accuracy:</strong> Snap within 1 pixel.
           </li>
@@ -87,9 +89,9 @@ export default function SnapToGridAlignmentArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          While dragging, calculate snap candidates (grid intersections, other element edges). Find closest within threshold. Move element to snap position. Draw alignment guides. On drop, finalize position.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          While dragging, calculate snap candidates (grid intersections, other element edges). <Highlight tier="important">Find closest within threshold. Move element</Highlight> to snap position. Draw alignment guides. On drop, finalize position.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -98,15 +100,15 @@ export default function SnapToGridAlignmentArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Grid Snapping</h3>
         <p>Aligning to fixed grid.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Grid Size:</strong> 8px, 16px, or custom (set by user).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Snap Logic:</strong> Round position to nearest grid intersection.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Formula:</strong> snappedX = Math.round(x / gridSize) * gridSize.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Performance:</strong> O(1) operation, very fast.
           </li>
@@ -194,9 +196,9 @@ export default function SnapToGridAlignmentArticle() {
             <strong>Result:</strong> Return snapped position with guide info.
           </li>
         </ul>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Snap Priority Ranking:</strong> When multiple snap candidates exist, rank them by strength and distance. Grid snapping is the weakest priority (just a grid), object edge alignment is medium priority (aligns with other elements), and center alignment or equal spacing is the strongest priority (meaningful compositional relationship). Within the same priority tier, prefer candidates closest to the element (smallest distance). Distance-based ranking prevents snapping to distant grids when a closer object edge is available. This ensures snap behavior feels predictable and intentional rather than random.
-        </p>
+        </HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/snap-to-grid-alignment-guides.svg"
           alt="Snap-to-grid and alignment guides system showing grid snapping, alignment guides between objects, and equal spacing detection with snap threshold zones"
@@ -215,9 +217,9 @@ export default function SnapToGridAlignmentArticle() {
           <li>
             <strong>Debouncing:</strong> Calculate snap less frequently if dragging fast.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Caching:</strong> Cache element bounds, update only on resize.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Worker Thread:</strong> Offload snap calculation to web worker.
           </li>
@@ -248,26 +250,27 @@ export default function SnapToGridAlignmentArticle() {
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Snap Threshold Sensitivity</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Large threshold: snaps easily, may snap unintentionally. Small: requires precise positioning.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Guide Visibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Many guides: clear feedback, cluttered. Few guides: simple, may miss snaps.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Performance vs Accuracy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Spatial index: faster, memory overhead. Linear search: simple, slower at scale.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Snap-to-grid and alignment systems improve precision in design tools. Essential aspects include grid snapping (round to nearest grid intersection), object snapping (edges, centers), alignment guides (visual feedback), smart guides (spacing, distribution), snap calculation with threshold filtering, and performance optimization for many elements. Real-world systems use spatial indexing for fast candidate detection, visual guide feedback, and configurable snap types and thresholds.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Real-world systems use{" "}
+          <Highlight tier="important">spatial indexing</Highlight>{" "}
+          for fast candidate detection,</HighlightBlock>
+<HighlightBlock as="p" tier="important">visual guide feedback, and configurable snap types and thresholds.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

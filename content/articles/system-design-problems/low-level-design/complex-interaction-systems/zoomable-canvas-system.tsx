@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function ZoomableCanvasSystemArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a zoomable canvas — a
           surface that users can pan and zoom
           (Figma, Miro, large image viewers,
@@ -40,8 +42,8 @@ export default function ZoomableCanvasSystemArticle() {
           The hard work is consistent zoom math
           across input methods, smooth physics,
           and bounded movement.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: zoom centered on
           cursor (not viewport center) for
           natural feel; pinch zoom on touch with
@@ -50,38 +52,38 @@ export default function ZoomableCanvasSystemArticle() {
           (Figma is unbounded; image viewer is
           bounded); keyboard alternative;
           accessibility for non-pointer users.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users navigate large content
           (designs, maps, diagrams). Power users
           spend hours panning and zooming.
           Engineering teams provide content;
           runtime handles navigation.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern browsers; Pointer Events,
           wheel events, transforms.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement what&rsquo;s in
           the canvas (the consumer&rsquo;s
           concern). We do not implement
           minimap (separate Pan + Zoom +
           Minimap subsystem builds on this).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Pan via drag. Zoom via wheel (mouse),
           pinch (touch), double-tap (touch),
           plus/minus keys. Zoom centered on
@@ -91,62 +93,62 @@ export default function ZoomableCanvasSystemArticle() {
           view (zoom 1, centered). Keyboard
           alternative: arrow keys pan, +/- zoom,
           0 reset.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Smooth physics with momentum on touch.
           Zoom-to-fit (fit content to viewport).
           Zoom-to-region (drag a rectangle to
           zoom). Animated transitions between
           views. Two-finger rotation (rare;
           for design tools).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Content rendering, minimap, multi-
           user awareness (separate
           subsystems).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Pan and zoom at 60 fps via CSS
           transforms. Heavy content delegates
           its own optimization (virtualization,
           LOD).
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zoom math consistent across input
           methods. Bounded clamping accurate.
           Reset always works.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Keyboard parity for pan and zoom.
           Live region announces zoom level
           changes (chunked, not continuous).
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Single transform state{" "}
           <code>{` { x, y, scale } `}</code>;
           all input methods update it.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The canvas is a content layer
           wrapped in a viewport. The content
           is positioned via{" "}
@@ -156,8 +158,8 @@ export default function ZoomableCanvasSystemArticle() {
           transform state. All input methods
           update this state; CSS handles
           rendering.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>wheel zoom</strong>: compute
           zoom delta from wheel deltaY.
           Compute target scale; clamp to
@@ -168,7 +170,7 @@ export default function ZoomableCanvasSystemArticle() {
           the difference between scale-old
           and scale-new at the cursor
           position.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>pinch zoom</strong>: track
           two pointers&rsquo; positions and
@@ -176,11 +178,11 @@ export default function ZoomableCanvasSystemArticle() {
           distance change. Apply the same
           zoom-centered math at the midpoint.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>double-tap</strong>: toggle
           between 1x and a fit-to-screen scale
           centered on the tap point.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>pan</strong>: pointer drag
           updates translation directly.
@@ -196,7 +198,7 @@ export default function ZoomableCanvasSystemArticle() {
           infinite pan (typical for design
           tools, whiteboards).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Smooth physics</strong>: pan
           inertia on touch (continue moving
           briefly after release based on
@@ -204,13 +206,13 @@ export default function ZoomableCanvasSystemArticle() {
           1x (nudge to 1x for a clean state).
           CSS transitions handle smooth
           interpolation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Keyboard</strong>: arrow keys
           pan by step; +/- zoom; 0 reset.
           Step sizes proportional to viewport
           for consistent feel.
-        </p>
+        </HighlightBlock>
       </section>
 
             <ArticleImage
@@ -221,164 +223,156 @@ export default function ZoomableCanvasSystemArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>ZoomableCanvas</strong> wraps
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial"><strong>ZoomableCanvas</strong></Highlight> wraps
           content. <strong>TransformState</strong>{" "}
-          (x, y, scale) in component state.
+          (x, y, scale) in <Highlight tier="important">component state.
           <strong> InputControllers</strong>{" "}
-          for wheel, pinch, drag, keyboard.
+          for wheel,</Highlight> pinch, drag, keyboard.
           <strong> BoundsClamper</strong>{" "}
           enforces limits.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Single transform state. All inputs
-          dispatch updates. Render is just
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Single transform state. <Highlight tier="important">All inputs
+          dispatch updates. Render is</Highlight> just
           CSS transform.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Inputs:{" "}
-          <code>children</code>,{" "}
-          <code>bounded</code>,
-          <code> minScale</code>,
-          <code> maxScale</code>,
-          <code> initialTransform</code>.
-          Output: optional onTransform
-          callback.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Inputs:</Highlight>{" "}
+          <code>children</code>, <code>bounded</code>,{" "}
+          <Highlight tier="important"><code>minScale</code></Highlight>,{" "}
+          <code>maxScale</code>, <code>initialTransform</code>. Output: optional{" "}
+          <code>onTransform</code> callback.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CSS transform is GPU-accelerated.
-          Pointer-move handler minimal work
-          (math only). RAF for smooth
+          Pointer-move <Highlight tier="important">handler minimal work
+          (math only). RAF</Highlight> for smooth
           updates if needed.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Cursor changes for pan mode.
-          Zoom indicator (small overlay
-          showing percentage). Reset button.
+          Zoom <Highlight tier="important">indicator (small overlay
+          showing percentage). Reset</Highlight> button.
           Smooth transitions on programmatic
           zoom.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Keyboard parity. Zoom level
-          announces (chunked, e.g. on
-          significant change). Reset has
+          <Highlight tier="important">announces (chunked, e.g. on
+          significant change).</Highlight> Reset has
           accessible button.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          No security surface; presentation
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          No security surface; <Highlight tier="important">presentation</Highlight>{" "}
           only.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Zoom math tests across input
-          methods. Bounds clamping tests.
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Zoom math tests <Highlight tier="important">across input
+          methods. Bounds clamping tests.</Highlight>
           Keyboard tests. Pinch simulation.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Wheel events with small deltaY
-          (precise scrolling): scale by a
-          smaller factor for finer control.
-          Pinch with three fingers: ignore.
-          Pan beyond bounds: clamp; visual
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Pan beyond bounds: clamp; visual
           rubber-band optional. Zoom past
-          min/max: clamp. Keyboard
-          accessibility on touch-only
+          min/max: clamp. Keyboard</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">accessibility on touch-only
           devices: not applicable; provide
-          on-screen buttons.
-        </p>
+          on-screen buttons.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Generic primitive. Used by image
-          viewers, whiteboards, maps,
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Generic primitive. <Highlight tier="important">Used by image
+          viewers, whiteboards, maps,</Highlight>
           diagram editors.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          UI strings via i18n. Zoom
-          percentage formatted via Intl.
-        </p>
+        <HighlightBlock as="p" tier="crucial">UI strings via{" "}
+          <Highlight tier="important">i18n</Highlight>. Zoom
+          percentage formatted via{" "}
+          <Highlight tier="important">Intl</Highlight>.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Bounded vs unbounded default</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Choose per use case. Image viewer:
           bounded. Whiteboard: unbounded.
           Configurable.
-        </p>
+        </HighlightBlock>
 
         <h3>CSS transform vs canvas-level pan</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CSS transform is simple and works
           for any DOM content. Canvas-level
           pan (transforming the canvas) is
           for game/graphics contexts. CSS is
           right for typical UIs.
-        </p>
+        </HighlightBlock>
 
         <h3>Zoom-centered-on-cursor vs viewport
         center</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cursor is more intuitive (the
           point under the cursor stays
           there). Viewport center is
           simpler but feels worse. Always
           cursor-centered.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Smarter physics, voice control of
-          zoom, AR/VR canvas, AI-assisted
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Smarter physics, <Highlight tier="important">voice control of
+          zoom, AR/VR canvas,</Highlight> AI-assisted
           framing.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>1. How is zoom centered on
           cursor?</strong> Adjust translation
           so the point under the cursor
@@ -387,32 +381,32 @@ export default function ZoomableCanvasSystemArticle() {
           new translation = old translation
           + (cursor - old translation) *
           (1 - newScale/oldScale).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How is pinch zoom
           handled?</strong> Track two
           pointers; midpoint and distance
           change drive translation and
           scale. Same zoom-centered math at
           midpoint.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. Bounded vs
           unbounded?</strong> Bounded clamps
           translation to keep content within
           viewport. Unbounded allows
           infinite pan. Configurable per
           use case.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does keyboard
           control work?</strong> Arrow keys
           pan; +/- zoom; 0 reset. Step
           sizes proportional to viewport.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How is performance
@@ -422,12 +416,12 @@ export default function ZoomableCanvasSystemArticle() {
           work; render is automatic.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How is this
           accessible?</strong> Keyboard
           parity. Zoom level announces.
           Reset button.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>7. How does this compose
@@ -448,16 +442,20 @@ export default function ZoomableCanvasSystemArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A zoomable canvas is{" "}
-          <strong>single transform state +
-          input controllers + CSS transform
-          rendering + bounds clamping</strong>.
-          Cursor-centered zoom feels right;
-          keyboard parity covers
-          accessibility; CSS transform keeps
-          it fast.
-        </p>
+          <strong>
+            single transform state + input controllers + CSS transform rendering +
+            bounds clamping
+          </strong>
+          .
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Cursor-centered zoom feels right; keyboard parity covers accessibility.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          CSS transform keeps it fast.
+        </HighlightBlock>
       </section>
     </ArticleLayout>
   );

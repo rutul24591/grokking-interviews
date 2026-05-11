@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function RAGBasedSearchUIArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a RAG-based search UI —
           retrieval-augmented generation, where a user&rsquo;s
           natural-language query is answered by an LLM
@@ -42,8 +44,8 @@ export default function RAGBasedSearchUIArticle() {
           attaches citation markers to claims, surfaces
           retrieved sources in a panel, and supports
           follow-up queries that build on prior context.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: streaming the LLM
           response with embedded citation markers that
           link to source documents; rendering markdown
@@ -56,10 +58,10 @@ export default function RAGBasedSearchUIArticle() {
           honesty about hallucination risks (citations
           should ground claims, but the LLM may not
           always cite correctly).
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users ask questions and expect synthesized
           answers grounded in retrieved sources. They
           want speed (streaming feels fast), accuracy
@@ -68,10 +70,10 @@ export default function RAGBasedSearchUIArticle() {
           Internal users (engineers) provide the RAG
           backend (retrieval + generation pipeline);
           we render its output.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend exposes a streaming endpoint that
           returns: (1) retrieved sources first, (2) then
           a streaming LLM answer with citation markers
@@ -80,24 +82,24 @@ export default function RAGBasedSearchUIArticle() {
           Sources have id, title, URL, snippet. Modern
           browsers; we use ReadableStream for response
           streaming.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement the RAG backend
           (retrieval, embedding, generation). We do
           not implement the autocomplete or full-text
           search alongside (related but separate). We
           do not implement custom-tuned LLMs (consumer
           choice).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Query input. Streaming answer rendered as
           markdown. Inline citation markers in the
           answer that, when clicked, scroll to or
@@ -109,10 +111,10 @@ export default function RAGBasedSearchUIArticle() {
           failure. Follow-up queries that include
           prior context. Stop generation button.
           Response history (the conversation log).
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Confidence indicators per claim. Source
           relevance scores. Multi-language support.
           Voice input for queries. Citations export
@@ -121,63 +123,63 @@ export default function RAGBasedSearchUIArticle() {
           results. Suggested follow-ups. Verify mode
           (check whether each cited source actually
           supports the claim).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The RAG pipeline itself, fine-tuning,
           analytics on which sources get clicked,
           conversation persistence to backend
           (could integrate, not implementing).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Retrieval results visible within 500 ms of
           query. First answer token within 1 second.
           Streaming at 60 fps. Sources panel renders
           quickly even with many sources (typically
           5–20).
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stream interruptions (network) gracefully
           surface partial answer + retry. Citation
           markers in malformed positions don&rsquo;t
           break rendering. Empty retrieval gracefully
           handles (&ldquo;No relevant sources
           found&rdquo;).
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sources sanitized (titles, snippets render
           as text; URLs validated). LLM output
           sanitized (it might inject HTML attempts;
           we never trust it). Cross-user privacy
           enforced server-side.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Streaming answer announces via polite live
           region (chunked, not per-token). Citation
           links keyboard-accessible. Sources panel
           accessible. Stop button accessible.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The runtime composes the Streaming Markdown
           Renderer (existing subsystem) for the
           answer body, with citation extension. The
           RAG adapter abstracts the backend protocol.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -194,7 +196,7 @@ export default function RAGBasedSearchUIArticle() {
           extension), and <strong>sources panel</strong>{" "}
           (renders retrieved documents alongside).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>RAG adapter</strong> reads the
           streaming response. The protocol is
           typically: a JSON-lines stream where the
@@ -206,8 +208,8 @@ export default function RAGBasedSearchUIArticle() {
           adapter handles connection lifecycle,
           aborts on user stop, and surfaces
           completion.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>citation parser</strong> watches
           the streaming token text for citation
           markers (configurable pattern, e.g.
@@ -221,8 +223,8 @@ export default function RAGBasedSearchUIArticle() {
           we buffer until a complete marker is
           seen to avoid partial-marker rendering
           glitches.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>answer renderer</strong> is the
           Streaming Markdown Renderer with the
           citation extension plugged in. As tokens
@@ -234,8 +236,8 @@ export default function RAGBasedSearchUIArticle() {
           Clicking the citation scrolls/highlights
           the matching source; clicking the source
           opens the original document.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>sources panel</strong> renders
           alongside (sidebar) or below the answer,
           listing each retrieved source with title,
@@ -244,7 +246,7 @@ export default function RAGBasedSearchUIArticle() {
           (via keyboard or click) highlights its
           citations in the answer (and vice versa)
           for cross-reference.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Follow-up queries</strong>: the input
           stays available after the answer. A new
@@ -262,7 +264,7 @@ export default function RAGBasedSearchUIArticle() {
           retained; the user can re-ask or
           follow-up.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Error handling</strong>: retrieval
           failure surfaces &ldquo;Couldn&rsquo;t
           find relevant sources&rdquo;; LLM
@@ -270,7 +272,7 @@ export default function RAGBasedSearchUIArticle() {
           answer with an error indicator and retry.
           Network failure offers retry from the
           last successful state.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Honesty about hallucinations</strong>:
           we always render the sources panel so
@@ -286,229 +288,190 @@ export default function RAGBasedSearchUIArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>RAGSearchProvider</strong>{" "}
-          instantiates the adapter and stores.
-          <strong> QueryInput</strong> for entering
-          questions. <strong>AnswerRenderer</strong>{" "}
-          (uses Streaming Markdown Renderer + citation
-          extension). <strong>CitationLink</strong>{" "}
-          renders an inline citation.
-          <strong> SourcesPanel</strong> renders the
+        <HighlightBlock as="p" tier="crucial"><strong> SourcesPanel</strong> renders the
           retrieved sources.
           <strong> ConversationThread</strong> renders
-          query/answer pairs.
-          <strong> StopButton</strong> aborts
+          query/answer</HighlightBlock>
+<HighlightBlock as="p" tier="important">pairs.
+          <Highlight tier="important"><strong> StopButton</strong></Highlight> aborts
           generation. <strong>RAGAdapter</strong>{" "}
-          consumes the streaming backend.
-        </p>
+          consumes the streaming backend.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Conversation history (queries + answers +
-          sources) lives in an external store.
-          Streaming buffer lives in the adapter.
-          Active query state (loading, streaming,
-          complete, error) drives UI states.
-          Sources highlighting state (which is
-          focused) is component-local.
-        </p>
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Active query state (loading, streaming,
+          complete, error) drives UI states.</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">Sources highlighting state (which is
+          focused) is component-local.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Streaming protocol:{" "}
+        <HighlightBlock as="p" tier="crucial">Streaming protocol:{" "}
           <code>{` { type: "sources", sources: [...] } `}</code>{" "}
           followed by{" "}
           <code>{` { type: "token", text: "..." } `}</code>{" "}
           chunks, then
-          <code>{` { type: "done" } `}</code>. Source
-          shape:{" "}
-          <code>{` { id, title, url, snippet, score? } `}</code>.
-          Citation marker pattern is configurable.
-        </p>
+          <code>{` { type: "done" } `}</code>.</HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="important">Source shape:</Highlight>{" "}
+          <code>{` { id, title, url, snippet, score? } `}</code>. Citation marker
+          pattern is configurable.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
-          Streaming Markdown Renderer&rsquo;s
-          RAF-aligned commits keep UI smooth.
-          Citation parsing buffers across chunks
-          to avoid re-rendering partial markers.
-          Source panel renders once per query (not
+        <HighlightBlock as="p" tier="crucial">Streaming Markdown Renderer&rsquo;s
+          RAF-aligned commits keep UI smooth.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Citation parsing buffers across chunks
+          to avoid re-rendering partial markers.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Source panel renders once per query (not
           per token). AbortController on stop
-          immediately cancels.
-        </p>
+          immediately cancels.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Two-pane layout: answer (left/main) and
-          sources (right/sidebar). On mobile, sources
-          stack below or are accessible via a tab.
-          Citations appear as superscript links
-          inline. Hovering a citation previews the
-          source snippet. Clicking scrolls to the
+        <HighlightBlock as="p" tier="crucial">Clicking scrolls to the
           source in the panel and highlights both.
           Streaming pulse on the last token.
-          Stop button visible during streaming.
+          Stop button</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">visible during streaming.
           Follow-up input below the answer.
           Conversation history scrolls with new
-          queries appended.
-        </p>
+          queries appended.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Streaming answer in
+        <HighlightBlock as="p" tier="crucial">Streaming answer in
           <code> aria-live=&quot;polite&quot;</code>{" "}
           with chunked announcements. Citation
           links are real
-          <code> &lt;a&gt;</code> elements.
-          Sources panel accessible. Stop button
+          <code> &lt;a&gt;</code> elements.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Sources panel accessible. Stop button
           and follow-up input keyboard-accessible.
           Conversation thread navigable by
-          keyboard.
-        </p>
+          keyboard.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Sources rendered as text. URLs validated.
-          LLM output sanitized — never rendered as
-          HTML. Citation markers are data, not
+          LLM output sanitized <Highlight tier="important">— never rendered as
+          HTML. Citation</Highlight> markers are data, not
           code. Cross-user privacy enforced
           server-side.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for citation parser (markers
-          across chunk boundaries, malformed
-          markers). Integration tests with a mock
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Integration tests with a mock
           stream: sources arrive, tokens stream,
-          citations render, click cross-highlights.
+          citations</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">render, click cross-highlights.
           Stop mid-stream test. Error scenario
-          tests.
-        </p>
+          tests.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Citation marker references a source not in
-          the sources list (LLM hallucinated): render
-          as plain text or with an error indicator
-          (&ldquo;[citation: unknown]&rdquo;).
-          Marker arrives split across chunks: buffer
-          until complete. LLM produces text with no
-          citations (uncited claim): render as-is;
-          we don&rsquo;t inject false citations.
-          Stream truncates: partial answer remains;
+        <HighlightBlock as="p" tier="crucial">Stream truncates: partial answer remains;
           surface error with retry. Empty retrieval:
           show no-sources state; LLM may still try
           to answer (configurable: with or without
-          retrieval, falling back to its training
+          retrieval,</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">falling back to its training
           knowledge with explicit caveat).
           Follow-up with conversation history that
           exceeds context window: backend handles
-          (we just send what we have).
-        </p>
+          (we just send what we have).</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The citation extension to the Streaming
-          Markdown Renderer is reusable for any
-          markdown-with-citations content. The RAG
+          Markdown Renderer <Highlight tier="important">is reusable for any
+          markdown-with-citations content.</Highlight> The RAG
           adapter pattern works across different
           backend protocols.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          UI strings via i18n. Answer and source
-          content in the LLM&rsquo;s output language.
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          UI strings via i18n. Answer and <Highlight tier="important">source
+          content in the LLM&rsquo;s output</Highlight> language.
           RTL layout via CSS logical properties.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Inline citations vs separate references list</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Inline citations (numbered links in
           context) feel more native and grounded.
           Separate list (footnotes) is cleaner but
           less integrated. We do inline; footnote-
           style is opt-in.
-        </p>
+        </HighlightBlock>
 
         <h3>Show retrieval before or with answer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Showing retrieval first sets expectation
           (you&rsquo;ll see what the LLM is reading)
           and gives users early context. Showing
           alongside the answer is less staged. We
           prefer retrieval-first for transparency.
-        </p>
+        </HighlightBlock>
 
         <h3>Verify-mode default</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           On by default would slow responses (extra
           processing); off by default is faster but
           more lenient. We default off with a
           toggle for power users.
-        </p>
+        </HighlightBlock>
 
         <h3>Streaming markdown vs plain text</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Markdown gives structure (headings, lists,
           code blocks) that LLMs use. Plain text
           loses structure. We always render
           markdown.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Verify mode where each cited claim is
-          re-checked against sources. Visual answer
-          (charts, images embedded). Voice
-          interaction. Multi-modal queries (images,
-          video, code). Personalization based on
-          user&rsquo;s document history. Real-time
-          updates if sources change mid-conversation.
-        </p>
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Multi-modal</Highlight>{" "}
+          queries (images,
+          video, code). Personalization based on</HighlightBlock>
+<HighlightBlock as="p" tier="important">user&rsquo;s document history. Real-time
+          updates if sources change mid-conversation.</HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How are sources and answer
           coordinated?</strong> Backend streams
           sources first, then tokens. UI renders
           sources panel immediately; tokens stream
           into the answer with citation markers
           linking back to sources by id.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How are citation markers
           parsed?</strong> The citation parser
           watches the streaming token text for
@@ -516,16 +479,16 @@ export default function RAGBasedSearchUIArticle() {
           chunks (a marker may span multiple
           chunks) and replaces complete markers
           with citation components on render.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. Why stream the answer?</strong>{" "}
           Perceived latency. Users see the answer
           forming rather than waiting for the
           complete response. RAG responses can
           take 5–30 seconds; streaming makes that
           feel acceptable.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. How do follow-ups work?</strong>{" "}
@@ -536,7 +499,7 @@ export default function RAGBasedSearchUIArticle() {
           sources.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>5. How does this differ from
           full-text search?</strong> Full-text
           returns ranked documents; users read them
@@ -545,7 +508,7 @@ export default function RAGBasedSearchUIArticle() {
           verification. RAG is faster for direct
           questions; full-text is better for
           exploration.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>6. How do you handle
@@ -565,7 +528,7 @@ export default function RAGBasedSearchUIArticle() {
           re-ask or follow up.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. What&rsquo;s the
           accessibility story?</strong> Streaming
           answer in polite live region with
@@ -573,26 +536,19 @@ export default function RAGBasedSearchUIArticle() {
           are real anchors. Sources panel
           accessible. Stop and follow-up keyboard-
           reachable.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A RAG search UI is{" "}
-          <strong>RAG adapter + citation parser +
-          Streaming Markdown Renderer + sources
-          panel</strong>. Sources arrive first;
-          tokens stream into the answer with
-          citation markers linking back to
-          sources. Follow-ups extend the
+        <HighlightBlock as="p" tier="crucial">Follow-ups extend the
           conversation. Honesty about retrieval
           (always show sources, don&rsquo;t inject
-          false citations) builds user trust.
+          false citations)</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">builds user trust.
           The result is search that synthesizes
           answers while keeping users grounded
-          in verifiable evidence.
-        </p>
+          in verifiable evidence.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

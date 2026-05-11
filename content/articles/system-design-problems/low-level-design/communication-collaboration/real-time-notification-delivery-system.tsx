@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +31,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing the client-side delivery
           system that takes notification events from
           the backend and routes them to the right
@@ -42,8 +44,8 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           a toast shouldn&rsquo;t still appear in
           the badge count) and handle deduplication,
           ordering, and cross-tab consistency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: routing one event to
           multiple surfaces correctly; cross-surface
           consistency (read on one, reflected on
@@ -53,10 +55,10 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           coordination so a notification opened in
           one tab updates the badge in others;
           accessibility for the various surfaces.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users see notifications across
           multiple surfaces. They expect coherent
           state — actions on one surface
@@ -64,31 +66,31 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           teams plug in: provide a notification
           source (WebSocket); the runtime routes,
           dedups, and renders.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend exposes a WebSocket for delivery.
           Each notification has stable id, type,
           and metadata indicating preferred
           surfaces. Modern browsers; we use
           BroadcastChannel for cross-tab.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The notification backend, the
           notification authoring tools, OS-level
           push notifications (separate subsystem
           that integrates with this layer).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           WebSocket subscription to user
           notifications. Routing: each event goes
           to the right surfaces (toast for some;
@@ -102,10 +104,10 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           apply in arrival order; out-of-order
           events that affect the same target
           handled idempotently.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Per-type routing rules (some types
           show as toast, others only in inbox).
           Per-user preferences (mute types).
@@ -113,60 +115,60 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           batching (digest mode for noisy types).
           Sound effects per type. Browser push
           integration.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend, authoring tools, OS push.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event delivery to UI within 100 ms of
           receipt. Routing decisions cheap.
           Cross-tab broadcast within 50 ms.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Dedup by id; out-of-order events
           handled idempotently. Reconnection
           fetches missed events via REST. State
           consistent across surfaces.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authenticated WebSocket. Server-enforced
           ownership. Notification content
           sanitized at render boundaries.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Each surface has its own a11y rules
           (toast announces, badge labeled, etc.).
           Cross-surface consistency means screen
           readers don&rsquo;t hear duplicate
           announcements when a single event hits
           multiple surfaces.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Routing rules declarative. Surface
           adapters pluggable (toast renderer,
           badge renderer, inbox).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The system is a <strong>delivery hub</strong>{" "}
           that receives WebSocket events,
           deduplicates, applies routing rules,
@@ -174,7 +176,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           (toast, badge, inbox, inline), and
           coordinates cross-tab consistency via
           BroadcastChannel.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>event arrival</strong>: dedupe
           by id (Set of recent ids). Apply
@@ -183,7 +185,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           inline UI? Dispatch to relevant
           adapters.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The <strong>toast adapter</strong> calls
           the Toast Notification System to show a
           transient banner. The <strong>badge
@@ -195,8 +197,8 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           specific listeners (e.g. the chat UI
           listens for new-message events to
           update its thread).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>read action</strong> (user
           clicks a toast or marks read in inbox):
           dispatch a read event to the hub. The
@@ -204,22 +206,22 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           the badge, dismisses any related toast.
           Broadcasts the read event via
           BroadcastChannel for cross-tab.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-tab consistency</strong>:
           BroadcastChannel propagates state changes
           (new notification, read, dismissed).
           Receiving tabs update their state
           accordingly without re-fetching from the
           server.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Reconnection</strong>: on WebSocket
           reconnect, fetch missed events via REST
           (since-last-seen). Dedup against the
           existing state. Apply routing.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Ordering and idempotency</strong>:
           events carry timestamps. Reads use
           last-write-wins by timestamp. Marking
@@ -228,7 +230,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           {`{ created, read }`} events for the
           same id ends up in the read state
           regardless of arrival order.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Per-user preferences</strong>:
           stored server-side; client receives the
@@ -252,219 +254,203 @@ export default function RealTimeNotificationDeliverySystemArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>NotificationHub</strong> is the
-          delivery coordinator.
-          <strong> WebSocketAdapter</strong>{" "}
-          subscribes to events.
-          <strong> RoutingRules</strong> decides
-          surfaces per event.
-          <strong> DeduplicationCache</strong>{" "}
+        <HighlightBlock as="p" tier="crucial"><strong> DeduplicationCache</strong>{" "}
           tracks recent ids.
           <strong> SurfaceAdapters</strong> for
-          toast, badge, inbox, inline.
-          <strong> BroadcastBridge</strong>{" "}
+          toast, badge, inbox,</HighlightBlock>
+<HighlightBlock as="p" tier="important">inline.
+          <Highlight tier="important"><strong> BroadcastBridge</strong></Highlight>{" "}
           handles cross-tab.
           <strong> PreferenceStore</strong> holds
-          user rules.
-        </p>
+          user rules.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Hub state: dedup cache, recent events.
-          Surface states: toast queue, badge
+        <HighlightBlock as="p" tier="crucial">Hub state: dedup cache, recent events.
+          Surface states: toast queue,</HighlightBlock>
+<HighlightBlock as="p" tier="important">badge
           count, inbox list — each in their own
-          store. Hub mutates them via dispatch.
+          store. Hub mutates</HighlightBlock>
+<HighlightBlock as="p" tier="important">them via dispatch.
           BroadcastChannel synchronizes across
-          tabs.
-        </p>
+          tabs.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Event shape:{" "}
-          <code>{` { id, type, target, content, surfaces?, createdAt } `}</code>.
-          Routing rule: per-type surface list.
-          Surface adapter contract:
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Event shape:</Highlight>{" "}
+          <Highlight tier="important">
+            <code>{` { id, type, target, content, surfaces?, createdAt } `}</code>
+          </Highlight>
+          . Routing rule: per-type surface list. Surface adapter contract:{" "}
           <code>{` { onEvent(event), onRead(id), onDismiss(id) } `}</code>.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Dedup cache O(1) lookup. Routing rules
-          static after init. Cross-tab broadcast
-          fire-and-forget. Surface adapters batch
+          static <Highlight tier="important">after init. Cross-tab broadcast
+          fire-and-forget. Surface</Highlight> adapters batch
           per-frame to avoid render flooding.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Toasts subtle and non-blocking. Badge
-          count accurate. Inbox accumulates.
-          Inline updates seamlessly. No
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">No
           duplicate announcements: if a chat
-          message shows as a toast and inline
-          simultaneously, the toast is the
-          announcer; inline appears silently.
-        </p>
+          message shows as a toast and inline</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">simultaneously, the toast is the
+          announcer; inline appears silently.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Each surface follows its own a11y
-          rules. Hub coordinates so screen
-          readers don&rsquo;t hear duplicate
-          announcements. Toasts use polite live
+        <HighlightBlock as="p" tier="crucial">Each surface follows its own a11y
+          rules. Hub coordinates so screen</HighlightBlock>
+<HighlightBlock as="p" tier="important">readers don&rsquo;t hear duplicate
+          announcements. Toasts use polite</HighlightBlock>
+<HighlightBlock as="p" tier="important">live
           region; inbox doesn&rsquo;t auto-
-          announce; badge is labeled.
-        </p>
+          announce; badge is labeled.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Authenticated WebSocket. Server-
-          enforced. Content sanitized at
-          surface boundaries. Per-user
+          <Highlight tier="important">enforced. Content sanitized at
+          surface boundaries.</Highlight> Per-user
           preferences server-stored.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for routing rules and
-          dedup. Integration tests with mock
-          WebSocket: event arrives, hits
+          dedup. Integration tests <Highlight tier="important">with mock
+          WebSocket: event arrives, hits</Highlight>
           correct surfaces; read action
           consistent across surfaces;
           cross-tab convergence.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Same event delivered twice (race
-          between WebSocket and reconnect REST
-          fetch): dedup by id. Read event
-          before created event: idempotent
-          handling lands on read state. User
+        <HighlightBlock as="p" tier="crucial">User
           opens inbox in tab A while tab B
           shows a toast: toast dismisses on
           inbox read via BroadcastChannel.
-          Quiet hours active: skip toast but
+          Quiet hours active: skip toast</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">but
           inbox accumulates; badge updates.
           User preferences change mid-session:
           subsequent events use new rules;
-          existing state unchanged.
-        </p>
+          existing state unchanged.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Pattern reuses across products with
-          multiple notification surfaces. Surface
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Pattern reuses <Highlight tier="important">across products with
+          multiple notification surfaces.</Highlight> Surface
           adapters plug-and-play.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Notification content typically pre-
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Notification content typically <Highlight tier="important">pre-
           translated server-side per recipient
-          locale. UI strings via i18n.
-        </p>
+          locale.</Highlight> UI strings via i18n.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Hub vs per-surface direct</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Hub centralizes routing and
           consistency. Per-surface direct is
           simpler but produces drift between
           surfaces. Hub is essential for any
           product with more than one surface.
-        </p>
+        </HighlightBlock>
 
         <h3>Client routing vs server routing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client routing lets us apply per-
           session preferences and inline-context
           awareness. Server routing is
           authoritative but inflexible. We do
           client routing on top of server-
           provided preferred-surfaces metadata.
-        </p>
+        </HighlightBlock>
 
         <h3>BroadcastChannel vs polling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           BroadcastChannel is instant.
           Polling is the fallback. For modern
           browsers, BroadcastChannel.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           OS-level push integration.
-          AI-prioritized surfacing (only show
-          critical as toast; demote noise).
+          AI-prioritized surfacing (only <Highlight tier="important">show
+          critical as toast; demote noise).</Highlight>
           Smart digesting. Cross-device
           consistency. Voice-assistant
           delivery.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why a delivery hub?</strong>{" "}
           One WebSocket subscription; routing
           to surfaces; cross-surface consistency.
           Without the hub, each surface would
           subscribe independently, drift, and
           duplicate.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How is dedup handled?</strong>{" "}
           Cache of recent event ids. Repeat
           arrivals are no-ops. Cache evicted
           after a TTL.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How is cross-surface
           consistency maintained?</strong> Read
           actions go to the hub, which updates
           all relevant surfaces (badge,
           inbox, toast). BroadcastChannel
           propagates to other tabs.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How are out-of-order events
           handled?</strong> Idempotently via
           state semantics. Read event for an
           unknown id can preempt the create
           event; when create arrives, it&rsquo;s
           inserted as already-read.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How are user preferences
@@ -489,31 +475,26 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           Server-side per-product.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How is this
           accessible?</strong> Surface-specific
           a11y; hub prevents duplicate
           announcements when one event hits
           multiple surfaces.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A real-time notification delivery
-          system is a{" "}
-          <strong>hub + dedup + routing rules +
-          surface adapters + cross-tab
-          coordination</strong>. The hub keeps
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">The hub keeps
           surfaces consistent; routing routes
           events to the right places; cross-
           surface read actions propagate
-          immediately; out-of-order events
+          immediately;</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">out-of-order events
           handled idempotently. The result is
           notifications that feel coherent
-          across every surface they appear on.
-        </p>
+          across every surface they appear on.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

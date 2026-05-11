@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,38 +26,38 @@ export default function LocalFirstArchitectureArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Traditional web apps are server-centric: data lives on server. Client
           fetches data on load, sends mutations to server, waits for
           confirmation. Offline = app is dead. Slow network = app feels
           unresponsive.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Local-first flips the model: data lives locally (IndexedDB/SQLite).
           User interacts with local data instantly. App syncs to server
           asynchronously and continuously. Offline = app continues working
           normally. Sync happens when online. Slow network = no lag; sync
           happens in background.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Example: note-taking app (Obsidian, Notion offline mode). User creates
           note offline. The note appears instantly in the list (local update).
           When online, the note syncs to server. Meanwhile, user can edit,
           delete, reorganize locally. No waiting, no network dependency.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key shifts: (1) immediate feedback on all actions (no server
           round-trip), (2) offline-first (works without network), (3) eventual
           consistency (server and client converge asynchronously), (4)
           collaborative by design (multiple devices sync to server).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> IndexedDB or local database
           available. Server supports pull-based sync (client queries for
           updates, not server-pushed). User devices may go offline/online
           unpredictably. Multi-device sync is expected. Eventual consistency
           acceptable (temporary divergence between devices is OK).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -64,10 +66,10 @@ export default function LocalFirstArchitectureArticle() {
           Functional Requirements
         </h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Local data operations:</strong> All CRUD operations work on
             local data immediately without server.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Background sync:</strong> Periodically (or on network
             detection) sync local data to server.
@@ -98,23 +100,23 @@ export default function LocalFirstArchitectureArticle() {
           Non-Functional Requirements
         </h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Latency:</strong> User actions apply instantly (often under
             about 1 ms, local only). Sync updates available within 5-30 seconds
             of network restore.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Consistency:</strong> Eventually consistent across devices;
             divergence resolved within minutes.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Storage:</strong> Local database scales to 100MB+ on modern
             devices.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Bandwidth:</strong> Sync is efficient (delta sync,
             compression). Works on slow/metered networks.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Battery:</strong> Doesn't drain battery with constant
             syncing; intelligent batching and exponential backoff.
@@ -124,25 +126,25 @@ export default function LocalFirstArchitectureArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Local-first architecture consists of: (1) local storage
           (IndexedDB/SQLite) as the authoritative data store, (2) local queries
           and mutations that update local storage synchronously, (3) a
           background sync process that periodically uploads local changes and
           downloads remote updates, (4) conflict resolution when local and
           remote diverge.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Data flow: user action → update local storage → return immediately →
           (async) sync to server → merge server updates into local store. The
           user perceives instant feedback; sync is invisible.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Sync algorithm: track version numbers (logical clocks, timestamps).
           Client sends all changes since last sync (with versions). Server
           merges them, detects conflicts, sends back resolved version and
           server-side changes. Client merges server updates.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -157,13 +159,13 @@ export default function LocalFirstArchitectureArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Local Storage Design
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use IndexedDB for web or SQLite for mobile. Schema includes: data
           (notes, posts, etc.) and sync metadata (version number per record,
           sync state, conflicts). Example schema for notes: id, title, content,
           lastModified (local timestamp), version (logical version), syncState
           (local, syncing, synced, conflict).
-        </p>
+        </HighlightBlock>
         <p>
           Versioning: use logical timestamps (Lamport clocks) or hybrid
           timestamps (server-side version + local sequence). Version uniquely
@@ -174,18 +176,18 @@ export default function LocalFirstArchitectureArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Background Sync Process
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Periodically (every 5-30 seconds) or on network detection, the app
           queries local database for unsync'd records (syncState != synced).
           Batches them and POSTs to server with version info. Server receives
           changes, applies them with conflict resolution, responds with merged
           data and server-side changes since client's last sync.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Exponential backoff: if sync fails (network error, server error),
           retry with increasing delays (1s, 2s, 4s, capping at 5 minutes). Don't
           retry constantly on slow networks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Conflict Detection and Resolution
@@ -197,12 +199,12 @@ export default function LocalFirstArchitectureArticle() {
           (compare timestamps, keep newer), (2) automatic merge (use CRDT-like
           semantics), (3) manual (show both versions, user chooses).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           CRDTs are optimal: operations are commutative and idempotent. If
           server edits note at position 5, and local inserts at position 10,
           both can apply either order and get same result. Libraries like
           Automerge or Yjs implement this.
-        </p>
+        </HighlightBlock>
         <p>
           For simple last-write-wins: compare server lastModified with local
           lastModified. Newer one wins. Simpler but data loss possible (local
@@ -232,12 +234,12 @@ export default function LocalFirstArchitectureArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incremental Sync</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Naive: on each sync, send entire local database. With large datasets
           (1000 notes), this is slow and wasteful. Better: send only changed
           records. Track version per record and send records whose local version
           is newer than the last-synced version.
-        </p>
+        </HighlightBlock>
         <p>
           Server tracks last-sync timestamp per device. On pull, server sends
           all records modified since that timestamp. Devices never sync same
@@ -282,27 +284,27 @@ export default function LocalFirstArchitectureArticle() {
 
       <section>
         <h2>Trade-offs and Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Complexity: local-first adds complexity (versioning, conflict
           resolution, multi-device sync). Simpler apps (single-user,
           always-online) may not justify it. Complex apps (note-taking,
           collaboration, mobile) benefit greatly.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Server scalability: server must handle sync from many devices.
           Efficient sync (deltas, compression) is essential. Server may become
           bottleneck if sync is inefficient.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Data freshness: eventual consistency means users may see stale data
           briefly. If strong consistency required (e.g., banking), local-first
           may not be suitable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           CRDT vs last-write-wins: CRDT is powerful but adds complexity and
           overhead. Last-write-wins is simpler but data loss possible. Choose
           based on needs.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -310,52 +312,34 @@ export default function LocalFirstArchitectureArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 1: Pull-Based Sync with Versioning
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Client tracks lastSyncVersion. On sync, sends all records with version
           newer than lastSyncVersion. Server responds with remote updates since
           lastSyncVersion. Client merges and updates lastSyncVersion.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 2: CRDT-Based Eventual Consistency
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use CRDT library (Automerge, Yjs). All operations are CRDT operations.
           Sync is automatic: replicate all operations, devices converge. Handles
           conflicts transparently.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 3: Offline-First with Library
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Use PouchDB, WatermelonDB, or Realm. Library handles all sync logic.
           Developers focus on data model and UI.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Local-first architecture prioritizes local storage as the source of
-          truth, syncing to server asynchronously and eventually. This provides
-          instant feedback (no network latency), offline capability (app works
-          disconnected), and resilience (network failures are tolerable).
-          Essential patterns include local-first design (all operations work
-          locally first), background sync with exponential backoff, versioning
-          and conflict detection/resolution (CRDT for optimal), incremental sync
-          (send only deltas), and multi-device sync via server coordination.
-          Trade-offs include added complexity (versioning, sync logic) versus
-          simplified user experience (instant feedback, offline support), and
-          eventual consistency (temporary divergence acceptable) versus strong
-          consistency (always up-to-date). Real-world systems (Obsidian, Notion
-          offline mode, Figma) use local-first. For best results, use an
-          established library (PouchDB, WatermelonDB, Automerge) rather than
-          building sync from scratch, design for eventual consistency, use CRDT
-          for collaborative features, implement exponential backoff for retries,
-          and provide clear sync status UI. Local-first is ideal for mobile
-          apps, collaborative editors, and offline-capable productivity tools.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Trade-offs include added complexity (versioning, sync logic) versus simplified user experience (instant feedback, offline support), and eventual consistency (temporary divergence acceptable) versus strong consistency (always</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">up-to-date). Real-world systems (Obsidian, Notion offline mode, Figma) use local-first. For best results, use an established library (PouchDB, WatermelonDB, Automerge) rather than building sync from scratch, design for eventual consistency, use CRDT for collaborative features, implement exponential backoff for retries, and provide clear sync status UI. Local-first is ideal for mobile apps, collaborative editors, and offline-capable productivity tools.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

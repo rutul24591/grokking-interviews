@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,18 +37,18 @@ export default function RateLimitedAutocompleteArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User types search query: "jav...a" (4 keystrokes). Naive implementation: 4 requests sent (one per key). Keystroke 1 "j" → request. Keystroke 2 "ja" → request (first still in-flight). Result: wasted requests (too many, overlapping). Better: debounce (wait 300ms after last keystroke before requesting). After "java" + 300ms silence → single request. User still sees instant suggestions (UI shows as they type, request deferred). Result: 1 request instead of 4.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Additional challenges: (1) User types fast, requests arrive out of order (request for "java" completes before "jav" starts). Must discard stale results (don't show "java" results after user edited to "javan"). (2) Rate limiting (server allows 100 requests/minute). If all users debounce-request simultaneously, load spike. Solution: throttle client-side (space out requests). (3) Caching ("java" and "javan" may have same results—cache by prefix to avoid duplicate requests). (4) Cancellation (user continues typing, previous request becomes irrelevant—cancel it).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Real-world impact: Google Search autocomplete handles 1B+ searches/day. Debouncing + caching + deduplication critical. Without them, server overwhelmed.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Explicit assumptions:</strong> User types incrementally. Keystroke rate variable (200-500ms between keys). Server has rate limits. Concurrent users. Requests may arrive out of order. Response latency 100-500ms.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -57,10 +59,10 @@ export default function RateLimitedAutocompleteArticle() {
             <strong>Debouncing:</strong> Wait 300ms after user stops typing before
             fetching.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rate Limiting:</strong> Space requests (e.g., min 1s between
             requests).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Request Deduplication:</strong> If user quickly types
             &quot;ja&quot; then &quot;java&quot;, cancel &quot;ja&quot; request.
@@ -76,21 +78,21 @@ export default function RateLimitedAutocompleteArticle() {
             <strong>Keyboard Navigation:</strong> Arrow keys navigate results, Enter
             selects.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accessibility:</strong> ARIA labels, screen reader support.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Perceived Latency:</strong> Results appear quickly. Cache ensures
             instant results for repeat queries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Server Load:</strong> Debounce, rate limit, deduplication minimize
             requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory:</strong> Cache bounded. LRU eviction when full.
           </li>
@@ -98,10 +100,10 @@ export default function RateLimitedAutocompleteArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             User types rapidly (e.g., &quot;java&quot; in 200ms) → debounce waits,
             then fetches once.
-          </li>
+          </HighlightBlock>
           <li>
             Two requests in flight simultaneously → cancel older, keep newer.
           </li>
@@ -116,13 +118,12 @@ export default function RateLimitedAutocompleteArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          On input change, debounce (wait 300ms). Check cache for results. If cached,
+        <HighlightBlock as="p" tier="crucial">On input change, debounce (wait 300ms). Check cache for results. If cached,
           show immediately. Otherwise, respect rate limit (wait if last request recent),
-          then fetch. Cancel previous in-flight request. Show loading indicator while
+          then fetch. Cancel previous in-flight request.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Show loading indicator while
           fetching. On results arrive, cache and display. Handle errors and timeouts
-          gracefully. Keyboard navigation and selection handled by component.
-        </p>
+          gracefully. Keyboard navigation and selection handled by component.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -133,10 +134,10 @@ export default function RateLimitedAutocompleteArticle() {
           Delay query fetch until user stops typing for N milliseconds.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Debounce Delay:</strong> Typical 300-500ms. Balance between
             responsiveness and load.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Implementation:</strong> Timer restarted on each keystroke.
             Cleared on unmount.
@@ -160,10 +161,10 @@ export default function RateLimitedAutocompleteArticle() {
             <strong>Token Bucket:</strong> Allow N requests per time window. Refill
             periodically.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Queuing:</strong> If rate limit reached, queue request. Execute
             when rate limit allows.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Deduplication</h3>
@@ -238,9 +239,9 @@ export default function RateLimitedAutocompleteArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Keyboard Navigation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Support keyboard navigation in results dropdown.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Arrow Up/Down:</strong> Navigate between results. Highlight
@@ -270,14 +271,14 @@ export default function RateLimitedAutocompleteArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Support screen readers and keyboard-only navigation.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>ARIA Labels:</strong> Input labeled &quot;Search suggestions&quot;.
             Results list has role=&quot;listbox&quot;.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Live Region:</strong> Announce result count and current highlight
             to screen readers.
@@ -293,29 +294,29 @@ export default function RateLimitedAutocompleteArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Debounce vs Throttle</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Debounce (wait for silence) vs Throttle (space out requests). Debounce
           better for autocomplete (fewer requests). Throttle better for scroll
           events.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Search Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Local search (filter cached results) vs remote search (query backend).
           Hybrid: show local results instantly, fetch remote in background.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Mobile Considerations</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Mobile may have higher latency/lower bandwidth. Adjust debounce delay and
           rate limit accordingly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Prefetching</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Prefetch suggestions for common queries on page load (e.g., trending
           searches).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -330,28 +331,28 @@ export default function RateLimitedAutocompleteArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Debounce Based on Network</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Detect network latency: slow network → longer debounce (wait for user to
           finish typing). Fast network → shorter debounce. Profile user typing
           speed: power-users type fast, casual users slower. Adjust debounce
           adaptively. Complex but better UX.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Local Search First Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Show local results instantly (from cache), fetch remote in background.
           User types "j", show recent searches starting with "j" immediately.
           Meanwhile, fetch fresh suggestions server-side. When arrive, update.
           Dramatically improves perceived latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Autocomplete Edge Cases</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Test rapid input changes, clear input, unmount mid-fetch. Test cache hits
           vs misses. Test rate limiting (exceed limits, verify graceful degradation).
           Use fake timers for debounce timing. Property-based: generate random input
           sequences, verify behavior consistent.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Optimization</h3>
         <p>
@@ -361,18 +362,18 @@ export default function RateLimitedAutocompleteArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Mobile Considerations</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Mobile has higher latency, variable bandwidth. Increase debounce delay
           (500-800ms). Reduce result count (show 5 instead of 20). Local search
           more valuable on mobile (instant results). Test on real devices.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Accessibility at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Screen reader announces result count. Keyboard: arrow keys navigate,
           Enter selects, Escape closes. ARIA live region updates on results.
           Test with real screen readers. Accessibility shouldn't be afterthought.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Integration with Backend Search</h3>
         <p>
@@ -390,48 +391,44 @@ export default function RateLimitedAutocompleteArticle() {
           src="/diagrams/system-design-problems/low-level-design/networking-data-systems/rate-limited-autocomplete.svg"
           alt="Rate-limited autocomplete request pipeline and techniques diagram"
         />
+
+        <HighlightBlock as="p" tier="crucial">
+          Interview signal: autocomplete is a load-shedding pipeline (debounce/throttle + cancellation + caching) that must preserve perceived responsiveness while protecting downstream search services.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Treat cancellation as correctness, not optimization: abort in-flight fetches on new keystrokes so stale suggestions don&rsquo;t win the race.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Combine client-side smoothing with hard server-side rate limits (token bucket/leaky bucket) and observability (429 rate, p95 latency, cache hit rate) to tune safely.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Responsiveness vs Load</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shorter debounce = more responsive but higher load. Longer debounce =
           lower load but less responsive.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Staleness</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Caching results risks showing stale suggestions. Balance freshness with
           performance via TTL.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Server Side</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Rate limiting and caching reduce backend load significantly. Implement
           server-side caching and rate limiting for extra protection.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          A rate-limited autocomplete system balances user responsiveness with
-          resource efficiency. For staff/principal engineers, critical additions
-          include adaptive debounce based on network conditions, local search first
-          pattern (instant local results + background fetch), client vs server-side
-          rate limiting strategies, and comprehensive testing of edge cases. At 1M
-          concurrent users, caching aggressively and ranking by popularity are
-          essential. Mobile optimization (higher latency, variable bandwidth) differs
-          from desktop. Real-world systems use machine learning to rank results
-          based on user behavior. Testing must cover rapid typing, network
-          interruptions, cache behavior, and accessibility (screen readers, keyboard
-          navigation). Production monitoring tracks cache hit rate, response time
-          percentiles (P95, P99), and retry rates to detect degradation. Understanding
-          the interaction between debouncing, rate limiting, caching, and deduplication
-          is essential for efficient client-server communication at scale.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems use machine learning to rank results based on user behavior. Testing must cover rapid typing, network interruptions, cache behavior, and</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">accessibility (screen readers, keyboard navigation). Production monitoring tracks cache hit rate, response time percentiles (P95, P99), and retry rates to detect degradation. Understanding the interaction between debouncing, rate limiting, caching, and deduplication is essential for efficient client-server communication at scale.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

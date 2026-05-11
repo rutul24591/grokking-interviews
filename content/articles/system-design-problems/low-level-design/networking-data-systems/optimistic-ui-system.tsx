@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,18 +37,18 @@ export default function OptimisticUISystemArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User creates a new post, clicks "Submit". Pessimistic approach: freeze UI, wait for server confirmation (500ms-2s), show post. User perceives lag. Optimistic approach: immediately add post to list (UI updates instantly), send request to server in parallel. Server confirms success, nothing changes. If server rejects, rollback (remove post, show error). User perceives instant response.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Optimistic updates dramatically improve UX. Gmail shows sent email instantly (optimistic), Google Docs shows edits instantly. Without this, apps feel slow. Challenge: UI can temporarily diverge from server state. If optimistic update wrong (user guesses wrong value), UI shows incorrect data briefly. Must handle rollback reliably, show loading indicator, handle concurrent mutations, manage request deduplication.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key risk: data consistency. If optimistic update assumes post will have ID 123, but server assigns ID 456, client data out of sync. Solution: server returns full response with actual assigned IDs. Client updates UI with real data.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Explicit assumptions:</strong> Mutations may fail (validation, conflicts). Concurrent mutations possible (multiple users editing same resource). Network latency 100-500ms. Rollback must restore previous state. Server is source of truth. Request IDs available for deduplication.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -59,22 +61,22 @@ export default function OptimisticUISystemArticle() {
             <strong>Immediate UI Update:</strong> Update UI instantly when user
             initiates mutation.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Rollback on Failure:</strong> If mutation fails, revert UI
             to previous state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Undo Stack:</strong> Store previous state so rollback can
             restore it exactly.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Conflict Resolution:</strong> Handle conflicts when
             concurrent mutations affect same data.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Manual Retry:</strong> Expose retry button so users can
             retry failed mutations.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Pending State Indicator:</strong> Show loading/pending state
             while mutation in-flight.
@@ -85,10 +87,10 @@ export default function OptimisticUISystemArticle() {
           Non-Functional Requirements
         </h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Instant Feedback:</strong> UI updates synchronously, no
             latency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Memory Efficient:</strong> Undo stack bounded (e.g., last 10
             mutations).
@@ -109,9 +111,9 @@ export default function OptimisticUISystemArticle() {
             Two mutations to same resource conflict → resolve via
             server-provided conflict info.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Network request times out → keep UI in pending state, expose retry.
-          </li>
+          </HighlightBlock>
           <li>
             Rollback during refetch → clean up timers and abort in-flight
             requests.
@@ -121,15 +123,8 @@ export default function OptimisticUISystemArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          On mutation initiation, immediately update local state (optimistic
-          update), then send request to server. Store the previous state in an
-          undo stack. If server responds with success, confirm the optimistic
-          update and update cache. If server responds with error, rollback to
-          previous state from undo stack. If conflict detected, apply server
-          state and notify user. Implement a mutation queue to serialize
-          mutations to same resource, preventing concurrent conflicts.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">If server responds with error, rollback to previous state from undo stack. If</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">conflict detected, apply server state and notify user. Implement a mutation queue to serialize mutations to same resource, preventing concurrent conflicts.</HighlightBlock>
       </section>
 
       <section>
@@ -151,10 +146,10 @@ export default function OptimisticUISystemArticle() {
             On server success: confirm optimistic update, mark mutation
             complete.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             On server error: rollback from undo stack, display error message,
             expose retry.
-          </li>
+          </HighlightBlock>
         </ol>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Undo Stack</h3>
@@ -208,10 +203,10 @@ export default function OptimisticUISystemArticle() {
             <strong>Server Wins:</strong> Discard local mutation, use server
             state. Simple but loses user changes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Client Wins:</strong> Apply local mutation after server
             mutation. Risks data inconsistency if server validation failed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Three-Way Merge:</strong> Merge base state, server mutation,
             and client mutation. Complex but preserves both changes.
@@ -243,18 +238,18 @@ export default function OptimisticUISystemArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Retry Mechanism</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If mutation fails, expose a retry button so user can re-attempt the
           mutation.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry State:</strong> Track retry count and reason for
             failure.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Exponential Backoff:</strong> Retry with increasing delays.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Max Retries:</strong> Cap at 3-5 retries. Beyond that,
             require manual intervention.
@@ -288,36 +283,36 @@ export default function OptimisticUISystemArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Type Safety</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Use TypeScript generics to enforce type consistency between optimistic
           state and server response.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Undo/Redo</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Extend optimistic updates to support undo/redo. Store mutations in a
           history list for users to revert or redo changes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Persistence</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For offline scenarios, persist pending mutations to localStorage. On
           reconnection, replay mutations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Analytics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Track mutation failures and rollback rates. High rollback rate
           indicates bad optimism strategy.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Optimistic Update Lifecycle & State Transitions</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           An optimistic mutation follows a well-defined lifecycle with clear state transitions. Initial state: idle (no mutation in-flight). User initiates mutation → state becomes optimistic-pending (UI updated, server request sent). Three possible outcomes from optimistic-pending: success (server confirms), error (server rejects), or timeout (no response). On success → state becomes confirmed (optimistic update confirmed by server). On error → state becomes rolled-back (UI reverted to previous state, error shown). On timeout → state remains pending with retry option.
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/networking-data-systems/optimistic-updates-lifecycle.svg"
@@ -325,19 +320,19 @@ export default function OptimisticUISystemArticle() {
         />
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Undo Stack Implementation Details</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The undo stack is a LIFO data structure storing (mutationId, previousState, timestamp, metadata). When mutation initiated, current state snapshot pushed. On rollback, pop stack and restore state. Size bounded: maximum 20-50 entries. When full, oldest entries discarded. Each stack entry includes: mutation type (create, update, delete), affected resource ID, old value, new value (optimistic), confirmation status. This metadata helps debug rollback issues and replay mutations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Concurrent Mutation Ordering & Causality</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           When two mutations happen simultaneously on same resource, ordering matters. Use vector clocks or timestamps to establish causality. Example: User A edits title, user B edits description simultaneously. Server must decide: apply A then B, or B then A? With timestamps: whoever's timestamp earlier, apply first. Vector clocks handle distributed ordering without central clock. Client-side queue prevents client's own mutations from conflicting (serial execution per resource). But server-side still needs ordering for inter-client mutations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Rollback Cascading & Side Effects</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mutation M1 succeeds optimistically. User does M2 based on M1 (e.g., created post, then likes it). If M1 rolls back, M2 invalid (can't like post that doesn't exist). Rollback must cascade: rollback M1 → cascade rollback M2. Collect mutations dependent on failed mutation, roll them back automatically. Show user "M1 failed, M2 rolled back as consequence". This requires dependency tracking: which mutations depend on which.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimism Confidence Scoring</h3>
         <p>
@@ -345,9 +340,9 @@ export default function OptimisticUISystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Network Failure Handling & Offline Queue</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If network unavailable during mutation, queue optimistically. On reconnection, replay queue in order. Each queued mutation has timestamp. On server, apply mutations older to newer (causality). Deduplication via mutation ID: server sees same ID twice, returns cached result. Essential for offline-first apps. Persist queue to IndexedDB, survive page reload.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -356,25 +351,25 @@ export default function OptimisticUISystemArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Complexity vs Responsiveness
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimistic updates add complexity but dramatically improve perceived
           performance. Trade-off is worth it for most user-facing mutations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Correctness vs Speed
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Serving stale data immediately (optimistic) risks incorrectness if
           mutation fails. Balance via appropriate optimism level per mutation
           type.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Memory Usage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Storing undo stack increases memory. Bound stack size to prevent
           unbounded growth.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -383,13 +378,13 @@ export default function OptimisticUISystemArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Observability & Conflict Metrics
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Emit metrics on optimistic success rate, rollback frequency, conflict
           rate. If rollback &gt; 5%, indicates bad optimism strategy or backend
           issues. Trace mutations through system. Monitor latency from
           rollback/retry cycle. At 1M concurrent users, conflicts common—track
           resolution strategy used.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Three-Way Merge vs Last-Write-Wins
@@ -414,22 +409,22 @@ export default function OptimisticUISystemArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Idempotency Keys & Deduplication
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assign unique ID per mutation. Server deduplicates via ID: same ID
           resubmitted returns cached result. Prevents duplicate effects on
           retry. Essential safety mechanism at scale. Pair with client-side
           request deduplication.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Partial Failures & Cascading Rollbacks
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mutation succeeds partially (some resources updated, others fail).
           Fully rollback to maintain consistency. Show user exactly what failed.
           Allow selective retry. Handle cascading: if A fails, do B and C
           rollback?
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Undo/Redo & History Management
@@ -462,41 +457,29 @@ export default function OptimisticUISystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: optimistic succeeds locally but fails server-side. UI shows
           success, user believes saved—silent failure worst case. Always show
           pending state and surface errors. Another: aggressive conflict
           resolution (always last-write) loses user work. Test extensively.
           Third: unbounded undo stack leaks memory. Bound carefully.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Integration with Cache Invalidation
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mutation updates local state optimistically and invalidates related
           cache entries. Fetch hook refetches. Coordinate timing: does
           optimistic update happen before or after cache invalidation? Ensure
           consistency.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Optimistic UI updates dramatically improve perceived performance at
-          cost of complexity. For staff/principal engineers, critical aspects
-          include conflict resolution strategies (three-way merge vs
-          last-write), idempotency keys for safety, undo/redo functionality,
-          offline mutation queuing, and comprehensive testing of concurrent
-          scenarios. Real-world systems face cascading rollbacks, partial
-          failures, race conditions, and must maintain consistency across
-          clients. Observability on rollback/conflict rates is essential for
-          diagnosing issues. Understanding these patterns is crucial for
-          building reliable, user-friendly applications at scale where network
-          latency and failures are inevitable. Implement carefully—silent
-          failures and data loss worse than showing errors.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems face cascading rollbacks, partial failures, race conditions, and must maintain consistency across clients. Observability on</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">rollback/conflict rates is essential for diagnosing issues. Understanding these patterns is crucial for building reliable, user-friendly applications at scale where network latency and failures are inevitable. Implement carefully—silent failures and data loss worse than showing errors.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,40 +37,40 @@ export default function RaceConditionHandlingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Two users edit same post simultaneously. User A edits title ("Post" → "Post Updated"). User B edits description. A's request sent, then B's request sent. B's request arrives first (faster network). Server updates post, sets version 2. A's request arrives. Server sees version 1, but post is version 2 (conflict!). Which edit wins? User A loses their title edit. Inconsistent state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Solutions: (1) Last-Write-Wins (LWW): later edit overwrites. Simple, fast. Con: early edit lost. (2) Optimistic Locking: version numbers. Client sends version (e.g., "you're editing v1"). Server checks: if v1 matches current, update. If not (v2 exists), reject conflict. Client receives error, fetches latest, retries. (3) Operational Transformation (OT): preserve both edits by transforming them. Complex but preserves intent. (4) Conflict Resolution UI: show user both versions, let them choose.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key insight: out-of-order delivery can cause lost updates (A's request arrives after B's, even though sent first). Must detect and handle. Server should be source of truth. Client mutations optimistic (show immediately), but must reconcile with server on conflict.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Multiple users/tabs may modify same resource. Mutations may arrive out of order. Some conflicts acceptable, others not. Server is authority. Conflict detection possible (version numbers, timestamps).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Conflict Detection:</strong> Identify when mutations conflict
             (modify same fields).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Version Tracking:</strong> Each resource version tracked. Mutations
             include version.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Conflict Resolution:</strong> Resolve conflicts consistently (last-write-wins,
             merge, user choice).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>State Consistency:</strong> All clients eventually converge to same
             state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Lost Update Prevention:</strong> No updates silently lost.
           </li>
@@ -97,9 +99,9 @@ export default function RaceConditionHandlingArticle() {
           <li>
             Stale mutation arrives after fresher mutation → reject or reapply.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             Optimistic update loses data → rollback and retry.
-          </li>
+          </HighlightBlock>
           <li>
             Conflict in offline mode → queue mutations, replay on sync.
           </li>
@@ -108,14 +110,12 @@ export default function RaceConditionHandlingArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Each resource has a version number (timestamp, logical clock, or hash).
+        <HighlightBlock as="p" tier="crucial">Each resource has a version number (timestamp, logical clock, or hash).
           Mutations include the version they&apos;re based on. Server checks if
-          version matches current. If match, apply mutation and increment version.
-          If mismatch, conflict detected. Resolve via last-write-wins, merge, or
+          version matches current. If match, apply mutation and increment version.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">If mismatch, conflict detected. Resolve via last-write-wins, merge, or
           user choice. Return result to client. Client updates state with result
-          version to prevent subsequent conflicts.
-        </p>
+          version to prevent subsequent conflicts.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -177,25 +177,25 @@ export default function RaceConditionHandlingArticle() {
             <strong>Three-Way Merge:</strong> Merge base, my mutation, their mutation.
             Preserves both edits if non-overlapping.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Operational Transformation:</strong> Adjust operations to maintain
             consistency. Complex.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>User Choice:</strong> Present conflict to user, let them choose.
             Slow but safe.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Mutation Ordering</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Ensure mutations applied in consistent order across replicas.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Total Ordering:</strong> All mutations ordered globally. Requires
             central authority (leader).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Causal Ordering:</strong> Dependent mutations ordered. Non-dependent
             may be unordered.
@@ -278,10 +278,10 @@ export default function RaceConditionHandlingArticle() {
             <strong>Resolution Rate:</strong> % resolved via last-write-wins vs merge
             vs user choice.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency Impact:</strong> How much do retries add to mutation
             latency.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -289,39 +289,39 @@ export default function RaceConditionHandlingArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Field-Level Conflicts</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Detect conflicts at field level, not whole record. Two mutations to
           different fields don&apos;t conflict.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Conflict Serialization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Some databases (PostgreSQL, MySQL) provide built-in optimistic locking via
           version columns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">State Machines</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For complex workflows, use state machines to prevent invalid transitions due
           to concurrent mutations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Simulate concurrent mutations, verify conflict detection and resolution.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">CRDT & Conflict-Free Replicated Data Types</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For collaborative systems, CRDTs allow concurrent mutations to converge
           automatically. No explicit conflict resolution needed. Trade: complexity
           and memory overhead. Solutions exist: Yjs, Automerge. Right choice for
           collaborative editors (Google Docs style).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Vector Clocks & Causal Ordering</h3>
         <p>
@@ -331,18 +331,18 @@ export default function RaceConditionHandlingArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Operational Transformation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Another approach: transform operations to maintain consistency. A inserts
           "x" at position 0, B inserts "y" at position 0 simultaneously. Transform
           one relative to other. Google Docs uses this. Complex but powerful.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Conflict Scenarios</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generate concurrent mutation sequences. Verify final state deterministic.
           Use property-based testing (fast-check) to find edge cases. Test all
           conflict resolution strategies under various timing patterns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring Conflict Rates</h3>
         <p>
@@ -366,19 +366,19 @@ export default function RaceConditionHandlingArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Lessons</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Common: last-write-wins loses data silently. Users realize too late.
           Always notify on conflict. Another: optimistic update assumes success
           then fails—rollback and retry, but show user. Another: distributed
           systems consensus hard—accept eventual consistency, handle conflicts.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response & Debugging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If users report lost data, likely conflict resolution issue. Trace
           mutation order, version history. Implement audit log: every mutation
           recorded with version, timestamp, user. Critical for post-mortems.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -388,47 +388,44 @@ export default function RaceConditionHandlingArticle() {
           src="/diagrams/system-design-problems/low-level-design/networking-data-systems/race-condition-patterns.svg"
           alt="Race condition patterns: out-of-order responses and unmount-while-fetching mitigation diagram"
         />
+
+        <HighlightBlock as="p" tier="crucial">
+          Interview signal: correctness needs a monotonic notion of &ldquo;newer&rdquo; (request ids, versions, timestamps). Without it, out-of-order responses and concurrent mutations silently overwrite fresh state.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          For fetches: use AbortController on unmount and ignore late responses via a request token check. For mutations: use optimistic locking (version columns) or server-side ordering guarantees.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Prefer explicit state machines for complex flows to make invalid transitions impossible (loading → success → stale-update is a bug; model it and prevent it).
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Correctness vs Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Last-write-wins is fast but lossy. Three-way merge is correct but slow.
           Choose based on use case.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">User Experience</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automatic conflict resolution is seamless but risky (data loss). User choice
           is safe but requires action.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Scalability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Central leader for total ordering doesn't scale. Distributed systems use
           vector clocks or causal ordering.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Race condition handling is critical for data consistency in distributed
-          systems. For staff/principal engineers, crucial aspects include CRDTs for
-          conflict-free replication (Yjs, Automerge), vector clocks for causal
-          ordering, operational transformation for real-time collaboration, and
-          deterministic conflict resolution across all replicas. Field-level conflict
-          detection more granular than record-level. Three-way merge preserves both
-          edits; last-write-wins simpler but lossy. At 1M concurrent users, conflicts
-          common—implement sophisticated resolution. Real-world systems must handle
-          offline mutations with replay and conflict detection on sync. Testing with
-          property-based generators finds edge cases. Audit logs (every mutation with
-          version, timestamp) essential for debugging data loss incidents. Integration
-          with optimistic updates, caching, and error handling complex. Understanding
-          these patterns prevents silent data loss—worst type of bug.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">At 1M concurrent users, conflicts common—implement sophisticated resolution. Real-world systems must handle offline mutations with replay and conflict</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">detection on sync. Testing with property-based generators finds edge cases. Audit logs (every mutation with version, timestamp) essential for debugging data loss incidents. Integration with optimistic updates, caching, and error handling complex. Understanding these patterns prevents silent data loss—worst type of bug.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function KanbanBoardArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a Kanban board — the
           column-based UI behind Trello, Jira,
           Linear, GitHub Projects, and any product
@@ -42,8 +44,8 @@ export default function KanbanBoardArticle() {
           composes drag-drop primitives with
           real-time sync and column-aware
           reordering.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: cross-list drag
           (a card moves from column A to column
           B, with reorder within B); swimlanes
@@ -54,41 +56,41 @@ export default function KanbanBoardArticle() {
           rollback; persistence of order +
           column membership; accessibility for
           the multi-list structure.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users (product managers, engineers,
           ops) organize cards on a board.
           Engineering teams plug in: provide
           columns and cards; the runtime
           handles drag and sync.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend supports card move and reorder
           via REST plus real-time updates via
           WebSocket. Each card has stable id,
           column id, position. Modern browsers.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement task management
           features beyond board mechanics. We do
           not implement card detail views
           (consumer-supplied). We do not
           implement column configuration UI
           (separate).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Board with columns rendered horizontally.
           Each column has a header (title, count)
           and a vertical list of cards. Cards
@@ -100,10 +102,10 @@ export default function KanbanBoardArticle() {
           delete cards. Add and delete columns.
           Empty state. Accessibility for cross-
           column drag (keyboard alternative).
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Swimlanes (horizontal sections within
           board). WIP limits (max cards per
           column). Filters (show only cards
@@ -112,62 +114,62 @@ export default function KanbanBoardArticle() {
           cards). Keyboard shortcuts. Undo
           recent moves. Column-level real-time
           presence (who is editing here).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Card content editing (consumer-supplied
           via render prop), workflow automation,
           reporting.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Smooth drag at 60 fps. Real-time updates
           render without disrupting active drags.
           Many cards (100+ per column) virtualize
           if needed.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimistic moves rollback on failure.
           Concurrent moves of the same card
           resolve (server is authoritative;
           client reconciles).
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server enforces per-card permissions
           on move. Real-time channel
           authenticated.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Keyboard alternative for cross-column
           drag. Each column is a labeled list.
           Card focus and movement announce.
           Column boundaries clear in screen
           reader output.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Built on the Drag &amp; Drop List
           primitive. Real-time integration via a
           standard adapter.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The board composes <strong>multiple
           drag-and-drop lists with shared drag
           context</strong> (cards can move between
@@ -177,8 +179,8 @@ export default function KanbanBoardArticle() {
           persistence</strong> (UI updates
           immediately; server confirms or
           rejects).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Each <strong>column</strong> is a
           drag-and-drop list (using the
           underlying primitive). All columns
@@ -189,7 +191,7 @@ export default function KanbanBoardArticle() {
           state (which card, where it&rsquo;s
           currently hovering); drop targets in
           all columns are valid.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>drag start</strong>: the card
           enters drag mode. Other columns
@@ -197,7 +199,7 @@ export default function KanbanBoardArticle() {
           The dragged card visually elevates
           and follows the pointer.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>drag over column</strong>: as
           the pointer enters another column,
           that column becomes the active drop
@@ -206,8 +208,8 @@ export default function KanbanBoardArticle() {
           bounding rects (same as single-list
           drag). Siblings shift to indicate
           insertion point.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>drop</strong>: optimistic
           update. The card moves to the new
           column at the new position; UI
@@ -219,7 +221,7 @@ export default function KanbanBoardArticle() {
           users (handled below). On failure,
           rollback the optimistic update with
           a banner.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Real-time updates</strong>:
           WebSocket delivers card moves from
@@ -259,14 +261,14 @@ export default function KanbanBoardArticle() {
           configurable whether to allow
           additional drops or block them.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Keyboard cross-column drag</strong>:
           focus a card, Space to pick up,
           arrow keys to move within column;
           Tab to move to the next column;
           Space to drop. Live region announces
           source and target columns.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -277,191 +279,173 @@ export default function KanbanBoardArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>BoardProvider</strong>{" "}
-          instantiates drag context, sync
-          layer. <strong>Board</strong> renders
-          the columns. <strong>Column</strong>{" "}
-          renders one column with cards list.
-          <strong> Card</strong> renders one
-          card. <strong>DragContext</strong>{" "}
+        <HighlightBlock as="p" tier="crucial">
+          <strong>Card</strong> renders one card. <strong>DragContext</strong>{" "}
           holds active drag state.
-          <strong> SyncAdapter</strong> handles
-          real-time events.
-          <strong> PersistenceAdapter</strong>{" "}
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          <strong>SyncAdapter</strong> handles real-time events.{" "}
+          <Highlight tier="important"><strong>PersistenceAdapter</strong></Highlight>{" "}
           for moves.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Cards-per-column in external store.
-          Drag state ephemeral in drag
-          context. Real-time events update
+          <Highlight tier="important">Drag state ephemeral in drag
+          context.</Highlight> Real-time events update
           the store.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Card shape:{" "}
+        <HighlightBlock as="p" tier="crucial">Card shape:{" "}
           <code>{` { id, columnId, position, ...content } `}</code>.
-          Move action:{" "}
-          <code>{` { cardId, fromColumnId, toColumnId, toPosition } `}</code>.
-          Real-time event:
-          <code>{` { type: "card.moved" | "card.added" | ..., cardId, ... } `}</code>.
-        </p>
+          Move</HighlightBlock>
+<HighlightBlock as="p" tier="important">action:{" "}
+          <code>{` { cardId, fromColumnId, toColumnId, toPosition } `}</code>.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Real-time event:
+          <code>{` { type: "card.moved" | "card.added" | ..., cardId, ... } `}</code>.</HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
-          Drag at 60 fps via FLIP. Real-time
-          events batched per RAF tick. Long
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Drag at 60 fps via <Highlight tier="important">FLIP. Real-time
+          events batched per RAF</Highlight> tick. Long
           columns virtualized. Memoized cards.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Columns horizontally scrollable when
+        <HighlightBlock as="p" tier="crucial">Columns horizontally scrollable when
           many. Cards visually consistent.
           Drop indicators clear in both source
-          and target column. Auto-scroll
+          and target column.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Auto-scroll
           horizontally when dragging near
           board edges. Real-time additions
-          subtly animate in.
-        </p>
+          subtly animate in.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Each column labeled (e.g. &ldquo;To
-          Do, 5 cards&rdquo;). Cards focusable;
-          Space picks up; arrows and Tab move;
-          Space drops. Live region announces
-          movements with source and target.
+        <HighlightBlock as="p" tier="crucial">Each column labeled (e.g. &ldquo;To
+          Do, 5 cards&rdquo;). Cards focusable;</HighlightBlock>
+<HighlightBlock as="p" tier="important">Space picks up; arrows and Tab move;
+          Space drops. Live region announces</HighlightBlock>
+<HighlightBlock as="p" tier="important">movements with source and target.
           Cross-column drag explicitly
-          announced.
-        </p>
+          announced.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Server enforces card move
-          authorization. Rate-limited.
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Server enforces card move authorization.
+          <Highlight tier="important">Rate-limited</Highlight>.
           Real-time channel authenticated.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag tests within and across columns.
-          Real-time event integration tests.
-          Optimistic rollback tests. Keyboard
+          Real-time event <Highlight tier="important">integration tests.
+          Optimistic rollback tests. Keyboard</Highlight>
           drag tests. Conflict tests with
           simulated concurrent moves.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Concurrent moves of the same card:
-          last-write-wins via server; clients
-          reconcile. WIP limit hit during
-          drag: visual warning; configurable
-          whether to block or allow with
-          flag. Real-time event arrives
-          mid-local-drag of the same card:
-          local drag wins until release;
-          then reconcile. Network drop
+        <HighlightBlock as="p" tier="crucial">Network drop
           mid-drag: the drop locally
           succeeds; persistence retries; if
-          persistence ultimately fails,
+          persistence ultimately</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">fails,
           rollback. Column deleted while
           card is being dragged into it:
-          fail and rollback gracefully.
-        </p>
+          fail and rollback gracefully.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Pattern reuses for any column-list
-          UI (workflow tools, sales pipelines,
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Pattern reuses for <Highlight tier="important">any column-list
+          UI (workflow tools, sales</Highlight> pipelines,
           admin tools).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Column headers and labels via i18n.
-          RTL flips column order; cross-
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Column headers and labels via <Highlight tier="important">i18n.
+          RTL flips column order; cross-</Highlight>
           column drag still works
           semantically.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Shared drag context vs per-column</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shared enables cross-column drag.
           Per-column would limit drag to
           within columns. Shared is essential
           for Kanban.
-        </p>
+        </HighlightBlock>
 
         <h3>Optimistic vs confirmed-first move</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Optimistic feels instant; rollback
           on failure. Confirmed-first is
           jarring for the common case where
           moves succeed. Optimistic is right.
-        </p>
+        </HighlightBlock>
 
         <h3>Server-authoritative vs CRDT</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server-authoritative with last-
           write-wins is simpler and sufficient
           for most boards. CRDT scales but
           adds complexity. Default server-
           authoritative.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Cross-board card drag. Bulk move.
-          Smart auto-arrange. AI-suggested
-          column for new cards. Real-time
+          <Highlight tier="important">Smart auto-arrange. AI-suggested
+          column for new</Highlight> cards. Real-time
           presence indicators per column.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How does cross-column drag
           work?</strong> Shared drag context
           across all columns. Active drag
           can drop in any column. Drop
           calculation per column uses card
           bounding rects.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How are real-time updates
           handled?</strong> WebSocket events
           drive the store. Updates render
@@ -469,7 +453,7 @@ export default function KanbanBoardArticle() {
           resolved by deferring remote
           changes for the dragged card until
           local drag completes.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. How are concurrent moves
@@ -479,14 +463,14 @@ export default function KanbanBoardArticle() {
           the real-time event.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How does keyboard
           cross-column drag work?</strong>{" "}
           Space picks up; arrows move within
           column; Tab to next column; Space
           drops. Live region announces source
           and target.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How does WIP limit
@@ -505,37 +489,32 @@ export default function KanbanBoardArticle() {
           and FLIP animation reuse.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How is performance
           maintained with many cards?</strong>{" "}
           Virtualize long columns. Memoize
           cards. Real-time events batched.
           Drag uses cached bounding rects.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How is this
           accessible?</strong> Labeled columns.
           Keyboard drag with announcements.
           Tab between columns. Cross-column
           moves explicit in announcements.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A Kanban board is{" "}
-          <strong>multiple drag-and-drop lists +
-          shared drag context + real-time
-          sync + optimistic persistence</strong>.
-          Last-write-wins handles conflicts;
+        <HighlightBlock as="p" tier="crucial">Last-write-wins handles conflicts;
           mid-drag conflicts defer; keyboard
-          cross-column drag gives parity.
+          cross-column drag gives</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">parity.
           The result is direct-manipulation
           workflows that scale across users
-          and devices.
-        </p>
+          and devices.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

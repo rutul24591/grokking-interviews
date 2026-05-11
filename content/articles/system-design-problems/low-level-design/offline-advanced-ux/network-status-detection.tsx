@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,22 +37,22 @@ export default function NetworkStatusDetectionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Apps need to know online/offline status to adjust behavior. Key
           challenges: navigator.onLine unreliable (reports offline when still
           connected), network types vary (Wi-Fi, 4G, 2G), slow networks feel
           offline (high latency), and UI must reflect accurate status (don't
           show "offline" when actually online). Naive apps trust navigator.onLine
           and get caught off-guard by slow networks.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Need to detect true offline (no network) vs slow (latency).</li>
-          <li>Different UX for offline vs slow (queue vs retry).</li>
-          <li>Network type determines sync strategy (Wi-Fi aggressive, 4G gentle).</li>
-          <li>Latency &gt;1s signals network issue (show UI indicator).</li>
+          <HighlightBlock as="li" tier="important">Need to detect true offline (no network) vs slow (latency).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Different UX for offline vs slow (queue vs retry).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Network type determines sync strategy (Wi-Fi aggressive, 4G gentle).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Latency &gt;1s signals network issue (show UI indicator).</HighlightBlock>
           <li>User expectation: app always responsive (queue if offline).</li>
         </ul>
       </section>
@@ -67,10 +69,10 @@ export default function NetworkStatusDetectionArticle() {
             <strong>Network Type:</strong> Detect Wi-Fi vs 4G vs 2G (via Network
             Information API).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency Estimation:</strong> Measure RTT (round-trip time)
             to detect slow network.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Status Changes:</strong> Notify app when online/offline
             transitions.
@@ -82,20 +84,20 @@ export default function NetworkStatusDetectionArticle() {
           <li>
             <strong>Adaptive Sync:</strong> Sync strategy based on network type.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry Logic:</strong> Automatic retry with backoff on
             failure.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Accuracy:</strong> Detect offline within 1s (not 10s).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Overhead:</strong> Status checks &lt;100ms (don't block app).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Battery:</strong> Network checks shouldn't drain battery
             (batch, throttle).
@@ -109,7 +111,7 @@ export default function NetworkStatusDetectionArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
           <li>Navigator.onLine says offline, but request succeeds—re-check.</li>
-          <li>Network extremely slow (10s latency) but technically online—treat as offline?</li>
+          <HighlightBlock as="li" tier="crucial">Network extremely slow (10s latency) but technically online—treat as offline?</HighlightBlock>
           <li>Network type changes (Wi-Fi→4G mid-sync)—adjust strategy?</li>
           <li>
             User on mobile hotspot with metered data—aggressive sync bad.
@@ -120,16 +122,15 @@ export default function NetworkStatusDetectionArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Don't trust navigator.onLine alone. Implement heartbeat: periodically
+        <HighlightBlock as="p" tier="crucial">Don't trust navigator.onLine alone. Implement heartbeat: periodically
           ping server (lightweight request). If succeeds, online; if fails,
           offline. Check every 5-10s (not too frequent to save battery). Use
           Network Information API to detect network type (4G vs Wi-Fi) and
-          adjust sync aggressiveness. Measure latency (RTT): if &gt;2s,
+          adjust sync aggressiveness.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Measure latency (RTT): if &gt;2s,
           treat as slow (queue, don't fail). Broadcast status changes to app
           (Redux action, event, callback). Show UI indicator (banner:
-          "offline", "slow connection", "online").
-        </p>
+          "offline", "slow connection", "online").</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -152,10 +153,10 @@ export default function NetworkStatusDetectionArticle() {
             <strong>Heartbeat Ping:</strong> Send lightweight request (HEAD
             /ping) every 5-10s. Success = online.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Fetch Timeout:</strong> If heartbeat times out (&gt;5s), treat
             offline.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Window Events:</strong> Listen to online/offline events
             (supplement navigator.onLine).
@@ -169,10 +170,10 @@ export default function NetworkStatusDetectionArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Network Type Detection</h3>
         <p>Identify connection type for adaptive sync.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Network Information API:</strong> navigator.connection
             returns type (wifi, 4g, 3g, 2g, slow-2g).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Effective Type:</strong> Estimated effective connection
             based on RTT + bandwidth.
@@ -205,10 +206,10 @@ export default function NetworkStatusDetectionArticle() {
             <strong>Moving Average:</strong> Track last 10 measurements, average
             (smooth spikes).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Thresholds:</strong> &lt;100ms good, 100-1000ms acceptable,
             &gt;1000ms slow.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>API:</strong> navigator.connection.rtt available on some
             browsers.
@@ -268,9 +269,9 @@ export default function NetworkStatusDetectionArticle() {
             <strong>Frequency:</strong> Every 5-10s (balance: accuracy vs
             overhead).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout:</strong> 5s (if no response, assume offline).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Adaptive Frequency:</strong> If offline, backoff (check
             every 30s). If online, every 10s.
@@ -340,10 +341,10 @@ export default function NetworkStatusDetectionArticle() {
             <strong>Offline Duration:</strong> How long users offline
             (distribution).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency Metrics:</strong> P50, P95, P99 latency
             (geographic variation).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Heartbeat Success Rate:</strong> % pings successful (low =
             network issue).
@@ -359,48 +360,48 @@ export default function NetworkStatusDetectionArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Heartbeat Endpoint</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Keep endpoint lightweight (return {'{'}ok: true{'}'} in &lt;10ms).
           Avoid redirects (add latency). Use CDN for low-latency response.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">CORS & Credentials</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Heartbeat may be cross-origin. Use no-cors mode (headers visible
           but body hidden). Or use same-origin endpoint (no CORS issue).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Network Detection</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Test: offline (DevTools), verify app detects within 1s. Test:
           heartbeat fails, verify status → offline. Test: latency spike,
           verify slow status. Test: network type changes, verify strategy
           adapts.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Geo-Aware Latency</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Users in different regions have different typical latencies. Set
           thresholds based on geo (India 200ms normal, US 50ms). Use CDN edge
           server latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Bandwidth Estimation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Measure actual download speed (download test image, measure time).
           Adapt payload size: slow bandwidth = compress more. Expensive but
           accurate.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Connection Pooling & Reuse</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           HTTP/2 multiplexing: single connection, multiple requests. Reduces
           latency overhead (avoid connection setup costs).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Device Sensors</h3>
         <p>
@@ -409,12 +410,12 @@ export default function NetworkStatusDetectionArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Load test: 100k users with varying network conditions. Verify
           heartbeat service handles load. Chaos: simulate latency (slow
           network), verify adaptive sync works. Verify accuracy: offline
           detection latency distribution.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
         <p>
@@ -425,57 +426,42 @@ export default function NetworkStatusDetectionArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Network detection broken: check heartbeat endpoint. Slow detection:
           reduce heartbeat interval temporarily. False positives: check
           heartbeat response times (may be CDN or server issue).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Accuracy vs Overhead</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Frequent heartbeats (every 1s) more accurate but drain battery.
           Infrequent (every 30s) save battery but delayed detection. 5-10s is
           balanced.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimistic vs Conservative</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Assume online (optimistic): faster response but fail if network down.
           Assume offline (conservative): reliable but laggy UX. Hybrid
           (optimistic + heartbeat verification) best.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Data Usage vs Accuracy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Heartbeat adds data usage (1KB × 6/min = ~360KB/hour). Users on
           metered plan may care. Adaptive: skip checks if data saver mode
           enabled.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Network status detection critical for offline-first apps. For
-          staff/principal engineers, critical aspects include hybrid detection
-          (navigator.onLine + heartbeat), adaptive sync based on network type
-          (Wi-Fi aggressive, 2G gentle), latency estimation for slow networks,
-          and UI indicators for user awareness. Heartbeat endpoint lightweight
-          and CDN-backed for low latency. Frequency 5-10s balances accuracy and
-          battery. Exponential backoff prevents server overload on failures. At
-          scale, heartbeat service must handle millions of pings/sec (use load
-          balancing). Testing must cover offline scenarios, latency variations,
-          and network type changes. Monitoring status distribution and
-          heartbeat success rate detects issues. Real-world systems use
-          navigator.connection API for type/RTT, custom heartbeat for accuracy,
-          and adaptive strategies for different networks. Integration with
-          offline-first architecture, optimistic updates, and UI state
-          management essential.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">At scale, heartbeat service must handle millions of pings/sec (use load balancing). Testing must cover offline scenarios, latency variations, and network type</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">changes. Monitoring status distribution and heartbeat success rate detects issues. Real-world systems use navigator.connection API for type/RTT, custom heartbeat for accuracy, and adaptive strategies for different networks. Integration with offline-first architecture, optimistic updates, and UI state management essential.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

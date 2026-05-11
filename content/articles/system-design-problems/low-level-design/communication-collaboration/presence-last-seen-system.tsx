@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +31,7 @@ export default function PresenceLastSeenSystemArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a presence + last-seen
           system — the layer that tracks whether a
           user is online, away, or offline, plus the
@@ -42,8 +44,8 @@ export default function PresenceLastSeenSystemArticle() {
           requires a clean heartbeat protocol,
           debounced server updates, and respect for
           user privacy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: heartbeat that
           balances accuracy with bandwidth; idle
           detection (away after inactivity);
@@ -53,39 +55,39 @@ export default function PresenceLastSeenSystemArticle() {
           (some users hide presence); and
           accessibility for the presence
           indicator.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users glance at presence indicators
           to decide whether to message someone.
           Engineering teams plug in: provide a
           backend with presence endpoints; the
           runtime handles heartbeat and display.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend exposes a presence WebSocket and
           an HTTP endpoint for last-seen lookups.
           Modern browsers; Page Visibility API for
           tab focus, BroadcastChannel for cross-
           tab.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement live cursors
           (separate). We do not implement
           end-to-end-encrypted presence (rare).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Send heartbeat to server periodically
           while active (every 30 s typically).
           Server marks user online; if no heartbeat
@@ -102,10 +104,10 @@ export default function PresenceLastSeenSystemArticle() {
           users (&ldquo;Last seen 5m ago&rdquo;).
           Privacy preferences: users can hide
           presence.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Custom statuses (&ldquo;In a
           meeting&rdquo;). Mobile push presence
           (offline on web but online on mobile).
@@ -113,61 +115,61 @@ export default function PresenceLastSeenSystemArticle() {
           friend presence visibility. Predictive
           presence (likely to be online based on
           history).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend presence storage architecture,
           push integration, video presence.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Heartbeat is a tiny request. Presence
           updates batch in the UI to avoid
           re-render flooding. Last-seen lookup
           cached.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cross-tab coordination prevents double-
           counted heartbeats. Disconnect cleanly
           marks offline. Last-seen timestamps
           accurate within a minute.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Privacy preferences honored server-side
           (others see &ldquo;offline&rdquo; if
           user is hidden). Presence data scope
           per friend list / authorized viewers.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Presence dot has text equivalent
           (&ldquo;Alice is online&rdquo;).
           Status changes don&rsquo;t spam
           announcements; throttled.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Heartbeat interval, idle threshold
           configurable. Privacy preferences in a
           small clean module.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The system has four parts: <strong>local
           heartbeat sender</strong> (periodic
           broadcasts to server), <strong>activity
@@ -177,24 +179,24 @@ export default function PresenceLastSeenSystemArticle() {
           heartbeat per user), and <strong>presence
           subscriber</strong> (receives others&rsquo;
           presence and renders).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>heartbeat sender</strong>{" "}
           fires every 30 s while the tab is
           active (visible and recently
           interacted). Server marks user online
           on first heartbeat; missing heartbeat
           for 90 s marks offline.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>activity tracker</strong>{" "}
           listens to mousemove, keypress, and
           touch events (debounced to 1/sec).
           Last-activity timestamp updates. If no
           activity for 5 minutes, mark away.
           Activity resumes online.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Cross-tab coordination</strong>:
           when a user has multiple tabs open,
           we don&rsquo;t want each tab firing its
@@ -205,14 +207,14 @@ export default function PresenceLastSeenSystemArticle() {
           heartbeats; if leader closes, another
           tab takes over. Last-seen aggregates
           across all tabs.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Tab hidden</strong>: pause
           heartbeats (or reduce frequency). The
           server&rsquo;s 90 s timeout handles the
           away state. On tab visible again,
           resume immediately.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Disconnect</strong>: WebSocket
           disconnect is a reliable signal that
@@ -248,206 +250,195 @@ export default function PresenceLastSeenSystemArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>HeartbeatSender</strong>,
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial"><strong>HeartbeatSender</strong></Highlight>,
           <strong> ActivityTracker</strong>,
           <strong> CrossTabCoordinator</strong>,
           <strong> PresenceSubscriber</strong>,
-          <strong> PresenceDot</strong>,
+          <Highlight tier="important"><strong> PresenceDot</strong></Highlight>,
           <strong> LastSeenLabel</strong>.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Local presence state in a small ref-
-          backed cache. Per-user presence in an
-          external store. Subscribers (avatars,
+          backed <Highlight tier="important">cache. Per-user presence in an
+          external</Highlight> store. Subscribers (avatars,
           chat list items) read via selectors.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Heartbeat:
-          <code>{` POST /presence/heartbeat `}</code>{" "}
-          (small body).
-          Presence event:
-          <code>{` { userId, status, lastSeen } `}</code>.
-          Subscription:
-          WebSocket subscribes to presence for
-          a set of user ids.
-        </p>
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Heartbeat:</Highlight>{" "}
+          <code>{`POST /presence/heartbeat`}</code> (small body). Presence event:{" "}
+          <Highlight tier="important">
+            <code>{` { userId, status, lastSeen } `}</code>
+          </Highlight>
+          . Subscription: WebSocket subscribes to presence for a set of user ids.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Heartbeats are tiny. Activity throttled.
-          Cross-tab election uses lightweight
-          BroadcastChannel events. Last-seen
+          Cross-tab <Highlight tier="important">election uses lightweight
+          BroadcastChannel events. Last-seen</Highlight>
           rendering memoized with periodic
           re-render via interval.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Presence dot small but visible (green/
-          yellow/gray). Last-seen text subtle
-          beneath name. &ldquo;Online&rdquo; text
+          yellow/gray). <Highlight tier="important">Last-seen text subtle
+          beneath name. &ldquo;Online&rdquo;</Highlight> text
           when applicable. Custom status displayed
           in tooltips.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Dot has text equivalent in tooltip and
-          aria-label. Status changes don&rsquo;t
-          announce per change (would spam);
+          <Highlight tier="important">aria-label. Status changes don&rsquo;t
+          announce per</Highlight> change (would spam);
           announced on focus only.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Privacy preferences server-enforced.
-          Authorization: only friends or
-          conversation participants see
+          Authorization: <Highlight tier="important">only friends or
+          conversation participants see</Highlight>
           presence. Server validates
           subscriptions.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for heartbeat timing, idle
           detection, cross-tab election.
-          Integration tests with mock backend:
-          presence broadcast updates UI; tab
+          <Highlight tier="important">Integration tests with mock backend:
+          presence</Highlight> broadcast updates UI; tab
           close fires offline; reconnect resumes.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Tab crashes mid-heartbeat: server
-          timeout marks offline after 90 s.
-          Multiple tabs: one tab leads; if leader
-          dies, another takes over. Network drops
-          and reconnects: heartbeat resumes;
-          server reconciles. Privacy hide:
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Privacy hide:
           server serves offline regardless. Mobile
-          browser backgrounding: heartbeats
-          paused; server timeout handles. Very
+          browser backgrounding: heartbeats</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">paused; server timeout handles. Very
           long idle (user stepped away): away
-          state after threshold.
-        </p>
+          state after threshold.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic; any product with users-and-
-          friends benefits. Presence + last-seen
-          is a tiny but ubiquitous primitive.
-        </p>
+          <Highlight tier="important">friends benefits. Presence + last-seen
+          is</Highlight> a tiny but ubiquitous primitive.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          Last-seen via
-          <code> Intl.RelativeTimeFormat</code>.
-          Status labels via i18n.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Last-seen via{" "}
+          <Highlight tier="important"><code>Intl.RelativeTimeFormat</code></Highlight>.{" "}
+          <Highlight tier="important">Status labels via i18n</Highlight>.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Heartbeat interval</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           30 s is a balance between accuracy and
           bandwidth. 10 s is more accurate but
           3x bandwidth. 60 s is cheaper but less
           responsive. 30 s is the sweet spot.
-        </p>
+        </HighlightBlock>
 
         <h3>Cross-tab leader vs all heartbeat</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Leader pattern minimizes server load.
           All-heartbeat is simpler but
           inefficient. Leader is the right
           architecture for any product with
           significant multi-tab usage.
-        </p>
+        </HighlightBlock>
 
         <h3>Pause on hidden vs continue</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Pause saves bandwidth and battery on
           mobile. Continue keeps presence
           accurate when the user has many tabs
           but isn&rsquo;t actively using one.
           Pause-with-server-timeout is the
           right balance.
-        </p>
+        </HighlightBlock>
 
         <h3>Privacy default</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Some products default to visible
           (social features); others to hidden
           (privacy-first products). Configurable
           per product.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          Cross-device presence (online on phone
+        <HighlightBlock as="p" tier="crucial">Cross-device presence (online on phone
           counts even if web is offline). AI-
           predicted &ldquo;likely online&rdquo;
-          status. Custom status auto-set based
+          status.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Custom status auto-set based
           on calendar (in a meeting). Activity
-          richness (typing, viewing, editing).
-        </p>
+          richness (typing, viewing, editing).</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How is online state
           determined?</strong> Heartbeat every 30 s
           while tab active. Server marks online
           on heartbeat; offline if no heartbeat
           for 90 s.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How is away
           detected?</strong> Activity tracker
           watches input events. After threshold
           (5 min) without activity, mark away.
           Activity resumes online.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How is cross-tab
           handled?</strong> BroadcastChannel
           elects a leader tab. Leader sends
           heartbeats. If leader dies, another
           tab takes over.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. How does last-seen
@@ -474,33 +465,28 @@ export default function PresenceLastSeenSystemArticle() {
           Per-user subscriptions limit fanout.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>7. What happens on tab
           close?</strong> WebSocket disconnect
           fires; server eventually marks
           offline (heartbeat timeout).
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>8. How is this
           accessible?</strong> Dot has text
           equivalent. Status announces on focus.
           Last-seen reads as text.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A presence + last-seen system is{" "}
-          <strong>periodic heartbeat + activity
-          tracker + cross-tab leader + server
-          broadcast</strong>. Privacy preferences
-          server-enforced. Cross-tab coordination
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Cross-tab coordination</Highlight>
           minimizes load. Last-seen via Intl.
-          The result is glanceable, trustworthy
-          presence indicators throughout the app.
-        </p>
+          The</HighlightBlock>
+<HighlightBlock as="p" tier="important">result is glanceable, trustworthy
+          presence indicators throughout the app.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

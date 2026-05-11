@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function CarouselSliderArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a carousel — the
           horizontal slider that cycles through
           slides (images, cards, ads, hero
@@ -41,8 +43,8 @@ export default function CarouselSliderArticle() {
           mobile apps. Done well it feels native;
           done poorly it&rsquo;s a layout-shifting
           accessibility nightmare.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: smooth swipe with
           momentum and snap; lazy-loading slides
           (don&rsquo;t load all images up front);
@@ -53,38 +55,38 @@ export default function CarouselSliderArticle() {
           (carousels are notoriously bad for
           screen readers); indicators (dots /
           pagination); responsive behavior.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users browse content via swipe
           or click. Engineering teams plug in
           slides; runtime handles UX.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Modern browsers; we use Pointer Events
           for unified touch/mouse, scroll-snap
           where supported, IntersectionObserver
           for lazy-load.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement image gallery
           (separate). We do not implement
           infinite scroll (separate). We do
           not implement video carousels with
           autoplay video.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Horizontal slider with N slides.
           Swipe on touch (pointer drag with
           momentum). Prev/next buttons. Pagination
@@ -95,10 +97,10 @@ export default function CarouselSliderArticle() {
           hover/focus and stop on manual
           interaction. Loop or non-loop modes.
           Empty state.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multiple visible slides at once
           (e.g. show 3 in viewport). Variable
           slide widths. Vertical orientation.
@@ -107,54 +109,54 @@ export default function CarouselSliderArticle() {
           Slide-specific actions (CTAs).
           Auto-height adjustment to current
           slide.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Video autoplay, full-screen modal,
           ecommerce-specific features.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Swipe at 60 fps. Lazy-load reduces
           initial cost. Autoplay doesn&rsquo;t
           consume CPU when paused.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Autoplay respects interaction. Loop
           mode handles boundary correctly. No
           layout shift on slide load.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slide content sanitized at render.
           External images CSP-compatible.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Slides as a list; current slide
           announced. Pause control accessible.
           Indicators are real buttons. Tab
           order through slides logical.
           Respect <code>prefers-reduced-motion</code>{" "}
           for autoplay and transitions.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Slides as children with stable
           keys. Configurable timing,
           orientation, loop.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -165,7 +167,7 @@ export default function CarouselSliderArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The carousel is a horizontally-
           scrollable container with{" "}
           <code>scroll-snap-type</code> set to
@@ -176,7 +178,7 @@ export default function CarouselSliderArticle() {
           This is dramatically simpler than
           fully-custom drag-and-snap and works
           smoothly on touch and desktop.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>swipe</strong>: native
           horizontal scroll handles it.
@@ -193,7 +195,7 @@ export default function CarouselSliderArticle() {
           motion</code> switches to instant
           scroll.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>autoplay</strong>: a timer
           fires every N seconds calling next.
           On hover, focus, or manual
@@ -202,8 +204,8 @@ export default function CarouselSliderArticle() {
           stop on manual (don&rsquo;t resume
           autoplay after manual interaction —
           users have indicated control).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           On <strong>lazy-load</strong>: each
           slide observes its own visibility
           via IntersectionObserver. When a
@@ -211,8 +213,8 @@ export default function CarouselSliderArticle() {
           (within ~1.5x viewport width), load
           its content. Off-screen slides
           render placeholders.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Indicators</strong>: pagination
           dots show current and total slide
           count. Each dot is a button that
@@ -220,14 +222,14 @@ export default function CarouselSliderArticle() {
           updates from scroll position
           (IntersectionObserver detects which
           slide is most visible).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Keyboard navigation</strong>:
           arrow keys move slides when the
           carousel has focus. Tab moves
           between interactive slide content
           (CTA buttons within slides).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Loop mode</strong>: clone the
           first slide after the last and
@@ -247,200 +249,187 @@ export default function CarouselSliderArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>Carousel</strong> is the
+        <HighlightBlock as="p" tier="crucial"><strong>Carousel</strong> is the
           container. <strong>SlidesTrack</strong>{" "}
-          renders the scrollable slides.
+          renders the scrollable</HighlightBlock>
+<HighlightBlock as="p" tier="important">slides.
           <strong> Slide</strong> renders one
           slide. <strong>NavButtons</strong>{" "}
-          (prev/next).
-          <strong> Indicators</strong>{" "}
+          (prev/next).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><strong> Indicators</strong>{" "}
           (dots). <strong>AutoplayController</strong>{" "}
           handles the timer.
           <strong> LazyLoadObserver</strong>{" "}
-          handles intersection-based loading.
-        </p>
+          handles intersection-based loading.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
-          Active slide index derived from
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Active slide index derived <Highlight tier="important">from
           scroll position. Autoplay state
-          (running/paused) component-local.
+          (running/paused)</Highlight> component-local.
           Lazy-load status per slide.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>slides</code> (array of
-          renderables or React children),
-          <code> autoplay</code>,
+          renderables <Highlight tier="important">or React children),
+          </Highlight><code> autoplay</code>,
           <code> interval</code>,
-          <code> loop</code>,
+          <code> loop</code>,</Highlight>
           <code> visibleSlides</code>,
           <code> orientation</code>.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Native scroll handles momentum.
-          Lazy-load defers off-screen content.
-          IntersectionObserver runs off-main.
+          <Highlight tier="important">Lazy-load defers off-screen content.
+          IntersectionObserver runs</Highlight> off-main.
           Scroll-snap is GPU-accelerated.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Smooth swipe. Subtle prev/next
           buttons. Dots for navigation.
-          Autoplay considerate (pauses on
-          hover, stops on manual). Lazy-load
+          Autoplay considerate <Highlight tier="important">(pauses on
+          hover, stops on manual).</Highlight> Lazy-load
           placeholder matches slide layout
           (no layout shift on load).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Use
-          <code> role=&quot;region&quot;</code> with
-          <code> aria-roledescription=&quot;carousel&quot;</code>.
-          Slides as list with current
-          announced. Pause/play button. Dots
+        <HighlightBlock as="p" tier="crucial">Dots
           as labeled buttons. Respect{" "}
-          <code>prefers-reduced-motion</code>.
-          Keyboard navigation works.
+          <Highlight tier="important"><code>prefers-reduced-motion</code></Highlight>.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Keyboard navigation works.
           Screen-reader users can disable
-          autoplay.
-        </p>
+          autoplay.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Slide content sanitized.
-          External resources via CSP.
-        </p>
+          External resources via <Highlight tier="important">CSP</Highlight>.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Swipe and click tests. Autoplay
-          pause behavior. Loop mode boundary
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Swipe and click tests. <Highlight tier="important">Autoplay
+          pause behavior. Loop mode boundary</Highlight>
           tests. Lazy-load tests.
           Accessibility tests.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Single slide: hide navigation;
-          treat as static. Loop with all
-          slides identical: still functions.
-          Network slow on lazy-load: show
-          placeholder until ready. Browser
+        <HighlightBlock as="p" tier="crucial">Browser
           without scroll-snap: fall back to
           JS-driven smooth scroll. User has
-          reduced-motion: autoplay off,
-          transitions instant. Carousel in
+          reduced-motion: autoplay off,</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">transitions instant. Carousel in
           viewport multiple times (rare but
-          possible): each instance independent.
-        </p>
+          possible): each instance independent.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over slide content.
-          Configurable per use case.
-        </p>
+          <Highlight tier="important">Configurable</Highlight> per use case.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Button labels via i18n. Indicator
-          aria-labels (&ldquo;Slide 3 of
-          7&rdquo;) localized via Intl. RTL
+          <Highlight tier="important">aria-labels (&ldquo;Slide 3 of
+          7&rdquo;) localized</Highlight> via Intl. RTL
           flips slide direction.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Native scroll vs JS-driven</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Native scroll-snap is simpler,
           smoother on touch, GPU-accelerated.
           JS-driven gives more control but
           rebuilds momentum and snap from
           scratch. Native is the right
           default.
-        </p>
+        </HighlightBlock>
 
         <h3>Loop via clones vs JS-jump</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Clones are simpler with native
           scroll-snap. JS-jump requires
           intercepting scroll. Clones win
           for the native approach.
-        </p>
+        </HighlightBlock>
 
         <h3>Autoplay default on vs off</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Default off respects user attention.
           Configurable per consumer. Some
           marketing pages need autoplay; many
           others don&rsquo;t.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
-          3D effects, parallax, video slides,
-          AR slides, smart adaptive sizing.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          3D effects, <Highlight tier="important">parallax, video slides,
+          AR slides, smart</Highlight> adaptive sizing.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. Why use native
           scroll-snap?</strong> Browser-optimized,
           GPU-accelerated, smooth on touch
           out of the box. JS-driven would
           rebuild this from scratch.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does loop work?</strong>{" "}
           Clone first slide after last and
           vice versa. When user scrolls to a
           clone, jump (without animation) to
           the real corresponding slide.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. How does autoplay respect
           users?</strong> Pause on hover/focus.
           Stop after manual interaction.
           Disabled by default under
           prefers-reduced-motion.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. How is lazy-load
@@ -457,7 +446,7 @@ export default function CarouselSliderArticle() {
           detecting the most-visible slide.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. How is accessibility
           handled?</strong> Region role with
           carousel description. Slides as
@@ -465,15 +454,15 @@ export default function CarouselSliderArticle() {
           Pause/play and indicators
           accessible. Reduced motion
           respected.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How does keyboard
           navigation work?</strong> Arrow
           keys when carousel has focus. Tab
           for interactive content within
           slides.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. How does this differ from
@@ -487,17 +476,12 @@ export default function CarouselSliderArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A carousel is{" "}
-          <strong>scroll-snap container +
-          prev/next + indicators + autoplay
-          (respectful) + lazy-load</strong>.
-          Native scroll handles the heavy
+        <HighlightBlock as="p" tier="crucial">Native scroll handles the heavy
           lifting; we add coordination and
-          accessibility on top. The result
+          accessibility</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">on top. The result
           is fluid swipe, considerate
-          autoplay, and proper a11y.
-        </p>
+          autoplay, and proper a11y.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

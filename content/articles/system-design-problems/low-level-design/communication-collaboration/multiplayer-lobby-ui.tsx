@@ -1,6 +1,8 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -29,7 +31,7 @@ export default function MultiplayerLobbyUIArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a multiplayer lobby —
           the UI where users gather before a game
           (or shared session) starts. Users see
@@ -39,8 +41,8 @@ export default function MultiplayerLobbyUIArticle() {
           in games, online classroom tools,
           virtual events, and any shared session
           with a coordinated start.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: real-time room
           membership updates (people joining and
           leaving); ready states with host
@@ -49,10 +51,10 @@ export default function MultiplayerLobbyUIArticle() {
           handoff to the actual session/game on
           start; reconnection if a member drops;
           accessibility for the lobby UI.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users join lobbies to play or
           collaborate. They expect to see who&rsquo;s
           in the room, mark themselves ready, and
@@ -60,30 +62,30 @@ export default function MultiplayerLobbyUIArticle() {
           provide a lobby backend (typically
           WebSocket-based) and the runtime
           handles UI.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend exposes WebSocket events for
           room membership, ready state changes,
           host actions. Authentication identifies
           users.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The actual game/session, matchmaking
           algorithms (the lobby&rsquo;s job is
           coordination, not selection), voice
           chat (typically separate).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Room list (browse available rooms with
           name, member count, status). Create
           room. Join room. Leave room. Member
@@ -93,68 +95,68 @@ export default function MultiplayerLobbyUIArticle() {
           all-ready (or host-override). Real-time
           updates as members join/leave/toggle
           ready. Handoff to session on start.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Room chat. Voice chat integration.
           Spectator mode. Custom room settings
           (game mode, map, etc.). Skill-based
           matchmaking (auto-join). Friends-only
           rooms. Region selection. Anti-griefing
           (minimum ready time, vote-kick).
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The session itself, voice chat
           backend, matchmaking algorithms.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Membership updates within ~100 ms. Room
           list updates smooth even with many
           rooms (virtualize if needed).
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reconnection re-joins room if still
           available. Host disconnect transfers
           host (or closes room). Stale rooms
           time out.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authenticated WebSocket. Server enforces
           host privileges. Anti-spam on room
           creation.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Room list as a navigable list. Member
           list accessible. Ready toggle is a real
           button. State changes announce.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Lobby state in a small store. Settings
           schema declarative. Plugins for chat,
           voice.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The lobby has three planes: <strong>room
           list</strong> (browse + create + join),
           <strong> active room</strong> (members,
@@ -163,23 +165,23 @@ export default function MultiplayerLobbyUIArticle() {
           to the session on start). Real-time via
           WebSocket; reconnection logic from the
           presence subsystem.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>room list</strong> subscribes
           to a stream of room updates. New rooms
           appear; full or started rooms drop.
           User clicks to join. Filtering and
           sorting by criteria (player count,
           mode, region).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>active room</strong> view
           subscribes to that room&rsquo;s
           membership and state. Members render
           with ready indicators. The current user
           can toggle their ready state. Host
           sees additional controls.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>join</strong>: send join
           request to backend. Server validates
@@ -187,14 +189,14 @@ export default function MultiplayerLobbyUIArticle() {
           user. Other members&rsquo; UIs update
           via WebSocket broadcast.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>ready toggle</strong>: send
           ready event. Server updates state.
           Other members see updated indicator.
           When all members are ready (or host
           overrides), the host&rsquo;s Start
           button enables.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>start</strong>: host clicks
           Start. Backend validates and transitions
@@ -216,213 +218,202 @@ export default function MultiplayerLobbyUIArticle() {
           gives them a window to reconnect before
           removing. Members see status change.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Settings changes</strong>: host
           changes settings (e.g. map, game mode);
           server validates and broadcasts. All
           members see the new settings; ready
           state may reset (you ready up against
           specific settings).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>LobbyProvider</strong>{" "}
+        <HighlightBlock as="p" tier="crucial"><strong>LobbyProvider</strong>{" "}
           instantiates backend connection.
-          <strong> RoomList</strong> renders
-          available rooms. <strong>RoomCard</strong>{" "}
+          <strong> RoomList</strong> renders</HighlightBlock>
+<HighlightBlock as="p" tier="important">available rooms. <strong>RoomCard</strong>{" "}
           renders one room. <strong>ActiveRoom</strong>{" "}
-          renders the joined room.
-          <strong> MemberList</strong> renders
+          renders the joined room.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><strong> MemberList</strong> renders
           members with ready states.
           <strong> ReadyToggle</strong> for self.
           <strong> HostControls</strong> for
           host. <strong>SettingsPanel</strong>{" "}
-          for room settings.
-        </p>
+          for room settings.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Room list, active room state,
-          membership, ready states in external
-          store. Connection state in connection
+          <Highlight tier="important">membership, ready states in external
+          store.</Highlight> Connection state in connection
           store.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Events:{" "}
           <code>room.created</code>,
-          <code> room.updated</code>,
+          </Highlight><code> room.updated</code>,
           <code> room.removed</code>,
           <code> member.joined</code>,
           <code> member.left</code>,
           <code> member.ready</code>,
           <code> session.started</code>. Room
           shape:{" "}
-          <code>{` { id, name, hostId, members, settings, status } `}</code>.
-        </p>
+          <Highlight tier="important">
+            <code>{` { id, name, hostId, members, settings, status } `}</code>
+          </Highlight>
+          .
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Real-time events batched per RAF tick
-          to avoid render flooding. Member list
-          re-renders only on changes. Room list
+          to avoid <Highlight tier="important">render flooding. Member list
+          re-renders only</Highlight> on changes. Room list
           virtualized when many rooms.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Room list with filters and sort. Join
-          via click. Active room shows members
-          prominently with ready indicators
-          (green check for ready). Ready toggle
-          large and clear. Host controls
+        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Host controls
           visible only to host. Start button
-          dim until conditions met. Settings
+          dim until conditions</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">met. Settings
           changes reset ready states with an
-          announcement.
-        </p>
+          announcement.</HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Room list accessible. Member list with
+        <HighlightBlock as="p" tier="crucial">Room list accessible. Member list with
           ready states announced. Ready toggle
           is a real button. Host controls
-          accessible. State changes (member
+          accessible.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">State changes (member
           joined, ready toggle, host transfer)
           announce in chunks via polite live
-          region.
-        </p>
+          region.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
-          Authenticated. Server enforces host
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Authenticated. Server enforces <Highlight tier="important">host
           privileges (kick, settings, start).
-          Anti-spam on room creation.
-        </p>
+          Anti-spam</Highlight> on room creation.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Integration tests with mock backend:
-          create room, join, ready up, start
-          session. Host disconnect transfer.
+          create room, join, <Highlight tier="important">ready up, start
+          session. Host disconnect</Highlight> transfer.
           Reconnect flow. Edge cases for
           settings changes.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Host leaves: transfer to next member;
-          if no members, close room. Member
-          disconnects mid-ready: status changes;
-          host can choose to wait or kick.
-          Settings change while members ready:
+        <HighlightBlock as="p" tier="crucial">Settings change while members ready:
           reset ready (you ready against a
-          specific setup). Network drop: try
-          reconnect; if fails, navigate to lobby
+          specific setup). Network drop: try</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">reconnect; if fails, navigate to lobby
           list. Room fills mid-join: server
-          rejects with reason.
-        </p>
+          rejects with reason.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Pattern reuses for any pre-session
-          coordination — games, classroom,
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Pattern reuses <Highlight tier="important">for any pre-session
+          coordination — games,</Highlight> classroom,
           virtual events.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          UI strings via i18n. Player names as
-          authored. Room names sanitized.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          UI strings <Highlight tier="important">via i18n. Player names as
+          authored.</Highlight> Room names sanitized.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Auto-start vs explicit host start</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Auto-start when all ready feels
           frictionless. Explicit host start gives
           control. We default to host-explicit
           with auto-start option.
-        </p>
+        </HighlightBlock>
 
         <h3>Host transfer vs close on disconnect</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Transfer keeps the lobby alive when
           the host has connection issues. Close
           is simpler. Transfer is right for most
           products.
-        </p>
+        </HighlightBlock>
 
         <h3>Reset ready on settings change</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Reset prevents people committing to
           settings they didn&rsquo;t agree to.
           Don&rsquo;t-reset is more frictionless
           but feels deceptive. Always reset.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Skill-based matchmaking integration.
-          Cross-platform play. Tournament brackets.
-          Spectator mode. Voice chat baked in.
-        </p>
+          <Highlight tier="important">Cross-platform play. Tournament brackets.
+          Spectator mode.</Highlight> Voice chat baked in.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How does the room list update
           in real time?</strong> WebSocket events
           for room.created/updated/removed.
           Subscribers re-render.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How is host transfer
           handled?</strong> On host disconnect,
           backend transfers to next member.
           Clients see host change via
           broadcast.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>3. When does ready reset?</strong>{" "}
           On settings change (ensures everyone
           ready against current settings). On
           host transfer (new host may want to
           re-confirm).
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>4. How is the start gated?</strong>{" "}
@@ -447,37 +438,32 @@ export default function MultiplayerLobbyUIArticle() {
           navigate to lobby list with banner.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How does this scale to many
           rooms?</strong> Server-side
           pagination on room list with
           filters. Virtualize the rendered
           list.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>8. How is this
           accessible?</strong> Real lists with
           item announcements. Buttons with
           labels. State changes announce in
           chunks via polite live region.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A multiplayer lobby is{" "}
-          <strong>real-time room list + active
-          room with members and ready states +
-          host controls + session handoff</strong>.
-          Host transfer keeps lobbies alive
+        <HighlightBlock as="p" tier="important"><Highlight tier="important">Host transfer keeps lobbies alive
           through disconnects; ready resets on
-          settings changes; explicit start gates
+          settings changes; explicit start</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="crucial">gates
           give the host control. The pattern
           works for games, classrooms, and
-          virtual events.
-        </p>
+          virtual events.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

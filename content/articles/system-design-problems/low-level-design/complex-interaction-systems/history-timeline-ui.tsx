@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,12 +25,12 @@ export default function HistoryTimelineUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>Applications need to show event sequences chronologically (git commits, document changes, activity logs). Key challenges: organizing events clearly, handling different timescales, and supporting filtering/search. Naive approach: simple list (unorganized). Better: visual timeline with grouping, filtering, and details.
-        </p>
-        <p><strong>Assumptions:</strong></p>
+        <HighlightBlock as="p" tier="crucial">Applications need to show event sequences chronologically (git commits, document changes, activity logs). Key challenges: organizing events clearly, handling different timescales, and supporting filtering/search. Naive approach: simple list (unorganized). Better: visual timeline with grouping, filtering, and details.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important"><strong>Assumptions:</strong></HighlightBlock>
         <ul className="space-y-2">
           <li>Events have timestamps.</li>
-          <li>Event count grows (100s to 1000s).</li>
+          <HighlightBlock as="li" tier="important">Event count grows (100s to 1000s).</HighlightBlock>
           <li>Timescale varies (seconds to years).</li>
           <li>Filtering/search required.</li>
         </ul>
@@ -38,18 +40,18 @@ export default function HistoryTimelineUIArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Timeline Display:</strong> Chronological event visualization.</li>
+          <HighlightBlock as="li" tier="important"><strong>Timeline Display:</strong> Chronological event visualization.</HighlightBlock>
           <li><strong>Event Details:</strong> Click to expand event info.</li>
           <li><strong>Grouping:</strong> By day, hour, or custom.</li>
           <li><strong>Filtering:</strong> By type, user, date range.</li>
           <li><strong>Search:</strong> Find events by keyword.</li>
-          <li><strong>Scrolling:</strong> Efficient handling of many events.</li>
+          <HighlightBlock as="li" tier="important"><strong>Scrolling:</strong> Efficient handling of many events.</HighlightBlock>
           <li><strong>Zoom:</strong> Change timescale (day → week → month).</li>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Performance:</strong> Virtualization for 1000+ events.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Performance:</strong> Virtualization for 1000+ events.</HighlightBlock>
           <li><strong>Load Time:</strong> Initial render under 1s.</li>
           <li><strong>Memory:</strong> Efficient for large histories.</li>
         </ul>
@@ -57,8 +59,8 @@ export default function HistoryTimelineUIArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>Fetch events ordered by timestamp. Group by time interval (day/hour). Render grouped timeline. On scroll, lazy-load more events. Virtualize for performance. Support filtering and search.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Fetch events ordered by timestamp. Group by time interval <Highlight tier="important">(day/hour). Render grouped timeline. On scroll,</Highlight> lazy-load more events. Virtualize for performance. Support filtering and search.
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -72,13 +74,13 @@ export default function HistoryTimelineUIArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Timeline Structure</h3>
         <p>Organizing events.</p>
         <ul className="space-y-2">
-          <li><strong>Events:</strong> Array with id, timestamp, type, author, description.</li>
-          <li><strong>Grouping:</strong> Organize by date (today, yesterday, last week, etc).</li>
+          <HighlightBlock as="li" tier="important"><strong>Events:</strong> Array with id, timestamp, type, author, description.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Grouping:</strong> Organize by date (today, yesterday, last week, etc).</HighlightBlock>
           <li><strong>Sections:</strong> Group header + events in section.</li>
           <li><strong>Timeline Line:</strong> Vertical line connecting events.</li>
           <li><strong>Event Markers:</strong> Dots on timeline, colored by type.</li>
         </ul>
-        <p><strong>Data Structure and Render Optimization:</strong> Store events as a flat array sorted by timestamp (descending for reverse chronological). During grouping, transform into a nested structure mapping group keys to event arrays (e.g., "2026-05-05" maps to event1, event2, event3). This enables efficient rendering: iterate groups, render group header, then render events in group. For large histories (10k+ events), don't load all upfront. Use cursor-based pagination: fetch first 100 events, display. On scroll to bottom, fetch next 100 with cursor pointing to last seen timestamp. Additionally, cache the transformed structure to avoid regrouping on every re-render.</p>
+        <HighlightBlock as="p" tier="important"><strong>Data Structure and Render Optimization:</strong> Store events as a flat array sorted by timestamp (descending for reverse chronological). During grouping, transform into a nested structure mapping group keys to event arrays (e.g., "2026-05-05" maps to event1, event2, event3). This enables efficient rendering: iterate groups, render group header, then render events in group. For large histories (10k+ events), don't load all upfront. Use cursor-based pagination: fetch first 100 events, display. On scroll to bottom, fetch next 100 with cursor pointing to last seen timestamp. Additionally, cache the transformed structure to avoid regrouping on every re-render.</HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Time Grouping</h3>
         <p>Grouping by interval.</p>
@@ -109,7 +111,7 @@ export default function HistoryTimelineUIArticle() {
           <li><strong>Keyword Search:</strong> Full-text search in descriptions.</li>
           <li><strong>Combined:</strong> Multiple filters (AND logic).</li>
         </ul>
-        <p><strong>Filter Implementation and Client-Side vs Server-Side Processing:</strong> For small event sets (under 1000), filter client-side: fetch all events, filter in memory. For large sets, filter server-side: send filter params to API, server returns filtered results. Client-side filtering is instant but expensive in memory. Server-side filtering reduces bandwidth but adds latency. Hybrid approach: cache recent 1000 events client-side and filter locally. For filters not in cache (e.g., date range beyond cached events), fetch from server. Implement filter persistence: save active filters to URL query parameters so timeline is shareable and bookmarkable.</p>
+        <HighlightBlock as="p" tier="important"><strong>Filter Implementation and Client-Side vs Server-Side Processing:</strong> For small event sets (under 1000), filter client-side: fetch all events, filter in memory. For large sets, filter server-side: send filter params to API, server returns filtered results. Client-side filtering is instant but expensive in memory. Server-side filtering reduces bandwidth but adds latency. Hybrid approach: cache recent 1000 events client-side and filter locally. For filters not in cache (e.g., date range beyond cached events), fetch from server. Implement filter persistence: save active filters to URL query parameters so timeline is shareable and bookmarkable.</HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Virtualization</h3>
         <p>Handling large event counts.</p>
@@ -120,7 +122,7 @@ export default function HistoryTimelineUIArticle() {
           <li><strong>Lazy Load:</strong> Load more events as user scrolls to end.</li>
           <li><strong>Performance:</strong> Render 1000+ events without lag.</li>
         </ul>
-        <p><strong>Virtual Scrolling Implementation and Fixed vs Dynamic Heights:</strong> Use a windowing library (react-window, react-virtualized) to render only visible timeline items. For fixed-height events (all events same height), simple index-based calculation suffices. For variable-height events (some expanded with details, some collapsed), maintain a height cache: after first render of an event, store its height. Use this cache to compute scroll offset accurately. Implement dynamic height measurement: use ResizeObserver to detect height changes (event expansion/collapse) and update cache. The overscan buffer (render 5 items above/below viewport) prevents flashing blank spaces during fast scrolling.</p>
+        <HighlightBlock as="p" tier="crucial"><strong>Virtual Scrolling Implementation and Fixed vs Dynamic Heights:</strong> Use a windowing library (react-window, react-virtualized) to render only visible timeline items. For fixed-height events (all events same height), simple index-based calculation suffices. For variable-height events (some expanded with details, some collapsed), maintain a height cache: after first render of an event, store its height. Use this cache to compute scroll offset accurately. Implement dynamic height measurement: use ResizeObserver to detect height changes (event expansion/collapse) and update cache. The overscan buffer (render 5 items above/below viewport) prevents flashing blank spaces during fast scrolling.</HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Visual Styling</h3>
         <p>Timeline appearance.</p>
@@ -145,16 +147,17 @@ export default function HistoryTimelineUIArticle() {
       <section>
         <h2>Trade-offs and Considerations</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Vertical vs Horizontal</h3>
-        <p>Vertical: natural scrolling, mobile-friendly. Horizontal: shows time progression, less common.</p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Vertical: natural scrolling, mobile-friendly. Horizontal: shows time progression, less common.</Highlight></HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Details vs Summary</h3>
-        <p>Expanded: complete info, takes space. Collapsed: clean, require clicks.</p>
+        <HighlightBlock as="p" tier="important">Expanded: complete info, takes space. Collapsed: clean, require clicks.</HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>Timeline UIs visualize event sequences chronologically. Essential aspects include timeline structure with grouping, time intervals (today, week, month), event details on expansion, filtering by type/user/date, search capability, virtualization for performance, visual styling with icons and connectors, and zoom for different timescales. Real-world systems use virtualized lists for scale, smooth animations, and color-coded event types.
-        </p>
+        <HighlightBlock as="p" tier="crucial">Timeline UIs visualize event sequences chronologically. Essential aspects include timeline structure with grouping, time intervals (today, week, month), event details on</HighlightBlock>
+<HighlightBlock as="p" tier="important">expansion, filtering by type/user/date, search capability, virtualization for performance, visual styling with icons and connectors, and zoom for different timescales.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Real-world systems use virtualized lists for scale, smooth animations, and color-coded event types.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

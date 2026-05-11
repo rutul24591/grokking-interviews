@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,39 +37,39 @@ export default function RequestBatchingSystemArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Page renders 10 components. Each loads user profile: GET /users/1, GET /users/2, ..., GET /users/10. Naive: 10 HTTP requests. HTTP overhead: 10 connections, 10 request headers, 10 response headers = significant. Better: batch. Collect all 10 requests in 10ms window. Send single POST /batch with array of request objects. Server processes batch, returns 10 responses. Result: 1 HTTP request instead of 10. 10x bandwidth savings (headers, connections). Lower latency (one round-trip instead of many).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Key challenges: (1) Batching window (too long = latency for early requests; too short = miss batching opportunities). Sweet spot: 10-50ms. (2) Ordered responses (client must match responses to requests—use request IDs). (3) Partial failure (some requests succeed, others fail—handle separately). (4) Server-side assembly (receive batch, process in parallel, return results in order).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Use cases: GraphQL batch queries (multiple queries in one request), REST bulk endpoints (POST /batch), RPC batch calls (multiple function calls in one message). At scale (millions of components), batching significantly improves throughput and reduces server load.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Many similar requests made concurrently. Backend supports batch endpoint. Batching window 10-50ms acceptable. Request IDs available for matching responses. Partial failure handling needed.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Request Queuing:</strong> Queue individual requests in-memory.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Batch Window:</strong> Wait N milliseconds (10-50ms) for more
             requests.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Batch Execution:</strong> Send all queued requests in single HTTP
             call.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Response Routing:</strong> Deserialize batch response and route
             individual results back to requesters.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Error Handling:</strong> Route errors back to individual
             requesters.
@@ -80,17 +82,17 @@ export default function RequestBatchingSystemArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency:</strong> Batching adds ~10-50ms delay but saves network
             round-trips.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Throughput:</strong> Reduces HTTP requests, improves server
             throughput.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory:</strong> Queue bounded to prevent memory leaks.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
@@ -112,13 +114,12 @@ export default function RequestBatchingSystemArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Maintain a queue of pending requests. When request arrives, add to queue and
+        <HighlightBlock as="p" tier="crucial">Maintain a queue of pending requests. When request arrives, add to queue and
           start batch timer (if not running). When timer fires or max size reached,
-          serialize all queued requests into single batch request. Execute batch HTTP
+          serialize all queued requests into single batch request.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Execute batch HTTP
           call. Deserialize response (array of results). Route each result back to
-          corresponding requester via callback/Promise. Clear queue and start fresh.
-        </p>
+          corresponding requester via callback/Promise. Clear queue and start fresh.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -149,10 +150,10 @@ export default function RequestBatchingSystemArticle() {
           Wait for more requests to arrive before sending batch.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Window Duration:</strong> Configurable (typical 10-50ms). Balance
             between latency and batching efficiency.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Timer:</strong> Start on first request. Fire after duration.
           </li>
@@ -191,10 +192,10 @@ export default function RequestBatchingSystemArticle() {
           <li>
             <strong>Method:</strong> Typically POST for batch of mutations/queries.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout:</strong> Set timeout for batch (e.g., 30s). Fail all
             requests if timeout.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Response Deserialization</h3>
@@ -218,14 +219,14 @@ export default function RequestBatchingSystemArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Error Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Handle batch failures and individual request errors.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Batch Failure:</strong> Network error, timeout, 5xx. Fail all
             requests in batch.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Individual Error:</strong> Request validation fails, returns 4xx
             in response. Fail only that request.
@@ -241,10 +242,10 @@ export default function RequestBatchingSystemArticle() {
           Individual requests may timeout before batch executes.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timeout Per Request:</strong> Each request has configurable
             timeout (e.g., 30s).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Early Failure:</strong> If request times out before batch window,
             fail immediately (don't wait for batch).
@@ -307,40 +308,40 @@ export default function RequestBatchingSystemArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Window</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Dynamically adjust batch window based on request rate. High rate → longer
           window to batch more. Low rate → shorter window to avoid latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">GraphQL Perspective</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           GraphQL is inherently batchable — query multiple fields in single request.
           Apollo Client provides batching plugin.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">DataLoader Pattern</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           DataLoader is a popular library for batching. Queue loads, batch at end of
           event loop tick.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mock batch endpoint. Verify requests are batched, responses routed correctly,
           errors handled.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Batch Window & Size</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Dynamic adjustment: high request rate → longer window to batch more.
           Low rate → shorter to minimize latency. Max batch size reached → send
           immediately. Balance: smaller window = lower latency but less efficient.
           Larger window = efficient but higher latency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Integration with Caching & Deduplication</h3>
         <p>
@@ -350,12 +351,12 @@ export default function RequestBatchingSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Partial Failures & Error Propagation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Batch succeeds partially: request 1 succeeds, request 2 fails. Route both
           appropriately. Or fail all? Both strategies used. Recommend: route
           individual results (request 1 succeeds, request 2 fails). Caller handles
           failures per request.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">GraphQL Perspective</h3>
         <p>
@@ -366,26 +367,26 @@ export default function RequestBatchingSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Batching Behavior</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Test: rapid requests coalesced into single batch. Test: batch sent when
           window expires. Test: batch sent when max size reached. Test: partial
           failures routed correctly. Property-based: generate request sequences,
           verify batching optimal.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring & Metrics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Track: avg batch size, batch formation latency, HTTP requests saved.
           If avg batch = 5, saving 80% HTTP overhead. Monitor: max batch size
           reached frequency (high = need to adjust). Alert on slow batch responses.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Queue Management & Backpressure</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Unbounded queue grows if batch processing slow. Implement backpressure:
           when queue reaches threshold, reject new requests or apply queue
           discipline (priority queue, fairness). Prevents memory explosion.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Optimization</h3>
         <p>
@@ -410,54 +411,50 @@ export default function RequestBatchingSystemArticle() {
           src="/diagrams/system-design-problems/low-level-design/networking-data-systems/request-batching-system.svg"
           alt="Request batching: without vs with batching and batching strategies diagram"
         />
+
+        <HighlightBlock as="p" tier="crucial">
+          Interview signal: batching is a micro-queueing problem. You trade added per-request latency (window) for fewer round-trips, better throughput, and less header/handshake overhead.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          The production nuance is response demuxing: map each sub-request to its result (including partial failures) and keep per-request timeouts and cancellation semantics intact.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Batching composes with caching and deduplication: cache hits should bypass the batch, and identical in-window requests should merge to avoid double work.
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Latency vs Efficiency</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Longer batch window increases batching efficiency but adds latency for
           individual requests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Complexity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Batching adds complexity (queue management, timer, deserialization). Only
           worth it for high-frequency request patterns.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Backend Support</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend must support batch endpoint. Standard REST doesn't support well —
           better in GraphQL or JSON-RPC.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">All-or-Nothing vs Partial</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Batch failure can fail all requests or only affected ones. Partial is more
           resilient.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Request batching dramatically improves infrastructure efficiency at scale.
-          For staff/principal engineers, critical aspects include adaptive batch
-          window sizing (high load → longer window), integration with caching and
-          deduplication (multiplicative effect), partial failure handling (route
-          individual results), and GraphQL as native batching solution. Queue
-          management and backpressure prevent memory issues. At 1M users, batching
-          can reduce HTTP requests by 80%+—massive infrastructure and cost savings.
-          DataLoader pattern batches at resolver level. Testing must verify batching
-          optimal under various request patterns. Monitoring batch size, formation
-          latency, and HTTP savings essential. Real-world systems balance complexity
-          with ROI—only implement if request frequency high. Integration with caching
-          layer ensures dedup + batch don't conflict. Understanding when batching
-          helps (many requests, large payloads) vs when it adds unnecessary
-          complexity is essential judgment for engineers architecting systems.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">DataLoader pattern batches at resolver level. Testing must verify batching optimal under various request patterns. Monitoring batch size, formation latency, and HTTP</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">savings essential. Real-world systems balance complexity with ROI—only implement if request frequency high. Integration with caching layer ensures dedup + batch don't conflict. Understanding when batching helps (many requests, large payloads) vs when it adds unnecessary complexity is essential judgment for engineers architecting systems.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

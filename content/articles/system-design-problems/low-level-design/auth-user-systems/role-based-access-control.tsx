@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,18 +38,18 @@ export default function RBACArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authentication verifies identity: "who are you?". Authorization determines access rights: "what can you do?". Role-Based Access Control (RBAC) is the standard approach: assign users roles (admin, editor, viewer), define permissions per role (create, read, update, delete), and enforce permissions on every request. Consider a real scenario: a user logs in as "editor". The app checks their role, fetches permissions (can create posts, edit own posts, can't delete posts). When user clicks "delete post", the app checks: user has "delete_post" permission? No—request rejected with 403 Forbidden.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key challenges: (1) Role hierarchies (admin inherits all editor permissions, editor inherits all viewer permissions). Computing inherited permissions on every request is expensive. (2) Dynamic role assignment (user promoted to admin mid-session). Session must reflect new role within seconds, not hours. (3) Permission caching (with 1M users, fetching permissions from database on every request = 1M database queries/sec, unscalable). Cache permissions in memory/Redis, but cache invalidation is hard. (4) Privilege escalation prevention (user can't grant themselves admin role). Require another admin to assign roles. (5) Multi-role users (user has both "editor" and "support_agent" roles with different permissions—merge them). (6) Fine-grained permissions vs simplicity (RBAC groups permissions into roles, but sometimes need per-resource permissions, e.g., "edit only your own posts"). Simple RBAC doesn't support that.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Naive approach—fetch user roles and permissions from database on every API request—is too slow at scale. Better approach: cache permissions in session (fetched at login), use per-request validation (fast lookup, &lt;1ms), invalidate cache on role change, and implement privilege escalation guards (require approval for sensitive role changes).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Users have one or more roles. Roles have explicit permissions. Role hierarchies exist (admin &gt; editor &gt; viewer). Permission caching acceptable (eventual consistency, &lt; 1 minute lag). Privilege escalation prevented via approval workflow. Audit logging available for role changes.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -79,15 +80,15 @@ export default function RBACArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Permission check &lt; 1ms (must be cached).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Scalability:</strong> Handle 1M users with varied roles.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Consistency:</strong> Role changes propagate to all servers within TTL.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Security:</strong> No privilege escalation, audit trails.
           </li>
@@ -96,31 +97,31 @@ export default function RBACArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases and Consistency Considerations</h3>
         <ul className="space-y-2">
           <li>User has multiple roles (editor + support_agent)—merge permissions (union, not intersection). If one role allows and one denies, allow wins (permissive).</li>
-          <li>User's role changes mid-request—session cached old permissions. User makes request with new permission. Session cache TTL expires, next request has new permissions. Brief lag (~1 min) is acceptable for eventual consistency.</li>
+          <HighlightBlock as="li" tier="crucial">User's role changes mid-request—session cached old permissions. User makes request with new permission. Session cache TTL expires, next request has new permissions. Brief lag (~1 min) is acceptable for eventual consistency.</HighlightBlock>
           <li>User removes own admin role (attempting privilege escalation)—block immediately with error. Require another admin to remove their admin role (separation of duties).</li>
-          <li>Permission added to role (e.g., "delete_post" added to editor role)—existing sessions don't have this until cache refresh. New sessions post-role-update have new permission. Acceptable tradeoff (eventual consistency).</li>
-          <li>Race condition: user gets promoted to admin, makes request before cache invalidates—old cache still has viewer permissions. Request denied. Acceptable (security over liveness).</li>
+          <HighlightBlock as="li" tier="important">Permission added to role (e.g., "delete_post" added to editor role)—existing sessions don't have this until cache refresh. New sessions post-role-update have new permission. Acceptable tradeoff (eventual consistency).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Race condition: user gets promoted to admin, makes request before cache invalidates—old cache still has viewer permissions. Request denied. Acceptable (security over liveness).</HighlightBlock>
           <li>User in no roles—denied all permissions. Handled as empty permission set.</li>
         </ul>
       </section>
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RBAC system has two phases: authorization setup (define roles, assign permissions) and enforcement (check permissions at request time).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phase 1 (Setup): Define roles (admin, editor, viewer) in database. Define permissions (create_post, edit_post, delete_post, etc.) per resource. Define role hierarchy: admin → editor → viewer (each role inherits parent permissions). Link roles to permissions in a role_permissions table. Assign users to roles in user_roles table. On role change (promotion/demotion), update user_roles and broadcast invalidation event.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Phase 2 (Enforcement): On login, fetch user's roles and compute all permissions (including inherited from role hierarchy). Cache in session or Redis with TTL (5-10 minutes). On each API request, middleware checks: "Does user have permission X?" Lookup cached permissions. If permission found, allow. If not found, either deny (safe default) or fetch fresh from database (optional, for long-running requests). Most requests validate cached permissions (fast path, &lt;1ms).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Role change flow: admin changes user's role (promote/demote). System updates user_roles in database, publishes "user_role_changed" event. Subscriber invalidates user's permission cache (Redis key deletion). Next request from that user, cache miss occurs, permissions refetched from database, cache repopulated. User sees new permissions within seconds (brief lag acceptable).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Privilege escalation prevention: Separation of duties—only another admin can change someone's role to admin. User attempting to remove their own admin role blocked immediately with error. All role changes logged and audited.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -139,34 +140,34 @@ export default function RBACArticle() {
         <p>
           Indexing: Create indexes on (user_id) on user_roles, (role_id) on role_permissions for fast lookups. Index (parent_role_id) on roles for hierarchy traversal. Index (user_id, assigned_at) on user_roles for audit queries.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Alternative for fine-grained control: Add resource_id column to permissions (permission to edit post_id=123 specifically, not all posts). But this scales poorly (permissions table grows with resources). Better: store as policies (user can edit post if post.author_id == user.id). Hybrid: RBAC for coarse permissions (everyone with editor role can edit), policies for fine-grained (but only your own posts).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Role Hierarchy and Permission Inheritance</h3>
         <p>
           Role hierarchy: admin (top) → editor (middle) → viewer (bottom). Admin inherits all editor permissions + all viewer permissions. When checking if admin has "read_post" permission, system traverses hierarchy: (1) Check admin.role_permissions (direct). (2) Check parent role (editor) permissions recursively. (3) Return union of all inherited permissions.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Recursive traversal is expensive. Instead, cache computed permissions: when role hierarchy is defined, precompute and cache "admin has permissions: [read, write, delete]". When hierarchy changes (new role added, hierarchy restructured), invalidate computed permission cache. Rebuild and cache. This way, looking up admin's permissions is O(1) lookup, not O(depth) recursion.
-        </p>
+        </HighlightBlock>
         <p>
           Cycle prevention: validate on role creation that no cycles exist (admin's parent can't be editor if editor inherits from admin). Enforce at database level (foreign key constraint, cycle detection on insert).
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Permission Caching and Invalidation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Cache user permissions at login: fetch the user’s roles, compute inherited permissions, and store the computed set either in the session (JWT payload) or in Redis. Use a predictable key scheme such as user_permissions plus the user identifier. Choose a TTL such as 5 to 10 minutes to balance freshness and cache hits. After the TTL expires, the next permission check refetches and repopulates.
-        </p>
+        </HighlightBlock>
         <p>
           Cache invalidation on role change: when an admin changes a user’s role, publish a user_roles_changed event carrying the user identifier. Subscribers delete the cached permission entry for that user. The next request from that user misses cache, refetches permissions from the database, and repopulates. Typical lag is under a second for event propagation, then the next request refreshes cache.
         </p>
         <p>
           Optional: aggressive invalidation (delete cache immediately on role change). Trade: avoids lag, but increases database load if roles change frequently. Safer: time-based expiry (TTL) + event-driven invalidation (instant for urgent changes).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Fallback: if cache miss (Redis down or expired), query database to fetch permissions. Don't deny access just because cache missed—degrade gracefully (slower but correct). Optimize: add second-level cache (local in-memory cache in application, fallback to Redis).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Permission Checking</h3>
         <p>Check if user has permission.</p>
@@ -240,9 +241,9 @@ export default function RBACArticle() {
           <li>
             <strong>Policy Engine:</strong> Evaluate complex policies (Rego, Cedar).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Trade-off:</strong> More expressive but slower to evaluate.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring & Observability</h3>
@@ -268,42 +269,42 @@ export default function RBACArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">JWT vs Session-Based Roles</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           JWT: encode roles in token payload. Scales (no server state) but role changes
           delayed until token refresh. Sessions: store roles in Redis. Instant updates but
           requires server state.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Centralized Authorization Service</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large orgs use centralized service (Okta, AWS IAM) for role/permission
           management. Apps query service for permission checks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing RBAC</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Test: user with each role can access allowed resources, denied to others, role
           hierarchy inherited, role change effective, privilege escalation prevented.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Attribute-Based Access Control (ABAC)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RBAC sufficient for simple apps. Complex apps use ABAC: decisions based on user
           attributes (role, department, clearance), resource attributes (owner, sensitivity),
           context (time, location). Expressive but requires policy engine (Cedar, Rego).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Delegated Permission Granting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User A can grant subset of their permissions to user B (delegation). Limited
           lifetime. Useful for temporary access (contractor, agency). Implement: delegation
           table (grantor, grantee, permissions, expires_at), check delegations in
           permission evaluation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Time-Based Role Activation</h3>
         <p>
@@ -313,27 +314,27 @@ export default function RBACArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Audit Logging & Compliance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Log all authorization decisions: who attempted what, permission granted/denied,
           timestamp, context. Required for compliance (SOC 2, PCI-DSS). High-volume
           logging—sample if needed.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing RBAC at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Load test: 100K permission checks/sec. Verify cache hit rate &gt; 99%, latency
           &lt; 1ms. Chaos test: cache down, database slow. Verify fallback (query database,
           slightly slower but correct).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: admin role cached in JWT, user loses admin role, JWT still valid until
           expiry. User can perform admin actions. Solution: check revocation list or use
           shorter TTL. Another: permission check cached on client (React), server role
           changed, client still shows old UI. Solution: check permissions server-side on
           every request, don't trust client.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
         <p>
@@ -347,32 +348,32 @@ export default function RBACArticle() {
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">RBAC vs ABAC (Attribute-Based Access Control)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RBAC: Simple, coarse-grained (admin, editor, viewer). All admins have same permissions. Scalable (few roles). Con: can't express "edit only your own posts" (requires per-resource logic). ABAC: Fine-grained, policy-driven (user can edit post if user.department == post.department && post.status != "published"). Expressive, flexible. Con: complex (policies hard to reason about), slow evaluation (each request evaluates policies), difficult to test. Most apps: RBAC for baseline, policies for fine-grained. Hybrid: use RBAC for access tiers, ABAC for resource-specific logic.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Instant vs Eventual Consistency</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Instant consistency: role change immediately visible to user (delete cache, next request refetches). Requires event-driven invalidation (complex, needs event bus). Eventual consistency: role change visible within TTL (~5 min). Simpler (just time-based expiry). Brief lag acceptable for most apps. Trade: consistency for simplicity. High-security apps (banking): instant consistency (complex, but necessary). Most apps: eventual (TTL-based).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Centralized vs Distributed Authorization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Centralized service (Okta, AWS IAM): all apps query central service for permission checks. Simpler operationally (one source of truth), good for multi-app systems. Con: single point of failure (if Okta down, all apps deny access). Distributed: each app manages its own roles/permissions. Resilient (no central dependency), but operationally complex (permissions out of sync). Most apps: distributed (accept operational burden for resilience).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Role-Based Access Control (RBAC) is fundamental to authorization systems. For staff/principal engineers, critical architectural components: (1) Role hierarchy enabling permission inheritance (admin ⊃ editor ⊃ viewer) with precomputed permission caching to avoid recursive traversal. (2) Permission caching with TTL (5-10 minutes) and event-driven invalidation for eventual consistency. (3) Privilege escalation prevention via separation of duties (only other admins can promote to admin). (4) Multi-role support merging permissions across roles (union, not intersection). (5) Audit logging of all role changes (who, what, when) for compliance and forensics.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At scale (1M users), permission checks are high-volume—permission lookup must be &lt;1ms (fast path via cache). Cache hits should be &gt;99% (TTL-based, event-driven invalidation). Database queries only on cache misses (graceful degradation). Redis cluster required for distributed caching with multi-region replication for consistency across regions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           RBAC is simple and scales, but limited expressiveness (can't represent "edit only your own posts"). For fine-grained control, use ABAC (attribute-based) or hybrid (RBAC baseline + policies for specifics). Testing must cover: role hierarchies (all inherited permissions present), cache invalidation (role change visible within TTL), multi-role merging (union of permissions correct), privilege escalation prevention (user can't self-promote), role assignment edge cases (concurrent assignments). Real-world systems often combine RBAC (coarse permissions for access tiers) with attribute policies (fine-grained resource control). Integration with session management (roles in token), authentication (login fetches roles), and audit systems critical.
-        </p>
+        </HighlightBlock>
       </section>
     </ArticleLayout>
   );

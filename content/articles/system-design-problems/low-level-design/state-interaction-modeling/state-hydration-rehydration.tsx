@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -24,18 +26,18 @@ export default function StateHydrationRehydrationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Server-side rendering (SSR) generates HTML on the server using the application's current state (user data, feature flags, initial page content). This HTML is sent to the browser, which displays it immediately — fast first paint, good Core Web Vitals. Then the browser loads JavaScript, initializes the React application, and "hydrates" — attaches event listeners and makes the static HTML interactive. For hydration to succeed without flickering or errors, the client-side state must match the state the server used to generate the HTML.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           This is the hydration problem: the server generated HTML with user A logged in; the browser must start with the same "user A logged in" state. If the browser initializes with an empty Redux store (the common default), React's reconciliation detects a mismatch between what the server rendered and what the client would render with empty state, and either re-renders (causing a visual flash) or throws a hydration error.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The problem has several dimensions. SSR hydration is about injecting server state into the client to prevent mismatches. Persistence rehydration is about restoring user preferences (theme, language, sidebar collapsed state) from localStorage across sessions — the opposite direction. Schema migration is about handling the case where a returning user's persisted state was saved by an older version of the application and may have a different structure. Each dimension has distinct failure modes and requires a different mechanism.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Application state is serializable to JSON (no functions, symbols, or circular references). The same application code runs on server and client (isomorphic). Server state is authoritative for authenticated data; localStorage state is authoritative for user preferences. State schemas may change across application versions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -48,12 +50,12 @@ export default function StateHydrationRehydrationArticle() {
           <li>
             <strong>Persistence:</strong> Selected state slices are serialized to localStorage on change and restored on subsequent page loads, enabling preferences to persist across sessions.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Schema Validation:</strong> Persisted state is validated against the current schema before use. Invalid or missing fields fall back to defaults rather than crashing the application.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Migration:</strong> If the persisted state's schema version differs from the current version, a migration function transforms it to the current format before use.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Priority Resolution:</strong> When multiple state sources are present (server state + localStorage), a defined priority and merge strategy determines the canonical initial state.
           </li>
@@ -64,12 +66,12 @@ export default function StateHydrationRehydrationArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Hydration latency:</strong> State deserialization and store initialization must complete before React's first render, adding under 10ms to the critical path.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Bundle size:</strong> The hydration/migration infrastructure must not significantly inflate the initial JS bundle — migrations for old versions can be code-split and loaded lazily if needed.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Correctness:</strong> Zero hydration mismatches in steady state (server and client produce identical HTML for identical state).
           </li>
@@ -81,7 +83,7 @@ export default function StateHydrationRehydrationArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
           <li>Server renders with user logged in; token expires before JS loads; client hydrates with stale auth state before the token check fires.</li>
-          <li>localStorage entry written by app version 1.0 contains a field that was renamed in version 2.0 — migration required but not present (schema gap).</li>
+          <HighlightBlock as="li" tier="important">localStorage entry written by app version 1.0 contains a field that was renamed in version 2.0 — migration required but not present (schema gap).</HighlightBlock>
           <li>localStorage JSON is syntactically invalid (storage was truncated, corrupted by another extension). JSON.parse throws.</li>
           <li>Server injects a large state object (50KB+), inflating HTML transfer size and Time to First Byte.</li>
           <li>Multiple tabs: Tab A saves to localStorage; Tab B rehydrates from it; Tab A's user-specific state appears in Tab B (different user or session).</li>
@@ -90,12 +92,11 @@ export default function StateHydrationRehydrationArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          SSR hydration: the server calls a getInitialState() function that returns a plain-object state snapshot, serializes it with a safe serializer (handling HTML-special characters to prevent XSS), and embeds it in the HTML as a script tag assigning a global variable (window.__INITIAL_STATE__). On the client, the store initialization reads window.__INITIAL_STATE__ and passes it as the preloaded state to the store constructor. React renders from this state, producing HTML identical to the server's, so hydration succeeds without mismatch.
-        </p>
-        <p>
+        <HighlightBlock as="p" tier="important">SSR hydration: the server calls a getInitialState() function that returns a plain-object state snapshot, serializes it with a safe serializer (handling HTML-special characters to prevent XSS), and embeds it in the HTML as a script tag assigning a global variable (window.__INITIAL_STATE__).</HighlightBlock>
+<HighlightBlock as="p" tier="important">On the client, the store initialization reads window.__INITIAL_STATE__ and passes it as the preloaded state to the store constructor. React renders from this state, producing HTML identical to the server's, so hydration succeeds without mismatch.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Persistence rehydration: a Zustand persist middleware (or Redux persist) subscribes to store changes and serializes selected slices to localStorage after each update. On initialization, the middleware reads localStorage, validates the data against the current schema, runs any necessary migrations, and merges the result with the server-injected state (server wins for auth, localStorage wins for preferences).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -108,9 +109,9 @@ export default function StateHydrationRehydrationArticle() {
         <h2>Detailed Design</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Server-Side State Serialization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The server's state collection function assembles the initial state: user identity from the auth session, feature flags from the flags service, and any server-fetched data needed for the first render. This state is serialized to JSON using a safe serializer that replaces HTML-special characters with Unicode escape sequences to prevent XSS via state injection attacks. The serialized payload is embedded into the HTML in a script tag and exposed to the client through a well-known global value so the client can bootstrap with the same initial state.
-        </p>
+        </HighlightBlock>
         <p>
           Size management is critical. The embedded JSON inflates HTML size, increasing Time to First Byte and delaying parsing. Best practice: serialize only the minimum state needed for the first render. Paginated list data should not be embedded (the page renders with a loading skeleton and fetches data client-side). Only server-authoritative data that prevents hydration mismatch needs injection — auth state, feature flags, and the first page of the primary data collection.
         </p>
@@ -130,14 +131,14 @@ export default function StateHydrationRehydrationArticle() {
         <p>
           Hydration mismatches occur when the server-rendered HTML and the client's first render differ. Common causes: date/time rendering (server is in UTC, client is in local timezone), random IDs generated with Math.random() in render (different values each call), browser-only APIs accessed during SSR (window.innerWidth, localStorage), and server state becoming stale before the client JS loads.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mitigation strategies: use a stable ID generator seeded by server-provided values; ensure date rendering is timezone-aware and consistent; use useEffect for browser-only data to prevent SSR access; keep the server-to-client state window short (hydration should happen within 1–2 seconds of HTML delivery). For volatile data (user's unread notification count that may change while the page loads), render a placeholder server-side and fetch the actual value client-side, accepting a brief visible update rather than risking a stale mismatch.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">localStorage Persistence Layer</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The persistence layer serializes and restores selected state slices. The configuration defines which slices persist (e.g., theme, language, sidebarCollapsed) and which are excluded (auth, serverData, loadingStates). On every qualifying state change, the persistence layer serializes the configured slices to a versioned localStorage key (app-state-v3, where v3 is the current schema version).
-        </p>
+        </HighlightBlock>
         <p>
           Zustand-persist and redux-persist both implement this pattern. They abstract the subscribe-then-serialize flow, handle debouncing (to avoid writing to localStorage on every keystroke), and provide a migration mechanism. Custom implementations should replicate these features rather than writing directly to localStorage in reducer logic, which creates tight coupling between business logic and persistence concerns.
         </p>
@@ -173,40 +174,39 @@ export default function StateHydrationRehydrationArticle() {
         <p>
           The window.__INITIAL_STATE__ injection is an XSS vector if the serialization is not safe. JSON.stringify does not escape HTML-special characters, allowing the value &lt;/script&gt; to appear in the embedded JSON and terminate the script tag prematurely, followed by arbitrary injected HTML. Always use a safe serializer that replaces &lt;, &gt;, and &amp; with their Unicode equivalents in the output JSON string.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           localStorage is accessible to any JavaScript running on the same origin, including XSS-injected scripts. Never store auth tokens, refresh tokens, JWTs, or any credential in localStorage. Session tokens belong in httpOnly cookies (inaccessible to JavaScript). If the token must be accessible to JavaScript (for Authorization header use), store it in memory (module-level variable) and re-authenticate on page reload via a server-side cookie.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring and Error Tracking</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Instrument the hydration and rehydration pipeline: log schema validation failures (indicates users with stale state formats in production), log migration execution (how many users are running old state versions), and track hydration mismatch errors (React's onRecoverableError callback in React 18). A spike in hydration mismatch errors following a deployment indicates a server/client state schema divergence introduced in the deployment.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">State Size vs First Paint Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Embedding more server state in the HTML prevents more client-side fetches (better UX) but increases HTML transfer size (worse Time to First Byte). The right balance: embed only the state needed for the above-the-fold render. Use deferred fetches (React Suspense) for below-the-fold data, accepting loading states rather than inflating the HTML payload.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Migration Maintenance Burden</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Every schema change generates a migration function. Over 3 years and 50 schema changes, the migration chain is 50 functions deep. The last migration runs 49 predecessor migrations for the very few users on extremely old state. Periodic migration pruning (dropping support for state older than N months) reduces this burden but requires a strategy for gracefully resetting stale state (show a "your session has expired, please log in" message rather than crashing).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">SSR vs CSR State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Applications that don't use SSR (client-rendered SPAs) face only the rehydration problem (from localStorage/cookies), not the hydration mismatch problem. Adding SSR later requires retrofitting the hydration injection mechanism. Design the store initialization to accept an optional preloaded state from the start — this makes adding SSR later straightforward rather than requiring a refactor of every store initialization path.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          State hydration and rehydration ensures application state is correctly initialized from all available sources — server-injected JSON, localStorage persistence, and application defaults — without hydration mismatches, security vulnerabilities, or crashes from corrupted or stale persisted data. The SSR hydration path requires a safe serializer on the server and synchronized store initialization before React's first render on the client. The persistence path requires schema validation, versioned migrations, and strict security policies (no credentials in localStorage). Multi-source merging is slice-aware, not a generic deep merge. For staff-level engineers, the architectural decisions that matter most are: use safe HTML serialization for server-injected state; design the store initialization API to accept preloaded state from day one; implement versioned schema migrations early (they become expensive to retrofit); monitor hydration mismatch errors as a deployment quality metric; and treat localStorage as a user preference store, not a session store.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Multi-source merging is slice-aware, not a generic deep merge. For staff-level engineers, the architectural decisions that matter most are: use safe HTML</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">serialization for server-injected state; design the store initialization API to accept preloaded state from day one; implement versioned schema migrations early (they become expensive to retrofit); monitor hydration mismatch errors as a deployment quality metric; and treat localStorage as a user preference store, not a session store.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

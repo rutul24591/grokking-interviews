@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,25 +37,25 @@ export default function AsyncStateHandlingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Async operations (API calls) have states: pending, success, error.
           Key challenges: managing multiple async ops (which succeeded?), race
           conditions (request B response arrives before A), cancellation
           (component unmounts, abort fetch), and retries (network flaky). Naive
           approach: dispatch action on success/error. Breaks with race
           conditions.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Multiple async operations (fetch users, comments, likes).</li>
-          <li>Operations take 100ms-5s (non-trivial latency).</li>
-          <li>
+          <HighlightBlock as="li" tier="important">Multiple async operations (fetch users, comments, likes).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Operations take 100ms-5s (non-trivial latency).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             User may interact while loading (scroll, click, change filters).
-          </li>
+          </HighlightBlock>
           <li>Network may fail, retry needed.</li>
-          <li>Component may unmount before response arrives.</li>
+          <HighlightBlock as="li" tier="important">Component may unmount before response arrives.</HighlightBlock>
         </ul>
       </section>
 
@@ -61,13 +63,13 @@ export default function AsyncStateHandlingArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Status Tracking:</strong> idle, loading, success, error per
             operation.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Data Storage:</strong> Store response data when success.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Error Storage:</strong> Store error message when failed.
           </li>
@@ -90,13 +92,13 @@ export default function AsyncStateHandlingArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory:</strong> No memory leaks (cleanup on unmount).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Dispatch pending state instantly
             (&lt;10ms).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Resilience:</strong> Retry with exponential backoff.
           </li>
@@ -108,10 +110,10 @@ export default function AsyncStateHandlingArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             User triggers operation A, then B quickly. B completes first. A
             then completes—show A's data (wrong order)?
-          </li>
+          </HighlightBlock>
           <li>
             Component unmounts while request pending—abort and cleanup.
           </li>
@@ -129,13 +131,12 @@ export default function AsyncStateHandlingArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Track async operation status: idle, loading, success, error. On
-          dispatch, set loading. On response, set success + data OR error. Use
+        <HighlightBlock as="p" tier="crucial">Track async operation status: idle, loading, success, error. On
+          dispatch, set loading. On response, set success + data OR error.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Use
           request ID to prevent race conditions (ignore older responses). Abort
           fetch on component unmount. Retry with exponential backoff on
-          failure.
-        </p>
+          failure.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -245,10 +246,10 @@ export default function AsyncStateHandlingArticle() {
             <strong>Unmount Cleanup:</strong> useEffect cleanup function aborts
             fetch.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Leak Prevention:</strong> Don't update unmounted
             component state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Error Handling:</strong> AbortError on cancel (expected,
             not error).
@@ -258,10 +259,10 @@ export default function AsyncStateHandlingArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Retry Strategy</h3>
         <p>Retry failed operations.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Exponential Backoff:</strong> 1s, 2s, 4s, 8s retry
             intervals.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Jitter:</strong> Add randomness (±10%) prevent thundering
             herd.
@@ -269,10 +270,10 @@ export default function AsyncStateHandlingArticle() {
           <li>
             <strong>Max Retries:</strong> Stop after 5 retries (give up).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Retriable Errors:</strong> Retry on network errors, 5xx. Not
             4xx (client error).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>User Trigger:</strong> Allow manual retry (button).
           </li>
@@ -324,13 +325,13 @@ export default function AsyncStateHandlingArticle() {
             <strong>Success Rate:</strong> % of requests succeeding (low =
             server issue).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Latency:</strong> P50, P95, P99 request latency.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry Rate:</strong> % of requests retried (high = network
             issue).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Timeout Rate:</strong> % of requests timing out.
           </li>
@@ -345,33 +346,33 @@ export default function AsyncStateHandlingArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">RTK Query</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Redux Toolkit Query builtin async handling. Generates thunks, hooks,
           caching. Reduces boilerplate significantly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">SWR / React Query</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Libraries for data fetching + caching. SWR minimal, React Query
           powerful. Cleaner than thunks.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Async</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mock fetch/API. Dispatch thunk, wait for fulfilled/rejected action.
           Assert state. Test race condition: dispatch two requests, verify
           latest wins.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Stale-While-Revalidate</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Show stale data immediately, fetch fresh in background, update when
           ready. Better UX.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Coalescing</h3>
         <p>
@@ -386,68 +387,57 @@ export default function AsyncStateHandlingArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Timeout Handling</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If request takes &gt;30s, abort and show error. Prevent hanging
           indefinitely.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Load test: 1000 concurrent async operations. Verify no race
           conditions, memory leaks. Chaos: timeout 50% of requests.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: update state after unmount (memory leak). Solution: check
           mounted before setState. Another: race condition (old response
           overwrites new). Solution: request ID.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           High error rate: check server health. Race conditions: verify request
           ID logic. Memory leaks: check unmount cleanup.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Deduplication vs Flexibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Deduplication prevents double-fetch but reduces flexibility (can't
           force refresh). Allow manual refresh button.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Retry Count vs User Experience</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           More retries increase success but delay error feedback. Balance:
           ~3-5 retries.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Library vs Manual</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           RTK Query / React Query eliminate boilerplate but add dependency.
           Manual more control. Use library for simplicity.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Async state handling critical for data-fetching apps. For
-          staff/principal engineers, essential aspects include status tracking
-          (idle/loading/success/error), request IDs for race condition
-          prevention, AbortController for cancellation, and exponential backoff
-          retries. Request deduplication prevents double-fetch. RTK Query
-          recommended for Redux apps. At scale, async operations with high
-          concurrency require careful race condition handling and memory leak
-          prevention. Testing must cover race conditions, cancellation,
-          timeouts, retries. Monitoring success rate and latency distribution.
-          Real-world systems use RTK Query for automatic handling, SWR/React
-          Query for simpler solutions.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">At scale, async operations with high concurrency require careful race condition handling and memory leak</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">prevention. Testing must cover race conditions, cancellation, timeouts, retries. Monitoring success rate and latency distribution. Real-world systems use RTK Query for automatic handling, SWR/React Query for simpler solutions.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

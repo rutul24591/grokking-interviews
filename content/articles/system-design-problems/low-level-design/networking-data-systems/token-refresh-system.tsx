@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,18 +37,18 @@ export default function TokenRefreshSystemArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Access token issued with 15-minute expiry for security (if stolen, useful only 15 min). User makes API request with access token. Token expired. Server returns 401. Naive: app shows error, user manual re-login. Bad UX. Better: app detects 401, silently refreshes token using refresh token (longer-lived, stored securely), retries request. User perceives zero interruption.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Challenge: concurrent requests. User makes 3 API calls simultaneously. All in-flight when access token expires. All receive 401. Naive: all 3 refresh independently (race condition: multiple refresh attempts, conflicting token updates, memory leak). Better: first request triggers refresh, other 2 wait for result, all retry with new token. Requires coordination—queue of waiting requests.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Implementation: maintain "refresh in progress" flag. When 401 detected and flag false, set true, start refresh. When 401 detected and flag true, queue request, wait for refresh to complete, retry. Once refresh done, notify all queued requests, retry. If refresh fails, abort queued requests, redirect to login.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Access tokens short-lived (15-60 min). Refresh tokens longer-lived (days/weeks). Multiple requests possible when token expires. Server returns 401 on expiration. Refresh endpoint requires refresh token. Atomic refresh required (no race conditions).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -65,18 +67,18 @@ export default function TokenRefreshSystemArticle() {
             <strong>Request Retry:</strong> After refresh, retry original failed
             request.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Race Condition Prevention:</strong> Multiple concurrent requests
             don't trigger multiple refreshes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Atomic Refresh:</strong> All concurrent requests wait for refresh
             to complete.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Refresh Failure Handling:</strong> If refresh fails, redirect to
             login.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
@@ -85,17 +87,17 @@ export default function TokenRefreshSystemArticle() {
             <strong>Transparency:</strong> Token refresh invisible to user. No
             re-login required.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency:</strong> Refresh adds ~500ms latency. Accept as
             trade-off for security.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Atomicity:</strong> All requests see consistent token state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Security:</strong> Refresh token stored securely (httpOnly cookie
             preferred).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
@@ -118,13 +120,12 @@ export default function TokenRefreshSystemArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Store access and refresh tokens in state. On API response 401, detect
+        <HighlightBlock as="p" tier="crucial">Store access and refresh tokens in state. On API response 401, detect
           expired token. Check if refresh already in progress. If yes, wait for its
-          completion. If no, initiate refresh. During refresh, queue all concurrent
+          completion.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">If no, initiate refresh. During refresh, queue all concurrent
           requests. Once refresh completes, update token and retry queued requests. If
-          refresh fails, redirect to login.
-        </p>
+          refresh fails, redirect to login.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -139,14 +140,14 @@ export default function TokenRefreshSystemArticle() {
             <strong>Access Token:</strong> Short-lived (15-60 min). Stored in memory
             or localStorage.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Refresh Token:</strong> Long-lived (days/weeks). Stored in
             httpOnly cookie for security.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Token Expiry:</strong> Decode JWT to extract expiry time. Or
             server provides expiry in response.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Expiration Detection</h3>
@@ -154,10 +155,10 @@ export default function TokenRefreshSystemArticle() {
           Detect when token has expired.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Response Status:</strong> API returns 401 Unauthorized on expired
             token.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Proactive Check:</strong> Before API call, check if token expired.
             Refresh if needed.
@@ -198,10 +199,10 @@ export default function TokenRefreshSystemArticle() {
             <strong>Add to Queue:</strong> When 401 received and refresh in progress,
             add request to queue.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Flush Queue:</strong> Once refresh completes, retry all queued
             requests.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Refresh Endpoint Call</h3>
@@ -209,9 +210,9 @@ export default function TokenRefreshSystemArticle() {
           Exchange refresh token for new access token.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Endpoint:</strong> POST /auth/refresh with refresh token.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Response:</strong> Server returns new access token (and
             optionally new refresh token).
@@ -304,45 +305,45 @@ export default function TokenRefreshSystemArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">HTTP Client Integration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Token refresh must integrate tightly with HTTP client (Axios, Fetch).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">State Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Zustand, Redux, or Context for token storage and refresh state.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Store refresh token in httpOnly cookie to prevent XSS. Access token in
           memory is acceptable if refresh on-demand.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">CSRF Protection</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Refresh endpoint may be POST. Protect via CSRF tokens or SameSite cookies.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Distributed Token Validation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In distributed systems, every server validates tokens independently. But
           revoked token takes time to propagate. Solutions: token blacklist (redis),
           short TTL (revocation takes N minutes max), or centralized auth service.
           Trade latency for freshness.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Revocation Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User logs out, token invalidated. But cached token still valid if short
           TTL. Option: immediately revoke (add to blacklist). Risk: blacklist
           lookups on every request adds latency. Most systems accept grace period
           (5-30 min) for convenience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Refresh Token Security</h3>
         <p>
@@ -366,26 +367,26 @@ export default function TokenRefreshSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Observability & Incident Response</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Monitor: refresh success rate, refresh failure reasons (token expired,
           network error), avg refresh latency. Alert on high failure rate (indicates
           auth issues). Log all refresh attempts for audit.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: refresh token also expired, user logged out, no graceful error.
           Another: refresh succeeds on server but response lost (network error).
           Client thinks refresh failed, tries again. Another: refresh endpoint slow,
           requests timeout waiting for it.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Refresh Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Refresh adds ~500ms latency per failed request. At 1M users, refresh load
           significant. Optimize: refresh in background (before expiration), avoid
           thundering herd on refresh endpoint. Use read replicas for token validation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Sliding Window Alternative</h3>
         <p>
@@ -402,48 +403,44 @@ export default function TokenRefreshSystemArticle() {
           src="/diagrams/system-design-problems/low-level-design/networking-data-systems/token-refresh-flow.svg"
           alt="Token refresh flow: silent refresh strategy and error scenarios diagram"
         />
+
+        <HighlightBlock as="p" tier="crucial">
+          Interview signal: refresh must be single-flight. When multiple requests hit 401 concurrently, only one refresh call should run; the rest queue behind it and replay after success.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Security posture matters: keep refresh tokens in httpOnly cookies (XSS resistant), keep access tokens short-lived, and bind refresh to device sessions with revocation.
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
+          Failure paths are product decisions: refresh fails → hard logout, soft re-auth banner, or limited read-only mode. Make it explicit and observable (refresh success rate, latency).
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Latency vs Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Short token TTL increases security but forces frequent refreshes (adds
           latency).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Complexity</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Automatic token refresh adds complexity. Simpler to just re-login on
           expiration, but worse UX.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Sliding Window</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Alternative: extend token lifetime on each request (sliding window).
           Simpler but weaker security.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          A token refresh system is foundational to secure, user-friendly
-          authentication. For staff/principal engineers, critical aspects include
-          distributed token validation strategies, token revocation with blacklists
-          or propagation delays, secure refresh token storage (httpOnly cookies),
-          and refresh token rotation to limit attacker window. Cross-origin refresh
-          requests require careful CORS and CSRF handling. At 1M users, refresh
-          endpoint becomes bottleneck—optimize via caching, read replicas, and
-          background refresh (before expiration) to avoid thundering herd. Real-world
-          systems must handle edge cases: concurrent refresh, refresh during logout,
-          refresh token expiration. Sliding window alternative trades simplicity for
-          security. Testing must cover all scenarios including race conditions.
-          Observability on refresh success rate and latency essential for detecting
-          auth issues early. Understanding interaction with error handling, retry
-          logic, and request deduplication is important.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems must handle edge cases: concurrent refresh, refresh during logout, refresh token expiration. Sliding window alternative</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">trades simplicity for security. Testing must cover all scenarios including race conditions. Observability on refresh success rate and latency essential for detecting auth issues early. Understanding interaction with error handling, retry logic, and request deduplication is important.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

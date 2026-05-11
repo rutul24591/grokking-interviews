@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,25 +38,25 @@ export default function OfflineFirstArchitectureArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Traditional apps assume network always available. Users expect apps to work
           offline: take notes on plane, edit documents on train, browse cached content
           without signal. Offline-first architecture inverts assumption: app works
           offline by default, syncs to server when network available. Key challenges:
           local data may diverge from server (conflicts), syncing large datasets is
           expensive, and users may edit same data on multiple devices.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
           <li>Users may go offline for minutes to hours.</li>
-          <li>App must remain functional offline (read, write local data).</li>
-          <li>
+          <HighlightBlock as="li" tier="important">App must remain functional offline (read, write local data).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Changes made offline sync to server when online. Server may have newer
             data (conflict).
-          </li>
-          <li>Multiple devices editing same data (need conflict resolution).</li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">Multiple devices editing same data (need conflict resolution).</HighlightBlock>
         </ul>
       </section>
 
@@ -62,15 +64,15 @@ export default function OfflineFirstArchitectureArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Local Storage:</strong> Data persisted locally (IndexedDB, SQLite).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Offline Operations:</strong> Read, write, delete work offline.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Automatic Sync:</strong> When online, sync local changes to server.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Conflict Detection:</strong> Detect when local and remote data
             diverged.
@@ -89,9 +91,9 @@ export default function OfflineFirstArchitectureArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Performance:</strong> Local reads &lt;10ms (no network latency).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Storage:</strong> Efficiently use device storage (compression, pruning).
           </li>
@@ -99,9 +101,9 @@ export default function OfflineFirstArchitectureArticle() {
             <strong>Battery:</strong> Sync doesn't drain battery (batch requests,
             backoff).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Consistency:</strong> Data eventually consistent across devices.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
@@ -120,14 +122,13 @@ export default function OfflineFirstArchitectureArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Store data locally in IndexedDB. On reads, query local store (fast, offline).
+        <HighlightBlock as="p" tier="crucial">Store data locally in IndexedDB. On reads, query local store (fast, offline).
           On writes, update local store immediately (optimistic), queue change for sync.
-          Monitor network status. When online, batch sync changes to server. Server
+          Monitor network status.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">When online, batch sync changes to server. Server
           returns latest data + conflicts (if any). Merge conflicts (3-way merge or
           user choice). Update local store with merged result. Notify user of sync
-          status.
-        </p>
+          status.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -142,22 +143,22 @@ export default function OfflineFirstArchitectureArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Local Data Storage</h3>
         <p>Persist data on device.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>IndexedDB:</strong> Browser storage (5-50GB). Suitable for large
             datasets.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>localStorage:</strong> Smaller (5-10MB). Sufficient for metadata,
             settings.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>SQLite (mobile):</strong> Native database on iOS/Android. More
             efficient.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Schema:</strong> Mirror server schema locally. Include version,
             timestamp, sync state.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Change Tracking</h3>
@@ -197,9 +198,9 @@ export default function OfflineFirstArchitectureArticle() {
           <li>
             <strong>Update Local:</strong> Apply server changes to local store.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Retry:</strong> If sync fails, retry with exponential backoff.
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Conflict Detection & Resolution</h3>
@@ -266,10 +267,10 @@ export default function OfflineFirstArchitectureArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Sync Status & Queuing</h3>
         <p>Track sync state.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Sync Queue:</strong> List of changes pending sync (id, operation,
             timestamp, retry_count).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Status:</strong> Each change: pending, syncing, synced, failed.
           </li>
@@ -307,22 +308,22 @@ export default function OfflineFirstArchitectureArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">IndexedDB Complexity</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           IndexedDB powerful but complex API. Use libraries (Dexie, PouchDB) for
           convenience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Data Sync Protocol</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Design efficient sync: send only deltas (changed records), not full dataset.
           Use checksums for validation.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Offline</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Use DevTools to simulate offline. Test: create/edit offline, go online, verify
           sync. Test conflicts: edit same document on two devices offline, sync both.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -336,11 +337,11 @@ export default function OfflineFirstArchitectureArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Sync Strategy</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Adjust sync based on network: Wi-Fi → sync aggressively (large payloads).
           Mobile 4G → sync less frequently (save bandwidth). Offline → queue locally.
           Detect connection type via navigator API.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Delta Compression</h3>
         <p>
@@ -349,73 +350,62 @@ export default function OfflineFirstArchitectureArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Multi-Device Sync</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           User edits document on phone offline, then opens on desktop. Desktop should
           see pending changes from phone. Implement: sync status per device, merge
           strategies account for multiple devices, cloud state authoritative.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Offline at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Load test: 1000 devices syncing simultaneously. Verify server handles load,
           conflicts resolved correctly, no data loss. Chaos test: network failures,
           partial syncs, device crashes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: user edits offline, goes online, forgets to sync. Changes lost. Solution:
           auto-sync on online, notify user. Another: storage quota exceeded, changes
           dropped silently. Solution: warn before storage full, prompt to clear. Another:
           conflicts resolved incorrectly, user data lost. Solution: comprehensive testing,
           audit logs.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response & Debugging</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Sync stuck: check queue depth, retry logic, server status. Conflicts not
           resolved: check merge logic, version tracking. Data loss: audit logs show
           what happened (conflict resolution, user deletion, sync failure).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Complexity vs Features</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Offline-first adds complexity (sync, conflict resolution, storage management).
           Only worthwhile if users frequently offline.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Consistency vs Availability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Offline-first favors availability (works offline) over consistency (conflicts).
           Users may work with stale data. Accept eventual consistency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Storage Usage</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Keeping full data locally uses storage. Trade: more storage for faster reads
           and offline support.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Offline-first architecture enables resilient apps that work anywhere. For
-          staff/principal engineers, critical aspects include change tracking with dirty
-          flags, three-way merge for conflict resolution, adaptive sync based on network,
-          delta compression for bandwidth, and CRDT for collaborative editing. Multi-device
-          sync requires cloud state as authoritative source. Storage management essential
-          (compression, pruning, quota). At scale, sync server must handle millions of
-          concurrent sync requests. Testing must cover offline scenarios, conflicts,
-          partial syncs, network failures. Monitoring sync success rate, queue depth,
-          conflict rate detects issues. Real-world systems use CRDT (Yjs) for collaboration,
-          IndexedDB (Dexie) for storage, adaptive sync for efficiency. Integration with
-          service workers, state management, and error handling critical.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">At scale, sync server must handle millions of concurrent sync requests. Testing must cover offline scenarios, conflicts, partial syncs,</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">network failures. Monitoring sync success rate, queue depth, conflict rate detects issues. Real-world systems use CRDT (Yjs) for collaboration, IndexedDB (Dexie) for storage, adaptive sync for efficiency. Integration with service workers, state management, and error handling critical.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

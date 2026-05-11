@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -37,18 +38,18 @@ export default function LoginSessionManagementArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Login authenticates users by verifying credentials, then creates a persistent session enabling API requests without re-entering password. Consider a real scenario: user logs into Gmail on their laptop. Gmail generates a session token and stores it in a cookie. Every subsequent request (fetch emails, send) includes this token. Gmail backend validates the token and processes the request as that user. If the token is stolen (XSS attack, network eavesdropping), attacker impersonates the user.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Key challenges: (1) Multi-device support (user logs in on phone, laptop, tablet—all simultaneously active). Each device needs its own session token. (2) Session timeout (sessions can't be infinite; idle sessions must expire after 30 days, absolute expiry after 90 days). (3) Logout synchronization (user logs out on laptop; phone session must also logout—cross-device broadcast). (4) Race conditions (user rapidly logs in and out; must serialize to prevent stale state). (5) Session security (token theft via XSS/MITM must be mitigated). (6) Anomaly detection (login from 3 countries in 1 hour is impossible—block and alert).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The naive approach—store session in in-memory app server, no timeout—leads to memory leaks and scalability issues. At 1 million concurrent users, a single server can't track all sessions. Better approach: use distributed session store (Redis) with TTL, validate on every request, track metadata (device, IP, location), detect anomalies, support multi-device, and enforce global session limits.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Users have unique email and password (identity). Multiple concurrent sessions per user are allowed. Sessions expire (inactivity TTL + absolute timeout). Simultaneous logins from different devices succeed (normal for modern apps). Distributed session store (Redis or equivalent) available. Device identification possible (user-agent, IP). Audit logging available for forensics.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -57,20 +58,20 @@ export default function LoginSessionManagementArticle() {
         <ul className="space-y-2">
           <li><strong>Credential Verification:</strong> User submits email/password. System verifies password against stored bcrypt hash. Use constant-time comparison (prevent timing attacks). Return generic error on mismatch ("Invalid email or password"—don't reveal which is wrong). Enforce rate limiting on failed attempts (max 5 failed logins per email per hour) to prevent brute-force.</li>
           <li><strong>Session Creation:</strong> On successful login, generate cryptographically random 32-byte session token. Create session record with metadata: device type (web/iOS/Android), device name (Chrome 120 on MacBook Pro), IP address, geolocation (city/country from IP database), user-agent string, timestamps (created_at, last_activity). Store in Redis for fast lookup.</li>
-          <li><strong>Token Generation and Delivery:</strong> Generate random token, hash before storage. Return token to client in httpOnly cookie (automatic with requests) and response body (for API clients). Include session_id and user_id in token (JWT-based). Set cookie flags: Secure (HTTPS only), SameSite=Strict (CSRF protection), httpOnly (XSS protection).</li>
+          <HighlightBlock as="li" tier="important"><strong>Token Generation and Delivery:</strong> Generate random token, hash before storage. Return token to client in httpOnly cookie (automatic with requests) and response body (for API clients). Include session_id and user_id in token (JWT-based). Set cookie flags: Secure (HTTPS only), SameSite=Strict (CSRF protection), httpOnly (XSS protection).</HighlightBlock>
           <li><strong>Multi-Device Session Support:</strong> Allow user to be logged in on phone, laptop, tablet simultaneously. Each device gets independent session token. Provide session list UI: "Chrome on MacBook (active now)", "Safari on iPhone (active 2 hours ago)". User can logout from any device remotely (without touching it).</li>
           <li><strong>Session Timeout and Expiry:</strong> Implement two timeout types: (1) Inactivity timeout—session expires if unused for 30 days. (2) Absolute timeout—session expires 90 days after creation regardless of activity. Sliding window: each activity extends inactivity timer to 30 days from now. Background job deletes expired sessions hourly.</li>
           <li><strong>Logout and Revocation:</strong> User clicks logout. System revokes session: delete from Redis cache, add to blacklist (short TTL, 1 hour), mark in database as revoked (revoked_at=now). Return immediate logout confirmation. Next request with revoked token returns 401 Unauthorized.</li>
-          <li><strong>Session Validation on Every Request:</strong> Middleware checks for token (cookie or Authorization header). Query Redis for session details. Verify not expired, not revoked, matches user_id. Attach user context to request. If invalid/expired, return 401, redirect to login. Cache sessions in Redis (fast path) and fallback to database.</li>
+          <HighlightBlock as="li" tier="important"><strong>Session Validation on Every Request:</strong> Middleware checks for token (cookie or Authorization header). Query Redis for session details. Verify not expired, not revoked, matches user_id. Attach user context to request. If invalid/expired, return 401, redirect to login. Cache sessions in Redis (fast path) and fallback to database.</HighlightBlock>
           <li><strong>Cross-Tab Logout Broadcasting:</strong> When user logs out in one tab, broadcast logout event to other tabs on same device via BroadcastChannel API. Tabs detect logout event, clear auth state, redirect to login immediately (prevents stale authenticated state).</li>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li><strong>Security:</strong> Sessions resistant to CSRF (SameSite cookie flag), XSS (httpOnly cookie), token theft (HTTPS only, short TTL), and hijacking (device fingerprinting). No plaintext password storage. Audit all session lifecycle events.</li>
-          <li><strong>Performance:</strong> Login request &lt; 500ms (credential verification + session creation). Session validation &lt; 10ms (Redis lookup, p99 &lt; 50ms). Session validation is on critical path; must not block API responses.</li>
+          <HighlightBlock as="li" tier="crucial"><strong>Security:</strong> Sessions resistant to CSRF (SameSite cookie flag), XSS (httpOnly cookie), token theft (HTTPS only, short TTL), and hijacking (device fingerprinting). No plaintext password storage. Audit all session lifecycle events.</HighlightBlock>
+          <HighlightBlock as="li" tier="important"><strong>Performance:</strong> Login request &lt; 500ms (credential verification + session creation). Session validation &lt; 10ms (Redis lookup, p99 &lt; 50ms). Session validation is on critical path; must not block API responses.</HighlightBlock>
           <li><strong>Scalability:</strong> Support 1 million concurrent sessions. Handle 100K logins/sec at peak (e.g., morning rush). Distributed session store must handle load without throttling or timeouts.</li>
-          <li><strong>Availability:</strong> Session service 99.99% uptime. Redis cluster with multi-region replication. Failover to replica &lt; 1 second. No single point of failure. Session lookups must gracefully degrade (cache layer, database fallback).</li>
+          <HighlightBlock as="li" tier="important"><strong>Availability:</strong> Session service 99.99% uptime. Redis cluster with multi-region replication. Failover to replica &lt; 1 second. No single point of failure. Session lookups must gracefully degrade (cache layer, database fallback).</HighlightBlock>
           <li><strong>Compliance:</strong> Audit log all logins (success/failure, IP, timestamp, device). Retention per regulatory requirements. GDPR: delete sessions on user account deletion within 30 days.</li>
         </ul>
 
@@ -88,21 +89,21 @@ export default function LoginSessionManagementArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The login and session management flow has three phases: authentication, session creation, and validation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phase 1 (Authentication): User submits login form with email and password. System looks up user by email in database. If user not found, return generic error "Invalid email or password" (privacy—don't reveal account doesn't exist). If found, compare provided password against stored bcrypt hash using constant-time comparison. If mismatch, increment failed_login_count, check against rate limit (5 failed per hour), return error. If match, proceed to session creation.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Phase 2 (Session Creation): Generate 32-byte cryptographically random token. Hash token with bcrypt before storage. Create session record in database: (session id, user id, token hash, device type, device name, IP address, location, user agent, created at, last activity, expires at). Store in Redis with an absolute TTL such as 90 days using a predictable key scheme like session plus the session id, mapping to minimal session metadata. Return token to client via an httpOnly cookie for browsers or an explicit token field for API clients.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Phase 3 (Validation): On every API request, extract token from cookie or Authorization header. Hash provided token, query Redis for session_id. If cache hit, return session metadata (fast path ~1ms). If cache miss, query database, update Redis cache (slow path ~50ms). Verify session not expired (expires_at &gt; now) and not revoked (revoked_at is NULL). Attach user_id to request context. Proceed to handler. If token invalid/expired/revoked, return 401 Unauthorized.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Activity Tracking: On each request, update last_activity timestamp (asynchronously, don't block request). Batch updates in background to avoid per-request database writes (would be 1M writes/sec at scale). Update Redis cache as well (extending inactivity timeout).
-        </p>
+        </HighlightBlock>
         <p>
           Logout: User clicks logout. Delete session from Redis (immediate revocation), add token to blacklist (short TTL), mark session as revoked in database. Return 200 OK. Next request with old token returns 401 (token in blacklist).
         </p>
@@ -118,12 +119,12 @@ export default function LoginSessionManagementArticle() {
         <h2>Detailed Design</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Credential Verification and Rate Limiting</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Authentication begins by querying the database for a user by email. If email not found, the system must not reveal this (privacy—prevent user enumeration). Instead, return the same error as if email was found but password wrong: "Invalid email or password". To prevent timing attacks revealing whether email exists, add random delay (100-500ms) when email not found. This makes the response time consistent regardless of found/not-found, preventing attackers from probing which emails are registered.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           If user is found, compare provided password against stored password_hash using bcrypt.compare() (constant-time comparison). Bcrypt is deliberately slow (tunable rounds, default 12) to make brute-force expensive. On mismatch, increment failed_login_count in database, check against rate limit (max 5 failures per email per hour). After limit exceeded, lock account temporarily or require CAPTCHA on next attempt. Log failed attempt (timestamp, IP, user_id) for audit.
-        </p>
+        </HighlightBlock>
         <p>
           On successful password match, clear failed_login_count and proceed to session creation. Optionally log successful login for audit trail.
         </p>
@@ -135,9 +136,9 @@ export default function LoginSessionManagementArticle() {
         <p>
           Session record includes: (1) user_id (foreign key). (2) token_hash (bcrypt hash of token, indexed for fast lookup). (3) device metadata: device_type (web/iOS/Android), device_name (parsed from user-agent: "Chrome 120 on MacBook Pro"), ip_address, geolocation (city/country from IP database), user_agent string. (4) timestamps: created_at (session inception), last_activity (last API request), expires_at (absolute expiry, created_at + 90 days). (5) revoked_at (NULL until logged out).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Store sessions in the database for persistence and audit. Additionally, cache a minimal session view in Redis for fast lookups. Use a predictable key scheme such as session plus the session identifier, and store only the fields needed for request validation such as user id, expiry time, device label, and revoked state. Set Redis TTL to the absolute expiry window. This dual storage keeps audit history durable while keeping the request path fast.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Delivery and Storage</h3>
         <p>
@@ -274,12 +275,12 @@ export default function LoginSessionManagementArticle() {
             <strong>Active Sessions:</strong> Total concurrent sessions, sessions per user
             (distribution).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Validation Latency:</strong> Session lookup time (p50, p95, p99).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Alerts:</strong> Alert if session lookup &gt; 100ms (cache issue).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Timeout Rate:</strong> % of requests with expired sessions.
           </li>
@@ -290,40 +291,40 @@ export default function LoginSessionManagementArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">JWT vs Session Tokens</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           JWT is stateless (no server-side session), but token revocation requires
           blacklist. Session tokens are stateful but revocation is instant.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Cookie vs Header Storage</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           httpOnly cookie is more secure (no XSS theft) but requires CSRF protection.
           Authorization header avoids CSRF but vulnerable to XSS. Use both.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Redis Cluster for Session State</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Single Redis node is bottleneck. Use Redis Cluster with replication for
           multi-region, failover resilience.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Sessions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Test: valid login, invalid credentials, expired session, concurrent logins,
           logout, cross-device sessions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Distributed Session Synchronization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In multi-region deployments, session created in region A must be readable in
           region B (user traveling). Use: Redis replication, session store in central
           database, or eventual consistency with sync protocol. Trade latency for
           consistency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Session Anomaly Detection</h3>
         <p>
@@ -348,11 +349,11 @@ export default function LoginSessionManagementArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Compliance & Audit Logging</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Log all session lifecycle events: login (success/failure), logout, timeout, IP
           change. Required for compliance (PCI-DSS, SOC 2). Store in audit log (immutable).
           Query by user for forensics.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">High-Availability Session Store</h3>
         <p>
@@ -363,62 +364,62 @@ export default function LoginSessionManagementArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Session Behavior at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Load test: 100K concurrent sessions, 10K logins/sec. Measure cache hit rate,
           lookup latency, session store throughput. Chaos test: Redis down, database
           slow, network partition. Verify graceful degradation, no data loss.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Common: session token never invalidated after logout (token reuse). Solution:
           always check Redis for revocation. Another: session sharing across users
           (user A token accepted for user B) due to token hash collision or bypass logic.
           Solution: strict token validation. Another: distributed session reads hit
           stale replica (session logged out in region A but cache in region B hasn't
           synced). Solution: sync token revocation immediately or use strong consistency.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Debugging Session Issues</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           If users mysteriously logged out, check: session timeout configuration, Redis
           memory limit (sessions evicted), replication lag (multi-region sync delay),
           application bugs (invalidating wrong session). Implement detailed logging: every
           session operation (create, validate, expire) with timestamp, user_id, outcome.
           Correlate with user reports for root cause.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Stateful vs Stateless Sessions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Stateful sessions (server maintains session state): Pros—instant revocation (logout immediately invalidates), no token encoding complexity, flexible permissions (can change mid-session). Cons—requires session store (Redis/DB), scales through sharding/replication. Stateless sessions (JWT, signed token, no server state): Pros—scales horizontally (no server state needed, any server validates signature), ideal for microservices. Cons—revocation is hard (token valid until expiry even after logout), requires blacklist for revocation (defeats stateless benefit). Hybrid: stateful for web (instant revocation), stateless for APIs (scale).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Session Timeout Tuning</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Inactivity timeout (30 days): extends with activity (UX-friendly, users don't get logged out while active). Absolute timeout (90 days): hard limit regardless of activity (security—eventually forces re-auth). Too short (7 days): users annoyed, re-login frequently, support burden. Too long (180 days): stolen token valid for months, security risk. 30-day inactivity + 90-day absolute is practical for most apps. Adjust based on security posture: banking (7-day absolute), social media (60-day inactivity).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Multi-Device vs Single-Device Sessions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Multi-device (allow simultaneous logins): matches modern user behavior (user on phone + laptop). Cons—complexity (track per-device sessions, logout one device, sync across devices). Single-device (one session per user—login device B logs out device A): simpler, but frustrating (user can't be on multiple devices). Real-world: multi-device is expected, worth the complexity.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Login and session management are core authentication systems. Critical architectural components for staff/principal engineers: (1) Secure credential verification using bcrypt with constant-time comparison and rate limiting (prevent brute-force). (2) Session creation with cryptographic token generation and hashing (prevent database breach exposure). (3) Dual-layer session storage: Redis for fast lookups (&lt;10ms), database for audit trail. (4) Multi-device support allowing simultaneous sessions per user with per-device tracking. (5) Timeout mechanisms combining inactivity (30 days) and absolute (90 days) expiry. (6) Instant session revocation on logout via Redis invalidation and revocation blacklist. (7) Anomaly detection for account takeover (impossible travel, suspicious IPs, rapid logins). (8) Cross-tab logout synchronization via BroadcastChannel API.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           At 1 million concurrent sessions, the session store (Redis) is a critical system. Implement Redis Cluster with multi-region replication for failover &lt; 1 second. Session validation is on the critical path for every API request—must be fast (&lt;10ms p99). Implement async activity tracking (batch updates, don't block requests) to handle 100K+ logins/second at peak. Immutable audit logging for compliance, security forensics, and detecting abuse patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Testing must cover: valid login (creates session), invalid credentials (rate-limited), expired sessions (401 after timeout), concurrent logins (multiple sessions coexist), logout (immediate revocation), multi-device scenarios (one device logout doesn't affect others), cross-region consistency (user travels, session readable in all regions), failover (Redis down, fallback to database), race conditions (rapid logout-login, token reuse attempts). Real-world deployments balance security (shorter timeouts, device fingerprinting, anomaly detection) vs UX (longer inactivity tolerances, seamless multi-device, minimal re-logins). Integration with password reset (terminate sessions), MFA (prompt on new device), and token refresh critical.
-        </p>
+        </HighlightBlock>
       </section>
     </ArticleLayout>
   );

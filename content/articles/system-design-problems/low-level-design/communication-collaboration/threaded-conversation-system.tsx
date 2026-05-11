@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -30,7 +32,7 @@ export default function ThreadedConversationSystemArticle() {
         <h2>🎯 Problem Context &amp; Scope Definition</h2>
 
         <h3>Problem Statement</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We are designing a threaded conversation
           system — the comments-with-replies UI seen
           on Reddit, Hacker News, blog comments,
@@ -44,8 +46,8 @@ export default function ThreadedConversationSystemArticle() {
           collapsed branches, optimistic post,
           collapsing depth at some maximum, and
           remain accessible.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           The hard problems are: rendering deeply
           nested trees efficiently; depth caps
           (after some level, replies render as
@@ -58,10 +60,10 @@ export default function ThreadedConversationSystemArticle() {
           (jump to parent, jump to next unread);
           accessibility for tree-structured
           conversation.
-        </p>
+        </HighlightBlock>
 
         <h3>User Context</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           End users read and reply to threaded
           discussions. They expect Reddit-class
           fluency: collapse a branch, expand
@@ -69,31 +71,31 @@ export default function ThreadedConversationSystemArticle() {
           state, navigate. Engineering teams plug
           in: provide a comment source; the
           runtime handles UI.
-        </p>
+        </HighlightBlock>
 
         <h3>Assumptions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Backend supports tree fetch (with depth
           and pagination per branch) and post.
           Real-time updates for new comments via
           WebSocket. Modern browsers.
-        </p>
+        </HighlightBlock>
 
         <h3>Non-Goals</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           We do not implement chat (separate). We
           do not implement comment moderation
           tooling (separate). We do not implement
           rich text in comments (use Rich Text
           Editor for that part).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚙️ Functional Requirements</h2>
 
         <h3>Core (Must-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Render the comment tree with indentation
           for depth. Cap depth after a threshold
           (e.g. 6 levels) and render deeper as
@@ -106,10 +108,10 @@ export default function ThreadedConversationSystemArticle() {
           real time. Sort options (newest, top,
           oldest). Permalink to a specific
           comment. Empty state.
-        </p>
+        </HighlightBlock>
 
         <h3>Secondary (Nice-to-have)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Vote / upvote per comment. Highlight
           unread or new-since-last-visit
           comments. Search within thread. Mention
@@ -118,55 +120,55 @@ export default function ThreadedConversationSystemArticle() {
           (issue trackers). Threading depth
           configuration per product. Inline
           quoting.
-        </p>
+        </HighlightBlock>
 
         <h3>Out of Scope</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Moderation tooling, voting algorithms,
           spam detection.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>📊 Non-Functional Requirements</h2>
 
         <h3>Performance</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Initial render of the visible tree under
           200 ms. Smooth scroll. Expanding a
           branch lazy-fetches its replies without
           blocking. Real-time additions don&rsquo;t
           flood re-renders.
-        </p>
+        </HighlightBlock>
 
         <h3>Reliability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Optimistic posts roll back on failure.
           Lazy-load failures show retry. Real-time
           events deduped by id.
-        </p>
+        </HighlightBlock>
 
         <h3>Security</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comment content sanitized. Server
           enforces post permissions. Rate-limit
           posts.
-        </p>
+        </HighlightBlock>
 
         <h3>Accessibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Tree structure announced. Each comment
           is a focusable region. Reply composer
           accessible. Collapse/expand keyboard-
           accessible.
-        </p>
+        </HighlightBlock>
 
         <h3>Maintainability</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Comment source adapter. Renderers per
           comment type. Plugins for voting, edit
           history.
-        </p>
+        </HighlightBlock>
       </section>
 
       <ArticleImage
@@ -177,7 +179,7 @@ export default function ThreadedConversationSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The system has four parts: <strong>tree
           source</strong> (fetch with depth and
           per-branch pagination), <strong>tree
@@ -187,8 +189,8 @@ export default function ThreadedConversationSystemArticle() {
           (render only visible comments),
           <strong> post pipeline</strong>{" "}
           (optimistic + retry).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>tree source</strong> exposes
           <code> getRoot(sort, page)</code> for
           top-level comments and
@@ -198,8 +200,8 @@ export default function ThreadedConversationSystemArticle() {
           page the rest. The client maintains a
           tree structure with per-node
           load-more state.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>tree flattener</strong>{" "}
           walks the tree depth-first, including
           each expanded comment&rsquo;s loaded
@@ -211,8 +213,8 @@ export default function ThreadedConversationSystemArticle() {
           link to view in a focused thread view).
           The flattened list drives the
           virtualizer.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The <strong>virtualized renderer</strong>{" "}
           uses 1D virtualization on the
           flattened list. Indentation is CSS
@@ -220,7 +222,7 @@ export default function ThreadedConversationSystemArticle() {
           Visual guides (vertical lines from
           parent to child) help users follow
           the structure.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>expand</strong>, the comment&rsquo;s
           children mount. If not yet loaded, the
@@ -233,7 +235,7 @@ export default function ThreadedConversationSystemArticle() {
           are hidden but kept in the cache so
           re-expand is instant.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           On <strong>reply</strong>, an inline
           composer opens beneath the target
           comment. Typing produces a draft;
@@ -243,7 +245,7 @@ export default function ThreadedConversationSystemArticle() {
           status &ldquo;posting&rdquo;. Server
           response confirms; on failure, retry
           surfaces.
-        </p>
+        </HighlightBlock>
         <p>
           On <strong>real-time addition</strong>:
           WebSocket delivers new comments. They
@@ -284,200 +286,181 @@ export default function ThreadedConversationSystemArticle() {
 
       <section>
         <h2>🧱 Component Architecture</h2>
-        <p>
-          <strong>ThreadProvider</strong>{" "}
-          instantiates source and tree state.
-          <strong> CommentTree</strong> renders
-          the virtualized flattened tree.
-          <strong> Comment</strong> renders one
-          comment with metadata, body, and
-          actions. <strong>ReplyComposer</strong>{" "}
+        <HighlightBlock as="p" tier="crucial"><strong>ReplyComposer</strong>{" "}
           inline composer.
           <strong> CollapseToggle</strong> on
-          parent comments.
-          <strong> SortControl</strong> for
+          parent comments.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> SortControl</strong></Highlight> for
           top-level sort.
           <strong> RealtimeBanner</strong>{" "}
-          surfaces new comments.
-        </p>
+          surfaces new comments.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔄 State Management</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Tree structure with expand state and
-          loaded-children cache in external
-          store. Real-time additions go into
+          loaded-children cache in <Highlight tier="important">external
+          store. Real-time additions go into</Highlight>
           the same tree. Optimistic posts
           tracked separately until confirmed.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Data Flow &amp; Contracts</h2>
-        <p>
-          Comment shape:{" "}
-          <code>{` { id, parentId, authorId, body, createdAt, status?, replyCount? } `}</code>.
-          Source contract:
+        <HighlightBlock as="p" tier="important">
+          <Highlight tier="crucial">Comment shape:</Highlight>{" "}
+          <Highlight tier="important">
+            <code>{` { id, parentId, authorId, body, createdAt, status?, replyCount? } `}</code>
+          </Highlight>
+          . Source contract:{" "}
           <code>{` { getRoot, getReplies, post, edit, delete } `}</code>.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>⚡ Performance</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Virtualization on the flattened tree.
-          Lazy-load replies on expand. Memoized
-          comments (re-render only on relevant
+          Lazy-load replies <Highlight tier="important">on expand. Memoized
+          comments (re-render only</Highlight> on relevant
           property change). Real-time inserts
           batched.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎨 UX</h2>
-        <p>
-          Indentation makes hierarchy visible.
+        <HighlightBlock as="p" tier="crucial">Indentation makes hierarchy visible.
           Visual guides aid following deep
-          threads. Collapse toggles unobtrusive.
-          Reply composer inline near the target.
+          threads. Collapse toggles unobtrusive.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Reply composer inline near the target.
           Optimistic posts feel instant.
           Real-time additions banner-surface
-          rather than auto-scroll.
-        </p>
+          rather than auto-scroll.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>♿ Accessibility</h2>
-        <p>
-          Tree structure with proper ARIA
+        <HighlightBlock as="p" tier="crucial">Tree structure with proper ARIA
           (<code>role=&quot;tree&quot;</code>,
           <code> role=&quot;treeitem&quot;</code>,
-          <code> aria-level</code>,
-          <code> aria-expanded</code>) where
+          <code> aria-level</code>,</HighlightBlock>
+<HighlightBlock as="p" tier="important"><code> aria-expanded</code>) where
           appropriate, or a flat list with
           accessible parent indication
-          (&ldquo;Reply to Alice: ...&rdquo;).
-          Each comment is focusable. Reply
+          (&ldquo;Reply to Alice: ...&rdquo;).</HighlightBlock>
+<HighlightBlock as="p" tier="important">Each comment is focusable. Reply
           composer accessible. Real-time
-          additions announce in chunks.
-        </p>
+          additions announce in chunks.</HighlightBlock>
       </section>
 
       <section>
         <h2>🔐 Security</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Comment content sanitized. Server
           enforces post permissions. Rate-limit.
-          Markdown opt-in via sanitizer. URLs in
+          <Highlight tier="important">Markdown opt-in via sanitizer. URLs in</Highlight>
           comments validated and rendered with
           safe rel attributes.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🧪 Testing</h2>
-        <p>
-          Unit tests for tree flattening with
-          depth cap. Integration tests: expand
-          loads replies; reply optimistic posts;
-          real-time additions insert correctly.
+        <HighlightBlock as="p" tier="crucial">Unit tests for tree flattening with
+          depth cap. Integration tests: expand</HighlightBlock>
+<HighlightBlock as="p" tier="important">loads replies; reply optimistic posts;
+          real-time additions insert</HighlightBlock>
+<HighlightBlock as="p" tier="important">correctly.
           Permalink resolution tests.
-          Accessibility tests for tree role.
-        </p>
+          Accessibility tests for tree role.</HighlightBlock>
       </section>
 
       <section>
         <h2>🚨 Edge Cases</h2>
-        <p>
-          Deeply nested threads beyond depth
-          cap: render flat continuation with
-          link to focused view. Comment with
-          1000s of replies: lazy-load with
-          pagination; show count; load more on
-          demand. Optimistic post fails:
-          rollback with retry. Permalink to a
+        <HighlightBlock as="p" tier="crucial">Permalink to a
           deleted comment: surface
           &ldquo;Comment unavailable&rdquo;.
           Real-time additions in a branch the
-          user has collapsed: don&rsquo;t expand;
-          show count badge on the parent.
+          user has collapsed: don&rsquo;t expand;</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">show count badge on the parent.
           Server returns deleted comment
           mid-tree: render as &ldquo;deleted&rdquo;
           placeholder so children remain
-          contextual.
-        </p>
+          contextual.</Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🔁 Reusability</h2>
-        <p>
-          Generic over comment shape. Pattern
-          reuses for blog comments, issue
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          Generic over comment <Highlight tier="important">shape. Pattern
+          reuses for blog comments,</Highlight> issue
           threads, discussion forums.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🌍 Internationalization</h2>
-        <p>
-          UI strings via i18n. Timestamps via
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
+          UI strings via i18n. <Highlight tier="important">Timestamps via
           Intl.RelativeTimeFormat. RTL flips
-          indentation direction via CSS
+          indentation</Highlight> direction via CSS
           logical properties.
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>⚖️ Trade-offs</h2>
 
         <h3>Indented vs flat threading</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Indented preserves hierarchy. Flat
           (Slack-style) is simpler to read but
           loses structure. Indented with depth
           cap balances both.
-        </p>
+        </HighlightBlock>
 
         <h3>Lazy vs eager replies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Lazy scales to large threads. Eager
           is simpler for small threads. Most
           products need lazy.
-        </p>
+        </HighlightBlock>
 
         <h3>Auto-scroll on real-time vs banner</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Banner respects user reading;
           auto-scroll interrupts. Banner is
           right.
-        </p>
+        </HighlightBlock>
 
         <h3>Virtualize the flattened tree vs the
         hierarchy</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Flattened-list virtualization is
           straightforward 1D. Tree
           virtualization is more complex
           without benefit. Always flatten.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>🔮 Future Improvements</h2>
-        <p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Threaded read state per user. AI-
-          summarized branches. Sentiment
-          highlighting. Cross-thread linking.
+          <Highlight tier="important">summarized branches. Sentiment
+          highlighting. Cross-thread linking.</Highlight>
           Real-time presence in threads (who&rsquo;s
           reading).
-        </p>
+        </Highlight></HighlightBlock>
       </section>
 
       <section>
         <h2>🎤 Interview Q&amp;A</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>1. How do you render deeply
           nested threads?</strong> Flatten the
           visible tree to a 1D list with
@@ -486,16 +469,16 @@ export default function ThreadedConversationSystemArticle() {
           a threshold; deeper renders flat
           with a &ldquo;Continue thread&rdquo;
           link.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>2. How does lazy-load of
           replies work?</strong> Server pre-loads
           some replies; rest fetched on
           expand. The tree node has a
           &ldquo;Load more&rdquo; affordance
           when there are unloaded children.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>3. How are real-time additions
@@ -508,14 +491,14 @@ export default function ThreadedConversationSystemArticle() {
           than auto-jumping.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>4. How are optimistic posts
           handled?</strong> Insert with
           temporary id and posting status.
           Server confirms; map to real id;
           status changes to confirmed. Failure
           rolls back with retry.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>5. How does permalink
@@ -525,15 +508,15 @@ export default function ThreadedConversationSystemArticle() {
           it, highlight.
         </p>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>6. What happens on depth
           cap?</strong> Deeper replies render
           flat with a &ldquo;Continue this
           thread&rdquo; link to a focused view
           where indentation resets at depth 0.
-        </p>
+        </HighlightBlock>
 
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>7. How is this
           accessible?</strong> Tree role with
           proper ARIA (or accessible flat
@@ -541,7 +524,7 @@ export default function ThreadedConversationSystemArticle() {
           comment focusable. Reply composer
           accessible. Real-time additions
           announce in chunks.
-        </p>
+        </HighlightBlock>
 
         <p>
           <strong>8. How does this differ from
@@ -557,19 +540,14 @@ export default function ThreadedConversationSystemArticle() {
 
       <section>
         <h2>📌 Summary</h2>
-        <p>
-          A threaded conversation system is{" "}
-          <strong>tree source + flatten with
-          depth cap + virtualized 1D render +
-          optimistic post + real-time
-          insert</strong>. Indentation preserves
+        <HighlightBlock as="p" tier="crucial">Indentation preserves
           hierarchy; depth cap preserves
           readability; lazy-load scales to
-          large threads. Permalinks make
+          large threads. Permalinks</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">make
           conversations linkable. The result is
           discussions that can grow large
-          without becoming unusable.
-        </p>
+          without becoming unusable.</Highlight></HighlightBlock>
       </section>
     </ArticleLayout>
   );

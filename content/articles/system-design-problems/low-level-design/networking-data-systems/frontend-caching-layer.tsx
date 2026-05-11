@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,27 +37,27 @@ export default function FrontendCachingLayerArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Frontend SPAs fetch data repeatedly from APIs. Without caching, each component fetch = network request. Consider: user navigates to profile page (GET /user/123), then navigates away, then back to profile (GET /user/123 again). Second fetch is redundant—server hasn't changed in 5 seconds. Naive solution: global cache storing all responses. Works, but problems emerge: cache grows unbounded (50MB limit on mobile—crash), stale data (user updates name, cached profile still shows old name), cache thrashing (too many evictions = slow).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Solution: in-memory caching layer with smart invalidation. Cache stores responses with TTLs (expire after 5 minutes). Use tag-based invalidation (tag user data with 'user' label; when user updates, invalidate all queries tagged 'user'). Support stale-while-revalidate (serve stale data immediately, refetch in background). Manage memory (LRU eviction when size exceeds limit). At scale (100+ queries, millions of users), caching layer is critical for performance.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Key challenges: (1) Staleness vs freshness (short TTL = fresh data, more refetches; long TTL = fewer requests, stale data). (2) Memory management (unbounded cache causes memory leak on mobile). (3) Tag-based invalidation (complex to track which queries have which tags). (4) Offline support (serve stale data when network down). (5) Performance (cache lookup must be &lt;1ms).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> React SPA with 100+ queries cached. Memory limited (~50MB on mobile). Different data has different freshness needs. Mutations trigger invalidation. Network may be intermittent. Cache lookup should be O(1).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Cache Storage:</strong> Store API responses by cache key.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>TTL Expiration:</strong> Each entry has a time-to-live. After
             expiration, mark stale.
@@ -68,9 +70,9 @@ export default function FrontendCachingLayerArticle() {
             <strong>Stale-While-Revalidate:</strong> Serve stale data immediately,
             refetch background.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Management:</strong> Max cache size with LRU eviction.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Offline Support:</strong> Serve stale data when offline.
           </li>
@@ -82,16 +84,16 @@ export default function FrontendCachingLayerArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Lookup Performance:</strong> O(1) cache lookups via hash table.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Invalidation Performance:</strong> O(k) tag-based invalidation
             where k is affected entries.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Memory Bounded:</strong> Cache size never exceeds max size.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Persistence:</strong> Optionally persist to localStorage for
             offline availability.
@@ -109,25 +111,17 @@ export default function FrontendCachingLayerArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          The cache is a Map&lt;cacheKey, CacheEntry&gt; with a tag index
-          (Map&lt;tag, Set&lt;cacheKey&gt;&gt;) for efficient tag-based
-          invalidation. Each entry stores data, timestamp, TTL, tags, and status
-          (fresh, stale, fetching). An LRU eviction policy tracks access order via
-          a doubly-linked list. On cache hit, return data (stale or fresh). On cache
-          miss, initiate fetch and cache result. On invalidation, mark matching
-          entries as stale and queue refetch. Memory usage is monitored, and LRU
-          eviction kicks in when size exceeds threshold.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">On cache hit, return data (stale or fresh). On cache miss, initiate fetch and</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">cache result. On invalidation, mark matching entries as stale and queue refetch. Memory usage is monitored, and LRU eviction kicks in when size exceeds threshold.</HighlightBlock>
       </section>
 
       <section>
         <h2>Detailed Design</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Cache Entry Structure</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each cache entry encapsulates data, metadata, and state.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>data:</strong> The cached API response.
@@ -145,17 +139,17 @@ export default function FrontendCachingLayerArticle() {
           <li>
             <strong>status:</strong> &apos;fresh&apos;, &apos;stale&apos;, or &apos;fetching&apos;.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>dependents:</strong> Set of cache keys that depend on this entry
             (for cascading invalidation).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">TTL-Based Expiration</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Each entry has a configurable TTL. On access, the cache checks if current
           time exceeds (timestamp + ttl). If so, mark as stale.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Lazy Expiration:</strong> Entries are not actively expired. Only
@@ -177,10 +171,10 @@ export default function FrontendCachingLayerArticle() {
           all keys for a tag and mark them stale.
         </p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Tag Index:</strong> Map&lt;tag, Set&lt;cacheKey&gt;&gt; for O(1)
             tag lookup.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multi-tag Entries:</strong> An entry can have multiple tags. It
             appears in multiple tag sets.
@@ -232,10 +226,10 @@ export default function FrontendCachingLayerArticle() {
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Memory Management</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Cache size is bounded. Memory pressure is monitored, and entries are
           evicted aggressively when approaching limit.
-        </p>
+        </HighlightBlock>
         <ul className="space-y-2">
           <li>
             <strong>Size Calculation:</strong> Estimate entry size via
@@ -294,38 +288,38 @@ export default function FrontendCachingLayerArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Thread Safety</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           JavaScript is single-threaded, so race conditions are minimal. However,
           async operations can interleave. Use proper synchronization for concurrent
           mutations.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Clock Skew</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Relying on system clock for TTL expiration is vulnerable to clock skew if
           user changes system time. Consider using relative timers or persisting TTL
           as a duration rather than timestamp.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Invalidation Strategies</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Support multiple invalidation triggers: manual invalidation, mutation-based
           (post created → invalidate posts list), and time-based (TTL expiration).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Compression</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           For large cached objects, consider compression (e.g., LZ4, Brotli) to
           reduce memory footprint.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Cache Architecture and Data Flow</h2>
 
-        <p>
+        <HighlightBlock as="p" tier="important">
           The caching layer sits between components and the network. Components request data via get(key). The cache checks: (1) Is entry in memory? (2) Is it fresh? If yes, return. If stale, serve stale + refetch. If miss, fetch from network, cache result. The cache maintains multiple indices: primary cache map (key → entry), tag index (tag → set of keys), LRU list (ordered by recency), and memory tracker (total size).
-        </p>
+        </HighlightBlock>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/networking-data-systems/frontend-caching-architecture.svg"
@@ -333,19 +327,19 @@ export default function FrontendCachingLayerArticle() {
         />
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Hit vs Miss Scenarios</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Hit (Fresh): Entry exists, timestamp + ttl &gt; now. Return immediately. Latency: &lt;1ms. Hit (Stale): Entry exists, timestamp + ttl &lt;= now. Return stale data, trigger background refetch. Latency: &lt;1ms for data, async refetch. Miss: Entry not in cache. Initiate network fetch. Latency: network RTT (~100-300ms). Cache the response for future hits.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Tag Index Mechanics</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tag index enables efficient invalidation. Example: cache has entries user-123 (tags: [user, profile]), posts-123 (tags: [user, feed]). When user logs out, invalidate tag 'user'. Look up tag in index: get [user-123, posts-123]. Mark both stale. Cost: O(k) where k is affected entries. Without tag index, must scan all entries: O(n). Tag index makes invalidation practical.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">LRU Eviction Deep Dive</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           LRU tracks access recency. Doubly-linked list: head = most recent, tail = least recent. On access, move entry to head. When cache full, remove tail. Cost: O(1) per operation with doubly-linked list. Alternative: timestamp-based eviction (evict oldest). LRU better reflects actual usage patterns. Under memory pressure, LRU prevents evicting frequently-used entries.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory Pressure and Eviction Policies</h3>
         <p>
@@ -358,57 +352,57 @@ export default function FrontendCachingLayerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Expiration Policies and Staleness Visibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Different queries have different freshness needs. API config specifies TTL per query: GET /user → 5min, GET /feed → 30sec. Query returning stale data should include freshness indicator so UI can show "Showing cached data" badge. This transparency helps users understand data age. For critical data (financial, security), show stale clearly. For non-critical (timeline), show subtly or not at all.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Memory vs Network</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Caching trades memory for network savings. On constrained devices (mobile),
           memory is precious. Balance cache size with device capabilities.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Consistency vs Availability</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Serving stale data improves availability but risks consistency. Indicate
           staleness to users (&quot;Showing cached data&quot;).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Eager vs Lazy Invalidation</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Eager invalidation (immediately mark stale on mutation) ensures freshness
           but triggers unnecessary refetches. Lazy invalidation (wait for next access)
           reduces refetches but serves stale data longer.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Library vs Custom</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Consider using a library like TanStack Query or Redux if caching needs
           grow complex. Custom implementations work for simple cases.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Cache Coherency in Distributed Settings</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           In multi-region deployments, users access from different regions with
           different caches. Solutions: invalidate on mutation, emit server-to-client
           events, or use version vectors for eventual consistency. Necessary for
           consistency across regions.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Adaptive TTL & Cache Warming</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Implement policy-based TTL per data type (profiles: 5min, feeds: 30sec).
           Pre-populate critical cache on startup to reduce perceived latency.
           Smart retry: show app while warm-up pending, fill in as data arrives.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Cache Stampede Prevention</h3>
         <p>
@@ -425,11 +419,11 @@ export default function FrontendCachingLayerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Testing & Storage Gotchas</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Mock clock with jest.useFakeTimers() for TTL tests. localStorage is
           synchronous and quota-limited (~5-10MB). Never block critical path;
           load async. Use IndexedDB for large/persistent data.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Schema Versioning & Poisoning Prevention</h3>
         <p>
@@ -439,38 +433,25 @@ export default function FrontendCachingLayerArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Multi-Tab Sync & Real-World Lessons</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Sync cache across tabs via StorageEvent or BroadcastChannel API for
           consistency. Avoid the localStorage performance trap: large objects block
           main thread. Cache invalidation remains hard; use event-driven approach.
           Stale-while-revalidate improves perception but users see old data briefly.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Integration & Scale Considerations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Tightly integrate cache with data fetching hook. On mutation, invalidate
           related entries. Use tags to declare relationships. At 1M users, LRU
           eviction non-negotiable. Modern browsers handle ~50MB reasonably.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          A frontend caching layer is fundamental to performant SPAs. Key aspects
-          include TTL expiration, tag-based invalidation, LRU memory management,
-          stale-while-revalidate patterns, and persistence. For staff/principal
-          engineers, critical additions include distributed cache coherency,
-          cache stampede prevention, compression, observability/metrics, and scale
-          considerations for 1M+ users. The cache must be memory-bounded, performant
-          (O(1) lookups), and support reactive updates. Real-world systems face
-          storage quota limits, serialization bottlenecks, and complex invalidation
-          logic. Libraries like TanStack Query/Redux handle many concerns, but
-          deep understanding of underlying design is essential for optimizing,
-          debugging, and extending at scale. Production systems require careful
-          monitoring, testing, and incident response procedures for cache-related
-          failures.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems face storage quota limits, serialization bottlenecks, and complex invalidation logic. Libraries like TanStack</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">Query/Redux handle many concerns, but deep understanding of underlying design is essential for optimizing, debugging, and extending at scale. Production systems require careful monitoring, testing, and incident response procedures for cache-related failures.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

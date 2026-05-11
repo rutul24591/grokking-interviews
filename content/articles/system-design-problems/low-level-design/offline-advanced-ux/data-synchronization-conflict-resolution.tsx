@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +38,7 @@ export default function DataSynchronizationConflictResolutionArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Users work offline on multiple devices simultaneously. Data diverges
           when local changes conflict with server or other device changes. Key
           challenges: detecting conflicts (version, timestamp, content),
@@ -44,17 +46,17 @@ export default function DataSynchronizationConflictResolutionArticle() {
           devices, and handling partial syncs (device crashes mid-sync). Naive
           approaches lose data (last-write-wins) or require manual resolution
           (merge prompts).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Multiple devices editing same record offline.</li>
-          <li>Users expect automatic conflict resolution (no prompts).</li>
-          <li>Data integrity essential (no silent data loss).</li>
-          <li>
+          <HighlightBlock as="li" tier="important">Multiple devices editing same record offline.</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Users expect automatic conflict resolution (no prompts).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Data integrity essential (no silent data loss).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Sync may fail mid-operation (network drop, device crash).
-          </li>
+          </HighlightBlock>
           <li>
             Server is source of truth (conflicts resolved toward server version).
           </li>
@@ -65,22 +67,22 @@ export default function DataSynchronizationConflictResolutionArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sync Operation:</strong> Send local changes, receive server
             changes.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Conflict Detection:</strong> Identify when versions diverged.
           </li>
           <li>
             <strong>Conflict Resolution:</strong> Merge changes automatically.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Consistency:</strong> All devices converge to same state.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Idempotency:</strong> Resync same changes doesn't duplicate.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Partial Sync Recovery:</strong> Resume interrupted syncs.
           </li>
@@ -95,10 +97,10 @@ export default function DataSynchronizationConflictResolutionArticle() {
           <li>
             <strong>Performance:</strong> Sync &lt;1s for typical changes.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Consistency:</strong> Strong consistency on server,
             eventual consistency across devices.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Bandwidth:</strong> Send deltas, not full records (minimize
             payload).
@@ -111,10 +113,10 @@ export default function DataSynchronizationConflictResolutionArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             User edits document A and B offline, syncs A but fails on B—handle
             partial sync.
-          </li>
+          </HighlightBlock>
           <li>
             Same field edited on two devices with different values—merge or
             resolve?
@@ -132,15 +134,13 @@ export default function DataSynchronizationConflictResolutionArticle() {
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Track data version (vector clock or timestamp). On sync, compare
+        <HighlightBlock as="p" tier="crucial">Track data version (vector clock or timestamp). On sync, compare
           local version to server version. If versions match, no conflict
           (apply server changes). If versions differ, conflict detected
-          (perform three-way merge: merge base, local changes, server changes).
-          Apply merged result locally. For collaborative editing, use CRDT
+          (perform three-way merge: merge base, local changes, server changes).</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Apply merged result locally. For collaborative editing, use CRDT
           (conflict-free replicated data type) for automatic merging without
-          central coordination. Persist change history for audit and recovery.
-        </p>
+          central coordination. Persist change history for audit and recovery.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -155,10 +155,10 @@ export default function DataSynchronizationConflictResolutionArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Version Tracking Schemes</h3>
         <p>Identify which version of data is current.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Timestamp:</strong> Last-modified timestamp. Simple but
             unreliable (clock skew).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Version Number:</strong> Incremental counter per record.
             Detects sequence changes but not concurrent edits.
@@ -282,10 +282,10 @@ export default function DataSynchronizationConflictResolutionArticle() {
             <strong>Monotonic Sequencing:</strong> Each sync increments version
             (v1, v2, v3). Server enforces order.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Idempotent Operations:</strong> Replaying same sync twice
             results in same final state.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Tombstones for Deletes:</strong> Mark deleted records with
             tombstone (deleted_at, deleted_by). Prevents reappearance.
@@ -324,14 +324,14 @@ export default function DataSynchronizationConflictResolutionArticle() {
             <strong>Resume Logic:</strong> On reconnect, sync from last
             synced_version onward.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Deduplication:</strong> Server tracks synced changes by ID.
             Resend same ID = idempotent (no duplicate).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Rollback on Failure:</strong> If sync fails mid-transaction,
             rollback entire batch (atomic).
-          </li>
+          </HighlightBlock>
         </ul>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Merge Conflict UI</h3>
@@ -366,10 +366,10 @@ export default function DataSynchronizationConflictResolutionArticle() {
             <strong>Resolution Strategy Distribution:</strong> % auto-resolved
             vs manual vs user-prompted.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Sync Latency:</strong> Time from local change to server
             applied (includes conflict resolution).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Data Loss:</strong> Compare checksums before/after merge
             (detect if merge lost data).
@@ -381,44 +381,44 @@ export default function DataSynchronizationConflictResolutionArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Diff Algorithms</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Implement efficient diff for three-way merge. Use Myers diff (edit
           distance) for text. For structured data (JSON), use recursive diff.
           Libraries: diff-match-patch, just-compare.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Clock Synchronization</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Vector clocks require tracking per device/user. Overkill for simple
           cases. Lamport timestamps simpler (single monotonic counter). Hybrid:
           timestamp + device_id for tiebreaker.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Conflict Resolution</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Simulate concurrent edits: edit record on device A, edit same record
           on device B, sync both. Verify merge result correct. Test edge cases:
           delete + modify, nested object changes, array reordering.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">CRDT Implementation (Yjs/Automerge)</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           For collaborative editing (Google Docs-like), use CRDT library. Yjs
           optimized for text. Automerge for JSON. Both handle conflicts
           automatically: no merge prompts, no data loss. Trade: increased memory
           (track operations, not just state).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Vector Clock Optimizations</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Full vector clocks {'{'}d1:5, d2:3, d3:7{'}'} expensive for many
           devices. Use interval tree clocks (compact representation) or hybrid
           (timestamp + device counter).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incremental Sync Protocol</h3>
         <p>
@@ -435,74 +435,60 @@ export default function DataSynchronizationConflictResolutionArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Load test: 1000 devices syncing simultaneously, simulate 10% conflict
           rate. Verify merge algorithms performant, no data loss. Chaos test:
           network partitions (two devices isolated, later merge), concurrent
           deletes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Common: naive merge loses edits (last-write-wins too aggressive).
           Solution: three-way merge preserves non-conflicting changes. Another:
           tombstones never deleted, database grows unbounded. Solution:
           background cleanup (hard delete after 30 days). Another: sync version
           number mismatch causes reapplication of old changes. Solution: include
           change ID in idempotency check.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Data inconsistency across devices: audit event log (see divergence
           point). Replay events in correct order to reconstruct ground truth.
           Broadcast corrected state to all devices. Conflict resolution bug:
           test suite should catch (automated conflict testing).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Simplicity vs Sophistication</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Last-write-wins simple but loses data. Three-way merge better but
           more complex. CRDT best for collaboration but heavyweight. Choose
           based on use case.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Consistency vs Autonomy</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Offline-first favors availability (devices autonomous). Trade:
           eventual consistency (devices may diverge temporarily). Accept
           convergence delay.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Storage Overhead</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Event sourcing provides auditability but uses 2-3x storage (store
           both events and derived state). Compress old events or archive.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Data synchronization and conflict resolution critical for offline-first
-          systems. For staff/principal engineers, essential aspects include
-          version tracking strategies (vector clocks for concurrent edits),
-          three-way merge algorithms for automatic conflict resolution, CRDT
-          adoption for real-time collaboration, and event sourcing for auditability.
-          Field-level merge strategies prevent data loss better than naive
-          last-write-wins. Metadata versioning enables granular conflict
-          detection. At scale, distributed sync server must handle millions of
-          concurrent syncs with sub-second latency. Testing must cover conflict
-          scenarios, partial syncs, and recovery. Monitoring conflict rates
-          detects merge strategy issues early. Real-world systems use Yjs/Automerge
-          for collaborative editing, three-way merge for document sync, and
-          event sourcing for audit trails. Integration with offline-first
-          architecture, undo/redo systems, and real-time collaboration essential.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">At scale, distributed sync server must handle millions of concurrent syncs with sub-second latency. Testing must cover conflict scenarios, partial syncs,</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">and recovery. Monitoring conflict rates detects merge strategy issues early. Real-world systems use Yjs/Automerge for collaborative editing, three-way merge for document sync, and event sourcing for audit trails. Integration with offline-first architecture, undo/redo systems, and real-time collaboration essential.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

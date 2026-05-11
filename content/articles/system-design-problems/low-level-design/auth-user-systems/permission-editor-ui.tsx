@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -28,15 +30,15 @@ export default function PermissionEditorUIArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           An admin must grant a new employee permission to view documents, but
           not delete them. Another admin needs to bulk-grant a team of 20
           contractors temporary access to a project. A senior engineer discovers
           that a junior engineer has admin permissions (over-privileged).
           Managing fine-grained permissions at scale is error-prone and
           dangerous without proper UI.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The challenge is multi-faceted. First, complexity of representation: a
           modern app might have 100+ granular permissions (documents.read,
           documents.edit, documents.comment, documents.delete, documents.share,
@@ -46,8 +48,8 @@ export default function PermissionEditorUIArticle() {
           granting "documents.edit" should imply "documents.read" (can't edit
           without reading). If a permission tree is deep, displaying all levels
           becomes unwieldy.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Third, error prevention: accidentally granting excessive permissions
           is a security incident. An admin intends to grant "documents.read" but
           clicks "documents.delete" by mistake. Without confirmation or visual
@@ -55,13 +57,13 @@ export default function PermissionEditorUIArticle() {
           permissions for 50 users individually is tedious. A bulk edit feature
           ("grant team.read to all contractors") is necessary but risky (must
           show preview of changes before committing).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Fifth, auditability: if permissions are granted incorrectly, admins
           need to trace what happened, who did it, and when. An audit log
           showing "Admin Alice revoked user.deactivate from User Bob at
           2026-05-05 14:23 UTC" is essential for security and compliance.
-        </p>
+        </HighlightBlock>
         <p>
           Naive UIs fail at multiple points. A flat list of checkboxes is
           overwhelming. Nested checkboxes without inheritance logic confuse
@@ -70,7 +72,7 @@ export default function PermissionEditorUIArticle() {
           (delete permissions) leads to mistakes. No audit trail means no
           accountability.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Explicit assumptions:</strong> Permission hierarchy is
           well-defined (parent/child relationships known). Permissions are
           immutable strings managed server-side. Bulk operations affect all
@@ -78,7 +80,7 @@ export default function PermissionEditorUIArticle() {
           grant others (can't grant permissions you don't have). Audit trail is
           append-only and tamper-proof. Frontend UI is trust-advisory; backend
           enforces all changes.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -87,18 +89,18 @@ export default function PermissionEditorUIArticle() {
           Functional Requirements
         </h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Display Grantable Permissions:</strong> Show all permissions
             that the current admin can grant (subset of all permissions if admin
             has limited authority). Include permission name, description, and
             category for clarity.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Grant and Revoke:</strong> Toggle individual permissions
             on/off with immediate visual feedback. Show three states: granted
             (✓), revoked (×), inherited (◑). Clicking a granted permission
             revokes it; clicking a revoked permission grants it.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Hierarchical Organization:</strong> Group permissions by
             category (Documents, Users, Settings, Teams) to reduce cognitive
@@ -143,47 +145,46 @@ export default function PermissionEditorUIArticle() {
           Non-Functional Requirements
         </h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Usability:</strong> Non-technical admins should understand
             the interface without help. Avoid jargon. Use clear visual hierarchy
             and grouping. Load times under 2 seconds even with large permission
             sets (100+).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Performance:</strong> Toggling a permission should reflect
             instantly in UI. Saving changes should complete within 3 seconds
             (include API call). Bulk operations on 100+ users should still feel
             responsive (show progress).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Safety:</strong> Prevent accidental permission changes.
             Require confirmation on dangerous operations. Show clear
             before/after state. Provide undo for recent changes (revert
             permission state to 1 hour ago if needed).
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Scalability:</strong> Support apps with up to 500 grantable
             permissions. Scale to millions of users (bulk edit with pagination
             if needed). Audit trail should not impact API performance.
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          A permission editor UI has three components: permission selection,
+        <HighlightBlock as="p" tier="important">A permission editor UI has three components: permission selection,
           role presets, and confirmation/audit. Users start by selecting target
           (a specific user, or multiple users for bulk edit). The UI then
           displays available permissions grouped by category. Admins toggle
-          permissions on/off, or select a preset role. Changes are reflected
+          permissions on/off, or select a preset role.</HighlightBlock>
+<HighlightBlock as="p" tier="important">Changes are reflected
           immediately (toggle instant, but marked as "unsaved"). Before saving,
           show a summary: what permissions will be granted/revoked and any
           warnings (dangerous operations, self-lock risks). On confirm, send to
           backend, which validates, logs the change, and updates the user's
-          permissions.
-        </p>
-        <p>
+          permissions.</HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Key principles: (1) Show permissions hierarchically to reduce
           overwhelming users with 100+ items. (2) Provide quick role presets for
           common patterns (most admins don't need granular control; they pick
@@ -192,7 +193,7 @@ export default function PermissionEditorUIArticle() {
           dangerous operations before executing. (5) Log all changes for audit
           and reversal. (6) Always fail-safe: if an operation is risky, require
           explicit confirmation; don't proceed silently.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -268,7 +269,7 @@ export default function PermissionEditorUIArticle() {
           permission (e.g., "Documents &gt; Delete [permissions.delete]") to
           clarify context.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Accessibility and Keyboard Navigation:</strong> Permissions UI
           should be fully keyboard navigable. Use arrow keys to expand/collapse
           trees, Space/Enter to toggle checkboxes. Implement ARIA roles (tree,
@@ -277,7 +278,7 @@ export default function PermissionEditorUIArticle() {
           should announce: "documents.edit, Edit documents, currently granted,
           dangerous permission". Tab order should follow visual hierarchy (move
           through categories, then permissions within category).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Three-State Checkboxes: Granted, Revoked, Inherited
@@ -425,7 +426,7 @@ export default function PermissionEditorUIArticle() {
           users? This change is not reversible without manual undo." Only after
           confirmation proceed.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>
             Differential Permission Application and Conflict Handling:
           </strong>{" "}
@@ -440,7 +441,7 @@ export default function PermissionEditorUIArticle() {
           users will be updated (net gain), 5 users upgraded (same + new), 5
           users downgraded (admin revoked). Proceed?" Allow admin to filter out
           the 5 downgrades if desired.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bulk Operation Progress and Partial Failure Handling:</strong>{" "}
           When applying changes to 1000+ users, show progress: "Applying
@@ -474,7 +475,7 @@ export default function PermissionEditorUIArticle() {
           permissions to the state before that change. Undo itself is logged:
           "Admin Dave undid permission change at 2026-05-05 16:00".
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Audit Trail Filtering and Compliance Reporting:</strong>{" "}
           Implement powerful audit trail filtering: filter by date range,
           changed permissions, admin who made change, type of change (grant vs
@@ -486,8 +487,8 @@ export default function PermissionEditorUIArticle() {
           permission or loses critical permissions, send email to organization
           admins: "Alert: User XYZ granted admin permission by Admin ABC at
           [time]". This provides real-time visibility for security monitoring.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Audit Trail Verification and Immutability:</strong> Audit logs
           are security-critical. Implement write-once semantics: once a log
           entry is written, it cannot be modified (database constraints).
@@ -498,18 +499,18 @@ export default function PermissionEditorUIArticle() {
           table, with restricted access (only read, no update/delete).
           Additionally, back up audit logs to external storage (cloud storage,
           audit service) to protect against local tampering.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Performance Optimization
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           With 500+ permissions, loading and rendering is slow. Paginate or
           virtualize: load the first 50 permissions, and load more as admin
           scrolls. Search filters reduce the set immediately (search for
           "delete" to show only deletion permissions). Debounce search input
           (wait 200ms before filtering to avoid lag).
-        </p>
+        </HighlightBlock>
         <p>
           Cache permission manifests (list of all grantable permissions with
           hierarchy). This rarely changes and can be cached aggressively (1 day
@@ -524,7 +525,7 @@ export default function PermissionEditorUIArticle() {
 
       <section>
         <h2>Trade-offs and Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Granular vs Role-Based:</strong> Granular permissions (100+
           individual checkboxes) provide ultimate flexibility but overwhelming
           UX. Role-based permissions (Viewer, Editor, Owner presets) are simple
@@ -532,29 +533,29 @@ export default function PermissionEditorUIArticle() {
           presets as primary interface, advanced granular control as secondary.
           Non-admin users pick a preset; advanced admins toggle individual
           permissions.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           <strong>Real-Time Inheritance Computation vs Pre-Computed:</strong>{" "}
           Computing effective permissions (with inheritance) on every render is
           expensive. Pre-computing server-side and caching client-side is faster
           but requires syncing when permissions change. Real approach:
           pre-compute server-side, cache in frontend state, invalidate on
           permission change.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Confirmation Dialogs vs No Friction:</strong> Confirmation on
           every change (confirmation hell) is annoying. No confirmation (easy
           mistakes) is dangerous. Balance: confirm only on dangerous operations
           (delete, admin grant) and bulk operations (50+ users). Single
           permission toggles proceed without dialog.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           <strong>Flat List vs Tree View:</strong> Flat list is simple and
           fast-loading. Tree view with expansion is more organized and compact.
           For 500+ permissions, tree view is better; for 20 permissions, flat
           list is simpler. Hybrid: default to grouped flat, offer tree expansion
           for large permission sets.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Bulk Edit Risk:</strong> Bulk operations (apply role to 100
           users) are efficient but risky (one mistake affects many). Mitigate by
@@ -562,12 +563,12 @@ export default function PermissionEditorUIArticle() {
           require an additional confirmation step for bulk operations (click
           "Apply", then confirm "Apply to 100 users?").
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           <strong>Audit Trail Storage:</strong> Logging every permission change
           creates large audit tables. Large-scale apps might keep only recent
           audit history (1 year) and archive older entries. Compliance
           requirements might mandate indefinite retention.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
@@ -575,70 +576,49 @@ export default function PermissionEditorUIArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 1: Role-Based Presets with Granular Override
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Display role buttons (Viewer, Editor, Owner) prominently. Clicking a
           role applies all associated permissions instantly. Below presets, show
           a collapsible "Advanced: Customize permissions" section with granular
           checkboxes. Most users pick a preset; power users customize.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 2: Hierarchical Tree with Three-State Checkboxes
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Permissions displayed as an expandable tree. Parent permissions have
           expand arrows. Granting parent auto-enables children (not shown as
           separate checkboxes, but implicitly granted). Inherited permissions
           shown with light color. Admin can revoke child without affecting
           parent (remove child from inherited set).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 3: Diff-Based Bulk Edit
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Select multiple users, then modify permissions. UI computes and
           displays the diff: "Current state vs Proposed state". Shows which
           users will gain permissions, lose permissions, and remain unchanged.
           Only on explicit confirmation does the change apply to all.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 4: Audit Trail with Reversible Undo
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Every permission change is logged with before/after state. Audit trail
           view shows history. Recent changes (within 1 hour) show "Undo" button.
           Clicking undo reverts that single change, logged as a new entry.
           Provides safety net while preventing "undo everything" chaos.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Permission editor UIs manage fine-grained access control at scale
-          while preventing dangerous mistakes. Essential patterns include
-          hierarchical organization (group by category, optionally use trees),
-          role-based presets (Viewer, Editor, Owner) for common cases, granular
-          checkboxes for advanced control, three-state checkboxes (granted,
-          revoked, inherited) for clarity, permission inheritance (parent
-          implies child), bulk edit with preview and confirmation, and
-          comprehensive audit logging with optional undo. Trade-offs include
-          preset simplicity vs granular flexibility (hybrid approach wins), flat
-          list simplicity vs tree organization (use trees for 100+ permissions),
-          and confirmation friction (confirm on dangerous + bulk, not on every
-          toggle). Real-world systems (GitHub, Datadog, Slack) use role presets
-          as primary interface with advanced granular control, visual
-          inheritance indicators (lighter color for inherited), and mandatory
-          confirmation on dangerous operations (revoke all, grant admin). For
-          best results, lead with presets, provide search for large permission
-          sets, always show before/after diff, require explicit confirmation on
-          dangerous and bulk operations, prevent self-lock (don't let only admin
-          revoke their own admin), provide audit trail, and fail-secure (when in
-          doubt, require confirmation). Permission editors are critical UX—small
-          improvements prevent security incidents and user frustration.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems (GitHub, Datadog, Slack) use role presets as primary interface with advanced granular control, visual inheritance indicators (lighter color for inherited), and mandatory confirmation on dangerous</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">operations (revoke all, grant admin). For best results, lead with presets, provide search for large permission sets, always show before/after diff, require explicit confirmation on dangerous and bulk operations, prevent self-lock (don't let only admin revoke their own admin), provide audit trail, and fail-secure (when in doubt, require confirmation). Permission editors are critical UX—small improvements prevent security incidents and user frustration.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

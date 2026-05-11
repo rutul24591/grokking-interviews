@@ -2,6 +2,8 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -36,7 +38,7 @@ export default function FiniteStateMachinesArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Complex workflows (checkout, auth, video player) have states and
           transitions. Key challenges: representing valid state transitions
           (invalid transitions should be impossible), handling events in each
@@ -44,17 +46,17 @@ export default function FiniteStateMachinesArticle() {
           transitions (prevent bugs). Naive approach: if-else on state (fragile,
           missed edge cases). Better: Finite State Machine (explicit state
           graph).
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Assumptions:</strong>
         </p>
         <ul className="space-y-2">
-          <li>Workflow has finite states (idle, loading, success, error).</li>
-          <li>Each state has valid transitions (idle → loading, not idle → error).</li>
-          <li>
+          <HighlightBlock as="li" tier="important">Workflow has finite states (idle, loading, success, error).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">Each state has valid transitions (idle → loading, not idle → error).</HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             Events trigger transitions (click "buy" → idle to loading).
-          </li>
-          <li>Guards conditionally allow transitions (only if user logged in).</li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">Guards conditionally allow transitions (only if user logged in).</HighlightBlock>
           <li>Actions execute on transitions (save to DB, send email).</li>
         </ul>
       </section>
@@ -63,21 +65,21 @@ export default function FiniteStateMachinesArticle() {
         <h2>Requirements</h2>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>State Definition:</strong> Define states, transitions
             explicitly.
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Transitions:</strong> On event, transition to next state (if
             guard passes).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Guards:</strong> Conditionally allow transitions (e.g., user
             logged in?).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Actions:</strong> Execute on enter/exit state or transition.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Context:</strong> Store data alongside state (user, error).
           </li>
@@ -113,19 +115,18 @@ export default function FiniteStateMachinesArticle() {
           <li>Guard condition false (transition blocked).</li>
           <li>Recursive transitions (state → state).</li>
           <li>Parallel states (orthogonal regions, complex).</li>
-          <li>Nested machines (parent/child state machines).</li>
+          <HighlightBlock as="li" tier="crucial">Nested machines (parent/child state machines).</HighlightBlock>
         </ul>
       </section>
 
       <section>
         <h2>High-Level Approach</h2>
-        <p>
-          Define state machine: states, transitions (on event, go to next
+        <HighlightBlock as="p" tier="crucial">Define state machine: states, transitions (on event, go to next
           state), guards (conditions), actions (side effects). Dispatch events
-          to machine. Machine looks up current state, checks guard, executes
+          to machine.</HighlightBlock>
+<HighlightBlock as="p" tier="important"><Highlight tier="important">Machine looks up current state, checks guard, executes
           action, transitions to next state. Return new state. Visualization
-          tools (Stately, XState visualizer) show state graph.
-        </p>
+          tools (Stately, XState visualizer) show state graph.</Highlight></HighlightBlock>
       </section>
 
       <section>
@@ -140,10 +141,10 @@ export default function FiniteStateMachinesArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">State Machine Structure</h3>
         <p>Define FSM components.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>States:</strong> Finite set (idle, loading, success, error).
             Mutually exclusive.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Events:</strong> Triggers (SUBMIT, RETRY, CANCEL).
           </li>
@@ -165,10 +166,10 @@ export default function FiniteStateMachinesArticle() {
           <li>
             <strong>Guard:</strong> Function (context, event) → boolean.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Example:</strong> Transition to checkout only if user
             authenticated.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>False Guard:</strong> Event ignored, state unchanged.
           </li>
@@ -266,10 +267,10 @@ export default function FiniteStateMachinesArticle() {
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Async Events & Side Effects</h3>
         <p>Handle async operations.</p>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Action:</strong> Dispatch event on completion (success or
             failure).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Invoke:</strong> XState: invoke service, transition on
             promise result.
@@ -313,14 +314,14 @@ export default function FiniteStateMachinesArticle() {
           <li>
             <strong>Event Rate:</strong> Events/sec per state.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="crucial">
             <strong>Transition Latency:</strong> Time to compute transition
             (&lt;1ms).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Blocked Transitions:</strong> % of events with false guard
             (retry?).
-          </li>
+          </HighlightBlock>
         </ul>
       </section>
 
@@ -328,57 +329,57 @@ export default function FiniteStateMachinesArticle() {
         <h2>Implementation Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">XState Library</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           XState: powerful FSM library for JS/TS. Supports nested states,
           parallel regions, history, visualization. Industry standard.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">State Explosion</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large FSM (many states) becomes unmanageable. Solution: nest states
           (child machines), slice by feature (separate machines).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing FSMs</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Generate all state transitions, test each. Use XState's built-in
           testing (sendTo, waitFor). Property-based testing (test random event
           sequences).
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Advanced Production Patterns</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Invoked Services</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           XState: invoke promises, callbacks, observables on state entry. On
           success/error, transition. Clean async handling.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Parallel Regions</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Orthogonal states: two independent substates active simultaneously
           (video player: playing + networking). Complex but powerful.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Machine Composition</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Parent machine spawns child machines. Each handles part of workflow.
           Modular, easier to reason about.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Event Queuing</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Events arrive while machine busy. Queue and process. XState handles
           automatically (internal event queue).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Large FSM: generate transition table, verify all reachable states.
           Chaos: send random events, verify no crashes.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
         <p>
@@ -399,39 +400,28 @@ export default function FiniteStateMachinesArticle() {
         <h2>Trade-offs and Considerations</h2>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Simplicity vs Power</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           Simple workflow (loading state): if-else simple. Complex (checkout):
           FSM clearer. Use FSM when complexity justifies.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Explicitness vs Flexibility</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           FSM explicit (valid transitions obvious) but inflexible (adding
           transitions hard). Balance based on requirements stability.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Learning Curve</h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           FSM concepts (states, transitions) new to many developers. XState
           powerful but complex. Invest in learning for large apps.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
-          Finite State Machines essential for complex workflows. For
-          staff/principal engineers, critical aspects include explicit state
-          definition (prevent invalid states), guarded transitions
-          (conditional), actions for side effects, and context for data. XState
-          recommended for production (supports nested states, services, history).
-          At scale, nested machines and parallel regions manage complexity. Type
-          safety with TypeScript prevents state name typos. Testing must cover
-          all states, events, guard conditions (true/false). Monitoring state
-          distribution and blocked transitions. Real-world systems use XState for
-          complex workflows (checkout, auth, video player), nested machines for
-          modularity. Integration with state management, UI components essential.
-        </p>
+        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Type safety with TypeScript prevents state name typos. Testing must cover all states, events, guard conditions</Highlight></HighlightBlock>
+<HighlightBlock as="p" tier="important">(true/false). Monitoring state distribution and blocked transitions. Real-world systems use XState for complex workflows (checkout, auth, video player), nested machines for modularity. Integration with state management, UI components essential.</HighlightBlock>
       </section>
     </ArticleLayout>
   );
