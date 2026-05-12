@@ -1,0 +1,153 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="960" height="660" fill="#f3f1f8"/>
+  <text x="480" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Infinite Scrolling Feed with Ranking — Cursor, Virtual DOM, New Content</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="14" y="50" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.14"/>
+  <text x="20" y="62" font-size="10" font-weight="bold" fill="#6d5bd0">ACTORS</text>
+
+  <rect x="20" y="72" width="96" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="68" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Browser</text>
+  <text x="68" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">React Query</text>
+
+  <rect x="188" y="72" width="100" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="238" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Feed API</text>
+  <text x="238" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">snapshot cursor</text>
+
+  <rect x="362" y="72" width="100" height="36" rx="7" fill="#2f9d74"/>
+  <text x="412" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Redis Snapshot</text>
+  <text x="412" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">feed_snapshot:{uid}</text>
+
+  <rect x="536" y="72" width="100" height="36" rx="7" fill="#2f9d74"/>
+  <text x="586" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Ranking Engine</text>
+  <text x="586" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">ML re-ranks 5min</text>
+
+  <rect x="710" y="72" width="100" height="36" rx="7" fill="#d97843"/>
+  <text x="760" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">New Posts SSE</text>
+  <text x="760" y="102" text-anchor="middle" font-size="10" fill="#fff5ee">30s poll</text>
+
+  <rect x="860" y="72" width="86" height="36" rx="7" fill="#1a1822"/>
+  <text x="903" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">sessionStorage</text>
+  <text x="903" y="102" text-anchor="middle" font-size="10" fill="#d7d1e6">scroll restore</text>
+
+  <!-- Lifelines -->
+  <line x1="68" y1="108" x2="68" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="238" y1="108" x2="238" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="412" y1="108" x2="412" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="586" y1="108" x2="586" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.6"/>
+  <line x1="760" y1="108" x2="760" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.5"/>
+  <line x1="903" y1="108" x2="903" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.4"/>
+
+  <!-- PATH A: Initial load + snapshot cursor -->
+  <rect x="14" y="118" width="932" height="16" rx="4" fill="#2f9d74" opacity="0.13"/>
+  <text x="480" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">PATH A — Initial Feed Load (rank-stable snapshot cursor, no duplicates on re-rank)</text>
+
+  <line x1="68" y1="148" x2="228" y2="148" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="148" y="142" text-anchor="middle" font-size="10" fill="#1a1822">GET /api/feed cursor=null</text>
+
+  <line x1="238" y1="162" x2="402" y2="162" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="320" y="156" text-anchor="middle" font-size="10" fill="#1a1822">ZADD feed_snapshot:{uid}:{snapId} (ranked post IDs, TTL 10min)</text>
+
+  <line x1="412" y1="176" x2="248" y2="176" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="330" y="170" text-anchor="middle" font-size="10" fill="#2f9d74">snapshot created: snapId=abc123</text>
+
+  <line x1="228" y1="190" x2="78" y2="190" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="153" y="184" text-anchor="middle" font-size="10" fill="#2f9d74">{posts[0..19], cursor:{snapId:abc123, offset:20}}</text>
+
+  <!-- PATH B: Next page -->
+  <rect x="14" y="208" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.12"/>
+  <text x="480" y="220" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">PATH B — Next Page (80% scroll sentinel, same snapshot → stable ordering)</text>
+
+  <line x1="68" y1="238" x2="228" y2="238" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="148" y="232" text-anchor="middle" font-size="10" fill="#1a1822">IntersectionObserver 80% → fetchNextPage cursor=abc123:20</text>
+
+  <line x1="238" y1="252" x2="402" y2="252" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="320" y="246" text-anchor="middle" font-size="10" fill="#1a1822">ZRANGE feed_snapshot:{uid}:abc123 20 39 (same snapshot)</text>
+
+  <line x1="402" y1="266" x2="248" y2="266" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="325" y="260" text-anchor="middle" font-size="10" fill="#2f9d74">post IDs [20..39] → enriched posts</text>
+
+  <line x1="228" y1="280" x2="78" y2="280" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="153" y="274" text-anchor="middle" font-size="10" fill="#2f9d74">appended to feed; dedup filter via seenPostIds Set</text>
+
+  <!-- PATH C: Virtual windowing -->
+  <rect x="14" y="298" width="932" height="16" rx="4" fill="#d97843" opacity="0.13"/>
+  <text x="480" y="310" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">PATH C — Virtual DOM Windowing (max 25 DOM nodes, height placeholders)</text>
+
+  <rect x="28" y="322" width="300" height="48" rx="6" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="178" y="337" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Render Window [startIdx..startIdx+25]</text>
+  <text x="178" y="351" text-anchor="middle" font-size="10" fill="#1a1822">Items below startIdx: height placeholder div</text>
+  <text x="178" y="364" text-anchor="middle" font-size="10" fill="#1a1822">ResizeObserver measures actual height → heights Map</text>
+
+  <rect x="348" y="322" width="280" height="48" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="488" y="337" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Scroll Event</text>
+  <text x="488" y="351" text-anchor="middle" font-size="10" fill="#1a1822">startIdx advances → old items unmounted</text>
+  <text x="488" y="364" text-anchor="middle" font-size="10" fill="#1a1822">placeholder height = measured height cached</text>
+
+  <rect x="648" y="322" width="290" height="48" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="793" y="337" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">DOM Budget</text>
+  <text x="793" y="351" text-anchor="middle" font-size="10" fill="#1a1822">Max 25 live nodes regardless of depth</text>
+  <text x="793" y="364" text-anchor="middle" font-size="10" fill="#2f9d74">60 fps on mid-range Android guaranteed</text>
+
+  <!-- PATH D: New content badge -->
+  <rect x="14" y="378" width="932" height="16" rx="4" fill="#c0392b" opacity="0.09"/>
+  <text x="480" y="390" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">PATH D — New Content Detection (badge, no auto-inject while scrolling)</text>
+
+  <line x1="68" y1="406" x2="750" y2="406" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="409" y="400" text-anchor="middle" font-size="10" fill="#d97843">poll GET /api/feed/new-count?after={firstPostId} every 30s</text>
+
+  <line x1="760" y1="418" x2="78" y2="418" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="419" y="412" text-anchor="middle" font-size="10" fill="#d97843">count=5 → show sticky badge "5 new posts — tap to see"</text>
+
+  <line x1="68" y1="432" x2="228" y2="432" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="148" y="426" text-anchor="middle" font-size="10" fill="#6d5bd0">user taps badge → new snapshot → prepend + scroll top</text>
+
+  <!-- PATH E: Scroll restoration -->
+  <rect x="14" y="448" width="932" height="16" rx="4" fill="#2f9d74" opacity="0.12"/>
+  <text x="480" y="460" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">PATH E — Scroll Restoration on Back-Navigation (&lt;100ms, no re-fetch)</text>
+
+  <line x1="68" y1="476" x2="893" y2="476" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="480" y="470" text-anchor="middle" font-size="10" fill="#1a1822">navigate to post: save {scrollY, loadedPostIds, snapId} to sessionStorage</text>
+
+  <line x1="893" y1="490" x2="78" y2="490" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="485" y="484" text-anchor="middle" font-size="10" fill="#2f9d74">back: hydrate from React Query cache + window.scrollTo(0, scrollY) &lt;100ms</text>
+
+  <!-- Metrics -->
+  <rect x="14" y="510" width="932" height="16" rx="4" fill="#1a1822" opacity="0.07"/>
+  <text x="480" y="522" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">KEY METRICS AND DESIGN DECISIONS</text>
+
+  <rect x="20" y="534" width="220" height="56" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="130" y="550" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Snapshot Cursor</text>
+  <text x="130" y="564" text-anchor="middle" font-size="10" fill="#1a1822">Redis ZADD TTL=10min frozen ranking</text>
+  <text x="130" y="578" text-anchor="middle" font-size="10" fill="#2f9d74">Zero duplicates on ML re-rank</text>
+
+  <rect x="256" y="534" width="220" height="56" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="366" y="550" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Virtual Windowing</text>
+  <text x="366" y="564" text-anchor="middle" font-size="10" fill="#1a1822">Breakeven: ~50-100 loaded items</text>
+  <text x="366" y="578" text-anchor="middle" font-size="10" fill="#2f9d74">Memory: &lt;200MB on mobile</text>
+
+  <rect x="492" y="534" width="220" height="56" rx="6" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="602" y="550" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">New Post Injection</text>
+  <text x="602" y="564" text-anchor="middle" font-size="10" fill="#1a1822">Badge only (no auto-push mid-scroll)</text>
+  <text x="602" y="578" text-anchor="middle" font-size="10" fill="#d97843">Auto-inject only if scrollY === 0</text>
+
+  <rect x="728" y="534" width="218" height="56" rx="6" fill="#fff" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="837" y="550" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">Dedup Guard</text>
+  <text x="837" y="564" text-anchor="middle" font-size="10" fill="#1a1822">seenPostIds Set (O(1) lookup)</text>
+  <text x="837" y="578" text-anchor="middle" font-size="10" fill="#6d5bd0">Safety net if snapshot expires mid-session</text>
+</svg>

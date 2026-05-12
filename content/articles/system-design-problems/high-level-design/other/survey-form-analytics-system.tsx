@@ -1,0 +1,106 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-hld-survey-form-analytics-system",
+  title: "Design a Survey / Form Analytics System",
+  description:
+    "Architecture for a survey and form analytics system: form builder with conditional logic, response ingestion pipeline, real-time aggregation, completion funnel analytics, drop-off detection, partial response recovery, response export, spam/bot filtering, and multi-tenant access control.",
+  category: "high-level-design",
+  subcategory: "other",
+  slug: "survey-form-analytics-system",
+  wordCount: 5000,
+  readingTime: 30,
+  lastUpdated: "2026-05-11",
+  tags: ["hld", "analytics", "survey", "form", "pipeline", "aggregation", "funnel"],
+  relatedTopics: ["feature-usage-analytics-dashboard", "customer-support-dashboard"],
+};
+
+export default function SurveyFormAnalyticsSystemArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Problem Clarification</h2>
+        <p>A survey and form analytics system has two distinct halves: a form runtime (rendering forms, collecting responses) and an analytics backend (aggregating responses, computing completion funnels, surfacing drop-off insights). The two halves have opposite characteristics. The form runtime is high-write, low-latency, and must be highly available—if the response submission endpoint goes down, respondents lose their answers. The analytics backend is read-heavy, high-computation, and can tolerate eventual consistency—a survey creator checking results at noon does not need to see the response submitted 3 seconds ago. Conflating these two halves into a single system creates an architecture where a spike in analytics queries degrades form response throughput, which is the wrong trade-off.</p>
+        <p>The problem has three distinct user roles. Respondents fill out forms (anonymous or authenticated, mobile or desktop, often on slow connections). Form creators build forms, configure logic, and analyze results (authenticated, desktop-first, need rich analytics UIs). Admins manage multi-tenant access, billing quotas, and compliance (GDPR response deletion, data retention policies). Each role has different latency and availability requirements; the architecture must serve all three without one role's traffic degrading another's experience.</p>
+        <p><strong>Explicit scope:</strong> Web-based survey and form platform with conditional logic, real-time analytics, completion funnel, drop-off analysis, and partial response recovery. Not in scope: native mobile SDK, payments, or advanced NLP text analysis.</p>
+      </section>
+
+      <section>
+        <h2>Requirements</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Form builder:</strong> Drag-and-drop question creation supporting types: short text, long text, single-choice, multi-choice, rating scale (1–10), NPS (0–10), date, file upload, matrix, and ranking. Conditional logic: show/hide questions based on prior answers (e.g., show Q5 only if Q3 answer = "Yes"). Question branching: route respondents to different question sequences based on answers. Form versioning: published forms are immutable; editing creates a new version (responses are attributed to a specific version).</li>
+          <li><strong>Response collection:</strong> Anonymous and authenticated submissions. Partial response saving: respondents can save progress and resume later (via a resume token in localStorage or email link). Each page submission is saved immediately (not just on final Submit), so network failures lose at most one page of answers. File upload responses up to 10MB per file.</li>
+          <li><strong>Real-time analytics:</strong> Response count, completion rate, average completion time, NPS score, and per-question answer distributions update within 60 seconds of a response being submitted. No manual refresh required (WebSocket or SSE push to the analytics dashboard).</li>
+          <li><strong>Funnel and drop-off:</strong> Per-question drop-off rate (what fraction of respondents who reached question N did not answer it and left the form). Page-level time-on-page distribution. Identification of which questions have the highest abandonment rates.</li>
+          <li><strong>Response export:</strong> CSV/XLSX export of all responses. Filtered exports (date range, completion status, specific answer values). Large exports (100K+ responses) are generated asynchronously and delivered via email link or downloadable job.</li>
+          <li><strong>Spam and bot filtering:</strong> Honeypot field detection, submission rate limiting per IP, CAPTCHA integration for public forms, duplicate submission detection (same respondent ID or fingerprint submitting twice).</li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Response submission latency:</strong> POST /responses must return 200 within 200ms at P99. Respondents should never see a spinning submit button.</li>
+          <li><strong>Analytics freshness:</strong> Aggregated metrics (completion rate, answer distributions) must reflect submissions within 60 seconds.</li>
+          <li><strong>Scale:</strong> Support forms with up to 10M responses. A single viral form campaign may generate 50K submissions/hour. The ingestion pipeline must handle 100K events/hour per tenant without degradation.</li>
+          <li><strong>Data retention:</strong> Responses retained for 24 months by default. GDPR deletion: individual response deletion within 24 hours of request.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>High-Level Architecture</h2>
+        <p>The system decomposes into four planes. The form delivery plane serves the form schema (JSON) to respondents via a CDN-cached endpoint. The form schema rarely changes (only on new version publish), so it can be cached aggressively (Cache-Control: max-age=3600) and served from edge nodes globally. The response ingestion plane receives submissions via a dedicated write-optimized API tier, validates, deduplicates, and writes to a raw response store (PostgreSQL for structured responses, S3 for file uploads) and simultaneously publishes to an event stream (Kafka) for downstream processing. The analytics computation plane consumes from Kafka, computes aggregations (per-question distributions, funnel metrics, completion rates), and writes results to an analytics store (ClickHouse or pre-aggregated Redis structures) optimized for analytical reads. The analytics delivery plane serves pre-computed analytics to the dashboard via a REST/WebSocket API, with real-time push updates as new aggregations arrive.</p>
+      </section>
+
+      <section>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/other/survey-form-analytics-system.svg"
+          alt="Survey form analytics system architecture showing form delivery plane (form builder UI → form schema store PostgreSQL → CDN cache edge serve JSON schema → respondent browser renders form), response ingestion plane (respondent submits → response API POST /responses 200ms P99 → spam filter honeypot + rate limit + CAPTCHA + fingerprint dedup → response validator conditional logic check required fields → raw response store PostgreSQL + S3 file uploads → Kafka responses topic), analytics computation plane (Kafka consumer → streaming aggregator Flink/Lambda (per-question distributions NPS completion rate drop-off per page time-on-page) → analytics store ClickHouse pre-aggregated → cache layer Redis TTL 60s), analytics delivery plane (dashboard API WebSocket/SSE push → form creator dashboard real-time charts), partial response recovery (page-by-page save resume token localStorage or email link), export pipeline (async export job CSV/XLSX 100K+ responses → S3 presigned URL → email notification), multi-tenant access (workspace isolation row-level security form quota limits per plan), funnel metrics (per-question drop-off rate page dwell distribution abandonment heatmap identification highest abandonment questions)."
+          caption="Form delivery (CDN-cached schema), response ingestion (spam filter → validator → PostgreSQL + Kafka), analytics computation (Flink aggregations → ClickHouse), real-time dashboard push, partial response recovery, async export pipeline, and multi-tenant access"
+        />
+      </section>
+
+      <section>
+        <h2>Detailed Design</h2>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Form Schema and Conditional Logic</h3>
+        <p>The form schema is a JSON document stored in PostgreSQL and cached in a CDN. Schema structure: a root form object contains an ordered array of pages; each page contains an ordered array of questions; each question has a type, label, validation rules, and optionally a conditions array specifying when the question is shown. Conditions reference other questions by ID and evaluate predicates: {"{ questionId: 'q3', operator: 'eq', value: 'Yes' }"}. The conditions engine runs client-side in the respondent's browser (evaluating conditions against the current answer state on every answer change). Running the conditions engine client-side eliminates a round-trip for each answer change and keeps the form responsive. The server re-validates conditions on submission to prevent a malicious client from skipping required questions by manipulating the DOM.</p>
+        <p>Form versioning: every publish operation creates a new immutable version record (formId + versionId). The currently published version is referenced by a pointer in the forms table. Respondents loading a form always receive the latest published version. Responses are attributed to the specific versionId at the time of submission, allowing analytics to be segmented by version (useful when a question is reworded between versions, making pre- and post-change distributions incomparable). Previous versions are archived but not deleted, as their responses remain valid and must be queryable.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Response Ingestion and Partial Save</h3>
+        <p>The response lifecycle has three states: partial (in progress), complete (submitted), and abandoned (partial with no activity for 24+ hours). Page-by-page saving: when a respondent advances to the next page, the frontend sends a PATCH /responses/{"{responseId}"}/pages/{"{pageIndex}"} request with the current page&apos;s answers. If the respondent navigates away, all submitted pages are persisted. A resume token (UUID) is stored in localStorage and in the URL fragment; returning to the same browser restores the in-progress response. For email-linked resumes, the token is embedded in the resume URL.</p>
+        <p>The response API performs three validations before writing. First, spam filtering: check IP submission rate (reject if &gt; 10 submissions/hour from same IP for the same form), validate the honeypot field is empty (bots typically fill all visible fields; a hidden honeypot field filled = bot), and check the fingerprint deduplication table (userId or device fingerprint + formId, reject if duplicate within 24 hours). Second, answer validation: for each submitted answer, verify it matches the expected type, respects required/optional, and satisfies any validation rules (e.g., "must be a valid email", "must be between 1 and 10"). Third, conditional logic re-validation: reconstruct the expected question sequence for this respondent's answer path and verify no required question was skipped.</p>
+        <p>After passing validation, the response is written to PostgreSQL (normalized: responses table, answer_values table with one row per question answer) and a ResponseSubmitted event is published to Kafka. The Kafka publish is asynchronous and non-blocking to the HTTP response—the 200 is returned as soon as the PostgreSQL write commits. If the Kafka publish fails (transient error), it is retried by a background process reading from an outbox table (transactional outbox pattern), ensuring at-least-once delivery to the analytics pipeline without blocking the submission API.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Analytics Computation Pipeline</h3>
+        <p>The Flink streaming pipeline consumes ResponseSubmitted and PageAbandoned events from Kafka and maintains per-form, per-version aggregations in ClickHouse. Aggregations computed in real time: total response count (count(*)), completion rate (completed responses / total started responses), average completion time (average of end_time − start_time for completed responses), per-question answer distribution (for choice questions: count per option; for numeric: histogram buckets of 1–10), NPS score (% Promoters (9–10) − % Detractors (0–6)), and per-question drop-off rate (count of responses where this question was the last question answered, indicating abandonment at this point).</p>
+        <p>ClickHouse is chosen for the analytics store because it is optimized for append-only inserts and fast analytical reads over large datasets (COUNT, GROUP BY, percentiles). A typical ClickHouse query for answer distribution (SELECT answer_value, count(*) FROM answer_events WHERE form_id=X AND question_id=Y GROUP BY answer_value) completes in under 100ms for 10M rows, which is acceptable for dashboard refresh. Pre-aggregated summaries are also written to Redis (TTL 60 seconds) for the most common dashboard queries (response count, completion rate, NPS) to serve sub-10ms reads for the most popular forms.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Drop-off and Funnel Analytics</h3>
+        <p>Drop-off analysis requires tracking not just completed responses but also the furthest question reached for abandoned responses. Every page save (PATCH /responses/{"{responseId}"}/pages/{"{pageIndex}"}) records the page index reached; abandoned responses (no activity for 24 hours, never completed) are moved to abandoned status by a daily cron job. The analytics pipeline computes the per-question funnel: respondents_reached_Q(n) = responses where last_page_reached ≥ page containing Q(n). Drop-off rate at Q(n) = 1 − (respondents_reached_Q(n+1) / respondents_reached_Q(n)). Questions with drop-off rates above a threshold (e.g., &gt;15%) are highlighted in the analytics dashboard with a &quot;high abandonment&quot; indicator. Page-level time-on-page is computed as the delta between consecutive page save timestamps, providing form creators insight into which questions are causing cognitive friction (long time-on-page + high drop-off = confusing or too-long question).</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Real-Time Dashboard and Export</h3>
+        <p>The analytics dashboard uses SSE (Server-Sent Events) to receive real-time updates. When the Flink pipeline writes a new aggregation, it publishes a FormMetricsUpdated event to a Redis Pub/Sub channel keyed by formId. The dashboard API server subscribes to this channel and forwards updates to connected SSE clients. Form creators see response counts, completion rates, and NPS scores increment in real time as responses arrive, without polling.</p>
+        <p>Large exports (100K+ responses) are handled asynchronously. A POST /exports request creates an export job record and returns immediately with a jobId. A background worker reads responses from PostgreSQL in batches (1000 rows/batch), streams them into a CSV/XLSX buffer, uploads the completed file to S3, and marks the job as complete. An email with a presigned S3 download URL (valid 24 hours) is sent to the requesting user. For very large exports (&gt;1M responses), the worker uses parallel partition reads (splitting by response_id range across multiple worker threads) and merges the results. Export jobs are idempotent: requesting an export for the same form + filter combination within 1 hour returns the existing job rather than creating a new one.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Multi-Tenant Access Control</h3>
+        <p>Every form, response, and analytics record is scoped to a workspace (tenant). Row-level security in PostgreSQL enforces workspace isolation: all queries include a WHERE workspace_id = ? predicate enforced at the application layer and verified by a middleware that reads the workspace from the authenticated user's JWT. Workspace quotas: form count, monthly response count, and file storage are metered per workspace and enforced at the API layer (429 Too Many Requests with a quota-exceeded message when exceeded). Form sharing permissions: forms can be private (only workspace members), workspace-visible, or public (anyone with the link). Analytics access: only workspace members with the "Analyst" or "Owner" role can view response-level data; "Viewer" role sees only aggregate metrics (protecting individual respondent privacy in shared workspaces).</p>
+      </section>
+
+      <section>
+        <h2>Trade-offs and Considerations</h2>
+        <p>Partial save granularity versus storage cost: saving every page as it is submitted increases storage (partial responses may outnumber completed responses by 3:1 for forms with high drop-off rates) but dramatically reduces data loss when respondents abandon mid-form. An alternative is client-side storage only (localStorage) with a single final submit, which reduces server storage but loses data if the respondent clears their browser or switches devices. The hybrid approach (page-by-page server save + localStorage backup) is the right default for enterprise survey platforms where losing a response from a high-value respondent is costly.</p>
+        <p>Real-time versus batch analytics: the Flink streaming pipeline adds operational complexity (Flink cluster management, exactly-once delivery guarantees, state management). An alternative for smaller-scale deployments is a simple batch pipeline: a cron job runs every 5 minutes, queries raw responses from PostgreSQL, and writes updated aggregations to Redis. This trades freshness (5-minute lag instead of 60-second lag) for significantly simpler infrastructure. The streaming approach is warranted only when real-time visibility is a product differentiator (e.g., live event feedback forms where the presenter wants to see audience reactions updating while they speak).</p>
+        <p>ClickHouse versus PostgreSQL for analytics: PostgreSQL can serve analytics queries for response counts up to ~1M rows acceptably. Above 1M rows, analytical query latency degrades significantly, and adding ClickHouse as a separate analytics store is justified. The operational cost is maintaining two databases; the alternative is using PostgreSQL with aggressive indexing and pre-computed materialized views, which works to ~5M rows before requiring ClickHouse.</p>
+      </section>
+
+      <section>
+        <h2>Summary</h2>
+        <p>A survey and form analytics system separates concerns across four planes: form delivery (CDN-cached JSON schema, client-side conditional logic engine, server-side re-validation on submit), response ingestion (200ms P99 submission API, three-layer validation: spam filter + answer validation + conditional re-validation, transactional outbox for Kafka reliability), analytics computation (Flink streaming pipeline → ClickHouse for raw distributions + Redis for hot pre-aggregations, 60-second freshness), and analytics delivery (SSE push for real-time dashboard, async export worker for large CSV/XLSX jobs). Partial response recovery uses page-by-page server saves with resume tokens, ensuring at most one page of answers is lost on abandonment. Drop-off analysis tracks the last question reached for abandoned responses and computes per-question funnel metrics. Multi-tenant isolation uses workspace-scoped row-level security and role-based analytics access (aggregate-only for Viewers, response-level for Analysts). The critical design insight: the submission API must be isolated from the analytics read path to prevent analytics dashboard traffic from degrading form response throughput during high-traffic campaigns.</p>
+      </section>
+    </ArticleLayout>
+  );
+}

@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6c63ff"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0891b2"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="bandA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0faff"/>
+      <stop offset="100%" stop-color="#f8fdff"/>
+    </linearGradient>
+    <linearGradient id="bandB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0faf4"/>
+      <stop offset="100%" stop-color="#f8fdfb"/>
+    </linearGradient>
+    <linearGradient id="bandC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef9f0"/>
+      <stop offset="100%" stop-color="#fffdf8"/>
+    </linearGradient>
+    <linearGradient id="bandD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff0f0"/>
+      <stop offset="100%" stop-color="#fff8f8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="680" fill="#f0fbff" rx="12"/>
+  <rect width="960" height="52" fill="url(#hdr)" rx="12"/>
+  <rect y="40" width="960" height="12" fill="url(#hdr)"/>
+  <text x="480" y="33" text-anchor="middle" fill="white" font-size="17" font-weight="700">Form Builder System — Typeform-like</text>
+
+  <!-- Actors -->
+  <rect x="20" y="66" width="90" height="34" rx="6" fill="#0891b2"/>
+  <text x="65" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Builder UI</text>
+
+  <rect x="160" y="66" width="100" height="34" rx="6" fill="#6c63ff"/>
+  <text x="210" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Responder App</text>
+
+  <rect x="315" y="66" width="100" height="34" rx="6" fill="#f59e0b"/>
+  <text x="365" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Form Service</text>
+
+  <rect x="470" y="66" width="110" height="34" rx="6" fill="#ef4444"/>
+  <text x="525" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Submission Svc</text>
+
+  <rect x="635" y="66" width="90" height="34" rx="6" fill="#10b981"/>
+  <text x="680" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">S3 / Lambda</text>
+
+  <rect x="785" y="66" width="130" height="34" rx="6" fill="#3b82f6"/>
+  <text x="850" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">PostgreSQL/Kafka</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="100" x2="65" y2="650" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="210" y1="100" x2="210" y2="650" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="365" y1="100" x2="365" y2="650" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="525" y1="100" x2="525" y2="650" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="680" y1="100" x2="680" y2="650" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="850" y1="100" x2="850" y2="650" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- BAND A: Builder -->
+  <rect x="14" y="108" width="932" height="116" fill="url(#bandA)" rx="4"/>
+  <text x="22" y="125" fill="#0891b2" font-size="10" font-weight="700">A · DRAG-AND-DROP BUILDER &amp; CONDITIONAL LOGIC</text>
+
+  <text x="40" y="142" fill="#374151" font-size="10" font-weight="600">dnd-kit canvas: drag field types (text email number date file signature) → drop into form · reorder by drag</text>
+  <text x="40" y="158" fill="#374151" font-size="10">Conditional rule editor: IF [field X] [equals] [value] AND/OR ... THEN show/hide [field Y] → plain English preview</text>
+
+  <line x1="65" y1="174" x2="357" y2="174" stroke="#6c63ff" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="211" y="168" text-anchor="middle" fill="#374151" font-size="10">PATCH /api/forms/{id} {pages,fields,rules} auto-save 30s</text>
+
+  <line x1="365" y1="188" x2="842" y2="188" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="604" y="182" text-anchor="middle" fill="#374151" font-size="10">validate DAG logic → store JSON → PUT /publish → version++</text>
+
+  <line x1="850" y1="202" x2="373" y2="202" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="612" y="196" text-anchor="middle" fill="#374151" font-size="10">public URL: form.example.com/{formId} serves responder bundle (&lt;50KB gz)</text>
+
+  <text x="40" y="214" fill="#0891b2" font-size="9">Form JSON: {formId, pages:[{pageId, fields:[{fieldId, type, label, required, validation, conditionalRules}]}], logic:[...]}</text>
+
+  <!-- BAND B: Responder + Conditional Logic -->
+  <rect x="14" y="232" width="932" height="128" fill="url(#bandB)" rx="4"/>
+  <text x="22" y="249" fill="#10b981" font-size="10" font-weight="700">B · RESPONDER APP &amp; CLIENT-SIDE CONDITIONAL LOGIC ENGINE</text>
+
+  <line x1="210" y1="259" x2="357" y2="259" stroke="#6c63ff" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="283" y="253" text-anchor="middle" fill="#374151" font-size="10">GET /api/forms/{formId}/public</text>
+
+  <line x1="365" y1="273" x2="218" y2="273" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="292" y="267" text-anchor="middle" fill="#374151" font-size="10">form definition JSON (cached CDN)</text>
+
+  <text x="40" y="291" fill="#374151" font-size="10" font-weight="600">Conditional engine (pure function): answers → visible field IDs · runs on every answer change (instant)</text>
+  <text x="40" y="307" fill="#374151" font-size="10">Hidden fields: NOT in DOM · NOT required · data discarded on submit · server re-evaluates on submission</text>
+
+  <line x1="210" y1="323" x2="672" y2="323" stroke="#6c63ff" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="441" y="317" text-anchor="middle" fill="#374151" font-size="10">File upload: POST /api/upload/presign → presigned S3 PUT URL (content-type + 50MB limit)</text>
+
+  <line x1="680" y1="337" x2="218" y2="337" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="449" y="331" text-anchor="middle" fill="#374151" font-size="10">direct browser→S3 upload (no app server) → S3 key in answer</text>
+
+  <text x="40" y="350" fill="#10b981" font-size="9">Progress bar: currentPage/totalPages · back navigation: React context state (no network) · sessionStorage for answer persistence</text>
+
+  <!-- BAND C: Submission Pipeline -->
+  <rect x="14" y="368" width="932" height="128" fill="url(#bandC)" rx="4"/>
+  <text x="22" y="385" fill="#f59e0b" font-size="10" font-weight="700">C · SUBMISSION PIPELINE — IDEMPOTENT &amp; RELIABLE</text>
+
+  <line x1="210" y1="395" x2="517" y2="395" stroke="#6c63ff" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="363" y="389" text-anchor="middle" fill="#374151" font-size="10">POST /api/submissions {formId, answers, idempotencyKey:UUID}</text>
+
+  <line x1="525" y1="409" x2="842" y2="409" stroke="#ef4444" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="683" y="403" text-anchor="middle" fill="#374151" font-size="10">SELECT id WHERE idempotency_key=X → exists? return 200</text>
+
+  <line x1="850" y1="423" x2="533" y2="423" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="692" y="417" text-anchor="middle" fill="#374151" font-size="10">not found: validate (conditional-aware required check)</text>
+
+  <line x1="525" y1="437" x2="842" y2="437" stroke="#ef4444" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="683" y="431" text-anchor="middle" fill="#374151" font-size="10">INSERT submissions + submission_answers (UNIQUE idx on key)</text>
+
+  <line x1="850" y1="451" x2="533" y2="451" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="692" y="445" text-anchor="middle" fill="#374151" font-size="10">Kafka submission.created → email notify + webhook + Sheets</text>
+
+  <line x1="525" y1="465" x2="218" y2="465" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="371" y="459" text-anchor="middle" fill="#374151" font-size="10">200 + submissionId → success screen</text>
+
+  <text x="40" y="484" fill="#f59e0b" font-size="9">Client retry: network failure → retry 3x 2s/4s/8s with same idempotencyKey · server UNIQUE constraint prevents duplicate · fallback: localStorage save</text>
+
+  <!-- BAND D: Virus Scan + Spam + Analytics -->
+  <rect x="14" y="504" width="932" height="112" fill="url(#bandD)" rx="4"/>
+  <text x="22" y="521" fill="#ef4444" font-size="10" font-weight="700">D · FILE SECURITY, SPAM PREVENTION &amp; ANALYTICS</text>
+
+  <line x1="680" y1="531" x2="857" y2="531" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="768" y="525" text-anchor="middle" fill="#374151" font-size="10">S3 event → Lambda ClamAV scan</text>
+
+  <line x1="850" y1="545" x2="688" y2="545" stroke="#ef4444" stroke-width="1.8" marker-end="url(#arr-red)"/>
+  <text x="769" y="539" text-anchor="middle" fill="#374151" font-size="10">infected: DELETE object + flag answer invalid</text>
+
+  <line x1="850" y1="559" x2="688" y2="559" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="769" y="553" text-anchor="middle" fill="#374151" font-size="10">clean: tag scan-status=clean → allow download URL</text>
+
+  <text x="40" y="578" fill="#374151" font-size="10" font-weight="600">Spam: honeypot hidden CSS field (silently discard if filled) · hCaptcha for public forms · IP rate limit INCR {formId}:{ip} &gt;10/min</text>
+  <text x="40" y="594" fill="#374151" font-size="10">Analytics: pre-computed submission_stats · page_reached beacon events → drop-off funnel · field distribution batch job hourly</text>
+  <text x="40" y="611" fill="#94a3b8" font-size="9">Retention: files deleted after 90 days (free tier) · answers in submissions table + denormalized submission_answers for aggregation queries</text>
+
+  <!-- Metrics -->
+  <rect x="14" y="630" width="932" height="36" fill="#0c1a2e" rx="6"/>
+  <text x="90" y="653" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="600">Responder Bundle</text>
+  <text x="90" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;50KB gzipped</text>
+  <text x="250" y="653" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="600">Conditional Logic</text>
+  <text x="250" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">Client-side instant</text>
+  <text x="430" y="653" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="600">Submission Dedup</text>
+  <text x="430" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">UNIQUE idx + retry</text>
+  <text x="620" y="653" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="600">File Security</text>
+  <text x="620" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">ClamAV Lambda</text>
+  <text x="830" y="653" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="600">Page Load Mobile</text>
+  <text x="830" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;1s on 3G</text>
+</svg>

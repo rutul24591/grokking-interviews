@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6c63ff"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/>
+    </marker>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="bandA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0eeff"/>
+      <stop offset="100%" stop-color="#f8f7ff"/>
+    </linearGradient>
+    <linearGradient id="bandB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0faf4"/>
+      <stop offset="100%" stop-color="#f8fdfb"/>
+    </linearGradient>
+    <linearGradient id="bandC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef9f0"/>
+      <stop offset="100%" stop-color="#fffdf8"/>
+    </linearGradient>
+    <linearGradient id="bandD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#f8faff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="680" fill="#f3f0ff" rx="12"/>
+  <rect width="960" height="52" fill="url(#hdr)" rx="12"/>
+  <rect y="40" width="960" height="12" fill="url(#hdr)"/>
+  <text x="480" y="33" text-anchor="middle" fill="white" font-size="17" font-weight="700">Faceted Search for Large Datasets</text>
+
+  <!-- Actors -->
+  <rect x="20" y="66" width="90" height="34" rx="6" fill="#4f46e5"/>
+  <text x="65" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Browser</text>
+
+  <rect x="165" y="66" width="110" height="34" rx="6" fill="#7c3aed"/>
+  <text x="220" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Search API</text>
+
+  <rect x="335" y="66" width="110" height="34" rx="6" fill="#10b981"/>
+  <text x="390" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Elasticsearch</text>
+
+  <rect x="505" y="66" width="100" height="34" rx="6" fill="#ef4444"/>
+  <text x="555" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Redis Cache</text>
+
+  <rect x="665" y="66" width="130" height="34" rx="6" fill="#f59e0b"/>
+  <text x="730" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">React (useSearchParams)</text>
+
+  <rect x="855" y="66" width="80" height="34" rx="6" fill="#3b82f6"/>
+  <text x="895" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">URL State</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="100" x2="65" y2="650" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="220" y1="100" x2="220" y2="650" stroke="#ddd6fe" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="390" y1="100" x2="390" y2="650" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="555" y1="100" x2="555" y2="650" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="730" y1="100" x2="730" y2="650" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="895" y1="100" x2="895" y2="650" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- BAND A: URL State + Filter Application -->
+  <rect x="14" y="108" width="932" height="124" fill="url(#bandA)" rx="4"/>
+  <text x="22" y="125" fill="#4f46e5" font-size="10" font-weight="700">A · URL-DRIVEN FILTER STATE (Single Source of Truth)</text>
+
+  <text x="40" y="142" fill="#374151" font-size="10" font-weight="600">URL: ?q=shoes&amp;brand=nike&amp;brand=adidas&amp;price_min=50&amp;price_max=200&amp;color=blue&amp;sort=price_asc&amp;page=1</text>
+  <text x="40" y="158" fill="#374151" font-size="10">useSearchParams hook reads URL → derives filter state → no separate React state needed (eliminates sync bugs)</text>
+
+  <line x1="65" y1="174" x2="887" y2="174" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="476" y="168" text-anchor="middle" fill="#374151" font-size="10">checkbox toggle → pushState URL → re-render → new ES query fired</text>
+
+  <line x1="895" y1="188" x2="73" y2="188" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="484" y="182" text-anchor="middle" fill="#374151" font-size="10">browser Back → previous URL → correct state restored · range slider: debounce 300ms before pushState</text>
+
+  <text x="40" y="206" fill="#4f46e5" font-size="9">Multiple params: brand=nike&amp;brand=adidas (repeated) · range: price_min + price_max · sort: single param · page: resets to 1 on filter change</text>
+  <text x="40" y="219" fill="#94a3b8" font-size="9">Conflict prevention: selecting "Live" removes Duration filter (incompatible) · active filter: filled chip, inactive: outlined</text>
+
+  <!-- BAND B: Elasticsearch Query -->
+  <rect x="14" y="240" width="932" height="128" fill="url(#bandB)" rx="4"/>
+  <text x="22" y="257" fill="#10b981" font-size="10" font-weight="700">B · ELASTICSEARCH AGGREGATION QUERY (Single Request)</text>
+
+  <line x1="65" y1="267" x2="547" y2="267" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="306" y="261" text-anchor="middle" fill="#374151" font-size="10">check Redis SHA256(filter_state+tenantId) TTL 2min</text>
+
+  <line x1="555" y1="281" x2="73" y2="281" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="314" y="275" text-anchor="middle" fill="#374151" font-size="10">cache HIT: return immediately &lt;5ms</text>
+
+  <line x1="220" y1="295" x2="382" y2="295" stroke="#7c3aed" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="301" y="289" text-anchor="middle" fill="#374151" font-size="10">cache MISS: ES query {bool:{filter:[...]} + aggregations:{brand_counts:{terms:{field:'brand',size:50}}, price_histogram:{histogram:{field:'price',interval:50}}}}</text>
+
+  <line x1="390" y1="309" x2="228" y2="309" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="309" y="303" text-anchor="middle" fill="#374151" font-size="10">response: {hits:{total:847, items:[...]}, aggregations:{brand_counts:{buckets:[{key:'nike',doc_count:234}...]}}}</text>
+
+  <text x="40" y="328" fill="#10b981" font-size="9">Post-filter: aggregations run BEFORE filter applied → selected brand facet still shows all brands (user can switch) · single request = results + all facet counts</text>
+  <text x="40" y="341" fill="#374151" font-size="9">High-cardinality facets (100K sellers): top-20 + in-facet search · shard_size tuning for accuracy/performance trade-off</text>
+  <text x="40" y="354" fill="#94a3b8" font-size="9">Cache invalidation: Kafka index.updated event → consumer DEL affected keys · pre-warm top-100 filter combos every minute</text>
+
+  <!-- BAND C: Facet Panel Rendering -->
+  <rect x="14" y="376" width="932" height="128" fill="url(#bandC)" rx="4"/>
+  <text x="22" y="393" fill="#f59e0b" font-size="10" font-weight="700">C · FACET PANEL RENDERING TYPES</text>
+
+  <text x="40" y="410" fill="#374151" font-size="10" font-weight="600">Checkbox facets: sorted by count desc · selected items pinned top · collapsed to top 5 + "Show N more" · ZERO-count: greyed, non-clickable (not hidden)</text>
+  <text x="40" y="426" fill="#374151" font-size="10">Range slider: dual-thumb · histogram overlay from price_histogram buckets (bar chart behind slider track) · snap to bucket boundaries</text>
+  <text x="40" y="442" fill="#374151" font-size="10">Hierarchical tree: click Electronics → expand Phones/Laptops/Tablets with counts · selecting subcategory narrows filter</text>
+  <text x="40" y="458" fill="#374151" font-size="10">Date range: from/to date pickers → ?date_min=2026-01-01&amp;date_max=2026-12-31 · Toggle: In Stock / Free Shipping checkboxes</text>
+
+  <line x1="65" y1="474" x2="887" y2="474" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="476" y="468" text-anchor="middle" fill="#374151" font-size="10">facet selection: skeleton cards 300ms loading · result count updates "Showing 847 results" · page resets to 1</text>
+
+  <line x1="895" y1="488" x2="73" y2="488" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="484" y="482" text-anchor="middle" fill="#374151" font-size="10">applied filter chips: derive from URL params → "Brand: Nike ×" · "Clear all" → remove all filter params</text>
+
+  <!-- BAND D: Result List + Sort -->
+  <rect x="14" y="512" width="932" height="104" fill="url(#bandD)" rx="4"/>
+  <text x="22" y="529" fill="#3b82f6" font-size="10" font-weight="700">D · RESULT LIST, SORT &amp; PAGINATION</text>
+
+  <text x="40" y="547" fill="#374151" font-size="10" font-weight="600">Result grid: 24 items/page · skeleton cards (height-preserving) during load · sort dropdown: price_asc price_desc relevance newest</text>
+  <text x="40" y="563" fill="#374151" font-size="10">Sort change: updates ?sort= in URL · preserves all active filters · does NOT reset page (sort within current filter context)</text>
+  <text x="40" y="579" fill="#374151" font-size="10">Filter change: always resets ?page=1 (new result set starts at beginning) · sort preserved across filter changes</text>
+  <text x="40" y="595" fill="#374151" font-size="10">Zero-result prevention: options with count=0 greyed not hidden · auto-suggest: "Did you mean: {corrected query}?"</text>
+  <text x="40" y="611" fill="#94a3b8" font-size="9">Business facet ordering: count-based default → pinned premium brands at top → alphabetical fallback · configurable per facet dimension</text>
+
+  <!-- Metrics -->
+  <rect x="14" y="630" width="932" height="36" fill="#1a0d3d" rx="6"/>
+  <text x="80" y="653" text-anchor="middle" fill="#c4b5fd" font-size="10" font-weight="600">Filter Latency</text>
+  <text x="80" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;300ms</text>
+  <text x="240" y="653" text-anchor="middle" fill="#c4b5fd" font-size="10" font-weight="600">Cache Hit</text>
+  <text x="240" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;5ms Redis</text>
+  <text x="410" y="653" text-anchor="middle" fill="#c4b5fd" font-size="10" font-weight="600">ES Query (10M docs)</text>
+  <text x="410" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;200ms</text>
+  <text x="600" y="653" text-anchor="middle" fill="#c4b5fd" font-size="10" font-weight="600">Count Accuracy</text>
+  <text x="600" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">Exact (±5% &gt;10M)</text>
+  <text x="800" y="653" text-anchor="middle" fill="#c4b5fd" font-size="10" font-weight="600">Cache TTL</text>
+  <text x="800" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">2min per filter combo</text>
+</svg>

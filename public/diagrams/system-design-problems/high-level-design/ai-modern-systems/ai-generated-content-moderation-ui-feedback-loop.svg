@@ -1,0 +1,137 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="480" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Moderation Feedback Loop &amp; Appeal System</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- Sequence: Feedback loop -->
+  <!-- Lifelines -->
+  <text x="70" y="68" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Moderator</text>
+  <rect x="30" y="72" width="80" height="26" rx="5" fill="#6d5bd0"/>
+  <text x="70" y="89" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">UI</text>
+  <line x1="70" y1="98" x2="70" y2="310" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <text x="230" y="68" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Decision</text>
+  <rect x="186" y="72" width="88" height="26" rx="5" fill="#1a1822"/>
+  <text x="230" y="89" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Logger</text>
+  <line x1="230" y1="98" x2="230" y2="310" stroke="#1a1822" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <text x="390" y="68" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">Training</text>
+  <rect x="346" y="72" width="88" height="26" rx="5" fill="#2f9d74"/>
+  <text x="390" y="89" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Pipeline</text>
+  <line x1="390" y1="98" x2="390" y2="310" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <text x="540" y="68" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Classifier</text>
+  <rect x="498" y="72" width="84" height="26" rx="5" fill="#d97843"/>
+  <text x="540" y="89" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">v(n+1)</text>
+  <line x1="540" y1="98" x2="540" y2="310" stroke="#d97843" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- Sequence steps -->
+  <line x1="70" y1="120" x2="218" y2="120" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="144" y="114" text-anchor="middle" font-size="9" fill="#6d5bd0">remove / approve + reason</text>
+
+  <rect x="204" y="128" width="52" height="22" rx="4" fill="#1a1822" opacity="0.15"/>
+  <text x="230" y="143" text-anchor="middle" font-size="9" fill="#1a1822">log decision</text>
+
+  <line x1="230" y1="150" x2="378" y2="150" stroke="#1a1822" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="304" y="144" text-anchor="middle" font-size="9" fill="#1a1822">labeled sample &#123;content, label, reason&#125;</text>
+
+  <rect x="366" y="158" width="48" height="22" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="390" y="173" text-anchor="middle" font-size="9" fill="#2f9d74">accumulate</text>
+
+  <!-- Batch threshold -->
+  <rect x="366" y="190" width="100" height="22" rx="4" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="416" y="205" text-anchor="middle" font-size="9" fill="#2f9d74">batch &gt; 500 samples?</text>
+
+  <line x1="390" y1="212" x2="528" y2="212" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="459" y="206" text-anchor="middle" font-size="9" fill="#2f9d74">retrain + evaluate</text>
+
+  <rect x="516" y="220" width="48" height="22" rx="4" fill="#d97843" opacity="0.15"/>
+  <text x="540" y="235" text-anchor="middle" font-size="9" fill="#d97843">new version</text>
+
+  <!-- Shadow deploy -->
+  <line x1="540" y1="242" x2="82" y2="260" stroke="#d97843" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-o)"/>
+  <text x="310" y="254" text-anchor="middle" font-size="9" fill="#d97843">shadow deploy: compare new vs current</text>
+
+  <!-- If regression -->
+  <line x1="540" y1="272" x2="82" y2="272" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="310" y="266" text-anchor="middle" font-size="9" fill="#c0392b">regression detected → block, alert</text>
+
+  <!-- If ok promote -->
+  <line x1="540" y1="290" x2="82" y2="290" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="310" y="284" text-anchor="middle" font-size="9" fill="#2f9d74">no regression → promote to production</text>
+
+  <!-- Appeal system right panel -->
+  <rect x="620" y="54" width="260" height="260" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="750" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">User Appeal System</text>
+
+  <rect x="635" y="88" width="230" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="750" y="105" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User Submits Appeal</text>
+  <text x="750" y="119" text-anchor="middle" font-size="10" fill="#edeaf5">select reason + freetext</text>
+  <line x1="750" y1="124" x2="750" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="635" y="140" width="230" height="36" rx="7" fill="#1a1822"/>
+  <text x="750" y="157" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Auto Triage</text>
+  <text x="750" y="171" text-anchor="middle" font-size="10" fill="#d7d1e6">re-score with higher-accuracy model</text>
+  <line x1="750" y1="176" x2="750" y2="192" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="635" y="192" width="110" height="36" rx="7" fill="#2f9d74"/>
+  <text x="690" y="209" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Auto-resolve</text>
+  <text x="690" y="223" text-anchor="middle" font-size="10" fill="#e8f5f0">if score flips clear</text>
+
+  <rect x="753" y="192" width="112" height="36" rx="7" fill="#d97843"/>
+  <text x="809" y="209" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Senior Review</text>
+  <text x="809" y="223" text-anchor="middle" font-size="10" fill="#fff">if borderline/complex</text>
+
+  <line x1="750" y1="228" x2="750" y2="244" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="635" y="244" width="230" height="36" rx="7" fill="#6d5bd0" opacity="0.7"/>
+  <text x="750" y="261" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Decision + Notification</text>
+  <text x="750" y="275" text-anchor="middle" font-size="10" fill="#edeaf5">upheld / overturned + reason</text>
+
+  <!-- SLA + metrics bottom panels -->
+  <rect x="620" y="330" width="260" height="130" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="750" y="352" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">SLA &amp; Volume Metrics</text>
+
+  <text x="630" y="372" font-size="10" fill="#1a1822">Review SLA (P95)</text>
+  <text x="872" y="372" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">10 min</text>
+  <text x="630" y="388" font-size="10" fill="#1a1822">Appeal resolution SLA</text>
+  <text x="872" y="388" text-anchor="end" font-size="10" fill="#d97843" font-weight="bold">48 hours</text>
+  <text x="630" y="404" font-size="10" fill="#1a1822">Auto-block rate (no human)</text>
+  <text x="872" y="404" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">78%</text>
+  <text x="630" y="420" font-size="10" fill="#1a1822">Human review rate</text>
+  <text x="872" y="420" text-anchor="end" font-size="10" fill="#d97843" font-weight="bold">12%</text>
+  <text x="630" y="436" font-size="10" fill="#1a1822">False positive correction rate</text>
+  <text x="872" y="436" text-anchor="end" font-size="10" fill="#6d5bd0" font-weight="bold">9% appeals overturned</text>
+  <text x="630" y="452" font-size="10" fill="#1a1822">Training batches/week</text>
+  <text x="872" y="452" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">3–5 (500+ sample trigger)</text>
+
+  <!-- Model drift detection -->
+  <rect x="20" y="326" width="590" height="130" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="305" y="348" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Model Drift Detection &amp; Policy Override</text>
+
+  <text x="30" y="370" font-size="11" fill="#d97843" font-weight="bold">Drift signals</text>
+  <text x="30" y="388" font-size="10" fill="#1a1822">• False positive rate rising week-over-week (content shift)</text>
+  <text x="30" y="404" font-size="10" fill="#1a1822">• Overturn rate from appeals exceeds 15% (model miscalibrated)</text>
+  <text x="30" y="420" font-size="10" fill="#1a1822">• Category distribution shifts (new spam patterns emerging)</text>
+  <text x="30" y="436" font-size="10" fill="#1a1822">→ Trigger re-training with recent samples; alert policy team</text>
+
+  <text x="310" y="370" font-size="11" fill="#6d5bd0" font-weight="bold">Policy Override</text>
+  <text x="310" y="388" font-size="10" fill="#1a1822">• Configurable per-category thresholds (no deploy needed)</text>
+  <text x="310" y="404" font-size="10" fill="#1a1822">• Allowlist / blocklist keywords bypass classifier</text>
+  <text x="310" y="420" font-size="10" fill="#1a1822">• Emergency kill switch: force-review all content instantly</text>
+  <text x="310" y="436" font-size="10" fill="#1a1822">• Time-boxed stricter policies (events, crises)</text>
+</svg>

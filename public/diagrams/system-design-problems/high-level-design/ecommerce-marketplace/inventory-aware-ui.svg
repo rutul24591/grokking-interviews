@@ -1,0 +1,155 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="960" height="660" fill="#f4f2fb"/>
+  <text x="480" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Inventory-Aware UI — Real-Time Stock Updates, Variant Availability</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="14" y="50" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.14"/>
+  <text x="20" y="62" font-size="10" font-weight="bold" fill="#6d5bd0">ACTORS</text>
+
+  <rect x="20" y="72" width="96" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="68" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Browser</text>
+  <text x="68" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">React PDP</text>
+
+  <rect x="182" y="72" width="96" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="230" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">SSE Server</text>
+  <text x="230" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">/stock/stream</text>
+
+  <rect x="350" y="72" width="96" height="36" rx="7" fill="#2f9d74"/>
+  <text x="398" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Redis Pub/Sub</text>
+  <text x="398" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">stock:{skuId}</text>
+
+  <rect x="516" y="72" width="110" height="36" rx="7" fill="#2f9d74"/>
+  <text x="571" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Inventory Svc</text>
+  <text x="571" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">Lua DECRBY</text>
+
+  <rect x="698" y="72" width="110" height="36" rx="7" fill="#d97843"/>
+  <text x="753" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Kafka</text>
+  <text x="753" y="102" text-anchor="middle" font-size="10" fill="#fff5ee">StockRestored</text>
+
+  <rect x="870" y="72" width="76" height="36" rx="7" fill="#1a1822"/>
+  <text x="908" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Notif</text>
+  <text x="908" y="102" text-anchor="middle" font-size="10" fill="#d7d1e6">Worker</text>
+
+  <!-- Lifelines -->
+  <line x1="68" y1="108" x2="68" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="230" y1="108" x2="230" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="398" y1="108" x2="398" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="571" y1="108" x2="571" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="753" y1="108" x2="753" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.6"/>
+  <line x1="908" y1="108" x2="908" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.4"/>
+
+  <!-- PATH A: SSE subscription for PDP -->
+  <rect x="14" y="118" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.12"/>
+  <text x="480" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">PATH A — PDP SSE Subscription (&lt;30s update latency)</text>
+
+  <line x1="68" y1="148" x2="220" y2="148" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="144" y="142" text-anchor="middle" font-size="10" fill="#1a1822">EventSource: GET /api/stock/stream?skuId=sku123</text>
+
+  <rect x="188" y="154" width="84" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="230" y="168" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">SSE connected</text>
+
+  <line x1="230" y1="182" x2="388" y2="182" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="309" y="176" text-anchor="middle" font-size="10" fill="#1a1822">SUBSCRIBE stock:sku123</text>
+
+  <!-- Inventory event fires -->
+  <line x1="571" y1="196" x2="408" y2="196" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="490" y="190" text-anchor="middle" font-size="10" fill="#d97843">purchase → DECRBY → PUBLISH stock:sku123 {available:2}</text>
+
+  <line x1="388" y1="210" x2="240" y2="210" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="314" y="204" text-anchor="middle" font-size="10" fill="#2f9d74">Redis delivers to SSE server instance</text>
+
+  <line x1="220" y1="224" x2="78" y2="224" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="149" y="218" text-anchor="middle" font-size="10" fill="#2f9d74">SSE event: data:{available:2, lowStock:true}</text>
+
+  <rect x="28" y="232" width="160" height="20" rx="5" fill="#2f9d74"/>
+  <text x="108" y="246" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Badge: "Only 2 left" ✓</text>
+
+  <!-- PATH B: Listing page polling -->
+  <rect x="14" y="260" width="932" height="16" rx="4" fill="#2f9d74" opacity="0.13"/>
+  <text x="480" y="272" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">PATH B — Listing Page Polling (60s batch MGET, adaptive idle detection)</text>
+
+  <line x1="68" y1="290" x2="561" y2="290" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="315" y="284" text-anchor="middle" font-size="10" fill="#1a1822">GET /api/stock?skuIds=sku1,sku2,…sku60 (every 60s)</text>
+
+  <line x1="571" y1="302" x2="408" y2="302" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="490" y="296" text-anchor="middle" font-size="10" fill="#1a1822">MGET stock:sku1 stock:sku2 … (Redis pipeline)</text>
+
+  <line x1="398" y1="316" x2="581" y2="316" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="490" y="310" text-anchor="middle" font-size="10" fill="#2f9d74">[2, 0, 47, 5, …] — O(1) per key</text>
+
+  <line x1="561" y1="330" x2="78" y2="330" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="320" y="324" text-anchor="middle" font-size="10" fill="#2f9d74">badges patched (only changed SKUs re-render)</text>
+
+  <rect x="28" y="338" width="185" height="20" rx="5" fill="#d97843"/>
+  <text x="120" y="352" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Idle: Page Visibility API → 5min</text>
+
+  <!-- PATH C: Add-to-cart atomic guard -->
+  <rect x="14" y="366" width="932" height="16" rx="4" fill="#c0392b" opacity="0.09"/>
+  <text x="480" y="378" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">PATH C — Add-to-Cart Guard (atomic Lua, TOCTOU-safe)</text>
+
+  <line x1="68" y1="396" x2="561" y2="396" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="315" y="390" text-anchor="middle" font-size="10" fill="#1a1822">POST /api/cart/add {skuId, qty=1}</text>
+
+  <line x1="571" y1="408" x2="571" y2="416" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="531" y="416" width="80" height="20" rx="5" fill="#2f9d74"/>
+  <text x="571" y="430" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Lua: check+decr</text>
+
+  <line x1="561" y1="444" x2="78" y2="444" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="320" y="438" text-anchor="middle" font-size="10" fill="#2f9d74">200: reserved — optimistic UI confirmed</text>
+
+  <rect x="28" y="450" width="155" height="20" rx="5" fill="#c0392b" opacity="0.25"/>
+  <text x="105" y="464" text-anchor="middle" font-size="10" fill="#c0392b" font-weight="bold">If Lua returns -1: OOS error</text>
+
+  <!-- PATH D: Back-in-stock notification -->
+  <rect x="14" y="474" width="932" height="16" rx="4" fill="#d97843" opacity="0.12"/>
+  <text x="480" y="486" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">PATH D — Back-in-Stock Notification (within 5 min of restock)</text>
+
+  <line x1="571" y1="500" x2="743" y2="500" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="657" y="494" text-anchor="middle" font-size="10" fill="#d97843">Kafka: StockRestored {skuId, variantId, qty}</text>
+
+  <line x1="753" y1="512" x2="898" y2="512" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="826" y="506" text-anchor="middle" font-size="10" fill="#1a1822">batch notify subscribers</text>
+
+  <!-- Metrics Panel -->
+  <rect x="14" y="530" width="932" height="16" rx="4" fill="#1a1822" opacity="0.07"/>
+  <text x="480" y="542" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">STOCK DATA MODEL: available = quantity − reserved (TTL-backed checkout sessions)</text>
+
+  <rect x="20" y="554" width="220" height="68" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="130" y="570" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Inventory Table</text>
+  <text x="130" y="583" text-anchor="middle" font-size="9" fill="#1a1822">skuId  warehouseId  quantity</text>
+  <text x="130" y="596" text-anchor="middle" font-size="9" fill="#1a1822">reserved  available = qty − rsv</text>
+  <text x="130" y="610" text-anchor="middle" font-size="9" fill="#2f9d74">reserved TTL: 15 min (checkout session)</text>
+
+  <rect x="256" y="554" width="220" height="68" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="366" y="570" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Low Stock Thresholds</text>
+  <text x="366" y="583" text-anchor="middle" font-size="9" fill="#1a1822">electronics: show "Only N left" if N&lt;5</text>
+  <text x="366" y="596" text-anchor="middle" font-size="9" fill="#1a1822">apparel: N&lt;10  grocery: N&lt;20</text>
+  <text x="366" y="610" text-anchor="middle" font-size="9" fill="#2f9d74">configurable per category</text>
+
+  <rect x="492" y="554" width="220" height="68" rx="6" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="602" y="570" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Variant Selector UI</text>
+  <text x="602" y="583" text-anchor="middle" font-size="9" fill="#1a1822">available: full opacity + clickable</text>
+  <text x="602" y="596" text-anchor="middle" font-size="9" fill="#1a1822">OOS: greyed + strikethrough</text>
+  <text x="602" y="610" text-anchor="middle" font-size="9" fill="#d97843">"Notify me" tooltip on hover</text>
+
+  <rect x="728" y="554" width="218" height="68" rx="6" fill="#fff" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="837" y="570" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">Two-Tier Delivery</text>
+  <text x="837" y="583" text-anchor="middle" font-size="9" fill="#1a1822">Listing: 60s poll (batch MGET)</text>
+  <text x="837" y="596" text-anchor="middle" font-size="9" fill="#1a1822">PDP: SSE per-product (&lt;30s)</text>
+  <text x="837" y="610" text-anchor="middle" font-size="9" fill="#6d5bd0">balances cost vs freshness</text>
+</svg>

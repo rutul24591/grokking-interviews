@@ -1,0 +1,133 @@
+<svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">High-Latency Network Optimized UI (300–600ms RTT)</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="58" width="80" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="60" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Browser</text>
+  <text x="60" y="88" text-anchor="middle" font-size="9" fill="#edeaf5">400ms RTT</text>
+
+  <rect x="165" y="58" width="90" height="36" rx="7" fill="#0891b2"/>
+  <text x="210" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">BatchLink</text>
+  <text x="210" y="88" text-anchor="middle" font-size="9" fill="#cffafe">20ms window</text>
+
+  <rect x="325" y="58" width="90" height="36" rx="7" fill="#2563eb"/>
+  <text x="370" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">BFF Server</text>
+  <text x="370" y="88" text-anchor="middle" font-size="9" fill="#dbeafe">fan-out aggregator</text>
+
+  <rect x="490" y="58" width="100" height="36" rx="7" fill="#2f9d74"/>
+  <text x="540" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Microservices</text>
+  <text x="540" y="88" text-anchor="middle" font-size="9" fill="#d1fae5">user+feed+notif</text>
+
+  <rect x="660" y="58" width="100" height="36" rx="7" fill="#d97843"/>
+  <text x="710" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Delta API</text>
+  <text x="710" y="88" text-anchor="middle" font-size="9" fill="#fef3c7">ETag polling</text>
+
+  <rect x="820" y="58" width="60" height="36" rx="7" fill="#7c3aed"/>
+  <text x="850" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Prefetch</text>
+  <text x="850" y="88" text-anchor="middle" font-size="9" fill="#ede9fe">idle/hover</text>
+
+  <!-- Lifelines -->
+  <line x1="60" y1="94" x2="60" y2="510" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="210" y1="94" x2="210" y2="510" stroke="#a5f3fc" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="370" y1="94" x2="370" y2="510" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="540" y1="94" x2="540" y2="510" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="710" y1="94" x2="710" y2="510" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="850" y1="94" x2="850" y2="510" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- BAND A: BFF page load -->
+  <rect x="14" y="104" width="872" height="16" rx="3" fill="#2563eb" opacity="0.2"/>
+  <text x="450" y="116" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="bold">PATH A — PAGE LOAD BFF (1 client RTT replaces 5 serial RTTs)</text>
+
+  <line x1="60" y1="132" x2="360" y2="132" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="210" y="126" text-anchor="middle" font-size="9" fill="#374151">GET /api/page-data</text>
+
+  <line x1="370" y1="140" x2="530" y2="140" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="450" y="134" text-anchor="middle" font-size="9" fill="#374151">Promise.all([user, feed, notif, ads]) parallel fan-out</text>
+
+  <line x1="530" y1="155" x2="380" y2="155" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="455" y="149" text-anchor="middle" font-size="9" fill="#374151">merged JSON (ad-svc timeout 300ms → dropped)</text>
+
+  <line x1="360" y1="170" x2="70" y2="170" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="215" y="164" text-anchor="middle" font-size="9" fill="#374151">1 RTT (400ms) vs 5 serial RTTs (2000ms) — 1600ms saved</text>
+
+  <!-- BAND B: Request batching -->
+  <rect x="14" y="184" width="872" height="16" rx="3" fill="#0891b2" opacity="0.2"/>
+  <text x="450" y="196" text-anchor="middle" font-size="9" fill="#155e75" font-weight="bold">PATH B — REQUEST BATCHING (20ms window → single POST /api/batch)</text>
+
+  <line x1="60" y1="214" x2="200" y2="214" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="130" y="208" text-anchor="middle" font-size="9" fill="#374151">fetch A + fetch B + fetch C (within 20ms)</text>
+
+  <rect x="170" y="222" width="80" height="18" rx="4" fill="#0891b2"/>
+  <text x="210" y="235" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">batch collect</text>
+
+  <line x1="210" y1="250" x2="360" y2="250" stroke="#0891b2" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="285" y="244" text-anchor="middle" font-size="9" fill="#374151">POST [{A},{B},{C}] single request</text>
+
+  <line x1="360" y1="264" x2="70" y2="264" stroke="#0891b2" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="215" y="258" text-anchor="middle" font-size="9" fill="#374151">response [{resA},{resB},{resC}] — 3 calls, 1 RTT</text>
+
+  <!-- BAND C: Optimistic UI -->
+  <rect x="14" y="278" width="872" height="16" rx="3" fill="#2f9d74" opacity="0.2"/>
+  <text x="450" y="290" text-anchor="middle" font-size="9" fill="#065f46" font-weight="bold">PATH C — OPTIMISTIC MUTATION (0ms UI update, async server confirm)</text>
+
+  <line x1="60" y1="308" x2="200" y2="308" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="130" y="302" text-anchor="middle" font-size="9" fill="#374151">click Like</text>
+
+  <rect x="170" y="316" width="80" height="18" rx="4" fill="#2f9d74"/>
+  <text x="210" y="329" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">onMutate</text>
+
+  <line x1="200" y1="344" x2="70" y2="344" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="130" y="338" text-anchor="middle" font-size="9" fill="#374151">count +1 instantly (0ms) → no spinner</text>
+
+  <line x1="210" y1="354" x2="360" y2="354" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="285" y="348" text-anchor="middle" font-size="9" fill="#374151">POST /api/like async (400ms in background)</text>
+
+  <line x1="360" y1="370" x2="200" y2="370" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="280" y="380" text-anchor="middle" font-size="9" fill="#374151">failure → onError rollback · toast shown</text>
+
+  <!-- BAND D: Delta polling -->
+  <rect x="14" y="390" width="872" height="16" rx="3" fill="#d97843" opacity="0.2"/>
+  <text x="450" y="402" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">PATH D — DELTA POLLING (ETag → 304 on no change, sparse delta on change)</text>
+
+  <line x1="60" y1="420" x2="700" y2="420" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="380" y="414" text-anchor="middle" font-size="9" fill="#374151">GET /api/feed?since=seq-1234 If-None-Match: "abc"</text>
+
+  <rect x="670" y="428" width="80" height="18" rx="4" fill="#2f9d74"/>
+  <text x="710" y="441" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">304 or delta</text>
+
+  <line x1="700" y1="456" x2="70" y2="456" stroke="#d97843" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="380" y="450" text-anchor="middle" font-size="9" fill="#374151">304 = 0 bytes (no change) · delta = only new items · interval adapts to RTT</text>
+
+  <!-- Metrics footer -->
+  <rect x="14" y="472" width="872" height="46" rx="6" fill="#1a1822"/>
+  <text x="80" y="490" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">RTT Saved</text>
+  <text x="80" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">1600ms BFF</text>
+
+  <text x="240" y="490" text-anchor="middle" font-size="9" fill="#a5f3fc" font-weight="600">Batch Window</text>
+  <text x="240" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">20ms collect</text>
+
+  <text x="420" y="490" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Optimistic</text>
+  <text x="420" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">0ms UI update</text>
+
+  <text x="610" y="490" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Poll Savings</text>
+  <text x="610" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">304 = 0 bytes</text>
+
+  <text x="800" y="490" text-anchor="middle" font-size="9" fill="#ddd6fe" font-weight="600">Prefetch Trigger</text>
+  <text x="800" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">idle / hover</text>
+</svg>

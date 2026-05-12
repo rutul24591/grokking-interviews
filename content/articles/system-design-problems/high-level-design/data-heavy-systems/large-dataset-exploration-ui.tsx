@@ -1,0 +1,97 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-hld-large-dataset-exploration-ui",
+  title: "Design a Large Dataset Exploration UI (Millions of Rows)",
+  description:
+    "Architecture for a large dataset exploration UI handling millions of rows: server-side pagination with keyset cursors, virtual grid rendering, column statistics and profiling, inline filter builder with predicate pushdown, column pinning and reordering, row grouping and aggregation, cell-level sparklines, export with server-side streaming, and query plan visualization for slow query diagnosis.",
+  category: "high-level-design",
+  subcategory: "data-heavy-systems",
+  slug: "large-dataset-exploration-ui",
+  wordCount: 5000,
+  readingTime: 31,
+  lastUpdated: "2026-05-11",
+  tags: ["hld", "data-exploration", "virtual-grid", "pagination", "filter-builder", "predicate-pushdown", "keyset-cursor"],
+  relatedTopics: ["bi-dashboard", "time-series-visualization"],
+};
+
+export default function LargeDatasetExplorationUIArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Problem Clarification</h2>
+        <p>A large dataset exploration UI serves data scientists and analysts who need to inspect, filter, and understand structured tabular data at scale — millions of rows that cannot be loaded into a browser. The product persona is someone who would otherwise use SQL in a terminal or export to Excel: the UI needs to be fast enough that they prefer it to command-line tools. This sets a high bar: SQL in a terminal returns results in seconds; the UI must feel comparably responsive. The most important design principle is that the browser should never attempt to hold or render the full dataset — it should always be a window into the data, with the server doing all computation.</p>
+        <p>The grid rendering challenge: a browser table with 10,000 rows has 10,000 DOM elements. Adding columns (say 50 columns × 10,000 rows = 500,000 TD elements) makes scrolling sluggish on even modern hardware. The solution is a virtual grid: only the rows and columns visible in the viewport (plus a small buffer) are in the DOM. As the user scrolls horizontally or vertically, off-screen cells are removed from the DOM and on-screen cells are added. The DOM always contains only ~200 cells regardless of dataset size. This is the same principle as virtual scrolling for lists, extended to two dimensions.</p>
+        <p><strong>Explicit scope:</strong> Virtual grid, server-side pagination, filter builder, column profiling, export, and row grouping. Not in scope: the underlying query engine design, data warehouse management, or collaborative annotation features.</p>
+      </section>
+
+      <section>
+        <h2>Requirements</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Virtual grid:</strong> Table with virtual row and column rendering. Supports 10 million rows and up to 500 columns. Rows are 36px tall by default (configurable: compact 24px, comfortable 48px). Columns have configurable widths (drag-resize), minimum 60px. Column header click sorts by that column (asc/desc toggle, multi-column sort with shift-click). Column pin: drag a column to the left or right frozen zone to pin it while scrolling horizontally.</li>
+          <li><strong>Server-side pagination:</strong> Data is fetched in pages of 100 rows using keyset cursor pagination (not offset pagination, which is slow for deep pages). The cursor is a base64-encoded composite of the sort key values of the last row. Loading the next page appends rows to the virtual grid; loading the previous page prepends. Jumping to a specific row number (e.g., "Go to row 500,000") triggers a server query with an OFFSET for the initial jump, then switches to keyset for subsequent pages.</li>
+          <li><strong>Filter builder:</strong> Visual predicate builder with up to 20 AND/OR conditions. Each condition: field selector + operator + value input. String fields: equals, not equals, contains, starts with, is null, is not null. Numeric fields: =, !=, &gt;, &lt;, &gt;=, &lt;=, between, is null. Date fields: equals, before, after, between, relative (last N days). Filters are immediately applied (active filter state updates URL params; pressing Enter or clicking "Apply" triggers a new server query).</li>
+          <li><strong>Column profiling:</strong> Clicking a column header shows a stats panel: for numeric columns (min, max, mean, median, p95, std dev, null rate, histogram of distribution). For string columns (cardinality, top-10 most frequent values with counts, null rate). For date columns (earliest, latest, gap detection). Stats are computed as a separate aggregation query, cached per column per filter state.</li>
+          <li><strong>Export:</strong> Export current filtered/sorted data as CSV or Parquet. For large exports (&gt;100K rows), the server streams the file to object storage and sends a download link via email when complete. For small exports (&lt;10K rows), the file streams directly to the browser.</li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Initial load:</strong> First 100 rows render within 500ms of opening the dataset (first page pre-fetched server-side).</li>
+          <li><strong>Scroll performance:</strong> Smooth 60fps scrolling in the virtual grid. Row fetches when nearing the end of the loaded window happen in background with no scroll stutter.</li>
+          <li><strong>Filter application:</strong> Applying a filter returns the first page of filtered results within 2 seconds for datasets up to 100 million rows (requires an indexed column or a pre-computed materialized view for commonly filtered fields).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>High-Level Architecture</h2>
+        <p>The exploration UI communicates with a Data API (Node.js) that translates filter/sort/pagination parameters into SQL queries executed against the underlying database (PostgreSQL, BigQuery, Snowflake, or DuckDB for CSV/Parquet files). The Data API applies tenant isolation (every query appends a WHERE tenant_id = ? clause), validates filter predicates (prevents SQL injection by using parameterized queries, never string interpolation), and returns normalized JSON result pages. The virtual grid is implemented using AG Grid Community Edition (or TanStack Table with a custom virtualization layer) — a headless library that handles two-dimensional virtualization, column state, and sort/filter state. The filter builder is a custom React component that builds a predicate tree (AND/OR conditions) that is serialized to URL parameters (JSON-encoded filter state) and translated to SQL WHERE clauses server-side.</p>
+      </section>
+
+      <section>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/large-dataset-exploration-ui.svg"
+          alt="Large dataset exploration UI architecture showing virtual grid (AG Grid: render ~200 cells in viewport; total rows virtualized via row model; row height: 36px compact/comfortable toggle; scroll event → compute visible row range [firstRow, lastRow]; infinite row model: fetch pages when buffer &lt;20 rows from end; column virtualization: compute visible col range from scrollLeft + colWidths; cell render: CSS position absolute within viewport div), server-side pagination (keyset cursor: base64({sortKey1:value, sortKey2:id}); page request: GET /api/data/{tableId}?cursor={base64}&sort=revenue:desc,id:asc&limit=100&filters={encoded}; SQL: SELECT * FROM table WHERE (revenue,id) &lt; (lastRevenue,lastId) ORDER BY revenue DESC,id ASC LIMIT 100; jump to row N: OFFSET N then switch to keyset; total count: SELECT COUNT(*) cached 5min), filter builder (predicate tree: {op:AND, conditions:[{field:region,op:eq,value:West},{op:OR,conditions:[{field:revenue,op:gt,value:1000}]}]}; serialize to URL: ?filter=base64(JSON); server: parse → parameterized SQL WHERE; operator list: string(eq,ne,contains,startsWith,isNull) numeric(=,!=,>,<,between) date(before,after,between,lastNdays); auto-apply on field+operator+value complete), column profiling (click header → GET /api/data/{tableId}/profile?col=revenue&filters={active}; numeric: {min,max,mean,median,p95,stddev,nullRate,histogram:[{bucket,count}]}; string: {cardinality,topValues:[{v,count}],nullRate}; cache: Redis SHA256(tableId+col+filterHash) TTL=15min; render: sparkline histogram + key stats panel), export (small &lt;10K rows: GET /api/data/{tableId}/export?format=csv&filters=... → stream CSV response; large &gt;100K: POST /api/exports → async job → query → write S3 streaming parquet → send email presigned URL; progress: SSE /api/exports/{jobId}/status → percent complete), row grouping (GROUP BY field toggle → aggregate query: SELECT region, COUNT(*), SUM(revenue), AVG(revenue) FROM table WHERE {filters} GROUP BY region ORDER BY region; expand group → sub-query WHERE region=West ORDER BY sort LIMIT 100; sparkline per numeric col in group header row)."
+          caption="Two-dimensional virtual grid (AG Grid, ~200 DOM cells, infinite row model), keyset cursor pagination (base64-encoded sort key composite, no deep OFFSET), filter predicate builder (AND/OR tree → parameterized SQL WHERE, URL-serialized state), column profiling (server-side numeric/string stats, Redis 15min cache, histogram sparkline), large export async job (S3 streaming Parquet, SSE progress, presigned email link), and GROUP BY row grouping with aggregate sub-queries"
+        />
+      </section>
+
+      <section>
+        <h2>Detailed Design</h2>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Two-Dimensional Virtual Grid</h3>
+        <p>AG Grid's infinite row model is used for large datasets. The grid maintains a page cache of fetched row pages (each page: 100 rows). When the user scrolls, the grid tracks the visible row range (firstRow, lastRow) and computes which pages are needed to fill the viewport plus a buffer of 20 rows above and below. Missing pages trigger a fetch request. The grid renders row content lazily — a row that is off-screen has a placeholder div with the correct height (for accurate scrollbar size) but no actual cell content. Only visible rows have their cells rendered. This ensures the DOM always contains ~(viewportHeight / rowHeight) × (viewportWidth / avgColumnWidth) cells, typically around 200–500 cells.</p>
+        <p>Column virtualization is the more complex dimension. The grid tracks the cumulative width of each column (sum of widths to the left of column N) to determine which columns are within the visible horizontal scroll range (scrollLeft to scrollLeft + viewportWidth). Only cells in those columns are rendered, even for visible rows. Columns to the left of the viewport are represented by an invisible "left filler" spacer, and columns to the right by a "right filler" spacer. Pinned columns (frozen left or right) are excluded from horizontal virtualization — they always render regardless of horizontal scroll position, in a separate DOM container that doesn't scroll horizontally.</p>
+        <p>Row height variability: when "row detail" mode is enabled (clicking a row expands it to show all fields in a multi-line detail section), the row height increases dynamically. The virtualizer must account for variable row heights by maintaining a cumulative height map (an array where entry N = sum of heights of rows 0..N). When a row height changes, the cumulative map is updated from that row onward. For datasets with consistent row heights (the common case), a simple formula (scrollTop / rowHeight) gives the first visible row without the cumulative map, which is faster.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Keyset Cursor Pagination</h3>
+        <p>Offset-based pagination (LIMIT 100 OFFSET 50000) requires the database to scan and discard the first 50,000 rows before returning the requested page — this becomes progressively slower as the page number increases. Keyset pagination avoids this: instead of specifying a row number, the cursor specifies the sort key values of the last returned row. The next page query becomes: SELECT * FROM table WHERE (sort_key1, sort_key2) &gt; (last_sort_key1, last_sort_key2) ORDER BY sort_key1, sort_key2 LIMIT 100. With an index on the sort columns, this query can seek directly to the cursor position in O(log N) time regardless of how deep in the dataset the cursor is.</p>
+        <p>The cursor is encoded as a base64 JSON object containing the values of all sort key columns for the last row: &#123; revenue: 50234.50, id: "row-uuid-789" &#125;. The id column is always included as a tiebreaker to ensure uniqueness (two rows may have the same revenue value). The cursor is sent to the client and included in subsequent "next page" requests. Bidirectional pagination (previous page) reverses the sort direction and comparison operator: WHERE (revenue, id) &lt; (cursor.revenue, cursor.id) ORDER BY revenue ASC, id ASC LIMIT 100, then reverses the result in the application layer.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Filter Builder and Predicate Pushdown</h3>
+        <p>The filter builder produces a predicate tree: a recursive structure of AND and OR nodes containing leaf conditions (field, operator, value). This tree is serialized to a JSON object, base64-encoded, and included in the URL query parameters (?filter=eyJvcCI6...), making filtered views shareable and bookmarkable. The server deserializes the predicate tree and converts it to a parameterized SQL WHERE clause using a recursive tree walk. All values are bound as query parameters — never interpolated into the SQL string — preventing SQL injection.</p>
+        <p>Predicate pushdown to the database layer is the key performance optimization. Instead of fetching rows and filtering in the application layer, every filter condition is pushed to the database WHERE clause. For cloud data warehouses (BigQuery, Snowflake), pushdown also enables partition pruning — a filter on a partitioned column (e.g., date &gt;= '2024-01-01') tells the warehouse to scan only the relevant partition files, skipping the others entirely. The Data API includes a query plan endpoint (GET /api/data/{`{tableId}`}/queryplan?filters=...) that returns the database's EXPLAIN output, helping analysts understand why a filter query is slow (e.g., full table scan due to missing index) and suggesting index creation or partition key adjustment.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Row Grouping and Aggregation</h3>
+        <p>Row grouping collapses the dataset into summary rows by a chosen field. When the user selects "Group by: region", the main query changes to: SELECT region, COUNT(*) AS row_count, SUM(revenue) AS total_revenue, AVG(revenue) AS avg_revenue FROM table WHERE &#123;filters&#125; GROUP BY region ORDER BY region. Each group header row shows the group value and the aggregate stats. The group rows in the virtual grid are rendered with a distinct background and a collapse/expand chevron. Expanding a group fires a sub-query for the rows in that group: SELECT * FROM table WHERE region = 'West' AND &#123;other_filters&#125; ORDER BY &#123;sort&#125; LIMIT 100, and the rows are inserted below the group header in the virtual grid.</p>
+        <p>Cell-level sparklines: when row grouping is enabled, each numeric column's group header cell can show a miniature histogram or sparkline of the distribution of values within the group. These are implemented as tiny SVG bar charts (3–5 bars, 60px wide, 20px tall) rendered inline in the cell. The distribution data comes from the column profiling API (the same profile endpoint, but with a filter for the specific group value applied). Sparklines are loaded lazily — only when the group row is in the visible viewport. This gives analysts an immediate visual sense of data distribution without opening the full profile panel.</p>
+      </section>
+
+      <section>
+        <h2>Trade-offs and Considerations</h2>
+        <p>AG Grid versus custom virtual table implementation: AG Grid is a mature, battle-tested virtual grid with a rich feature set (cell editing, clipboard, range selection, Excel export, row grouping). It saves months of development time and has solved many edge cases (variable row heights, frozen columns, keyboard navigation, accessibility). The trade-offs: AG Grid Community Edition is MIT-licensed but the Enterprise Edition (required for advanced grouping and pivoting) is commercially licensed. The bundle size is substantial (~300KB gzipped). For a highly customized UI with unique requirements, a custom implementation using TanStack Virtual + TanStack Table provides a lighter, more flexible base — but requires implementing every grid feature from scratch.</p>
+        <p>Total row count display: showing "10,345,678 rows" requires a SELECT COUNT(*) query against the full (filtered) dataset. On large tables, COUNT(*) can be slow (minutes on a 1-billion-row table without index-only scans). Options: (1) compute COUNT(*) asynchronously and show a spinner until it arrives; (2) use a database-specific optimization (PostgreSQL's pg_class.reltuples for approximate count, Snowflake's approximate_count_distinct); (3) show "&gt; 1,000,000 rows" with an estimate and only compute the exact count when the user explicitly requests it. The experience tradeoff: exact counts are important for data quality assessment but not worth making every filter application wait for a slow COUNT. Showing "~2.3M rows (estimated)" with a "Get exact count" link is a reasonable middle ground.</p>
+      </section>
+
+      <section>
+        <h2>Summary</h2>
+        <p>A large dataset exploration UI for millions of rows is built on three non-negotiable foundations: (1) virtual grid (AG Grid infinite row model + column virtualization → ~200 DOM cells regardless of dataset size, smooth 60fps scrolling); (2) keyset cursor pagination (base64-encoded composite sort key → O(log N) page seek in the database, no deep OFFSET scans); and (3) server-side predicate execution (filter predicate tree → parameterized SQL WHERE clauses → partition pruning in cloud warehouses). Column profiling (numeric/string aggregation stats + distribution histogram, Redis 15-min cache per column×filter state) loads lazily when columns are clicked. Row grouping fires aggregate sub-queries per group; sparklines in group header cells give instant distribution previews. Large exports (&gt;100K rows) are async jobs (S3 streaming Parquet, SSE progress, presigned email link); small exports stream directly. The URL encodes all state (filters, sort, cursor) making views shareable. The defining constraint: never load full dataset rows into the browser — the browser is a presentation window, the database is the compute layer.</p>
+      </section>
+    </ArticleLayout>
+  );
+}

@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4285f4"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34a853"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ea4335"/>
+    </marker>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4285f4"/>
+      <stop offset="25%" stop-color="#ea4335"/>
+      <stop offset="50%" stop-color="#fbbc04"/>
+      <stop offset="75%" stop-color="#34a853"/>
+      <stop offset="100%" stop-color="#4285f4"/>
+    </linearGradient>
+    <linearGradient id="bandA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#f8faff"/>
+    </linearGradient>
+    <linearGradient id="bandB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0faf4"/>
+      <stop offset="100%" stop-color="#f8fdfb"/>
+    </linearGradient>
+    <linearGradient id="bandC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef9f0"/>
+      <stop offset="100%" stop-color="#fffdf8"/>
+    </linearGradient>
+    <linearGradient id="bandD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0eeff"/>
+      <stop offset="100%" stop-color="#f8f7ff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="680" fill="#f0f4ff" rx="12"/>
+  <rect width="960" height="52" fill="url(#hdr)" rx="12"/>
+  <rect y="40" width="960" height="12" fill="url(#hdr)"/>
+  <text x="480" y="33" text-anchor="middle" fill="white" font-size="17" font-weight="700" filter="url(#shadow)">Google-like Search Frontend</text>
+
+  <!-- Actor boxes -->
+  <rect x="20" y="66" width="90" height="34" rx="6" fill="#4285f4"/>
+  <text x="65" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Browser</text>
+
+  <rect x="165" y="66" width="110" height="34" rx="6" fill="#34a853"/>
+  <text x="220" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Next.js SSR</text>
+
+  <rect x="335" y="66" width="100" height="34" rx="6" fill="#ea4335"/>
+  <text x="385" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Search API</text>
+
+  <rect x="495" y="66" width="110" height="34" rx="6" fill="#fbbc04"/>
+  <text x="550" y="88" text-anchor="middle" fill="white" font-size="11" font-weight="700">Knowledge Graph</text>
+
+  <rect x="665" y="66" width="110" height="34" rx="6" fill="#9c27b0"/>
+  <text x="720" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Autocomplete</text>
+
+  <rect x="835" y="66" width="100" height="34" rx="6" fill="#0f766e"/>
+  <text x="885" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Click Tracker</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="100" x2="65" y2="650" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="220" y1="100" x2="220" y2="650" stroke="#86efac" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="385" y1="100" x2="385" y2="650" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="550" y1="100" x2="550" y2="650" stroke="#fde68a" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="720" y1="100" x2="720" y2="650" stroke="#d8b4fe" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="885" y1="100" x2="885" y2="650" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- BAND A: Autocomplete -->
+  <rect x="14" y="108" width="932" height="108" fill="url(#bandA)" rx="4"/>
+  <text x="22" y="125" fill="#4285f4" font-size="10" font-weight="700">A · SEARCH BOX &amp; AUTOCOMPLETE</text>
+
+  <line x1="65" y1="135" x2="712" y2="135" stroke="#4285f4" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="388" y="129" text-anchor="middle" fill="#374151" font-size="10">debounce 80ms → GET /api/autocomplete?q={partial} (edge CDN)</text>
+
+  <line x1="720" y1="149" x2="73" y2="149" stroke="#34a853" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="397" y="143" text-anchor="middle" fill="#374151" font-size="10">suggestions: localStorage recent(3) + trending(7) → &lt;100ms total</text>
+
+  <text x="40" y="167" fill="#374151" font-size="10" font-weight="600">Dropdown: ↑↓ arrows navigate, Enter submits, Escape dismisses · Selected suggestion fills searchbox (no submit)</text>
+  <text x="40" y="183" fill="#374151" font-size="10">Voice: Web Speech API → transcript → fills input · Submit: navigate /?q={query}&amp;page=1</text>
+  <text x="40" y="198" fill="#4285f4" font-size="9">Autocomplete API edge-deployed (Cloudflare Workers) → 5-10ms from cache</text>
+
+  <!-- BAND B: SSR SERP Streaming -->
+  <rect x="14" y="224" width="932" height="128" fill="url(#bandB)" rx="4"/>
+  <text x="22" y="241" fill="#34a853" font-size="10" font-weight="700">B · SERP SERVER-RENDERING WITH STREAMING</text>
+
+  <line x1="65" y1="251" x2="212" y2="251" stroke="#4285f4" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="138" y="245" text-anchor="middle" fill="#374151" font-size="10">GET /?q=query SSR request</text>
+
+  <line x1="220" y1="265" x2="377" y2="265" stroke="#4285f4" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="299" y="259" text-anchor="middle" fill="#374151" font-size="10">Search API (fast path)</text>
+
+  <line x1="385" y1="279" x2="228" y2="279" stroke="#34a853" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="307" y="273" text-anchor="middle" fill="#374151" font-size="10">organic results &lt;200ms</text>
+
+  <line x1="220" y1="293" x2="542" y2="293" stroke="#4285f4" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="381" y="287" text-anchor="middle" fill="#374151" font-size="10">Knowledge Graph (async, concurrent)</text>
+
+  <line x1="550" y1="307" x2="228" y2="307" stroke="#fbbc04" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="389" y="301" text-anchor="middle" fill="#374151" font-size="10">entity data 400-800ms → streams into 300px skeleton placeholder</text>
+
+  <line x1="220" y1="321" x2="73" y2="321" stroke="#34a853" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="147" y="315" text-anchor="middle" fill="#374151" font-size="10">HTML stream → browser renders above-fold first</text>
+
+  <text x="40" y="340" fill="#34a853" font-size="9">CLS &lt;0.1: Knowledge Panel reserves 300px right column via skeleton · Featured snippet 80px placeholder</text>
+
+  <!-- BAND C: Rich Result Types -->
+  <rect x="14" y="360" width="932" height="122" fill="url(#bandC)" rx="4"/>
+  <text x="22" y="377" fill="#ea4335" font-size="10" font-weight="700">C · RICH RESULT TYPES &amp; LAYOUT</text>
+
+  <text x="40" y="394" fill="#374151" font-size="10" font-weight="600">Organic: title (blue link) + breadcrumb URL (green) + snippet (query terms bolded) + sitelinks grid</text>
+  <text x="40" y="410" fill="#374151" font-size="10">Featured Snippet: answer box pinned at top · People Also Ask: accordion chevron → lazy-load answer → append more questions</text>
+  <text x="40" y="426" fill="#374151" font-size="10">Image grid: 4-col masonry IntersectionObserver lazy · News carousel: horizontal scroll cards</text>
+  <text x="40" y="442" fill="#374151" font-size="10">Knowledge Panel: entity photo + infobox table + social links + "People also search for" carousel</text>
+
+  <line x1="65" y1="460" x2="377" y2="460" stroke="#4285f4" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="221" y="454" text-anchor="middle" fill="#374151" font-size="10">Did you mean: {corrected} banner → "Search instead for: {original}" link</text>
+
+  <line x1="385" y1="474" x2="73" y2="474" stroke="#34a853" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="229" y="468" text-anchor="middle" fill="#374151" font-size="10">Auto-correct: "Showing results for X" transparent redirect</text>
+
+  <!-- BAND D: Pagination + Click Tracking -->
+  <rect x="14" y="490" width="932" height="126" fill="url(#bandD)" rx="4"/>
+  <text x="22" y="507" fill="#9c27b0" font-size="10" font-weight="700">D · PAGINATION &amp; CLICK TRACKING</text>
+
+  <line x1="65" y1="517" x2="212" y2="517" stroke="#4285f4" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="138" y="511" text-anchor="middle" fill="#374151" font-size="10">hover page 2 → prefetch</text>
+
+  <line x1="220" y1="531" x2="73" y2="531" stroke="#34a853" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="147" y="525" text-anchor="middle" fill="#374151" font-size="10">link rel=prefetch /?q=q&amp;page=2</text>
+
+  <line x1="65" y1="551" x2="877" y2="551" stroke="#4285f4" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="471" y="545" text-anchor="middle" fill="#374151" font-size="10">click result → /url?q={dest}&amp;pos={n}&amp;query={q} → log click {query, position, destination, session}</text>
+
+  <line x1="885" y1="565" x2="73" y2="565" stroke="#34a853" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="479" y="559" text-anchor="middle" fill="#374151" font-size="10">HTTP redirect to destination · dwell time: Beacon API on unload → relevance signal</text>
+
+  <text x="40" y="584" fill="#9c27b0" font-size="9">Image search: IntersectionObserver infinite scroll · replaceState URL sync on scroll depth · Browser Back: restore position from sessionStorage</text>
+  <text x="40" y="597" fill="#ea4335" font-size="9">Zero results: search tips + related searches + broader query suggestion + spell correction attempt</text>
+  <text x="40" y="610" fill="#94a3b8" font-size="9">Filter bar: All | Images | Videos | News | Shopping · Time filter: Any time / Past hour / 24h / Week / Year</text>
+
+  <!-- Metrics -->
+  <rect x="14" y="630" width="932" height="36" fill="#1a1a2e" rx="6"/>
+  <text x="85" y="653" text-anchor="middle" fill="#93c5fd" font-size="10" font-weight="600">Autocomplete</text>
+  <text x="85" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;100ms (80ms debounce)</text>
+  <text x="255" y="653" text-anchor="middle" fill="#86efac" font-size="10" font-weight="600">Above-fold SERP</text>
+  <text x="255" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;500ms (streaming)</text>
+  <text x="430" y="653" text-anchor="middle" fill="#fde68a" font-size="10" font-weight="600">Knowledge Panel</text>
+  <text x="430" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">400-800ms deferred</text>
+  <text x="620" y="653" text-anchor="middle" fill="#d8b4fe" font-size="10" font-weight="600">Layout Stability</text>
+  <text x="620" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">CLS &lt;0.1</text>
+  <text x="820" y="653" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="600">Full SERP</text>
+  <text x="820" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;1s</text>
+</svg>

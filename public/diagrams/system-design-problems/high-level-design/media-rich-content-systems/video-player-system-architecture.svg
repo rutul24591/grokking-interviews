@@ -1,0 +1,141 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Video Player System — Adaptive Streaming &amp; DRM Architecture</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Encoding pipeline top band -->
+  <rect x="20" y="54" width="860" height="22" rx="6" fill="#6d5bd0" opacity="0.12"/>
+  <text x="450" y="69" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">ENCODING &amp; PACKAGING PIPELINE (offline)</text>
+
+  <rect x="30" y="88" width="110" height="44" rx="7" fill="#6d5bd0"/>
+  <text x="85" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Raw Video</text>
+  <text x="85" y="122" text-anchor="middle" font-size="10" fill="#edeaf5">upload → S3 origin</text>
+  <line x1="140" y1="110" x2="172" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="172" y="88" width="120" height="44" rx="7" fill="#1a1822"/>
+  <text x="232" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Transcoder</text>
+  <text x="232" y="122" text-anchor="middle" font-size="10" fill="#d7d1e6">FFmpeg · 240p–4K renditions</text>
+  <line x1="292" y1="110" x2="324" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="324" y="88" width="110" height="44" rx="7" fill="#2f9d74"/>
+  <text x="379" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Segmenter</text>
+  <text x="379" y="122" text-anchor="middle" font-size="10" fill="#e8f5f0">2s chunks → HLS/DASH</text>
+  <line x1="434" y1="110" x2="466" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="466" y="88" width="120" height="44" rx="7" fill="#d97843"/>
+  <text x="526" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">DRM Encryptor</text>
+  <text x="526" y="122" text-anchor="middle" font-size="10" fill="#fff">AES-128 · Widevine · FairPlay</text>
+  <line x1="586" y1="110" x2="618" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="618" y="88" width="120" height="44" rx="7" fill="#6d5bd0" opacity="0.8"/>
+  <text x="678" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CDN Origin</text>
+  <text x="678" y="122" text-anchor="middle" font-size="10" fill="#edeaf5">manifests + encrypted segs</text>
+  <line x1="738" y1="110" x2="770" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="770" y="88" width="110" height="44" rx="7" fill="#6d5bd0"/>
+  <text x="825" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CDN Edge</text>
+  <text x="825" y="122" text-anchor="middle" font-size="10" fill="#edeaf5">PoP near viewer</text>
+
+  <!-- divider -->
+  <line x1="20" y1="148" x2="880" y2="148" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="450" y="164" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">PLAYBACK PIPELINE (real-time)</text>
+
+  <!-- Left: Player UI components -->
+  <rect x="20" y="174" width="260" height="330" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="150" y="196" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Player UI Layer</text>
+
+  <rect x="35" y="208" width="230" height="38" rx="7" fill="#6d5bd0"/>
+  <text x="150" y="223" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Video Surface</text>
+  <text x="150" y="237" text-anchor="middle" font-size="10" fill="#edeaf5">HTMLVideoElement / MSE</text>
+
+  <rect x="35" y="254" width="230" height="38" rx="7" fill="#2f9d74"/>
+  <text x="150" y="269" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Controls Bar</text>
+  <text x="150" y="283" text-anchor="middle" font-size="10" fill="#e8f5f0">play/pause, seek, volume, CC, HD</text>
+
+  <rect x="35" y="300" width="230" height="38" rx="7" fill="#1a1822"/>
+  <text x="150" y="315" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Seek Preview Thumbnails</text>
+  <text x="150" y="329" text-anchor="middle" font-size="10" fill="#d7d1e6">sprite sheet hover at timecode</text>
+
+  <rect x="35" y="346" width="230" height="38" rx="7" fill="#d97843"/>
+  <text x="150" y="361" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Quality Selector</text>
+  <text x="150" y="375" text-anchor="middle" font-size="10" fill="#fff">Auto / 1080p / 720p / 480p</text>
+
+  <rect x="35" y="392" width="230" height="38" rx="7" fill="#6d5bd0" opacity="0.6"/>
+  <text x="150" y="407" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Subtitle / CC Renderer</text>
+  <text x="150" y="421" text-anchor="middle" font-size="10" fill="#edeaf5">VTT tracks, styled overlays</text>
+
+  <rect x="35" y="438" width="230" height="54" rx="7" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="150" y="456" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">Keyboard Shortcuts</text>
+  <text x="40" y="472" font-size="9" fill="#1a1822">Space: play/pause · ←/→: seek 5s</text>
+  <text x="40" y="485" font-size="9" fill="#1a1822">F: fullscreen · M: mute · J/L: ±10s</text>
+
+  <!-- Center: ABR Engine -->
+  <rect x="300" y="174" width="280" height="330" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="440" y="196" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">ABR Engine &amp; Buffer Logic</text>
+
+  <rect x="315" y="208" width="250" height="50" rx="7" fill="#6d5bd0"/>
+  <text x="440" y="226" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Adaptive Bitrate (ABR) Logic</text>
+  <text x="440" y="242" text-anchor="middle" font-size="10" fill="#edeaf5">bandwidth est → pick best rendition</text>
+  <text x="440" y="255" text-anchor="middle" font-size="10" fill="#edeaf5">BOLA / throughput-based heuristic</text>
+
+  <rect x="315" y="266" width="250" height="50" rx="7" fill="#2f9d74"/>
+  <text x="440" y="284" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Buffer Manager</text>
+  <text x="440" y="300" text-anchor="middle" font-size="10" fill="#e8f5f0">forward buffer: 30s · back: 60s</text>
+  <text x="440" y="312" text-anchor="middle" font-size="10" fill="#e8f5f0">pre-fetch next 3 segments</text>
+
+  <rect x="315" y="324" width="250" height="50" rx="7" fill="#1a1822"/>
+  <text x="440" y="342" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Manifest Parser</text>
+  <text x="440" y="358" text-anchor="middle" font-size="10" fill="#d7d1e6">HLS .m3u8 / DASH .mpd</text>
+  <text x="440" y="370" text-anchor="middle" font-size="10" fill="#d7d1e6">parse renditions, segments, keys</text>
+
+  <rect x="315" y="382" width="250" height="50" rx="7" fill="#d97843"/>
+  <text x="440" y="400" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">DRM License Client</text>
+  <text x="440" y="416" text-anchor="middle" font-size="10" fill="#fff">EME API → Widevine CDM</text>
+  <text x="440" y="428" text-anchor="middle" font-size="10" fill="#fff">license server JWT auth</text>
+
+  <rect x="315" y="440" width="250" height="52" rx="7" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="440" y="458" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">Stall Recovery</text>
+  <text x="320" y="474" font-size="9" fill="#1a1822">rebuffer → drop rendition 1 step down</text>
+  <text x="320" y="487" font-size="9" fill="#1a1822">3 stalls in 60s → show quality warning</text>
+
+  <!-- Right: Metrics + CDN -->
+  <rect x="600" y="174" width="280" height="330" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="740" y="196" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">CDN &amp; Quality of Experience</text>
+
+  <text x="610" y="218" font-size="11" fill="#6d5bd0" font-weight="bold">Rendition Ladder</text>
+  <text x="610" y="236" font-size="10" fill="#1a1822">240p  · 250 kbps  · 416×240</text>
+  <text x="610" y="252" font-size="10" fill="#1a1822">480p  · 800 kbps  · 854×480</text>
+  <text x="610" y="268" font-size="10" fill="#1a1822">720p  · 2.5 Mbps  · 1280×720</text>
+  <text x="610" y="284" font-size="10" fill="#1a1822">1080p · 5 Mbps   · 1920×1080</text>
+  <text x="610" y="300" font-size="10" fill="#1a1822">4K    · 15 Mbps  · 3840×2160</text>
+
+  <line x1="610" y1="312" x2="868" y2="312" stroke="#d7d1e6"/>
+  <text x="610" y="330" font-size="11" fill="#d97843" font-weight="bold">QoE Metrics (reported)</text>
+  <text x="610" y="348" font-size="10" fill="#1a1822">Time to first frame (TTFF)</text>
+  <text x="868" y="348" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">&lt;1s target</text>
+  <text x="610" y="364" font-size="10" fill="#1a1822">Rebuffer ratio</text>
+  <text x="868" y="364" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">&lt;0.5%</text>
+  <text x="610" y="380" font-size="10" fill="#1a1822">Avg bitrate played</text>
+  <text x="868" y="380" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">tracked</text>
+  <text x="610" y="396" font-size="10" fill="#1a1822">Bitrate switches / session</text>
+  <text x="868" y="396" text-anchor="end" font-size="10" fill="#d97843" font-weight="bold">tracked</text>
+  <text x="610" y="412" font-size="10" fill="#1a1822">Errors / license failures</text>
+  <text x="868" y="412" text-anchor="end" font-size="10" fill="#d97843" font-weight="bold">tracked</text>
+
+  <line x1="610" y1="424" x2="868" y2="424" stroke="#d7d1e6"/>
+  <text x="610" y="442" font-size="11" fill="#2f9d74" font-weight="bold">CDN Strategy</text>
+  <text x="610" y="460" font-size="10" fill="#1a1822">Segment cache: edge TTL 365d</text>
+  <text x="610" y="476" font-size="10" fill="#1a1822">Manifest cache: edge TTL 5s</text>
+  <text x="610" y="492" font-size="10" fill="#1a1822">Multi-CDN fallback on error</text>
+</svg>

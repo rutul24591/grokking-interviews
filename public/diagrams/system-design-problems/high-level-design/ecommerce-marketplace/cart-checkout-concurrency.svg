@@ -1,0 +1,165 @@
+<svg viewBox="0 0 960 680" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="960" height="680" fill="#f3f1f8"/>
+  <text x="480" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Cart + Checkout at Scale — Concurrency &amp; Saga Pattern</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="14" y="50" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.14"/>
+  <text x="20" y="62" font-size="10" font-weight="bold" fill="#6d5bd0">ACTORS</text>
+
+  <rect x="20" y="72" width="90" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="65" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Browser</text>
+  <text x="65" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">React</text>
+
+  <rect x="170" y="72" width="96" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="218" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Cart Service</text>
+  <text x="218" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">Redis Hash</text>
+
+  <rect x="332" y="72" width="108" height="36" rx="7" fill="#2f9d74"/>
+  <text x="386" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Checkout</text>
+  <text x="386" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">Session Saga</text>
+
+  <rect x="506" y="72" width="108" height="36" rx="7" fill="#2f9d74"/>
+  <text x="560" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Inventory</text>
+  <text x="560" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">Redis Lua Script</text>
+
+  <rect x="676" y="72" width="108" height="36" rx="7" fill="#d97843"/>
+  <text x="730" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Payment GW</text>
+  <text x="730" y="102" text-anchor="middle" font-size="10" fill="#fff5ee">Stripe / Razorpay</text>
+
+  <rect x="848" y="72" width="96" height="36" rx="7" fill="#1a1822"/>
+  <text x="896" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Orders DB</text>
+  <text x="896" y="102" text-anchor="middle" font-size="10" fill="#d7d1e6">PostgreSQL</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="108" x2="65" y2="644" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="218" y1="108" x2="218" y2="644" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="386" y1="108" x2="386" y2="644" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="560" y1="108" x2="560" y2="644" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="730" y1="108" x2="730" y2="644" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.5"/>
+  <line x1="896" y1="108" x2="896" y2="644" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.5"/>
+
+  <!-- PATH A: Add to Cart (atomic) -->
+  <rect x="14" y="118" width="932" height="16" rx="4" fill="#2f9d74" opacity="0.13"/>
+  <text x="480" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">PATH A — Add to Cart (atomic Redis HINCRBY, P99 &lt;100ms)</text>
+
+  <line x1="65" y1="150" x2="208" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="136" y="144" text-anchor="middle" font-size="10" fill="#1a1822">HINCRBY cart:{userId} sku123 1</text>
+
+  <rect x="174" y="156" width="88" height="20" rx="5" fill="#2f9d74"/>
+  <text x="218" y="170" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Atomic ✓ qty=2</text>
+
+  <line x1="208" y1="184" x2="75" y2="184" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="141" y="178" text-anchor="middle" font-size="10" fill="#2f9d74">cart updated (optimistic UI already shown)</text>
+
+  <!-- PATH B: Checkout Saga Happy Path -->
+  <rect x="14" y="200" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.12"/>
+  <text x="480" y="212" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">PATH B — Checkout Saga (Happy Path): price snapshot → reserve → pay → order</text>
+
+  <line x1="65" y1="232" x2="376" y2="232" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="221" y="226" text-anchor="middle" font-size="10" fill="#1a1822">POST /checkout/initiate (cart contents)</text>
+
+  <rect x="344" y="238" width="84" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="386" y="252" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">INITIATED state</text>
+
+  <line x1="386" y1="266" x2="386" y2="274" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="344" y="274" width="84" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="386" y="288" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">PRICE SNAPSHOT</text>
+
+  <line x1="386" y1="302" x2="550" y2="302" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="468" y="296" text-anchor="middle" font-size="10" fill="#1a1822">Lua: DECRBY stock:{sku} qty (atomic)</text>
+
+  <rect x="518" y="308" width="84" height="20" rx="5" fill="#2f9d74"/>
+  <text x="560" y="322" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Reserved ✓</text>
+
+  <line x1="550" y1="338" x2="396" y2="338" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="473" y="332" text-anchor="middle" font-size="10" fill="#2f9d74">stock=3 (atomic decrement)</text>
+
+  <rect x="344" y="344" width="84" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="386" y="358" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">INV_RESERVED</text>
+
+  <line x1="386" y1="372" x2="720" y2="372" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="553" y="366" text-anchor="middle" font-size="10" fill="#d97843">charge(amount, idempotencyKey=sessionId+1)</text>
+
+  <line x1="720" y1="388" x2="396" y2="388" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="558" y="382" text-anchor="middle" font-size="10" fill="#d97843">payment_intent.succeeded webhook</text>
+
+  <line x1="386" y1="402" x2="886" y2="402" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="636" y="396" text-anchor="middle" font-size="10" fill="#2f9d74">INSERT orders (idempotent: session_id UNIQUE)</text>
+
+  <line x1="886" y1="416" x2="396" y2="416" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="641" y="410" text-anchor="middle" font-size="10" fill="#2f9d74">order_id created → COMPLETED</text>
+
+  <line x1="376" y1="430" x2="75" y2="430" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="225" y="424" text-anchor="middle" font-size="10" fill="#2f9d74">order confirmed → redirect /orders/{id}</text>
+
+  <!-- PATH C: Inventory race / oversell guard -->
+  <rect x="14" y="448" width="932" height="16" rx="4" fill="#c0392b" opacity="0.10"/>
+  <text x="480" y="460" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">PATH C — Oversell Guard: concurrent users race for last unit</text>
+
+  <line x1="386" y1="476" x2="550" y2="476" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="468" y="470" text-anchor="middle" font-size="10" fill="#1a1822">User B: Lua DECRBY stock:{sku} 1</text>
+
+  <rect x="518" y="482" width="84" height="20" rx="5" fill="#c0392b"/>
+  <text x="560" y="496" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Returns -1 ✗</text>
+
+  <line x1="550" y1="512" x2="396" y2="512" stroke="#c0392b" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="473" y="506" text-anchor="middle" font-size="10" fill="#c0392b">Lua returns -1 → abort reservation</text>
+
+  <line x1="376" y1="524" x2="75" y2="524" stroke="#c0392b" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="225" y="518" text-anchor="middle" font-size="10" fill="#c0392b">Error: "Item just sold out" → variant marked OOS</text>
+
+  <!-- Metrics -->
+  <rect x="14" y="544" width="932" height="16" rx="4" fill="#1a1822" opacity="0.07"/>
+  <text x="480" y="556" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">SAGA STATES &amp; COMPENSATING TRANSACTIONS</text>
+
+  <rect x="20" y="566" width="138" height="68" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="89" y="581" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">INITIATED</text>
+  <text x="89" y="595" text-anchor="middle" font-size="10" fill="#1a1822">session created</text>
+  <text x="89" y="608" text-anchor="middle" font-size="10" fill="#1a1822">TTL: 15 min</text>
+  <text x="89" y="621" text-anchor="middle" font-size="10" fill="#6d5bd0">comp: expire session</text>
+
+  <rect x="172" y="566" width="138" height="68" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="241" y="581" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">INV_RESERVED</text>
+  <text x="241" y="595" text-anchor="middle" font-size="10" fill="#1a1822">Lua DECRBY done</text>
+  <text x="241" y="608" text-anchor="middle" font-size="10" fill="#1a1822">TTL key: 15 min</text>
+  <text x="241" y="621" text-anchor="middle" font-size="10" fill="#c0392b">comp: INCRBY release</text>
+
+  <rect x="324" y="566" width="138" height="68" rx="6" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="393" y="581" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">PAY_PROCESSING</text>
+  <text x="393" y="595" text-anchor="middle" font-size="10" fill="#1a1822">gateway call sent</text>
+  <text x="393" y="608" text-anchor="middle" font-size="10" fill="#1a1822">idempotency key set</text>
+  <text x="393" y="621" text-anchor="middle" font-size="10" fill="#c0392b">comp: release + notify</text>
+
+  <rect x="476" y="566" width="138" height="68" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="545" y="581" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">COMPLETED</text>
+  <text x="545" y="595" text-anchor="middle" font-size="10" fill="#1a1822">order in DB</text>
+  <text x="545" y="608" text-anchor="middle" font-size="10" fill="#1a1822">Kafka: order-created</text>
+  <text x="545" y="621" text-anchor="middle" font-size="10" fill="#2f9d74">no comp needed</text>
+
+  <rect x="628" y="566" width="138" height="68" rx="6" fill="#fff" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="697" y="581" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">PAY_FAILED</text>
+  <text x="697" y="595" text-anchor="middle" font-size="10" fill="#1a1822">gateway declined</text>
+  <text x="697" y="608" text-anchor="middle" font-size="10" fill="#1a1822">INCRBY stock released</text>
+  <text x="697" y="621" text-anchor="middle" font-size="10" fill="#c0392b">cart restored to user</text>
+
+  <rect x="780" y="566" width="166" height="68" rx="6" fill="#fff" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="863" y="581" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">Flash Sale Queue</text>
+  <text x="863" y="595" text-anchor="middle" font-size="10" fill="#1a1822">ZADD flash:{sku} ts reqId</text>
+  <text x="863" y="608" text-anchor="middle" font-size="10" fill="#1a1822">ZPOPMIN (FIFO processing)</text>
+  <text x="863" y="621" text-anchor="middle" font-size="10" fill="#d97843">SSE: queue position N</text>
+</svg>

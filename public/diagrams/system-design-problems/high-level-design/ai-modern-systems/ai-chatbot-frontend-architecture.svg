@@ -1,0 +1,142 @@
+<svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">AI Chatbot Frontend — Streaming Architecture</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Left column: UI layers -->
+  <rect x="20" y="60" width="190" height="400" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="115" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Chat UI Layer</text>
+
+  <rect x="35" y="96" width="160" height="44" rx="7" fill="#6d5bd0"/>
+  <text x="115" y="113" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Message Input</text>
+  <text x="115" y="130" text-anchor="middle" font-size="10" fill="#edeaf5">Submit → optimistic bubble</text>
+
+  <rect x="35" y="152" width="160" height="44" rx="7" fill="#6d5bd0" opacity="0.85"/>
+  <text x="115" y="169" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Streaming Renderer</text>
+  <text x="115" y="186" text-anchor="middle" font-size="10" fill="#edeaf5">token-by-token via ReadableStream</text>
+
+  <rect x="35" y="208" width="160" height="44" rx="7" fill="#2f9d74"/>
+  <text x="115" y="225" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Markdown Parser</text>
+  <text x="115" y="242" text-anchor="middle" font-size="10" fill="#e8f5f0">incremental parse, code highlight</text>
+
+  <rect x="35" y="264" width="160" height="44" rx="7" fill="#2f9d74" opacity="0.8"/>
+  <text x="115" y="281" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Multimodal Input</text>
+  <text x="115" y="298" text-anchor="middle" font-size="10" fill="#e8f5f0">image paste, file attach, voice</text>
+
+  <rect x="35" y="320" width="160" height="44" rx="7" fill="#1a1822"/>
+  <text x="115" y="337" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">History Manager</text>
+  <text x="115" y="354" text-anchor="middle" font-size="10" fill="#d7d1e6">virtual list, IndexedDB persist</text>
+
+  <rect x="35" y="376" width="160" height="44" rx="7" fill="#d97843"/>
+  <text x="115" y="393" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Abort Controller</text>
+  <text x="115" y="410" text-anchor="middle" font-size="10" fill="#fff">stop generation, cancel stream</text>
+
+  <!-- Center: Data flow -->
+  <rect x="240" y="60" width="200" height="400" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="340" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Client State + Transport</text>
+
+  <rect x="255" y="96" width="170" height="44" rx="7" fill="#6d5bd0"/>
+  <text x="340" y="113" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Conversation Store</text>
+  <text x="340" y="130" text-anchor="middle" font-size="10" fill="#edeaf5">messages[], activeThread, status</text>
+
+  <rect x="255" y="152" width="170" height="44" rx="7" fill="#6d5bd0" opacity="0.75"/>
+  <text x="340" y="169" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">SSE / fetch stream</text>
+  <text x="340" y="186" text-anchor="middle" font-size="10" fill="#edeaf5">ReadableStream decoder, UTF-8</text>
+
+  <rect x="255" y="208" width="170" height="44" rx="7" fill="#2f9d74"/>
+  <text x="340" y="225" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Token Buffer</text>
+  <text x="340" y="242" text-anchor="middle" font-size="10" fill="#e8f5f0">accumulate → rAF flush batch</text>
+
+  <rect x="255" y="264" width="170" height="44" rx="7" fill="#1a1822"/>
+  <text x="340" y="281" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Context Window Tracker</text>
+  <text x="340" y="298" text-anchor="middle" font-size="10" fill="#d7d1e6">token count, truncation policy</text>
+
+  <rect x="255" y="320" width="170" height="44" rx="7" fill="#d97843"/>
+  <text x="340" y="337" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Tool Call Renderer</text>
+  <text x="340" y="354" text-anchor="middle" font-size="10" fill="#fff">function_call events, progress</text>
+
+  <rect x="255" y="376" width="170" height="44" rx="7" fill="#1a1822" opacity="0.7"/>
+  <text x="340" y="393" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Error / Retry State</text>
+  <text x="340" y="410" text-anchor="middle" font-size="10" fill="#d7d1e6">exponential backoff, fallback msg</text>
+
+  <!-- Right column: Backend -->
+  <rect x="470" y="60" width="200" height="260" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="570" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Backend / API Layer</text>
+
+  <rect x="485" y="96" width="170" height="44" rx="7" fill="#6d5bd0"/>
+  <text x="570" y="113" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Chat API Route</text>
+  <text x="570" y="130" text-anchor="middle" font-size="10" fill="#edeaf5">POST /chat → streams response</text>
+
+  <rect x="485" y="152" width="170" height="44" rx="7" fill="#2f9d74"/>
+  <text x="570" y="169" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Prompt Builder</text>
+  <text x="570" y="186" text-anchor="middle" font-size="10" fill="#e8f5f0">system prompt + history + RAG ctx</text>
+
+  <rect x="485" y="208" width="170" height="44" rx="7" fill="#1a1822"/>
+  <text x="570" y="225" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">LLM Provider</text>
+  <text x="570" y="242" text-anchor="middle" font-size="10" fill="#d7d1e6">Anthropic / OpenAI stream API</text>
+
+  <rect x="485" y="264" width="170" height="44" rx="7" fill="#d97843"/>
+  <text x="570" y="281" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Tool Execution</text>
+  <text x="570" y="298" text-anchor="middle" font-size="10" fill="#fff">web search, code run, DB query</text>
+
+  <!-- Metrics panel -->
+  <rect x="700" y="60" width="182" height="310" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="791" y="83" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Key Metrics</text>
+
+  <text x="712" y="108" font-size="11" fill="#1a1822" font-weight="bold">Time to First Token</text>
+  <text x="870" y="108" text-anchor="end" font-size="11" fill="#2f9d74" font-weight="bold">&lt; 800ms</text>
+
+  <text x="712" y="132" font-size="11" fill="#1a1822" font-weight="bold">Token throughput</text>
+  <text x="870" y="132" text-anchor="end" font-size="11" fill="#2f9d74" font-weight="bold">30-80 tok/s</text>
+
+  <text x="712" y="156" font-size="11" fill="#1a1822" font-weight="bold">Context window</text>
+  <text x="870" y="156" text-anchor="end" font-size="11" fill="#d97843" font-weight="bold">200K tokens</text>
+
+  <text x="712" y="180" font-size="11" fill="#1a1822" font-weight="bold">rAF flush interval</text>
+  <text x="870" y="180" text-anchor="end" font-size="11" fill="#2f9d74" font-weight="bold">16ms</text>
+
+  <line x1="710" y1="193" x2="872" y2="193" stroke="#d7d1e6"/>
+
+  <text x="712" y="213" font-size="11" fill="#6d5bd0" font-weight="bold">Streaming path</text>
+  <text x="712" y="232" font-size="10" fill="#1a1822">fetch() → ReadableStream</text>
+  <text x="712" y="250" font-size="10" fill="#1a1822">→ TextDecoder → token buf</text>
+  <text x="712" y="268" font-size="10" fill="#1a1822">→ rAF batch → React state</text>
+
+  <line x1="710" y1="282" x2="872" y2="282" stroke="#d7d1e6"/>
+  <text x="712" y="301" font-size="11" fill="#d97843" font-weight="bold">Stop generation</text>
+  <text x="712" y="320" font-size="10" fill="#1a1822">AbortController.abort()</text>
+  <text x="712" y="338" font-size="10" fill="#1a1822">closes stream mid-token</text>
+  <text x="712" y="356" font-size="10" fill="#1a1822">saves partial response</text>
+
+  <!-- Arrows UI → State -->
+  <line x1="210" y1="250" x2="250" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- Arrows State → Backend -->
+  <line x1="430" y1="200" x2="480" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- Arrows Backend → State (stream) -->
+  <line x1="480" y1="230" x2="430" y2="230" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)" stroke-dasharray="6,3"/>
+
+  <!-- Stream label -->
+  <text x="454" y="220" text-anchor="middle" font-size="9" fill="#2f9d74" font-weight="bold">SSE stream</text>
+
+  <!-- Bottom: Multimodal flow -->
+  <rect x="20" y="478" width="860" height="48" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="450" y="497" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Multimodal Pipeline</text>
+  <text x="135" y="516" text-anchor="middle" font-size="10" fill="#1a1822">Image paste → base64 / presigned S3 URL</text>
+  <line x1="260" y1="510" x2="300" y2="510" stroke="#d7d1e6"/>
+  <text x="380" y="516" text-anchor="middle" font-size="10" fill="#1a1822">Voice → WebSpeech API → text</text>
+  <line x1="480" y1="510" x2="520" y2="510" stroke="#d7d1e6"/>
+  <text x="620" y="516" text-anchor="middle" font-size="10" fill="#1a1822">File → extract text → context injection</text>
+  <line x1="720" y1="510" x2="760" y2="510" stroke="#d7d1e6"/>
+  <text x="820" y="516" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">vision model</text>
+</svg>

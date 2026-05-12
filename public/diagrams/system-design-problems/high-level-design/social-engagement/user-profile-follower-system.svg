@@ -1,0 +1,156 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="960" height="660" fill="#f4f2fb"/>
+  <text x="480" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">User Profile &amp; Follower System — Graph, Fan-out, Celebrity Accounts</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="14" y="50" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.14"/>
+  <text x="20" y="62" font-size="10" font-weight="bold" fill="#6d5bd0">ACTORS</text>
+
+  <rect x="20" y="72" width="96" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="68" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Browser</text>
+  <text x="68" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">Viewer</text>
+
+  <rect x="186" y="72" width="96" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="234" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Profile Svc</text>
+  <text x="234" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">SSR Edge Cache</text>
+
+  <rect x="354" y="72" width="96" height="36" rx="7" fill="#2f9d74"/>
+  <text x="402" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Follow Svc</text>
+  <text x="402" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">social_graph DB</text>
+
+  <rect x="520" y="72" width="96" height="36" rx="7" fill="#2f9d74"/>
+  <text x="568" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Redis</text>
+  <text x="568" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">counters + cache</text>
+
+  <rect x="686" y="72" width="96" height="36" rx="7" fill="#d97843"/>
+  <text x="734" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Fan-out Svc</text>
+  <text x="734" y="102" text-anchor="middle" font-size="10" fill="#fff5ee">Kafka consumer</text>
+
+  <rect x="854" y="72" width="92" height="36" rx="7" fill="#1a1822"/>
+  <text x="900" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Notif Svc</text>
+  <text x="900" y="102" text-anchor="middle" font-size="10" fill="#d7d1e6">follow alert</text>
+
+  <!-- Lifelines -->
+  <line x1="68" y1="108" x2="68" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="234" y1="108" x2="234" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="402" y1="108" x2="402" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="568" y1="108" x2="568" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.6"/>
+  <line x1="734" y1="108" x2="734" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.5"/>
+  <line x1="900" y1="108" x2="900" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.4"/>
+
+  <!-- PATH A: Profile page SSR edge -->
+  <rect x="14" y="118" width="932" height="16" rx="4" fill="#2f9d74" opacity="0.13"/>
+  <text x="480" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">PATH A — Profile Page (SSR edge-cached s-maxage=300, viewer relationship client-side)</text>
+
+  <line x1="68" y1="148" x2="224" y2="148" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="146" y="142" text-anchor="middle" font-size="10" fill="#1a1822">GET /profile/{username}</text>
+
+  <rect x="192" y="154" width="84" height="20" rx="5" fill="#2f9d74"/>
+  <text x="234" y="168" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">CDN HIT s-maxage=300</text>
+
+  <line x1="224" y1="182" x2="78" y2="182" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="151" y="176" text-anchor="middle" font-size="10" fill="#2f9d74">SSR: avatar bio postCount followerCount grid (public)</text>
+
+  <line x1="68" y1="196" x2="558" y2="196" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="313" y="190" text-anchor="middle" font-size="10" fill="#d97843">GET /api/me/relationship/{userId} (client-side after hydration)</text>
+
+  <line x1="558" y1="210" x2="78" y2="210" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="318" y="204" text-anchor="middle" font-size="10" fill="#d97843">NONE / FOLLOWING / PENDING → button state</text>
+
+  <!-- PATH B: Follow with optimistic UI -->
+  <rect x="14" y="228" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.12"/>
+  <text x="480" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">PATH B — Follow Action (optimistic UI, Redis INCR counters, Kafka fan-out)</text>
+
+  <rect x="28" y="252" width="150" height="20" rx="5" fill="#6d5bd0" opacity="0.25"/>
+  <text x="103" y="266" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Tap Follow → immediate "Following"</text>
+
+  <line x1="68" y1="282" x2="392" y2="282" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="230" y="276" text-anchor="middle" font-size="10" fill="#1a1822">POST /api/follow {targetUserId}</text>
+
+  <line x1="402" y1="296" x2="558" y2="296" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="480" y="290" text-anchor="middle" font-size="10" fill="#1a1822">INCR followers:{target} + INCR following:{me}</text>
+
+  <line x1="402" y1="310" x2="724" y2="310" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="563" y="304" text-anchor="middle" font-size="10" fill="#d97843">Kafka: follow.created → fan-out (push or pull by threshold)</text>
+
+  <line x1="734" y1="324" x2="890" y2="324" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="812" y="318" text-anchor="middle" font-size="10" fill="#1a1822">notify: "A followed you"</text>
+
+  <!-- PATH C: Celebrity fan-out split -->
+  <rect x="14" y="342" width="932" height="16" rx="4" fill="#c0392b" opacity="0.09"/>
+  <text x="480" y="354" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">PATH C — Celebrity vs Regular Fan-out (threshold: 10K followers)</text>
+
+  <rect x="28" y="368" width="270" height="48" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="163" y="383" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Regular Account (&lt;10K followers)</text>
+  <text x="163" y="397" text-anchor="middle" font-size="10" fill="#1a1822">Push fan-out: update feed cache for each follower</text>
+  <text x="163" y="410" text-anchor="middle" font-size="10" fill="#2f9d74">ZADD feed:{followerId} {score} {postId}</text>
+
+  <rect x="316" y="368" width="300" height="48" rx="6" fill="#fff" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="466" y="383" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">Celebrity Account (&gt;10K followers)</text>
+  <text x="466" y="397" text-anchor="middle" font-size="10" fill="#1a1822">Pull fan-out: NO write to follower caches</text>
+  <text x="466" y="410" text-anchor="middle" font-size="10" fill="#c0392b">Feed query merges celeb posts at read time</text>
+
+  <rect x="634" y="368" width="292" height="48" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="780" y="383" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Follower Count Display</text>
+  <text x="780" y="397" text-anchor="middle" font-size="10" fill="#1a1822">Regular: exact (PFCOUNT/INCR)</text>
+  <text x="780" y="410" text-anchor="middle" font-size="10" fill="#6d5bd0">Celebrity: "10.2M" (floor 100K rounds)</text>
+
+  <!-- PATH D: Private account + suggested users -->
+  <rect x="14" y="426" width="932" height="16" rx="4" fill="#d97843" opacity="0.13"/>
+  <text x="480" y="438" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">PATH D — Private Account Request + Suggested Users (2nd-degree graph)</text>
+
+  <line x1="68" y1="454" x2="392" y2="454" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="230" y="448" text-anchor="middle" font-size="10" fill="#1a1822">POST /api/follow {private user} → status=PENDING</text>
+
+  <rect x="28" y="462" width="130" height="20" rx="5" fill="#d97843"/>
+  <text x="93" y="476" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Button: "Requested"</text>
+
+  <line x1="902" y1="486" x2="78" y2="486" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="490" y="480" text-anchor="middle" font-size="10" fill="#2f9d74">notify target → PATCH accept/reject → status=ACTIVE or DELETE</text>
+
+  <line x1="68" y1="502" x2="558" y2="502" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="313" y="496" text-anchor="middle" font-size="10" fill="#d97843">GET suggested_users:{userId} (precomputed 4h batch, 2nd-degree graph)</text>
+
+  <!-- Metrics Panel -->
+  <rect x="14" y="528" width="932" height="16" rx="4" fill="#1a1822" opacity="0.07"/>
+  <text x="480" y="540" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">SOCIAL GRAPH QUERIES + BLOCK / MUTE</text>
+
+  <rect x="20" y="552" width="220" height="68" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="130" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Mutual Follow Check</text>
+  <text x="130" y="582" text-anchor="middle" font-size="9" fill="#1a1822">EXISTS WHERE follower_id=viewer</text>
+  <text x="130" y="595" text-anchor="middle" font-size="9" fill="#1a1822">AND followee_id=profileOwner</text>
+  <text x="130" y="608" text-anchor="middle" font-size="9" fill="#2f9d74">→ "Follows you" badge</text>
+
+  <rect x="256" y="552" width="220" height="68" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="366" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Suggested Users</text>
+  <text x="366" y="582" text-anchor="middle" font-size="9" fill="#1a1822">2nd-degree: followees of followees</text>
+  <text x="366" y="595" text-anchor="middle" font-size="9" fill="#1a1822">batch job 4h → Redis TTL 4h</text>
+  <text x="366" y="608" text-anchor="middle" font-size="9" fill="#d97843">invalidate on follow/unfollow event</text>
+
+  <rect x="492" y="552" width="220" height="68" rx="6" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="602" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Block</text>
+  <text x="602" y="582" text-anchor="middle" font-size="9" fill="#1a1822">INSERT blocks (blocker, target)</text>
+  <text x="602" y="595" text-anchor="middle" font-size="9" fill="#1a1822">profile / feed / search hidden</text>
+  <text x="602" y="608" text-anchor="middle" font-size="9" fill="#c0392b">soft-delete for T&amp;S audit</text>
+
+  <rect x="728" y="552" width="218" height="68" rx="6" fill="#fff" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="837" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">Mute</text>
+  <text x="837" y="582" text-anchor="middle" font-size="9" fill="#1a1822">INSERT mutes (muter, target)</text>
+  <text x="837" y="595" text-anchor="middle" font-size="9" fill="#1a1822">feed only — target unaware</text>
+  <text x="837" y="608" text-anchor="middle" font-size="9" fill="#6d5bd0">soft-deletable (unmute)</text>
+</svg>

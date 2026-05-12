@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ff0000"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#cc0000"/>
+      <stop offset="100%" stop-color="#ff4444"/>
+    </linearGradient>
+    <linearGradient id="bandA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff5f5"/>
+      <stop offset="100%" stop-color="#fff8f8"/>
+    </linearGradient>
+    <linearGradient id="bandB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0faf4"/>
+      <stop offset="100%" stop-color="#f8fdfb"/>
+    </linearGradient>
+    <linearGradient id="bandC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#f8faff"/>
+    </linearGradient>
+    <linearGradient id="bandD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef9f0"/>
+      <stop offset="100%" stop-color="#fffdf8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="680" fill="#fff8f8" rx="12"/>
+  <rect width="960" height="52" fill="url(#hdr)" rx="12"/>
+  <rect y="40" width="960" height="12" fill="url(#hdr)"/>
+  <text x="480" y="33" text-anchor="middle" fill="white" font-size="17" font-weight="700">YouTube Search + Recommendation UI</text>
+
+  <!-- Actors -->
+  <rect x="20" y="66" width="90" height="34" rx="6" fill="#cc0000"/>
+  <text x="65" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Browser</text>
+
+  <rect x="165" y="66" width="110" height="34" rx="6" fill="#ff6b35"/>
+  <text x="220" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Search Service</text>
+
+  <rect x="335" y="66" width="120" height="34" rx="6" fill="#10b981"/>
+  <text x="395" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Recommendation Svc</text>
+
+  <rect x="515" y="66" width="100" height="34" rx="6" fill="#3b82f6"/>
+  <text x="565" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">CDN (thumbnails)</text>
+
+  <rect x="675" y="66" width="110" height="34" rx="6" fill="#8b5cf6"/>
+  <text x="730" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Watch History</text>
+
+  <rect x="845" y="66" width="90" height="34" rx="6" fill="#f59e0b"/>
+  <text x="890" y="88" text-anchor="middle" fill="white" font-size="12" font-weight="600">Player / HLS</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="100" x2="65" y2="650" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="220" y1="100" x2="220" y2="650" stroke="#fdba74" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="395" y1="100" x2="395" y2="650" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="565" y1="100" x2="565" y2="650" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="730" y1="100" x2="730" y2="650" stroke="#ddd6fe" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="890" y1="100" x2="890" y2="650" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- BAND A: Search + Video Cards -->
+  <rect x="14" y="108" width="932" height="126" fill="url(#bandA)" rx="4"/>
+  <text x="22" y="125" fill="#cc0000" font-size="10" font-weight="700">A · SEARCH RESULTS &amp; VIDEO CARD COMPONENTS</text>
+
+  <line x1="65" y1="135" x2="212" y2="135" stroke="#cc0000" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="138" y="129" text-anchor="middle" fill="#374151" font-size="10">navigate /results?search_query={q}</text>
+
+  <line x1="220" y1="149" x2="387" y2="149" stroke="#ff6b35" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="303" y="143" text-anchor="middle" fill="#374151" font-size="10">BM25 + personalization ranking</text>
+
+  <line x1="395" y1="163" x2="228" y2="163" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="312" y="157" text-anchor="middle" fill="#374151" font-size="10">ranked video metadata array</text>
+
+  <line x1="220" y1="177" x2="557" y2="177" stroke="#ff6b35" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="388" y="171" text-anchor="middle" fill="#374151" font-size="10">GET thumbnails: srcset 320/480/640 WebP+JPEG</text>
+
+  <line x1="565" y1="191" x2="73" y2="191" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr-blue)"/>
+  <text x="319" y="185" text-anchor="middle" fill="#374151" font-size="10">thumbnails via CDN edge · loading=lazy below fold · IntersectionObserver</text>
+
+  <text x="40" y="210" fill="#cc0000" font-size="9">Video card: thumbnail(srcset) + duration badge(absolute pill) + title(2-line truncated) + channel avatar + view count + relative date + ⋮ menu</text>
+  <text x="40" y="223" fill="#374151" font-size="9">Hover preview: mouseenter 300ms delay → fetch storyboard sprite → requestAnimationFrame frame loop 3fps · mouseleave → restore thumbnail</text>
+
+  <!-- BAND B: Recommendation Sidebar -->
+  <rect x="14" y="242" width="932" height="120" fill="url(#bandB)" rx="4"/>
+  <text x="22" y="259" fill="#10b981" font-size="10" font-weight="700">B · WATCH PAGE RECOMMENDATION SIDEBAR</text>
+
+  <line x1="65" y1="269" x2="387" y2="269" stroke="#cc0000" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="226" y="263" text-anchor="middle" fill="#374151" font-size="10">GET /api/recommendations?videoId={id}&amp;context=sidebar</text>
+
+  <line x1="395" y1="283" x2="722" y2="283" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="558" y="277" text-anchor="middle" fill="#374151" font-size="10">collaborative filtering: users who watched X also watched...</text>
+
+  <line x1="730" y1="297" x2="403" y2="297" stroke="#8b5cf6" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="567" y="291" text-anchor="middle" fill="#374151" font-size="10">watch history signals → re-rank by predicted watch time</text>
+
+  <line x1="395" y1="311" x2="73" y2="311" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="234" y="305" text-anchor="middle" fill="#374151" font-size="10">20 compact cards · IntersectionObserver infinite scroll</text>
+
+  <text x="40" y="330" fill="#10b981" font-size="9">Navigation to new video: sidebar refreshes · new cards fade in (opacity transition) · Watched badge: progress bar from watchProgress Zustand map</text>
+  <text x="40" y="343" fill="#94a3b8" font-size="9">Filter chips: Upload date | Type | Duration | Features | Sort · sp= URL param encoding · zero-count chip: greyed non-clickable</text>
+
+  <!-- BAND C: Autoplay + Homepage Feed -->
+  <rect x="14" y="370" width="932" height="134" fill="url(#bandC)" rx="4"/>
+  <text x="22" y="387" fill="#3b82f6" font-size="10" font-weight="700">C · AUTOPLAY COUNTDOWN &amp; HOMEPAGE FEED</text>
+
+  <line x1="890" y1="397" x2="73" y2="397" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="481" y="391" text-anchor="middle" fill="#374151" font-size="10">video.onended → fetch next video metadata</text>
+
+  <line x1="65" y1="411" x2="882" y2="411" stroke="#cc0000" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="473" y="405" text-anchor="middle" fill="#374151" font-size="10">show overlay: nextVideo.thumbnail + title + 5s SVG progress ring (requestAnimationFrame stroke-dashoffset)</text>
+
+  <line x1="890" y1="425" x2="73" y2="425" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="481" y="419" text-anchor="middle" fill="#374151" font-size="10">preload: link rel=preload as=video href={nextVideoSrc} during countdown</text>
+
+  <line x1="65" y1="445" x2="382" y2="445" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="223" y="439" text-anchor="middle" fill="#374151" font-size="10">GET /api/feed?context=home&amp;category={chip}</text>
+
+  <line x1="395" y1="459" x2="73" y2="459" stroke="#10b981" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="234" y="453" text-anchor="middle" fill="#374151" font-size="10">personalized grid: 2-4 col responsive · category server-side re-rank</text>
+
+  <line x1="65" y1="479" x2="722" y2="479" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="393" y="473" text-anchor="middle" fill="#374151" font-size="10">watch event: POST /api/watch-events → recommendation model update async</text>
+
+  <line x1="730" y1="493" x2="73" y2="493" stroke="#8b5cf6" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <text x="401" y="487" text-anchor="middle" fill="#374151" font-size="10">watchProgress Zustand map updated → progress bar overlay on thumbnail</text>
+
+  <!-- BAND D: Autoplay toggle + Watch progress -->
+  <rect x="14" y="512" width="932" height="104" fill="url(#bandD)" rx="4"/>
+  <text x="22" y="529" fill="#f59e0b" font-size="10" font-weight="700">D · AUTOPLAY CONTROLS &amp; WATCH PROGRESS STATE</text>
+
+  <text x="40" y="547" fill="#374151" font-size="10" font-weight="600">Autoplay toggle: switch in player controls → localStorage autoplay=false + account settings sync (if logged in)</text>
+  <text x="40" y="563" fill="#374151" font-size="10">Countdown cancel: click X → sessionStorage cancelAutoplay=true · dismiss prevents autoplay for current session</text>
+  <text x="40" y="579" fill="#374151" font-size="10">Next video transition: crossfade (volume ramp down → new video starts) · URL updates via history.pushState (no page reload)</text>
+  <text x="40" y="595" fill="#374151" font-size="10">Watch progress: 5-95% → progress bar overlay · &gt;95% → "Watched" badge · feed chip filter: server-side (not client filter)</text>
+  <text x="40" y="611" fill="#94a3b8" font-size="9">Homepage pagination: IntersectionObserver infinite scroll · scroll-snap category chips · subscription section header grouping</text>
+
+  <!-- Metrics -->
+  <rect x="14" y="630" width="932" height="36" fill="#1a0000" rx="6"/>
+  <text x="85" y="653" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">Search Results</text>
+  <text x="85" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;800ms</text>
+  <text x="240" y="653" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">Thumbnail Load</text>
+  <text x="240" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;1s above-fold</text>
+  <text x="410" y="653" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">Hover Preview</text>
+  <text x="410" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;200ms sprite load</text>
+  <text x="600" y="653" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">Feed Freshness</text>
+  <text x="600" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">&lt;30s after watch event</text>
+  <text x="810" y="653" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">Autoplay Countdown</text>
+  <text x="810" y="664" text-anchor="middle" fill="white" font-size="11" font-weight="700">5s ring + preload</text>
+</svg>

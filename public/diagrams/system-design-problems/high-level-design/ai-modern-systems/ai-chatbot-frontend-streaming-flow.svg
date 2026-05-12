@@ -1,0 +1,103 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="480" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Token Streaming Flow — Sequence &amp; State Machine</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="30" y="60" width="100" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="80" y="78" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User</text>
+  <text x="80" y="94" text-anchor="middle" font-size="10" fill="#edeaf5">Browser</text>
+
+  <rect x="210" y="60" width="120" height="40" rx="8" fill="#6d5bd0" opacity="0.8"/>
+  <text x="270" y="78" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Chat Store</text>
+  <text x="270" y="94" text-anchor="middle" font-size="10" fill="#edeaf5">Zustand/Redux</text>
+
+  <rect x="420" y="60" width="120" height="40" rx="8" fill="#1a1822"/>
+  <text x="480" y="78" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">API Server</text>
+  <text x="480" y="94" text-anchor="middle" font-size="10" fill="#d7d1e6">Edge / Node.js</text>
+
+  <rect x="640" y="60" width="120" height="40" rx="8" fill="#2f9d74"/>
+  <text x="700" y="78" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">LLM Provider</text>
+  <text x="700" y="94" text-anchor="middle" font-size="10" fill="#e8f5f0">Anthropic / OpenAI</text>
+
+  <!-- Lifelines -->
+  <line x1="80" y1="100" x2="80" y2="430" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="270" y1="100" x2="270" y2="430" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="480" y1="100" x2="480" y2="430" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="700" y1="100" x2="700" y2="430" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+
+  <!-- Step 1 -->
+  <line x1="80" y1="128" x2="260" y2="128" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="170" y="122" text-anchor="middle" font-size="10" fill="#1a1822">1. send(message)</text>
+
+  <!-- Optimistic bubble -->
+  <rect x="30" y="136" width="140" height="20" rx="5" fill="#6d5bd0" opacity="0.2"/>
+  <text x="100" y="150" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">optimistic user bubble shown</text>
+
+  <!-- Step 2 -->
+  <line x1="270" y1="166" x2="470" y2="166" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="374" y="160" text-anchor="middle" font-size="10" fill="#1a1822">2. POST /chat (history + message)</text>
+
+  <!-- Step 3 -->
+  <line x1="480" y1="186" x2="690" y2="186" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="590" y="180" text-anchor="middle" font-size="10" fill="#1a1822">3. createStream(prompt, history)</text>
+
+  <!-- TTFT label -->
+  <rect x="430" y="194" width="145" height="20" rx="5" fill="#d97843" opacity="0.15"/>
+  <text x="503" y="208" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">TTFT: ~300-800ms</text>
+
+  <!-- Step 4: first token -->
+  <line x1="690" y1="222" x2="490" y2="222" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="590" y="216" text-anchor="middle" font-size="10" fill="#2f9d74">4. stream: first token chunk</text>
+
+  <!-- Step 5: relay -->
+  <line x1="470" y1="240" x2="280" y2="240" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)" stroke-dasharray="6,3"/>
+  <text x="374" y="234" text-anchor="middle" font-size="10" fill="#2f9d74">5. relay SSE chunk to browser</text>
+
+  <!-- Step 6: token render -->
+  <rect x="225" y="250" width="120" height="20" rx="5" fill="#2f9d74"/>
+  <text x="285" y="264" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">6. append token to buffer</text>
+
+  <!-- rAF flush -->
+  <rect x="30" y="278" width="165" height="20" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="112" y="292" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">rAF: flush buffer → React state</text>
+  <line x1="270" y1="282" x2="90" y2="282" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Repeat -->
+  <rect x="20" y="298" width="860" height="18" rx="4" fill="#2f9d74" opacity="0.1"/>
+  <text x="450" y="311" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">↻  Steps 4–6 repeat for every chunk at 30–80 tokens/sec</text>
+
+  <!-- Done signal -->
+  <line x1="690" y1="328" x2="490" y2="328" stroke="#1a1822" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="590" y="322" text-anchor="middle" font-size="10" fill="#1a1822">7. stream done signal [DONE]</text>
+
+  <line x1="470" y1="348" x2="280" y2="348" stroke="#1a1822" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="374" y="342" text-anchor="middle" font-size="10" fill="#1a1822">8. status → complete</text>
+
+  <rect x="225" y="356" width="120" height="20" rx="5" fill="#1a1822"/>
+  <text x="285" y="370" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">9. persist to IndexedDB</text>
+
+  <!-- State machine -->
+  <rect x="540" y="300" width="340" height="118" rx="10" fill="#fff" stroke="#d7d1e6"/>
+  <text x="710" y="322" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Chat State Machine</text>
+  <text x="550" y="344" font-size="10" fill="#1a1822">idle  →  sending  →  streaming  →  complete</text>
+  <text x="550" y="362" font-size="10" fill="#d97843">any state  →  error  (retry / fallback)</text>
+  <text x="550" y="380" font-size="10" fill="#d97843">streaming  →  aborted  (stop button)</text>
+  <line x1="550" y1="390" x2="870" y2="390" stroke="#d7d1e6"/>
+  <text x="550" y="406" font-size="10" fill="#2f9d74" font-weight="bold">Abort: controller.abort() → saves partial</text>
+
+  <!-- Abort arrow -->
+  <line x1="80" y1="398" x2="260" y2="340" stroke="#d97843" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-o)"/>
+  <text x="110" y="378" font-size="9" fill="#d97843">stop btn</text>
+</svg>

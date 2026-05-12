@@ -1,0 +1,97 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-hld-log-monitoring-ui",
+  title: "Design a Log Monitoring UI (Datadog/Kibana-like)",
+  description:
+    "Architecture for a log monitoring UI like Datadog or Kibana: real-time log tail via WebSocket, full-text search with Lucene query syntax, field extraction and structured log parsing, log level distribution histogram over time, saved searches and alert thresholds, context expansion (show N lines before/after a log entry), faceted sidebar (level, service, host, trace ID), log correlation with traces and metrics, and virtual scroll for millions of log entries.",
+  category: "high-level-design",
+  subcategory: "data-heavy-systems",
+  slug: "log-monitoring-ui",
+  wordCount: 5000,
+  readingTime: 31,
+  lastUpdated: "2026-05-11",
+  tags: ["hld", "logging", "monitoring", "datadog", "kibana", "elasticsearch", "virtual-scroll", "log-tail"],
+  relatedTopics: ["realtime-analytics-10k-datapoints", "alerting-anomaly-detection-dashboard"],
+};
+
+export default function LogMonitoringUIArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Problem Clarification</h2>
+        <p>A log monitoring UI like Datadog or Kibana serves one primary use case: rapid incident investigation. When a service is down, an engineer opens the log UI, searches for errors from that service in the last 15 minutes, and uses context expansion and trace correlation to understand the root cause. The design must optimize for this workflow: time-to-first-log after opening the UI should be under 2 seconds; searching for errors from a specific service should return results in under 1 second; expanding log context (show the 50 lines before and after an error) should be instantaneous. Every design decision should be evaluated against whether it makes incident investigation faster or slower.</p>
+        <p>The scale challenge is unique to log data: a production system generating 1 million log lines per minute produces 1.4 billion lines per day. These logs are stored in Elasticsearch or OpenSearch — a distributed inverted index that can full-text search across all fields in milliseconds. But returning even 10,000 raw log lines to the browser would require downloading megabytes of text, making the initial render slow. The solution is to show only the most recent N lines (virtual scroll loads more as the user scrolls up) while computing an overview histogram (log counts per 1-minute bucket over the last hour) to give the engineer a situational picture of the error rate before they dig into individual lines.</p>
+        <p><strong>Explicit scope:</strong> Log search, real-time tail, histogram, faceted sidebar, context expansion, and trace correlation. Not in scope: log ingestion pipeline design, Elasticsearch cluster management, or the alerting backend (covered in alerting dashboard article).</p>
+      </section>
+
+      <section>
+        <h2>Requirements</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Search:</strong> Full-text search with Lucene query syntax (service:auth AND level:error AND "connection refused"). Relative time ranges (Last 15 minutes, 1 hour, 4 hours, 1 day, custom range). Query suggestions: field name autocomplete (as the user types "serv..." suggest "service:"), value autocomplete (after "service:" suggest known service names from the index). Search history saved in localStorage (last 20 queries).</li>
+          <li><strong>Log list:</strong> Virtual scrolled list of log entries. Each row: timestamp, log level badge (ERROR = red, WARN = yellow, INFO = blue, DEBUG = gray), service name, message text (truncated to 2 lines, expand on click). Clicking a row opens a detail panel: all parsed fields (as key-value pairs), raw JSON if structured, context expansion (+50 lines before/after), and a "View in Trace" button if a trace_id field is present.</li>
+          <li><strong>Histogram:</strong> Bar chart at the top of the log list showing log count per time bucket (1-minute buckets for last-hour queries, 5-minute buckets for last-day). Bars are color-stacked by log level (ERROR red, WARN yellow, INFO blue). Clicking and dragging a selection on the histogram zooms the time range to the selected window. A "New errors" badge appears when live tail receives error-level logs.</li>
+          <li><strong>Faceted sidebar:</strong> Aggregated facet counts for key fields: Level (ERROR: 142, WARN: 38, INFO: 4201), Service, Host, Container, Trace ID presence. Clicking a facet value adds it as a filter to the search query. Facet counts update when the search query changes.</li>
+          <li><strong>Live tail:</strong> Toggle to stream new logs in real time via WebSocket. New logs appear at the top of the list (prepended). A "New logs" sticky banner shows the count of new logs received while the user is scrolled away from the top, clicking the banner scrolls to top and shows new logs.</li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Search latency:</strong> Results appear within 1 second for queries over the last 1 hour (Elasticsearch with warm indices). Last 15 minutes should return within 300ms (hot cache).</li>
+          <li><strong>Virtual scroll performance:</strong> Smooth scrolling at 60fps through millions of log entries using a windowed renderer that renders only ~50 DOM nodes regardless of total result count.</li>
+          <li><strong>Live tail throughput:</strong> Handle up to 1,000 new log lines per second (high-traffic service) without freezing the UI — achieved by batching DOM updates to every 100ms (not on every individual message).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>High-Level Architecture</h2>
+        <p>Log data flows from the application servers through a log shipper (Fluentd, Logstash, or the Datadog Agent) to a Log Ingestion Service that indexes logs into Elasticsearch (one index per day, rotated at midnight, with a 30-day retention policy). The Log API (Node.js) sits between the frontend and Elasticsearch — it translates the UI's search parameters into Elasticsearch DSL queries, enforces tenant isolation (every query includes a tenant_id filter), and handles result pagination using Elasticsearch's search_after cursor (not from/size pagination, which is inefficient for deep pages). The Live Tail Service is a WebSocket server that subscribes to new log events from a Kafka topic (the Log Ingestion Service publishes to Kafka before indexing). This means live tail is nearly real-time (0–2 second lag) independent of Elasticsearch indexing lag (which can be 5–30 seconds for near-real-time refresh).</p>
+      </section>
+
+      <section>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/log-monitoring-ui.svg"
+          alt="Log monitoring UI architecture showing search system (search bar: Lucene syntax 'service:auth AND level:error'; field autocomplete: GET /api/fields?prefix=serv → service,severity; value autocomplete: GET /api/fieldvalues?field=service → auth payments gateway; time range: relative 15min/1h/4h/24h or custom; search history: localStorage last-20; POST /api/logs/search {query, timeRange, cursor, size:50}), elasticsearch query (Log API: translate to DSL → bool filter must:{term:{level:error}} should:{match:{message:'connection refused'}}; inject tenant_id:{org_id}; search_after cursor for deep pagination; parallel: histogram agg + log hits; Elasticsearch: index per day, NRT refresh 5s, warm cache last 1h), log list rendering (virtual scroll: TanStack Virtualizer; render 50 DOM nodes regardless of total; row: timestamp badge{level} service message-2-line-truncated; detail panel expand: all parsed fields KV; raw JSON toggle; context: GET /api/logs/{id}/context?before=50&after=50 → 101 lines; View Trace: open Jaeger/Datadog APM with trace_id), histogram (stacked bar: ERROR red WARN yellow INFO blue per 1min/5min bucket; Elasticsearch agg: date_histogram + terms on level; drag selection → zoom timeRange → re-search; New errors badge when live tail receives ERROR), faceted sidebar (agg: terms on level/service/host/container; counts update on query change; click facet → append to query: AND service:auth; max 20 values per facet; show/hide zero-count facets), live tail (toggle → WebSocket ws://log-tail-svc · subscribe {query, tenantId}; Live Tail Service: Kafka consumer search.logs → filter by query → push to client; batch: accumulate 100ms → prepend rows; rate limit: max 100 rows/batch; New logs banner: sticky count badge scroll-to-top; tab backgrounded → pause tail)."
+          caption="Elasticsearch log search (DSL translation, tenant isolation, search_after cursor, parallel histogram agg), Log API query execution (&lt;1s hot cache / &lt;300ms last 15min), TanStack Virtualizer virtual scroll (50 DOM nodes for millions of entries), stacked histogram with drag-to-zoom, faceted sidebar (terms aggregation, click-to-filter), Kafka live tail WebSocket (100ms batch prepend, rate-limited 100 rows/batch), and context expansion (+50 before/after log lines)"
+        />
+      </section>
+
+      <section>
+        <h2>Detailed Design</h2>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Elasticsearch Query Design</h3>
+        <p>Every search request from the Log API sends a compound Elasticsearch DSL query. The structure: a bool query with a filter clause for structured fields (level, service, host — these use term filters which bypass text analysis and are faster) and a must clause for full-text search (the user's free-text search terms, analyzed with the standard tokenizer and matched with a multi-match query across message and all string fields). The filter and must clauses are combined: filter results are cached by Elasticsearch (term filters on keyword fields hit the filter cache), while must clauses are scored and cannot be cached. Forcing structured field searches into the filter clause is the primary Elasticsearch query optimization for log search.</p>
+        <p>To avoid deep pagination performance problems (Elasticsearch's from/size becomes expensive beyond 10,000 results), the Log API uses search_after for cursor-based pagination. The cursor is the sort values of the last result from the previous page (sort: [timestamp, _id]) — Elasticsearch uses this as a starting point for the next page without scanning all preceding results. The cursor is base64-encoded and returned to the client as part of the response, and passed back in subsequent "load more" requests. This keeps pagination O(1) regardless of result count.</p>
+        <p>Parallel query for histogram: the search request to Elasticsearch always includes two requests in one multi-search (msearch) call: (1) the top-N log hits for the list, and (2) a date_histogram aggregation (with a nested terms aggregation on the level field) for the histogram. This means the list and histogram always reflect the same query and time range without extra round trips. The histogram query uses a different size (0 hits needed, just the aggregation), so Elasticsearch can optimize it independently.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Virtual Scroll for Millions of Logs</h3>
+        <p>The log list uses TanStack Virtualizer (or react-virtual) to render only the visible log rows plus a buffer of ~20 rows above and below the viewport. Instead of rendering 10,000 DOM elements for 10,000 search results, only ~50 DOM elements exist at any time. The virtualizer calculates the total scrollable height as totalHeight = totalResultCount × estimatedRowHeight (where estimatedRowHeight is typically 56px per log row, adjusted dynamically as rows are measured). A large transparent spacer div at the top and bottom of the scroll container represents the virtual space, and the rendered rows are absolutely positioned within this space as the user scrolls.</p>
+        <p>Log row heights are variable (some log messages are long and wrap to multiple lines). The virtualizer handles this by measuring each row after initial render and adjusting the scroll position and spacer heights. For unmeasured rows (not yet rendered), the estimated height is used; the spacer is corrected as rows are measured. Sudden height corrections can cause scroll position jumps — this is mitigated by only correcting heights for rows above the current scroll position (rows below can be corrected without the user noticing).</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Live Tail and Real-Time Updates</h3>
+        <p>The Live Tail Service is a stateful WebSocket server (Socket.io or native WebSocket) that maintains a Kafka consumer group per connected session. When a user enables live tail with a query (e.g., service:auth AND level:error), the Live Tail Service creates a consumer that reads from the logs.stream Kafka topic, applies the same filter logic as the Log API (but in-process, using a compiled version of the Lucene query), and pushes matching new logs to the client WebSocket. The filtering is necessary to avoid sending all logs to every live tail client — only logs matching the user's current query should appear.</p>
+        <p>Batching: the Live Tail Service does not push every individual log event as it arrives. Instead, it accumulates events in a buffer for 100ms and sends a batch. This prevents the browser from calling React setState on every individual log event (which would trigger a re-render per event, potentially hundreds of times per second for high-traffic services). The 100ms batch makes the live updates feel near-real-time while capping React renders at 10/second. The client prepends the batch to the virtual list's data array and triggers a single re-render. To prevent memory exhaustion for long-running live tail sessions, the client maintains a maximum list size (e.g., 10,000 log entries): when the list exceeds this limit, the oldest entries at the bottom are dropped.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Context Expansion and Trace Correlation</h3>
+        <p>Context expansion (show N lines before/after a specific log entry) is a critical debugging tool — it lets engineers see what happened immediately before an error without manually adjusting the time range filter. The API endpoint is GET /api/logs/{`{logId}`}/context?before=50&amp;after=50. The server uses the log entry's timestamp and _id to construct a "before" query (timestamp &lt;= entry.timestamp, sort descending, limit 50) and an "after" query (timestamp &gt;= entry.timestamp, sort ascending, limit 50), then merges the results. The log entry itself is highlighted in the returned context with a distinct background color (typically light yellow). The context is displayed in a slide-in panel without leaving the main log list, allowing the engineer to see context while maintaining their place in the search results.</p>
+        <p>Trace correlation: if a log entry contains a trace_id field (set by the application's distributed tracing instrumentation — OpenTelemetry, Jaeger, Datadog APM), a "View Trace" button appears in the detail panel. Clicking it deep-links to the trace view with the trace_id pre-populated: /traces/{`{trace_id}`}. In a unified observability platform (like Datadog), this trace view shows the full request lifecycle across services, with timeline bars for each span, and a split view that shows the logs emitted during that trace alongside the trace spans — letting the engineer jump from an error log directly to the full request trace and back.</p>
+      </section>
+
+      <section>
+        <h2>Trade-offs and Considerations</h2>
+        <p>Elasticsearch versus ClickHouse for log storage: Elasticsearch provides inverted-index full-text search (fast for arbitrary keyword searches across millions of log lines) but is expensive to operate at scale (memory-intensive, complex cluster management). ClickHouse is a columnar OLAP database that is cheaper to operate and faster for structured queries (SELECT * WHERE level='error' AND service='auth' ORDER BY timestamp DESC LIMIT 100), but slower for true full-text search (it uses trigram-based search rather than inverted indexes). For log monitoring where structured filters (level, service, host) are more common than arbitrary full-text searches, ClickHouse is increasingly the preferred choice and is used by Grafana Loki and Quickwit. For use cases where arbitrary message text search is critical (security investigation: searching for specific IP addresses, user IDs, or error codes), Elasticsearch remains superior.</p>
+        <p>Live tail freshness versus Elasticsearch indexing lag: Elasticsearch's near-real-time (NRT) refresh means newly ingested logs become searchable after a 1–5 second delay (the default refresh_interval). This means a user searching for logs from the last 1 minute may miss the most recent 5 seconds of logs. The Live Tail WebSocket bypasses this lag by reading directly from Kafka (pre-indexing), so live tail is always current. But this creates a user expectation mismatch: the user sees logs in live tail that don't appear when they pause and search for that same time window — confusing during incidents. The solution is to prominently show the NRT lag in the UI ("Search index: up to 5s behind live") so users understand why search and live tail may diverge.</p>
+      </section>
+
+      <section>
+        <h2>Summary</h2>
+        <p>A log monitoring UI like Datadog/Kibana is built around three primary data paths: (1) Elasticsearch search (Lucene query → bool DSL with term filters for structured fields + multi-match for full-text; search_after cursor pagination; parallel msearch for log hits + date_histogram aggregation); (2) TanStack Virtualizer virtual scroll (50 DOM nodes for millions of entries, variable-height row measurement, spacer-based virtual space); and (3) Kafka live tail WebSocket (pre-Elasticsearch ingestion tap, in-process query filter, 100ms batch accumulation, max 10,000 entry memory cap). The histogram (stacked ERROR/WARN/INFO bars, drag-to-zoom time selection) and faceted sidebar (terms aggregations, click-to-filter query appending) are computed from the same Elasticsearch msearch response. Context expansion uses timestamp-bounded before/after queries; trace correlation deep-links to APM via trace_id. The defining incident-investigation metric: time-to-first-log should be under 2 seconds, requiring hot-cached Elasticsearch indices for recent data and careful query structure (filter vs must placement for cache efficiency).</p>
+      </section>
+    </ArticleLayout>
+  );
+}

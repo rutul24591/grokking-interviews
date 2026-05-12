@@ -1,0 +1,221 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1230"/>
+      <stop offset="100%" stop-color="#0f1a2e"/>
+    </linearGradient>
+    <linearGradient id="purple-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8b6fe8"/>
+      <stop offset="100%" stop-color="#6d5bd0"/>
+    </linearGradient>
+    <linearGradient id="green-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3dbf8a"/>
+      <stop offset="100%" stop-color="#2f9d74"/>
+    </linearGradient>
+    <linearGradient id="amber-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8924f"/>
+      <stop offset="100%" stop-color="#d97843"/>
+    </linearGradient>
+    <linearGradient id="dark-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2540"/>
+      <stop offset="100%" stop-color="#1a1822"/>
+    </linearGradient>
+    <filter id="glow-purple">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow-green">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b6fe8"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3dbf8a"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e8924f"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#bg-grad)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.04">
+    <line x1="0" y1="60" x2="960" y2="60" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="0" y1="120" x2="960" y2="120" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="0" y1="180" x2="960" y2="180" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="0" y1="240" x2="960" y2="240" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="0" y1="300" x2="960" y2="300" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="0" y1="360" x2="960" y2="360" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="0" y1="420" x2="960" y2="420" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="0" y1="480" x2="960" y2="480" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="120" y1="0" x2="120" y2="540" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="240" y1="0" x2="240" y2="540" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="360" y1="0" x2="360" y2="540" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="480" y1="0" x2="480" y2="540" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="540" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="540" stroke="#8b6fe8" stroke-width="1"/>
+    <line x1="840" y1="0" x2="840" y2="540" stroke="#8b6fe8" stroke-width="1"/>
+  </g>
+
+  <text x="480" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#e8e4ff">PDF Viewer + Annotation System — Architecture</text>
+  <text x="480" y="50" text-anchor="middle" font-size="11" fill="#8b7fcf">Rendering pipeline · Page virtualization · Annotation layer · Collaborative storage</text>
+
+  <!-- TOP BAND: PDF Rendering Pipeline -->
+  <rect x="16" y="60" width="928" height="24" rx="6" fill="#6d5bd0" opacity="0.18"/>
+  <text x="480" y="76" text-anchor="middle" font-size="11" fill="#a994ff" font-weight="bold" letter-spacing="1">PDF RENDERING PIPELINE</text>
+
+  <!-- Pipeline steps -->
+  <rect x="24" y="92" width="120" height="50" rx="8" fill="url(#purple-grad)" filter="url(#glow-purple)"/>
+  <text x="84" y="112" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">PDF Source</text>
+  <text x="84" y="128" text-anchor="middle" font-size="9" fill="#ddd0ff">URL · Blob · ArrayBuffer</text>
+
+  <line x1="144" y1="117" x2="166" y2="117" stroke="#8b6fe8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="166" y="92" width="120" height="50" rx="8" fill="url(#dark-grad)" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="226" y="112" text-anchor="middle" font-size="11" fill="#a994ff" font-weight="bold">PDF.js Engine</text>
+  <text x="226" y="128" text-anchor="middle" font-size="9" fill="#9985cc">parse xref · decode streams</text>
+
+  <line x1="286" y1="117" x2="308" y2="117" stroke="#8b6fe8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="308" y="92" width="120" height="50" rx="8" fill="url(#dark-grad)" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="368" y="112" text-anchor="middle" font-size="11" fill="#a994ff" font-weight="bold">Page Renderer</text>
+  <text x="368" y="128" text-anchor="middle" font-size="9" fill="#9985cc">Canvas 2D / OffscreenCanvas</text>
+
+  <line x1="428" y1="117" x2="450" y2="117" stroke="#8b6fe8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="450" y="92" width="120" height="50" rx="8" fill="url(#dark-grad)" stroke="#3dbf8a" stroke-width="1.5"/>
+  <text x="510" y="112" text-anchor="middle" font-size="11" fill="#3dbf8a" font-weight="bold">Page Cache</text>
+  <text x="510" y="128" text-anchor="middle" font-size="9" fill="#7dd4b0">LRU · rendered bitmaps</text>
+
+  <line x1="570" y1="117" x2="592" y2="117" stroke="#8b6fe8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="592" y="92" width="120" height="50" rx="8" fill="url(#dark-grad)" stroke="#e8924f" stroke-width="1.5"/>
+  <text x="652" y="112" text-anchor="middle" font-size="11" fill="#e8924f" font-weight="bold">Annotation Layer</text>
+  <text x="652" y="128" text-anchor="middle" font-size="9" fill="#f0b87e">SVG overlay · hit testing</text>
+
+  <line x1="712" y1="117" x2="734" y2="117" stroke="#8b6fe8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="734" y="92" width="120" height="50" rx="8" fill="url(#green-grad)" filter="url(#glow-green)"/>
+  <text x="794" y="112" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Viewport Display</text>
+  <text x="794" y="128" text-anchor="middle" font-size="9" fill="#c5f0de">CSS transform · scroll sync</text>
+
+  <line x1="854" y1="117" x2="876" y2="117" stroke="#3dbf8a" stroke-width="2" marker-end="url(#arr-g)"/>
+
+  <rect x="876" y="92" width="72" height="50" rx="8" fill="url(#dark-grad)" stroke="#3dbf8a" stroke-width="1.5"/>
+  <text x="912" y="112" text-anchor="middle" font-size="11" fill="#3dbf8a" font-weight="bold">CDN</text>
+  <text x="912" y="128" text-anchor="middle" font-size="9" fill="#7dd4b0">chunked fetch</text>
+
+  <!-- Divider -->
+  <line x1="16" y1="158" x2="944" y2="158" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+  <text x="480" y="173" text-anchor="middle" font-size="11" fill="#e8924f" font-weight="bold" letter-spacing="1">CORE SUBSYSTEMS</text>
+
+  <!-- LEFT: Page Virtualization -->
+  <rect x="16" y="182" width="290" height="190" rx="10" fill="#1c1535" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="16" y="182" width="290" height="28" rx="10" fill="#6d5bd0" opacity="0.3"/>
+  <text x="161" y="200" text-anchor="middle" font-size="12" fill="#c0b0ff" font-weight="bold">Page Virtualization</text>
+
+  <text x="26" y="224" font-size="10" fill="#9985cc" font-weight="bold">Intersection Observer</text>
+  <rect x="26" y="230" width="270" height="30" rx="5" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="161" y="244" text-anchor="middle" font-size="9" fill="#c0b0ff">Observe each page sentinel div</text>
+  <text x="161" y="256" text-anchor="middle" font-size="9" fill="#c0b0ff">threshold 0.1 → schedule render (requestIdleCallback)</text>
+
+  <text x="26" y="276" font-size="10" fill="#3dbf8a" font-weight="bold">Render Window (±2 pages)</text>
+  <rect x="26" y="282" width="270" height="42" rx="5" fill="#3dbf8a" opacity="0.08" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="161" y="298" text-anchor="middle" font-size="9" fill="#a8e8cf">visible pages: render full canvas</text>
+  <text x="161" y="311" text-anchor="middle" font-size="9" fill="#a8e8cf">±1 pages: pre-render in background worker</text>
+  <text x="161" y="324" text-anchor="middle" font-size="9" fill="#a8e8cf">beyond ±2: destroy canvas, keep placeholder div</text>
+
+  <text x="26" y="344" font-size="10" fill="#e8924f" font-weight="bold">LRU Page Cache</text>
+  <rect x="26" y="350" width="270" height="14" rx="4" fill="#e8924f" opacity="0.1" stroke="#e8924f" stroke-width="1"/>
+  <text x="161" y="361" text-anchor="middle" font-size="9" fill="#f0b87e">max 10 rendered canvases · evict on LRU miss</text>
+
+  <!-- CENTER: Annotation System -->
+  <rect x="322" y="182" width="316" height="190" rx="10" fill="#1c1535" stroke="#e8924f" stroke-width="1.5"/>
+  <rect x="322" y="182" width="316" height="28" rx="10" fill="#e8924f" opacity="0.2"/>
+  <text x="480" y="200" text-anchor="middle" font-size="12" fill="#f5c080" font-weight="bold">Annotation Types &amp; Layer</text>
+
+  <!-- Annotation type grid -->
+  <rect x="332" y="214" width="88" height="38" rx="6" fill="#6d5bd0" opacity="0.25" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="376" y="230" text-anchor="middle" font-size="9" fill="#c0b0ff" font-weight="bold">Highlight</text>
+  <text x="376" y="244" text-anchor="middle" font-size="8" fill="#9985cc">rect quads from text layer</text>
+
+  <rect x="428" y="214" width="88" height="38" rx="6" fill="#3dbf8a" opacity="0.2" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="472" y="230" text-anchor="middle" font-size="9" fill="#7dd4b0" font-weight="bold">Comment</text>
+  <text x="472" y="244" text-anchor="middle" font-size="8" fill="#7dd4b0">anchor page + coords + thread</text>
+
+  <rect x="524" y="214" width="104" height="38" rx="6" fill="#e8924f" opacity="0.2" stroke="#e8924f" stroke-width="1"/>
+  <text x="576" y="230" text-anchor="middle" font-size="9" fill="#f0b87e" font-weight="bold">Freehand Ink</text>
+  <text x="576" y="244" text-anchor="middle" font-size="8" fill="#f0b87e">SVG path · pointer pressure</text>
+
+  <rect x="332" y="260" width="88" height="38" rx="6" fill="#e8924f" opacity="0.15" stroke="#e8924f" stroke-width="1"/>
+  <text x="376" y="276" text-anchor="middle" font-size="9" fill="#f0b87e" font-weight="bold">Underline</text>
+  <text x="376" y="290" text-anchor="middle" font-size="8" fill="#f0b87e">text range · page coords</text>
+
+  <rect x="428" y="260" width="88" height="38" rx="6" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="472" y="276" text-anchor="middle" font-size="9" fill="#c0b0ff" font-weight="bold">Shape / Box</text>
+  <text x="472" y="290" text-anchor="middle" font-size="8" fill="#9985cc">rect · circle · arrow · line</text>
+
+  <rect x="524" y="260" width="104" height="38" rx="6" fill="#3dbf8a" opacity="0.15" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="576" y="276" text-anchor="middle" font-size="9" fill="#7dd4b0" font-weight="bold">Stamp / Signature</text>
+  <text x="576" y="290" text-anchor="middle" font-size="8" fill="#7dd4b0">image blob · typed text</text>
+
+  <rect x="332" y="306" width="296" height="58" rx="6" fill="#2a2050" stroke="#e8924f" stroke-width="1"/>
+  <text x="480" y="320" text-anchor="middle" font-size="9" fill="#f5c080" font-weight="bold">SVG Overlay Architecture</text>
+  <text x="336" y="334" font-size="9" fill="#c0b0ff">• One SVG per page, positioned absolute over canvas</text>
+  <text x="336" y="348" font-size="9" fill="#c0b0ff">• Annotation coords stored in PDF user-space (0–width, 0–height)</text>
+  <text x="336" y="361" font-size="9" fill="#c0b0ff">• Transforms: pdfCoord → screenCoord = pdfCoord × scale + scrollOffset</text>
+
+  <!-- RIGHT: Storage & Sync -->
+  <rect x="654" y="182" width="290" height="190" rx="10" fill="#1c1535" stroke="#3dbf8a" stroke-width="1.5"/>
+  <rect x="654" y="182" width="290" height="28" rx="10" fill="#3dbf8a" opacity="0.18"/>
+  <text x="799" y="200" text-anchor="middle" font-size="12" fill="#7dd4b0" font-weight="bold">Annotation Storage &amp; Sync</text>
+
+  <text x="664" y="222" font-size="10" fill="#9985cc" font-weight="bold">Data Model</text>
+  <rect x="664" y="228" width="270" height="56" rx="5" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="664" y="242" font-size="8.5" fill="#c0b0ff">  type: highlight | comment | ink | shape | stamp</text>
+  <text x="664" y="255" font-size="8.5" fill="#c0b0ff">  page: number   coords: &#123;x,y,w,h&#125; | SVGPath</text>
+  <text x="664" y="268" font-size="8.5" fill="#c0b0ff">  color: string  author: userId   createdAt: ISO</text>
+  <text x="664" y="281" font-size="8.5" fill="#c0b0ff">  thread: Comment[]   resolved: boolean</text>
+
+  <text x="664" y="300" font-size="10" fill="#3dbf8a" font-weight="bold">Optimistic Update Flow</text>
+  <rect x="664" y="306" width="270" height="42" rx="5" fill="#3dbf8a" opacity="0.08" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="799" y="320" text-anchor="middle" font-size="9" fill="#7dd4b0">local insert → render instantly → POST /annotations</text>
+  <text x="799" y="333" text-anchor="middle" font-size="9" fill="#7dd4b0">on 200: replace tempId with serverId</text>
+  <text x="799" y="346" text-anchor="middle" font-size="9" fill="#7dd4b0">on error: roll back + show toast retry</text>
+
+  <text x="664" y="366" font-size="10" fill="#e8924f" font-weight="bold">Realtime Collab (WebSocket)</text>
+  <rect x="664" y="372" width="270" height="14" rx="4" fill="#e8924f" opacity="0.1" stroke="#e8924f" stroke-width="1"/>
+  <text x="799" y="383" text-anchor="middle" font-size="9" fill="#f0b87e">broadcast annotation mutations to all doc viewers</text>
+
+  <!-- BOTTOM BAND: Key Performance Details -->
+  <line x1="16" y1="386" x2="944" y2="386" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+  <text x="480" y="402" text-anchor="middle" font-size="11" fill="#a994ff" font-weight="bold" letter-spacing="1">TEXT LAYER · SEARCH · EXPORT</text>
+
+  <!-- Bottom 3 panels -->
+  <rect x="16" y="412" width="290" height="116" rx="10" fill="#1c1535" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="161" y="432" text-anchor="middle" font-size="11" fill="#c0b0ff" font-weight="bold">Text Layer (Copy/Search)</text>
+  <text x="26" y="452" font-size="9" fill="#9985cc">• Invisible &lt;span&gt; elements positioned over canvas</text>
+  <text x="26" y="466" font-size="9" fill="#9985cc">• Text extracted from PDF glyph stream via PDF.js</text>
+  <text x="26" y="480" font-size="9" fill="#9985cc">• Coords: PDF user-space → CSS px using viewport scale</text>
+  <text x="26" y="494" font-size="9" fill="#9985cc">• Enables native browser Cmd/Ctrl+F text search</text>
+  <text x="26" y="508" font-size="9" fill="#e8924f">• Highlight selection → create highlight annotation</text>
+
+  <rect x="322" y="412" width="316" height="116" rx="10" fill="#1c1535" stroke="#e8924f" stroke-width="1.5"/>
+  <text x="480" y="432" text-anchor="middle" font-size="11" fill="#f5c080" font-weight="bold">Search &amp; Navigation</text>
+  <text x="332" y="452" font-size="9" fill="#9985cc">• Full-text search: index all page text at load via web worker</text>
+  <text x="332" y="466" font-size="9" fill="#9985cc">• match highlight: wrap matched spans with mark element + yellow bg</text>
+  <text x="332" y="480" font-size="9" fill="#9985cc">• Thumbnail strip: low-res canvas renders at 0.2× scale, scroll-linked</text>
+  <text x="332" y="494" font-size="9" fill="#9985cc">• TOC: parsed from PDF outline dict (bookmarks), jump to dest page</text>
+  <text x="332" y="508" font-size="9" fill="#3dbf8a">• Annotation sidebar: filter by type/author/page, click-to-jump</text>
+
+  <rect x="654" y="412" width="290" height="116" rx="10" fill="#1c1535" stroke="#3dbf8a" stroke-width="1.5"/>
+  <text x="799" y="432" text-anchor="middle" font-size="11" fill="#7dd4b0" font-weight="bold">Export &amp; Performance</text>
+  <text x="664" y="452" font-size="9" fill="#9985cc">• Export annotated PDF: flatten annotations via PDF-lib.js</text>
+  <text x="664" y="466" font-size="9" fill="#9985cc">• Download: Blob URL → anchor.click() → revoke URL</text>
+  <text x="664" y="480" font-size="9" fill="#9985cc">• First page render target: &lt;1s (loaded from CDN range request)</text>
+  <text x="664" y="494" font-size="9" fill="#9985cc">• Zoom: re-render canvas at new scale × devicePixelRatio</text>
+  <text x="664" y="508" font-size="9" fill="#e8924f">• DPR-aware: canvas.width = cssWidth × window.devicePixelRatio</text>
+</svg>

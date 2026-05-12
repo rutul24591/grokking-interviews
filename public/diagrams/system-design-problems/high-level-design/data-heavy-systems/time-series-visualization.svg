@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#0891b2"/>
+    </marker>
+    <marker id="arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arr-p" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arr-o" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="560" fill="#edfcf5" rx="12"/>
+  <rect width="900" height="48" fill="url(#hdr)" rx="12"/>
+  <rect y="36" width="900" height="12" fill="url(#hdr)"/>
+  <text x="450" y="30" text-anchor="middle" fill="white" font-size="16" font-weight="700">Time-Series Visualization System</text>
+
+  <!-- ── ROW 1: Resolution Routing ── -->
+  <text x="24" y="76" fill="#064e3b" font-size="11" font-weight="700">① ADAPTIVE RESOLUTION ROUTING</text>
+
+  <!-- Formula box -->
+  <rect x="20" y="84" width="310" height="80" rx="8" fill="#ecfdf5" stroke="#064e3b" stroke-width="1.5"/>
+  <text x="175" y="104" text-anchor="middle" fill="#064e3b" font-size="11" font-weight="600">Step Calculation</text>
+  <text x="175" y="120" text-anchor="middle" fill="#374151" font-size="9">step = timeRange ÷ (pixelWidth ÷ 2)</text>
+  <text x="175" y="134" text-anchor="middle" fill="#374151" font-size="9">1200px × last 24h → step = 144s ≈ 2.5 min</text>
+  <text x="175" y="148" text-anchor="middle" fill="#374151" font-size="9">→ round to nearest rollup → 1-min rollup</text>
+  <text x="175" y="160" text-anchor="middle" fill="#374151" font-size="9">Cache: SHA256(query+step+from+to) TTL = 2×step</text>
+
+  <line x1="332" y1="124" x2="374" y2="124" stroke="#0891b2" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Resolution table -->
+  <rect x="376" y="84" width="500" height="80" rx="8" fill="#f0fdff" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="626" y="104" text-anchor="middle" fill="#0891b2" font-size="11" font-weight="600">Resolution Routing Table</text>
+  <!-- table rows -->
+  <line x1="390" y1="114" x2="862" y2="114" stroke="#bae6fd" stroke-width="0.5"/>
+  <text x="480" y="125" text-anchor="middle" fill="#374151" font-size="9">step &lt;30s</text>
+  <text x="640" y="125" text-anchor="middle" fill="#374151" font-size="9">→ Raw 10s data</text>
+  <text x="800" y="125" text-anchor="middle" fill="#374151" font-size="9">Prometheus /query_range</text>
+  <line x1="390" y1="130" x2="862" y2="130" stroke="#bae6fd" stroke-width="0.5"/>
+  <text x="480" y="141" text-anchor="middle" fill="#374151" font-size="9">30s – 5min</text>
+  <text x="640" y="141" text-anchor="middle" fill="#374151" font-size="9">→ 1-min rollup</text>
+  <text x="800" y="141" text-anchor="middle" fill="#374151" font-size="9">Thanos downsampled store</text>
+  <line x1="390" y1="146" x2="862" y2="146" stroke="#bae6fd" stroke-width="0.5"/>
+  <text x="480" y="157" text-anchor="middle" fill="#374151" font-size="9">5min – 1h</text>
+  <text x="640" y="157" text-anchor="middle" fill="#374151" font-size="9">→ 5-min rollup</text>
+  <text x="800" y="157" text-anchor="middle" fill="#374151" font-size="9">Thanos (avg/min/max per bucket)</text>
+
+  <!-- ── ROW 2: Cross-panel sync + Comparison ── -->
+  <line x1="20" y1="180" x2="880" y2="180" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="24" y="200" fill="#7c3aed" font-size="11" font-weight="700">② TIME CURSOR SYNC (ALL PANELS)</text>
+  <text x="460" y="200" fill="#f59e0b" font-size="11" font-weight="700">③ COMPARISON MODE</text>
+
+  <rect x="20" y="208" width="400" height="96" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="220" y="228" text-anchor="middle" fill="#374151" font-size="9">mousemove → xScale.invert(mouseX) → hoverTimestamp</text>
+  <text x="220" y="242" text-anchor="middle" fill="#374151" font-size="9">Zustand global store → all panels subscribe</text>
+  <text x="220" y="256" text-anchor="middle" fill="#374151" font-size="9">cursor drawn via ctx.moveTo/lineTo on canvas (no re-render)</text>
+  <text x="220" y="270" text-anchor="middle" fill="#374151" font-size="9">tooltip: React setState debounced 16ms</text>
+  <text x="220" y="284" text-anchor="middle" fill="#374151" font-size="9">rAF throttled 30fps to cap CPU cost across 20 panels</text>
+  <text x="220" y="298" text-anchor="middle" fill="#374151" font-size="9">drag zoom → update Zustand timeRange → all panels re-query</text>
+
+  <rect x="450" y="208" width="420" height="96" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="228" text-anchor="middle" fill="#374151" font-size="9">toggle "Compare to previous period" (-7d / -1d)</text>
+  <text x="660" y="242" text-anchor="middle" fill="#374151" font-size="9">duplicate each panel query with time offset</text>
+  <text x="660" y="256" text-anchor="middle" fill="#374151" font-size="9">render: same color · dashed line · opacity 0.4</text>
+  <text x="660" y="270" text-anchor="middle" fill="#374151" font-size="9">Y-axis: shared domain (min/max across both series)</text>
+  <text x="660" y="284" text-anchor="middle" fill="#374151" font-size="9">tooltip: current={v} prior={v} delta=+12% (green)</text>
+  <text x="660" y="298" text-anchor="middle" fill="#374151" font-size="9">comparison cache: high hit rate (historical data stable)</text>
+
+  <!-- ── ROW 3: Annotations ── -->
+  <line x1="20" y1="320" x2="880" y2="320" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="24" y="340" fill="#059669" font-size="11" font-weight="700">④ ANNOTATIONS — DEPLOYMENTS · INCIDENTS · MANUAL</text>
+
+  <rect x="20" y="348" width="840" height="72" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+
+  <!-- deploy annotation -->
+  <rect x="38" y="362" width="185" height="44" rx="6" fill="#dcfce7" stroke="#059669" stroke-width="1"/>
+  <text x="130" y="378" text-anchor="middle" fill="#059669" font-size="10" font-weight="600">Deployment (green)</text>
+  <text x="130" y="392" text-anchor="middle" fill="#374151" font-size="8.5">CI/CD push: sha, service, deployer</text>
+  <text x="130" y="404" text-anchor="middle" fill="#374151" font-size="8.5">vertical dashed line on all panels</text>
+
+  <!-- incident annotation -->
+  <rect x="243" y="362" width="185" height="44" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1"/>
+  <text x="335" y="378" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="600">Incident (red band)</text>
+  <text x="335" y="392" text-anchor="middle" fill="#374151" font-size="8.5">PagerDuty open → close: time range</text>
+  <text x="335" y="404" text-anchor="middle" fill="#374151" font-size="8.5">semi-transparent red rect overlay</text>
+
+  <!-- manual annotation -->
+  <rect x="448" y="362" width="185" height="44" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1"/>
+  <text x="540" y="378" text-anchor="middle" fill="#1d4ed8" font-size="10" font-weight="600">Manual (blue)</text>
+  <text x="540" y="392" text-anchor="middle" fill="#374151" font-size="8.5">right-click chart → add note</text>
+  <text x="540" y="404" text-anchor="middle" fill="#374151" font-size="8.5">PostgreSQL annotations table</text>
+
+  <!-- storage note -->
+  <rect x="653" y="362" width="190" height="44" rx="6" fill="#f8faff" stroke="#6366f1" stroke-width="1"/>
+  <text x="748" y="378" text-anchor="middle" fill="#6366f1" font-size="10" font-weight="600">Storage + Fetch</text>
+  <text x="748" y="392" text-anchor="middle" fill="#374151" font-size="8.5">PostgreSQL: index on timestamp</text>
+  <text x="748" y="404" text-anchor="middle" fill="#374151" font-size="8.5">parallel fetch with panel queries</text>
+
+  <!-- Metrics bar -->
+  <rect x="14" y="440" width="872" height="106" rx="8" fill="#022c22"/>
+  <text x="14" y="436" fill="#6ee7b7" font-size="10" font-weight="600">KEY NUMBERS</text>
+
+  <text x="90" y="464" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="600">Dashboard Load</text>
+  <text x="90" y="482" text-anchor="middle" fill="white" font-size="14" font-weight="700">&lt;3s</text>
+  <text x="90" y="498" text-anchor="middle" fill="#94a3b8" font-size="9">all panels parallel</text>
+  <text x="90" y="514" text-anchor="middle" fill="#6b7280" font-size="8">max 10 concurrent/datasource</text>
+  <text x="90" y="530" text-anchor="middle" fill="#6b7280" font-size="8">queue remaining panels</text>
+
+  <text x="260" y="464" text-anchor="middle" fill="#34d399" font-size="10" font-weight="600">Rollup Query</text>
+  <text x="260" y="482" text-anchor="middle" fill="white" font-size="14" font-weight="700">&lt;500ms</text>
+  <text x="260" y="498" text-anchor="middle" fill="#94a3b8" font-size="9">Thanos 30-day range</text>
+  <text x="260" y="514" text-anchor="middle" fill="#6b7280" font-size="8">raw scan avoided</text>
+  <text x="260" y="530" text-anchor="middle" fill="#6b7280" font-size="8">avg/min/max per bucket</text>
+
+  <text x="450" y="464" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="600">Cursor Sync</text>
+  <text x="450" y="482" text-anchor="middle" fill="white" font-size="14" font-weight="700">0ms</text>
+  <text x="450" y="498" text-anchor="middle" fill="#94a3b8" font-size="9">pure client-side</text>
+  <text x="450" y="514" text-anchor="middle" fill="#6b7280" font-size="8">Zustand + canvas ref</text>
+  <text x="450" y="530" text-anchor="middle" fill="#6b7280" font-size="8">no React re-render for line</text>
+
+  <text x="640" y="464" text-anchor="middle" fill="#a5f3fc" font-size="10" font-weight="600">Zoom Re-query</text>
+  <text x="640" y="482" text-anchor="middle" fill="white" font-size="14" font-weight="700">&lt;1s</text>
+  <text x="640" y="498" text-anchor="middle" fill="#94a3b8" font-size="9">new resolution selected</text>
+  <text x="640" y="514" text-anchor="middle" fill="#6b7280" font-size="8">finer step on narrow window</text>
+  <text x="640" y="530" text-anchor="middle" fill="#6b7280" font-size="8">coarser step on wide window</text>
+
+  <text x="810" y="464" text-anchor="middle" fill="#ddd6fe" font-size="10" font-weight="600">Resolutions</text>
+  <text x="810" y="482" text-anchor="middle" fill="white" font-size="13" font-weight="700">raw/1m/5m/1h</text>
+  <text x="810" y="498" text-anchor="middle" fill="#94a3b8" font-size="9">raw: last 48h</text>
+  <text x="810" y="514" text-anchor="middle" fill="#6b7280" font-size="8">1min: last 90d</text>
+  <text x="810" y="530" text-anchor="middle" fill="#6b7280" font-size="8">1h: last 2 years</text>
+</svg>

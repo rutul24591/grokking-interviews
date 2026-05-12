@@ -1,0 +1,167 @@
+<svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="960" height="660" fill="#f4f2fb"/>
+  <text x="480" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Subscription Billing Frontend — PCI DSS, Webhooks, State Machine</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="14" y="50" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.14"/>
+  <text x="20" y="62" font-size="10" font-weight="bold" fill="#6d5bd0">ACTORS</text>
+
+  <rect x="20" y="72" width="100" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="70" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Browser</text>
+  <text x="70" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">Stripe.js SDK</text>
+
+  <rect x="188" y="72" width="96" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="236" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Billing API</text>
+  <text x="236" y="102" text-anchor="middle" font-size="10" fill="#edeaf5">App Server</text>
+
+  <rect x="356" y="72" width="96" height="36" rx="7" fill="#2f9d74"/>
+  <text x="404" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Stripe API</text>
+  <text x="404" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">Payment Provider</text>
+
+  <rect x="524" y="72" width="96" height="36" rx="7" fill="#2f9d74"/>
+  <text x="572" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Stripe Webhook</text>
+  <text x="572" y="102" text-anchor="middle" font-size="10" fill="#e8f5f0">→ App Handler</text>
+
+  <rect x="692" y="72" width="96" height="36" rx="7" fill="#d97843"/>
+  <text x="740" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">App DB</text>
+  <text x="740" y="102" text-anchor="middle" font-size="10" fill="#fff5ee">PostgreSQL</text>
+
+  <rect x="856" y="72" width="88" height="36" rx="7" fill="#1a1822"/>
+  <text x="900" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Redis Pub</text>
+  <text x="900" y="102" text-anchor="middle" font-size="10" fill="#d7d1e6">→ SSE push</text>
+
+  <!-- Lifelines -->
+  <line x1="70" y1="108" x2="70" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="236" y1="108" x2="236" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="404" y1="108" x2="404" y2="520" stroke="#c4b8e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="572" y1="108" x2="572" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.6"/>
+  <line x1="740" y1="108" x2="740" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.5"/>
+  <line x1="900" y1="108" x2="900" y2="520" stroke="#c4b8e8" stroke-width="1" stroke-dasharray="4,5" opacity="0.4"/>
+
+  <!-- PATH A: PCI-safe card add -->
+  <rect x="14" y="118" width="932" height="16" rx="4" fill="#6d5bd0" opacity="0.13"/>
+  <text x="480" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">PATH A — PCI-DSS Compliant Card Collection (card data NEVER touches app server)</text>
+
+  <rect x="30" y="142" width="200" height="22" rx="5" fill="#6d5bd0" opacity="0.20"/>
+  <text x="130" y="157" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Stripe Elements iframe (js.stripe.com domain)</text>
+
+  <line x1="70" y1="172" x2="394" y2="172" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="232" y="166" text-anchor="middle" font-size="10" fill="#1a1822">stripe.confirmSetup() → card PAN direct to Stripe</text>
+
+  <line x1="394" y1="186" x2="80" y2="186" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="237" y="180" text-anchor="middle" font-size="10" fill="#2f9d74">PaymentMethod ID: pm_xxxx (token only)</text>
+
+  <line x1="70" y1="200" x2="226" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="148" y="194" text-anchor="middle" font-size="10" fill="#1a1822">POST /billing/payment-methods {pm_xxxx}</text>
+
+  <line x1="236" y1="212" x2="394" y2="212" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="315" y="206" text-anchor="middle" font-size="10" fill="#1a1822">attachPaymentMethod(customerId, pm_xxxx)</text>
+
+  <line x1="394" y1="226" x2="246" y2="226" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="320" y="220" text-anchor="middle" font-size="10" fill="#2f9d74">200 OK — method saved</text>
+
+  <!-- PATH B: Upgrade + proration -->
+  <rect x="14" y="244" width="932" height="16" rx="4" fill="#2f9d74" opacity="0.13"/>
+  <text x="480" y="256" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">PATH B — Plan Upgrade with Proration Preview (idempotent)</text>
+
+  <line x1="70" y1="274" x2="226" y2="274" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="148" y="268" text-anchor="middle" font-size="10" fill="#1a1822">POST /billing/preview-upgrade {newPlanId}</text>
+
+  <line x1="236" y1="286" x2="394" y2="286" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="315" y="280" text-anchor="middle" font-size="10" fill="#1a1822">invoices.upcoming (proration_behavior=create)</text>
+
+  <line x1="394" y1="300" x2="246" y2="300" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="320" y="294" text-anchor="middle" font-size="10" fill="#2f9d74">{immediate: $10, next: $30/mo}</text>
+
+  <line x1="70" y1="314" x2="226" y2="314" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="148" y="308" text-anchor="middle" font-size="10" fill="#1a1822">Confirm → POST /billing/upgrade {idempotencyKey}</text>
+
+  <rect x="194" y="320" width="84" height="20" rx="5" fill="#2f9d74"/>
+  <text x="236" y="334" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Idempotent ✓</text>
+
+  <!-- PATH C: Webhook → state sync -->
+  <rect x="14" y="352" width="932" height="16" rx="4" fill="#d97843" opacity="0.13"/>
+  <text x="480" y="364" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">PATH C — Webhook-Driven State Sync (within 30s of billing event)</text>
+
+  <line x1="404" y1="382" x2="562" y2="382" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="483" y="376" text-anchor="middle" font-size="10" fill="#d97843">invoice.payment_failed webhook (HMAC verified)</text>
+
+  <line x1="572" y1="396" x2="730" y2="396" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="651" y="390" text-anchor="middle" font-size="10" fill="#d97843">UPDATE sub SET status=PAST_DUE</text>
+
+  <line x1="740" y1="410" x2="890" y2="410" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="815" y="404" text-anchor="middle" font-size="10" fill="#1a1822">PUBLISH sub:{userId} PAST_DUE</text>
+
+  <line x1="890" y1="424" x2="80" y2="424" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="485" y="418" text-anchor="middle" font-size="10" fill="#c0392b">SSE push → show dunning banner (within ~5s)</text>
+
+  <!-- PATH D: Dunning recovery -->
+  <rect x="14" y="440" width="932" height="16" rx="4" fill="#c0392b" opacity="0.08"/>
+  <text x="480" y="452" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">PATH D — Dunning Recovery (user updates card, retry charge)</text>
+
+  <line x1="70" y1="468" x2="394" y2="468" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="232" y="462" text-anchor="middle" font-size="10" fill="#1a1822">User adds new card (PATH A) → POST /billing/retry-charge</text>
+
+  <line x1="236" y1="480" x2="394" y2="480" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="315" y="474" text-anchor="middle" font-size="10" fill="#1a1822">invoice.pay() → charge new card</text>
+
+  <line x1="404" y1="494" x2="562" y2="494" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="483" y="488" text-anchor="middle" font-size="10" fill="#2f9d74">invoice.payment_succeeded → ACTIVE state</text>
+
+  <line x1="572" y1="506" x2="80" y2="506" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="326" y="500" text-anchor="middle" font-size="10" fill="#2f9d74">SSE push → dunning banner dismissed</text>
+
+  <!-- State Machine -->
+  <rect x="14" y="528" width="932" height="16" rx="4" fill="#1a1822" opacity="0.07"/>
+  <text x="480" y="540" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">SUBSCRIPTION STATE MACHINE (webhook-driven transitions)</text>
+
+  <rect x="20" y="552" width="110" height="50" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="75" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">TRIALING</text>
+  <text x="75" y="582" text-anchor="middle" font-size="10" fill="#1a1822">trial_end countdown</text>
+  <text x="75" y="596" text-anchor="middle" font-size="10" fill="#6d5bd0">→ ACTIVE on pay</text>
+
+  <rect x="148" y="552" width="110" height="50" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="203" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">ACTIVE</text>
+  <text x="203" y="582" text-anchor="middle" font-size="10" fill="#1a1822">full access</text>
+  <text x="203" y="596" text-anchor="middle" font-size="10" fill="#2f9d74">renews each cycle</text>
+
+  <rect x="276" y="552" width="110" height="50" rx="6" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="331" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">PAST_DUE</text>
+  <text x="331" y="582" text-anchor="middle" font-size="10" fill="#1a1822">grace period</text>
+  <text x="331" y="596" text-anchor="middle" font-size="10" fill="#d97843">dunning banner</text>
+
+  <rect x="404" y="552" width="110" height="50" rx="6" fill="#fff" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="459" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">UNPAID</text>
+  <text x="459" y="582" text-anchor="middle" font-size="10" fill="#1a1822">service suspended</text>
+  <text x="459" y="596" text-anchor="middle" font-size="10" fill="#c0392b">paywall shown</text>
+
+  <rect x="532" y="552" width="110" height="50" rx="6" fill="#fff" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="587" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">CANCELED</text>
+  <text x="587" y="582" text-anchor="middle" font-size="10" fill="#1a1822">end of period</text>
+  <text x="587" y="596" text-anchor="middle" font-size="10" fill="#1a1822">reactivation CTA</text>
+
+  <rect x="660" y="552" width="110" height="50" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="715" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">PAUSED</text>
+  <text x="715" y="582" text-anchor="middle" font-size="10" fill="#1a1822">billing suspended</text>
+  <text x="715" y="596" text-anchor="middle" font-size="10" fill="#6d5bd0">1–3 months</text>
+
+  <rect x="788" y="552" width="158" height="50" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="867" y="568" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Usage Meter</text>
+  <text x="867" y="582" text-anchor="middle" font-size="10" fill="#1a1822">INCRBY usage:{uid} 1</text>
+  <text x="867" y="596" text-anchor="middle" font-size="10" fill="#d97843">upgrade prompt @80%</text>
+</svg>

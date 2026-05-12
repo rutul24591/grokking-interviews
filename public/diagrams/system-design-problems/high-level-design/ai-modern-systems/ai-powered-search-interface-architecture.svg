@@ -1,0 +1,128 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">AI-Powered Search Interface — Architecture</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Query pipeline top band -->
+  <rect x="20" y="54" width="860" height="22" rx="6" fill="#6d5bd0" opacity="0.12"/>
+  <text x="450" y="69" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">QUERY PIPELINE</text>
+
+  <rect x="30" y="86" width="110" height="44" rx="7" fill="#6d5bd0"/>
+  <text x="85" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Search Bar</text>
+  <text x="85" y="120" text-anchor="middle" font-size="10" fill="#edeaf5">NL + filters + scope</text>
+  <line x1="140" y1="108" x2="172" y2="108" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="172" y="86" width="110" height="44" rx="7" fill="#6d5bd0" opacity="0.8"/>
+  <text x="227" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Query Parser</text>
+  <text x="227" y="120" text-anchor="middle" font-size="10" fill="#edeaf5">NL → structured filters</text>
+  <line x1="282" y1="108" x2="314" y2="108" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="314" y="86" width="120" height="44" rx="7" fill="#1a1822"/>
+  <text x="374" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Intent Router</text>
+  <text x="374" y="120" text-anchor="middle" font-size="10" fill="#d7d1e6">keyword / semantic / hybrid</text>
+  <line x1="434" y1="108" x2="466" y2="108" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="466" y="86" width="120" height="44" rx="7" fill="#2f9d74"/>
+  <text x="526" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Retrieval Engine</text>
+  <text x="526" y="120" text-anchor="middle" font-size="10" fill="#e8f5f0">BM25 + ANN vector</text>
+  <line x1="586" y1="108" x2="618" y2="108" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="618" y="86" width="110" height="44" rx="7" fill="#d97843"/>
+  <text x="673" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Re-ranker</text>
+  <text x="673" y="120" text-anchor="middle" font-size="10" fill="#fff">cross-encoder top-10</text>
+  <line x1="728" y1="108" x2="760" y2="108" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="760" y="86" width="110" height="44" rx="7" fill="#6d5bd0"/>
+  <text x="815" y="104" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Answer Gen</text>
+  <text x="815" y="120" text-anchor="middle" font-size="10" fill="#edeaf5">LLM summary + citations</text>
+
+  <!-- divider -->
+  <line x1="20" y1="146" x2="880" y2="146" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="450" y="162" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">UI RESULTS LAYER</text>
+
+  <!-- UI components left panel -->
+  <rect x="20" y="172" width="380" height="330" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="210" y="194" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Search UI Components</text>
+
+  <rect x="35" y="204" width="170" height="40" rx="7" fill="#6d5bd0"/>
+  <text x="120" y="221" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">AI Answer Box</text>
+  <text x="120" y="235" text-anchor="middle" font-size="10" fill="#edeaf5">streaming summary + [1][2]</text>
+
+  <rect x="215" y="204" width="170" height="40" rx="7" fill="#6d5bd0" opacity="0.75"/>
+  <text x="300" y="221" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Instant Suggestions</text>
+  <text x="300" y="235" text-anchor="middle" font-size="10" fill="#edeaf5">typeahead as user types</text>
+
+  <rect x="35" y="254" width="170" height="40" rx="7" fill="#2f9d74"/>
+  <text x="120" y="271" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Result Cards</text>
+  <text x="120" y="285" text-anchor="middle" font-size="10" fill="#e8f5f0">title, snippet, score, source</text>
+
+  <rect x="215" y="254" width="170" height="40" rx="7" fill="#1a1822"/>
+  <text x="300" y="271" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Faceted Filters</text>
+  <text x="300" y="285" text-anchor="middle" font-size="10" fill="#d7d1e6">type, date, author, tag</text>
+
+  <rect x="35" y="304" width="170" height="40" rx="7" fill="#d97843"/>
+  <text x="120" y="321" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Highlighted Matches</text>
+  <text x="120" y="335" text-anchor="middle" font-size="10" fill="#fff">keyword + semantic spans</text>
+
+  <rect x="215" y="304" width="170" height="40" rx="7" fill="#2f9d74" opacity="0.7"/>
+  <text x="300" y="321" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Source Citations</text>
+  <text x="300" y="335" text-anchor="middle" font-size="10" fill="#e8f5f0">hover preview, click to open</text>
+
+  <rect x="35" y="354" width="350" height="40" rx="7" fill="#6d5bd0" opacity="0.5"/>
+  <text x="210" y="371" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Conversational Follow-up</text>
+  <text x="210" y="385" text-anchor="middle" font-size="10" fill="#edeaf5">refine query: "more recent", "only PDFs", "from Alice"</text>
+
+  <rect x="35" y="404" width="350" height="84" rx="7" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="210" y="424" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Typeahead Architecture</text>
+  <text x="35" y="442" font-size="10" fill="#6d5bd0">• Keystroke → debounce 150ms → prefix query</text>
+  <text x="35" y="458" font-size="10" fill="#1a1822">• Popular completions from query-log index</text>
+  <text x="35" y="474" font-size="10" fill="#1a1822">• Entity suggestions (people, docs) from cached index</text>
+
+  <!-- Right panel: indexing -->
+  <rect x="420" y="172" width="460" height="330" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="650" y="194" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Indexing &amp; Retrieval Architecture</text>
+
+  <text x="430" y="216" font-size="11" fill="#6d5bd0" font-weight="bold">Dual-Index Strategy</text>
+
+  <rect x="430" y="224" width="200" height="76" rx="7" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="530" y="242" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Keyword Index (BM25)</text>
+  <text x="435" y="260" font-size="10" fill="#1a1822">Engine: Elasticsearch / OpenSearch</text>
+  <text x="435" y="276" font-size="10" fill="#1a1822">Fields: title^3, body^1, tags^2</text>
+  <text x="435" y="292" font-size="10" fill="#1a1822">Latency: &lt;30ms for top-100</text>
+
+  <rect x="648" y="224" width="220" height="76" rx="7" fill="#2f9d74" opacity="0.08" stroke="#2f9d74" stroke-width="1"/>
+  <text x="758" y="242" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Vector Index (ANN)</text>
+  <text x="653" y="260" font-size="10" fill="#1a1822">Engine: Pinecone / pgvector</text>
+  <text x="653" y="276" font-size="10" fill="#1a1822">Model: text-embedding-3-large</text>
+  <text x="653" y="292" font-size="10" fill="#1a1822">Latency: &lt;80ms for top-20</text>
+
+  <text x="430" y="320" font-size="11" fill="#6d5bd0" font-weight="bold">Hybrid Fusion</text>
+  <text x="430" y="338" font-size="10" fill="#1a1822">Reciprocal Rank Fusion (RRF): score = Σ 1/(k + rank_i)</text>
+  <text x="430" y="354" font-size="10" fill="#1a1822">k=60 dampens outlier ranks; merged list sent to re-ranker</text>
+
+  <line x1="430" y1="364" x2="868" y2="364" stroke="#d7d1e6"/>
+  <text x="430" y="382" font-size="11" fill="#d97843" font-weight="bold">Performance Targets</text>
+  <text x="430" y="400" font-size="10" fill="#1a1822">Time to first suggestion (typeahead)</text>
+  <text x="866" y="400" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">&lt;150ms</text>
+  <text x="430" y="416" font-size="10" fill="#1a1822">Keyword retrieval (BM25)</text>
+  <text x="866" y="416" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">&lt;30ms</text>
+  <text x="430" y="432" font-size="10" fill="#1a1822">Vector retrieval (ANN)</text>
+  <text x="866" y="432" text-anchor="end" font-size="10" fill="#2f9d74" font-weight="bold">&lt;80ms</text>
+  <text x="430" y="448" font-size="10" fill="#1a1822">Re-ranking (cross-encoder)</text>
+  <text x="866" y="448" text-anchor="end" font-size="10" fill="#d97843" font-weight="bold">&lt;150ms</text>
+  <text x="430" y="464" font-size="10" fill="#1a1822">AI answer (TTFT)</text>
+  <text x="866" y="464" text-anchor="end" font-size="10" fill="#d97843" font-weight="bold">&lt;800ms</text>
+  <text x="430" y="480" font-size="10" fill="#1a1822">Total end-to-end (P95)</text>
+  <text x="866" y="480" text-anchor="end" font-size="10" fill="#6d5bd0" font-weight="bold">&lt;1.5s</text>
+</svg>

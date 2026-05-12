@@ -1,0 +1,221 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e1218"/>
+      <stop offset="100%" stop-color="#121820"/>
+    </linearGradient>
+    <linearGradient id="purple-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9b7cf4"/>
+      <stop offset="100%" stop-color="#6d5bd0"/>
+    </linearGradient>
+    <linearGradient id="green-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3dbf8a"/>
+      <stop offset="100%" stop-color="#2f9d74"/>
+    </linearGradient>
+    <linearGradient id="amber-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8924f"/>
+      <stop offset="100%" stop-color="#d97843"/>
+    </linearGradient>
+    <linearGradient id="teal-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38c8d8"/>
+      <stop offset="100%" stop-color="#2298a8"/>
+    </linearGradient>
+    <filter id="glow-p">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-g">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9b7cf4"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3dbf8a"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e8924f"/>
+    </marker>
+    <marker id="arr-t" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#38c8d8"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#bg-grad)"/>
+  <g opacity="0.05">
+    <line x1="0" y1="60" x2="960" y2="60" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="120" x2="960" y2="120" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="180" x2="960" y2="180" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="240" x2="960" y2="240" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="300" x2="960" y2="300" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="360" x2="960" y2="360" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="420" x2="960" y2="420" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="480" x2="960" y2="480" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="120" y1="0" x2="120" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="240" y1="0" x2="240" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="360" y1="0" x2="360" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="480" y1="0" x2="480" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="840" y1="0" x2="840" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+  </g>
+
+  <text x="480" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#e8e4ff">Short-Video Editing System — Architecture</text>
+  <text x="480" y="50" text-anchor="middle" font-size="11" fill="#8b7fcf">Timeline editor · WebCodecs frame decode · Clip operations · Effects · Server export</text>
+
+  <!-- TOP BAND: Edit pipeline -->
+  <rect x="16" y="62" width="928" height="26" rx="6" fill="#6d5bd0" opacity="0.18"/>
+  <text x="480" y="79" text-anchor="middle" font-size="11" fill="#a994ff" font-weight="bold" letter-spacing="1">VIDEO EDIT PIPELINE (import → edit → preview → export)</text>
+
+  <!-- Pipeline nodes -->
+  <rect x="24" y="96" width="100" height="50" rx="7" fill="url(#purple-grad)" filter="url(#glow-p)"/>
+  <text x="74" y="115" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Media Import</text>
+  <text x="74" y="130" text-anchor="middle" font-size="9" fill="#ddd0ff">camera · gallery · URL</text>
+
+  <line x1="124" y1="121" x2="146" y2="121" stroke="#9b7cf4" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="146" y="96" width="110" height="50" rx="7" fill="#1e1a30" stroke="#38c8d8" stroke-width="1.5"/>
+  <text x="201" y="115" text-anchor="middle" font-size="10" fill="#38c8d8" font-weight="bold">WebCodecs Decode</text>
+  <text x="201" y="130" text-anchor="middle" font-size="9" fill="#7dd8e0">VideoDecoder → VideoFrames</text>
+
+  <line x1="256" y1="121" x2="278" y2="121" stroke="#9b7cf4" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="278" y="96" width="110" height="50" rx="7" fill="#1e1a30" stroke="#9b7cf4" stroke-width="1.5"/>
+  <text x="333" y="115" text-anchor="middle" font-size="10" fill="#c0b0ff" font-weight="bold">Clip Store</text>
+  <text x="333" y="130" text-anchor="middle" font-size="9" fill="#9985cc">ArrayBuffer · thumbnail strip</text>
+
+  <line x1="388" y1="121" x2="410" y2="121" stroke="#9b7cf4" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="410" y="96" width="110" height="50" rx="7" fill="#1e1a30" stroke="#3dbf8a" stroke-width="1.5"/>
+  <text x="465" y="115" text-anchor="middle" font-size="10" fill="#3dbf8a" font-weight="bold">Timeline Engine</text>
+  <text x="465" y="130" text-anchor="middle" font-size="9" fill="#7dd4b0">clips · cuts · transitions</text>
+
+  <line x1="520" y1="121" x2="542" y2="121" stroke="#3dbf8a" stroke-width="2" marker-end="url(#arr-g)"/>
+
+  <rect x="542" y="96" width="110" height="50" rx="7" fill="#1e1a30" stroke="#e8924f" stroke-width="1.5"/>
+  <text x="597" y="115" text-anchor="middle" font-size="10" fill="#e8924f" font-weight="bold">Preview Renderer</text>
+  <text x="597" y="130" text-anchor="middle" font-size="9" fill="#f0b87e">Canvas · rAF loop</text>
+
+  <line x1="652" y1="121" x2="674" y2="121" stroke="#e8924f" stroke-width="2" marker-end="url(#arr-o)"/>
+
+  <rect x="674" y="96" width="110" height="50" rx="7" fill="#1e1a30" stroke="#38c8d8" stroke-width="1.5"/>
+  <text x="729" y="115" text-anchor="middle" font-size="10" fill="#38c8d8" font-weight="bold">WebCodecs Encode</text>
+  <text x="729" y="130" text-anchor="middle" font-size="9" fill="#7dd8e0">VideoEncoder → MP4</text>
+
+  <line x1="784" y1="121" x2="806" y2="121" stroke="#38c8d8" stroke-width="2" marker-end="url(#arr-t)"/>
+
+  <rect x="806" y="96" width="130" height="50" rx="7" fill="url(#green-grad)" filter="url(#glow-g)"/>
+  <text x="871" y="115" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Upload + CDN</text>
+  <text x="871" y="130" text-anchor="middle" font-size="9" fill="#c5f0de">S3 multipart · transcode</text>
+
+  <!-- Divider -->
+  <line x1="16" y1="162" x2="944" y2="162" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="6,4" opacity="0.35"/>
+  <text x="480" y="178" text-anchor="middle" font-size="11" fill="#e8924f" font-weight="bold" letter-spacing="1">TIMELINE EDITOR · CLIP OPERATIONS · AUDIO</text>
+
+  <!-- LEFT: Timeline editor -->
+  <rect x="16" y="188" width="290" height="230" rx="10" fill="#181430" stroke="#9b7cf4" stroke-width="1.5"/>
+  <rect x="16" y="188" width="290" height="28" rx="10" fill="#6d5bd0" opacity="0.28"/>
+  <text x="161" y="207" text-anchor="middle" font-size="12" fill="#c0b0ff" font-weight="bold">Timeline Editor</text>
+
+  <!-- Track layout -->
+  <text x="26" y="228" font-size="9" fill="#9985cc" font-weight="bold">Video Track</text>
+  <rect x="80" y="218" width="220" height="16" rx="3" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="1"/>
+  <rect x="80" y="218" width="80" height="16" rx="3" fill="#9b7cf4" opacity="0.7"/>
+  <text x="120" y="230" text-anchor="middle" font-size="8" fill="#fff">Clip A 0–3s</text>
+  <rect x="162" y="218" width="60" height="16" rx="3" fill="#3dbf8a" opacity="0.7"/>
+  <text x="192" y="230" text-anchor="middle" font-size="8" fill="#fff">B 3–5s</text>
+  <rect x="224" y="218" width="76" height="16" rx="3" fill="#e8924f" opacity="0.7"/>
+  <text x="262" y="230" text-anchor="middle" font-size="8" fill="#fff">C 5–8s</text>
+  <!-- Playhead -->
+  <line x1="130" y1="212" x2="130" y2="248" stroke="#3dbf8a" stroke-width="2"/>
+  <polygon points="126,212 134,212 130,217" fill="#3dbf8a"/>
+  <text x="132" y="210" font-size="7" fill="#3dbf8a">2.1s</text>
+
+  <text x="26" y="252" font-size="9" fill="#9985cc" font-weight="bold">Audio Track</text>
+  <rect x="80" y="242" width="220" height="12" rx="2" fill="#3dbf8a" opacity="0.15" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="190" y="252" text-anchor="middle" font-size="7" fill="#7dd4b0">background music · fade in/out</text>
+
+  <text x="26" y="268" font-size="9" fill="#9985cc" font-weight="bold">Effects Track</text>
+  <rect x="80" y="258" width="220" height="12" rx="2" fill="#e8924f" opacity="0.15" stroke="#e8924f" stroke-width="1"/>
+  <text x="190" y="268" text-anchor="middle" font-size="7" fill="#f0b87e">text overlay · sticker · filter</text>
+
+  <text x="26" y="290" font-size="10" fill="#9985cc" font-weight="bold">Clip Operations</text>
+  <rect x="26" y="296" width="270" height="42" rx="5" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="26" y="310" font-size="9" fill="#c0b0ff">  Trim: drag clip edge → update inPoint/outPoint metadata</text>
+  <text x="26" y="324" font-size="9" fill="#c0b0ff">  Split: at playhead → divide clip into 2 at frame boundary</text>
+  <text x="26" y="336" font-size="9" fill="#c0b0ff">  Reorder: drag-drop clip → update timeline sequence</text>
+
+  <text x="26" y="358" font-size="10" fill="#3dbf8a" font-weight="bold">Transitions</text>
+  <rect x="26" y="364" width="270" height="28" rx="5" fill="#3dbf8a" opacity="0.08" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="161" y="378" text-anchor="middle" font-size="9" fill="#7dd4b0">Cross-dissolve · Cut · Fade-to-black · Wipe · Zoom-punch</text>
+  <text x="161" y="390" text-anchor="middle" font-size="9" fill="#7dd4b0">Rendered as WebGL shader blend between adjacent frames</text>
+
+  <!-- CENTER: Effects + Audio -->
+  <rect x="322" y="188" width="316" height="230" rx="10" fill="#181430" stroke="#e8924f" stroke-width="1.5"/>
+  <rect x="322" y="188" width="316" height="28" rx="10" fill="#e8924f" opacity="0.2"/>
+  <text x="480" y="207" text-anchor="middle" font-size="12" fill="#f5c080" font-weight="bold">Effects, Filters &amp; Audio</text>
+
+  <text x="332" y="228" font-size="10" fill="#9985cc" font-weight="bold">Visual Effects Pipeline</text>
+  <rect x="332" y="234" width="296" height="54" rx="5" fill="#e8924f" opacity="0.07" stroke="#e8924f" stroke-width="1"/>
+  <text x="332" y="248" font-size="9" fill="#c0b0ff">Input frame (VideoFrame) → Canvas drawImage</text>
+  <text x="332" y="262" font-size="9" fill="#c0b0ff">→ WebGL shader (color grade, vignette, blur)</text>
+  <text x="332" y="276" font-size="9" fill="#c0b0ff">→ Canvas 2D (text overlay, sticker, border)</text>
+  <text x="332" y="286" font-size="9" fill="#e8924f">→ ctx.getImageData → VideoEncoder.encode(frame)</text>
+
+  <text x="332" y="308" font-size="10" fill="#3dbf8a" font-weight="bold">Filter Library</text>
+  <rect x="332" y="314" width="136" height="54" rx="5" fill="#3dbf8a" opacity="0.07" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="400" y="328" text-anchor="middle" font-size="9" fill="#7dd4b0" font-weight="bold">Instagram-style</text>
+  <text x="340" y="342" font-size="9" fill="#9985cc">Clarendon   Gingham</text>
+  <text x="340" y="356" font-size="9" fill="#9985cc">Juno        Lark</text>
+  <text x="340" y="368" font-size="9" fill="#9985cc">Reyes       Valencia</text>
+
+  <rect x="474" y="314" width="154" height="54" rx="5" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="551" y="328" text-anchor="middle" font-size="9" fill="#c0b0ff" font-weight="bold">Implementation</text>
+  <text x="480" y="342" font-size="9" fill="#9985cc">Lookup Table (LUT) texture</text>
+  <text x="480" y="356" font-size="9" fill="#9985cc">WebGL: texture2D sample</text>
+  <text x="480" y="368" font-size="9" fill="#9985cc">per pixel: O(1) cost</text>
+
+  <text x="332" y="390" font-size="10" fill="#e8924f" font-weight="bold">Audio Processing</text>
+  <rect x="332" y="396" width="296" height="14" rx="4" fill="#e8924f" opacity="0.1" stroke="#e8924f" stroke-width="1"/>
+  <text x="480" y="407" text-anchor="middle" font-size="9" fill="#f0b87e">Web Audio API: gain, fade-in/out, noise gate, pitch shift, BPM detection for beat-sync cuts</text>
+
+  <!-- RIGHT: WebCodecs pipeline -->
+  <rect x="654" y="188" width="290" height="230" rx="10" fill="#181430" stroke="#38c8d8" stroke-width="1.5"/>
+  <rect x="654" y="188" width="290" height="28" rx="10" fill="#38c8d8" opacity="0.18"/>
+  <text x="799" y="207" text-anchor="middle" font-size="12" fill="#7dd8e0" font-weight="bold">WebCodecs Pipeline</text>
+
+  <text x="664" y="228" font-size="10" fill="#9985cc" font-weight="bold">Decode (import)</text>
+  <rect x="664" y="234" width="270" height="54" rx="5" fill="#38c8d8" opacity="0.08" stroke="#38c8d8" stroke-width="1"/>
+  <text x="664" y="248" font-size="9" fill="#7dd8e0">const decoder = new VideoDecoder(&#123;</text>
+  <text x="664" y="261" font-size="9" fill="#7dd8e0">  output: frame =&gt; frameBuffer.push(frame),</text>
+  <text x="664" y="274" font-size="9" fill="#7dd8e0">  error: console.error</text>
+  <text x="664" y="287" font-size="9" fill="#7dd8e0">&#125;)</text>
+
+  <text x="664" y="308" font-size="10" fill="#9985cc" font-weight="bold">Encode (export)</text>
+  <rect x="664" y="314" width="270" height="56" rx="5" fill="#9b7cf4" opacity="0.1" stroke="#9b7cf4" stroke-width="1"/>
+  <text x="664" y="328" font-size="9" fill="#c0b0ff">const encoder = new VideoEncoder(&#123;</text>
+  <text x="664" y="341" font-size="9" fill="#c0b0ff">  output: (chunk, meta) =&gt; mp4Writer.write(chunk),</text>
+  <text x="664" y="354" font-size="9" fill="#c0b0ff">  error: console.error</text>
+  <text x="664" y="367" font-size="9" fill="#c0b0ff">&#125;)  codec: "avc1.42001f" (H.264 Baseline)</text>
+
+  <text x="664" y="388" font-size="10" fill="#e8924f" font-weight="bold">Web Worker Offload</text>
+  <rect x="664" y="394" width="270" height="16" rx="4" fill="#e8924f" opacity="0.1" stroke="#e8924f" stroke-width="1"/>
+  <text x="799" y="406" text-anchor="middle" font-size="9" fill="#f0b87e">Decode + encode in Web Worker → main thread free for UI</text>
+
+  <!-- BOTTOM: Export pipeline + perf -->
+  <line x1="16" y1="432" x2="944" y2="432" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="6,4" opacity="0.35"/>
+  <text x="480" y="448" text-anchor="middle" font-size="11" fill="#a994ff" font-weight="bold" letter-spacing="1">EXPORT STRATEGY · SERVER TRANSCODE · PERFORMANCE</text>
+
+  <rect x="16" y="458" width="440" height="72" rx="10" fill="#181430" stroke="#3dbf8a" stroke-width="1.5"/>
+  <text x="236" y="476" text-anchor="middle" font-size="11" fill="#7dd4b0" font-weight="bold">Export Decision Tree</text>
+  <text x="26" y="494" font-size="9" fill="#9985cc">Clip ≤ 60s + no complex effects → WebCodecs in-browser (VP9/H.264, &lt;30s render)</text>
+  <text x="26" y="507" font-size="9" fill="#9985cc">Clip &gt; 60s OR server-quality H.264 required → POST project JSON to FFmpeg worker (SSE progress)</text>
+  <text x="26" y="520" font-size="9" fill="#e8924f">Multi-resolution export: 9:16 TikTok, 4:5 Instagram, 16:9 YouTube → server renders all 3 in parallel</text>
+
+  <rect x="472" y="458" width="472" height="72" rx="10" fill="#181430" stroke="#9b7cf4" stroke-width="1.5"/>
+  <text x="708" y="476" text-anchor="middle" font-size="11" fill="#c0b0ff" font-weight="bold">Performance Targets &amp; Optimizations</text>
+  <text x="482" y="494" font-size="9" fill="#3dbf8a">Scrub preview: seek to frame at playhead position using requestVideoFrameCallback (16ms)</text>
+  <text x="482" y="507" font-size="9" fill="#3dbf8a">Thumbnail strip: decode 1 frame per 500ms at 0.1× size via VideoDecoder in worker</text>
+  <text x="482" y="520" font-size="9" fill="#e8924f">In-browser export: WebCodecs H.264 30fps 60s clip → &lt;25s render time (Chrome, hardware encoder)</text>
+</svg>

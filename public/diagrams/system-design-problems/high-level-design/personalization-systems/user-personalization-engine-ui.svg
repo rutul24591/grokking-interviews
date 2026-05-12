@@ -1,0 +1,185 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1020"/>
+      <stop offset="100%" stop-color="#101828"/>
+    </linearGradient>
+    <linearGradient id="purple-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9b7cf4"/>
+      <stop offset="100%" stop-color="#6d5bd0"/>
+    </linearGradient>
+    <linearGradient id="green-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3dbf8a"/>
+      <stop offset="100%" stop-color="#2f9d74"/>
+    </linearGradient>
+    <linearGradient id="amber-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8924f"/>
+      <stop offset="100%" stop-color="#d97843"/>
+    </linearGradient>
+    <filter id="glow-p">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9b7cf4"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3dbf8a"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e8924f"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="500" fill="url(#bg-grad)"/>
+  <g opacity="0.04">
+    <line x1="0" y1="60" x2="960" y2="60" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="120" x2="960" y2="120" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="180" x2="960" y2="180" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="240" x2="960" y2="240" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="300" x2="960" y2="300" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="360" x2="960" y2="360" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="420" x2="960" y2="420" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="120" y1="0" x2="120" y2="500" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="240" y1="0" x2="240" y2="500" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="360" y1="0" x2="360" y2="500" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="480" y1="0" x2="480" y2="500" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="500" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="500" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="840" y1="0" x2="840" y2="500" stroke="#9b7cf4" stroke-width="1"/>
+  </g>
+
+  <text x="480" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#e8e4ff">Personalization Engine — UI State Machine &amp; Onboarding Flow</text>
+  <text x="480" y="50" text-anchor="middle" font-size="11" fill="#8b7fcf">Onboarding · Feed state transitions · Explanation UX · Feedback controls · SLA</text>
+
+  <!-- LEFT: Onboarding flow -->
+  <rect x="16" y="62" width="430" height="310" rx="10" fill="#151228" stroke="#9b7cf4" stroke-width="1.5"/>
+  <rect x="16" y="62" width="430" height="28" rx="10" fill="#6d5bd0" opacity="0.25"/>
+  <text x="231" y="80" text-anchor="middle" font-size="12" fill="#c0b0ff" font-weight="bold">Cold-Start Onboarding Flow</text>
+
+  <!-- Step boxes -->
+  <rect x="26" y="100" width="410" height="40" rx="7" fill="#9b7cf4" opacity="0.25" stroke="#9b7cf4" stroke-width="1"/>
+  <text x="70" y="116" font-size="10" fill="#c0b0ff" font-weight="bold">Step 1</text>
+  <text x="114" y="116" font-size="10" fill="#9985cc">Interest Picker — select 3+ topics from visual grid</text>
+  <text x="70" y="132" font-size="9" fill="#9985cc">UX: large tap targets, search box for topics, skip option → uses geo-popular</text>
+
+  <line x1="231" y1="140" x2="231" y2="154" stroke="#9b7cf4" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+
+  <rect x="26" y="154" width="410" height="40" rx="7" fill="#4a9ef8" opacity="0.18" stroke="#4a9ef8" stroke-width="1"/>
+  <text x="70" y="170" font-size="10" fill="#90c8ff" font-weight="bold">Step 2</text>
+  <text x="114" y="170" font-size="10" fill="#9985cc">Level Preference — beginner / intermediate / advanced</text>
+  <text x="70" y="184" font-size="9" fill="#9985cc">Informs content complexity ranking feature</text>
+
+  <line x1="231" y1="194" x2="231" y2="208" stroke="#9b7cf4" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+
+  <rect x="26" y="208" width="410" height="40" rx="7" fill="#3dbf8a" opacity="0.18" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="70" y="224" font-size="10" fill="#7dd4b0" font-weight="bold">Step 3</text>
+  <text x="114" y="224" font-size="10" fill="#9985cc">Seed Profile Written to Feature Store (immediate)</text>
+  <text x="70" y="238" font-size="9" fill="#9985cc">Popularity-ranked feed rendered while model initializes</text>
+
+  <line x1="231" y1="248" x2="231" y2="262" stroke="#3dbf8a" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr-g)"/>
+
+  <rect x="26" y="262" width="410" height="40" rx="7" fill="#e8924f" opacity="0.15" stroke="#e8924f" stroke-width="1"/>
+  <text x="70" y="278" font-size="10" fill="#f0b87e" font-weight="bold">Warm-up</text>
+  <text x="114" y="278" font-size="10" fill="#9985cc">After 10 interactions → switch to personalized ranking</text>
+  <text x="70" y="292" font-size="9" fill="#9985cc">Signal: 10 clicks/dwells/saves logged → trigger model switch</text>
+
+  <!-- Feed state machine -->
+  <text x="26" y="326" font-size="10" fill="#9985cc" font-weight="bold">Feed State Machine</text>
+  <rect x="26" y="332" width="90" height="26" rx="5" fill="#9b7cf4" opacity="0.4"/>
+  <text x="71" y="349" text-anchor="middle" font-size="9" fill="#fff">COLD</text>
+  <line x1="116" y1="345" x2="136" y2="345" stroke="#9b7cf4" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="126" y="340" text-anchor="middle" font-size="7" fill="#9985cc">10 events</text>
+
+  <rect x="136" y="332" width="90" height="26" rx="5" fill="#4a9ef8" opacity="0.4"/>
+  <text x="181" y="349" text-anchor="middle" font-size="9" fill="#fff">WARMING</text>
+  <line x1="226" y1="345" x2="246" y2="345" stroke="#4a9ef8" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="236" y="340" text-anchor="middle" font-size="7" fill="#9985cc">model ready</text>
+
+  <rect x="246" y="332" width="90" height="26" rx="5" fill="#3dbf8a" opacity="0.5"/>
+  <text x="291" y="349" text-anchor="middle" font-size="9" fill="#fff">ACTIVE</text>
+  <line x1="336" y1="345" x2="356" y2="345" stroke="#e8924f" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr-o)"/>
+  <text x="346" y="340" text-anchor="middle" font-size="7" fill="#e8924f">stale</text>
+
+  <rect x="356" y="332" width="90" height="26" rx="5" fill="#e8924f" opacity="0.3"/>
+  <text x="401" y="349" text-anchor="middle" font-size="9" fill="#fff">STALE</text>
+
+  <text x="26" y="375" font-size="9" fill="#9985cc">STALE: no activity 30 days → decay features, re-prompt onboarding interest</text>
+
+  <!-- RIGHT: Explanation UX + feedback controls -->
+  <rect x="462" y="62" width="482" height="310" rx="10" fill="#151228" stroke="#3dbf8a" stroke-width="1.5"/>
+  <rect x="462" y="62" width="482" height="28" rx="10" fill="#3dbf8a" opacity="0.18"/>
+  <text x="703" y="80" text-anchor="middle" font-size="12" fill="#7dd4b0" font-weight="bold">Explainability UX + Feedback Controls</text>
+
+  <!-- Explanation pill mockup -->
+  <text x="472" y="104" font-size="10" fill="#9985cc" font-weight="bold">"Why am I seeing this?" — Explanation Tooltip</text>
+  <rect x="472" y="110" width="462" height="64" rx="7" fill="#1c1a38" stroke="#9b7cf4" stroke-width="1"/>
+  <!-- Article card mockup -->
+  <rect x="480" y="118" width="200" height="48" rx="5" fill="#9b7cf4" opacity="0.2"/>
+  <text x="580" y="135" text-anchor="middle" font-size="9" fill="#c0b0ff">Article Card</text>
+  <text x="580" y="149" text-anchor="middle" font-size="8" fill="#9985cc">Based on: System Design (⭐ 94%)</text>
+  <!-- Explanation chip -->
+  <rect x="688" y="122" width="238" height="40" rx="5" fill="#2a2050" stroke="#9b7cf4" stroke-width="1"/>
+  <text x="807" y="136" text-anchor="middle" font-size="9" fill="#c0b0ff" font-weight="bold">Why this?</text>
+  <text x="695" y="150" font-size="8" fill="#9985cc">You read 12 System Design articles this week</text>
+  <text x="695" y="162" font-size="8" fill="#9985cc">Similar users also liked this · Published 2h ago</text>
+
+  <!-- Feedback controls -->
+  <text x="472" y="192" font-size="10" fill="#e8924f" font-weight="bold">Inline Feedback Controls (per item)</text>
+  <rect x="472" y="198" width="462" height="56" rx="7" fill="#1c1a38" stroke="#e8924f" stroke-width="1"/>
+  <rect x="482" y="208" width="70" height="22" rx="5" fill="#3dbf8a" opacity="0.4"/>
+  <text x="517" y="223" text-anchor="middle" font-size="9" fill="#fff">👍 More like this</text>
+  <rect x="558" y="208" width="70" height="22" rx="5" fill="#e8924f" opacity="0.3"/>
+  <text x="593" y="223" text-anchor="middle" font-size="9" fill="#fff">👎 Not interested</text>
+  <rect x="634" y="208" width="90" height="22" rx="5" fill="#9b7cf4" opacity="0.3"/>
+  <text x="679" y="223" text-anchor="middle" font-size="9" fill="#fff">🚫 Hide topic</text>
+  <rect x="730" y="208" width="80" height="22" rx="5" fill="#4a9ef8" opacity="0.25"/>
+  <text x="770" y="223" text-anchor="middle" font-size="9" fill="#fff">🔖 Save</text>
+  <text x="482" y="246" font-size="8" fill="#9985cc">👍: boost category weight +0.1 · 👎: penalize item score · 🚫: suppress category 7 days</text>
+
+  <!-- Preference dashboard -->
+  <text x="472" y="272" font-size="10" fill="#4a9ef8" font-weight="bold">Preference Dashboard (/settings/personalization)</text>
+  <rect x="472" y="278" width="462" height="86" rx="7" fill="#1c1a38" stroke="#4a9ef8" stroke-width="1"/>
+
+  <text x="482" y="294" font-size="9" fill="#90c8ff" font-weight="bold">My Interests</text>
+  <rect x="482" y="300" width="80" height="16" rx="8" fill="#9b7cf4" opacity="0.5"/>
+  <text x="522" y="312" text-anchor="middle" font-size="8" fill="#fff">System Design ×</text>
+  <rect x="568" y="300" width="60" height="16" rx="8" fill="#3dbf8a" opacity="0.5"/>
+  <text x="598" y="312" text-anchor="middle" font-size="8" fill="#fff">Frontend ×</text>
+  <rect x="634" y="300" width="70" height="16" rx="8" fill="#e8924f" opacity="0.4"/>
+  <text x="669" y="312" text-anchor="middle" font-size="8" fill="#fff">Architecture ×</text>
+  <rect x="710" y="300" width="50" height="16" rx="8" fill="#9b7cf4" opacity="0.3" stroke="#9b7cf4" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="735" y="312" text-anchor="middle" font-size="8" fill="#9985cc">+ Add</text>
+
+  <text x="482" y="332" font-size="9" fill="#90c8ff" font-weight="bold">Suppressed Topics</text>
+  <rect x="482" y="338" width="70" height="16" rx="8" fill="#4a1a1a" stroke="#e8924f" stroke-width="1"/>
+  <text x="517" y="350" text-anchor="middle" font-size="8" fill="#e8924f">Crypto ×</text>
+
+  <text x="482" y="358" font-size="8" fill="#9985cc">Personalization strength slider: Off ——●—— Full (controls exploration ratio)</text>
+
+  <!-- BOTTOM: Signal weights + SLA table -->
+  <rect x="16" y="386" width="928" height="102" rx="10" fill="#151228" stroke="#9b7cf4" stroke-width="1.5"/>
+  <text x="480" y="406" text-anchor="middle" font-size="12" fill="#c0b0ff" font-weight="bold">Signal Weights · Decay · Latency Budget</text>
+
+  <!-- Signal weights table -->
+  <rect x="26" y="416" width="290" height="62" rx="5" fill="#9b7cf4" opacity="0.08" stroke="#9b7cf4" stroke-width="1"/>
+  <text x="171" y="430" text-anchor="middle" font-size="10" fill="#c0b0ff" font-weight="bold">Signal Weight Table</text>
+  <text x="32" y="444" font-size="9" fill="#3dbf8a">Save / Bookmark:   +0.5  (strong intent)</text>
+  <text x="32" y="457" font-size="9" fill="#3dbf8a">Dwell &gt;90s:         +0.3  (engaged read)</text>
+  <text x="32" y="470" font-size="9" fill="#9985cc">Click:              +0.1  (curiosity)</text>
+  <text x="32" y="483" font-size="9" fill="#e8924f">Not interested:    −1.0  (negative feedback)</text>
+
+  <rect x="330" y="416" width="290" height="62" rx="5" fill="#4a9ef8" opacity="0.07" stroke="#4a9ef8" stroke-width="1"/>
+  <text x="475" y="430" text-anchor="middle" font-size="10" fill="#90c8ff" font-weight="bold">Signal Decay (time-weighted)</text>
+  <text x="336" y="444" font-size="9" fill="#9985cc">Signals decay by e^(−λt) with λ = ln(2)/30d</text>
+  <text x="336" y="457" font-size="9" fill="#9985cc">Half-life 30 days: signal from 30d ago = 50% weight</text>
+  <text x="336" y="470" font-size="9" fill="#9985cc">Hard reset at 90 days (signal treated as cold)</text>
+  <text x="336" y="483" font-size="9" fill="#3dbf8a">Recency boost: items &lt;24h old +0.2 score</text>
+
+  <rect x="636" y="416" width="292" height="62" rx="5" fill="#e8924f" opacity="0.07" stroke="#e8924f" stroke-width="1"/>
+  <text x="782" y="430" text-anchor="middle" font-size="10" fill="#f5c080" font-weight="bold">Latency Budget</text>
+  <text x="642" y="444" font-size="9" fill="#3dbf8a">Feature lookup (Redis):      &lt;5 ms</text>
+  <text x="642" y="457" font-size="9" fill="#3dbf8a">ANN retrieval (FAISS):       &lt;20 ms</text>
+  <text x="642" y="470" font-size="9" fill="#e8924f">LightGBM scoring:            &lt;20 ms</text>
+  <text x="642" y="483" font-size="9" fill="#9985cc">Total P99:                   &lt;50 ms</text>
+</svg>

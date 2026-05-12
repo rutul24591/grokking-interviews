@@ -1,0 +1,98 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-hld-google-like-search-frontend",
+  title: "Design a Google-like Search Frontend",
+  description:
+    "Architecture for a Google-like search frontend: search box with instant autocomplete (debounced, keyboard navigable), query tokenization and spell correction display, SERP layout with organic results, rich snippets (Knowledge Panel, featured snippets, sitelinks), pagination versus infinite scroll, result ranking signals surfaced in UI, image search grid, news carousel, People Also Ask accordion, search refinement filters, and zero-result handling.",
+  category: "high-level-design",
+  subcategory: "search-discovery-systems",
+  slug: "google-like-search-frontend",
+  wordCount: 5000,
+  readingTime: 31,
+  lastUpdated: "2026-05-11",
+  tags: ["hld", "search", "serp", "autocomplete", "rich-snippets", "knowledge-panel", "spell-correction"],
+  relatedTopics: ["faceted-search-large-datasets", "search-ranking-experimentation-ui"],
+};
+
+export default function GoogleLikeSearchFrontendArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Problem Clarification</h2>
+        <p>A Google-like search frontend is the most performance-critical web interface in existence — Google's own data shows that a 100ms increase in SERP load time reduces searches by 0.2%. The frontend must handle an extremely fast search box (suggestions appear within 100ms of keystroke), a dense results page that includes heterogeneous content types (organic results, images, videos, knowledge panels, featured snippets, news carousels), and zero-latency perceived navigation (prefetching the top result, preloading the next page). Unlike most web applications where the backend is the performance bottleneck, the search frontend is heavily optimized at the browser rendering level: layout shift prevention (reserving space for rich snippets that load asynchronously), above-the-fold prioritization, and minimal JavaScript that could delay interactivity.</p>
+        <p>The design challenge is heterogeneity: a search for "Barack Obama" shows a Knowledge Panel (biographical data, images, social links) alongside organic results; a search for "python tutorial" shows a featured snippet at the top; a search for "weather" shows a weather widget; a search for "cats" shows an image grid. The frontend must handle all these result types with a layout system that composes arbitrary combinations of rich components without reflow. The autocomplete system must handle hundreds of concurrent users typing simultaneously, with suggestions derived from search logs, trending queries, and personalized history — all within a 100ms budget.</p>
+        <p><strong>Explicit scope:</strong> Search box with autocomplete, SERP layout with rich result types, Knowledge Panel, pagination, image search, and zero-result handling. Not in scope: the search indexing pipeline, PageRank computation, or ad serving infrastructure.</p>
+      </section>
+
+      <section>
+        <h2>Requirements</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Search box:</strong> Single-line text input at the top of every page. Autocomplete dropdown appears after the first keystroke (debounced 80ms) showing up to 10 suggestions: recent searches (from localStorage), trending queries, and search predictions. Keyboard navigation (arrow keys, Enter to select, Escape to dismiss). Voice search via Web Speech API.</li>
+          <li><strong>SERP layout:</strong> Results page with a two-column layout on desktop: main column (organic results, featured snippets, carousels) and right column (Knowledge Panel when available). Each organic result shows: title (blue link), URL breadcrumb, description snippet with query terms highlighted, and sitelinks for major domains. Rich result types: featured snippet (answer box at top), People Also Ask (expandable accordion), image grid, news carousel, video thumbnails, and local results map.</li>
+          <li><strong>Spell correction:</strong> "Did you mean: [corrected query]" banner above results when the query appears misspelled. "Showing results for [corrected]" when auto-corrected. "Search instead for [original]" link to bypass correction.</li>
+          <li><strong>Pagination:</strong> Paginated results (10 per page) with numbered pages up to page 10. Infinite scroll mode for image search. URL updates on page navigation (/?q=query&page=2) for shareability and browser back button support.</li>
+          <li><strong>Filters and refinements:</strong> Horizontal filter bar below the search box: All, Images, Videos, News, Shopping, Maps. Time filter (Any time, Past hour, Past 24 hours, Past week, Past year). Verbatim search (disable spell correction).</li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Autocomplete latency:</strong> Suggestions appear within 100ms of keystroke (80ms debounce + 20ms network budget from edge-cached suggestions API).</li>
+          <li><strong>SERP load time:</strong> Above-the-fold content (first 3 organic results) renders within 500ms. Full page including right-column Knowledge Panel within 1 second.</li>
+          <li><strong>Layout stability:</strong> Cumulative Layout Shift (CLS) below 0.1. Rich components that load asynchronously reserve their space via skeleton loaders with known dimensions.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>High-Level Architecture</h2>
+        <p>The search frontend is a server-rendered application (Next.js with SSR) where the initial SERP is rendered on the server using the search results from the Search API, enabling fast time-to-first-byte and good SEO. The page is rendered as a stream: the main column organic results are streamed first (available quickly from the search index), while the Knowledge Panel (which requires an additional entity lookup) streams in later and fills a reserved placeholder. The autocomplete is a client-side component that queries an Autocomplete Service (edge-deployed for low latency) and renders suggestions without a page navigation. Result click tracking is implemented via a redirect through a tracking endpoint (/url?q=resultUrl&position=1) that logs the click before redirecting to the destination, capturing SERP click-through data for relevance feedback.</p>
+      </section>
+
+      <section>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/google-like-search-frontend.svg"
+          alt="Google-like search frontend architecture showing search box with autocomplete (debounce 80ms → GET /api/autocomplete?q={partial} edge-cached CDN; suggestions: recent searches from localStorage + trending + personalized; keyboard nav: arrow keys Enter Escape; voice: Web Speech API → transcript → query; submit → navigate /?q={query}&page=1), SERP server rendering (Next.js SSR: GET /?q=query → Search API; streaming SSR: organic results stream first fast path; Knowledge Panel streams separately deferred; page HTML returned with above-fold content first; hydration: result links + accordion + carousels become interactive), rich result types (organic: title URL snippet sitelinks; featured snippet: answer box with source link pinned at top; People Also Ask: accordion chevron expand → lazy-load answer; image grid: 4-column masonry lazy-loaded; news carousel: horizontal scroll cards; Knowledge Panel: entity image infobox table social links; local results: embedded map iframe + business cards; video thumbnails: thumbnail + duration badge), layout stability (skeleton loaders: Knowledge Panel reserving 300px right column; featured snippet: 80px placeholder; no layout shift on async load; CLS &lt; 0.1), pagination (URL /?q=query&page=N; numbered pages 1-10 header/footer; image search: IntersectionObserver infinite scroll; prefetch: link rel=prefetch next page on hover; browser history: pushState on page change), click tracking (result link: href=/url?q={dest}&pos={n}&q={query}; server: log click_event {query position destination sessionId}; redirect to destination; dwell time: beacon on page unload after X seconds → relevance signal), spell correction (Showing results for: {corrected} link; Did you mean: {corrected}; Search instead for: {original} link; auto-correct transparent; verbatim filter: exact search without correction), zero-result handling (No results: show search tips; related searches suggestions; broader query link; spell correction attempt; trending in this category)."
+          caption="SSR streaming SERP (organic first, Knowledge Panel deferred), edge-cached autocomplete (&lt;100ms, localStorage recent + trending), rich result type composition (featured snippet, PAA accordion, image grid, carousels, Knowledge Panel), CLS prevention via skeleton placeholders, click tracking redirect, URL-driven pagination with prefetch, and spell-correction display logic"
+        />
+      </section>
+
+      <section>
+        <h2>Detailed Design</h2>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Autocomplete System</h3>
+        <p>The autocomplete dropdown is the highest-frequency UI interaction on the search page — every keystroke triggers a potential network request. The implementation: an 80ms debounce prevents request flooding (a user typing "javascript" at normal speed would fire 10 characters, but with 80ms debounce only 2–3 requests are sent). The request: GET /api/autocomplete?q={`{partial}`}&locale=en-US, served from an edge-deployed service (Cloudflare Workers or Lambda@Edge) that returns cached suggestions within 5–10ms. Suggestions are a merged set: the first 3 entries are recent searches from the user's localStorage (purely local, no network request), followed by 7 suggestions from the API. The API suggestions are a blend of trending queries (matching the typed prefix, ranked by global search frequency) and personalized predictions (if the user is logged in, weighted by their search history).</p>
+        <p>The dropdown renders as an absolutely-positioned overlay below the search box. Each suggestion row shows the suggestion text (with the typed portion in normal weight and the predicted completion in lighter weight), a search icon on the left, and an arrow icon that navigates to the search but also fills the search box with the suggestion text without submitting (for exploration). Keyboard navigation: ArrowDown/ArrowUp moves focus through suggestions (with focus looping); the currently focused suggestion fills the search box in real time (so the user can see what they'd search for); Enter on a focused suggestion submits that query; Escape dismisses the dropdown and returns focus to the input. Voice search: clicking the microphone icon starts recording via Web Speech API, shows a pulsing animation, and fills the search box with the transcript on recognition completion.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">SERP Layout and Streaming SSR</h3>
+        <p>The SERP is a two-column layout: the left/main column (approximately 65% width on desktop) contains the organic results and rich components (featured snippet, People Also Ask, carousels); the right column (approximately 35% width) contains the Knowledge Panel when available. The page is server-rendered with Next.js App Router using React Suspense streaming: the organic results are available quickly from the search index and are streamed as HTML within 200ms; the Knowledge Panel requires an entity lookup (a secondary query to the Knowledge Graph API) and streams into its placeholder after 400–800ms. The placeholder for the Knowledge Panel is a fixed-height skeleton loader (300px) that reserves the right column space, preventing layout shift when the panel content arrives.</p>
+        <p>Each organic result is a semantic HTML element (article tag) with three parts: the title (a link to the result URL via the tracking redirect), the breadcrumb URL display (showing the domain and path in green), and the snippet (2–3 lines of text from the result's content, with query terms bolded using &lt;strong&gt; tags). Sitelinks appear below major domain results as a grid of 4–6 sub-links to common pages on the domain. The rich result types are inserted into the organic result stream based on the result type annotations returned by the Search API — the frontend renders each result type based on a type field in the result object (type: "featured_snippet" | "people_also_ask" | "image_grid" | "news_carousel" | "organic").</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Knowledge Panel and Rich Snippets</h3>
+        <p>The Knowledge Panel is the most complex component on the SERP. It shows entity information (for queries about people, places, organizations, or concepts) in a structured panel: entity image, entity name and type, description (from Wikipedia or the entity database), a table of key facts (birthdate, occupation, nationality), and social links. The panel also shows "People also search for" — a carousel of related entities. The panel data comes from a separate Knowledge Graph API that is slower than the main search index, so the panel is loaded via React Suspense: the server starts rendering the SERP with an empty right column, makes the Knowledge Graph API call concurrently, and streams the panel HTML into the right column when the response arrives. The client-side hydration wires up the "People also search for" carousel with horizontal scroll behavior.</p>
+        <p>The People Also Ask (PAA) accordion is a vertical list of related questions. Each question row shows the question text and a chevron icon. On first click, the accordion expands to show the answer (loaded lazily — the answers are not in the initial HTML to keep page size small). After expanding one answer, new related questions are appended to the bottom of the accordion list, creating an infinite depth exploration pattern. The accordion state is managed client-side; navigating away and back with the browser's Back button restores the expanded state via sessionStorage.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Pagination and Navigation</h3>
+        <p>Search results are paginated at 10 results per page. The URL is the source of truth for the current page: /?q=query&page=2. Page navigation updates the URL using Next.js router.push(), which triggers a new server-side fetch and re-render of the SERP with the new page's results. The pagination control shows the current page number (highlighted) and surrounding pages (typically: 1 2 3 ... current-1 current current+1 ... 10). Hovering over a page number prefetches that page's results (using &lt;link rel="prefetch"&gt; or Next.js router.prefetch()), so clicking feels instant. Image search uses infinite scroll instead: an IntersectionObserver watches a sentinel element at the bottom of the image grid; when the sentinel is visible, the next page of images is fetched and appended. The browser URL updates as the user scrolls (using the History API replaceState), so the page can be bookmarked at any scroll depth.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Click Tracking and Result Analytics</h3>
+        <p>Every result click is tracked for relevance feedback. The tracking mechanism: result links point to /url?q=&#123;destination&#125;&amp;position=&#123;n&#125;&amp;query=&#123;queryEncoded&#125; rather than directly to the destination URL. The server receives this request, logs the click event (query, position, destination URL, session ID, timestamp) to a Kafka topic, and immediately HTTP redirects to the destination. The click event is consumed by the relevance feedback pipeline — a result that receives many clicks at position 1 with high dwell time (the user stayed on the destination for &gt;30 seconds) is a strong positive relevance signal. Low-position results with high click rates are candidates for rank promotion. Dwell time is measured using a beacon: the destination page sends a background request when the user navigates away (using the Beacon API: navigator.sendBeacon('/api/dwell', &#123; session, duration &#125;)), allowing measurement of how long the user found the result useful before returning to the SERP.</p>
+      </section>
+
+      <section>
+        <h2>Trade-offs and Considerations</h2>
+        <p>Client-side rendering versus SSR for SERP: a client-side rendered SERP would require the browser to download JavaScript, execute the search query API call, and render the results — adding 500ms–1s of delay compared to SSR where the server renders the HTML with search results already embedded. However, SSR requires a server round-trip on every search, while a CSR approach could cache the search UI bundle and only fetch result data. For a search engine (where result freshness and first-load performance are paramount), SSR is clearly superior. The SSR server also enables streaming, allowing above-the-fold results to reach the user before the page is fully rendered.</p>
+        <p>Featured snippet placement versus organic results: the featured snippet ("position zero") is intentionally placed above organic result 1, which reduces clicks on all organic results. This is controversial: featured snippets can answer the user's question entirely on the SERP (zero-click searches), which is good for user experience but bad for publishers whose content is being excerpted. The UX design decision — how much of the answer to show in the snippet versus requiring a click — is a significant product trade-off that affects both user engagement and publisher relationships. Most search engines now show a truncated excerpt (3–4 sentences) with a "More" link to encourage destination clicks.</p>
+      </section>
+
+      <section>
+        <h2>Summary</h2>
+        <p>A Google-like search frontend is built around SSR streaming (organic results first, Knowledge Panel deferred via React Suspense), an edge-cached autocomplete service (80ms debounce, 5–10ms edge latency, localStorage recent searches merged with API predictions), and a heterogeneous SERP layout system that composes rich result types (featured snippets, PAA accordions, image grids, news carousels, Knowledge Panels) without layout shift (skeleton placeholders reserve space before async content arrives). Click tracking uses redirect URLs to log query + position + destination before forwarding the user; dwell time is captured via Beacon API. Pagination uses URL state (?page=N) with hover-prefetch; image search uses IntersectionObserver infinite scroll with replaceState URL sync. Spell correction is surfaced as a "Showing results for X" banner with "Search instead for Y" escape hatch. Zero-result pages show related searches and query broadening suggestions. The defining performance constraint: every 100ms of SERP latency reduces searches — the entire architecture (streaming SSR, edge autocomplete, CLS prevention, result prefetch) is in service of this single metric.</p>
+      </section>
+    </ArticleLayout>
+  );
+}

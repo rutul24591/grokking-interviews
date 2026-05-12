@@ -1,0 +1,125 @@
+<svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Low-End Device Frontend (India Scale)</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="58" width="85" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="62" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Moto G4</text>
+  <text x="62" y="88" text-anchor="middle" font-size="9" fill="#edeaf5">2G/3G User</text>
+
+  <rect x="165" y="58" width="95" height="36" rx="7" fill="#2563eb"/>
+  <text x="212" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CDN Edge</text>
+  <text x="212" y="88" text-anchor="middle" font-size="9" fill="#dbeafe">Vary: ECT,Save-Data</text>
+
+  <rect x="330" y="58" width="105" height="36" rx="7" fill="#d97843"/>
+  <text x="382" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Origin Server</text>
+  <text x="382" y="88" text-anchor="middle" font-size="9" fill="#fef3c7">Build selector</text>
+
+  <rect x="505" y="58" width="100" height="36" rx="7" fill="#2f9d74"/>
+  <text x="555" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Service Worker</text>
+  <text x="555" y="88" text-anchor="middle" font-size="9" fill="#d1fae5">Cache-first</text>
+
+  <rect x="675" y="58" width="105" height="36" rx="7" fill="#7c3aed"/>
+  <text x="727" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">JS Engine</text>
+  <text x="727" y="88" text-anchor="middle" font-size="9" fill="#ede9fe">Snapdragon 450</text>
+
+  <!-- Lifelines -->
+  <line x1="62" y1="94" x2="62" y2="510" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="212" y1="94" x2="212" y2="510" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="382" y1="94" x2="382" y2="510" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="555" y1="94" x2="555" y2="510" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="727" y1="94" x2="727" y2="510" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- BAND A: Adaptive Build Selection -->
+  <rect x="14" y="104" width="872" height="16" rx="3" fill="#2563eb" opacity="0.2"/>
+  <text x="450" y="116" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="bold">PATH A — ADAPTIVE BUILD SELECTION (Client Hints: ECT + Save-Data)</text>
+
+  <line x1="62" y1="132" x2="202" y2="132" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="132" y="126" text-anchor="middle" font-size="9" fill="#374151">GET / Accept-CH: ECT, Save-Data</text>
+
+  <line x1="212" y1="140" x2="372" y2="140" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="292" y="134" text-anchor="middle" font-size="9" fill="#374151">ECT: 2g → select lite build (no images)</text>
+
+  <rect x="342" y="148" width="80" height="18" rx="4" fill="#d97843"/>
+  <text x="382" y="161" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">lite HTML</text>
+
+  <line x1="342" y1="176" x2="72" y2="176" stroke="#d97843" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="207" y="170" text-anchor="middle" font-size="9" fill="#374151">200 inline critical CSS ~14KB · no images · skeleton placeholders</text>
+
+  <!-- BAND B: Bundle Strategy -->
+  <rect x="14" y="188" width="872" height="16" rx="3" fill="#7c3aed" opacity="0.15"/>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="#5b21b6" font-weight="bold">PATH B — JS BUNDLE &lt;100KB GZIP (route split + defer third-party)</text>
+
+  <line x1="72" y1="218" x2="717" y2="218" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="394" y="212" text-anchor="middle" font-size="9" fill="#374151">parse + execute: router + critical component only (100KB gzip = ~300KB raw)</text>
+
+  <rect x="687" y="226" width="80" height="18" rx="4" fill="#7c3aed"/>
+  <text x="727" y="239" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">TTI &lt;5s</text>
+
+  <line x1="717" y1="254" x2="72" y2="254" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="394" y="248" text-anchor="middle" font-size="9" fill="#374151">analytics + chat deferred via requestIdleCallback after TTI · polyfills removed (ES2017+)</text>
+
+  <!-- BAND C: Service Worker Cache -->
+  <rect x="14" y="268" width="872" height="16" rx="3" fill="#2f9d74" opacity="0.2"/>
+  <text x="450" y="280" text-anchor="middle" font-size="9" fill="#065f46" font-weight="bold">PATH C — SERVICE WORKER (cache-first app shell + stale-while-revalidate API)</text>
+
+  <line x1="62" y1="298" x2="545" y2="298" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="303" y="292" text-anchor="middle" font-size="9" fill="#374151">2nd visit: fetch /  (SW intercepts)</text>
+
+  <rect x="515" y="306" width="80" height="18" rx="4" fill="#2f9d74"/>
+  <text x="555" y="319" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">cache-first</text>
+
+  <line x1="545" y1="334" x2="72" y2="334" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="308" y="328" text-anchor="middle" font-size="9" fill="#374151">instant stale HTML from cache — 0ms latency on 2G (vs 5–10s spinner)</text>
+
+  <line x1="555" y1="344" x2="372" y2="344" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="463" y="338" text-anchor="middle" font-size="9" fill="#374151">background revalidate API</text>
+
+  <!-- BAND D: Image Delivery -->
+  <rect x="14" y="356" width="872" height="16" rx="3" fill="#e05252" opacity="0.15"/>
+  <text x="450" y="368" text-anchor="middle" font-size="9" fill="#9f1239" font-weight="bold">PATH D — IMAGE DELIVERY (WebP srcset + lazy loading + 50% quality JPEG on 3G)</text>
+
+  <line x1="62" y1="388" x2="202" y2="388" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="132" y="382" text-anchor="middle" font-size="9" fill="#374151">GET img-320.webp (3G, below fold)</text>
+
+  <rect x="172" y="396" width="80" height="18" rx="4" fill="#2563eb"/>
+  <text x="212" y="409" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">picture tag</text>
+
+  <line x1="202" y1="424" x2="72" y2="424" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="137" y="418" text-anchor="middle" font-size="9" fill="#374151">WebP fallback JPEG · loading=lazy · decoding=async</text>
+
+  <line x1="202" y1="432" x2="372" y2="432" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="287" y="443" text-anchor="middle" font-size="9" fill="#374151">2G: omit images → colored placeholder div</text>
+
+  <!-- Metrics footer -->
+  <rect x="14" y="460" width="872" height="46" rx="6" fill="#1a1822"/>
+  <text x="85" y="478" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Initial JS</text>
+  <text x="85" y="494" text-anchor="middle" font-size="12" fill="white" font-weight="700">&lt;100KB gzip</text>
+
+  <text x="240" y="478" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">TTI Target</text>
+  <text x="240" y="494" text-anchor="middle" font-size="12" fill="white" font-weight="700">&lt;5s 3G</text>
+
+  <text x="420" y="478" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">FCP Target</text>
+  <text x="420" y="494" text-anchor="middle" font-size="12" fill="white" font-weight="700">&lt;2s SSR</text>
+
+  <text x="610" y="478" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Image Savings</text>
+  <text x="610" y="494" text-anchor="middle" font-size="12" fill="white" font-weight="700">60% WebP</text>
+
+  <text x="800" y="478" text-anchor="middle" font-size="9" fill="#ddd6fe" font-weight="600">SW Cache Hit</text>
+  <text x="800" y="494" text-anchor="middle" font-size="12" fill="white" font-weight="700">0ms 2nd visit</text>
+</svg>

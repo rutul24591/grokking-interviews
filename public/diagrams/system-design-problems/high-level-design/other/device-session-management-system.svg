@@ -1,0 +1,171 @@
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="960" height="580" fill="#f5f3fb"/>
+  <text x="480" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1530">Device / Session Management System</text>
+  <text x="480" y="48" text-anchor="middle" font-size="11" fill="#6d5bd0">Token lifecycle · Device registry · Multi-device UI · Suspicious login · Revocation · GDPR</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c84444"/>
+    </marker>
+    <marker id="arr-b" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2266c8"/>
+    </marker>
+  </defs>
+
+  <!-- ══════════ ROW 1: Session Issuance Flow ══════════ -->
+  <!-- Actors: lifeline sequence diagram style -->
+  <rect x="14" y="60" width="932" height="20" rx="4" fill="#6d5bd0" opacity="0.14"/>
+  <text x="480" y="74" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold" letter-spacing="1">SESSION ISSUANCE FLOW — Login → Tokens issued → Stored in Redis + PostgreSQL</text>
+
+  <!-- Actor boxes -->
+  <rect x="22" y="88" width="90" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="67" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Client</text>
+  <text x="67" y="118" text-anchor="middle" font-size="9" fill="#e0daff">Browser / App</text>
+
+  <rect x="160" y="88" width="100" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="210" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Auth Service</text>
+  <text x="210" y="118" text-anchor="middle" font-size="9" fill="#e0daff">verifies creds</text>
+
+  <rect x="316" y="88" width="110" height="40" rx="8" fill="#9b7cf4"/>
+  <text x="371" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Session Service</text>
+  <text x="371" y="118" text-anchor="middle" font-size="9" fill="#e8e0ff">lifecycle owner</text>
+
+  <rect x="482" y="88" width="100" height="40" rx="8" fill="#2266c8"/>
+  <text x="532" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Token Service</text>
+  <text x="532" y="118" text-anchor="middle" font-size="9" fill="#cce0ff">RS256 JWT</text>
+
+  <rect x="638" y="88" width="90" height="40" rx="8" fill="#d97843"/>
+  <text x="683" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Redis</text>
+  <text x="683" y="118" text-anchor="middle" font-size="9" fill="#fff5e8">fast path</text>
+
+  <rect x="784" y="88" width="96" height="40" rx="8" fill="#2f9d74"/>
+  <text x="832" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">PostgreSQL</text>
+  <text x="832" y="118" text-anchor="middle" font-size="9" fill="#d0ffe8">durable store</text>
+
+  <!-- Lifelines -->
+  <line x1="67" y1="128" x2="67" y2="216" stroke="#c8c0e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="210" y1="128" x2="210" y2="216" stroke="#c8c0e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="371" y1="128" x2="371" y2="216" stroke="#c8c0e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="532" y1="128" x2="532" y2="216" stroke="#c8c0e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="683" y1="128" x2="683" y2="216" stroke="#c8c0e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="832" y1="128" x2="832" y2="216" stroke="#c8c0e8" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- Step 1 -->
+  <line x1="67" y1="144" x2="200" y2="144" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="133" y="139" text-anchor="middle" font-size="9" fill="#333">1. POST /login (creds + deviceId)</text>
+
+  <!-- Step 2 -->
+  <line x1="210" y1="158" x2="361" y2="158" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="285" y="153" text-anchor="middle" font-size="9" fill="#333">2. creds valid → create session</text>
+
+  <!-- Step 3 -->
+  <line x1="371" y1="172" x2="522" y2="172" stroke="#9b7cf4" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="445" y="167" text-anchor="middle" font-size="9" fill="#333">3. sign JWT (15min, RS256)</text>
+
+  <!-- Step 4 -->
+  <line x1="371" y1="186" x2="673" y2="186" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="520" y="181" text-anchor="middle" font-size="9" fill="#333">4. SET session:{hash(rt)} TTL 30d</text>
+
+  <!-- Step 5 -->
+  <line x1="371" y1="200" x2="822" y2="200" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="595" y="195" text-anchor="middle" font-size="9" fill="#333">5. INSERT sessions table (durable)</text>
+
+  <!-- Step 6 — response -->
+  <line x1="532" y1="214" x2="77" y2="214" stroke="#2266c8" stroke-width="2" marker-end="url(#arr-b)"/>
+  <text x="300" y="209" text-anchor="middle" font-size="9" fill="#2266c8" font-weight="bold">6. access_token body + refresh_token HttpOnly cookie</text>
+
+  <!-- ══════════ ROW 2: Refresh + Rotation ══════════ -->
+  <rect x="14" y="226" width="932" height="20" rx="4" fill="#d97843" opacity="0.12"/>
+  <text x="480" y="240" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold" letter-spacing="1">TOKEN REFRESH + ROTATION — Redis fast path · PostgreSQL fallback · Reuse detection</text>
+
+  <rect x="22" y="254" width="280" height="78" rx="8" fill="#d97843"/>
+  <text x="162" y="271" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">POST /auth/refresh Flow</text>
+  <text x="162" y="285" text-anchor="middle" font-size="9" fill="#fff5e8">1. Read refresh token from HttpOnly cookie</text>
+  <text x="162" y="298" text-anchor="middle" font-size="9" fill="#fff5e8">2. Hash → lookup Redis O(1) &lt;5ms</text>
+  <text x="162" y="311" text-anchor="middle" font-size="9" fill="#fff5e8">3. Valid: rotate token (atomic swap Lua)</text>
+  <text x="162" y="323" text-anchor="middle" font-size="8" fill="#ffe0c0">Redis miss → PostgreSQL fallback (100ms)</text>
+
+  <rect x="318" y="254" width="280" height="78" rx="8" fill="#fff" stroke="#c84444"/>
+  <text x="458" y="271" font-size="10" fill="#c84444" font-weight="bold">Refresh Token Reuse Detection</text>
+  <text x="334" y="286" font-size="9" fill="#333">Old token used (already rotated) → THEFT SIGNAL</text>
+  <text x="334" y="300" font-size="9" fill="#c84444" font-weight="bold">→ Revoke ALL sessions for this userId immediately</text>
+  <text x="334" y="314" font-size="9" fill="#333">15-min tombstone on rotated tokens prevents race</text>
+  <text x="334" y="326" font-size="8" fill="#888">SHA-256 hash stored (never plaintext) in Redis + PG</text>
+
+  <rect x="614" y="254" width="318" height="78" rx="8" fill="#fff" stroke="#c8c0e8"/>
+  <text x="630" y="271" font-size="10" fill="#6d5bd0" font-weight="bold">Token Architecture</text>
+  <text x="630" y="286" font-size="9" fill="#333">Access Token: JWT · RS256 · 15min expiry</text>
+  <text x="630" y="300" font-size="9" fill="#333">  → verified locally (RSA public key) · no DB lookup</text>
+  <text x="630" y="314" font-size="9" fill="#333">Refresh Token: 256-bit random · 30d · SHA-256 hashed</text>
+  <text x="630" y="326" font-size="8" fill="#888">  HttpOnly Secure SameSite=Strict cookie · never in JS</text>
+
+  <!-- ══════════ ROW 3: Device Registry + Suspicious Login ══════════ -->
+  <rect x="14" y="346" width="932" height="20" rx="4" fill="#c84444" opacity="0.10"/>
+  <text x="480" y="360" text-anchor="middle" font-size="10" fill="#c84444" font-weight="bold" letter-spacing="1">DEVICE REGISTRY + SUSPICIOUS LOGIN DETECTION</text>
+
+  <!-- Device Registry -->
+  <rect x="22" y="374" width="240" height="90" rx="8" fill="#2266c8"/>
+  <text x="142" y="392" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Device Registry</text>
+  <text x="142" y="406" text-anchor="middle" font-size="9" fill="#cce0ff">deviceId: localStorage UUID (primary)</text>
+  <text x="142" y="419" text-anchor="middle" font-size="9" fill="#cce0ff">  → UA+screen+tz hash (fallback)</text>
+  <text x="142" y="432" text-anchor="middle" font-size="9" fill="#cce0ff">device_name: inferred UA → editable</text>
+  <text x="142" y="445" text-anchor="middle" font-size="9" fill="#cce0ff">fields: last_active · IP · geo · status</text>
+  <text x="142" y="456" text-anchor="middle" font-size="8" fill="#aaccff">max 5 sessions: oldest evicted (Lua atomic)</text>
+
+  <!-- Risk scorer -->
+  <rect x="278" y="374" width="308" height="90" rx="8" fill="#c84444"/>
+  <text x="432" y="392" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Suspicious Login Risk Scorer</text>
+  <!-- Risk table -->
+  <text x="290" y="407" font-size="9" fill="#ffe0e0">New device fingerprint</text>
+  <text x="540" y="407" text-anchor="end" font-size="9" fill="#fff" font-weight="bold">+30 pts</text>
+  <text x="290" y="420" font-size="9" fill="#ffe0e0">New country (not seen 90d)</text>
+  <text x="540" y="420" text-anchor="end" font-size="9" fill="#fff" font-weight="bold">+20 pts</text>
+  <text x="290" y="433" font-size="9" fill="#ffe0e0">Tor exit node IP</text>
+  <text x="540" y="433" text-anchor="end" font-size="9" fill="#fff" font-weight="bold">+50 pts</text>
+  <text x="290" y="446" font-size="9" fill="#ffe0e0">Impossible travel (&gt;5000km, &lt;1h)</text>
+  <text x="540" y="446" text-anchor="end" font-size="9" fill="#fff" font-weight="bold">+60 pts</text>
+  <text x="290" y="458" font-size="8" fill="#ffb0b0">LOW ≤30 → proceed · MED 31–60 → notify · HIGH 61+ → email OTP required</text>
+
+  <!-- Multi-device UI -->
+  <rect x="602" y="374" width="330" height="90" rx="8" fill="#fff" stroke="#c8c0e8"/>
+  <text x="618" y="392" font-size="10" fill="#6d5bd0" font-weight="bold">Multi-Device Management UI</text>
+  <text x="618" y="407" font-size="9" fill="#333">Settings page: device list (name · location · last active)</text>
+  <text x="618" y="421" font-size="9" fill="#2f9d74">Per-device Revoke button · current device highlighted</text>
+  <text x="618" y="435" font-size="9" fill="#c84444">"Log out all other devices" → batch Redis delete</text>
+  <text x="618" y="449" font-size="9" fill="#333">Session audit log: IP · timestamp · action (immutable)</text>
+  <text x="618" y="460" font-size="8" fill="#888">User editable device names stored in device record</text>
+
+  <!-- ══════════ ROW 4: Revocation + GDPR ══════════ -->
+  <rect x="14" y="476" width="932" height="20" rx="4" fill="#2f9d74" opacity="0.12"/>
+  <text x="480" y="490" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold" letter-spacing="1">REVOCATION + GDPR COMPLIANCE</text>
+
+  <!-- Normal revocation -->
+  <rect x="22" y="506" width="240" height="62" rx="8" fill="#0f1e10"/>
+  <text x="142" y="523" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Normal Revocation</text>
+  <text x="142" y="537" text-anchor="middle" font-size="9" fill="#90c890">Delete Redis key + mark PG revoked</text>
+  <text x="142" y="550" text-anchor="middle" font-size="9" fill="#90c890">Effective at next refresh ≤15 min</text>
+  <text x="142" y="561" text-anchor="middle" font-size="8" fill="#608060">Access token still valid until 15min expiry</text>
+
+  <!-- Immediate revocation -->
+  <rect x="278" y="506" width="240" height="62" rx="8" fill="#c84444"/>
+  <text x="398" y="523" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Immediate Revocation (Compromise)</text>
+  <text x="398" y="537" text-anchor="middle" font-size="9" fill="#ffe0e0">SET user_revoked:{userId} TTL 15min</text>
+  <text x="398" y="550" text-anchor="middle" font-size="9" fill="#ffe0e0">Every API request: Redis GET check +&lt;1ms</text>
+  <text x="398" y="561" text-anchor="middle" font-size="8" fill="#ffb0b0">revokedAt &gt; token.iat → 401 · key auto-expires</text>
+
+  <!-- GDPR -->
+  <rect x="534" y="506" width="398" height="62" rx="8" fill="#fff" stroke="#b8d8c8"/>
+  <text x="550" y="523" font-size="10" fill="#2f9d74" font-weight="bold">GDPR Deletion Cascade (account delete request)</text>
+  <text x="550" y="537" font-size="9" fill="#333">1. PG sessions + audit log → sync delete &lt;1s</text>
+  <text x="550" y="550" font-size="9" fill="#333">2. Redis session keys → sync delete &lt;1s</text>
+  <text x="550" y="561" font-size="9" fill="#333">3. Kafka: userId tombstone to deletion_requests · skipped in pipeline</text>
+</svg>

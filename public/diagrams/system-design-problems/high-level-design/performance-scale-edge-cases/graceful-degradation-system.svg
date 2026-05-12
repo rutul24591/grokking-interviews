@@ -1,0 +1,130 @@
+<svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Graceful Degradation System</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="58" width="80" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="60" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">React UI</text>
+  <text x="60" y="88" text-anchor="middle" font-size="9" fill="#edeaf5">component tree</text>
+
+  <rect x="165" y="58" width="95" height="36" rx="7" fill="#2f9d74"/>
+  <text x="212" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Circuit Breaker</text>
+  <text x="212" y="88" text-anchor="middle" font-size="9" fill="#d1fae5">per dependency</text>
+
+  <rect x="330" y="58" width="95" height="36" rx="7" fill="#2563eb"/>
+  <text x="377" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">API Service</text>
+  <text x="377" y="88" text-anchor="middle" font-size="9" fill="#dbeafe">recommendations</text>
+
+  <rect x="500" y="58" width="90" height="36" rx="7" fill="#d97843"/>
+  <text x="545" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Error Boundary</text>
+  <text x="545" y="88" text-anchor="middle" font-size="9" fill="#fef3c7">zone isolation</text>
+
+  <rect x="660" y="58" width="100" height="36" rx="7" fill="#7c3aed"/>
+  <text x="710" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Health Check</text>
+  <text x="710" y="88" text-anchor="middle" font-size="9" fill="#ede9fe">/api/health 30s</text>
+
+  <rect x="820" y="58" width="60" height="36" rx="7" fill="#be123c"/>
+  <text x="850" y="74" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Flags</text>
+  <text x="850" y="88" text-anchor="middle" font-size="9" fill="#fecdd3">LaunchDarkly</text>
+
+  <!-- Lifelines -->
+  <line x1="60" y1="94" x2="60" y2="510" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="212" y1="94" x2="212" y2="510" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="377" y1="94" x2="377" y2="510" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="545" y1="94" x2="545" y2="510" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="710" y1="94" x2="710" y2="510" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="850" y1="94" x2="850" y2="510" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- BAND A: Healthy path -->
+  <rect x="14" y="104" width="872" height="16" rx="3" fill="#2f9d74" opacity="0.2"/>
+  <text x="450" y="116" text-anchor="middle" font-size="9" fill="#065f46" font-weight="bold">PATH A — HEALTHY STATE (circuit CLOSED, requests pass through)</text>
+
+  <line x1="60" y1="132" x2="202" y2="132" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="131" y="126" text-anchor="middle" font-size="9" fill="#374151">fetch recommendations</text>
+
+  <rect x="172" y="140" width="80" height="18" rx="4" fill="#2f9d74"/>
+  <text x="212" y="153" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">CLOSED ✓</text>
+
+  <line x1="212" y1="168" x2="367" y2="168" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="289" y="162" text-anchor="middle" font-size="9" fill="#374151">pass-through to API</text>
+
+  <line x1="367" y1="182" x2="70" y2="182" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="218" y="176" text-anchor="middle" font-size="9" fill="#374151">200 data → render full recommendations panel</text>
+
+  <!-- BAND B: Circuit opens -->
+  <rect x="14" y="196" width="872" height="16" rx="3" fill="#e05252" opacity="0.15"/>
+  <text x="450" y="208" text-anchor="middle" font-size="9" fill="#9f1239" font-weight="bold">PATH B — CIRCUIT OPENS (5 errors/10s → OPEN state → instant fallback)</text>
+
+  <line x1="367" y1="228" x2="202" y2="228" stroke="#e05252" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="284" y="222" text-anchor="middle" font-size="9" fill="#374151">5× 500 error in 10s window</text>
+
+  <rect x="172" y="236" width="80" height="18" rx="4" fill="#e05252"/>
+  <text x="212" y="249" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">OPEN ✗</text>
+
+  <line x1="60" y1="266" x2="202" y2="266" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="131" y="260" text-anchor="middle" font-size="9" fill="#374151">next fetch attempt</text>
+
+  <line x1="202" y1="280" x2="70" y2="280" stroke="#e05252" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="131" y="274" text-anchor="middle" font-size="9" fill="#374151">CircuitOpenError — no network call → stale cache fallback</text>
+
+  <!-- BAND C: Error boundary isolation -->
+  <rect x="14" y="294" width="872" height="16" rx="3" fill="#d97843" opacity="0.2"/>
+  <text x="450" y="306" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">PATH C — ERROR BOUNDARY (render error caught → fallback UI, parent unaffected)</text>
+
+  <line x1="60" y1="324" x2="535" y2="324" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="297" y="318" text-anchor="middle" font-size="9" fill="#374151">RecommendationPanel throws during render</text>
+
+  <rect x="505" y="332" width="80" height="18" rx="4" fill="#d97843"/>
+  <text x="545" y="345" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">catches error</text>
+
+  <line x1="535" y1="360" x2="70" y2="360" stroke="#d97843" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="302" y="354" text-anchor="middle" font-size="9" fill="#374151">fallback: grey placeholder cards → ProductListing unaffected</text>
+
+  <!-- BAND D: Health check pre-degradation -->
+  <rect x="14" y="374" width="872" height="16" rx="3" fill="#7c3aed" opacity="0.15"/>
+  <text x="450" y="386" text-anchor="middle" font-size="9" fill="#5b21b6" font-weight="bold">PATH D — HEALTH CHECK + FEATURE FLAG pre-emptive degradation</text>
+
+  <line x1="60" y1="404" x2="700" y2="404" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="380" y="398" text-anchor="middle" font-size="9" fill="#374151">GET /api/health (every 30s)</text>
+
+  <rect x="660" y="412" width="100" height="18" rx="4" fill="#7c3aed"/>
+  <text x="710" y="425" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">search: slow</text>
+
+  <line x1="700" y1="440" x2="202" y2="440" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="451" y="434" text-anchor="middle" font-size="9" fill="#374151">pre-open search circuit before user sees errors</text>
+
+  <line x1="840" y1="404" x2="70" y2="452" stroke="#be123c" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="455" y="460" text-anchor="middle" font-size="9" fill="#374151">disable_recommendations=true flag → component returns null instantly</text>
+
+  <!-- Metrics footer -->
+  <rect x="14" y="472" width="872" height="46" rx="6" fill="#1a1822"/>
+  <text x="80" y="490" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">CB Threshold</text>
+  <text x="80" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">5 err / 10s</text>
+
+  <text x="240" y="490" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Cooldown</text>
+  <text x="240" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">30s → Half-Open</text>
+
+  <text x="420" y="490" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Fallback Tiers</text>
+  <text x="420" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">cache→static→hide</text>
+
+  <text x="610" y="490" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Health Poll</text>
+  <text x="610" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">30s interval</text>
+
+  <text x="800" y="490" text-anchor="middle" font-size="9" fill="#ddd6fe" font-weight="600">Flag Disable</text>
+  <text x="800" y="506" text-anchor="middle" font-size="12" fill="white" font-weight="700">no deploy</text>
+</svg>

@@ -1,0 +1,209 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1020"/>
+      <stop offset="100%" stop-color="#101828"/>
+    </linearGradient>
+    <linearGradient id="purple-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9b7cf4"/>
+      <stop offset="100%" stop-color="#6d5bd0"/>
+    </linearGradient>
+    <linearGradient id="green-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3dbf8a"/>
+      <stop offset="100%" stop-color="#2f9d74"/>
+    </linearGradient>
+    <linearGradient id="amber-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8924f"/>
+      <stop offset="100%" stop-color="#d97843"/>
+    </linearGradient>
+    <linearGradient id="blue-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a9ef8"/>
+      <stop offset="100%" stop-color="#2266c8"/>
+    </linearGradient>
+    <filter id="glow-p">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-g">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-b">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9b7cf4"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3dbf8a"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e8924f"/>
+    </marker>
+    <marker id="arr-b" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a9ef8"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#bg-grad)"/>
+  <!-- grid -->
+  <g opacity="0.05">
+    <line x1="0" y1="60" x2="960" y2="60" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="120" x2="960" y2="120" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="180" x2="960" y2="180" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="240" x2="960" y2="240" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="300" x2="960" y2="300" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="360" x2="960" y2="360" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="420" x2="960" y2="420" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="0" y1="480" x2="960" y2="480" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="120" y1="0" x2="120" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="240" y1="0" x2="240" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="360" y1="0" x2="360" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="480" y1="0" x2="480" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+    <line x1="840" y1="0" x2="840" y2="540" stroke="#9b7cf4" stroke-width="1"/>
+  </g>
+
+  <text x="480" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#e8e4ff">User Personalization Engine UI — Architecture</text>
+  <text x="480" y="50" text-anchor="middle" font-size="11" fill="#8b7fcf">Signal ingestion · Feature store · Ranking model · UI surface injection · A/B layer</text>
+
+  <!-- TOP BAND: Signal pipeline -->
+  <rect x="16" y="62" width="928" height="26" rx="6" fill="#6d5bd0" opacity="0.2"/>
+  <text x="480" y="79" text-anchor="middle" font-size="11" fill="#c0b0ff" font-weight="bold" letter-spacing="1">SIGNAL INGESTION PIPELINE (client → feature store)</text>
+
+  <!-- Signal sources → pipeline -->
+  <rect x="24" y="96" width="108" height="50" rx="7" fill="url(#purple-grad)" filter="url(#glow-p)"/>
+  <text x="78" y="114" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Behavioral Events</text>
+  <text x="78" y="130" text-anchor="middle" font-size="9" fill="#ddd0ff">click · dwell · scroll · search</text>
+
+  <line x1="132" y1="121" x2="154" y2="121" stroke="#9b7cf4" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="154" y="96" width="108" height="50" rx="7" fill="#151228" stroke="#9b7cf4" stroke-width="1.5"/>
+  <text x="208" y="114" text-anchor="middle" font-size="10" fill="#c0b0ff" font-weight="bold">Event Bus</text>
+  <text x="208" y="130" text-anchor="middle" font-size="9" fill="#9985cc">Kafka · batched · deduped</text>
+
+  <line x1="262" y1="121" x2="284" y2="121" stroke="#9b7cf4" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="284" y="96" width="118" height="50" rx="7" fill="#151228" stroke="#4a9ef8" stroke-width="1.5"/>
+  <text x="343" y="114" text-anchor="middle" font-size="10" fill="#4a9ef8" font-weight="bold">Feature Pipeline</text>
+  <text x="343" y="130" text-anchor="middle" font-size="9" fill="#7ab0e8">Spark · Flink streaming</text>
+
+  <line x1="402" y1="121" x2="424" y2="121" stroke="#4a9ef8" stroke-width="2" marker-end="url(#arr-b)"/>
+
+  <rect x="424" y="96" width="118" height="50" rx="7" fill="#151228" stroke="#4a9ef8" stroke-width="1.5"/>
+  <text x="483" y="114" text-anchor="middle" font-size="10" fill="#4a9ef8" font-weight="bold">Feature Store</text>
+  <text x="483" y="130" text-anchor="middle" font-size="9" fill="#7ab0e8">Redis (online) · S3 (offline)</text>
+
+  <line x1="542" y1="121" x2="564" y2="121" stroke="#3dbf8a" stroke-width="2" marker-end="url(#arr-g)"/>
+
+  <rect x="564" y="96" width="118" height="50" rx="7" fill="#151228" stroke="#3dbf8a" stroke-width="1.5"/>
+  <text x="623" y="114" text-anchor="middle" font-size="10" fill="#3dbf8a" font-weight="bold">Ranking Model</text>
+  <text x="623" y="130" text-anchor="middle" font-size="9" fill="#7dd4b0">LightGBM · ONNX · &lt;50ms</text>
+
+  <line x1="682" y1="121" x2="704" y2="121" stroke="#3dbf8a" stroke-width="2" marker-end="url(#arr-g)"/>
+
+  <rect x="704" y="96" width="118" height="50" rx="7" fill="#151228" stroke="#e8924f" stroke-width="1.5"/>
+  <text x="763" y="114" text-anchor="middle" font-size="10" fill="#e8924f" font-weight="bold">Personalization API</text>
+  <text x="763" y="130" text-anchor="middle" font-size="9" fill="#f0b87e">ranked slots · fallback</text>
+
+  <line x1="822" y1="121" x2="844" y2="121" stroke="#e8924f" stroke-width="2" marker-end="url(#arr-o)"/>
+
+  <rect x="844" y="96" width="100" height="50" rx="7" fill="url(#green-grad)" filter="url(#glow-g)"/>
+  <text x="894" y="114" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">UI Surfaces</text>
+  <text x="894" y="130" text-anchor="middle" font-size="9" fill="#c5f0de">feed · hero · sidebar</text>
+
+  <!-- DIVIDER -->
+  <line x1="16" y1="162" x2="944" y2="162" stroke="#9b7cf4" stroke-width="1" stroke-dasharray="6,4" opacity="0.35"/>
+  <text x="480" y="178" text-anchor="middle" font-size="11" fill="#e8924f" font-weight="bold" letter-spacing="1">USER PROFILE · FEATURE STORE · RANKING · A/B LAYER</text>
+
+  <!-- LEFT: User Profile -->
+  <rect x="16" y="188" width="290" height="226" rx="10" fill="#151228" stroke="#9b7cf4" stroke-width="1.5"/>
+  <rect x="16" y="188" width="290" height="28" rx="10" fill="#6d5bd0" opacity="0.28"/>
+  <text x="161" y="207" text-anchor="middle" font-size="12" fill="#c0b0ff" font-weight="bold">User Profile Model</text>
+
+  <text x="26" y="230" font-size="10" fill="#9985cc" font-weight="bold">Explicit Signals</text>
+  <rect x="26" y="236" width="270" height="38" rx="5" fill="#9b7cf4" opacity="0.1" stroke="#9b7cf4" stroke-width="1"/>
+  <text x="26" y="250" font-size="9" fill="#c0b0ff">  • Explicit ratings / likes / saves / follows</text>
+  <text x="26" y="264" font-size="9" fill="#c0b0ff">  • Preference settings (topics, content types)</text>
+
+  <text x="26" y="288" font-size="10" fill="#3dbf8a" font-weight="bold">Implicit Signals</text>
+  <rect x="26" y="294" width="270" height="54" rx="5" fill="#3dbf8a" opacity="0.07" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="26" y="308" font-size="9" fill="#7dd4b0">  • Dwell time per item (sec, rolling 30d)</text>
+  <text x="26" y="322" font-size="9" fill="#7dd4b0">  • Click-through rate per category</text>
+  <text x="26" y="336" font-size="9" fill="#7dd4b0">  • Scroll depth · share · re-open frequency</text>
+
+  <text x="26" y="362" font-size="10" fill="#4a9ef8" font-weight="bold">Context Features</text>
+  <rect x="26" y="368" width="270" height="38" rx="5" fill="#4a9ef8" opacity="0.07" stroke="#4a9ef8" stroke-width="1"/>
+  <text x="26" y="382" font-size="9" fill="#90c8ff">  • Time of day · day of week · device</text>
+  <text x="26" y="396" font-size="9" fill="#90c8ff">  • Location (coarse) · session recency</text>
+
+  <!-- CENTER: Feature Store + Ranking -->
+  <rect x="322" y="188" width="316" height="226" rx="10" fill="#151228" stroke="#4a9ef8" stroke-width="1.5"/>
+  <rect x="322" y="188" width="316" height="28" rx="10" fill="#4a9ef8" opacity="0.2"/>
+  <text x="480" y="207" text-anchor="middle" font-size="12" fill="#90c8ff" font-weight="bold">Feature Store + Ranking Model</text>
+
+  <text x="332" y="228" font-size="10" fill="#6090b0" font-weight="bold">Feature Lookup (&lt;5ms)</text>
+  <rect x="332" y="234" width="296" height="44" rx="5" fill="#4a9ef8" opacity="0.08" stroke="#4a9ef8" stroke-width="1"/>
+  <text x="332" y="248" font-size="9" fill="#90c8ff">Online store (Redis): user embedding, recent CTR</text>
+  <text x="332" y="262" font-size="9" fill="#90c8ff">Item features (Redis): category, age, popularity score</text>
+  <text x="332" y="274" font-size="9" fill="#4a9ef8">Offline store (S3/Hive): long-horizon interest vectors</text>
+
+  <text x="332" y="296" font-size="10" fill="#3dbf8a" font-weight="bold">Two-Stage Ranking</text>
+  <rect x="332" y="302" width="296" height="56" rx="5" fill="#3dbf8a" opacity="0.07" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="332" y="316" font-size="9" fill="#7dd4b0">Stage 1 — Candidate retrieval:</text>
+  <text x="332" y="329" font-size="9" fill="#9985cc">  ANN (FAISS) on user embedding → top 500 items</text>
+  <text x="332" y="342" font-size="9" fill="#7dd4b0">Stage 2 — Precision ranking:</text>
+  <text x="332" y="355" font-size="9" fill="#9985cc">  LightGBM scores each candidate → top K returned</text>
+
+  <text x="332" y="377" font-size="10" fill="#e8924f" font-weight="bold">Diversity + Freshness Boosts</text>
+  <rect x="332" y="383" width="296" height="24" rx="4" fill="#e8924f" opacity="0.08" stroke="#e8924f" stroke-width="1"/>
+  <text x="480" y="395" text-anchor="middle" font-size="9" fill="#f0b87e">Re-rank: cap same-source slots (max 3) · boost items &lt;24h old</text>
+  <text x="480" y="407" text-anchor="middle" font-size="9" fill="#f0b87e">Exploration budget: 10% slots reserved for random fresh items</text>
+
+  <!-- RIGHT: A/B layer + UI injection -->
+  <rect x="654" y="188" width="290" height="226" rx="10" fill="#151228" stroke="#e8924f" stroke-width="1.5"/>
+  <rect x="654" y="188" width="290" height="28" rx="10" fill="#e8924f" opacity="0.2"/>
+  <text x="799" y="207" text-anchor="middle" font-size="12" fill="#f5c080" font-weight="bold">A/B Layer + UI Surface Injection</text>
+
+  <text x="664" y="228" font-size="10" fill="#9985cc" font-weight="bold">Experiment Assignment</text>
+  <rect x="664" y="234" width="270" height="44" rx="5" fill="#e8924f" opacity="0.08" stroke="#e8924f" stroke-width="1"/>
+  <text x="664" y="248" font-size="9" fill="#f0b87e">Hash(userId + experimentId) mod 100 → bucket</text>
+  <text x="664" y="262" font-size="9" fill="#f0b87e">Bucketing: control (50%) vs treatment (50%)</text>
+  <text x="664" y="274" font-size="9" fill="#9985cc">Sticky: same bucket for same user across sessions</text>
+
+  <text x="664" y="296" font-size="10" fill="#3dbf8a" font-weight="bold">UI Injection Points</text>
+  <rect x="664" y="302" width="270" height="56" rx="5" fill="#3dbf8a" opacity="0.07" stroke="#3dbf8a" stroke-width="1"/>
+  <text x="664" y="316" font-size="9" fill="#7dd4b0">• Hero banner: personalized CTA based on category affinity</text>
+  <text x="664" y="330" font-size="9" fill="#7dd4b0">• Feed order: server-ranked items replace static chronological</text>
+  <text x="664" y="344" font-size="9" fill="#7dd4b0">• Sidebar: "Recommended for you" widget (top 5 items)</text>
+  <text x="664" y="356" font-size="9" fill="#7dd4b0">• Search: ranked results + personalized "you may also like"</text>
+
+  <text x="664" y="378" font-size="10" fill="#9b7cf4" font-weight="bold">Latency SLA</text>
+  <rect x="664" y="384" width="270" height="22" rx="4" fill="#9b7cf4" opacity="0.1" stroke="#9b7cf4" stroke-width="1"/>
+  <text x="799" y="395" text-anchor="middle" font-size="9" fill="#c0b0ff">Personalization API: P99 &lt; 50ms (Redis feature lookup)</text>
+  <text x="799" y="407" text-anchor="middle" font-size="9" fill="#c0b0ff">Fallback: popularity-based ranking if user cold-start</text>
+
+  <!-- BOTTOM: UI layout + cold start + privacy -->
+  <line x1="16" y1="428" x2="944" y2="428" stroke="#9b7cf4" stroke-width="1" stroke-dasharray="6,4" opacity="0.3"/>
+  <text x="480" y="444" text-anchor="middle" font-size="11" fill="#a994ff" font-weight="bold" letter-spacing="1">COLD START · PRIVACY · FEEDBACK LOOP · GUARDRAILS</text>
+
+  <rect x="16" y="454" width="290" height="76" rx="10" fill="#151228" stroke="#9b7cf4" stroke-width="1.5"/>
+  <text x="161" y="472" text-anchor="middle" font-size="11" fill="#c0b0ff" font-weight="bold">Cold Start Strategy</text>
+  <text x="26" y="490" font-size="9" fill="#9985cc">New user: onboarding interest picker (3+ topics) → seed profile</text>
+  <text x="26" y="504" font-size="9" fill="#9985cc">Fallback: geo-trending + global popular as default feed</text>
+  <text x="26" y="518" font-size="9" fill="#3dbf8a">Ramp: switch from popularity → personalized after 10 interactions</text>
+
+  <rect x="322" y="454" width="316" height="76" rx="10" fill="#151228" stroke="#3dbf8a" stroke-width="1.5"/>
+  <text x="480" y="472" text-anchor="middle" font-size="11" fill="#7dd4b0" font-weight="bold">Privacy + Guardrails</text>
+  <text x="332" y="490" font-size="9" fill="#9985cc">No cross-user data: user vectors stored per-user, never merged</text>
+  <text x="332" y="504" font-size="9" fill="#9985cc">GDPR: "forget me" deletes feature store entries within 24h</text>
+  <text x="332" y="518" font-size="9" fill="#e8924f">Filter bubble guard: inject 10% diverse-category items each render</text>
+
+  <rect x="654" y="454" width="290" height="76" rx="10" fill="#151228" stroke="#e8924f" stroke-width="1.5"/>
+  <text x="799" y="472" text-anchor="middle" font-size="11" fill="#f5c080" font-weight="bold">Feedback Loop</text>
+  <text x="664" y="490" font-size="9" fill="#9985cc">Implicit: clicks/dwell logged → Kafka → feature pipeline → model</text>
+  <text x="664" y="504" font-size="9" fill="#9985cc">Explicit: thumbs-up/down updates preference store immediately</text>
+  <text x="664" y="518" font-size="9" fill="#3dbf8a">Model retrain: daily batch (Spark) + hourly online update (Flink)</text>
+</svg>

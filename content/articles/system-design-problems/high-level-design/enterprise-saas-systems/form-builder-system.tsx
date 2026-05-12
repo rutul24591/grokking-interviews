@@ -1,0 +1,99 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-hld-form-builder-system",
+  title: "Design a Form Builder System (Typeform-like)",
+  description:
+    "Architecture for a form builder system: drag-and-drop field types (text, select, file upload, signature, date), conditional logic (show/hide fields based on prior answers), multi-step form navigation with progress tracking, form submission pipeline with validation and deduplication, real-time response analytics, public form embedding via iframe and SDK, file upload to S3 with virus scanning, and spam prevention (honeypot, CAPTCHA, rate limiting).",
+  category: "high-level-design",
+  subcategory: "enterprise-saas-systems",
+  slug: "form-builder-system",
+  wordCount: 5000,
+  readingTime: 31,
+  lastUpdated: "2026-05-11",
+  tags: ["hld", "form-builder", "typeform", "conditional-logic", "submissions", "file-upload", "analytics"],
+  relatedTopics: ["workflow-automation-system", "reporting-analytics-dashboard"],
+};
+
+export default function FormBuilderSystemArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Problem Clarification</h2>
+        <p>A form builder system is a platform where non-technical users create data collection forms and share them publicly, without writing code. The product has two distinct surfaces: the builder (where the form creator designs the form) and the responder (where end users fill out and submit the form). These surfaces have different requirements: the builder must be a rich drag-and-drop editor that handles complex conditional logic; the responder must be lightweight, mobile-optimized, and extremely reliable (a submission failure on the responder is a data loss event).</p>
+        <p>The conditional logic challenge is central to form builder sophistication. Simple conditional logic ("show question 5 only if the answer to question 3 is 'Yes'") is straightforward. Complex conditional logic ("show section B if answer to Q1 is 'Option A' AND answer to Q2 is greater than 50 AND the user's email matches the pattern '*@enterprise.com'") requires a rules engine that evaluates conditions at render time, ensuring the user sees the right questions without exposing skipped questions' data in the response payload. Beyond rendering, conditional logic affects which questions are required: a hidden question should not block form submission even if it was marked required.</p>
+        <p><strong>Explicit scope:</strong> Drag-and-drop builder, conditional logic, multi-step navigation, submission pipeline with validation, file upload, and response analytics. Not in scope: payment collection within forms, digital signature legality compliance, or custom code injection into forms.</p>
+      </section>
+
+      <section>
+        <h2>Requirements</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Field types:</strong> Short text, long text, email, phone, number, date, time, dropdown (single select), checkbox (multi-select), radio (single select), rating (1–5 or 1–10), file upload (images, PDFs, up to 50 MB), signature pad (drawn on canvas, saved as PNG), address (structured multi-field), and matrix (grid of options).</li>
+          <li><strong>Conditional logic:</strong> Show/hide fields or sections based on the values of preceding fields. Conditions can use operators: equals, not equals, contains, greater than, less than, is empty, is not empty. Multiple conditions can be combined with AND/OR. Conditional logic is evaluated client-side for instant UI response and validated server-side on submission to prevent hidden required field violations.</li>
+          <li><strong>Multi-step forms:</strong> Forms can be divided into pages (steps). Progress bar shows completion percentage. Users can navigate back to previous steps to edit answers before final submission. Answer state persists across step navigation without network requests (stored in component state).</li>
+          <li><strong>Submission pipeline:</strong> On submit, the form data is validated (required fields, format validation, file size limits), deduplicated (prevent double submission on network retry), stored in the database, and triggers configured integrations (email notification, webhook, Google Sheets sync, Zapier).</li>
+          <li><strong>Analytics:</strong> Response dashboard showing: total submissions, completion rate (started vs. completed), average completion time, drop-off by question (which question causes the most abandonment), and field-level analytics (most common answer to each field).</li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>Responder performance:</strong> Form page loads within 1 second on mobile (3G). The responder is a separate optimized bundle (&lt;50 KB gzipped) from the builder.</li>
+          <li><strong>Submission reliability:</strong> Submissions must not be lost due to network flakiness. Client-side retry with idempotency key on submission. Server-side deduplication on idempotency key.</li>
+          <li><strong>Builder scale:</strong> Forms with 200+ fields, 50+ conditional logic rules, and 10+ pages must render and edit without performance degradation.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>High-Level Architecture</h2>
+        <p>The system has three independently deployed applications. The Builder App is a Next.js application with a rich drag-and-drop editor (React DnD or dnd-kit). The Builder communicates with the Form Service API to save form definitions. The Responder App is a lightweight React application optimized for mobile performance, loaded when a user visits a public form URL (form.example.com/&#123;formId&#125;). It fetches the form definition, renders the fields, evaluates conditional logic, and submits responses to the Submission Service. The Dashboard App is the analytics view for form creators, reading from the Analytics Service (which aggregates submission data into pre-computed metrics). The Submission Service is a separate service from the Form Service to allow independent scaling — during a viral form submission spike, the submission infrastructure scales independently without affecting the builder.</p>
+      </section>
+
+      <section>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/enterprise-saas-systems/form-builder-system.svg"
+          alt="Form builder system architecture showing builder UI (drag-and-drop field palette: text email number date file signature; drop into form canvas; field config panel: label required placeholder validation; conditional logic editor: IF field X = value THEN show/hide field Y; logic stored as rules array in form JSON; multi-page editor: pages list + add page; save → PATCH /api/forms/{id} {pages fields rules}), form definition (JSON: {formId pages:[{pageId fields:[{fieldId type label required validation conditionalRules}]}] logic:[{condition action target}] theme settings}; versioned: publish → increment version; public form URL form.example.com/{formId}), responder app (GET /api/forms/{formId}/public → form definition; render fields for current page; conditional logic engine: evaluate rules against current answer state → show/hide fields; file upload: presigned S3 URL GET /api/upload/presign → direct browser-to-S3 upload; progress bar: currentPage/totalPages; back navigation: state in React context; submit: POST /api/submissions {formId answers idempotencyKey}), submission pipeline (POST /api/submissions; idempotency check: SELECT id WHERE idempotencyKey=X → if exists return 200; validate answers: required fields conditional visibility aware; sanitize XSS; file references validate S3 keys; INSERT submissions + submission_answers; publish Kafka submission.created; integrations: email notify Google Sheets sync webhook Zapier), spam prevention (honeypot field: hidden CSS field; if filled → discard silently; CAPTCHA: hCaptcha for public forms with no auth; rate limiting: INCR submissions:{formId}:{ip} TTL 60s reject if > 10/min; bot detection: check submission speed < 3s → flag), file upload security (presigned S3 URL with content-type restriction and 50MB limit; virus scan: ClamAV Lambda trigger on S3 upload; if infected: DELETE object + mark submission_answer invalid; file retention policy: delete after 90 days for free tier), analytics dashboard (pre-computed metrics: submission_stats table {formId date total_submissions completed_submissions avg_duration}; drop-off per field: track partial_submissions with last_field_reached; field analytics: GROUP BY answer for select fields; chart: Recharts line chart daily submissions; completion funnel: step drop-off bar chart)."
+          caption="Builder (drag-and-drop, conditional logic rules, multi-page, version publish), form definition JSON, responder app (lightweight, client-side conditional evaluation, S3 presigned direct upload), submission pipeline (idempotency dedup, conditional-aware validation, Kafka integrations), spam prevention (honeypot + hCaptcha + rate limit), S3 virus scan (ClamAV Lambda), and pre-computed analytics (drop-off funnel, field-level aggregates)"
+        />
+      </section>
+
+      <section>
+        <h2>Detailed Design</h2>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Drag-and-Drop Builder</h3>
+        <p>The form builder canvas uses dnd-kit for drag-and-drop. Fields are dragged from a left panel palette and dropped into the form canvas. Within the canvas, fields can be reordered by dragging them up or down. Field types are rendered as preview cards showing the question label and a representative input (text input preview, dropdown preview, etc.). Clicking a field opens the configuration panel on the right: label text, placeholder, required toggle, validation rules, and conditional logic rules for this field.</p>
+        <p>Conditional logic is configured per-field: "Show this field if [condition]." The condition editor is a structured UI (not a text expression): a dropdown to select the source field, an operator dropdown (equals, contains, greater than, is empty, etc.), and a value input (static value or reference to another field). Multiple conditions are combined with AND/OR toggle. The builder renders a preview of the condition in plain English: "Show this field if 'Company size' equals 'Enterprise' AND 'Industry' contains 'Technology'." This preview helps non-technical users verify their logic. The entire form definition (pages, fields, conditional rules, theme settings) is stored as a single JSON document in PostgreSQL, versioned with each publish action. Draft changes are auto-saved every 30 seconds without publishing.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Conditional Logic Engine</h3>
+        <p>The conditional logic engine is a pure function: given the form definition's rule set and the current answer state, it returns the set of visible field IDs. The engine evaluates rules in the order they are defined, with each rule potentially showing or hiding fields. The algorithm: start with all fields visible; for each field with conditional visibility rules, evaluate the rule's condition against the current answers; if the condition is false, remove the field from the visible set. This approach ensures hidden fields are not shown even if they are defined later in the form.</p>
+        <p>The engine runs client-side on every answer change, providing instant UI feedback. It also runs server-side on submission, to determine which questions were visible at the time of submission — hidden questions are excluded from required field validation (a hidden required field does not block submission) and their answers are discarded from the submission record. This two-layer evaluation (client for UX, server for validation) is critical for security: a malicious user could submit data for hidden fields by manipulating the client-side request, and server-side re-evaluation of visibility ensures that hidden field data is never stored.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Submission Pipeline with Deduplication</h3>
+        <p>Submission reliability is the most critical requirement of the responder. Mobile networks frequently drop mid-request, and users may tap "Submit" multiple times if the response is slow. The deduplication strategy: the responder generates a UUID idempotencyKey when the user reaches the final page and stores it in sessionStorage. On submit, this key is included in the submission payload. The Submission Service checks for an existing submission with this key (SELECT id FROM submissions WHERE idempotency_key = $1). If found, it returns the existing submission ID with status 200 — the submission already succeeded, the UI can show the success state. If not found, the submission is inserted atomically with the idempotency key using a unique constraint (UNIQUE INDEX on idempotency_key ensures no race condition on concurrent retries).</p>
+        <p>The client retries automatically on network failure: if the submission request times out or returns a 5xx error, the responder retries up to 3 times with exponential backoff (2s, 4s, 8s). The idempotency key ensures that even if multiple retry requests reach the server, only one submission is stored. After 3 failed retries, the responder shows a "Save and Continue Later" option: the partial answers are stored in localStorage with the form ID, and when the user returns (even on a different device if they have the link), the answers are pre-filled.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">File Upload with Security Scanning</h3>
+        <p>File uploads are handled with direct browser-to-S3 upload (bypassing the application server for large files). The flow: the browser requests a presigned S3 URL from the API (POST /api/upload/presign &#123; filename, contentType, size &#125;). The API validates the content type (only allowed types: image/jpeg, image/png, image/gif, application/pdf) and size (&lt;50 MB), then generates a presigned PUT URL with a 15-minute expiry and a specific S3 key path (uploads/&#123;formId&#125;/&#123;submissionId&#125;/&#123;uuid&#125;.&#123;ext&#125;). The browser uploads directly to S3 using the presigned URL, receiving no AWS credentials. When the upload completes, the browser includes the S3 key in the form submission payload as a file reference.</p>
+        <p>Security scanning: an S3 Event triggers a Lambda function on every new object upload. The Lambda runs ClamAV (compiled for Lambda runtime) on the file content. If a threat is detected, the Lambda deletes the S3 object and publishes a file-scan-failed event to SNS, which triggers the Submission Service to mark the file field as invalid in the submission record and notifies the form creator via email. Clean files are tagged with a scan-status=clean metadata tag, and the Submission Service only allows file references with this tag to be accessed via download URLs. Unscanned files (Lambda not yet run) show as "processing" in the dashboard.</p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Response Analytics</h3>
+        <p>The analytics dashboard shows form performance metrics to the creator. The metrics are pre-computed into a submission_stats table (formId, date, totalSubmissions, completedSubmissions, avgDurationSeconds) by a nightly aggregation job — computing these on demand from raw submission data would be too slow for forms with millions of responses. Drop-off analysis tracks which question causes the most abandonment: the responder sends a page_reached event (a lightweight beacon POST) each time the user advances to a new page. These events are stored in a page_views table (formId, submissionSessionId, pageIndex, timestamp). The drop-off funnel computes: for each page, the count of sessions that reached that page, showing where users exit. Field-level analytics for select fields (dropdown, radio, checkbox) compute the distribution of answers using GROUP BY: for a "How did you hear about us?" field, the analytics shows "Search engine: 42%, Social media: 28%, Friend referral: 20%, Other: 10%." These aggregations are computed by a batch job that runs every hour and cached in Redis.</p>
+      </section>
+
+      <section>
+        <h2>Trade-offs and Considerations</h2>
+        <p>Client-side versus server-side conditional logic evaluation: client-side evaluation provides instant UI response (no network round-trip between questions). However, client-side evaluation is not authoritative — the submission validation must re-evaluate conditions server-side to prevent hidden required field violations or manipulation. This means maintaining two implementations of the conditional logic engine (one in JavaScript/TypeScript for the client, one in the server language). The alternative — server-side evaluation with a real-time API call on each answer change — adds 100–300ms latency to every field interaction, creating visible jank. The dual-implementation cost is worth the UI performance benefit, especially since the conditional logic engine is a pure function with well-defined inputs and outputs that can be tested exhaustively.</p>
+        <p>Storing form responses as rows versus JSON: storing each answer as a separate row in a submission_answers table (submissionId, fieldId, value) allows efficient per-field aggregation queries (SELECT fieldId, value, COUNT(*) GROUP BY fieldId, value) but creates many small rows for forms with 50+ fields. Storing the entire submission as a JSON blob in the submissions table is simpler and avoids schema coupling to the form definition, but makes per-field aggregation require JSON extraction (which is slower in SQL). The hybrid approach: store the full JSON response in submissions.answers for retrieval, and denormalize answer data into submission_answers for aggregation queries. The denormalization is done asynchronously by a Kafka consumer after the submission is stored.</p>
+      </section>
+
+      <section>
+        <h2>Summary</h2>
+        <p>A form builder system (Typeform-like) separates into three independently scaled applications: the Builder App (React drag-and-drop editor with conditional logic UI, auto-save drafts, versioned publish), the Responder App (&lt;50 KB bundle, client-side conditional logic evaluation, multi-step navigation, idempotent submission with retry), and the Dashboard App (pre-computed analytics, drop-off funnel, field distribution charts). The conditional logic engine runs client-side for instant UX and server-side for submission validation — hidden fields are excluded from required validation and their data discarded. File uploads use presigned S3 URLs (bypassing the server) with ClamAV Lambda scanning; infected files are deleted and submissions flagged. Submissions are deduplicated via a unique idempotency key constraint; failed submissions retry with exponential backoff and fall back to localStorage persistence for offline resilience. Spam prevention combines honeypot fields, hCaptcha, IP-based rate limiting (INCR in Redis), and minimum time-to-submit detection. The core design principle: the responder must be bulletproof — a submission failure is a data loss event that erodes trust, so every layer from client retry to server deduplication to localStorage fallback is designed to ensure at-least-once submission delivery.</p>
+      </section>
+    </ArticleLayout>
+  );
+}
