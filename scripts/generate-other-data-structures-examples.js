@@ -50,6 +50,26 @@ ${checkLines}
 `;
 }
 
+function buildExplanation({ exampleId, summary, checks }) {
+  const number = Number(exampleId.split("-")[1]);
+  const lead =
+    number === 1
+      ? "Example 1 is a production-style implementation demo for this data structure."
+      : number === 2
+        ? "Example 2 focuses on a follow-up scenario that’s commonly asked after the main implementation."
+        : "Example 3 focuses on edge cases and correctness checks you should validate in production-style code.";
+
+  const demonstrates = checks.map((line) => `- ${line}`).join("\n");
+
+  return `${lead}
+
+${summary}
+
+It demonstrates:
+${demonstrates}
+`;
+}
+
 function createTopic(topic) {
   const topicDir = path.join(BASE_DIR, topic.slug);
   cleanDir(topicDir);
@@ -63,13 +83,26 @@ function createTopic(topic) {
     }
 
     writeFile(
+      path.join(exampleDir, "EXPLANATION.md"),
+      `${buildExplanation({
+        exampleId: example.id,
+        summary: example.summary,
+        checks: example.checks,
+      }).trim()}\n`,
+    );
+
+    writeFile(
       path.join(exampleDir, "README.md"),
       buildReadme({
         topicSlug: topic.slug,
         topicTitle: topic.title,
         exampleTitle: example.title,
         summary: example.summary,
-        files: [...example.files.map((file) => file.name), "README.md"],
+        files: [
+          "EXPLANATION.md",
+          ...example.files.map((file) => file.name),
+          "README.md",
+        ],
         runTarget: `${example.id}/${example.runFile}`,
         checks: example.checks,
       }),
@@ -1217,6 +1250,65 @@ console.log("Directed cycle present:", hasCycle("A"));
           },
         ],
       },
+      {
+        id: "example-4",
+        title: "Weighted Shortest Path (Dijkstra)",
+        summary:
+          "Adds a weighted-graph follow-up using Dijkstra’s algorithm, which is the natural escalation after BFS shortest paths.",
+        runFile: "demo.js",
+        checks: [
+          "edge weights change path selection versus minimum-hop routing",
+          "the algorithm relies on extracting the next minimum-distance node",
+          "negative weights are invalid for vanilla Dijkstra and should be rejected by design",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+function dijkstra(graph, start) {
+  const distances = new Map(Object.keys(graph).map((node) => [node, Infinity]));
+  distances.set(start, 0);
+  const visited = new Set();
+
+  while (visited.size < distances.size) {
+    let current = null;
+    let best = Infinity;
+    for (const [node, distance] of distances) {
+      if (!visited.has(node) && distance < best) {
+        best = distance;
+        current = node;
+      }
+    }
+    if (current === null) break;
+
+    visited.add(current);
+    for (const { to, weight } of graph[current] ?? []) {
+      const next = distances.get(current) + weight;
+      if (next < distances.get(to)) distances.set(to, next);
+    }
+  }
+
+  return Object.fromEntries(distances);
+}
+
+const graph = {
+  A: [
+    { to: "B", weight: 2 },
+    { to: "C", weight: 5 },
+  ],
+  B: [
+    { to: "C", weight: 1 },
+    { to: "D", weight: 4 },
+  ],
+  C: [{ to: "D", weight: 1 }],
+  D: [],
+};
+
+console.log("Distances from A:", dijkstra(graph, "A"));
+`,
+          },
+        ],
+      },
     ],
   },
   {
@@ -1339,6 +1431,66 @@ table.set("config", { retries: 5 });
 
 console.log("Updated config:", table.get("config"));
 console.log("Missing key:", table.get("missing"));
+`,
+          },
+        ],
+      },
+      {
+        id: "example-4",
+        title: "Open Addressing Follow-Up",
+        summary:
+          "Implements a minimal open-addressing hash table (linear probing) to contrast collision resolution with separate chaining.",
+        runFile: "demo.js",
+        checks: [
+          "collisions resolve by probing the next slot instead of building chains",
+          "load factor influences expected probe length",
+          "deletions require tombstones or a rehash policy in real systems",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+class LinearProbingTable {
+  constructor(capacity = 8) {
+    this.capacity = capacity;
+    this.keys = new Array(capacity).fill(null);
+    this.values = new Array(capacity).fill(null);
+  }
+
+  #hash(key) {
+    let hash = 0;
+    for (const char of key) hash = (hash * 33 + char.charCodeAt(0)) % this.capacity;
+    return hash;
+  }
+
+  set(key, value) {
+    let index = this.#hash(key);
+    for (let probe = 0; probe < this.capacity; probe += 1) {
+      const slot = (index + probe) % this.capacity;
+      if (this.keys[slot] === null || this.keys[slot] === key) {
+        this.keys[slot] = key;
+        this.values[slot] = value;
+        return slot;
+      }
+    }
+    throw new Error("table full");
+  }
+
+  get(key) {
+    let index = this.#hash(key);
+    for (let probe = 0; probe < this.capacity; probe += 1) {
+      const slot = (index + probe) % this.capacity;
+      if (this.keys[slot] === null) return null;
+      if (this.keys[slot] === key) return this.values[slot];
+    }
+    return null;
+  }
+}
+
+const table = new LinearProbingTable(6);
+["aa", "bb", "cc", "dd"].forEach((key, idx) => table.set(key, idx));
+console.log("Keys array:", table.keys);
+console.log("Lookup cc:", table.get("cc"));
 `,
           },
         ],
@@ -1977,6 +2129,61 @@ console.log("Observation: plain Bloom filters cannot safely delete one item with
           },
         ],
       },
+      {
+        id: "example-4",
+        title: "Counting Bloom Filter (Deletion)",
+        summary:
+          "Implements a counting Bloom filter variant to support deletions safely, which is the key follow-up after plain Bloom limitations.",
+        runFile: "demo.js",
+        checks: [
+          "counters increment and decrement instead of toggling a single bit",
+          "deleting one key does not clear shared membership evidence for others",
+          "counters must be bounded and protected from underflow",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+class CountingBloom {
+  constructor(size = 16) {
+    this.size = size;
+    this.counters = new Array(size).fill(0);
+  }
+
+  #hashes(value) {
+    const codes = [...value].map((char) => char.charCodeAt(0));
+    const sum = codes.reduce((total, code) => total + code, 0);
+    const weighted = codes.reduce((total, code, index) => total + code * (index + 1), 0);
+    return [sum % this.size, weighted % this.size, (sum * 3 + weighted) % this.size];
+  }
+
+  add(value) {
+    for (const index of this.#hashes(value)) this.counters[index] += 1;
+  }
+
+  remove(value) {
+    for (const index of this.#hashes(value)) {
+      if (this.counters[index] === 0) throw new Error("counter underflow");
+      this.counters[index] -= 1;
+    }
+  }
+
+  mightContain(value) {
+    return this.#hashes(value).every((index) => this.counters[index] > 0);
+  }
+}
+
+const filter = new CountingBloom(12);
+filter.add("A");
+filter.add("B");
+console.log("A before delete:", filter.mightContain("A"));
+filter.remove("A");
+console.log("A after delete:", filter.mightContain("A"));
+console.log("B after A delete:", filter.mightContain("B"));
+`,
+          },
+        ],
+      },
     ],
   },
   {
@@ -2100,6 +2307,54 @@ const sketch = new CountMinSketch(2, 4);
 console.log("A exact=2 estimate=", sketch.estimate("A"));
 console.log("B exact=1 estimate=", sketch.estimate("B"));
 console.log("Observation: collisions can only push estimates upward.");
+`,
+          },
+        ],
+      },
+      {
+        id: "example-4",
+        title: "Sliding Window Follow-Up",
+        summary:
+          "Demonstrates a simple sliding-window approach by rotating multiple sketches, matching common 'last N minutes' telemetry questions.",
+        runFile: "demo.js",
+        checks: [
+          "older windows are expired by dropping their sketch",
+          "queries aggregate across active window sketches",
+          "memory usage is bounded by the number of retained windows",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+const { CountMinSketch } = require("../example-1/count-min-sketch");
+
+const windows = [new CountMinSketch(), new CountMinSketch(), new CountMinSketch()];
+const windowSize = windows.length;
+let active = 0;
+
+function tick() {
+  active = (active + 1) % windowSize;
+  windows[active] = new CountMinSketch();
+}
+
+function increment(key) {
+  windows[active].increment(key);
+}
+
+function estimateAcrossWindows(key) {
+  return windows.reduce((sum, sketch) => sum + sketch.estimate(key), 0);
+}
+
+increment("search");
+increment("search");
+tick();
+increment("search");
+increment("view");
+tick();
+increment("view");
+
+console.log("search last windows:", estimateAcrossWindows("search"));
+console.log("view last windows:", estimateAcrossWindows("view"));
 `,
           },
         ],
@@ -2384,6 +2639,40 @@ console.log("Observation: small-cardinality bias is why many HLL implementations
           },
         ],
       },
+      {
+        id: "example-4",
+        title: "Register Precision Follow-Up",
+        summary:
+          "Compares two sketches with different register counts to show how precision trades off against memory.",
+        runFile: "demo.js",
+        checks: [
+          "more registers generally reduce variance on large sets",
+          "memory usage grows with register count",
+          "the estimator remains approximate regardless of precision",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+const { HyperLogLog } = require("../example-1/hyperloglog");
+
+function feed(sketch, count) {
+  for (let i = 0; i < count; i += 1) sketch.add(\`user-\${i}\`);
+}
+
+const lowPrecision = new HyperLogLog(3);
+const highPrecision = new HyperLogLog(5);
+
+feed(lowPrecision, 200);
+feed(highPrecision, 200);
+
+console.log("Exact uniques:", 200);
+console.log("Low precision registers:", lowPrecision.registers.length, "estimate:", lowPrecision.estimate());
+console.log("High precision registers:", highPrecision.registers.length, "estimate:", highPrecision.estimate());
+`,
+          },
+        ],
+      },
     ],
   },
   {
@@ -2516,6 +2805,44 @@ console.log("Observation: tombstones must be preserved until compaction makes ol
           },
         ],
       },
+      {
+        id: "example-4",
+        title: "Write-Ahead Log Follow-Up",
+        summary:
+          "Models WAL replay to show how write-ahead logging pairs with memtables to survive crashes between flushes.",
+        runFile: "demo.js",
+        checks: [
+          "updates are appended to the log before being applied to memory",
+          "replay reconstructs memtable state after a simulated crash",
+          "flush boundary determines what must be replayed on restart",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+const wal = [];
+let memtable = new Map();
+
+function put(key, value) {
+  wal.push({ op: "put", key, value });
+  memtable.set(key, value);
+}
+
+put("k1", "v1");
+put("k2", "v2");
+
+console.log("Before crash memtable:", Object.fromEntries(memtable));
+
+memtable = new Map();
+for (const entry of wal) {
+  if (entry.op === "put") memtable.set(entry.key, entry.value);
+}
+
+console.log("After replay memtable:", Object.fromEntries(memtable));
+`,
+          },
+        ],
+      },
     ],
   },
   {
@@ -2624,6 +2951,43 @@ const updatedRoot = buildMerkleRoot(["a", "b", "c-updated"]);
 console.log("Odd leaf root:", oddRoot);
 console.log("Updated leaf root:", updatedRoot);
 console.log("Observation: only one branch changes logically, but the root still changes globally.");
+`,
+          },
+        ],
+      },
+      {
+        id: "example-4",
+        title: "Diff Discovery Follow-Up",
+        summary:
+          "Shows how Merkle trees help narrow down which chunk changed by comparing subtree hashes top-down.",
+        runFile: "demo.js",
+        checks: [
+          "a mismatch at the root implies some leaf differs",
+          "comparing children hashes narrows the divergent subtree",
+          "the process is logarithmic in leaf count when trees are balanced",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+const { sha } = require("../example-1/merkle");
+
+function levelHashes(chunks) {
+  const leaves = chunks.map((chunk) => sha(chunk));
+  return {
+    left: sha(leaves[0] + leaves[1]),
+    right: sha(leaves[2] + leaves[3]),
+    root: sha(sha(leaves[0] + leaves[1]) + sha(leaves[2] + leaves[3])),
+  };
+}
+
+const a = levelHashes(["a", "b", "c", "d"]);
+const b = levelHashes(["a", "b", "c", "X"]);
+
+console.log("Roots equal?", a.root === b.root);
+console.log("Left subtree equal?", a.left === b.left);
+console.log("Right subtree equal?", a.right === b.right);
+console.log("Observation: right subtree mismatch points you to leaves 2..3 as the diff range.");
 `,
           },
         ],
@@ -2765,6 +3129,43 @@ console.log("Observation: real skip lists rely on random promotion to keep expec
           },
         ],
       },
+      {
+        id: "example-4",
+        title: "Search Follow-Up",
+        summary:
+          "Adds a search routine that walks higher levels first, since interview follow-ups often probe the search path behavior.",
+        runFile: "demo.js",
+        checks: [
+          "search starts from the highest level and drops down as needed",
+          "the expected number of hops stays small in a well-distributed level scheme",
+          "worst-case behavior still exists if level distribution is poor",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+const { SkipList } = require("../example-1/skip-list");
+
+function contains(list, target) {
+  let current = list.head;
+  for (let level = list.maxLevel - 1; level >= 0; level -= 1) {
+    while (current.forward[level] && current.forward[level].value < target) {
+      current = current.forward[level];
+    }
+  }
+  current = current.forward[0];
+  return current && current.value === target;
+}
+
+const list = new SkipList();
+[10, 20, 15, 7, 30].forEach((value) => list.insert(value));
+
+console.log("Contains 15?", contains(list, 15));
+console.log("Contains 99?", contains(list, 99));
+`,
+          },
+        ],
+      },
     ],
   },
   {
@@ -2893,6 +3294,54 @@ const trie = new Trie();
 
 console.log("All words:", trie.collect(""));
 console.log("Missing prefix 'z':", trie.collect("z"));
+`,
+          },
+        ],
+      },
+      {
+        id: "example-4",
+        title: "Delete Word Follow-Up",
+        summary:
+          "Implements word deletion to cover the common follow-up where nodes must be pruned without breaking shared prefixes.",
+        runFile: "demo.js",
+        checks: [
+          "deleting one word does not remove nodes needed by other words",
+          "unused nodes are pruned on the way back up",
+          "the prefix subtree remains valid after deletions",
+        ],
+        files: [
+          {
+            name: "demo.js",
+            content: `
+const { Trie } = require("../example-1/trie");
+
+function removeWord(trie, word) {
+  const stack = [];
+  let current = trie.root;
+  for (const char of word) {
+    if (!current.children.has(char)) return false;
+    stack.push([current, char]);
+    current = current.children.get(char);
+  }
+  if (!current.isWord) return false;
+  current.isWord = false;
+
+  for (let i = stack.length - 1; i >= 0; i -= 1) {
+    const [parent, char] = stack[i];
+    const child = parent.children.get(char);
+    if (child.isWord || child.children.size > 0) break;
+    parent.children.delete(char);
+  }
+
+  return true;
+}
+
+const trie = new Trie();
+["cache", "caching", "catalog"].forEach((word) => trie.insert(word));
+console.log("Before delete:", trie.collect("cac"));
+removeWord(trie, "cache");
+console.log("After delete cache:", trie.collect("cac"));
+console.log("Still has caching:", trie.collect("cach"));
 `,
           },
         ],

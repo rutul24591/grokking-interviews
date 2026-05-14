@@ -19,12 +19,18 @@ function collectTsxFiles(entry) {
   const stat = fs.statSync(entry);
   if (stat.isFile()) return [entry];
   const files = [];
-  for (const name of fs.readdirSync(entry)) {
-    const full = path.join(entry, name);
-    const st = fs.statSync(full);
-    if (st.isDirectory()) continue;
-    if (full.endsWith(".tsx")) files.push(full);
+  function walk(dir) {
+    for (const name of fs.readdirSync(dir)) {
+      const full = path.join(dir, name);
+      const st = fs.statSync(full);
+      if (st.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      if (full.endsWith(".tsx")) files.push(full);
+    }
   }
+  walk(entry);
   return files.sort((a, b) => a.localeCompare(b));
 }
 
@@ -36,7 +42,7 @@ function countMatches(haystack, needleRe) {
 function summarizeFile(filePath) {
   const src = fs.readFileSync(filePath, "utf8");
 
-  const h2Re = /<h2>([\s\S]*?)<\/h2>/g;
+  const h2Re = /<h2\b[^>]*>([\s\S]*?)<\/h2>/g;
   const sections = [];
   let match;
   while ((match = h2Re.exec(src))) {
@@ -56,10 +62,12 @@ function summarizeFile(filePath) {
 
     const crucial =
       countMatches(block, /tier="crucial"/g) +
-      countMatches(block, /captionTier="crucial"/g);
+      countMatches(block, /captionTier="crucial"/g) +
+      countMatches(block, /<Highlight\b[\s\S]*?tier="crucial"/g);
     const important =
       countMatches(block, /tier="important"/g) +
-      countMatches(block, /captionTier="important"/g);
+      countMatches(block, /captionTier="important"/g) +
+      countMatches(block, /<Highlight\b[\s\S]*?tier="important"/g);
 
     sections[i].counts = { crucial, important };
     sections[i].skip = /references/i.test(sections[i].title);
@@ -108,4 +116,3 @@ function main(argv) {
 }
 
 main(process.argv);
-
