@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -156,6 +157,11 @@ export default function MultiplayerLobbyUIArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/multiplayer-lobby-ui-architecture.svg"
+          alt="Multiplayer lobby UI architecture showing room model, player model, join flow, lobby list UI, ready toggle gate, game settings, game start sequence, and reconnect handling"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="crucial">
           The lobby has three planes: <strong>room
           list</strong> (browse + create + join),

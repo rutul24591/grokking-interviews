@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -185,6 +186,11 @@ export default function RealTimeCollaborativeEditorArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-collaborative-editor-architecture.svg"
+          alt="Real-time collaborative editor architecture showing Yjs CRDT document types, provider sync, binary delta update flow, network layer with reconnect, CRDT convergence properties, editor bindings, awareness protocol, and undo manager"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The editor uses a CRDT library (Yjs in
           our recommendation) as the underlying

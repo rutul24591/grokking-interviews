@@ -1,31 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="280" fill="transparent"/>
-
-  <rect x="30" y="100" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="100" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Pointer Drag</text>
-  <text x="50" y="158" font-size="11" fill="#3b82f6">mousedown → move → up</text>
-
-  <line x1="170" y1="140" x2="250" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="250" y="70" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="350" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Drag System</text>
-  <text x="270" y="125" font-size="11" fill="#92400e">• pointerId capture</text>
-  <text x="270" y="145" font-size="11" fill="#92400e">• delta computation</text>
-  <text x="270" y="165" font-size="11" fill="#92400e">• axis restriction</text>
-  <text x="270" y="185" font-size="11" fill="#92400e">• document-level listeners</text>
-  <text x="270" y="210" font-size="10" fill="#b45309">FLIP animation trigger</text>
-
-  <line x1="450" y1="140" x2="530" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="530" y="90" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="605" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">List Reorder</text>
-  <text x="550" y="145" font-size="11" fill="#166534">• array splice</text>
-  <text x="550" y="165" font-size="11" fill="#166534">• optimistic update</text>
-  <text x="550" y="185" font-size="10" fill="#15803d">rollback on API fail</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
-    </marker>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Drag &amp; Drop List — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Drag state · Hit test · FLIP reorder · Auto-scroll &amp; A11y</text>
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — DRAG STATE MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">DragState</text>
+  <text x="34" y="133" font-size="9" fill="#374151">isDragging: boolean</text>
+  <text x="34" y="148" font-size="9" fill="#374151">draggingId: string | null</text>
+  <text x="34" y="163" font-size="9" fill="#374151">overId: string | null</text>
+  <text x="34" y="178" font-size="9" fill="#374151">dragOffset: { x, y } within item</text>
+  <text x="34" y="193" font-size="9" fill="#374151">origin: { x, y } pointer start</text>
+  <text x="34" y="208" font-size="9" fill="#374151">ghost: cloned node (absolute pos)</text>
+  <text x="34" y="223" font-size="9" fill="#374151">  follows pointer via transform</text>
+  <text x="34" y="240" font-size="9" fill="#374151">items: DragItem[] ordered list</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Pointer Capture</text>
+  <text x="236" y="133" font-size="9" fill="#374151">pointerdown: setPointerCapture()</text>
+  <text x="236" y="148" font-size="9" fill="#374151">  fires pointermove globally</text>
+  <text x="236" y="163" font-size="9" fill="#374151">pointermove: update ghost pos</text>
+  <text x="236" y="178" font-size="9" fill="#374151">  ghost.style.transform = translate</text>
+  <text x="236" y="193" font-size="9" fill="#374151">pointerup: commit new order</text>
+  <text x="236" y="208" font-size="9" fill="#374151">  call onReorder([...items])</text>
+  <text x="236" y="223" font-size="9" fill="#374151">pointercancel: restore original</text>
+  <text x="236" y="240" font-size="9" fill="#374151">Ghost: opacity 0.7, cursor grabbing</text>
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — HIT TEST ENGINE</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Collision Detection</text>
+  <text x="485" y="133" font-size="9" fill="#374151">Strategy: closestCenter default</text>
+  <text x="485" y="148" font-size="9" fill="#374151">  each item: getBoundingClientRect</text>
+  <text x="485" y="163" font-size="9" fill="#374151">  compare pointer to item center</text>
+  <text x="485" y="178" font-size="9" fill="#374151">  pick minimum distance item</text>
+  <text x="485" y="193" font-size="9" fill="#374151">overId updated → drop indicator</text>
+  <text x="485" y="208" font-size="9" fill="#374151">Throttle: rAF (60fps hit test)</text>
+  <text x="485" y="225" font-size="9" fill="#374151">  not every pointermove event</text>
+  <text x="485" y="240" font-size="9" fill="#374151">Alt strategy: rect overlap area</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Drop Indicator</text>
+  <text x="682" y="133" font-size="9" fill="#374151">Placeholder: original = ghost slot</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  opacity: 0 (space reserved)</text>
+  <text x="682" y="163" font-size="9" fill="#374151">Drop line: 2px blue bar between</text>
+  <text x="682" y="178" font-size="9" fill="#374151">  items showing insert position</text>
+  <text x="682" y="193" font-size="9" fill="#374151">Drag over: zone border highlight</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Multi-list: cross-list DnD support</text>
+  <text x="682" y="225" font-size="9" fill="#374151">  droppable containers registered</text>
+  <text x="682" y="240" font-size="9" fill="#374151">  pick closest container</text>
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — FLIP REORDER ANIMATION</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">FLIP Steps</text>
+  <text x="34" y="358" font-size="9" fill="#374151">First: record all item rects</text>
+  <text x="34" y="373" font-size="9" fill="#374151">Last: mutate array → rerender</text>
+  <text x="34" y="388" font-size="9" fill="#374151">  DOM updates with new order</text>
+  <text x="34" y="403" font-size="9" fill="#374151">Invert: apply inverted transforms</text>
+  <text x="34" y="418" font-size="9" fill="#374151">  items appear at old positions</text>
+  <text x="34" y="433" font-size="9" fill="#374151">Play: rAF → animate to 0</text>
+  <text x="34" y="448" font-size="9" fill="#374151">  duration 200ms ease-out</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">View Transitions API</text>
+  <text x="236" y="358" font-size="9" fill="#374151">document.startViewTransition()</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  DOM mutation inside callback</text>
+  <text x="236" y="388" font-size="9" fill="#374151">  browser handles FLIP natively</text>
+  <text x="236" y="403" font-size="9" fill="#374151">view-transition-name per item id</text>
+  <text x="236" y="418" font-size="9" fill="#374151">  must be unique across page</text>
+  <text x="236" y="433" font-size="9" fill="#374151">Fallback: JS FLIP for Safari</text>
+  <text x="236" y="448" font-size="9" fill="#374151">prefers-reduced-motion: skip</text>
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — AUTO-SCROLL &amp; ACCESSIBILITY</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Auto-scroll</text>
+  <text x="485" y="358" font-size="9" fill="#374151">Scroll zone: 60px from container</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  edge triggers scrollBy per frame</text>
+  <text x="485" y="388" font-size="9" fill="#374151">Speed: proportional to distance</text>
+  <text x="485" y="403" font-size="9" fill="#374151">  max 20px per rAF frame</text>
+  <text x="485" y="418" font-size="9" fill="#374151">Direction: vertical + horizontal</text>
+  <text x="485" y="433" font-size="9" fill="#374151">Nested: closest scrollable ancestor</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Stop scroll on pointerup</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Keyboard &amp; A11y</text>
+  <text x="682" y="358" font-size="9" fill="#374151">aria-roledescription="draggable"</text>
+  <text x="682" y="373" font-size="9" fill="#374151">Space: pick up / drop item</text>
+  <text x="682" y="388" font-size="9" fill="#374151">↑ ↓: move item up / down</text>
+  <text x="682" y="403" font-size="9" fill="#374151">Escape: cancel drag + restore</text>
+  <text x="682" y="418" font-size="9" fill="#374151">aria-live: announce new position</text>
+  <text x="682" y="433" font-size="9" fill="#374151">  "Item moved to position 3 of 8"</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Focus: stays on moved item</text>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Pointer capture: setPointerCapture()</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Hit test: rAF throttled 60fps</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">FLIP duration: 200ms ease-out</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Scroll zone: 60px from edge</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Keyboard: Space pick, ↑↓ move, Esc</text>
 </svg>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -161,6 +162,11 @@ export default function MessageDeliveryStateSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/message-delivery-state-system-architecture.svg"
+          alt="Message delivery state system architecture showing message model, status FSM transitions, sending with idempotency, delivery receipts, status icons, read receipt display, retry logic, and offline IndexedDB queue"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The system is a per-message state
           machine plus a per-recipient tracker for

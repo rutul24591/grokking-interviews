@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -259,6 +260,12 @@ export default function WizardMultiStepFormArticle() {
       {/* Section 4: System Design (LLD) */}
       <section>
         <h2>System Design</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/wizard-multi-step-form-architecture.svg"
+          alt="Wizard multi-step form architecture showing step state, validation gate, navigation rules, and URL persistence"
+          caption="Architecture Overview"
+        />
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>

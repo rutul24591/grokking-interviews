@@ -1,31 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="280" fill="transparent"/>
-
-  <rect x="30" y="100" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="100" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Document Load</text>
-  <text x="50" y="158" font-size="11" fill="#3b82f6">URL / file input</text>
-
-  <line x1="170" y1="140" x2="250" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="250" y="70" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="350" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">PDF.js Engine</text>
-  <text x="270" y="125" font-size="11" fill="#92400e">• document: PDFDocProxy</text>
-  <text x="270" y="145" font-size="11" fill="#92400e">• pages: PageRender[]</text>
-  <text x="270" y="165" font-size="11" fill="#92400e">• textContent: Map</text>
-  <text x="270" y="185" font-size="11" fill="#92400e">• annotations: Layer[]</text>
-  <text x="270" y="210" font-size="10" fill="#b45309">render, search, annotate</text>
-
-  <line x1="450" y1="140" x2="530" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="530" y="90" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="605" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Viewer UI</text>
-  <text x="550" y="145" font-size="11" fill="#166534">• canvas pages</text>
-  <text x="550" y="165" font-size="11" fill="#166534">• text layer (a11y)</text>
-  <text x="550" y="185" font-size="10" fill="#15803d">toolbar + navigation</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
-    </marker>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">PDF Viewer — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">PDF.js pipeline · Page virtualisation · Text layer · Annotation &amp; forms</text>
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — PDF.js PIPELINE</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Document Load</text>
+  <text x="34" y="133" font-size="9" fill="#374151">getDocument(url|data): Task</text>
+  <text x="34" y="148" font-size="9" fill="#374151">  Web Worker: pdf.worker.js</text>
+  <text x="34" y="163" font-size="9" fill="#374151">PDFDocumentProxy: numPages</text>
+  <text x="34" y="178" font-size="9" fill="#374151">  fingerprint, metadata</text>
+  <text x="34" y="193" font-size="9" fill="#374151">Password: onPassword callback</text>
+  <text x="34" y="208" font-size="9" fill="#374151">  show prompt on exception</text>
+  <text x="34" y="223" font-size="9" fill="#374151">Range requests: byte-range</text>
+  <text x="34" y="240" font-size="9" fill="#374151">  stream pages on demand</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Page Render</text>
+  <text x="236" y="133" font-size="9" fill="#374151">getPage(n): PDFPageProxy</text>
+  <text x="236" y="148" font-size="9" fill="#374151">render({ canvasContext, viewport })</text>
+  <text x="236" y="163" font-size="9" fill="#374151">scale: devicePixelRatio * zoom</text>
+  <text x="236" y="178" font-size="9" fill="#374151">  default: 1.5 (150% crisp)</text>
+  <text x="236" y="193" font-size="9" fill="#374151">Render task: cancellable</text>
+  <text x="236" y="208" font-size="9" fill="#374151">  cancel on scroll past range</text>
+  <text x="236" y="223" font-size="9" fill="#374151">OffscreenCanvas: paint async</text>
+  <text x="236" y="240" font-size="9" fill="#374151">  transfer to visible canvas</text>
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — PAGE VIRTUALISATION</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Virtual Page List</text>
+  <text x="485" y="133" font-size="9" fill="#374151">Render: ±2 pages around current</text>
+  <text x="485" y="148" font-size="9" fill="#374151">  destroy canvas beyond ±3</text>
+  <text x="485" y="163" font-size="9" fill="#374151">Placeholder: grey rect at page H</text>
+  <text x="485" y="178" font-size="9" fill="#374151">  preserve scroll position</text>
+  <text x="485" y="193" font-size="9" fill="#374151">IntersectionObserver: trigger</text>
+  <text x="485" y="208" font-size="9" fill="#374151">  render on 10% visible</text>
+  <text x="485" y="225" font-size="9" fill="#374151">currentPage: updated on scroll</text>
+  <text x="485" y="240" font-size="9" fill="#374151">  throttle: rAF (not per scroll)</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Zoom &amp; Fit</text>
+  <text x="682" y="133" font-size="9" fill="#374151">zoom: 0.5–3.0 range</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  fit-width: container / pageW</text>
+  <text x="682" y="163" font-size="9" fill="#374151">  fit-page: min(w-fit, h-fit)</text>
+  <text x="682" y="178" font-size="9" fill="#374151">Ctrl+scroll: zoom at cursor</text>
+  <text x="682" y="193" font-size="9" fill="#374151">  transform-origin: pointer pos</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Pinch-to-zoom: touch gesture</text>
+  <text x="682" y="225" font-size="9" fill="#374151">Re-render: debounce 200ms</text>
+  <text x="682" y="240" font-size="9" fill="#374151">  cancel pending on new zoom</text>
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — TEXT LAYER &amp; SEARCH</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Text Layer</text>
+  <text x="34" y="358" font-size="9" fill="#374151">getTextContent(): TextItem[]</text>
+  <text x="34" y="373" font-size="9" fill="#374151">  { str, transform, width, height }</text>
+  <text x="34" y="388" font-size="9" fill="#374151">Overlay: absolute spans over</text>
+  <text x="34" y="403" font-size="9" fill="#374151">  canvas (selection + copy)</text>
+  <text x="34" y="418" font-size="9" fill="#374151">renderTextLayer(): positions</text>
+  <text x="34" y="433" font-size="9" fill="#374151">  each span via transform matrix</text>
+  <text x="34" y="448" font-size="9" fill="#374151">User-select: text on text layer</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Search &amp; Highlight</text>
+  <text x="236" y="358" font-size="9" fill="#374151">findController: PDF.js built-in</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  regex or exact match</text>
+  <text x="236" y="388" font-size="9" fill="#374151">  case sensitive option</text>
+  <text x="236" y="403" font-size="9" fill="#374151">Highlight: mark.js wrap spans</text>
+  <text x="236" y="418" font-size="9" fill="#374151">  active match: orange bg</text>
+  <text x="236" y="433" font-size="9" fill="#374151">Navigate: n/N or ↑↓ through</text>
+  <text x="236" y="448" font-size="9" fill="#374151">  scroll to match page auto</text>
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — ANNOTATION &amp; FORMS</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Annotation Layer</text>
+  <text x="485" y="358" font-size="9" fill="#374151">getAnnotations(): AnnotData[]</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  types: Link|Note|Highlight</text>
+  <text x="485" y="388" font-size="9" fill="#374151">  |FreeText|Stamp|Popup</text>
+  <text x="485" y="403" font-size="9" fill="#374151">renderAnnotationLayer(): divs</text>
+  <text x="485" y="418" font-size="9" fill="#374151">  positioned over canvas</text>
+  <text x="485" y="433" font-size="9" fill="#374151">Link: navigate page or URL</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Popup: hover tooltip note</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Form Fields</text>
+  <text x="682" y="358" font-size="9" fill="#374151">AcroForm: text|checkbox|radio</text>
+  <text x="682" y="373" font-size="9" fill="#374151">  |select|button field types</text>
+  <text x="682" y="388" font-size="9" fill="#374151">renderAnnotationLayer fills</text>
+  <text x="682" y="403" font-size="9" fill="#374151">  native HTML inputs in overlay</text>
+  <text x="682" y="418" font-size="9" fill="#374151">Data: getFieldObjects() map</text>
+  <text x="682" y="433" font-size="9" fill="#374151">Export: serialise to FDF/XFDF</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Submit: POST form data to URL</text>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Render scale: 1.5× default</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Overscan: ±2 pages rendered</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Search: regex + exact match</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Annotation types: Link|Note|Form</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Form: AcroForm HTML overlay</text>
 </svg>

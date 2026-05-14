@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -181,6 +182,11 @@ export default function ColumnConfigurationSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/column-configuration-system-architecture.svg"
+          alt="Column configuration system architecture showing column definition model, column state, visibility toggle panel, column reorder via drag-and-drop, resize handle, auto-fit, persistence, and export"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The system is structured as a <strong>layered
           configuration model</strong> with three layers:

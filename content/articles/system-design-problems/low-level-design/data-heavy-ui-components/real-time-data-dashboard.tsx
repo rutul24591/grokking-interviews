@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -199,6 +200,11 @@ export default function RealTimeDataDashboardArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/real-time-data-dashboard-architecture.svg"
+          alt="Real-time data dashboard architecture showing widget registry, dashboard layout, WebSocket data feed with REST fallback, time-series chart update with ring buffer, stat cards, refresh controls, and error handling"
+          caption="Architecture Overview"
+        />
         <p>
           The dashboard is built around a <strong>shared
           WebSocket connection</strong> with multiplexed

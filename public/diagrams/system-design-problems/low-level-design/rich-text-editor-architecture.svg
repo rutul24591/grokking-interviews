@@ -1,30 +1,125 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="260" fill="transparent"/>
-
-  <rect x="30" y="90" width="130" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="95" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">User Input</text>
-  <text x="50" y="148" font-size="11" fill="#3b82f6">typing / formatting</text>
-
-  <line x1="160" y1="130" x2="240" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="240" y="60" width="180" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="330" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Editor Store</text>
-  <text x="260" y="115" font-size="11" fill="#92400e">• blocks: BlockNode[]</text>
-  <text x="260" y="135" font-size="11" fill="#92400e">• selection: Range</text>
-  <text x="260" y="155" font-size="11" fill="#92400e">• history: Stack[]</text>
-  <text x="260" y="185" font-size="10" fill="#b45309">insert, delete, format, undo/redo</text>
-
-  <line x1="420" y1="130" x2="500" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="500" y="80" width="170" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="585" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">ContentEditable</text>
-  <text x="520" y="135" font-size="11" fill="#166534">• DOM rendering</text>
-  <text x="520" y="155" font-size="11" fill="#166534">• mention overlay</text>
-  <text x="520" y="175" font-size="10" fill="#15803d">image upload progress</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
     </marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Rich Text Editor — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Doc model · Plugin chain · Toolbar state · Paste sanitise &amp; collab</text>
+
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — DOCUMENT MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">ProseMirror Schema</text>
+  <text x="34" y="133" font-size="9" fill="#374151">Document: block node tree</text>
+  <text x="34" y="148" font-size="9" fill="#374151">Blocks: paragraph, heading 1-6</text>
+  <text x="34" y="163" font-size="9" fill="#374151">  blockquote, code_block, list</text>
+  <text x="34" y="178" font-size="9" fill="#374151">  image, table, horizontal_rule</text>
+  <text x="34" y="193" font-size="9" fill="#374151">Inline: text with mark[] array</text>
+  <text x="34" y="208" font-size="9" fill="#374151">Marks: bold, italic, underline</text>
+  <text x="34" y="223" font-size="9" fill="#374151">  strike, code, link, color</text>
+  <text x="34" y="240" font-size="9" fill="#374151">Immutable: transforms return new</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">State &amp; Transaction</text>
+  <text x="236" y="133" font-size="9" fill="#374151">EditorState: doc + selection + marks</text>
+  <text x="236" y="148" font-size="9" fill="#374151">Transaction: batch of steps</text>
+  <text x="236" y="163" font-size="9" fill="#374151">  addMark, insertText, replaceRange</text>
+  <text x="236" y="178" font-size="9" fill="#374151">dispatch(tr): derives new state</text>
+  <text x="236" y="193" font-size="9" fill="#374151">History: 100-deep undo/redo stacks</text>
+  <text x="236" y="208" font-size="9" fill="#374151">  compress adjacent same-origin tr</text>
+  <text x="236" y="223" font-size="9" fill="#374151">Serialise: toJSON / fromJSON</text>
+  <text x="236" y="240" font-size="9" fill="#374151">Export: toHTML, toMarkdown</text>
+
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — PLUGIN CHAIN</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Plugin Interface</text>
+  <text x="485" y="133" font-size="9" fill="#374151">Plugin: { key, state?, view?, props }</text>
+  <text x="485" y="148" font-size="9" fill="#374151">key: unique PluginKey for retrieval</text>
+  <text x="485" y="163" font-size="9" fill="#374151">state: { init, apply } lifecycle</text>
+  <text x="485" y="178" font-size="9" fill="#374151">props: handleEvent() overrides</text>
+  <text x="485" y="193" font-size="9" fill="#374151">Priority: low → high runs last</text>
+  <text x="485" y="208" font-size="9" fill="#374151">Built-ins: history, keymap, basekeys</text>
+  <text x="485" y="225" font-size="9" fill="#374151">  inputRules, placeholder, focus</text>
+  <text x="485" y="240" font-size="9" fill="#374151">Tiptap: Extension wraps plugins</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Key Extensions</text>
+  <text x="682" y="133" font-size="9" fill="#374151">Mention: @ trigger + dropdown</text>
+  <text x="682" y="148" font-size="9" fill="#374151">SlashCommands: / menu</text>
+  <text x="682" y="163" font-size="9" fill="#374151">ImageUpload: drag+drop handler</text>
+  <text x="682" y="178" font-size="9" fill="#374151">Emoji: : shortcode auto-replace</text>
+  <text x="682" y="193" font-size="9" fill="#374151">Table: cell navigation plugin</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Collab: y-prosemirror + Yjs</text>
+  <text x="682" y="225" font-size="9" fill="#374151">CharCount: plugin key readout</text>
+  <text x="682" y="240" font-size="9" fill="#374151">WordLimit: highlight at max chars</text>
+
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — TOOLBAR STATE</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Active Mark Detection</text>
+  <text x="34" y="358" font-size="9" fill="#374151">onSelectionChange: recompute state</text>
+  <text x="34" y="373" font-size="9" fill="#374151">isActive('bold'): check mark in sel</text>
+  <text x="34" y="388" font-size="9" fill="#374151">Toolbar btn: aria-pressed={active}</text>
+  <text x="34" y="403" font-size="9" fill="#374151">Block type dropdown: current node</text>
+  <text x="34" y="418" font-size="9" fill="#374151">Floating toolbar: on text selection</text>
+  <text x="34" y="433" font-size="9" fill="#374151">  position: Range.getBoundingRect</text>
+  <text x="34" y="448" font-size="9" fill="#374151">Fixed toolbar: always visible above</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Keyboard Shortcuts</text>
+  <text x="236" y="358" font-size="9" fill="#374151">Mod+B: toggle bold mark</text>
+  <text x="236" y="373" font-size="9" fill="#374151">Mod+I: toggle italic mark</text>
+  <text x="236" y="388" font-size="9" fill="#374151">Mod+Z / Mod+Shift+Z: undo/redo</text>
+  <text x="236" y="403" font-size="9" fill="#374151">Mod+K: insert / edit link</text>
+  <text x="236" y="418" font-size="9" fill="#374151">Tab: indent list item</text>
+  <text x="236" y="433" font-size="9" fill="#374151">Shift+Tab: outdent list item</text>
+  <text x="236" y="448" font-size="9" fill="#374151">keymap plugin: priority chain</text>
+
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — PASTE SANITISE &amp; COLLAB</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Paste Pipeline</text>
+  <text x="485" y="358" font-size="9" fill="#374151">handlePaste plugin intercepts</text>
+  <text x="485" y="373" font-size="9" fill="#374151">1. clipboardData.getData text/html</text>
+  <text x="485" y="388" font-size="9" fill="#374151">2. DOMPurify.sanitize(html)</text>
+  <text x="485" y="403" font-size="9" fill="#374151">3. parseHTML → ProseMirror slice</text>
+  <text x="485" y="418" font-size="9" fill="#374151">4. Strip disallowed marks/nodes</text>
+  <text x="485" y="433" font-size="9" fill="#374151">Plain text fallback: insert as-is</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Image paste: upload to CDN first</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Collab (Yjs / CRDT)</text>
+  <text x="682" y="358" font-size="9" fill="#374151">Yjs CRDT: Y.XmlFragment</text>
+  <text x="682" y="373" font-size="9" fill="#374151">y-prosemirror binding layer</text>
+  <text x="682" y="388" font-size="9" fill="#374151">Awareness: cursor + presence</text>
+  <text x="682" y="403" font-size="9" fill="#374151">  user name + color decoration</text>
+  <text x="682" y="418" font-size="9" fill="#374151">WebSocket provider: y-websocket</text>
+  <text x="682" y="433" font-size="9" fill="#374151">Conflict: CRDT auto-merge</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Offline: IndexedDB persistence</text>
+
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Mark types: 9 (bold, italic, link…)</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Plugin priority: low → high chain</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Paste: DOMPurify sanitise first</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Collab: Yjs CRDT + y-prosemirror</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">History: 100-deep undo stack</text>
 </svg>

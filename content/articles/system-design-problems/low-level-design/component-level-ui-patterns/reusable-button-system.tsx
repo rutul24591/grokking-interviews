@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -267,6 +268,12 @@ export default function ReusableButtonSystemArticle() {
       {/* Section 4: System Design (LLD) */}
       <section>
         <h2>System Design</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/reusable-button-system-architecture.svg"
+          alt="Reusable button system architecture showing variant system, loading state, icon slots, and focus handling"
+          caption="Architecture Overview"
+        />
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of seven modules:</p>

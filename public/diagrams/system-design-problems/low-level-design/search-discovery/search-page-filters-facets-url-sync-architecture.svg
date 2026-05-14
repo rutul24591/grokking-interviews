@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Search Filters / Facets / URL Sync — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Filter state · Facet counts · URL encode · Apply &amp; reset</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — FILTER STATE</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">FilterModel</text>
+  <text x="34" y="133" font-size="9" fill="#374151">filters: {field, op, value}[]</text>
+  <text x="34" y="148" font-size="9" fill="#374151">sort: {field, dir}</text>
+  <text x="34" y="163" font-size="9" fill="#374151">page: number</text>
+  <text x="34" y="178" font-size="9" fill="#374151">pageSize: 20</text>
+  <text x="34" y="193" font-size="9" fill="#374151">query: string</text>
+  <text x="34" y="208" font-size="9" fill="#374151">dirty: boolean (unsaved)</text>
+  <text x="34" y="223" font-size="9" fill="#374151">activeCount: filter count</text>
+  <text x="34" y="240" font-size="9" fill="#374151">derived: computed result set</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Filter Types</text>
+  <text x="236" y="133" font-size="9" fill="#374151">text: eq|contains|startsWith</text>
+  <text x="236" y="148" font-size="9" fill="#374151">number: eq|gt|lt|between</text>
+  <text x="236" y="163" font-size="9" fill="#374151">date: eq|before|after|range</text>
+  <text x="236" y="178" font-size="9" fill="#374151">boolean: eq</text>
+  <text x="236" y="193" font-size="9" fill="#374151">multi: in|notIn</text>
+  <text x="236" y="208" font-size="9" fill="#374151">geo: within radius</text>
+  <text x="236" y="223" font-size="9" fill="#374151">exists: field has/not value</text>
+  <text x="236" y="240" font-size="9" fill="#374151">regex: pattern match</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — FACET COUNTS</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Facet Request</text>
+  <text x="485" y="133" font-size="9" fill="#374151">include facets in search req</text>
+  <text x="485" y="148" font-size="9" fill="#374151">response: {field: [{val,count}]}</text>
+  <text x="485" y="163" font-size="9" fill="#374151">update on every filter change</text>
+  <text x="485" y="178" font-size="9" fill="#374151">selected: count with filter</text>
+  <text x="485" y="193" font-size="9" fill="#374151">agg: Elasticsearch aggs</text>
+  <text x="485" y="208" font-size="9" fill="#374151">cardinality: max 1000 values</text>
+  <text x="485" y="223" font-size="9" fill="#374151">nested: parent-child facets</text>
+  <text x="485" y="240" font-size="9" fill="#374151">cache: 30s for same query</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Facet UI</text>
+  <text x="682" y="133" font-size="9" fill="#374151">accordion per field</text>
+  <text x="682" y="148" font-size="9" fill="#374151">checkbox: sorted by count desc</text>
+  <text x="682" y="163" font-size="9" fill="#374151">search within facet options</text>
+  <text x="682" y="178" font-size="9" fill="#374151">show more: expand after top 5</text>
+  <text x="682" y="193" font-size="9" fill="#374151">zero count: greyed + disabled</text>
+  <text x="682" y="208" font-size="9" fill="#374151">range: dual slider for numbers</text>
+  <text x="682" y="223" font-size="9" fill="#374151">date: calendar picker</text>
+  <text x="682" y="240" font-size="9" fill="#374151">clear: reset one field button</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — URL SYNCHRONIZATION</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Encode Strategy</text>
+  <text x="34" y="358" font-size="9" fill="#374151">JSON→base64 complex filters</text>
+  <text x="34" y="373" font-size="9" fill="#374151">simple: ?brand=nike&amp;price=0-100</text>
+  <text x="34" y="388" font-size="9" fill="#374151">sort: ?sort=price:asc</text>
+  <text x="34" y="403" font-size="9" fill="#374151">page: ?page=2</text>
+  <text x="34" y="418" font-size="9" fill="#374151">push: replaceState per change</text>
+  <text x="34" y="433" font-size="9" fill="#374151">max URL: stay under 2KB</text>
+  <text x="34" y="448" font-size="9" fill="#374151">encode: encodeURIComponent</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Parse on Mount</text>
+  <text x="236" y="358" font-size="9" fill="#374151">read URL params on mount</text>
+  <text x="236" y="373" font-size="9" fill="#374151">decode + validate each filter</text>
+  <text x="236" y="388" font-size="9" fill="#374151">invalid: skip + log warning</text>
+  <text x="236" y="403" font-size="9" fill="#374151">clamp: page within totalPages</text>
+  <text x="236" y="418" font-size="9" fill="#374151">apply: set state from URL</text>
+  <text x="236" y="433" font-size="9" fill="#374151">popstate: browser back/fwd</text>
+  <text x="236" y="448" font-size="9" fill="#374151">SSR: handle on server too</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — APPLY &amp; RESET</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Apply Flow</text>
+  <text x="485" y="358" font-size="9" fill="#374151">apply: re-fetch with new filters</text>
+  <text x="485" y="373" font-size="9" fill="#374151">optimistic: show skeleton now</text>
+  <text x="485" y="388" font-size="9" fill="#374151">debounce: 200ms range sliders</text>
+  <text x="485" y="403" font-size="9" fill="#374151">abort: cancel in-flight on new</text>
+  <text x="485" y="418" font-size="9" fill="#374151">lock: disable apply while loading</text>
+  <text x="485" y="433" font-size="9" fill="#374151">count: show "N results" preview</text>
+  <text x="485" y="448" font-size="9" fill="#374151">scroll: to top on apply</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Reset Controls</text>
+  <text x="682" y="358" font-size="9" fill="#374151">clear all: empty filter state</text>
+  <text x="682" y="373" font-size="9" fill="#374151">reset field: remove one filter</text>
+  <text x="682" y="388" font-size="9" fill="#374151">back: popstate restores filters</text>
+  <text x="682" y="403" font-size="9" fill="#374151">save: persist to SavedView</text>
+  <text x="682" y="418" font-size="9" fill="#374151">undo: restore previous filters</text>
+  <text x="682" y="433" font-size="9" fill="#374151">default: navigate to base URL</text>
+  <text x="682" y="448" font-size="9" fill="#374151">confirm: modal if many results</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">URL: base64 encoded filters</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Facet: per-field counts</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Range debounce: 200ms</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Clear all: empty state</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Browser back: popstate restore</text>
+</svg>

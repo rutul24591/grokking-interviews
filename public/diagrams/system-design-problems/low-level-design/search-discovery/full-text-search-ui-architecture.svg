@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Full-text Search UI — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Query model · Debounce · Result ranking · Highlight &amp; pagination</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — QUERY MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">SearchState</text>
+  <text x="34" y="133" font-size="9" fill="#374151">query: string</text>
+  <text x="34" y="148" font-size="9" fill="#374151">filters: Record&lt;field, value&gt;</text>
+  <text x="34" y="163" font-size="9" fill="#374151">sort: {field, dir} | relevance</text>
+  <text x="34" y="178" font-size="9" fill="#374151">page: number</text>
+  <text x="34" y="193" font-size="9" fill="#374151">pageSize: 20</text>
+  <text x="34" y="208" font-size="9" fill="#374151">facets: selected Set</text>
+  <text x="34" y="223" font-size="9" fill="#374151">loading: boolean</text>
+  <text x="34" y="240" font-size="9" fill="#374151">totalHits: number</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">QueryBuilder</text>
+  <text x="236" y="133" font-size="9" fill="#374151">buildQuery(state): {q, filters}</text>
+  <text x="236" y="148" font-size="9" fill="#374151">escape: special chars in q</text>
+  <text x="236" y="163" font-size="9" fill="#374151">boost: title&gt;body&gt;tags</text>
+  <text x="236" y="178" font-size="9" fill="#374151">fuzzy: ~1 for &lt;8 char queries</text>
+  <text x="236" y="193" font-size="9" fill="#374151">phrase: wrap in quotes</text>
+  <text x="236" y="208" font-size="9" fill="#374151">wildcard: * suffix for prefix</text>
+  <text x="236" y="223" font-size="9" fill="#374151">must/should: boolean clauses</text>
+  <text x="236" y="240" font-size="9" fill="#374151">from: page × pageSize offset</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — DEBOUNCE &amp; FETCH</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Input Debounce</text>
+  <text x="485" y="133" font-size="9" fill="#374151">debounce: 300ms after last key</text>
+  <text x="485" y="148" font-size="9" fill="#374151">cancel: abort prev on new query</text>
+  <text x="485" y="163" font-size="9" fill="#374151">min length: 2 chars before fetch</text>
+  <text x="485" y="178" font-size="9" fill="#374151">instant: Enter bypasses debounce</text>
+  <text x="485" y="193" font-size="9" fill="#374151">clear: X button resets instantly</text>
+  <text x="485" y="208" font-size="9" fill="#374151">history: recent searches list</text>
+  <text x="485" y="223" font-size="9" fill="#374151">suggest: typeahead while typing</text>
+  <text x="485" y="240" font-size="9" fill="#374151">voice: Web Speech API input</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Request</text>
+  <text x="682" y="133" font-size="9" fill="#374151">GET /search?q=&amp;from=&amp;size=</text>
+  <text x="682" y="148" font-size="9" fill="#374151">AbortController: cancel inflight</text>
+  <text x="682" y="163" font-size="9" fill="#374151">cache: 60s same query</text>
+  <text x="682" y="178" font-size="9" fill="#374151">retry: once on network error</text>
+  <text x="682" y="193" font-size="9" fill="#374151">timeout: 5s request timeout</text>
+  <text x="682" y="208" font-size="9" fill="#374151">compress: Accept-Encoding gzip</text>
+  <text x="682" y="223" font-size="9" fill="#374151">auth: include credentials</text>
+  <text x="682" y="240" font-size="9" fill="#374151">log: track query analytics</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — RESULT DISPLAY</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Result Card</text>
+  <text x="34" y="358" font-size="9" fill="#374151">title with highlight spans</text>
+  <text x="34" y="373" font-size="9" fill="#374151">snippet: 200 char excerpt</text>
+  <text x="34" y="388" font-size="9" fill="#374151">highlight: &lt;mark&gt; matched terms</text>
+  <text x="34" y="403" font-size="9" fill="#374151">score badge: relevance %</text>
+  <text x="34" y="418" font-size="9" fill="#374151">breadcrumb: category path</text>
+  <text x="34" y="433" font-size="9" fill="#374151">thumbnail: if media result</text>
+  <text x="34" y="448" font-size="9" fill="#374151">date: formatted timestamp</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Facets / Filters</text>
+  <text x="236" y="358" font-size="9" fill="#374151">facet counts: {value, count}[]</text>
+  <text x="236" y="373" font-size="9" fill="#374151">checkbox per field</text>
+  <text x="236" y="388" font-size="9" fill="#374151">apply: re-fetch with filter</text>
+  <text x="236" y="403" font-size="9" fill="#374151">clear: remove + re-fetch</text>
+  <text x="236" y="418" font-size="9" fill="#374151">loading: skeleton per panel</text>
+  <text x="236" y="433" font-size="9" fill="#374151">show more: expand after 5</text>
+  <text x="236" y="448" font-size="9" fill="#374151">zero count: grey + disabled</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — RANKING &amp; PAGINATION</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Highlight</text>
+  <text x="485" y="358" font-size="9" fill="#374151">server: highlight with &lt;em&gt; tags</text>
+  <text x="485" y="373" font-size="9" fill="#374151">client: dangerouslySetInnerHTML</text>
+  <text x="485" y="388" font-size="9" fill="#374151">XSS: strip except &lt;em&gt;</text>
+  <text x="485" y="403" font-size="9" fill="#374151">bold: matched terms</text>
+  <text x="485" y="418" font-size="9" fill="#374151">color: yellow/orange highlight</text>
+  <text x="485" y="433" font-size="9" fill="#374151">navigate: Ctrl+G between hits</text>
+  <text x="485" y="448" font-size="9" fill="#374151">count: "3 of 12 matches"</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Pagination</text>
+  <text x="682" y="358" font-size="9" fill="#374151">offset: from = page × size</text>
+  <text x="682" y="373" font-size="9" fill="#374151">total hits: "~1,200 results"</text>
+  <text x="682" y="388" font-size="9" fill="#374151">cursor: search_after for deep</text>
+  <text x="682" y="403" font-size="9" fill="#374151">infinite scroll: append on scroll</text>
+  <text x="682" y="418" font-size="9" fill="#374151">prev/next: page buttons</text>
+  <text x="682" y="433" font-size="9" fill="#374151">scroll to top: on page change</text>
+  <text x="682" y="448" font-size="9" fill="#374151">URL: ?page=N in querystring</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Debounce: 300ms</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Min query: 2 chars</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Snippet: 200 chars</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Fuzzy: ~1 for short queries</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Deep page: search_after cursor</text>
+</svg>

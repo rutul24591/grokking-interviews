@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -200,6 +201,11 @@ export default function InlineEditingSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/inline-editing-system-architecture.svg"
+          alt="Inline editing system architecture showing edit trigger activation, edit state model, text and specialized input types, client and server validation rules, optimistic save, and keyboard UX"
+          caption="Architecture Overview"
+        />
         <p>
           The system is built around four primitives:
           <strong> per-cell edit state</strong>,

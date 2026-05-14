@@ -1,31 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="280" fill="transparent"/>
-
-  <rect x="30" y="100" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="100" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Field Input</text>
-  <text x="50" y="158" font-size="11" fill="#3b82f6">onChange, onBlur</text>
-
-  <line x1="170" y1="140" x2="250" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="250" y="70" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="350" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Validation Engine</text>
-  <text x="270" y="125" font-size="11" fill="#92400e">• rules: ValidationRule[]</text>
-  <text x="270" y="145" font-size="11" fill="#92400e">• fieldErrors: Map&lt;id&gt;</text>
-  <text x="270" y="165" font-size="11" fill="#92400e">• async validators</text>
-  <text x="270" y="185" font-size="11" fill="#92400e">• cross-field rules</text>
-  <text x="270" y="210" font-size="10" fill="#b45309">runChain, runAsync, i18n</text>
-
-  <line x1="450" y1="140" x2="530" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="530" y="90" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="605" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Error Display</text>
-  <text x="550" y="145" font-size="11" fill="#166534">• inline errors</text>
-  <text x="550" y="165" font-size="11" fill="#166534">• summary list</text>
-  <text x="550" y="185" font-size="10" fill="#15803d">aria-live announcements</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
-    </marker>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Form Validation Engine — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Rule registry · Validation chain · Error map · Async &amp; server errors</text>
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — RULE REGISTRY</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">ValidationRule</text>
+  <text x="34" y="133" font-size="9" fill="#374151">name: string (rule id)</text>
+  <text x="34" y="148" font-size="9" fill="#374151">validate(value, ctx): bool|string</text>
+  <text x="34" y="163" font-size="9" fill="#374151">  or Promise&lt;bool|string&gt;</text>
+  <text x="34" y="178" font-size="9" fill="#374151">message: string | fn(params)</text>
+  <text x="34" y="193" font-size="9" fill="#374151">params: Record&lt;string, any&gt;</text>
+  <text x="34" y="208" font-size="9" fill="#374151">Built-ins: required|min|max|email</text>
+  <text x="34" y="223" font-size="9" fill="#374151">  |pattern|minLength|maxLength</text>
+  <text x="34" y="240" font-size="9" fill="#374151">Custom: register(name, fn)</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Field Schema</text>
+  <text x="236" y="133" font-size="9" fill="#374151">FieldConfig: { name, rules[] }</text>
+  <text x="236" y="148" font-size="9" fill="#374151">rules[]: ordered array</text>
+  <text x="236" y="163" font-size="9" fill="#374151">  stop on first failure (bail)</text>
+  <text x="236" y="178" font-size="9" fill="#374151">  or collect all errors</text>
+  <text x="236" y="193" font-size="9" fill="#374151">Cross-field: ctx.values access</text>
+  <text x="236" y="208" font-size="9" fill="#374151">  e.g. confirm password match</text>
+  <text x="236" y="223" font-size="9" fill="#374151">Dependencies: revalidate on dep</text>
+  <text x="236" y="240" font-size="9" fill="#374151">  field change triggers sibling</text>
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — VALIDATION CHAIN</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Trigger Modes</text>
+  <text x="485" y="133" font-size="9" fill="#374151">onChange: validate on each key</text>
+  <text x="485" y="148" font-size="9" fill="#374151">  debounce: 300ms default</text>
+  <text x="485" y="163" font-size="9" fill="#374151">onBlur: validate on field leave</text>
+  <text x="485" y="178" font-size="9" fill="#374151">onSubmit: validate all fields</text>
+  <text x="485" y="193" font-size="9" fill="#374151">  block submit if any errors</text>
+  <text x="485" y="208" font-size="9" fill="#374151">touched: track dirtied fields</text>
+  <text x="485" y="225" font-size="9" fill="#374151">  only show errors after touch</text>
+  <text x="485" y="240" font-size="9" fill="#374151">revalidateMode: onChange after</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Execution Pipeline</text>
+  <text x="682" y="133" font-size="9" fill="#374151">1. Sync rules first (fast path)</text>
+  <text x="682" y="148" font-size="9" fill="#374151">2. Fail fast: first error stops</text>
+  <text x="682" y="163" font-size="9" fill="#374151">3. Async rules: Promise.all</text>
+  <text x="682" y="178" font-size="9" fill="#374151">  AbortController on new run</text>
+  <text x="682" y="193" font-size="9" fill="#374151">  timeout: 5000ms hard cap</text>
+  <text x="682" y="208" font-size="9" fill="#374151">4. Schema-level validate fn</text>
+  <text x="682" y="225" font-size="9" fill="#374151">  runs after all field rules pass</text>
+  <text x="682" y="240" font-size="9" fill="#374151">isValidating flag per field</text>
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — ERROR MAP &amp; DISPLAY</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Error State</text>
+  <text x="34" y="358" font-size="9" fill="#374151">errors: Record&lt;name, string[]&gt;</text>
+  <text x="34" y="373" font-size="9" fill="#374151">  one or multiple per field</text>
+  <text x="34" y="388" font-size="9" fill="#374151">isValid: all errors empty</text>
+  <text x="34" y="403" font-size="9" fill="#374151">isDirty: any field modified</text>
+  <text x="34" y="418" font-size="9" fill="#374151">isSubmitting: async submit flag</text>
+  <text x="34" y="433" font-size="9" fill="#374151">clearError(name): remove entry</text>
+  <text x="34" y="448" font-size="9" fill="#374151">reset(): clear all + restore vals</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">UI Error Display</text>
+  <text x="236" y="358" font-size="9" fill="#374151">Field border: red on error</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  green on valid + touched</text>
+  <text x="236" y="388" font-size="9" fill="#374151">Error text: below input, role=alert</text>
+  <text x="236" y="403" font-size="9" fill="#374151">  aria-describedby wires field</text>
+  <text x="236" y="418" font-size="9" fill="#374151">Error summary: top of form</text>
+  <text x="236" y="433" font-size="9" fill="#374151">  links to each invalid field</text>
+  <text x="236" y="448" font-size="9" fill="#374151">Focus: first error field on submit</text>
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — ASYNC &amp; SERVER ERRORS</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Async Validation</text>
+  <text x="485" y="358" font-size="9" fill="#374151">Remote check: username unique</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  debounce 500ms before fetch</text>
+  <text x="485" y="388" font-size="9" fill="#374151">Loading indicator on field</text>
+  <text x="485" y="403" font-size="9" fill="#374151">  spinner replaces check icon</text>
+  <text x="485" y="418" font-size="9" fill="#374151">AbortController: cancel stale</text>
+  <text x="485" y="433" font-size="9" fill="#374151">Timeout: 5s → show error msg</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Cache: 60s per checked value</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Server Error Merge</text>
+  <text x="682" y="358" font-size="9" fill="#374151">API 422: field error map in body</text>
+  <text x="682" y="373" font-size="9" fill="#374151">  setError(name, serverMsg)</text>
+  <text x="682" y="388" font-size="9" fill="#374151">Merge: append to existing errs</text>
+  <text x="682" y="403" font-size="9" fill="#374151">Server TTL: clear on next change</text>
+  <text x="682" y="418" font-size="9" fill="#374151">  stale after 30s automatically</text>
+  <text x="682" y="433" font-size="9" fill="#374151">Non-field: form-level error toast</text>
+  <text x="682" y="448" font-size="9" fill="#374151">  network / 500 server errors</text>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Debounce: 300ms onChange</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Async timeout: 5000ms hard cap</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Server error TTL: 30s</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Touched tracking: show after blur</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Focus: first error field on submit</text>
 </svg>

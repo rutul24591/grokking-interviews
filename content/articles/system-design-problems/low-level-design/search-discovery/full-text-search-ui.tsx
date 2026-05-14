@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -180,6 +181,11 @@ export default function FullTextSearchUIArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/search-discovery/full-text-search-ui-architecture.svg"
+          alt="Full-text search UI architecture showing search state model, query builder, input debounce, fetch with AbortController, result card with highlights, facet filter panel, highlight XSS-safe rendering, and pagination with cursor support"
+          caption="Architecture Overview"
+        />
         <p>
           The UI has four parts: <strong>query
           parser</strong>, <strong>backend adapter</strong>,

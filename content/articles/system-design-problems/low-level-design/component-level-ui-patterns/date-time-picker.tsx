@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -239,6 +240,12 @@ export default function DateTimePickerArticle() {
       {/* Section 4: System Design (LLD) */}
       <section>
         <h2>System Design</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/date-time-picker-architecture.svg"
+          alt="Date time picker architecture showing calendar state, navigation, DST-safe storage, and range selection"
+          caption="Architecture Overview"
+        />
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of six modules:</p>

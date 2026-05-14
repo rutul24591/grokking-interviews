@@ -1,30 +1,125 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="260" fill="transparent"/>
-
-  <rect x="30" y="90" width="130" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="95" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">User Click/Hover</text>
-  <text x="50" y="148" font-size="11" fill="#3b82f6">mouse / keyboard</text>
-
-  <line x1="160" y1="130" x2="240" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="240" y="70" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="340" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Rating Store</text>
-  <text x="260" y="125" font-size="11" fill="#92400e">• value: number (0-5)</text>
-  <text x="260" y="145" font-size="11" fill="#92400e">• hoverValue: number | null</text>
-  <text x="260" y="165" font-size="11" fill="#92400e">• maxStars: number</text>
-  <text x="260" y="190" font-size="10" fill="#b45309">setValue, setHover, clearHover</text>
-
-  <line x1="440" y1="130" x2="520" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="520" y="80" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="600" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Star Renderer</text>
-  <text x="540" y="135" font-size="11" fill="#166534">• filled / half / empty</text>
-  <text x="540" y="155" font-size="11" fill="#166534">• clip-path for half-fill</text>
-  <text x="540" y="175" font-size="10" fill="#15803d">keyboard + ARIA slider</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
     </marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Rating Stars Component — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Value state · Hover preview · Star render · Form integration &amp; A11y</text>
+
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — VALUE STATE MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">RatingProps</text>
+  <text x="34" y="133" font-size="9" fill="#374151">value: number (0–max)</text>
+  <text x="34" y="148" font-size="9" fill="#374151">max: number (default 5)</text>
+  <text x="34" y="163" font-size="9" fill="#374151">precision: 1 | 0.5 | 0.1</text>
+  <text x="34" y="178" font-size="9" fill="#374151">readOnly?: boolean</text>
+  <text x="34" y="193" font-size="9" fill="#374151">disabled?: boolean</text>
+  <text x="34" y="208" font-size="9" fill="#374151">onChange(value: number): void</text>
+  <text x="34" y="223" font-size="9" fill="#374151">name?: string (hidden input)</text>
+  <text x="34" y="240" font-size="9" fill="#374151">size?: 'sm'|'md'|'lg' (px)</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Internal State</text>
+  <text x="236" y="133" font-size="9" fill="#374151">committedValue: number</text>
+  <text x="236" y="148" font-size="9" fill="#374151">hoverValue: number | null</text>
+  <text x="236" y="163" font-size="9" fill="#374151">focused: boolean</text>
+  <text x="236" y="178" font-size="9" fill="#374151">displayValue = hoverValue ?? committed</text>
+  <text x="236" y="193" font-size="9" fill="#374151">Precision 0.5: left/right half detect</text>
+  <text x="236" y="208" font-size="9" fill="#374151">  offsetX &lt; starW/2 → x - 0.5</text>
+  <text x="236" y="223" font-size="9" fill="#374151">Precision 0.1: Math.round(pos*10)/10</text>
+  <text x="236" y="240" font-size="9" fill="#374151">Controlled via value prop</text>
+
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — HOVER PREVIEW</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Hover Logic</text>
+  <text x="485" y="133" font-size="9" fill="#374151">onMouseMove on star container</text>
+  <text x="485" y="148" font-size="9" fill="#374151">  compute hoverValue from offsetX</text>
+  <text x="485" y="163" font-size="9" fill="#374151">  no debounce (immediate feedback)</text>
+  <text x="485" y="178" font-size="9" fill="#374151">onMouseLeave: reset hoverValue=null</text>
+  <text x="485" y="193" font-size="9" fill="#374151">  display reverts to committedValue</text>
+  <text x="485" y="208" font-size="9" fill="#374151">onClick: commit hoverValue</text>
+  <text x="485" y="225" font-size="9" fill="#374151">  call onChange(newValue)</text>
+  <text x="485" y="240" font-size="9" fill="#374151">Touch: onTouchMove same logic</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Clear &amp; Reset</text>
+  <text x="682" y="133" font-size="9" fill="#374151">allowClear?: boolean (default true)</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  click same value → set to 0</text>
+  <text x="682" y="163" font-size="9" fill="#374151">Hover position 0: clear hint icon</text>
+  <text x="682" y="178" font-size="9" fill="#374151">  x-icon before first star</text>
+  <text x="682" y="193" font-size="9" fill="#374151">Keyboard Backspace = clear</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Label: "0 stars, clear rating"</text>
+  <text x="682" y="225" font-size="9" fill="#374151">Disabled: pointer-events: none</text>
+  <text x="682" y="240" font-size="9" fill="#374151">  opacity 0.5, cursor not-allowed</text>
+
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — STAR RENDER</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">SVG Star Technique</text>
+  <text x="34" y="358" font-size="9" fill="#374151">SVG polygon 5-point star path</text>
+  <text x="34" y="373" font-size="9" fill="#374151">Partial fill via clipPath</text>
+  <text x="34" y="388" font-size="9" fill="#374151">  clipPath width = frac × 100%</text>
+  <text x="34" y="403" font-size="9" fill="#374151">Filled color: amber #f59e0b</text>
+  <text x="34" y="418" font-size="9" fill="#374151">Empty color: grey #d1d5db</text>
+  <text x="34" y="433" font-size="9" fill="#374151">Size map: sm=16 md=24 lg=32 px</text>
+  <text x="34" y="448" font-size="9" fill="#374151">gap: 4px between stars</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Responsive &amp; Custom</text>
+  <text x="236" y="358" font-size="9" fill="#374151">Custom icon: icon prop (ReactNode)</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  heart, circle, thumb icons</text>
+  <text x="236" y="388" font-size="9" fill="#374151">CSS custom props for colors</text>
+  <text x="236" y="403" font-size="9" fill="#374151">  --rating-filled, --rating-empty</text>
+  <text x="236" y="418" font-size="9" fill="#374151">Hover: scale(1.1) transition 100ms</text>
+  <text x="236" y="433" font-size="9" fill="#374151">prefers-reduced-motion: no scale</text>
+  <text x="236" y="448" font-size="9" fill="#374151">RTL: stars right-to-left order</text>
+
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — FORM INTEGRATION &amp; A11Y</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Form Hidden Input</text>
+  <text x="485" y="358" font-size="9" fill="#374151">input type="hidden" name={name}</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  value={committedValue}</text>
+  <text x="485" y="388" font-size="9" fill="#374151">Required: setCustomValidity</text>
+  <text x="485" y="403" font-size="9" fill="#374151">  if value === 0 → "Rating required"</text>
+  <text x="485" y="418" font-size="9" fill="#374151">Form reset event: reset to default</text>
+  <text x="485" y="433" font-size="9" fill="#374151">  or 0 if no defaultValue</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Uncontrolled: local state drives</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Accessibility</text>
+  <text x="682" y="358" font-size="9" fill="#374151">role="slider" on container</text>
+  <text x="682" y="373" font-size="9" fill="#374151">aria-valuenow={committedValue}</text>
+  <text x="682" y="388" font-size="9" fill="#374151">aria-valuemin=0 aria-valuemax={max}</text>
+  <text x="682" y="403" font-size="9" fill="#374151">aria-label="Rating" or custom prop</text>
+  <text x="682" y="418" font-size="9" fill="#374151">← → arrows: decrement/increment</text>
+  <text x="682" y="433" font-size="9" fill="#374151">  step = precision value</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Home/End: jump to min/max</text>
+
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Half-star: left/right half detection</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Hover debounce: none (immediate)</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">ARIA valuenow: committedValue</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Form: hidden input type="hidden"</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Keyboard step: precision value</text>
 </svg>

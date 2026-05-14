@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -169,6 +170,11 @@ export default function PresenceLastSeenSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/presence-last-seen-system-architecture.svg"
+          alt="Presence and last-seen system architecture showing presence record model, status rules, client heartbeat, server TTL with Redis, presence indicator UI, last-seen text formatting, privacy controls, and scale considerations"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The system has four parts: <strong>local
           heartbeat sender</strong> (periodic

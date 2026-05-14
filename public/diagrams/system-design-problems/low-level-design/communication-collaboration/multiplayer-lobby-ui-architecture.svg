@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Multiplayer Lobby UI — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Room model · Presence list · Ready gate · Start &amp; reconnect</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — ROOM MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Room</text>
+  <text x="34" y="133" font-size="9" fill="#374151">id: string</text>
+  <text x="34" y="148" font-size="9" fill="#374151">code: 6-char join code</text>
+  <text x="34" y="163" font-size="9" fill="#374151">hostId: string</text>
+  <text x="34" y="178" font-size="9" fill="#374151">state: waiting|starting|in-game</text>
+  <text x="34" y="193" font-size="9" fill="#374151">maxPlayers: number</text>
+  <text x="34" y="208" font-size="9" fill="#374151">settings: GameSettings</text>
+  <text x="34" y="223" font-size="9" fill="#374151">createdAt: timestamp</text>
+  <text x="34" y="240" font-size="9" fill="#374151">visibility: public|private</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Player</text>
+  <text x="236" y="133" font-size="9" fill="#374151">clientId: string</text>
+  <text x="236" y="148" font-size="9" fill="#374151">userId: string</text>
+  <text x="236" y="163" font-size="9" fill="#374151">displayName: string</text>
+  <text x="236" y="178" font-size="9" fill="#374151">avatar: string</text>
+  <text x="236" y="193" font-size="9" fill="#374151">status: joining|ready|not-ready</text>
+  <text x="236" y="208" font-size="9" fill="#374151">ping: number</text>
+  <text x="236" y="223" font-size="9" fill="#374151">isHost: boolean</text>
+  <text x="236" y="240" font-size="9" fill="#374151">team: string | null</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — PRESENCE LIST</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Join Flow</text>
+  <text x="485" y="133" font-size="9" fill="#374151">GET /room/:code → join or 404</text>
+  <text x="485" y="148" font-size="9" fill="#374151">ws connect: join event</text>
+  <text x="485" y="163" font-size="9" fill="#374151">server: broadcast player-joined</text>
+  <text x="485" y="178" font-size="9" fill="#374151">optimistic: add self immediately</text>
+  <text x="485" y="193" font-size="9" fill="#374151">validate: check maxPlayers</text>
+  <text x="485" y="208" font-size="9" fill="#374151">password: optional gate check</text>
+  <text x="485" y="223" font-size="9" fill="#374151">redirect: full → spectate view</text>
+  <text x="485" y="240" font-size="9" fill="#374151">invite: deep-link with code</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Lobby List UI</text>
+  <text x="682" y="133" font-size="9" fill="#374151">player cards: avatar+name+badge</text>
+  <text x="682" y="148" font-size="9" fill="#374151">host badge: crown icon</text>
+  <text x="682" y="163" font-size="9" fill="#374151">ping: color-coded ms</text>
+  <text x="682" y="178" font-size="9" fill="#374151">kick: host only × button</text>
+  <text x="682" y="193" font-size="9" fill="#374151">slots: grayed placeholders</text>
+  <text x="682" y="208" font-size="9" fill="#374151">join animation: slide-in card</text>
+  <text x="682" y="223" font-size="9" fill="#374151">leave: slide-out + shift cards</text>
+  <text x="682" y="240" font-size="9" fill="#374151">chat: lobby text channel</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — READY GATE</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Ready Toggle</text>
+  <text x="34" y="358" font-size="9" fill="#374151">toggle: ws {playerId, ready}</text>
+  <text x="34" y="373" font-size="9" fill="#374151">host: start when all ready</text>
+  <text x="34" y="388" font-size="9" fill="#374151">forced-start: host override</text>
+  <text x="34" y="403" font-size="9" fill="#374151">countdown: 3s before start</text>
+  <text x="34" y="418" font-size="9" fill="#374151">cancel: host can abort countdown</text>
+  <text x="34" y="433" font-size="9" fill="#374151">min players: enforce minimum</text>
+  <text x="34" y="448" font-size="9" fill="#374151">sound: ready chime per player</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Settings</text>
+  <text x="236" y="358" font-size="9" fill="#374151">host: game mode, map, time</text>
+  <text x="236" y="373" font-size="9" fill="#374151">broadcast: settings-changed</text>
+  <text x="236" y="388" font-size="9" fill="#374151">lock: before start</text>
+  <text x="236" y="403" font-size="9" fill="#374151">defaults: per-game-type preset</text>
+  <text x="236" y="418" font-size="9" fill="#374151">vote: optional player vote</text>
+  <text x="236" y="433" font-size="9" fill="#374151">preview: setting summary card</text>
+  <text x="236" y="448" font-size="9" fill="#374151">copy: share settings link</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — START &amp; RECONNECT</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Game Start</text>
+  <text x="485" y="358" font-size="9" fill="#374151">server: state=starting</text>
+  <text x="485" y="373" font-size="9" fill="#374151">broadcast: game-start event</text>
+  <text x="485" y="388" font-size="9" fill="#374151">client: navigate to game view</text>
+  <text x="485" y="403" font-size="9" fill="#374151">late join: redirect to spectate</text>
+  <text x="485" y="418" font-size="9" fill="#374151">loading: transition animation</text>
+  <text x="485" y="433" font-size="9" fill="#374151">seed: shared random seed</text>
+  <text x="485" y="448" font-size="9" fill="#374151">sync: game tick alignment</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Reconnect</text>
+  <text x="682" y="358" font-size="9" fill="#374151">ws drop: "Reconnecting..." overlay</text>
+  <text x="682" y="373" font-size="9" fill="#374151">rejoin: GET /room/:id + clientId</text>
+  <text x="682" y="388" font-size="9" fill="#374151">restore: player state from server</text>
+  <text x="682" y="403" font-size="9" fill="#374151">grace: 30s before AFK kick</text>
+  <text x="682" y="418" font-size="9" fill="#374151">backoff: exp 1s→30s</text>
+  <text x="682" y="433" font-size="9" fill="#374151">host migrate: next player if host</text>
+  <text x="682" y="448" font-size="9" fill="#374151">notify: room of reconnect</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Join code: 6-char</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Max players: configurable</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Ready gate: all ready or host-force</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Reconnect grace: 30s</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Ping: color-coded</text>
+</svg>

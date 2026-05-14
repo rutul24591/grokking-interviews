@@ -3,6 +3,7 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { Highlight } from "@/components/articles/Highlight";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -167,6 +168,13 @@ export default function CollaborativeWhiteboardArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/collaborative-whiteboard-architecture.svg"
+          alt="Collaborative whiteboard architecture showing canvas model, tool system, viewport rendering, and presence sync"
+          caption="Architecture Overview"
+        />
+
         <HighlightBlock as="p" tier="crucial">
           The whiteboard composes <strong>CRDT
           document</strong> (Yjs Y.Map of objects),

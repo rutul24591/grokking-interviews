@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Client-side Data Normalization — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Entity schema · Normalizer · Selector cache · Mutation sync</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — DATA SCHEMA</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">EntityStore Shape</text>
+  <text x="34" y="133" font-size="9" fill="#374151">entities: Record&lt;id, T&gt;</text>
+  <text x="34" y="148" font-size="9" fill="#374151">ids: string[]</text>
+  <text x="34" y="163" font-size="9" fill="#374151">meta per type</text>
+  <text x="34" y="178" font-size="9" fill="#374151">loading: boolean</text>
+  <text x="34" y="193" font-size="9" fill="#374151">error: string | null</text>
+  <text x="34" y="208" font-size="9" fill="#374151">lastFetched: timestamp</text>
+  <text x="34" y="223" font-size="9" fill="#374151">total: number</text>
+  <text x="34" y="240" font-size="9" fill="#374151">type: string (entity key)</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">NormalizationSchema</text>
+  <text x="236" y="133" font-size="9" fill="#374151">schema.Entity definition</text>
+  <text x="236" y="148" font-size="9" fill="#374151">define key: id field name</text>
+  <text x="236" y="163" font-size="9" fill="#374151">define relations: nested types</text>
+  <text x="236" y="178" font-size="9" fill="#374151">mergeStrategy: replace|merge</text>
+  <text x="236" y="193" font-size="9" fill="#374151">idAttribute: fn or string</text>
+  <text x="236" y="208" font-size="9" fill="#374151">processStrategy: transform fn</text>
+  <text x="236" y="223" font-size="9" fill="#374151">fallbackStrategy: on missing</text>
+  <text x="236" y="240" font-size="9" fill="#374151">schema.Array / schema.Values</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — NORMALIZATION ENGINE</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Normalize Pipeline</text>
+  <text x="485" y="133" font-size="9" fill="#374151">normalize(response, schema)</text>
+  <text x="485" y="148" font-size="9" fill="#374151">→ {entities, result}</text>
+  <text x="485" y="163" font-size="9" fill="#374151">flatten nested → top-level maps</text>
+  <text x="485" y="178" font-size="9" fill="#374151">de-dup: merge by id</text>
+  <text x="485" y="193" font-size="9" fill="#374151">handle arrays + singles</text>
+  <text x="485" y="208" font-size="9" fill="#374151">result: id or id[] reference</text>
+  <text x="485" y="223" font-size="9" fill="#374151">entities: {type: {id: obj}}</text>
+  <text x="485" y="240" font-size="9" fill="#374151">dispatch: merge into store</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Denormalize</text>
+  <text x="682" y="133" font-size="9" fill="#374151">denormalize(result, schema,</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  entities)</text>
+  <text x="682" y="163" font-size="9" fill="#374151">re-hydrate from flat maps</text>
+  <text x="682" y="178" font-size="9" fill="#374151">memoize: re-run on id change</text>
+  <text x="682" y="193" font-size="9" fill="#374151">circular ref guard: max depth 10</text>
+  <text x="682" y="208" font-size="9" fill="#374151">output: nested object graph</text>
+  <text x="682" y="223" font-size="9" fill="#374151">cache: WeakMap keyed by ids</text>
+  <text x="682" y="240" font-size="9" fill="#374151">invalidate on entity map change</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — SELECTOR LAYER</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Memoized Selectors</text>
+  <text x="34" y="358" font-size="9" fill="#374151">selectById(id): T</text>
+  <text x="34" y="373" font-size="9" fill="#374151">selectAll(): T[]</text>
+  <text x="34" y="388" font-size="9" fill="#374151">reselect: input+output cache</text>
+  <text x="34" y="403" font-size="9" fill="#374151">invalidate on entity map change</text>
+  <text x="34" y="418" font-size="9" fill="#374151">createSelector: compose fns</text>
+  <text x="34" y="433" font-size="9" fill="#374151">selectByIds(ids[]): T[]</text>
+  <text x="34" y="448" font-size="9" fill="#374151">parametric: factory pattern</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Optimistic Updates</text>
+  <text x="236" y="358" font-size="9" fill="#374151">apply patch to entity store</text>
+  <text x="236" y="373" font-size="9" fill="#374151">track pending: Map&lt;id, original&gt;</text>
+  <text x="236" y="388" font-size="9" fill="#374151">rollback on error</text>
+  <text x="236" y="403" font-size="9" fill="#374151">merge server response on confirm</text>
+  <text x="236" y="418" font-size="9" fill="#374151">tag: {optimistic: true} flag</text>
+  <text x="236" y="433" font-size="9" fill="#374151">revert: restore original entity</text>
+  <text x="236" y="448" font-size="9" fill="#374151">timeout: 10s → auto-rollback</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — MUTATION SYNC</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Write-through</text>
+  <text x="485" y="358" font-size="9" fill="#374151">PUT/PATCH → update store now</text>
+  <text x="485" y="373" font-size="9" fill="#374151">queue: [{id, patch, timestamp}]</text>
+  <text x="485" y="388" font-size="9" fill="#374151">flush on success</text>
+  <text x="485" y="403" font-size="9" fill="#374151">discard on 4xx</text>
+  <text x="485" y="418" font-size="9" fill="#374151">idempotency key per request</text>
+  <text x="485" y="433" font-size="9" fill="#374151">retry: once on network fail</text>
+  <text x="485" y="448" font-size="9" fill="#374151">event: mutation-settled</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Conflict Resolution</text>
+  <text x="682" y="358" font-size="9" fill="#374151">server wins: overwrite on 200</text>
+  <text x="682" y="373" font-size="9" fill="#374151">client wins: re-apply after merge</text>
+  <text x="682" y="388" font-size="9" fill="#374151">timestamp-based: last-write-wins</text>
+  <text x="682" y="403" font-size="9" fill="#374151">field-level merge for objects</text>
+  <text x="682" y="418" font-size="9" fill="#374151">version vector: detect stale</text>
+  <text x="682" y="433" font-size="9" fill="#374151">ETag: conditional PUT header</text>
+  <text x="682" y="448" font-size="9" fill="#374151">409: trigger manual resolution</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">De-dup strategy: merge by id</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Selector cache: reselect</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Optimistic: rollback on error</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Write-through: flush on success</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Conflict: last-write-wins</text>
+</svg>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -189,6 +190,11 @@ export default function ClientSideDataNormalizationArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/client-side-data-normalization-architecture.svg"
+          alt="Client-side data normalization architecture showing entity store shape, normalization schema, normalize pipeline, denormalize, memoized selectors, optimistic updates, write-through mutation sync, and conflict resolution"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The system is built around three primitives: a
           <strong> schema</strong> (declares entities and

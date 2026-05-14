@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Inline Editing System — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Edit trigger · Input types · Validation · Optimistic save &amp; error</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — EDIT TRIGGER</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Activation</text>
+  <text x="34" y="133" font-size="9" fill="#374151">dblclick cell: enter edit mode</text>
+  <text x="34" y="148" font-size="9" fill="#374151">F2 key: activate focused cell</text>
+  <text x="34" y="163" font-size="9" fill="#374151">single-click delay: 300ms wait</text>
+  <text x="34" y="178" font-size="9" fill="#374151">Escape: cancel + revert</text>
+  <text x="34" y="193" font-size="9" fill="#374151">pencil icon: click to edit</text>
+  <text x="34" y="208" font-size="9" fill="#374151">readonly: skip activation</text>
+  <text x="34" y="223" font-size="9" fill="#374151">focus: auto-select input text</text>
+  <text x="34" y="240" font-size="9" fill="#374151">lock: one cell editable at once</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">EditState</text>
+  <text x="236" y="133" font-size="9" fill="#374151">editingId: string | null</text>
+  <text x="236" y="148" font-size="9" fill="#374151">originalValue: any</text>
+  <text x="236" y="163" font-size="9" fill="#374151">dirtyValue: any</text>
+  <text x="236" y="178" font-size="9" fill="#374151">isSubmitting: boolean</text>
+  <text x="236" y="193" font-size="9" fill="#374151">error: string | null</text>
+  <text x="236" y="208" font-size="9" fill="#374151">isDirty: originalValue !== dirty</text>
+  <text x="236" y="223" font-size="9" fill="#374151">fieldType: text|number|date...</text>
+  <text x="236" y="240" font-size="9" fill="#374151">validationState: idle|error|ok</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — INPUT TYPES</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Text / Number</text>
+  <text x="485" y="133" font-size="9" fill="#374151">input[type=text]: autosize width</text>
+  <text x="485" y="148" font-size="9" fill="#374151">input[type=number]: step+min+max</text>
+  <text x="485" y="163" font-size="9" fill="#374151">textarea: auto-grow on newline</text>
+  <text x="485" y="178" font-size="9" fill="#374151">select: dropdown options list</text>
+  <text x="485" y="193" font-size="9" fill="#374151">combobox: type + dropdown</text>
+  <text x="485" y="208" font-size="9" fill="#374151">placeholder: original value hint</text>
+  <text x="485" y="223" font-size="9" fill="#374151">width: match cell width</text>
+  <text x="485" y="240" font-size="9" fill="#374151">spellcheck: optional disable</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Specialized</text>
+  <text x="682" y="133" font-size="9" fill="#374151">date: native date input</text>
+  <text x="682" y="148" font-size="9" fill="#374151">color: color picker popover</text>
+  <text x="682" y="163" font-size="9" fill="#374151">rich text: mini toolbar</text>
+  <text x="682" y="178" font-size="9" fill="#374151">checkbox: toggle on click</text>
+  <text x="682" y="193" font-size="9" fill="#374151">tags: multi-select chips</text>
+  <text x="682" y="208" font-size="9" fill="#374151">rating: star click to set</text>
+  <text x="682" y="223" font-size="9" fill="#374151">currency: formatted number</text>
+  <text x="682" y="240" font-size="9" fill="#374151">file: inline upload trigger</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — VALIDATION</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Client Rules</text>
+  <text x="34" y="358" font-size="9" fill="#374151">required: non-empty check</text>
+  <text x="34" y="373" font-size="9" fill="#374151">type: parse + validate</text>
+  <text x="34" y="388" font-size="9" fill="#374151">range: min/max for numbers</text>
+  <text x="34" y="403" font-size="9" fill="#374151">custom: fn(value)→string|null</text>
+  <text x="34" y="418" font-size="9" fill="#374151">show inline: below input</text>
+  <text x="34" y="433" font-size="9" fill="#374151">block: prevent save if invalid</text>
+  <text x="34" y="448" font-size="9" fill="#374151">pattern: regex match check</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Server Validate</text>
+  <text x="236" y="358" font-size="9" fill="#374151">PATCH on blur</text>
+  <text x="236" y="373" font-size="9" fill="#374151">422: show server error inline</text>
+  <text x="236" y="388" font-size="9" fill="#374151">retry: once on network fail</text>
+  <text x="236" y="403" font-size="9" fill="#374151">debounce: 300ms before send</text>
+  <text x="236" y="418" font-size="9" fill="#374151">abort: cancel on new input</text>
+  <text x="236" y="433" font-size="9" fill="#374151">lock field: while validating</text>
+  <text x="236" y="448" font-size="9" fill="#374151">409: conflict, re-fetch latest</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — SAVE &amp; CANCEL</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Optimistic Save</text>
+  <text x="485" y="358" font-size="9" fill="#374151">apply dirtyValue immediately</text>
+  <text x="485" y="373" font-size="9" fill="#374151">PUT/PATCH in background</text>
+  <text x="485" y="388" font-size="9" fill="#374151">rollback originalValue on error</text>
+  <text x="485" y="403" font-size="9" fill="#374151">spinner: show while submitting</text>
+  <text x="485" y="418" font-size="9" fill="#374151">toast: success/error feedback</text>
+  <text x="485" y="433" font-size="9" fill="#374151">dirty indicator: unsaved badge</text>
+  <text x="485" y="448" font-size="9" fill="#374151">batch: group multiple saves</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Keyboard UX</text>
+  <text x="682" y="358" font-size="9" fill="#374151">Enter: confirm + move down</text>
+  <text x="682" y="373" font-size="9" fill="#374151">Tab: confirm + move right</text>
+  <text x="682" y="388" font-size="9" fill="#374151">Escape: cancel + revert</text>
+  <text x="682" y="403" font-size="9" fill="#374151">Arrow keys: navigate cells</text>
+  <text x="682" y="418" font-size="9" fill="#374151">Shift+Tab: confirm + move left</text>
+  <text x="682" y="433" font-size="9" fill="#374151">Shift+Enter: confirm + move up</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Ctrl+Z: undo last edit</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Activation: dblclick or F2</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Edit confirm: Enter/Tab</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Cancel: Escape</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Optimistic: rollback on error</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Server: 422 shows inline error</text>
+</svg>

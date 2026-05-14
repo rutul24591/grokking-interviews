@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Real-time Data Dashboard — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Widget registry · WebSocket feed · Chart update · Refresh &amp; error</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — WIDGET REGISTRY</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">WidgetDef</text>
+  <text x="34" y="133" font-size="9" fill="#374151">id: string</text>
+  <text x="34" y="148" font-size="9" fill="#374151">type: chart|stat|table|map</text>
+  <text x="34" y="163" font-size="9" fill="#374151">dataKey: string</text>
+  <text x="34" y="178" font-size="9" fill="#374151">refreshInterval: number</text>
+  <text x="34" y="193" font-size="9" fill="#374151">layout: {x,y,w,h} grid unit</text>
+  <text x="34" y="208" font-size="9" fill="#374151">title: display string</text>
+  <text x="34" y="223" font-size="9" fill="#374151">thresholds: {warn, crit}</text>
+  <text x="34" y="240" font-size="9" fill="#374151">renderer: React component ref</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Dashboard Layout</text>
+  <text x="236" y="133" font-size="9" fill="#374151">react-grid-layout or custom</text>
+  <text x="236" y="148" font-size="9" fill="#374151">persist: save layout to server</text>
+  <text x="236" y="163" font-size="9" fill="#374151">responsive: breakpoint configs</text>
+  <text x="236" y="178" font-size="9" fill="#374151">drag+resize: pointer events</text>
+  <text x="236" y="193" font-size="9" fill="#374151">add widget: modal picker</text>
+  <text x="236" y="208" font-size="9" fill="#374151">remove: × button per widget</text>
+  <text x="236" y="223" font-size="9" fill="#374151">lock: prevent edit mode</text>
+  <text x="236" y="240" font-size="9" fill="#374151">fullscreen: expand one widget</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — DATA FEED</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">WebSocket Channel</text>
+  <text x="485" y="133" font-size="9" fill="#374151">ws://api/stream?keys=[...]</text>
+  <text x="485" y="148" font-size="9" fill="#374151">subscribe per widget dataKey</text>
+  <text x="485" y="163" font-size="9" fill="#374151">message: {key, value, ts}</text>
+  <text x="485" y="178" font-size="9" fill="#374151">auto-reconnect: 1s→30s backoff</text>
+  <text x="485" y="193" font-size="9" fill="#374151">heartbeat: ping every 30s</text>
+  <text x="485" y="208" font-size="9" fill="#374151">unsubscribe: on widget remove</text>
+  <text x="485" y="223" font-size="9" fill="#374151">batch: group N updates 50ms</text>
+  <text x="485" y="240" font-size="9" fill="#374151">auth: token in ws URL param</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">REST Fallback</text>
+  <text x="682" y="133" font-size="9" fill="#374151">poll per refreshInterval</text>
+  <text x="682" y="148" font-size="9" fill="#374151">dedup: skip if ws active</text>
+  <text x="682" y="163" font-size="9" fill="#374151">merge: prefer ws if fresher ts</text>
+  <text x="682" y="178" font-size="9" fill="#374151">offline: show last known value</text>
+  <text x="682" y="193" font-size="9" fill="#374151">AbortController: cancel stale</text>
+  <text x="682" y="208" font-size="9" fill="#374151">cache: 5s for same endpoint</text>
+  <text x="682" y="223" font-size="9" fill="#374151">retry: 3× on network error</text>
+  <text x="682" y="240" font-size="9" fill="#374151">jitter: ±10% interval</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — CHART UPDATE</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Time-series</text>
+  <text x="34" y="358" font-size="9" fill="#374151">ring buffer: 200 data points</text>
+  <text x="34" y="373" font-size="9" fill="#374151">slide window: drop oldest</text>
+  <text x="34" y="388" font-size="9" fill="#374151">chart lib: lightweight-charts</text>
+  <text x="34" y="403" font-size="9" fill="#374151">animate: requestAnimationFrame</text>
+  <text x="34" y="418" font-size="9" fill="#374151">zoom: pinch or scroll wheel</text>
+  <text x="34" y="433" font-size="9" fill="#374151">crosshair: hover tooltip</text>
+  <text x="34" y="448" font-size="9" fill="#374151">export: PNG download</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Stat Cards</text>
+  <text x="236" y="358" font-size="9" fill="#374151">value transition: spring anim</text>
+  <text x="236" y="373" font-size="9" fill="#374151">threshold: color change on breach</text>
+  <text x="236" y="388" font-size="9" fill="#374151">sparkline: 20-pt mini chart</text>
+  <text x="236" y="403" font-size="9" fill="#374151">alert badge: pulse on threshold</text>
+  <text x="236" y="418" font-size="9" fill="#374151">delta: show change vs previous</text>
+  <text x="236" y="433" font-size="9" fill="#374151">unit: suffix (ms, %, $)</text>
+  <text x="236" y="448" font-size="9" fill="#374151">format: compact (1.2k, 3.4M)</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — REFRESH &amp; ERROR</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Refresh Controls</text>
+  <text x="485" y="358" font-size="9" fill="#374151">manual: refresh button per widget</text>
+  <text x="485" y="373" font-size="9" fill="#374151">global: refresh all button</text>
+  <text x="485" y="388" font-size="9" fill="#374151">interval: 5s–300s per widget</text>
+  <text x="485" y="403" font-size="9" fill="#374151">loading: skeleton overlay</text>
+  <text x="485" y="418" font-size="9" fill="#374151">pause: stop on tab hidden</text>
+  <text x="485" y="433" font-size="9" fill="#374151">resume: on tab visible</text>
+  <text x="485" y="448" font-size="9" fill="#374151">countdown: next refresh timer</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Error Handling</text>
+  <text x="682" y="358" font-size="9" fill="#374151">ws drop: yellow badge + poll</text>
+  <text x="682" y="373" font-size="9" fill="#374151">stale: grey out after 60s</text>
+  <text x="682" y="388" font-size="9" fill="#374151">error: red border + retry btn</text>
+  <text x="682" y="403" font-size="9" fill="#374151">partial: per-widget isolation</text>
+  <text x="682" y="418" font-size="9" fill="#374151">boundary: ErrorBoundary wrap</text>
+  <text x="682" y="433" font-size="9" fill="#374151">log: report to observability</text>
+  <text x="682" y="448" font-size="9" fill="#374151">fallback: last good snapshot</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Ring buffer: 200 pts</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">WS reconnect: 1s→30s</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Stale threshold: 60s</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Refresh: 5s–300s</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Grid: persist layout to server</text>
+</svg>

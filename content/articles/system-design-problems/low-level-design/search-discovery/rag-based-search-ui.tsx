@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -184,6 +185,11 @@ export default function RAGBasedSearchUIArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/search-discovery/rag-based-search-ui-architecture.svg"
+          alt="RAG-based search UI architecture showing query embedding with cache, search parameters, vector search with re-ranking, context assembly with token budget, streaming LLM response via SSE, answer display, source citations, and feedback loop"
+          caption="Architecture Overview"
+        />
         <p>
           The system has four parts: <strong>RAG
           adapter</strong> (consumes the backend&rsquo;s

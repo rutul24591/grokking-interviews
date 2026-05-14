@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -172,6 +173,11 @@ export default function SearchPageFiltersFacetsURLSyncArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/search-discovery/search-page-filters-facets-url-sync-architecture.svg"
+          alt="Search filters, facets, and URL sync architecture showing filter model, filter types, facet count request, facet accordion UI, URL base64 encoding, parse-on-mount, apply flow with debounce, and reset controls"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The page is structured as a <strong>state
           coordinator</strong> that owns the unified

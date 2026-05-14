@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -153,6 +154,11 @@ export default function TypingIndicatorSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/typing-indicator-system-architecture.svg"
+          alt="Typing indicator system architecture showing typing payload model, client state, throttled emit strategy, debounce stop logic, server fan-out via Redis pub/sub, ephemeral persistence, indicator UI with 3-dot animation, and timeout cleanup"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="crucial">
           The system has three parts: <strong>local
           detector</strong> (broadcasts typing

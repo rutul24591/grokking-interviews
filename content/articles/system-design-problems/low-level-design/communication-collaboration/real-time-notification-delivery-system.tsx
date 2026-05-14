@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -168,6 +169,11 @@ export default function RealTimeNotificationDeliverySystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-notification-delivery-system-architecture.svg"
+          alt="Real-time notification delivery system architecture showing notification event model, routing rules, server fan-out with queue consumer, delivery channels, WebSocket client delivery, push fallback via Service Worker, read tracking, and badge count"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="crucial">
           The system is a <strong>delivery hub</strong>{" "}
           that receives WebSocket events,

@@ -1,30 +1,125 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="280" fill="transparent"/>
-
-  <rect x="30" y="100" width="130" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="95" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">User Action</text>
-  <text x="50" y="158" font-size="11" fill="#3b82f6">post / expand / like</text>
-
-  <line x1="160" y1="140" x2="240" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="240" y="70" width="190" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="335" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Comment Store</text>
-  <text x="260" y="125" font-size="11" fill="#92400e">• comments: Map&lt;id&gt;</text>
-  <text x="260" y="145" font-size="11" fill="#92400e">• tree: buildTree()</text>
-  <text x="260" y="165" font-size="11" fill="#92400e">• collapsed: Set&lt;id&gt;</text>
-  <text x="260" y="195" font-size="10" fill="#b45309">optimistic insert, rollback</text>
-
-  <line x1="430" y1="140" x2="510" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="510" y="90" width="160" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="590" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Thread Renderer</text>
-  <text x="530" y="145" font-size="11" fill="#166534">• recursive tree</text>
-  <text x="530" y="165" font-size="11" fill="#166534">• max depth: 5</text>
-  <text x="530" y="185" font-size="10" fill="#15803d">WebSocket merge</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
     </marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Comment Thread — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Comment tree · Optimistic post · Cursor pagination · Real-time patch</text>
+
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — COMMENT TREE DATA MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Comment Node</text>
+  <text x="34" y="133" font-size="9" fill="#374151">id: string (UUID)</text>
+  <text x="34" y="148" font-size="9" fill="#374151">parentId: string | null</text>
+  <text x="34" y="163" font-size="9" fill="#374151">author: { id, name, avatar }</text>
+  <text x="34" y="178" font-size="9" fill="#374151">body: string (markdown)</text>
+  <text x="34" y="193" font-size="9" fill="#374151">createdAt: ISO 8601 timestamp</text>
+  <text x="34" y="208" font-size="9" fill="#374151">editedAt?: timestamp</text>
+  <text x="34" y="223" font-size="9" fill="#374151">deletedAt?: timestamp (soft)</text>
+  <text x="34" y="240" font-size="9" fill="#374151">reactions: Record&lt;emoji, count&gt;</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Tree Structure</text>
+  <text x="236" y="133" font-size="9" fill="#374151">Flat list → nested tree</text>
+  <text x="236" y="148" font-size="9" fill="#374151">buildTree(flat[]): TreeNode[]</text>
+  <text x="236" y="163" font-size="9" fill="#374151">  Map&lt;id, children[]&gt; O(n)</text>
+  <text x="236" y="178" font-size="9" fill="#374151">Max nest depth: 5 levels</text>
+  <text x="236" y="193" font-size="9" fill="#374151">Deep replies: flatten at depth 5</text>
+  <text x="236" y="208" font-size="9" fill="#374151">Sort: createdAt ASC per level</text>
+  <text x="236" y="223" font-size="9" fill="#374151">Collapsed thread: show count</text>
+  <text x="236" y="240" font-size="9" fill="#374151">Indent: 24px per depth level</text>
+
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — OPTIMISTIC POST &amp; MUTATIONS</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Optimistic Insert</text>
+  <text x="485" y="133" font-size="9" fill="#374151">1. Generate temp id (uuid-client)</text>
+  <text x="485" y="148" font-size="9" fill="#374151">2. Prepend to local store instantly</text>
+  <text x="485" y="163" font-size="9" fill="#374151">3. POST /comments with body</text>
+  <text x="485" y="178" font-size="9" fill="#374151">4. On success: swap temp→server id</text>
+  <text x="485" y="193" font-size="9" fill="#374151">5. On error: remove + show toast</text>
+  <text x="485" y="208" font-size="9" fill="#374151">Edit grace period: 5 minutes</text>
+  <text x="485" y="225" font-size="9" fill="#374151">  PATCH /comments/:id with editedAt</text>
+  <text x="485" y="240" font-size="9" fill="#374151">Soft delete: PUT deletedAt=now</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Validation &amp; Rate Limit</text>
+  <text x="682" y="133" font-size="9" fill="#374151">Min body length: 1 char</text>
+  <text x="682" y="148" font-size="9" fill="#374151">Max body length: 10,000 chars</text>
+  <text x="682" y="163" font-size="9" fill="#374151">Markdown sanitisation: DOMPurify</text>
+  <text x="682" y="178" font-size="9" fill="#374151">Rate limit: 5 posts / 10s client</text>
+  <text x="682" y="193" font-size="9" fill="#374151">Spam filter: block repeat exact</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Loading: spinner on submit btn</text>
+  <text x="682" y="225" font-size="9" fill="#374151">Prevent double-submit via flag</text>
+  <text x="682" y="240" font-size="9" fill="#374151">Ctrl+Enter to submit shortcut</text>
+
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — CURSOR PAGINATION</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Pagination Model</text>
+  <text x="34" y="358" font-size="9" fill="#374151">GET /comments?cursor=&lt;id&gt;&amp;limit=20</text>
+  <text x="34" y="373" font-size="9" fill="#374151">Response: { data[], nextCursor }</text>
+  <text x="34" y="388" font-size="9" fill="#374151">nextCursor: last item id</text>
+  <text x="34" y="403" font-size="9" fill="#374151">  null = no more pages</text>
+  <text x="34" y="418" font-size="9" fill="#374151">Client: append pages to cache</text>
+  <text x="34" y="433" font-size="9" fill="#374151">  React Query infinite query</text>
+  <text x="34" y="448" font-size="9" fill="#374151">Page size: 20 root comments</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Load More UX</text>
+  <text x="236" y="358" font-size="9" fill="#374151">IntersectionObserver sentinel</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  100px before list bottom</text>
+  <text x="236" y="388" font-size="9" fill="#374151">Manual "Load more" fallback</text>
+  <text x="236" y="403" font-size="9" fill="#374151">  for users preferring control</text>
+  <text x="236" y="418" font-size="9" fill="#374151">Skeleton: 3 placeholder cards</text>
+  <text x="236" y="433" font-size="9" fill="#374151">Error state: "Retry" btn inline</text>
+  <text x="236" y="448" font-size="9" fill="#374151">Dedup: filter by id on merge</text>
+
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — REAL-TIME &amp; EDGE CASES</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">WebSocket Patch</text>
+  <text x="485" y="358" font-size="9" fill="#374151">WS event: comment.created</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  insert into cache at position</text>
+  <text x="485" y="388" font-size="9" fill="#374151">WS event: comment.updated</text>
+  <text x="485" y="403" font-size="9" fill="#374151">  patch body/editedAt in place</text>
+  <text x="485" y="418" font-size="9" fill="#374151">WS event: comment.deleted</text>
+  <text x="485" y="433" font-size="9" fill="#374151">  replace body with [deleted]</text>
+  <text x="485" y="448" font-size="9" fill="#374151">WS reconnect: exponential 1–30s</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Edge Cases</text>
+  <text x="682" y="358" font-size="9" fill="#374151">Own comment: hide WS duplicate</text>
+  <text x="682" y="373" font-size="9" fill="#374151">  match by temp id before swap</text>
+  <text x="682" y="388" font-size="9" fill="#374151">Soft-deleted: [deleted] placeholder</text>
+  <text x="682" y="403" font-size="9" fill="#374151">  children still visible</text>
+  <text x="682" y="418" font-size="9" fill="#374151">Mention @user: autocomplete list</text>
+  <text x="682" y="433" font-size="9" fill="#374151">Long thread: virtual scroll on 100+</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Soft-delete TTL: 30 days hard del</text>
+
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Max nest depth: 5 levels</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Page size: 20 root comments</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">WS reconnect: exponential 1–30s</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Edit grace period: 5 minutes</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Soft-delete TTL: 30 days</text>
 </svg>

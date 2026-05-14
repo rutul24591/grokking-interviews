@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -132,6 +133,11 @@ export default function ConflictResolutionUIArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/conflict-resolution-ui-architecture.svg"
+          alt="Conflict resolution UI architecture showing version vector conflict detection, conflict metadata, field-level diff view, rich text diff, auto-merge rules, manual resolution strategies, resolution flow, and publish"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The UI presents two versions side-by- side, computes per-field diffs,
           lets the user choose per-field which version to keep (or merge inline

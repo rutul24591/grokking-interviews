@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Message Delivery State System — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Message model · Status FSM · Receipt ACK · Retry &amp; offline</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — MESSAGE MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Message</text>
+  <text x="34" y="133" font-size="9" fill="#374151">id: uuid</text>
+  <text x="34" y="148" font-size="9" fill="#374151">senderId: string</text>
+  <text x="34" y="163" font-size="9" fill="#374151">content: string</text>
+  <text x="34" y="178" font-size="9" fill="#374151">ts: client timestamp</text>
+  <text x="34" y="193" font-size="9" fill="#374151">serverTs: null | timestamp</text>
+  <text x="34" y="208" font-size="9" fill="#374151">status: sending|sent|delivered</text>
+  <text x="34" y="223" font-size="9" fill="#374151">|read|failed</text>
+  <text x="34" y="240" font-size="9" fill="#374151">threadId: string | null</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Status FSM</text>
+  <text x="236" y="133" font-size="9" fill="#374151">sending → sent (server ACK)</text>
+  <text x="236" y="148" font-size="9" fill="#374151">sent → delivered (device ACK)</text>
+  <text x="236" y="163" font-size="9" fill="#374151">delivered → read (opened)</text>
+  <text x="236" y="178" font-size="9" fill="#374151">any → failed (error/timeout)</text>
+  <text x="236" y="193" font-size="9" fill="#374151">failed → sending (retry)</text>
+  <text x="236" y="208" font-size="9" fill="#374151">terminal: read or failed(3×)</text>
+  <text x="236" y="223" font-size="9" fill="#374151">queued: offline hold state</text>
+  <text x="236" y="240" font-size="9" fill="#374151">revoked: delete-for-all state</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — STATUS TRACKING</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Sending</text>
+  <text x="485" y="133" font-size="9" fill="#374151">POST /messages → 200: sent</text>
+  <text x="485" y="148" font-size="9" fill="#374151">optimistic: show immediately</text>
+  <text x="485" y="163" font-size="9" fill="#374151">dedupe: idempotency key=uuid</text>
+  <text x="485" y="178" font-size="9" fill="#374151">timeout: 10s → failed</text>
+  <text x="485" y="193" font-size="9" fill="#374151">serverTs: set on ACK</text>
+  <text x="485" y="208" font-size="9" fill="#374151">reorder: sort by serverTs</text>
+  <text x="485" y="223" font-size="9" fill="#374151">encryption: E2E before send</text>
+  <text x="485" y="240" font-size="9" fill="#374151">compress: gzip if &gt;1KB</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Delivery Receipts</text>
+  <text x="682" y="133" font-size="9" fill="#374151">ws: {msgId, event, userId, ts}</text>
+  <text x="682" y="148" font-size="9" fill="#374151">update: setStatus(id, event)</text>
+  <text x="682" y="163" font-size="9" fill="#374151">batch: group receipts per msg</text>
+  <text x="682" y="178" font-size="9" fill="#374151">dedup: skip already-read msgs</text>
+  <text x="682" y="193" font-size="9" fill="#374151">persist: store in IndexedDB</text>
+  <text x="682" y="208" font-size="9" fill="#374151">group: N/M read in group chat</text>
+  <text x="682" y="223" font-size="9" fill="#374151">sync: fetch receipts on reconnect</text>
+  <text x="682" y="240" font-size="9" fill="#374151">bulk ACK: mark batch delivered</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — RECEIPT DISPLAY</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Status Icons</text>
+  <text x="34" y="358" font-size="9" fill="#374151">single tick: sent</text>
+  <text x="34" y="373" font-size="9" fill="#374151">double tick: delivered</text>
+  <text x="34" y="388" font-size="9" fill="#374151">blue double tick: read</text>
+  <text x="34" y="403" font-size="9" fill="#374151">spinner: sending</text>
+  <text x="34" y="418" font-size="9" fill="#374151">red X: failed</text>
+  <text x="34" y="433" font-size="9" fill="#374151">clock: queued offline</text>
+  <text x="34" y="448" font-size="9" fill="#374151">animate: transition between</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Read Receipts</text>
+  <text x="236" y="358" font-size="9" fill="#374151">group: N/M read count</text>
+  <text x="236" y="373" font-size="9" fill="#374151">1:1: "Read at 2:34pm"</text>
+  <text x="236" y="388" font-size="9" fill="#374151">toggle: user can opt-out</text>
+  <text x="236" y="403" font-size="9" fill="#374151">privacy: no exact reader in group</text>
+  <text x="236" y="418" font-size="9" fill="#374151">avatar: show who has read</text>
+  <text x="236" y="433" font-size="9" fill="#374151">tooltip: expand reader list</text>
+  <text x="236" y="448" font-size="9" fill="#374151">mutual: both must enable</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — RETRY &amp; OFFLINE</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Retry Logic</text>
+  <text x="485" y="358" font-size="9" fill="#374151">failed: show "Retry" button</text>
+  <text x="485" y="373" font-size="9" fill="#374151">auto-retry: once after 5s</text>
+  <text x="485" y="388" font-size="9" fill="#374151">max retries: 3</text>
+  <text x="485" y="403" font-size="9" fill="#374151">exponential: 5s + 10s + 20s</text>
+  <text x="485" y="418" font-size="9" fill="#374151">discard: after 3 fails</text>
+  <text x="485" y="433" font-size="9" fill="#374151">jitter: ±10% interval</text>
+  <text x="485" y="448" font-size="9" fill="#374151">notify: toast on final failure</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Offline Queue</text>
+  <text x="682" y="358" font-size="9" fill="#374151">IndexedDB: persist pending</text>
+  <text x="682" y="373" font-size="9" fill="#374151">navigator.onLine: drain on back</text>
+  <text x="682" y="388" font-size="9" fill="#374151">order: maintain send sequence</text>
+  <text x="682" y="403" font-size="9" fill="#374151">dedup: skip if already sent</text>
+  <text x="682" y="418" font-size="9" fill="#374151">indicator: "Offline" banner</text>
+  <text x="682" y="433" font-size="9" fill="#374151">sync: send all queued on online</text>
+  <text x="682" y="448" font-size="9" fill="#374151">capacity: max 100 queued msgs</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">FSM: sending→sent→delivered→read</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Idempotency key: uuid</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Retry: 3× exponential</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Offline: IndexedDB queue</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Read receipt: opt-out</text>
+</svg>

@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -143,6 +144,11 @@ export default function LiveCursorPresenceSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/live-cursor-presence-system-architecture.svg"
+          alt="Live cursor and presence system architecture showing cursor payload model, presence store, WebSocket broadcast channel, channel alternatives, client throttle, remote interpolation, cursor renderer, and cleanup"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The system has four parts: <strong>cursor broadcaster</strong>{" "}
           (throttle local cursor and broadcast),{" "}

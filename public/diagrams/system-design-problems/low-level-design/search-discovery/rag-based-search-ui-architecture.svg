@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">RAG-based Search UI — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Query embed · Retrieval · LLM answer · Source citation &amp; feedback</text>
+
+  <!-- Section A: purple, top-left -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — QUERY PROCESSING</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Query Input</text>
+  <text x="34" y="133" font-size="9" fill="#374151">text input: natural language</text>
+  <text x="34" y="148" font-size="9" fill="#374151">rewrite: expand acronyms+syns</text>
+  <text x="34" y="163" font-size="9" fill="#374151">embed: POST /embed → vector</text>
+  <text x="34" y="178" font-size="9" fill="#374151">cache: hash(query)→embed 1h</text>
+  <text x="34" y="193" font-size="9" fill="#374151">dim: float32[1536] OpenAI</text>
+  <text x="34" y="208" font-size="9" fill="#374151">history: conversation context</text>
+  <text x="34" y="223" font-size="9" fill="#374151">suggestions: semantic similar</text>
+  <text x="34" y="240" font-size="9" fill="#374151">session: thread-based memory</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Search Params</text>
+  <text x="236" y="133" font-size="9" fill="#374151">topK: 5 chunks default</text>
+  <text x="236" y="148" font-size="9" fill="#374151">minScore: 0.7 cosine threshold</text>
+  <text x="236" y="163" font-size="9" fill="#374151">filters: namespace|date|source</text>
+  <text x="236" y="178" font-size="9" fill="#374151">hybrid: vector + BM25 α=0.7</text>
+  <text x="236" y="193" font-size="9" fill="#374151">rerank: cross-encoder on top 20</text>
+  <text x="236" y="208" font-size="9" fill="#374151">namespace: tenant isolation</text>
+  <text x="236" y="223" font-size="9" fill="#374151">date: recency boost weight</text>
+  <text x="236" y="240" font-size="9" fill="#374151">diversity: MMR for variety</text>
+
+  <!-- Section B: blue, top-right -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — RETRIEVAL</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Vector Search</text>
+  <text x="485" y="133" font-size="9" fill="#374151">POST /search {vector, topK}</text>
+  <text x="485" y="148" font-size="9" fill="#374151">response: [{chunkId, text, score}]</text>
+  <text x="485" y="163" font-size="9" fill="#374151">re-rank: cross-encoder top 20</text>
+  <text x="485" y="178" font-size="9" fill="#374151">return top 5 to LLM context</text>
+  <text x="485" y="193" font-size="9" fill="#374151">index: pgvector or Pinecone</text>
+  <text x="485" y="208" font-size="9" fill="#374151">HNSW: approximate NN graph</text>
+  <text x="485" y="223" font-size="9" fill="#374151">cosine: similarity metric</text>
+  <text x="485" y="240" font-size="9" fill="#374151">latency: &lt;100ms p99 target</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Context Assembly</text>
+  <text x="682" y="133" font-size="9" fill="#374151">build prompt: sys + chunks + q</text>
+  <text x="682" y="148" font-size="9" fill="#374151">token budget: 3000 ctx max</text>
+  <text x="682" y="163" font-size="9" fill="#374151">truncate: trim chunks to fit</text>
+  <text x="682" y="178" font-size="9" fill="#374151">dedupe: same source chunks</text>
+  <text x="682" y="193" font-size="9" fill="#374151">order: high score chunks first</text>
+  <text x="682" y="208" font-size="9" fill="#374151">citation map: chunk → [N]</text>
+  <text x="682" y="223" font-size="9" fill="#374151">metadata: title + URL per chunk</text>
+  <text x="682" y="240" font-size="9" fill="#374151">safety: filter PII from context</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Section C: green, bottom-left -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — LLM ANSWER</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Streaming Response</text>
+  <text x="34" y="358" font-size="9" fill="#374151">POST /answer {context, question}</text>
+  <text x="34" y="373" font-size="9" fill="#374151">Content-Type: text/event-stream</text>
+  <text x="34" y="388" font-size="9" fill="#374151">SSE chunk: data: {token}</text>
+  <text x="34" y="403" font-size="9" fill="#374151">accumulate: append to buffer</text>
+  <text x="34" y="418" font-size="9" fill="#374151">done: data: [DONE]</text>
+  <text x="34" y="433" font-size="9" fill="#374151">error: data: {error: string}</text>
+  <text x="34" y="448" font-size="9" fill="#374151">timeout: 30s stream timeout</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Answer Display</text>
+  <text x="236" y="358" font-size="9" fill="#374151">stream: render token-by-token</text>
+  <text x="236" y="373" font-size="9" fill="#374151">markdown: render as it streams</text>
+  <text x="236" y="388" font-size="9" fill="#374151">loading: blinking cursor</text>
+  <text x="236" y="403" font-size="9" fill="#374151">abort: user can stop stream</text>
+  <text x="236" y="418" font-size="9" fill="#374151">copy: copy answer button</text>
+  <text x="236" y="433" font-size="9" fill="#374151">regenerate: re-send same query</text>
+  <text x="236" y="448" font-size="9" fill="#374151">share: link to this Q&amp;A</text>
+
+  <!-- Section D: amber, bottom-right -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — CITATIONS &amp; FEEDBACK</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Source Citations</text>
+  <text x="485" y="358" font-size="9" fill="#374151">[1] footnote per claim</text>
+  <text x="485" y="373" font-size="9" fill="#374151">clickable: expand source chunk</text>
+  <text x="485" y="388" font-size="9" fill="#374151">highlight: matched text in src</text>
+  <text x="485" y="403" font-size="9" fill="#374151">score: cosine similarity %</text>
+  <text x="485" y="418" font-size="9" fill="#374151">modal: full document preview</text>
+  <text x="485" y="433" font-size="9" fill="#374151">link: open source in new tab</text>
+  <text x="485" y="448" font-size="9" fill="#374151">collapse: hide refs by default</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Feedback Loop</text>
+  <text x="682" y="358" font-size="9" fill="#374151">thumbs up/down per answer</text>
+  <text x="682" y="373" font-size="9" fill="#374151">flag: mark wrong/outdated</text>
+  <text x="682" y="388" font-size="9" fill="#374151">reason: optional text field</text>
+  <text x="682" y="403" font-size="9" fill="#374151">POST /feedback {queryId, rating}</text>
+  <text x="682" y="418" font-size="9" fill="#374151">use: re-rank training signal</text>
+  <text x="682" y="433" font-size="9" fill="#374151">RLHF: fine-tune on rated pairs</text>
+  <text x="682" y="448" font-size="9" fill="#374151">aggregate: weekly model updates</text>
+
+  <!-- Arrows B→D, A→C, C→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Embed cache: 1h TTL</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">topK: 5 chunks</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Min score: 0.7</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Token budget: 3000 ctx</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Feedback: rating + reason</text>
+</svg>

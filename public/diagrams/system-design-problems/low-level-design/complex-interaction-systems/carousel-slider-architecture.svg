@@ -1,30 +1,125 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="260" fill="transparent"/>
-
-  <rect x="30" y="90" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="100" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Autoplay Timer</text>
-  <text x="50" y="148" font-size="11" fill="#3b82f6">setInterval + pause</text>
-
-  <line x1="170" y1="130" x2="250" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="250" y="70" width="200" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="350" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Carousel Store</text>
-  <text x="270" y="125" font-size="11" fill="#92400e">• currentIndex: number</text>
-  <text x="270" y="145" font-size="11" fill="#92400e">• isPlaying: boolean</text>
-  <text x="270" y="165" font-size="11" fill="#92400e">• slides: Slide[]</text>
-  <text x="270" y="190" font-size="10" fill="#b45309">next, prev, goTo, play, pause</text>
-
-  <line x1="450" y1="130" x2="530" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="530" y="80" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="605" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Slide Track</text>
-  <text x="550" y="135" font-size="11" fill="#166534">• translateX animation</text>
-  <text x="550" y="155" font-size="11" fill="#166534">• scroll-snap fallback</text>
-  <text x="550" y="175" font-size="10" fill="#15803d">clone slides for loop</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
     </marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Carousel / Slider — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Slide state · Touch &amp; velocity · FLIP animation · Autoplay &amp; A11y</text>
+
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — SLIDE STATE MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">CarouselState</text>
+  <text x="34" y="133" font-size="9" fill="#374151">activeIndex: number</text>
+  <text x="34" y="148" font-size="9" fill="#374151">totalSlides: number</text>
+  <text x="34" y="163" font-size="9" fill="#374151">isAnimating: boolean (lock)</text>
+  <text x="34" y="178" font-size="9" fill="#374151">direction: 'forward'|'backward'</text>
+  <text x="34" y="193" font-size="9" fill="#374151">loop: boolean</text>
+  <text x="34" y="208" font-size="9" fill="#374151">visibleCount: number (1–4)</text>
+  <text x="34" y="223" font-size="9" fill="#374151">gap: number (px between slides)</text>
+  <text x="34" y="240" font-size="9" fill="#374151">preloadCount: 2 ahead + 2 behind</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Navigation Props</text>
+  <text x="236" y="133" font-size="9" fill="#374151">onSlideChange(index): void</text>
+  <text x="236" y="148" font-size="9" fill="#374151">defaultIndex?: number (0)</text>
+  <text x="236" y="163" font-size="9" fill="#374151">infinite?: boolean</text>
+  <text x="236" y="178" font-size="9" fill="#374151">autoplay?: boolean | interval ms</text>
+  <text x="236" y="193" font-size="9" fill="#374151">pauseOnHover?: boolean</text>
+  <text x="236" y="208" font-size="9" fill="#374151">pauseOnFocus?: boolean</text>
+  <text x="236" y="223" font-size="9" fill="#374151">dots?: boolean | custom render</text>
+  <text x="236" y="240" font-size="9" fill="#374151">arrows?: boolean | custom node</text>
+
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — TOUCH &amp; VELOCITY DETECTION</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Pointer / Touch Events</text>
+  <text x="485" y="133" font-size="9" fill="#374151">pointerdown: capture startX,T</text>
+  <text x="485" y="148" font-size="9" fill="#374151">pointermove: track deltaX live</text>
+  <text x="485" y="163" font-size="9" fill="#374151">  translate track by deltaX px</text>
+  <text x="485" y="178" font-size="9" fill="#374151">pointerup: compute velocity</text>
+  <text x="485" y="193" font-size="9" fill="#374151">  velocity = Δx / Δt (px/ms)</text>
+  <text x="485" y="208" font-size="9" fill="#374151">  abs(velocity) &gt; 0.3 → swipe</text>
+  <text x="485" y="223" font-size="9" fill="#374151">  else: abs(deltaX) &gt; 40% width</text>
+  <text x="485" y="240" font-size="9" fill="#374151">setPointerCapture() on start</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Scroll Conflict Prevention</text>
+  <text x="682" y="133" font-size="9" fill="#374151">Detect horizontal vs vertical</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  |Δx| &gt; |Δy| → carousel owns</text>
+  <text x="682" y="163" font-size="9" fill="#374151">  else → pass to page scroll</text>
+  <text x="682" y="178" font-size="9" fill="#374151">touch-action: pan-y on track</text>
+  <text x="682" y="193" font-size="9" fill="#374151">  prevents scroll hijacking</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Mouse drag: user-select: none</text>
+  <text x="682" y="223" font-size="9" fill="#374151">Resistance: 0.3× at boundaries</text>
+  <text x="682" y="240" font-size="9" fill="#374151">  elastic snap-back if no loop</text>
+
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — FLIP ANIMATION</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">FLIP Technique</text>
+  <text x="34" y="358" font-size="9" fill="#374151">First: record getBoundingClientRect</text>
+  <text x="34" y="373" font-size="9" fill="#374151">Last: update activeIndex (DOM)</text>
+  <text x="34" y="388" font-size="9" fill="#374151">Invert: apply transform to old pos</text>
+  <text x="34" y="403" font-size="9" fill="#374151">Play: requestAnimationFrame</text>
+  <text x="34" y="418" font-size="9" fill="#374151">  animate transform to 0</text>
+  <text x="34" y="433" font-size="9" fill="#374151">Duration: 300ms ease-out default</text>
+  <text x="34" y="448" font-size="9" fill="#374151">isAnimating lock prevents overlap</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">CSS Alternative</text>
+  <text x="236" y="358" font-size="9" fill="#374151">translateX: -activeIndex×slideW</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  CSS transition: transform 300ms</text>
+  <text x="236" y="388" font-size="9" fill="#374151">will-change: transform on track</text>
+  <text x="236" y="403" font-size="9" fill="#374151">prefers-reduced-motion: instant</text>
+  <text x="236" y="418" font-size="9" fill="#374151">Cloned slides for infinite loop</text>
+  <text x="236" y="433" font-size="9" fill="#374151">  clone first→end, last→start</text>
+  <text x="236" y="448" font-size="9" fill="#374151">  silent jump after transition end</text>
+
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — AUTOPLAY &amp; ACCESSIBILITY</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Autoplay</text>
+  <text x="485" y="358" font-size="9" fill="#374151">Default interval: 5000ms</text>
+  <text x="485" y="373" font-size="9" fill="#374151">setInterval cleared on unmount</text>
+  <text x="485" y="388" font-size="9" fill="#374151">Pause on: hover, focus, touch</text>
+  <text x="485" y="403" font-size="9" fill="#374151">  document.hidden (tab switch)</text>
+  <text x="485" y="418" font-size="9" fill="#374151">Pause/resume btn: visible always</text>
+  <text x="485" y="433" font-size="9" fill="#374151">WCAG 2.1 2.2.2: pause required</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Resume after manual nav (+5s)</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">ARIA &amp; Keyboard</text>
+  <text x="682" y="358" font-size="9" fill="#374151">role="region" aria-label="Carousel"</text>
+  <text x="682" y="373" font-size="9" fill="#374151">aria-live="polite" on slide region</text>
+  <text x="682" y="388" font-size="9" fill="#374151">  announces slide X of N</text>
+  <text x="682" y="403" font-size="9" fill="#374151">Arrow keys: prev/next slide</text>
+  <text x="682" y="418" font-size="9" fill="#374151">Home/End: first/last slide</text>
+  <text x="682" y="433" font-size="9" fill="#374151">Dots: role="tab" tablist pattern</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Focus: stays on active dot/btn</text>
+
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Velocity threshold: 0.3 px/ms</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">FLIP duration: 300ms ease-out</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Preload count: ±2 slides</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Autoplay interval: 5000ms default</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">ARIA live: "polite" slide announce</text>
 </svg>

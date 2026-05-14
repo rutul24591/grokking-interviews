@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -183,6 +184,11 @@ export default function SavedViewsFiltersSystemArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/saved-views-filters-system-architecture.svg"
+          alt="Saved views and filters system architecture showing filter definition model, filter state, filter bar UI, advanced filter panel, saved view persistence, load and apply, URL serialization, and sharing"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The system is structured as a <strong>view
           schema</strong> (declares what dimensions a view

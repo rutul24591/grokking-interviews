@@ -1,0 +1,112 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+  </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Collaborative Whiteboard — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Canvas model · CRDT shapes · Tool system · Viewport &amp; presence</text>
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — CANVAS MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Shape Schema</text>
+  <text x="34" y="133" font-size="9" fill="#374151">Shape: {id, type, x, y, w, h}</text>
+  <text x="34" y="148" font-size="9" fill="#374151">  type: rect|ellipse|line|text</text>
+  <text x="34" y="163" font-size="9" fill="#374151">  |arrow|image|sticky|freehand</text>
+  <text x="34" y="178" font-size="9" fill="#374151">style: {fill, stroke, width, opacity}</text>
+  <text x="34" y="193" font-size="9" fill="#374151">rotation: degrees, locked: bool</text>
+  <text x="34" y="208" font-size="9" fill="#374151">z-index: explicit layer order</text>
+  <text x="34" y="223" font-size="9" fill="#374151">groupId: optional group ref</text>
+  <text x="34" y="240" font-size="9" fill="#374151">createdBy: userId + timestamp</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">CRDT Shape Store</text>
+  <text x="236" y="133" font-size="9" fill="#374151">Y.Map: shapeId → Shape</text>
+  <text x="236" y="148" font-size="9" fill="#374151">  last-write-wins per field</text>
+  <text x="236" y="163" font-size="9" fill="#374151">freehand: Y.Array of points</text>
+  <text x="236" y="178" font-size="9" fill="#374151">  append-only during draw</text>
+  <text x="236" y="193" font-size="9" fill="#374151">delete: tombstone in Y.Map</text>
+  <text x="236" y="208" font-size="9" fill="#374151">undo: Y.UndoManager local</text>
+  <text x="236" y="223" font-size="9" fill="#374151">  scope: own ops only</text>
+  <text x="236" y="240" font-size="9" fill="#374151">snapshot: export Y.encodeSnapshot</text>
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — TOOL SYSTEM</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Tool Modes</text>
+  <text x="485" y="133" font-size="9" fill="#374151">select: pointer + drag to move</text>
+  <text x="485" y="148" font-size="9" fill="#374151">  resize: handles at corners</text>
+  <text x="485" y="163" font-size="9" fill="#374151">draw: rect|ellipse drag-create</text>
+  <text x="485" y="178" font-size="9" fill="#374151">freehand: pressure-aware points</text>
+  <text x="485" y="193" font-size="9" fill="#374151">text: click → contenteditable</text>
+  <text x="485" y="208" font-size="9" fill="#374151">arrow: snap to shape edges</text>
+  <text x="485" y="225" font-size="9" fill="#374151">eraser: delete on hover</text>
+  <text x="485" y="240" font-size="9" fill="#374151">hand: pan viewport (space key)</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Selection System</text>
+  <text x="682" y="133" font-size="9" fill="#374151">selectedIds: Set&lt;string&gt;</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  multi: shift+click, rubber band</text>
+  <text x="682" y="163" font-size="9" fill="#374151">bounding box: union of shapes</text>
+  <text x="682" y="178" font-size="9" fill="#374151">  resize: scale all proportionally</text>
+  <text x="682" y="193" font-size="9" fill="#374151">group: Cmd+G → groupId</text>
+  <text x="682" y="208" font-size="9" fill="#374151">copy/paste: clone with new ids</text>
+  <text x="682" y="225" font-size="9" fill="#374151">delete: tombstone in Y.Map</text>
+  <text x="682" y="240" font-size="9" fill="#374151">lock: prevent move/edit</text>
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — VIEWPORT &amp; RENDERING</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Viewport Transform</text>
+  <text x="34" y="358" font-size="9" fill="#374151">camera: {x, y, zoom: 0.1–20}</text>
+  <text x="34" y="373" font-size="9" fill="#374151">  CSS transform: scale + translate</text>
+  <text x="34" y="388" font-size="9" fill="#374151">pan: pointer drag or scroll</text>
+  <text x="34" y="403" font-size="9" fill="#374151">zoom: wheel or pinch gesture</text>
+  <text x="34" y="418" font-size="9" fill="#374151">  zoom to cursor: adjust x,y</text>
+  <text x="34" y="433" font-size="9" fill="#374151">fit: zoom to bounding box of all</text>
+  <text x="34" y="448" font-size="9" fill="#374151">minimap: scaled canvas overview</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Render Pipeline</text>
+  <text x="236" y="358" font-size="9" fill="#374151">SVG layer: shapes (crisp zoom)</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  or Canvas 2D for perf</text>
+  <text x="236" y="388" font-size="9" fill="#374151">freehand: Canvas for draw perf</text>
+  <text x="236" y="403" font-size="9" fill="#374151">UI layer: handles, cursors (DOM)</text>
+  <text x="236" y="418" font-size="9" fill="#374151">cull: skip off-viewport shapes</text>
+  <text x="236" y="433" font-size="9" fill="#374151">rAF: batch updates per frame</text>
+  <text x="236" y="448" font-size="9" fill="#374151">image: cache decoded bitmaps</text>
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — PRESENCE &amp; SYNC</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Cursor Presence</text>
+  <text x="485" y="358" font-size="9" fill="#374151">awareness: {userId, name, color}</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  cursor: {x, y} canvas coords</text>
+  <text x="485" y="388" font-size="9" fill="#374151">throttle: 50ms emit rate</text>
+  <text x="485" y="403" font-size="9" fill="#374151">render: label + color dot</text>
+  <text x="485" y="418" font-size="9" fill="#374151">selection highlight: tinted box</text>
+  <text x="485" y="433" font-size="9" fill="#374151">TTL: prune after 30s no update</text>
+  <text x="485" y="448" font-size="9" fill="#374151">max visible cursors: 50</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Sync &amp; Persist</text>
+  <text x="682" y="358" font-size="9" fill="#374151">WebsocketProvider: Yjs sync</text>
+  <text x="682" y="373" font-size="9" fill="#374151">  reconnect: exp backoff 1s→30s</text>
+  <text x="682" y="388" font-size="9" fill="#374151">IndexedDB: offline persistence</text>
+  <text x="682" y="403" font-size="9" fill="#374151">  load on mount if ws unavail</text>
+  <text x="682" y="418" font-size="9" fill="#374151">export: PNG (canvas toBlob)</text>
+  <text x="682" y="433" font-size="9" fill="#374151">  SVG: serialize shape tree</text>
+  <text x="682" y="448" font-size="9" fill="#374151">share: read-only link token</text>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">CRDT: Yjs Y.Map per shape</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Zoom range: 0.1× – 20×</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Cursor throttle: 50ms</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Presence TTL: 30s</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Export: PNG toBlob or SVG serialize</text>
+</svg>

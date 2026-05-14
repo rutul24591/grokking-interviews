@@ -3,6 +3,7 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import { Highlight } from "@/components/articles/Highlight";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -188,6 +189,13 @@ export default function StreamingMarkdownRendererArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/streaming-markdown-renderer-architecture.svg"
+          alt="Streaming markdown renderer architecture showing token buffer, incremental parse, syntax highlighting, and scroll UX"
+          caption="Architecture Overview"
+        />
+
         <p>
           The renderer has three core components: an
           <strong> incremental parser</strong> that

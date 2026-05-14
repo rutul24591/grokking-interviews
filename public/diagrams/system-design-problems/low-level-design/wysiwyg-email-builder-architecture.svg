@@ -1,31 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="280" fill="transparent"/>
-
-  <rect x="30" y="100" width="140" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="100" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Drag Block</text>
-  <text x="50" y="158" font-size="11" fill="#3b82f6">from palette to canvas</text>
-
-  <line x1="170" y1="140" x2="250" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="250" y="70" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="350" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Template Store</text>
-  <text x="270" y="125" font-size="11" fill="#92400e">• blocks: Block[]</text>
-  <text x="270" y="145" font-size="11" fill="#92400e">• selectedBlock: id | null</text>
-  <text x="270" y="165" font-size="11" fill="#92400e">• undoStack: Command[]</text>
-  <text x="270" y="185" font-size="11" fill="#92400e">• templates: Template[]</text>
-  <text x="270" y="210" font-size="10" fill="#b45309">add, remove, edit, save</text>
-
-  <line x1="450" y1="140" x2="530" y2="140" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="530" y="90" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="605" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">HTML Generator</text>
-  <text x="550" y="145" font-size="11" fill="#166534">• table-based layout</text>
-  <text x="550" y="165" font-size="11" fill="#166534">• inline styles</text>
-  <text x="550" y="185" font-size="10" fill="#15803d">variable substitution</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
-    </marker>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">WYSIWYG Email Builder — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Block schema · Template store · MJML render · Variable substitution &amp; preview</text>
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — BLOCK SCHEMA</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Block Types</text>
+  <text x="34" y="133" font-size="9" fill="#374151">text: rich text paragraph</text>
+  <text x="34" y="148" font-size="9" fill="#374151">  inline: bold|italic|link|color</text>
+  <text x="34" y="163" font-size="9" fill="#374151">image: src|alt|width|link</text>
+  <text x="34" y="178" font-size="9" fill="#374151">button: text|href|bg|radius</text>
+  <text x="34" y="193" font-size="9" fill="#374151">divider: hr with spacing</text>
+  <text x="34" y="208" font-size="9" fill="#374151">columns: 1|2|3 col layout</text>
+  <text x="34" y="223" font-size="9" fill="#374151">spacer: height in px</text>
+  <text x="34" y="240" font-size="9" fill="#374151">social: icon + link rows</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Block Data Model</text>
+  <text x="236" y="133" font-size="9" fill="#374151">EmailDoc: { blocks: Block[] }</text>
+  <text x="236" y="148" font-size="9" fill="#374151">Block: { id, type, props, style }</text>
+  <text x="236" y="163" font-size="9" fill="#374151">  id: uuid (stable key)</text>
+  <text x="236" y="178" font-size="9" fill="#374151">  props: type-specific data</text>
+  <text x="236" y="193" font-size="9" fill="#374151">  style: padding|bg|align</text>
+  <text x="236" y="208" font-size="9" fill="#374151">DnD reorder: blocks array</text>
+  <text x="236" y="223" font-size="9" fill="#374151">  drag handle on each block</text>
+  <text x="236" y="240" font-size="9" fill="#374151">Selection: one block at a time</text>
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — TEMPLATE STORE</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Template Model</text>
+  <text x="485" y="133" font-size="9" fill="#374151">Template: { id, name, doc, meta }</text>
+  <text x="485" y="148" font-size="9" fill="#374151">meta: { tags, category, thumb }</text>
+  <text x="485" y="163" font-size="9" fill="#374151">Save: POST /templates</text>
+  <text x="485" y="178" font-size="9" fill="#374151">  JSON body with EmailDoc</text>
+  <text x="485" y="193" font-size="9" fill="#374151">Load: GET /templates/:id</text>
+  <text x="485" y="208" font-size="9" fill="#374151">Gallery: grid of thumbnail imgs</text>
+  <text x="485" y="225" font-size="9" fill="#374151">  prerender to PNG via canvas</text>
+  <text x="485" y="240" font-size="9" fill="#374151">Autosave: 30s debounce PUT</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Version History</text>
+  <text x="682" y="133" font-size="9" fill="#374151">versions[]: { id, doc, ts }</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  saved on explicit Save action</text>
+  <text x="682" y="163" font-size="9" fill="#374151">Restore: overwrite current doc</text>
+  <text x="682" y="178" font-size="9" fill="#374151">  show diff: block-level changes</text>
+  <text x="682" y="193" font-size="9" fill="#374151">Keep: last 20 versions</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Local undo/redo: Ctrl+Z|Y</text>
+  <text x="682" y="225" font-size="9" fill="#374151">  in-memory command stack</text>
+  <text x="682" y="240" font-size="9" fill="#374151">  separate from version history</text>
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — MJML RENDER PIPELINE</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Block → MJML</text>
+  <text x="34" y="358" font-size="9" fill="#374151">Traverse blocks: map to MJML</text>
+  <text x="34" y="373" font-size="9" fill="#374151">  text → mj-text</text>
+  <text x="34" y="388" font-size="9" fill="#374151">  image → mj-image</text>
+  <text x="34" y="403" font-size="9" fill="#374151">  button → mj-button</text>
+  <text x="34" y="418" font-size="9" fill="#374151">  columns → mj-section/mj-column</text>
+  <text x="34" y="433" font-size="9" fill="#374151">Wrap: mj-body &gt; mj-section</text>
+  <text x="34" y="448" font-size="9" fill="#374151">mjml2html(): server or WASM</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Outlook Compat</text>
+  <text x="236" y="358" font-size="9" fill="#374151">MJML emits table-based layout</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  MSO conditional comments</text>
+  <text x="236" y="388" font-size="9" fill="#374151">VML: vector shapes for buttons</text>
+  <text x="236" y="403" font-size="9" fill="#374151">  Outlook 2007–2019 compat</text>
+  <text x="236" y="418" font-size="9" fill="#374151">Inline CSS: all styles inlined</text>
+  <text x="236" y="433" font-size="9" fill="#374151">  strip class-based styles</text>
+  <text x="236" y="448" font-size="9" fill="#374151">Max width: 600px container</text>
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — VARIABLES &amp; PREVIEW</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Variable System</text>
+  <text x="485" y="358" font-size="9" fill="#374151">Syntax: {{firstName}} mustache</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  or {%- firstName -%} liquid</text>
+  <text x="485" y="388" font-size="9" fill="#374151">Variable picker: dropdown insert</text>
+  <text x="485" y="403" font-size="9" fill="#374151">Schema: { key, label, sample }</text>
+  <text x="485" y="418" font-size="9" fill="#374151">Preview mode: replace with</text>
+  <text x="485" y="433" font-size="9" fill="#374151">  sample data for visual check</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Missing var: highlight red</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Preview &amp; Export</text>
+  <text x="682" y="358" font-size="9" fill="#374151">Desktop/Mobile toggle: width</text>
+  <text x="682" y="373" font-size="9" fill="#374151">  600px vs 375px iframe</text>
+  <text x="682" y="388" font-size="9" fill="#374151">Send test: POST to email API</text>
+  <text x="682" y="403" font-size="9" fill="#374151">  with rendered HTML body</text>
+  <text x="682" y="418" font-size="9" fill="#374151">Export: HTML file download</text>
+  <text x="682" y="433" font-size="9" fill="#374151">  minified + inlined styles</text>
+  <text x="682" y="448" font-size="9" fill="#374151">Litmus: iframe embed preview</text>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Block types: text|img|btn|cols</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Variable syntax: {{key}}</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Outlook: VML + table layout</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Preview: desktop 600px / mobile 375px</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Export: HTML minified + inlined</text>
 </svg>

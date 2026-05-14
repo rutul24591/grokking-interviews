@@ -1,30 +1,125 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" fill="none" font-family="system-ui, sans-serif">
-  <rect width="700" height="260" fill="transparent"/>
-
-  <rect x="30" y="90" width="130" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
-  <text x="95" y="125" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Gallery Grid</text>
-  <text x="50" y="148" font-size="11" fill="#3b82f6">lazy loaded thumbnails</text>
-
-  <line x1="160" y1="130" x2="240" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="240" y="70" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="330" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Gallery Store</text>
-  <text x="260" y="125" font-size="11" fill="#92400e">• images: GalleryImage[]</text>
-  <text x="260" y="145" font-size="11" fill="#92400e">• currentIndex: number</text>
-  <text x="260" y="165" font-size="11" fill="#92400e">• zoom: ZoomState</text>
-  <text x="260" y="185" font-size="10" fill="#b45309">next, prev, goTo, setZoom</text>
-
-  <line x1="420" y1="130" x2="500" y2="130" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-  <rect x="500" y="80" width="170" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="585" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">Lightbox</text>
-  <text x="520" y="135" font-size="11" fill="#166534">• Portal rendering</text>
-  <text x="520" y="155" font-size="11" fill="#166534">• pinch-to-zoom</text>
-  <text x="520" y="175" font-size="10" fill="#15803d">swipe, keyboard, focus trap</text>
-
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/>
     </marker>
   </defs>
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Image Gallery &amp; Lightbox — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Grid layout · Progressive load · Lightbox view · Gesture &amp; keyboard</text>
+
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — GRID LAYOUT MODEL</text>
+  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">GalleryItem Shape</text>
+  <text x="34" y="133" font-size="9" fill="#374151">id: string</text>
+  <text x="34" y="148" font-size="9" fill="#374151">src: string (full resolution)</text>
+  <text x="34" y="163" font-size="9" fill="#374151">thumbnail: string (optimised)</text>
+  <text x="34" y="178" font-size="9" fill="#374151">alt: string (required)</text>
+  <text x="34" y="193" font-size="9" fill="#374151">width: number, height: number</text>
+  <text x="34" y="208" font-size="9" fill="#374151">caption?: string</text>
+  <text x="34" y="223" font-size="9" fill="#374151">exif?: { camera, iso, aperture }</text>
+  <text x="34" y="240" font-size="9" fill="#374151">blurDataURL?: string (LQP)</text>
+  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Masonry / Grid</text>
+  <text x="236" y="133" font-size="9" fill="#374151">CSS grid: auto-fill minmax(200px,1fr)</text>
+  <text x="236" y="148" font-size="9" fill="#374151">Masonry: grid-template-rows: masonry</text>
+  <text x="236" y="163" font-size="9" fill="#374151">  or multi-column JS approach</text>
+  <text x="236" y="178" font-size="9" fill="#374151">Aspect ratio: aspect-ratio CSS prop</text>
+  <text x="236" y="193" font-size="9" fill="#374151">  or padding-top trick fallback</text>
+  <text x="236" y="208" font-size="9" fill="#374151">Thumbnail: 200px target, webp</text>
+  <text x="236" y="223" font-size="9" fill="#374151">srcset for 1× 2× DPR</text>
+  <text x="236" y="240" font-size="9" fill="#374151">Responsive: 1→2→3→4 columns</text>
+
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — PROGRESSIVE LOAD STRATEGY</text>
+  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Lazy Loading</text>
+  <text x="485" y="133" font-size="9" fill="#374151">IntersectionObserver on each item</text>
+  <text x="485" y="148" font-size="9" fill="#374151">  rootMargin: "200px" preload zone</text>
+  <text x="485" y="163" font-size="9" fill="#374151">loading="lazy" on img elements</text>
+  <text x="485" y="178" font-size="9" fill="#374151">Blur placeholder (LQP) during load</text>
+  <text x="485" y="193" font-size="9" fill="#374151">  CSS filter: blur(20px) → 0</text>
+  <text x="485" y="208" font-size="9" fill="#374151">decode="async" attribute</text>
+  <text x="485" y="225" font-size="9" fill="#374151">Above-fold: loading="eager"</text>
+  <text x="485" y="240" font-size="9" fill="#374151">Skeleton: fixed aspect-ratio box</text>
+  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Preload Neighbours</text>
+  <text x="682" y="133" font-size="9" fill="#374151">Lightbox open: preload ±2 full-res</text>
+  <text x="682" y="148" font-size="9" fill="#374151">  new Image().src = fullSrc</text>
+  <text x="682" y="163" font-size="9" fill="#374151">Priority: current → next → prev</text>
+  <text x="682" y="178" font-size="9" fill="#374151">Full image: decode before show</text>
+  <text x="682" y="193" font-size="9" fill="#374151">  img.decode() promise-based</text>
+  <text x="682" y="208" font-size="9" fill="#374151">Low-data mode: skip preload</text>
+  <text x="682" y="225" font-size="9" fill="#374151">  navigator.connection.saveData</text>
+  <text x="682" y="240" font-size="9" fill="#374151">Error: broken-img icon fallback</text>
+
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — LIGHTBOX VIEW</text>
+  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Lightbox Structure</text>
+  <text x="34" y="358" font-size="9" fill="#374151">Portal: ReactDOM.createPortal</text>
+  <text x="34" y="373" font-size="9" fill="#374151">  mounted on document.body</text>
+  <text x="34" y="388" font-size="9" fill="#374151">Overlay: fixed 100vw × 100vh</text>
+  <text x="34" y="403" font-size="9" fill="#374151">  rgba(0,0,0,0.9) backdrop</text>
+  <text x="34" y="418" font-size="9" fill="#374151">Image: object-fit contain</text>
+  <text x="34" y="433" font-size="9" fill="#374151">  max 90vw × 90vh bounds</text>
+  <text x="34" y="448" font-size="9" fill="#374151">EXIF panel: slide-in on toggle</text>
+  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Focus Trap &amp; Portal</text>
+  <text x="236" y="358" font-size="9" fill="#374151">Open: trap focus inside lightbox</text>
+  <text x="236" y="373" font-size="9" fill="#374151">  first focusable = close btn</text>
+  <text x="236" y="388" font-size="9" fill="#374151">Close: Escape key or overlay click</text>
+  <text x="236" y="403" font-size="9" fill="#374151">  restore focus to thumbnail</text>
+  <text x="236" y="418" font-size="9" fill="#374151">body: overflow hidden while open</text>
+  <text x="236" y="433" font-size="9" fill="#374151">scrollbar-gutter: stable prevents jump</text>
+  <text x="236" y="448" font-size="9" fill="#374151">Animation: fade+scale 200ms</text>
+
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — GESTURE &amp; KEYBOARD</text>
+  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Swipe / Pinch</text>
+  <text x="485" y="358" font-size="9" fill="#374151">Swipe left/right: next/prev image</text>
+  <text x="485" y="373" font-size="9" fill="#374151">  velocity threshold: 0.4 px/ms</text>
+  <text x="485" y="388" font-size="9" fill="#374151">Swipe down: dismiss lightbox</text>
+  <text x="485" y="403" font-size="9" fill="#374151">  deltaY &gt; 100px → close</text>
+  <text x="485" y="418" font-size="9" fill="#374151">Pinch-to-zoom: scale 1→3×</text>
+  <text x="485" y="433" font-size="9" fill="#374151">  getCoalescedEvents for accuracy</text>
+  <text x="485" y="448" font-size="9" fill="#374151">Double-tap: toggle zoom 1× ↔ 2×</text>
+  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Keyboard Navigation</text>
+  <text x="682" y="358" font-size="9" fill="#374151">← → : prev / next image</text>
+  <text x="682" y="373" font-size="9" fill="#374151">Escape: close lightbox</text>
+  <text x="682" y="388" font-size="9" fill="#374151">i : toggle EXIF info panel</text>
+  <text x="682" y="403" font-size="9" fill="#374151">f : toggle fullscreen API</text>
+  <text x="682" y="418" font-size="9" fill="#374151">+ / - : zoom in / out</text>
+  <text x="682" y="433" font-size="9" fill="#374151">Grid Enter: open lightbox</text>
+  <text x="682" y="448" font-size="9" fill="#374151">aria-label: "Image N of M"</text>
+
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Thumbnail: 200px webp target</text>
+  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">decode="async" on all images</text>
+  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Swipe velocity: 0.4 px/ms</text>
+  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Preload: ±2 full-res neighbours</text>
+  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">EXIF fields: camera, iso, aperture</text>
 </svg>

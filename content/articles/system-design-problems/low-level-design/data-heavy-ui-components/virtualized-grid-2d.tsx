@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
@@ -196,6 +197,11 @@ export default function VirtualizedGrid2DArticle() {
 
       <section>
         <h2>🧠 Solution Approach</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/virtualized-grid-2d-architecture.svg"
+          alt="Virtualized 2D grid architecture showing cell definition model, grid state, visible row and column windowing with overscan, variable row and column sizes, scroll container, frozen panes, selection model, and cell editing"
+          caption="Architecture Overview"
+        />
         <HighlightBlock as="p" tier="important">
           The grid is built around a <strong>two-dimensional
           virtualizer</strong> that independently maintains
