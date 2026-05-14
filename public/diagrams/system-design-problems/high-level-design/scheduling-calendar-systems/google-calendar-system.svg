@@ -1,0 +1,117 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Google Calendar System — Event Storage, Sync &amp; Recurrence</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Calendar Client</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">web / mobile</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Calendar API</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">CRUD + recurrence</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Event Store</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">Spanner / PG</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Sync Engine</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">iCal / CalDAV</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Invite / Notify</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">RSVP + reminders</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Event creation + recurrence -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · EVENT CREATION + RECURRENCE — RRULE stored once; occurrences expanded on query (never stored individually); EXDATE for exceptions</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">POST /events &#123;title, start, end, rrule, attendees&#125;</text>
+
+  <line x1="240" y1="164" x2="430" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="158" text-anchor="middle" font-size="9" fill="#374151">store master event + RRULE; assign global eventId</text>
+
+  <line x1="430" y1="178" x2="90" y2="178" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="172" text-anchor="middle" font-size="9" fill="#374151">200 &#123;eventId, nextOccurrence&#125; — no fan-out of occurrences</text>
+
+  <!-- SECTION 2: Range query + expansion -->
+  <rect x="8" y="196" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="207" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · RANGE QUERY + EXPANSION — GET /events?start=&amp;end= ; expand RRULE in API layer (not DB); cap at 1yr; Redis cache per user per week</text>
+
+  <line x1="75" y1="226" x2="240" y2="226" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="220" text-anchor="middle" font-size="9" fill="#374151">GET /events?start=Mon&amp;end=Sun (week view)</text>
+
+  <line x1="240" y1="240" x2="430" y2="240" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="234" text-anchor="middle" font-size="9" fill="#374151">fetch masters in range; expand RRULE; merge EXDATE exceptions</text>
+
+  <line x1="430" y1="254" x2="90" y2="254" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="248" text-anchor="middle" font-size="9" fill="#374151">return expanded occurrences; cache key: userId:week:2026-W20</text>
+
+  <!-- Recurrence box -->
+  <rect x="160" y="262" width="350" height="24" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="335" y="278" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Exception edit: store EXDATE on master + new one-off event at same time slot</text>
+
+  <!-- SECTION 3: Sync + CalDAV -->
+  <rect x="8" y="294" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="305" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · SYNC — CalDAV REPORT for delta sync; syncToken per calendar; push via WebSocket for web; background fetch for mobile (BGTask)</text>
+
+  <line x1="240" y1="324" x2="620" y2="324" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="430" y="318" text-anchor="middle" font-size="9" fill="#374151">CalDAV REPORT &#123;syncToken&#125; → delta of changed events since last sync</text>
+
+  <line x1="620" y1="338" x2="90" y2="338" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="355" y="332" text-anchor="middle" font-size="9" fill="#374151">new syncToken + changed/deleted event list → client applies patch</text>
+
+  <!-- Sync box -->
+  <rect x="20" y="348" width="360" height="24" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="200" y="364" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Conflict: last-write-wins by updated_at; sequence number for ordering concurrent edits</text>
+
+  <!-- SECTION 4: Invites + reminders -->
+  <rect x="8" y="380" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="391" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · INVITES + REMINDERS — iCalendar .ics email invite; RSVP updates attendee status; reminder worker polls 15min ahead; timezone-aware alarm</text>
+
+  <line x1="430" y1="410" x2="809" y2="410" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="619" y="404" text-anchor="middle" font-size="9" fill="#374151">send .ics invite email to all attendees on event create/update</text>
+
+  <line x1="809" y1="424" x2="240" y2="424" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="524" y="418" text-anchor="middle" font-size="9" fill="#374151">RSVP link → PATCH /events/&#123;id&#125;/attendees &#123;status: accepted&#125;</text>
+
+  <line x1="809" y1="438" x2="90" y2="438" stroke="#e05252" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="449" y="432" text-anchor="middle" font-size="9" fill="#374151">reminder: cron 15min before event start (user TZ) → push + email</text>
+
+  <!-- Footer -->
+  <rect x="8" y="456" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="472" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Recurrence</text>
+  <text x="90" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">RRULE + EXDATE</text>
+  <text x="255" y="472" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Expansion Cap</text>
+  <text x="255" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">1 year ahead</text>
+  <text x="450" y="472" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Sync Protocol</text>
+  <text x="450" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">CalDAV + syncToken</text>
+  <text x="645" y="472" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Reminder Lead</text>
+  <text x="645" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">15 min (user TZ)</text>
+  <text x="820" y="472" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Conflict</text>
+  <text x="820" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">last-write-wins</text>
+</svg>

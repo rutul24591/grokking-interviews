@@ -1,0 +1,115 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Retry &amp; Failure Recovery UX — Detect, Retry &amp; Restore</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">User / UI</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">action + feedback</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Retry Manager</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">schedule + backoff</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Offline Queue</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">IndexedDB / SW</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">API / Server</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">idempotent endpoint</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Circuit Breaker</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">open / half-open</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Request fails -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · FAILURE DETECT — request fails with 5xx / timeout / network error; UI shows optimistic state; Retry Manager intercepts before surfacing to user</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">user action: submit form / mutation / upload</text>
+
+  <line x1="240" y1="164" x2="620" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="430" y="158" text-anchor="middle" font-size="9" fill="#374151">POST /api/resource {idempotencyKey: uuid}</text>
+
+  <line x1="620" y1="178" x2="240" y2="178" stroke="#e05252" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="430" y="172" text-anchor="middle" font-size="9" fill="#e05252">503 / timeout / ERR_NETWORK — failure captured</text>
+
+  <!-- SECTION 2: Retry with backoff -->
+  <rect x="8" y="192" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="203" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · RETRY — exponential backoff with jitter (1s, 2s, 4s); check circuit breaker state before each attempt; show countdown UI to user; max 3 auto-retries</text>
+
+  <line x1="240" y1="222" x2="809" y2="222" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="524" y="216" text-anchor="middle" font-size="9" fill="#374151">check circuit breaker: CLOSED → allow; OPEN → skip to queue</text>
+
+  <line x1="240" y1="236" x2="620" y2="236" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="430" y="230" text-anchor="middle" font-size="9" fill="#374151">retry #1 after 1s+jitter; #2 after 2s+jitter; #3 after 4s+jitter</text>
+
+  <line x1="240" y1="250" x2="90" y2="250" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="244" text-anchor="middle" font-size="9" fill="#374151">UI: "Retrying… (attempt 2 of 3)" with cancel button</text>
+
+  <!-- SECTION 3: Offline queue -->
+  <rect x="8" y="264" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="275" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · OFFLINE QUEUE — if all retries fail or network offline: persist mutation to IndexedDB queue; Service Worker replays on reconnect; idempotency key prevents duplicates</text>
+
+  <line x1="240" y1="294" x2="430" y2="294" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="288" text-anchor="middle" font-size="9" fill="#374151">enqueue to IndexedDB: {idempotencyKey, payload, timestamp}</text>
+
+  <line x1="430" y1="308" x2="90" y2="308" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="302" text-anchor="middle" font-size="9" fill="#374151">UI: "Saved offline — will sync when reconnected" banner</text>
+
+  <line x1="430" y1="322" x2="620" y2="322" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="525" y="316" text-anchor="middle" font-size="9" fill="#374151">SW: navigator.onLine → true → replay queue in order</text>
+
+  <!-- SECTION 4: Circuit breaker + recovery -->
+  <rect x="8" y="336" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="347" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · CIRCUIT BREAKER — 5 failures in 30s → OPEN (block requests, show degraded banner); 60s cooldown → HALF-OPEN (probe); success → CLOSED; restore optimistic UI</text>
+
+  <line x1="240" y1="366" x2="809" y2="366" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="524" y="360" text-anchor="middle" font-size="9" fill="#374151">failure count ≥ 5 in 30s → circuit OPEN; block all requests</text>
+
+  <line x1="809" y1="380" x2="90" y2="380" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="450" y="374" text-anchor="middle" font-size="9" fill="#374151">UI banner: "Service degraded — changes queued for sync"</text>
+
+  <line x1="809" y1="396" x2="240" y2="396" stroke="#be123c" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="524" y="390" text-anchor="middle" font-size="9" fill="#374151">60s cooldown → HALF-OPEN; send probe; 200 OK → CLOSED</text>
+
+  <line x1="430" y1="416" x2="90" y2="416" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="410" text-anchor="middle" font-size="9" fill="#374151">replay offline queue; confirm success; dismiss banner</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Retry Budget</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">3 auto / unlimited manual</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Backoff</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">1s → 2s → 4s + jitter</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Offline Store</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">IndexedDB + SW sync</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Circuit Breaker</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5 fails / 30s → OPEN</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Idempotency</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">UUID per mutation</text>
+</svg>

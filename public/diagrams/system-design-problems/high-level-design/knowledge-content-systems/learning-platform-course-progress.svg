@@ -1,0 +1,116 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Learning Platform — Video Delivery, Progress &amp; Completion Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="115" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="77" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Learner Player</text>
+  <text x="77" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">HLS.js / native</text>
+
+  <rect x="205" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="262" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Media / CDN</text>
+  <text x="262" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">CloudFront + HLS</text>
+
+  <rect x="392" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="449" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Progress API</text>
+  <text x="449" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">heartbeat + UPSERT</text>
+
+  <rect x="580" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="637" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">DRM License</text>
+  <text x="637" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">Widevine / FairPlay</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Certificate Svc</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">Puppeteer + email</text>
+
+  <!-- Lifelines -->
+  <line x1="77"  y1="105" x2="77"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="262" y1="105" x2="262" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="449" y1="105" x2="449" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="637" y1="105" x2="637" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Video Delivery + DRM -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · VIDEO DELIVERY — HLS adaptive bitrate (360p–1080p) from CloudFront; DRM license validates enrollment, returns 1-hour key</text>
+
+  <line x1="77" y1="150" x2="247" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="162" y="144" text-anchor="middle" font-size="9" fill="#374151">GET master.m3u8 → player selects quality by bandwidth</text>
+
+  <line x1="247" y1="164" x2="92" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="169" y="158" text-anchor="middle" font-size="9" fill="#374151">HLS .ts segments (360p / 720p / 1080p) via CloudFront</text>
+
+  <line x1="77" y1="180" x2="622" y2="180" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="349" y="174" text-anchor="middle" font-size="9" fill="#374151">POST /api/drm/license (DRM encrypted segment → validate enrollment)</text>
+
+  <line x1="622" y1="194" x2="92" y2="194" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="357" y="188" text-anchor="middle" font-size="9" fill="#374151">ephemeral 1-hour decrypt key (48hr offline TTL)</text>
+
+  <!-- SECTION 2: Progress Tracking -->
+  <rect x="8" y="210" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="221" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · PROGRESS TRACKING — 10s heartbeat UPSERT; resume to lastPosition on load; completed when position &gt;90% of duration</text>
+
+  <line x1="77" y1="240" x2="434" y2="240" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="255" y="234" text-anchor="middle" font-size="9" fill="#374151">POST /api/progress {lessonId, position: 142.5} every 10s</text>
+
+  <line x1="434" y1="254" x2="92" y2="254" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="263" y="248" text-anchor="middle" font-size="9" fill="#374151">UPSERT lastPosition; if &gt;90% → completedAt = now()</text>
+
+  <!-- Progress detail box -->
+  <rect x="20" y="264" width="330" height="32" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="185" y="279" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">10K writes/sec → batch 5s buffer + Redis analytics async</text>
+  <text x="185" y="293" text-anchor="middle" font-size="9" fill="#374151">offline: IndexedDB buffer → flush on reconnect (max-position win)</text>
+
+  <!-- SECTION 3: Course Completion + Certificate -->
+  <rect x="8" y="306" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="317" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · COMPLETION + CERTIFICATE — Kafka event checks all lessons done; Puppeteer renders PDF with QR; public verification URL</text>
+
+  <line x1="434" y1="336" x2="809" y2="336" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="621" y="330" text-anchor="middle" font-size="9" fill="#374151">Kafka: lesson_completed → check all required lessons done</text>
+
+  <line x1="809" y1="350" x2="92" y2="350" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="450" y="344" text-anchor="middle" font-size="9" fill="#374151">Puppeteer PDF (name + course + date + QR) → S3 + email</text>
+
+  <!-- Certificate box -->
+  <rect x="510" y="360" width="360" height="32" rx="6" fill="#fff" stroke="#be123c" stroke-width="1"/>
+  <text x="690" y="375" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Public: /certificates/{id} → DB lookup (tamper-evident)</text>
+  <text x="690" y="390" text-anchor="middle" font-size="9" fill="#374151">QR links to verification URL; PDF alone is not authoritative</text>
+
+  <!-- SECTION 4: Spaced Repetition + Instructor Analytics -->
+  <rect x="8" y="402" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="413" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · RETENTION + ANALYTICS — SM-2 spaced repetition daily review; instructor drop-off chart per 10% video bucket</text>
+
+  <line x1="434" y1="432" x2="92" y2="432" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="263" y="426" text-anchor="middle" font-size="9" fill="#374151">SM-2: interval × ease factor; fail → reset 1 day</text>
+
+  <line x1="434" y1="446" x2="809" y2="446" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="621" y="440" text-anchor="middle" font-size="9" fill="#374151">instructor: completion rate, avg watch time, 10% drop-off chart</text>
+
+  <!-- Footer -->
+  <rect x="8" y="462" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="478" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">HLS Renditions</text>
+  <text x="90" y="492" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">360p / 720p / 1080p</text>
+  <text x="255" y="478" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">DRM Key TTL</text>
+  <text x="255" y="492" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">1hr / 48hr offline</text>
+  <text x="450" y="478" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Heartbeat</text>
+  <text x="450" y="492" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">10s, &gt;90% = done</text>
+  <text x="645" y="478" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Completion Check</text>
+  <text x="645" y="492" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Kafka + all lessons</text>
+  <text x="820" y="478" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">SM-2 Review</text>
+  <text x="820" y="492" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">daily notification</text>
+</svg>

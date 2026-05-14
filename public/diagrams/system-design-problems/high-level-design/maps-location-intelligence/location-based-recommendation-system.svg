@@ -1,0 +1,117 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Location-Based Recommendation System — Proximity + Ranking Pipeline</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">User App</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">lat/lng + context</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Rec API</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">candidate fetch</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Geo Index</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">S2 cells / Redis</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Ranking Engine</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">score + filter</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">User Profile</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">history + prefs</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Geo candidate fetch -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · GEO CANDIDATE FETCH — user sends lat/lng; S2 cell covers radius; Redis GEORADIUS returns up to 200 candidates within 5km in &lt;5ms</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">GET /recs?lat=37.7&amp;lng=-122.4&amp;category=restaurant</text>
+
+  <line x1="240" y1="164" x2="430" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="158" text-anchor="middle" font-size="9" fill="#374151">GEORADIUS key 37.7 -122.4 5 km ASC COUNT 200</text>
+
+  <line x1="430" y1="178" x2="240" y2="178" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="335" y="172" text-anchor="middle" font-size="9" fill="#374151">200 candidate placeIds + distances</text>
+
+  <!-- S2 box -->
+  <rect x="160" y="186" width="350" height="22" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="335" y="201" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">S2 cell level 14 ≈ 600m² per cell; index sharded by city geohash prefix</text>
+
+  <!-- SECTION 2: User profile + context -->
+  <rect x="8" y="216" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="227" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · USER CONTEXT — parallel fetch: user visit history + cuisine prefs + time-of-day + day-of-week signals; cached in Redis 10min TTL</text>
+
+  <line x1="240" y1="246" x2="809" y2="246" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="524" y="240" text-anchor="middle" font-size="9" fill="#374151">GET user profile: past visits, ratings, dietary prefs, visit frequency</text>
+
+  <line x1="809" y1="260" x2="240" y2="260" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="524" y="254" text-anchor="middle" font-size="9" fill="#374151">{visitedPlaceIds[], cuisineAffinity{}, priceRange, openNowPref}</text>
+
+  <!-- SECTION 3: Ranking -->
+  <rect x="8" y="276" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="287" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · RANKING — score = α×proximity + β×rating + γ×personalAffinity + δ×popularity; filter closed; dedupe visited; top 20 returned</text>
+
+  <line x1="240" y1="306" x2="620" y2="306" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="430" y="300" text-anchor="middle" font-size="9" fill="#374151">candidates[] + userProfile → score each candidate</text>
+
+  <line x1="620" y1="320" x2="620" y2="320" stroke="#d97843" stroke-width="1"/>
+  <rect x="530" y="322" width="210" height="22" rx="5" fill="#d97843"/>
+  <text x="635" y="337" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">score = dist×0.4 + rating×0.3 + affinity×0.2 + pop×0.1</text>
+
+  <line x1="620" y1="348" x2="240" y2="348" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="430" y="342" text-anchor="middle" font-size="9" fill="#374151">top 20 ranked places (open now, not recently visited)</text>
+
+  <!-- SECTION 4: Response + cache -->
+  <rect x="8" y="364" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="375" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · RESPONSE + FEEDBACK — return ranked list; client logs impressions; tap → visit event logged → updates affinity scores async via Kafka</text>
+
+  <line x1="240" y1="394" x2="90" y2="394" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="388" text-anchor="middle" font-size="9" fill="#374151">200 [{placeId, name, dist, score, openNow, photo}]</text>
+
+  <line x1="75" y1="412" x2="240" y2="412" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="157" y="406" text-anchor="middle" font-size="9" fill="#374151">user taps place → POST /events {placeId, action: "visit"}</text>
+
+  <line x1="240" y1="426" x2="620" y2="426" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="430" y="420" text-anchor="middle" font-size="9" fill="#374151">Kafka event → affinity model update (async, near-real-time)</text>
+
+  <line x1="620" y1="440" x2="809" y2="440" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="714" y="434" text-anchor="middle" font-size="9" fill="#374151">UPDATE user profile affinity scores (Redis + DB)</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Geo Index</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Redis GEORADIUS</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Candidate Pool</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">200 within 5km</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Ranking Signals</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">dist + rating + affinity</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Profile Cache</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Redis 10min TTL</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Feedback Loop</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Kafka → affinity update</text>
+</svg>

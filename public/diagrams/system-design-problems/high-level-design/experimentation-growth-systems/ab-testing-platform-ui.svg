@@ -1,0 +1,114 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">A/B Testing Platform — Request &amp; Analysis Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors: 5 boxes, evenly spaced -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">User Browser</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">Flag SDK</text>
+
+  <rect x="200" y="65" width="120" height="40" rx="8" fill="#2563eb"/>
+  <text x="260" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Experiment API</text>
+  <text x="260" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">config + results</text>
+
+  <rect x="393" y="65" width="120" height="40" rx="8" fill="#2f9d74"/>
+  <text x="453" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Event Pipeline</text>
+  <text x="453" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">assignment log</text>
+
+  <rect x="585" y="65" width="120" height="40" rx="8" fill="#d97843"/>
+  <text x="645" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Stats Engine</text>
+  <text x="645" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">z-test / t-test</text>
+
+  <rect x="778" y="65" width="102" height="40" rx="8" fill="#be123c"/>
+  <text x="829" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Results Store</text>
+  <text x="829" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">dashboard read</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="260" y1="105" x2="260" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="453" y1="105" x2="453" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="645" y1="105" x2="645" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="829" y1="105" x2="829" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Bucketing -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · DETERMINISTIC BUCKETING — hash(userId + experimentId) % 100, no network on critical path</text>
+
+  <line x1="75" y1="150" x2="245" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="160" y="144" text-anchor="middle" font-size="9" fill="#374151">GET /experiments/active (cached 10 min)</text>
+
+  <line x1="245" y1="164" x2="90" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="167" y="158" text-anchor="middle" font-size="9" fill="#374151">config array → localStorage TTL 10 min</text>
+
+  <line x1="75" y1="182" x2="245" y2="182" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="160" y="176" text-anchor="middle" font-size="9" fill="#374151">FNV-1a hash(userId+expId)%100 → variant</text>
+
+  <line x1="75" y1="198" x2="438" y2="198" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="256" y="192" text-anchor="middle" font-size="9" fill="#374151">sendBeacon: {expId, variantId, userId, ts} (async, non-blocking)</text>
+
+  <!-- SECTION 2: Analysis Pipeline -->
+  <rect x="8" y="216" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="227" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · ANALYSIS PIPELINE — join assignments × metric events → z-test / t-test per variant</text>
+
+  <line x1="453" y1="248" x2="630" y2="248" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="541" y="242" text-anchor="middle" font-size="9" fill="#374151">batch assignment + metric events</text>
+
+  <line x1="630" y1="262" x2="468" y2="262" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="549" y="256" text-anchor="middle" font-size="9" fill="#374151">lift, 95% CI, p-value, SRM chi-sq</text>
+
+  <line x1="645" y1="278" x2="814" y2="278" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="729" y="272" text-anchor="middle" font-size="9" fill="#374151">write computed results</text>
+
+  <!-- SECTION 3: Dashboard Read -->
+  <rect x="8" y="296" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="307" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · RESULTS DASHBOARD — poll every 60 s; CI bars color-coded; SRM banner; guardrail alert</text>
+
+  <line x1="75" y1="328" x2="814" y2="328" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="444" y="322" text-anchor="middle" font-size="9" fill="#374151">GET /experiments/{id}/results (poll 60 s)</text>
+
+  <line x1="814" y1="342" x2="90" y2="342" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="452" y="336" text-anchor="middle" font-size="9" fill="#374151">{lift, p-value, CI, srmPValue, guardrailAlerts[]}</text>
+
+  <!-- Result rendering box -->
+  <rect x="20" y="356" width="420" height="42" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="230" y="372" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">CI bar: ●——[ green if CI &gt; 0 ] | grey if spans 0 | red if CI &lt; 0</text>
+  <text x="230" y="388" text-anchor="middle" font-size="9" fill="#374151">SRM p&lt;0.01 → red banner | guardrail &gt;5% → ⚠ banner + email</text>
+
+  <!-- SECTION 4: Lifecycle -->
+  <rect x="8" y="410" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="421" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · EXPERIMENT LIFECYCLE — Draft → Running (sign-off) → Paused → Concluded (decision logged)</text>
+
+  <line x1="75" y1="442" x2="245" y2="442" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="160" y="436" text-anchor="middle" font-size="9" fill="#374151">PATCH /experiments/{id}/state</text>
+
+  <line x1="245" y1="456" x2="90" y2="456" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="167" y="450" text-anchor="middle" font-size="9" fill="#374151">state: draft | running | paused | concluded</text>
+
+  <!-- Footer metrics -->
+  <rect x="8" y="476" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="100" y="492" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Bucketing</text>
+  <text x="100" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">FNV-1a hash</text>
+  <text x="270" y="492" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Config Cache</text>
+  <text x="270" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">10 min TTL</text>
+  <text x="450" y="492" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Poll Interval</text>
+  <text x="450" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">60 s</text>
+  <text x="640" y="492" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">SRM Threshold</text>
+  <text x="640" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">chi-sq p&lt;0.01</text>
+  <text x="820" y="492" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Significance</text>
+  <text x="820" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">α = 0.05</text>
+</svg>

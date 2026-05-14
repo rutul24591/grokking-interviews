@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -35,7 +36,7 @@ export default function RecommendationTuningSystemArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h2>Problem Clarification</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           A recommendation tuning system is the control plane that sits above
           the recommendation engine. While the engine (ranking model, feature
           store, retrieval index) produces recommendations, the tuning system
@@ -47,8 +48,8 @@ export default function RecommendationTuningSystemArticle() {
           (revenue, diversity, content freshness, creator fairness, regulatory
           compliance) that are often in tension. The tuning system is where
           those trade-offs are made explicit and manageable.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The problem space has three distinct actors. Data scientists need to
           run controlled experiments (A/B tests, interleaved tests) and analyze
           results, retrain and compare model variants, understand which features
@@ -63,7 +64,7 @@ export default function RecommendationTuningSystemArticle() {
           tooling: a PM accidentally modifying a training parameter, or a data
           scientist's experiment inadvertently triggering a business rule
           exclusion.
-        </p>
+        </HighlightBlock>
         <p>
           <strong>Explicit scope:</strong> This article covers the tuning and
           evaluation layer. The underlying recommendation engine (feature store,
@@ -103,12 +104,12 @@ export default function RecommendationTuningSystemArticle() {
             are logged and compared offline to validate model improvements
             before any traffic exposure.
           </li>
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Feature importance dashboard:</strong> For any model
             variant, visualize the top contributing features by SHAP value,
             per-user segment feature contributions, and feature drift over time
             (distribution of feature values today vs. 7 days ago).
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Multi-armed bandit:</strong> For certain surfaces (e.g.,
             email subject line recommendations, push notification content),
@@ -129,18 +130,18 @@ export default function RecommendationTuningSystemArticle() {
           Non-Functional Requirements
         </h3>
         <ul className="space-y-2">
-          <li>
+          <HighlightBlock as="li" tier="important">
             <strong>Latency overhead:</strong> The tuning layer (experiment
             assignment + business rule application) must add less than 5ms to
             the ranking pipeline (which targets P99 &lt; 50ms total).
-          </li>
-          <li>
+          </HighlightBlock>
+          <HighlightBlock as="li" tier="important">
             <strong>Experiment integrity:</strong> Users must receive consistent
             treatment throughout an experiment (same bucket for the experiment's
             duration). Partial exposure (user seeing treatment on one session
             and control on another) invalidates measurements and must not
             happen.
-          </li>
+          </HighlightBlock>
           <li>
             <strong>Audit log:</strong> Every business rule change, experiment
             activation, and model deployment is logged with actor identity,
@@ -152,15 +153,15 @@ export default function RecommendationTuningSystemArticle() {
 
       <section>
         <h2>High-Level Architecture</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The tuning system wraps the recommendation engine at the request path
           and sits as a sidecar to the serving infrastructure. The critical
           insight is that the tuning layer must be on the critical path (to
           apply post-rank adjustments and experiment routing) but must be fast
           and stateless (all configuration loaded into memory, no synchronous DB
           reads at request time).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           The request flow: (1) An incoming recommendation request (userId,
           surface, candidates) hits the Recommendation Gateway. (2) The
           Experiment Assignment Service reads the user's bucket assignments from
@@ -176,7 +177,7 @@ export default function RecommendationTuningSystemArticle() {
           Scoring Service sends the same request to all candidate models and
           logs shadow scores alongside the production scores for offline
           comparison.
-        </p>
+        </HighlightBlock>
         <p>
           The configuration plane runs asynchronously: the Config Store (backed
           by a distributed KV store like etcd or Consul) holds experiment
@@ -234,7 +235,7 @@ export default function RecommendationTuningSystemArticle() {
           or because of external factors (seasonal traffic, content quality
           improvements).
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Interleaved testing: a faster alternative to A/B tests for comparing
           two ranking models. In an interleaved test, a single request is scored
           by both models. The results are interleaved in a round-robin fashion
@@ -248,7 +249,7 @@ export default function RecommendationTuningSystemArticle() {
           measure click-based metrics (they cannot measure dwell time,
           conversions, or longer-term engagement effects, which require true A/B
           isolation).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Business Rules Engine
@@ -302,13 +303,13 @@ export default function RecommendationTuningSystemArticle() {
           critical for trust &amp; safety use cases where a flagged item must
           never appear regardless of its model score.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Rule evaluation order: exclusions first (reduces the candidate pool),
           then boost/bury (adjusts scores), then re-ranking (produces the final
           ordered list), then inclusion (injects guaranteed slots). This order
           ensures that exclusions take precedence over boosts (a flagged item
           cannot be boosted back into the list).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Multi-Armed Bandit Exploration
@@ -322,7 +323,7 @@ export default function RecommendationTuningSystemArticle() {
           rigor. The tuning system supports contextual bandits for surfaces
           where the "arm" choice is context-dependent.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Thompson Sampling implementation: each arm (model variant) has a Beta
           distribution over its click-through rate. Initially: Beta(1, 1)
           (uniform prior). On each impression: if the user clicks, update the
@@ -337,7 +338,7 @@ export default function RecommendationTuningSystemArticle() {
           non-stationary environments (model quality can change over time as the
           underlying content catalog changes), whereas UCB's confidence
           intervals are calibrated assuming a stationary reward distribution.
-        </p>
+        </HighlightBlock>
         <p>
           Contextual bandits extend this to the per-user level: instead of a
           global CTR estimate per arm, the bandit estimates the probability of
@@ -358,7 +359,7 @@ export default function RecommendationTuningSystemArticle() {
           Each stage gates traffic exposure and requires passing quality checks
           before promotion.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shadow deployment: a new model candidate scores all production
           requests in parallel (asynchronously, non-blocking on the critical
           path). Shadow scores are logged to a dedicated shadow_scores table
@@ -372,8 +373,8 @@ export default function RecommendationTuningSystemArticle() {
           promoted to canary. Shadow deployment runs for at least 72 hours to
           capture weekend traffic patterns, which differ significantly from
           weekday patterns.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="crucial">
           Canary deployment: the new model receives 1% of traffic. Online
           metrics (CTR, dwell time) are monitored in real time. Automated
           guardrails trigger rollback if: CTR drops more than 5% relative to the
@@ -383,8 +384,8 @@ export default function RecommendationTuningSystemArticle() {
           ramping is automated but requires explicit operator approval at the
           25% step, ensuring a human reviews early results before majority
           traffic exposure.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Rollback: each model deployment stores its predecessor model
           reference. A rollback command atomically updates the model routing
           table in the Config Store to point back to the previous model. Serving
@@ -394,16 +395,16 @@ export default function RecommendationTuningSystemArticle() {
           remain loaded in memory on all serving nodes until the rollback is
           confirmed complete, eliminating the cold start latency of re-loading
           weights during a live incident.
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Feature Importance Dashboard
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The feature importance dashboard gives data scientists visibility into
           what the ranking model is actually doing. It has three views.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Global feature importance: aggregate SHAP values across all scored
           requests in the past 24 hours. Displays a ranked bar chart of features
           by mean absolute SHAP value. This answers "what features matter most
@@ -412,8 +413,8 @@ export default function RecommendationTuningSystemArticle() {
           (0.15), item_global_ctr (0.12), user_device_type (0.08). Feature
           importance that dramatically changes between training days is an early
           signal of data pipeline drift.
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Segment-level importance: filter global importance by user segment
           (new users, power users, mobile users, specific geo). This reveals
           whether the model is using different feature combinations for
@@ -421,8 +422,8 @@ export default function RecommendationTuningSystemArticle() {
           demographic groups (e.g., if device_type has unexpectedly high
           importance for a specific geo segment, it may indicate a proxy for a
           protected attribute).
-        </p>
-        <p>
+        </HighlightBlock>
+        <HighlightBlock as="p" tier="important">
           Feature drift monitor: for each feature, compare the distribution of
           values seen in scoring requests today vs. 7 days ago using
           KL-divergence and population stability index (PSI). A PSI &gt; 0.2 for
@@ -430,12 +431,12 @@ export default function RecommendationTuningSystemArticle() {
           common cause of recommendation quality degradation that is not
           immediately visible in CTR metrics (a drifted feature may produce
           worse recommendations subtly, with CTR declining slowly over weeks).
-        </p>
+        </HighlightBlock>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Metrics and Guardrails
         </h3>
-        <p>
+        <HighlightBlock as="p" tier="important">
           The recommendation tuning system monitors three tiers of metrics.
           Engagement metrics (measured online, per-experiment): CTR (primary),
           dwell time per item (indicates read completion vs. bounce), scroll
@@ -453,7 +454,7 @@ export default function RecommendationTuningSystemArticle() {
           harming creator ecosystem health), category diversity index (entropy
           of category distribution in served results), and discovery rate
           (fraction of items shown that the user had never previously seen).
-        </p>
+        </HighlightBlock>
         <p>
           Statistical significance: the tuning system uses a sequential testing
           framework (always-valid p-values) rather than fixed-horizon A/B
@@ -469,7 +470,7 @@ export default function RecommendationTuningSystemArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Operator UI</h3>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           The operator-facing tuning dashboard has four panels. Experiment
           Manager: list of active experiments with current traffic allocation,
           live metric deltas (treatment vs. control CTR), statistical
@@ -487,12 +488,12 @@ export default function RecommendationTuningSystemArticle() {
           annotations (rule activations, model promotions, traffic spikes) are
           overlaid on time series charts so operators can correlate metric
           changes with tuning actions.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Trade-offs and Considerations</h2>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Experiment velocity versus statistical rigor: the pressure to ship
           fast (and show improvement metrics) creates an incentive to run short
           experiments, stop them early when results look positive, and run many
@@ -507,7 +508,7 @@ export default function RecommendationTuningSystemArticle() {
           improvements. For recommendation systems serving millions of users, a
           1% CTR regression deployed to 100% of traffic is a costly false
           positive worth slowing down for.
-        </p>
+        </HighlightBlock>
         <p>
           Business rules versus model training: every business rule applied
           post-model-scoring creates a discrepancy between what the model was
@@ -523,7 +524,7 @@ export default function RecommendationTuningSystemArticle() {
           category, emergency content policy response) that cannot wait for a
           model retrain cycle.
         </p>
-        <p>
+        <HighlightBlock as="p" tier="important">
           Shadow deployment completeness: shadow scoring only validates offline
           quality signals (rank correlation, NDCG). It cannot capture online
           effects—how users behave when the new model is actually served to them
@@ -533,12 +534,12 @@ export default function RecommendationTuningSystemArticle() {
           worse model but cannot eliminate the risk entirely. The canary ramp
           with real traffic is the true validation step; shadow is a pre-screen
           to avoid wasting canary budget on clearly inferior models.
-        </p>
+        </HighlightBlock>
       </section>
 
       <section>
         <h2>Summary</h2>
-        <p>
+        <HighlightBlock as="p" tier="crucial">
           A recommendation tuning system is the control plane above the
           recommendation engine. It has three planes: the serving plane
           (experiment assignment via consistent hash bucketing, business rules
@@ -559,7 +560,7 @@ export default function RecommendationTuningSystemArticle() {
           training data bias, and every accelerated experiment introduces false
           positives—the system must be explicitly designed to slow down in both
           dimensions to maintain long-term recommendation quality.
-        </p>
+        </HighlightBlock>
       </section>
     </ArticleLayout>
   );

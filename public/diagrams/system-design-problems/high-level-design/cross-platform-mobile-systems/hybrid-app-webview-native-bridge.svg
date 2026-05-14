@@ -1,0 +1,142 @@
+<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="620" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Hybrid App: WebView + Native Bridge Architecture</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="14" y="52" width="80" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="54" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">WebView JS</text>
+  <text x="54" y="82" text-anchor="middle" font-size="9" fill="#edeaf5">React web</text>
+
+  <rect x="152" y="52" width="80" height="36" rx="7" fill="#2563eb"/>
+  <text x="192" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Bridge</text>
+  <text x="192" y="82" text-anchor="middle" font-size="9" fill="#dbeafe">Capacitor</text>
+
+  <rect x="296" y="52" width="80" height="36" rx="7" fill="#2f9d74"/>
+  <text x="336" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Native Layer</text>
+  <text x="336" y="82" text-anchor="middle" font-size="9" fill="#d1fae5">iOS / Android</text>
+
+  <rect x="440" y="52" width="88" height="36" rx="7" fill="#d97843"/>
+  <text x="484" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">OTA Server</text>
+  <text x="484" y="82" text-anchor="middle" font-size="9" fill="#fef3c7">bundle updates</text>
+
+  <rect x="594" y="52" width="88" height="36" rx="7" fill="#7c3aed"/>
+  <text x="638" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Secure Store</text>
+  <text x="638" y="82" text-anchor="middle" font-size="9" fill="#ede9fe">Keychain/Keystore</text>
+
+  <rect x="786" y="52" width="88" height="36" rx="7" fill="#be123c"/>
+  <text x="830" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Feature Flags</text>
+  <text x="830" y="82" text-anchor="middle" font-size="9" fill="#fecdd3">remote config</text>
+
+  <!-- Lifelines -->
+  <line x1="54" y1="88" x2="54" y2="585" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="192" y1="88" x2="192" y2="585" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="336" y1="88" x2="336" y2="585" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="484" y1="88" x2="484" y2="585" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="638" y1="88" x2="638" y2="585" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="830" y1="88" x2="830" y2="585" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- BAND A: Bridge Protocol -->
+  <rect x="8" y="98" width="878" height="16" rx="3" fill="#2563eb" opacity="0.2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="bold">PATH A — BRIDGE PROTOCOL (requestId map; postMessage→native; evaluateJS callback; 10s timeout)</text>
+
+  <line x1="54" y1="128" x2="182" y2="128" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="118" y="122" text-anchor="middle" font-size="9" fill="#374151">nativePromise('Camera','getPhoto') → pendingCalls.set(requestId,&#123;resolve,reject,timeout&#125;)</text>
+
+  <line x1="182" y1="142" x2="326" y2="142" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="254" y="136" text-anchor="middle" font-size="9" fill="#374151">postMessage &#123;action:'getPhoto', requestId:'uuid'&#125;</text>
+
+  <line x1="326" y1="156" x2="182" y2="156" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="254" y="150" text-anchor="middle" font-size="9" fill="#374151">evaluateJS: __bridgeCallback(requestId, result)</text>
+
+  <line x1="182" y1="170" x2="64" y2="170" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="118" y="164" text-anchor="middle" font-size="9" fill="#374151">pendingCalls.get(requestId).resolve(result); 10s timeout → BridgeTimeoutError</text>
+
+  <!-- BAND B: Native Modules -->
+  <rect x="8" y="186" width="878" height="16" rx="3" fill="#2f9d74" opacity="0.2"/>
+  <text x="450" y="198" text-anchor="middle" font-size="9" fill="#065f46" font-weight="bold">PATH B — NATIVE CAPABILITY MODULES (Camera; Biometrics attestation; SecureStorage; Haptics fallback)</text>
+
+  <line x1="54" y1="216" x2="326" y2="216" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="190" y="210" text-anchor="middle" font-size="9" fill="#374151">Camera.capturePhoto() → isNativePlatform() ? bridge : getUserMedia() fallback</text>
+
+  <line x1="54" y1="230" x2="628" y2="230" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="341" y="224" text-anchor="middle" font-size="9" fill="#374151">SecureStorage.setItem('token',val) → iOS Keychain / Android Keystore hardware-backed</text>
+
+  <line x1="326" y1="244" x2="64" y2="244" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="195" y="238" text-anchor="middle" font-size="9" fill="#374151">Biometrics.authenticate() → attestation token → send to server for independent verify</text>
+
+  <!-- BAND C: OTA Updates -->
+  <rect x="8" y="260" width="878" height="16" rx="3" fill="#d97843" opacity="0.2"/>
+  <text x="450" y="272" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">PATH C — OTA UPDATES (launch+foreground check; SHA-256+sig verify; gradual rollout; crash rollback)</text>
+
+  <line x1="326" y1="290" x2="474" y2="290" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="400" y="284" text-anchor="middle" font-size="9" fill="#374151">GET /ota/latest?appVersion&amp;platform → &#123;bundleVersion, downloadUrl, checksum&#125;</text>
+
+  <line x1="474" y1="304" x2="326" y2="304" stroke="#d97843" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="400" y="298" text-anchor="middle" font-size="9" fill="#374151">download ZIP → SHA-256 verify + sig check → extract to local dir</text>
+
+  <line x1="326" y1="318" x2="64" y2="318" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="195" y="312" text-anchor="middle" font-size="9" fill="#374151">load on next foreground; crash 3x → rollback to prev bundle; 10% gradual by server</text>
+
+  <!-- BAND D: Deep Link Routing -->
+  <rect x="8" y="334" width="878" height="16" rx="3" fill="#7c3aed" opacity="0.15"/>
+  <text x="450" y="346" text-anchor="middle" font-size="9" fill="#5b21b6" font-weight="bold">PATH D — DEEP LINK ROUTING (routing table pattern→native or WebView; WebView→native via bridge)</text>
+
+  <line x1="326" y1="364" x2="64" y2="364" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="195" y="358" text-anchor="middle" font-size="9" fill="#374151">deep link myapp://checkout → routing table → NativeCheckoutScreen</text>
+
+  <line x1="326" y1="378" x2="64" y2="378" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="195" y="372" text-anchor="middle" font-size="9" fill="#374151">myapp://product/123 → WebView /product/123; payment complete → bridge→push NativeScreen</text>
+
+  <!-- BAND E: Security -->
+  <rect x="8" y="394" width="878" height="16" rx="3" fill="#e05252" opacity="0.15"/>
+  <text x="450" y="406" text-anchor="middle" font-size="9" fill="#9f1239" font-weight="bold">PATH E — WEBVIEW SECURITY (CSP default-src 'self'; nav whitelist; bridge origin validate; action allowlist)</text>
+
+  <rect x="20" y="420" width="560" height="30" rx="4" fill="#fef2f2" stroke="#e05252" stroke-width="1"/>
+  <text x="300" y="436" text-anchor="middle" font-size="8.5" fill="#9f1239" font-weight="600">CSP: default-src 'self'; script-src 'self' — no inline scripts, no external sources</text>
+  <text x="300" y="449" text-anchor="middle" font-size="8" fill="#374151">shouldOverrideUrlLoading: only allowlisted origins | bridge validates postMessage origin | allowlist per action</text>
+
+  <!-- BAND F: Feature Flags + Perf -->
+  <rect x="8" y="462" width="878" height="16" rx="3" fill="#be123c" opacity="0.15"/>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#9f1239" font-weight="bold">PATH F — FEATURE FLAGS + BRIDGE PERF (native/webview routing; inject initial data; no high-freq bridge)</text>
+
+  <line x1="54" y1="492" x2="820" y2="492" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="437" y="486" text-anchor="middle" font-size="9" fill="#374151">launch: GET /config → &#123;checkout:'native', profile:'webview'&#125; → router dispatches; instant rollback server-side</text>
+
+  <line x1="326" y1="508" x2="64" y2="508" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="195" y="502" text-anchor="middle" font-size="9" fill="#374151">inject window.__initialData=&#123;token,user&#125; in HTML → no bridge call on load; CSS transform/opacity only (no bridge for anim)</text>
+
+  <!-- Metrics footer -->
+  <rect x="8" y="524" width="878" height="50" rx="6" fill="#1a1822"/>
+  <text x="65" y="542" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Bridge P99</text>
+  <text x="65" y="560" text-anchor="middle" font-size="12" fill="white" font-weight="700">&lt;100ms UI</text>
+
+  <text x="200" y="542" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">OTA Scope</text>
+  <text x="200" y="560" text-anchor="middle" font-size="12" fill="white" font-weight="700">WebView only</text>
+
+  <text x="355" y="542" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Rollout</text>
+  <text x="355" y="560" text-anchor="middle" font-size="12" fill="white" font-weight="700">10% gradual</text>
+
+  <text x="510" y="542" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Rollback</text>
+  <text x="510" y="560" text-anchor="middle" font-size="12" fill="white" font-weight="700">crash 3x auto</text>
+
+  <text x="680" y="542" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Secure Token</text>
+  <text x="680" y="560" text-anchor="middle" font-size="12" fill="white" font-weight="700">HW Keychain</text>
+
+  <text x="845" y="542" text-anchor="middle" font-size="9" fill="#fecdd3" font-weight="600">Flag Rollback</text>
+  <text x="845" y="560" text-anchor="middle" font-size="12" fill="white" font-weight="700">instant no release</text>
+</svg>

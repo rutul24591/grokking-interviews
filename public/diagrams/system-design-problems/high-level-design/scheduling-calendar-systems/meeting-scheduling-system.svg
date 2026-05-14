@@ -1,0 +1,119 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Meeting Scheduling System — Calendly-like Availability &amp; Booking</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Guest (Booker)</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">sees free slots</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Booking API</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">slot + lock logic</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Availability Svc</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">free/busy merge</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Host Calendar</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">Google/Outlook</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Confirm + Notify</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">.ics + video link</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Availability computation -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · AVAILABILITY — host working hours (RRULE) minus existing calendar events; buffer between meetings; max bookings/day; TTL cache 5min</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">GET /schedule/&#123;username&#125; → load event type config</text>
+
+  <line x1="240" y1="164" x2="430" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="158" text-anchor="middle" font-size="9" fill="#374151">fetch working hours rules + existing bookings</text>
+
+  <line x1="430" y1="178" x2="620" y2="178" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="172" text-anchor="middle" font-size="9" fill="#374151">Google/Outlook free-busy API → busy slots</text>
+
+  <line x1="620" y1="192" x2="90" y2="192" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="355" y="186" text-anchor="middle" font-size="9" fill="#374151">merge: working_hours − busy − buffers → free slots list</text>
+
+  <!-- SECTION 2: Slot reservation (optimistic lock) -->
+  <rect x="8" y="208" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="219" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · SLOT LOCK — Redis SETNX slot:&#123;hostId&#125;:&#123;slotISO&#125; 10min TTL on click; prevents double-booking while guest fills form</text>
+
+  <line x1="75" y1="238" x2="240" y2="238" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="232" text-anchor="middle" font-size="9" fill="#374151">guest clicks slot → POST /slots/reserve &#123;slot, hostId&#125;</text>
+
+  <line x1="240" y1="252" x2="430" y2="252" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="246" text-anchor="middle" font-size="9" fill="#374151">SETNX slot lock (10min TTL) → success or 409 conflict</text>
+
+  <line x1="430" y1="266" x2="90" y2="266" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="260" text-anchor="middle" font-size="9" fill="#374151">200 &#123;reservationToken&#125; → guest sees booking form</text>
+
+  <!-- Lock box -->
+  <rect x="160" y="274" width="350" height="24" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="335" y="290" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">409 → show "slot taken" and refresh available slots (no ghost bookings)</text>
+
+  <!-- SECTION 3: Confirm + calendar write -->
+  <rect x="8" y="306" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="317" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · CONFIRM + CALENDAR WRITE — POST /bookings; write to host Google Calendar; generate Zoom/Meet link; idempotency on reservationToken</text>
+
+  <line x1="75" y1="336" x2="240" y2="336" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="330" text-anchor="middle" font-size="9" fill="#374151">POST /bookings &#123;token, guestName, guestEmail, answers&#125;</text>
+
+  <line x1="240" y1="350" x2="620" y2="350" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="430" y="344" text-anchor="middle" font-size="9" fill="#374151">create Google Calendar event via API; get conferenceData (Meet URL)</text>
+
+  <line x1="620" y1="364" x2="809" y2="364" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="714" y="358" text-anchor="middle" font-size="9" fill="#374151">send .ics + Meet link to guest + host</text>
+
+  <!-- SECTION 4: Reschedule + cancel -->
+  <rect x="8" y="382" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="393" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · RESCHEDULE + CANCEL — signed token in email link (no login); re-run availability check; cancel frees slot + updates calendar + notifies host</text>
+
+  <line x1="75" y1="412" x2="240" y2="412" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="157" y="406" text-anchor="middle" font-size="9" fill="#374151">guest clicks reschedule link → PATCH /bookings/&#123;id&#125;</text>
+
+  <line x1="240" y1="426" x2="620" y2="426" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="430" y="420" text-anchor="middle" font-size="9" fill="#374151">delete old calendar event + release slot lock</text>
+
+  <line x1="620" y1="440" x2="809" y2="440" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="714" y="434" text-anchor="middle" font-size="9" fill="#374151">new .ics sent; old invite cancelled</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Slot Lock TTL</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">10 min Redis</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Free/Busy Cache</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5 min TTL</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Booking Link</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">signed JWT, no login</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Calendar Write</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Google / Outlook API</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Double-book Guard</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">SETNX + 409</text>
+</svg>

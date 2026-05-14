@@ -1,0 +1,113 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Web3 Wallet Frontend — Key Management &amp; Transaction Signing</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">dApp Page</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">window.ethereum</text>
+
+  <rect x="200" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="257" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Content Script</text>
+  <text x="257" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">EIP-1193 bridge</text>
+
+  <rect x="390" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="447" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Background SW</text>
+  <text x="447" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">keys in memory</text>
+
+  <rect x="580" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="637" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Popup UI</text>
+  <text x="637" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">approve / reject</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">RPC / Ledger</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">node + WebHID</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="257" y1="105" x2="257" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="447" y1="105" x2="447" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="637" y1="105" x2="637" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Key Derivation + Vault -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · KEY VAULT — BIP-39 mnemonic → PBKDF2 seed → BIP-44 m/44'/60'/0'/0/N; AES-256-GCM encrypted vault in chrome.storage.local</text>
+
+  <line x1="432" y1="150" x2="622" y2="150" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="527" y="144" text-anchor="middle" font-size="9" fill="#374151">unlock: PBKDF2 600K iter → AES-GCM decrypt vault in memory</text>
+
+  <!-- Vault box -->
+  <rect x="20" y="160" width="370" height="32" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="205" y="175" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">BIP-39 → 512-bit seed → BIP-44 HD tree → private key leaf</text>
+  <text x="205" y="189" text-anchor="middle" font-size="9" fill="#374151">keys zeroed on lock / 15min inactivity; Uint8Array.fill(0)</text>
+
+  <!-- SECTION 2: dApp Connection (EIP-1193) -->
+  <rect x="8" y="202" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="213" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · EIP-1193 PROVIDER — content script injects window.ethereum; read methods no prompt; write methods always require popup approval</text>
+
+  <line x1="75" y1="232" x2="242" y2="232" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="158" y="226" text-anchor="middle" font-size="9" fill="#374151">eth_requestAccounts / eth_sendTransaction</text>
+
+  <line x1="242" y1="246" x2="432" y2="246" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="337" y="240" text-anchor="middle" font-size="9" fill="#374151">chrome.runtime.sendMessage → background</text>
+
+  <line x1="432" y1="260" x2="622" y2="260" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="527" y="254" text-anchor="middle" font-size="9" fill="#374151">open popup: phishing check + decoded ABI display</text>
+
+  <!-- SECTION 3: Transaction Signing -->
+  <rect x="8" y="278" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="289" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · SIGNING — phishing blocklist check; EIP-712 decoded display; EIP-1559 fee tiers; user approves → background signs → return</text>
+
+  <line x1="622" y1="308" x2="809" y2="308" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="715" y="302" text-anchor="middle" font-size="9" fill="#374151">eth_estimateGas + eth_feeHistory (Slow/Std/Fast)</text>
+
+  <line x1="622" y1="322" x2="432" y2="322" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="527" y="316" text-anchor="middle" font-size="9" fill="#374151">user approves → background signs with private key</text>
+
+  <!-- Signing detail box -->
+  <rect x="400" y="332" width="370" height="32" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="585" y="347" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">EIP-712 typed data: decoded field-by-field (not raw hex)</text>
+  <text x="585" y="362" text-anchor="middle" font-size="9" fill="#374151">unlimited approval warning; unverified contract warning</text>
+
+  <!-- SECTION 4: Hardware Wallet + Phishing -->
+  <rect x="8" y="374" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="385" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · HARDWARE WALLET + PHISHING — WebHID Ledger (key never leaves device); blocklist CDN cached 30min; homoglyph detection</text>
+
+  <line x1="432" y1="404" x2="809" y2="404" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="620" y="398" text-anchor="middle" font-size="9" fill="#374151">WebHID: unsigned tx to Ledger → user confirms on device screen</text>
+
+  <line x1="809" y1="418" x2="432" y2="418" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="620" y="412" text-anchor="middle" font-size="9" fill="#374151">signed tx returned (private key never touches host computer)</text>
+
+  <line x1="432" y1="434" x2="90" y2="434" stroke="#e05252" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="261" y="428" text-anchor="middle" font-size="9" fill="#374151">phishing match → full-screen red block (cannot approve)</text>
+
+  <!-- Footer -->
+  <rect x="8" y="452" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="468" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Key Derivation</text>
+  <text x="90" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">BIP-44 HD tree</text>
+  <text x="255" y="468" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Vault Encryption</text>
+  <text x="255" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">AES-256-GCM</text>
+  <text x="450" y="468" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">PBKDF2 Iterations</text>
+  <text x="450" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">600,000</text>
+  <text x="645" y="468" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Phishing Cache</text>
+  <text x="645" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">30 min CDN TTL</text>
+  <text x="820" y="468" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Lock Timeout</text>
+  <text x="820" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">15 min inactivity</text>
+</svg>

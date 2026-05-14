@@ -1,0 +1,121 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">ETL Pipeline Monitoring — Ingest, Transform, Observe &amp; Alert</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">ETL Orchestrator</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">schedule + trigger</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Pipeline Worker</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">extract + transform</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Metrics Store</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">Prometheus / TSDB</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Alert Manager</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">threshold + routing</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Dashboard / On-call</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">Grafana + PagerDuty</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Pipeline trigger + extraction -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · TRIGGER &amp; EXTRACT — cron / event starts DAG run; worker pulls source data in micro-batches; emits row-count + latency metrics every 30s</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">DAG trigger: {pipelineId, runId, scheduledAt}</text>
+
+  <rect x="178" y="155" width="155" height="20" rx="5" fill="#2563eb"/>
+  <text x="255" y="169" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">open source cursor; pull micro-batch (5K rows)</text>
+
+  <line x1="240" y1="178" x2="430" y2="178" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="172" text-anchor="middle" font-size="9" fill="#374151">push metric: extract_rows_total, extract_latency_ms</text>
+
+  <line x1="240" y1="192" x2="90" y2="192" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="186" text-anchor="middle" font-size="9" fill="#374151">run status: running; heartbeat every 30s</text>
+
+  <!-- SECTION 2: Transform + data quality checks -->
+  <rect x="8" y="206" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="217" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · TRANSFORM &amp; VALIDATE — apply rules; null checks, type coercion, dedup; DQ score = valid_rows/total; emit dq_score gauge; abort if score &lt; 0.95</text>
+
+  <line x1="240" y1="236" x2="430" y2="236" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="230" text-anchor="middle" font-size="9" fill="#374151">transform batch; compute DQ score per column</text>
+
+  <line x1="430" y1="250" x2="620" y2="250" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="244" text-anchor="middle" font-size="9" fill="#374151">push gauge: dq_score{pipeline, stage}; null_rate; dup_rate</text>
+
+  <line x1="620" y1="264" x2="430" y2="264" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="525" y="258" text-anchor="middle" font-size="9" fill="#374151">evaluate rule: dq_score &lt; 0.95 → fire DQ alert</text>
+
+  <line x1="430" y1="278" x2="240" y2="278" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="335" y="272" text-anchor="middle" font-size="9" fill="#374151">DQ fail → set run status=failed; skip load stage</text>
+
+  <!-- SECTION 3: Load + SLA tracking -->
+  <rect x="8" y="292" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="303" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · LOAD &amp; SLA — write to target; track load_rows/s throughput; compare run duration vs SLA baseline; emit sla_breach counter if &gt;110% of p95 baseline</text>
+
+  <line x1="240" y1="322" x2="430" y2="322" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="316" text-anchor="middle" font-size="9" fill="#374151">COPY/INSERT batch to target; commit; record load_ms</text>
+
+  <line x1="430" y1="336" x2="620" y2="336" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="330" text-anchor="middle" font-size="9" fill="#374151">push: load_rows_total, load_latency_ms, sla_breach_total</text>
+
+  <line x1="620" y1="350" x2="809" y2="350" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="714" y="344" text-anchor="middle" font-size="9" fill="#374151">alert: SLA breach → severity=warning; route to on-call</text>
+
+  <line x1="430" y1="364" x2="90" y2="364" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="358" text-anchor="middle" font-size="9" fill="#374151">run complete: status=success, rows_loaded, duration_s</text>
+
+  <!-- SECTION 4: Alerting + dashboard -->
+  <rect x="8" y="378" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="389" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · ALERT &amp; OBSERVE — PagerDuty page on 3 consecutive failures; Grafana panels: row throughput, DQ score trend, SLA %, error heatmap; replay from checkpoint on retry</text>
+
+  <line x1="620" y1="408" x2="809" y2="408" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="714" y="402" text-anchor="middle" font-size="9" fill="#374151">3x consecutive failure → PagerDuty critical alert</text>
+
+  <line x1="430" y1="422" x2="809" y2="422" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="619" y="416" text-anchor="middle" font-size="9" fill="#374151">Grafana queries: rate(load_rows_total[5m]), dq_score gauge</text>
+
+  <line x1="75" y1="442" x2="240" y2="442" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="157" y="436" text-anchor="middle" font-size="9" fill="#374151">retry: resume from last committed checkpoint offset</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Micro-batch Size</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5K rows / pull</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Heartbeat</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">30s metric push</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">DQ Abort Threshold</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">score &lt; 0.95</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">SLA Breach</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&gt;110% p95 baseline</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Page On</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">3 consecutive fails</text>
+</svg>

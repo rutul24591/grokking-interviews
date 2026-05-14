@@ -1,0 +1,119 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#eef2ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Cloud Storage UI — Upload, Chunking &amp; CDN Delivery</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Browser / App</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">chunked upload</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Upload API</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">presign + metadata</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Object Store</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">S3 / GCS chunks</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Metadata DB</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">files + folders</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">CDN / Preview</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">signed URL + thumb</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Chunked upload -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · CHUNKED UPLOAD — client splits file into 5MB chunks; SHA-256 per chunk for dedup; server-side multipart S3 upload; resumable on failure</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">POST /uploads/init &#123;fileName, size, mimeType, chunkSHA256[]&#125;</text>
+
+  <line x1="240" y1="164" x2="430" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="158" text-anchor="middle" font-size="9" fill="#374151">dedup check on SHA-256; init S3 multipart; return presigned part URLs</text>
+
+  <line x1="430" y1="178" x2="90" y2="178" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="172" text-anchor="middle" font-size="9" fill="#374151">&#123;uploadId, presignedPartUrls[]&#125; — client uploads chunks directly to S3</text>
+
+  <!-- Chunk box -->
+  <rect x="160" y="186" width="350" height="24" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="335" y="202" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Dedup: if SHA-256 exists in store → server-side copy (zero-byte upload); saves bandwidth</text>
+
+  <!-- SECTION 2: Complete + metadata write -->
+  <rect x="8" y="218" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="229" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · COMPLETE + METADATA — POST /uploads/complete; S3 CompleteMultipartUpload; write file metadata to DB; trigger thumbnail + virus scan async</text>
+
+  <line x1="75" y1="248" x2="240" y2="248" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="242" text-anchor="middle" font-size="9" fill="#374151">POST /uploads/complete &#123;uploadId, partETags[]&#125;</text>
+
+  <line x1="240" y1="262" x2="430" y2="262" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="256" text-anchor="middle" font-size="9" fill="#374151">S3 CompleteMultipartUpload → single object key</text>
+
+  <line x1="430" y1="276" x2="620" y2="276" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="270" text-anchor="middle" font-size="9" fill="#374151">INSERT file &#123;fileId, ownerId, folderId, s3Key, size, mimeType&#125;</text>
+
+  <line x1="620" y1="290" x2="90" y2="290" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="355" y="284" text-anchor="middle" font-size="9" fill="#374151">200 &#123;fileId&#125;; async: thumbnail worker + ClamAV scan via Kafka</text>
+
+  <!-- SECTION 3: Folder tree + browse -->
+  <rect x="8" y="308" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="319" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · FOLDER TREE — adjacency list with materialised path for fast subtree queries; cursor pagination; search via Elasticsearch on file metadata</text>
+
+  <line x1="75" y1="338" x2="240" y2="338" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="332" text-anchor="middle" font-size="9" fill="#374151">GET /folders/&#123;id&#125;/children?cursor=&amp;limit=50</text>
+
+  <line x1="240" y1="352" x2="620" y2="352" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="430" y="346" text-anchor="middle" font-size="9" fill="#374151">SELECT * FROM files WHERE folderId=X ORDER BY name LIMIT 50</text>
+
+  <line x1="620" y1="366" x2="90" y2="366" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="355" y="360" text-anchor="middle" font-size="9" fill="#374151">file list with thumbnailUrl (CDN signed) + metadata</text>
+
+  <!-- SECTION 4: Download via CDN presigned URL -->
+  <rect x="8" y="382" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="393" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · DOWNLOAD — GET /files/&#123;id&#125;/download → S3 presigned URL (15min TTL); CDN serves bytes; Range header for seek; ACL checked before presign</text>
+
+  <line x1="75" y1="412" x2="240" y2="412" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="406" text-anchor="middle" font-size="9" fill="#374151">GET /files/&#123;id&#125;/download (with session cookie)</text>
+
+  <line x1="240" y1="426" x2="620" y2="426" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="430" y="420" text-anchor="middle" font-size="9" fill="#374151">verify ACL; generate S3 presigned GET URL (15min)</text>
+
+  <line x1="620" y1="440" x2="809" y2="440" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="714" y="434" text-anchor="middle" font-size="9" fill="#374151">redirect 302 → CDN presigned URL; Range requests supported</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Chunk Size</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5 MB per part</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Dedup</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">SHA-256 server copy</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Presigned TTL</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">15 min download</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Virus Scan</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">async ClamAV</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Folder Index</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">adjacency + mat. path</text>
+</svg>

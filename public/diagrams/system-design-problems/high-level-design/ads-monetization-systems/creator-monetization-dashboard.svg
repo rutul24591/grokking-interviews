@@ -1,0 +1,121 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Creator Monetization Dashboard — Revenue Attribution &amp; Payout Pipeline</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Creator</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">earnings + payout</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Creator API</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">earnings + balance</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Revenue Engine</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">attribution + split</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Ledger DB</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">immutable entries</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Payout Service</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">Stripe / wire</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Revenue attribution -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · REVENUE ATTRIBUTION — ad impression on creator content → clearing price × platform share → creator RPM; daily batch job closes previous day's books</text>
+
+  <line x1="430" y1="150" x2="620" y2="150" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="144" text-anchor="middle" font-size="9" fill="#374151">ad auction closes: clearingPrice, creatorId, contentId</text>
+
+  <line x1="620" y1="164" x2="430" y2="164" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="525" y="158" text-anchor="middle" font-size="9" fill="#374151">INSERT ledger: {creatorId, type:ad_revenue, amount, contentId, ts}</text>
+
+  <rect x="200" y="170" width="430" height="20" rx="5" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="415" y="184" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">creator share = clearingPrice × (1 − platformFeeRate); RPM = revenue / (impressions/1000)</text>
+
+  <!-- SECTION 2: Dashboard earnings view -->
+  <rect x="8" y="198" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="209" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · EARNINGS DASHBOARD — lifetime balance, MTD earnings, RPM trend, top-earning content; Redis cache 5min; breakdown by content + revenue stream</text>
+
+  <line x1="75" y1="228" x2="240" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="222" text-anchor="middle" font-size="9" fill="#374151">GET /creator/earnings?from=&amp;to=&amp;dim=content</text>
+
+  <line x1="240" y1="242" x2="430" y2="242" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="236" text-anchor="middle" font-size="9" fill="#374151">SUM(amount) GROUP BY contentId, date from ledger</text>
+
+  <line x1="430" y1="256" x2="620" y2="256" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="250" text-anchor="middle" font-size="9" fill="#374151">also: subscriptions, tips, merch affiliate from ledger</text>
+
+  <line x1="620" y1="270" x2="90" y2="270" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="355" y="264" text-anchor="middle" font-size="9" fill="#374151">{balance, mtdEarnings, rpm, topContent[], streamBreakdown}</text>
+
+  <!-- SECTION 3: Multiple revenue streams -->
+  <rect x="8" y="284" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="295" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · REVENUE STREAMS — ad revenue (RPM-based), subscriptions (monthly recurring), tips/super-chats, affiliate commissions, merchandise cuts</text>
+
+  <line x1="75" y1="314" x2="430" y2="314" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="252" y="308" text-anchor="middle" font-size="9" fill="#374151">subscription payment processed → revenue engine splits platform fee</text>
+
+  <line x1="430" y1="328" x2="620" y2="328" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="322" text-anchor="middle" font-size="9" fill="#374151">INSERT ledger: {type:subscription, amount, subscriberId}</text>
+
+  <line x1="620" y1="342" x2="240" y2="342" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="430" y="336" text-anchor="middle" font-size="9" fill="#374151">balance = SUM(credits) − SUM(debits) — double-entry ledger</text>
+
+  <!-- SECTION 4: Payout -->
+  <rect x="8" y="356" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="367" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · PAYOUT — monthly or threshold-triggered; tax form gating (W-9/W-8); idempotent Stripe transfer with payout_id; status webhook updates balance</text>
+
+  <line x1="75" y1="386" x2="240" y2="386" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="380" text-anchor="middle" font-size="9" fill="#374151">POST /creator/payout {amount, method: bank}</text>
+
+  <line x1="240" y1="400" x2="430" y2="400" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="394" text-anchor="middle" font-size="9" fill="#374151">check: balance &gt;= threshold, tax forms on file, no hold</text>
+
+  <line x1="430" y1="414" x2="809" y2="414" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="619" y="408" text-anchor="middle" font-size="9" fill="#374151">Stripe.transfers.create({amount, destination, idempotencyKey: payoutId})</text>
+
+  <line x1="809" y1="428" x2="620" y2="428" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="714" y="422" text-anchor="middle" font-size="9" fill="#374151">webhook: payout.paid → INSERT ledger debit; update status</text>
+
+  <line x1="620" y1="442" x2="90" y2="442" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="355" y="436" text-anchor="middle" font-size="9" fill="#374151">200 {payoutId, status: processing, estimatedArrival}</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Ledger Type</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">double-entry immutable</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Creator Share</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">price × (1−fee rate)</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Revenue Streams</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">ads + subs + tips</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Payout Guard</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">tax form + threshold</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Idempotency</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">payoutId key</text>
+</svg>

@@ -1,0 +1,115 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Fraud Detection &amp; Risk Alert System — Real-time Scoring Pipeline</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Payment Request</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">+ device fingerprint</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Rule Engine</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">10ms, deterministic</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">ML Scorer</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">XGBoost, 50ms</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Step-up Auth</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">OTP / biometric</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Analyst Queue</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">SHAP + retrain</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Feature Extraction + Rule Engine -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · FEATURE EXTRACTION + RULES — BIN DB (in-mem), Redis velocity counters, user profile cache; 10ms rule engine: blocklist, velocity, Tor IP</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">features: amount, BIN, MCC, device fingerprint hash</text>
+
+  <line x1="240" y1="164" x2="90" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="158" text-anchor="middle" font-size="9" fill="#374151">rule match → BLOCK (tier-1) or add to risk score</text>
+
+  <!-- Velocity box -->
+  <rect x="160" y="174" width="350" height="24" rx="6" fill="#fff" stroke="#2563eb" stroke-width="1"/>
+  <text x="335" y="190" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Redis INCR: card 5/10min | IP 20/hr | device 10/hr | merchant 3/5min (per card)</text>
+
+  <!-- SECTION 2: ML Scoring + Decision -->
+  <rect x="8" y="206" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="217" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · ML SCORING — XGBoost feature vector (ONNX in-mem, 50ms); score: allow &lt;0.4, challenge 0.4–0.8, block &gt;0.8; total pipeline &lt;100ms</text>
+
+  <line x1="240" y1="236" x2="430" y2="236" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="230" text-anchor="middle" font-size="9" fill="#374151">no rule block → feature vector to ONNX ML model</text>
+
+  <line x1="430" y1="250" x2="90" y2="250" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="244" text-anchor="middle" font-size="9" fill="#374151">score 0.0–1.0 → decision: allow / challenge / block</text>
+
+  <!-- Decision box -->
+  <rect x="20" y="260" width="360" height="32" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="200" y="275" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Score bands: &lt;0.4 allow | 0.4–0.8 challenge | &gt;0.8 block</text>
+  <text x="200" y="290" text-anchor="middle" font-size="9" fill="#374151">SHAP top-3 features pre-computed + stored 90 days</text>
+
+  <!-- SECTION 3: Step-up Auth -->
+  <rect x="8" y="302" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="313" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · STEP-UP AUTH — challenge score triggers OTP/biometric/3DS2; verified → score reduced → allow; fail/timeout → block</text>
+
+  <line x1="430" y1="332" x2="620" y2="332" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="326" text-anchor="middle" font-size="9" fill="#374151">challenge: OTP to registered mobile / WebAuthn biometric</text>
+
+  <line x1="620" y1="346" x2="430" y2="346" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="525" y="340" text-anchor="middle" font-size="9" fill="#374151">OTP verified → risk score reduced → allow transaction</text>
+
+  <line x1="620" y1="360" x2="90" y2="360" stroke="#e05252" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="355" y="354" text-anchor="middle" font-size="9" fill="#374151">OTP fail / 5min timeout → block (bots cannot complete)</text>
+
+  <!-- SECTION 4: Analyst Queue + Retrain -->
+  <rect x="8" y="378" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="389" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · ANALYST QUEUE + RETRAIN — 0.6–0.8 → review queue; SHAP top features + history; approve/decline/escalate; weekly retrain → shadow mode</text>
+
+  <line x1="430" y1="408" x2="809" y2="408" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="619" y="402" text-anchor="middle" font-size="9" fill="#374151">Kafka: challenge decisions → analyst review queue</text>
+
+  <line x1="809" y1="422" x2="430" y2="422" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="619" y="416" text-anchor="middle" font-size="9" fill="#374151">analyst verdicts + chargeback labels → weekly model retrain</text>
+
+  <line x1="430" y1="436" x2="240" y2="436" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="335" y="430" text-anchor="middle" font-size="9" fill="#374151">new model: shadow mode → 10% rollout → 100%</text>
+
+  <!-- Footer -->
+  <rect x="8" y="454" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="470" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Pipeline Budget</text>
+  <text x="90" y="484" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&lt;100ms total</text>
+  <text x="255" y="470" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Rule Engine</text>
+  <text x="255" y="484" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">10ms max</text>
+  <text x="450" y="470" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">ML Inference</text>
+  <text x="450" y="484" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">50ms ONNX</text>
+  <text x="645" y="470" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Retrain Cadence</text>
+  <text x="645" y="484" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">weekly + shadow</text>
+  <text x="820" y="470" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">SHAP Retention</text>
+  <text x="820" y="484" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">90 days</text>
+</svg>

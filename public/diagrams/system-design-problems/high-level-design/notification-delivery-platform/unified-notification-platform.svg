@@ -1,0 +1,114 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Unified Notification Platform — Multi-channel Delivery Pipeline</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Event Source</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">service / trigger</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Notif Service</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">template + routing</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Channel Workers</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">push/email/SMS/in-app</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Delivery Providers</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">FCM/SES/Twilio</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Delivery Log</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">status + analytics</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Event ingestion + preference check -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · EVENT INGESTION + PREFERENCE CHECK — Kafka topic; user preference lookup (opt-out, channel priority, quiet hours); dedup by idempotency key</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">POST /api/notify {userId, event, payload, priority}</text>
+
+  <line x1="240" y1="164" x2="90" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="158" text-anchor="middle" font-size="9" fill="#374151">check: preferences, opt-out, quiet hours, dedup key</text>
+
+  <!-- Preference box -->
+  <rect x="160" y="174" width="350" height="24" rx="6" fill="#fff" stroke="#2563eb" stroke-width="1"/>
+  <text x="335" y="190" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Quiet hours: suppress delivery, queue until window open. Dedup: 24hr TTL idempotency key in Redis</text>
+
+  <!-- SECTION 2: Template render + channel routing -->
+  <rect x="8" y="206" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="217" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · TEMPLATE + ROUTING — Handlebars template render per channel; fan-out to channel queues (Kafka per channel); priority lanes: critical &gt; high &gt; normal &gt; low</text>
+
+  <line x1="240" y1="236" x2="430" y2="236" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="230" text-anchor="middle" font-size="9" fill="#374151">render template, resolve channel list → enqueue per channel</text>
+
+  <line x1="430" y1="250" x2="90" y2="250" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="244" text-anchor="middle" font-size="9" fill="#374151">ack: 4 Kafka messages enqueued (push/email/SMS/in-app)</text>
+
+  <!-- Channel box -->
+  <rect x="20" y="260" width="370" height="24" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="205" y="276" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Kafka topics: notif.push | notif.email | notif.sms | notif.inapp (separate consumers, separate SLAs)</text>
+
+  <!-- SECTION 3: Channel worker delivery -->
+  <rect x="8" y="292" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="303" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · CHANNEL DELIVERY — each worker calls provider API; exponential backoff on failure; fallback chain: push fail → in-app; SMS fail → email</text>
+
+  <line x1="430" y1="322" x2="620" y2="322" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="316" text-anchor="middle" font-size="9" fill="#374151">push: FCM/APNs token lookup → provider API call</text>
+
+  <line x1="620" y1="336" x2="430" y2="336" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="525" y="330" text-anchor="middle" font-size="9" fill="#374151">200 OK → delivered | 400 invalid token → remove device</text>
+
+  <line x1="620" y1="350" x2="809" y2="350" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="714" y="344" text-anchor="middle" font-size="9" fill="#374151">write delivery event: {notifId, channel, status, ts}</text>
+
+  <!-- SECTION 4: In-app + read tracking + analytics -->
+  <rect x="8" y="368" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="379" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · IN-APP + READ TRACKING — SSE/WebSocket push to active sessions; unread badge count in Redis; open/click webhooks from providers → delivery analytics</text>
+
+  <line x1="430" y1="398" x2="90" y2="398" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="392" text-anchor="middle" font-size="9" fill="#374151">in-app: SSE push → notification bell badge (Redis incr)</text>
+
+  <line x1="620" y1="412" x2="809" y2="412" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="714" y="406" text-anchor="middle" font-size="9" fill="#374151">FCM/SES open webhooks → delivery rate analytics</text>
+
+  <line x1="809" y1="426" x2="240" y2="426" stroke="#be123c" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="524" y="420" text-anchor="middle" font-size="9" fill="#374151">read: PATCH /notif/{id}/read → Redis decr + DB mark read</text>
+
+  <!-- Footer -->
+  <rect x="8" y="444" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="460" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Dedup Window</text>
+  <text x="90" y="474" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">24 hr Redis TTL</text>
+  <text x="255" y="460" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Push Retry</text>
+  <text x="255" y="474" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">3× exp backoff</text>
+  <text x="450" y="460" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Fallback Chain</text>
+  <text x="450" y="474" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">push → in-app → email</text>
+  <text x="645" y="460" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Kafka Topics</text>
+  <text x="645" y="474" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">4 channels</text>
+  <text x="820" y="460" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">In-app Badge</text>
+  <text x="820" y="474" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Redis INCR/DECR</text>
+</svg>

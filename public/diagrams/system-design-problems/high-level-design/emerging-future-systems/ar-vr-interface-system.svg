@@ -1,0 +1,113 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">AR/VR Interface System — WebXR Render Loop &amp; Interaction</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="115" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="77" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">XR Session</text>
+  <text x="77" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">WebXR API</text>
+
+  <rect x="205" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="262" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Render Loop</text>
+  <text x="262" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">90Hz, 11ms budget</text>
+
+  <rect x="392" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="449" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Scene / ECS</text>
+  <text x="449" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">entity-component</text>
+
+  <rect x="580" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="637" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Input / Anchors</text>
+  <text x="637" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">hands + gaze + AR</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">GPU / Audio</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">WebGL + HRTF</text>
+
+  <!-- Lifelines -->
+  <line x1="77"  y1="105" x2="77"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="262" y1="105" x2="262" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="449" y1="105" x2="449" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="637" y1="105" x2="637" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Session + Render Loop -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · SESSION + RENDER LOOP — requestSession (hand-tracking, hit-test); session.requestAnimationFrame locked to 90Hz headset display</text>
+
+  <line x1="77" y1="150" x2="247" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="162" y="144" text-anchor="middle" font-size="9" fill="#374151">navigator.xr.requestSession('immersive-ar')</text>
+
+  <line x1="247" y1="164" x2="434" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="340" y="158" text-anchor="middle" font-size="9" fill="#374151">onFrame: get viewer pose + input sources per frame</text>
+
+  <!-- Budget box -->
+  <rect x="160" y="174" width="350" height="32" rx="6" fill="#fff" stroke="#2563eb" stroke-width="1"/>
+  <text x="335" y="189" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">11ms budget: 2ms JS (systems) + 7ms GPU (draw calls) + 2ms compositor</text>
+  <text x="335" y="204" text-anchor="middle" font-size="9" fill="#374151">batching + instancing + frustum cull + dirty-flagged transforms</text>
+
+  <!-- SECTION 2: ECS Scene Graph -->
+  <rect x="8" y="216" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="227" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · ECS SCENE GRAPH — entities=IDs; Float32Array transforms; dirty-flagged depth-first traversal; BVH ray cast O(log N)</text>
+
+  <line x1="247" y1="246" x2="434" y2="246" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="340" y="240" text-anchor="middle" font-size="9" fill="#374151">TransformSystem: dirty-flag DFS, parent × local = world</text>
+
+  <line x1="434" y1="260" x2="809" y2="260" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="621" y="254" text-anchor="middle" font-size="9" fill="#374151">sorted draw calls → WebGL batched dispatch</text>
+
+  <!-- LOD box -->
+  <rect x="400" y="270" width="370" height="32" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="585" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">LOD: &lt;2m→LOD0 (50K poly), 2–10m→LOD1, &gt;10m→LOD2 (2K)</text>
+  <text x="585" y="300" text-anchor="middle" font-size="9" fill="#374151">200ms cross-fade swap; IndexedDB cache; LOD2-first load</text>
+
+  <!-- SECTION 3: Hand Tracking + Anchors -->
+  <rect x="8" y="312" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="323" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · INPUT + ANCHORS — 25 joints/hand per frame; pinch index-thumb &lt;20mm; gaze dwell 1s; XRAnchor per-frame pose update</text>
+
+  <line x1="622" y1="342" x2="434" y2="342" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="528" y="336" text-anchor="middle" font-size="9" fill="#374151">hand joint poses from XRFrame per 10ms</text>
+
+  <line x1="434" y1="356" x2="622" y2="356" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="528" y="350" text-anchor="middle" font-size="9" fill="#374151">pinch detected → createAnchorFromHitTestResult()</text>
+
+  <line x1="622" y1="370" x2="434" y2="370" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="528" y="364" text-anchor="middle" font-size="9" fill="#374151">frame.getPose(anchor.anchorSpace) → world position each frame</text>
+
+  <!-- SECTION 4: Foveated Rendering + Audio -->
+  <rect x="8" y="388" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="399" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · FOVEATED RENDERING + SPATIAL AUDIO — periphery 50% res (~40% GPU); HRTF PannerNode position updated from viewer pose each frame</text>
+
+  <line x1="247" y1="418" x2="809" y2="418" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="528" y="412" text-anchor="middle" font-size="9" fill="#374151">XR_EXT_texture_foveation: foveal=full res, periphery=50%</text>
+
+  <line x1="809" y1="432" x2="434" y2="432" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="621" y="426" text-anchor="middle" font-size="9" fill="#374151">PannerNode.setPosition(x,y,z) from 3D object world pos per frame</text>
+
+  <!-- Footer -->
+  <rect x="8" y="452" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="468" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Frame Budget</text>
+  <text x="90" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">11ms @ 90Hz</text>
+  <text x="255" y="468" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Pinch Threshold</text>
+  <text x="255" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&lt;20mm index-thumb</text>
+  <text x="450" y="468" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Dwell Activation</text>
+  <text x="450" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">1s gaze hold</text>
+  <text x="645" y="468" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Foveated GPU Saving</text>
+  <text x="645" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">~40%</text>
+  <text x="820" y="468" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">LOD Crossfade</text>
+  <text x="820" y="482" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">200ms</text>
+</svg>

@@ -1,0 +1,119 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Maps Exploration UI — Tile Rendering &amp; Search Pipeline</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Map Client</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">browser / app</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Tile CDN</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">edge tile cache</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Tile Server</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">render + serve</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Search API</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">geocode + POI</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Geo DB</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">PostGIS + index</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Tile loading -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · TILE LOADING — viewport computes z/x/y tile grid; requests up to 12 tiles per pan; CDN cache hit ~5ms; miss renders from vector data</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">GET /tiles/{z}/{x}/{y}.mvt (Mapbox Vector Tile)</text>
+
+  <line x1="240" y1="164" x2="240" y2="164" stroke="#2563eb" stroke-width="1"/>
+  <rect x="185" y="168" width="140" height="20" rx="5" fill="#2563eb"/>
+  <text x="255" y="182" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">CDN HIT → return tile ~5ms</text>
+
+  <line x1="240" y1="192" x2="430" y2="192" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="335" y="186" text-anchor="middle" font-size="9" fill="#374151">CDN MISS → render tile from OSM vector store</text>
+
+  <line x1="430" y1="206" x2="90" y2="206" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="200" text-anchor="middle" font-size="9" fill="#374151">MVT bytes → CDN caches tile 30 days; client renders with WebGL</text>
+
+  <!-- SECTION 2: Search + geocoding -->
+  <rect x="8" y="220" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="231" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · SEARCH + GEOCODE — prefix trie for autocomplete (p50 &lt;20ms); forward geocoding maps query → lat/lng; PostGIS nearest-neighbor for POI</text>
+
+  <line x1="75" y1="250" x2="620" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="350" y="244" text-anchor="middle" font-size="9" fill="#374151">GET /search?q=coffee&amp;lat=37.7&amp;lng=-122.4&amp;radius=1km</text>
+
+  <line x1="620" y1="264" x2="809" y2="264" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="714" y="258" text-anchor="middle" font-size="9" fill="#374151">SELECT * FROM pois WHERE ST_DWithin(geom, point, 1000)</text>
+
+  <line x1="809" y1="278" x2="620" y2="278" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="714" y="272" text-anchor="middle" font-size="9" fill="#374151">ranked POI list (PostGIS KNN index, GIST on geom)</text>
+
+  <line x1="620" y1="292" x2="90" y2="292" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="355" y="286" text-anchor="middle" font-size="9" fill="#374151">[{name, lat, lng, category, rating, distance}] — pin overlay on map</text>
+
+  <!-- SECTION 3: Place details -->
+  <rect x="8" y="308" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="319" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · PLACE DETAILS — click pin → fetch rich details; photos from CDN; reviews from separate service; opening hours + real-time busy data</text>
+
+  <line x1="75" y1="338" x2="620" y2="338" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="350" y="332" text-anchor="middle" font-size="9" fill="#374151">GET /places/{placeId} (place detail card open)</text>
+
+  <line x1="620" y1="352" x2="809" y2="352" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="714" y="346" text-anchor="middle" font-size="9" fill="#374151">JOIN places, hours, busy_times WHERE id={placeId}</text>
+
+  <line x1="809" y1="366" x2="90" y2="366" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="450" y="360" text-anchor="middle" font-size="9" fill="#374151">{name, address, phone, hours, busyNow, photos[], rating, reviewCount}</text>
+
+  <!-- SECTION 4: Real-time traffic overlay -->
+  <rect x="8" y="382" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="393" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · TRAFFIC OVERLAY — speed readings ingested from GPS probes every 30s; aggregated into road segments; served as separate traffic tile layer</text>
+
+  <line x1="75" y1="412" x2="240" y2="412" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="406" text-anchor="middle" font-size="9" fill="#374151">GET /tiles/{z}/{x}/{y}/traffic.mvt</text>
+
+  <line x1="240" y1="426" x2="430" y2="426" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="335" y="420" text-anchor="middle" font-size="9" fill="#374151">CDN TTL 30s (traffic data refreshed frequently)</text>
+
+  <line x1="430" y1="440" x2="90" y2="440" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="260" y="434" text-anchor="middle" font-size="9" fill="#374151">color-coded speed layer overlaid on base map (green/yellow/red)</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Tile Format</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">MVT / WebGL render</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Tile CDN TTL</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">30 days base / 30s traffic</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Search Index</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">PostGIS GIST + KNN</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Autocomplete</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">prefix trie &lt;20ms</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Traffic Probe</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">GPS agg every 30s</text>
+</svg>

@@ -1,0 +1,117 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Payment Gateway Integration UI — Stripe Checkout Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Browser</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">Stripe Elements</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Merchant Server</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">PaymentIntent API</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Stripe API</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">payment processor</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Issuing Bank</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">3DS + authorize</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Webhook Handler</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">HMAC-SHA256</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: PaymentIntent + PCI Card Capture -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · PAYMENT INTENT + PCI CAPTURE — server creates PaymentIntent with idempotency key; clientSecret → browser; card in Stripe iframe only</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">page load → POST /api/checkout/create-intent</text>
+
+  <line x1="240" y1="164" x2="430" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="158" text-anchor="middle" font-size="9" fill="#374151">POST /v1/payment_intents + idempotency-key header</text>
+
+  <line x1="430" y1="178" x2="90" y2="178" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="172" text-anchor="middle" font-size="9" fill="#374151">clientSecret → page (HTML var, never in localStorage/URL)</text>
+
+  <!-- PCI note box -->
+  <rect x="20" y="188" width="340" height="24" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="190" y="204" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Stripe Elements iframe: card data → Stripe directly (merchant JS never sees card number)</text>
+
+  <!-- SECTION 2: Confirm + 3DS -->
+  <rect x="8" y="220" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="231" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · CONFIRM + 3DS — confirmCardPayment; if requires_action → SDK opens 3DS iframe; bank authenticates; Stripe resolves promise</text>
+
+  <line x1="75" y1="250" x2="430" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="252" y="244" text-anchor="middle" font-size="9" fill="#374151">stripe.confirmCardPayment(clientSecret, {card: element})</text>
+
+  <line x1="430" y1="264" x2="620" y2="264" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="258" text-anchor="middle" font-size="9" fill="#374151">status: requires_action → SDK opens 3DS bank iframe</text>
+
+  <line x1="620" y1="278" x2="430" y2="278" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="525" y="272" text-anchor="middle" font-size="9" fill="#374151">bank authenticates → returns to Stripe → status: succeeded</text>
+
+  <line x1="430" y1="292" x2="90" y2="292" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="260" y="286" text-anchor="middle" font-size="9" fill="#374151">promise resolves: {paymentIntent: {status: 'succeeded'}}</text>
+
+  <!-- SECTION 3: Webhook -->
+  <rect x="8" y="308" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="319" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · WEBHOOK — Stripe-Signature HMAC-SHA256 verify; idempotent handler; 5s response → background queue; Stripe retries 72hr</text>
+
+  <line x1="430" y1="338" x2="809" y2="338" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="619" y="332" text-anchor="middle" font-size="9" fill="#374151">POST /webhook: charge.succeeded event</text>
+
+  <line x1="809" y1="352" x2="240" y2="352" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="524" y="346" text-anchor="middle" font-size="9" fill="#374151">verify Stripe-Signature; check event_id idempotency; enqueue fulfillment</text>
+
+  <!-- Decline box -->
+  <rect x="20" y="362" width="350" height="24" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="195" y="378" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Decline codes: insufficient_funds → user message; stolen_card → generic "declined" (never reveal)</text>
+
+  <!-- SECTION 4: Retry + Abandonment -->
+  <rect x="8" y="394" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="405" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · RETRY + ABANDONMENT — exp backoff (1s × 2^n, max 5 retries, 30s cap); 1hr abandonment email with signed JWT resume link</text>
+
+  <line x1="75" y1="424" x2="240" y2="424" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="157" y="418" text-anchor="middle" font-size="9" fill="#374151">timeout/500 → retry with same idempotency-key</text>
+
+  <line x1="240" y1="438" x2="75" y2="438" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="157" y="432" text-anchor="middle" font-size="9" fill="#374151">after 1hr: abandonment email + signed JWT cart resume link</text>
+
+  <!-- Footer -->
+  <rect x="8" y="456" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="472" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">PCI Scope</text>
+  <text x="90" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Stripe iframe only</text>
+  <text x="255" y="472" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Idempotency</text>
+  <text x="255" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">UUID / 24hr TTL</text>
+  <text x="450" y="472" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Webhook SLA</text>
+  <text x="450" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5s → background job</text>
+  <text x="645" y="472" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Max Retries</text>
+  <text x="645" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5 × exp backoff</text>
+  <text x="820" y="472" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Capture Window</text>
+  <text x="820" y="486" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">7 days (manual)</text>
+</svg>

@@ -1,0 +1,114 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Priority-Based Notification Delivery — SLA Lanes &amp; Escalation</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Priority Router</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">classify + enqueue</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#e05252"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Critical Lane</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">SLA &lt;5s, bypass prefs</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Normal Lane</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">SLA &lt;60s, pref-checked</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Bulk Lane</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">SLA &lt;4hr, batched</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Escalation</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">SLA breach + retry</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Priority classification -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · PRIORITY CLASSIFICATION — event type → priority: CRITICAL (fraud, 2FA, system alert) | HIGH (order update) | NORMAL (social) | BULK (newsletter, digest)</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#e05252" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">CRITICAL: fraud_alert, otp, account_locked → Kafka high-pri</text>
+
+  <line x1="75" y1="168" x2="430" y2="168" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="252" y="162" text-anchor="middle" font-size="9" fill="#374151">NORMAL: order_shipped, comment_reply → Kafka normal topic</text>
+
+  <line x1="75" y1="186" x2="620" y2="186" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="347" y="180" text-anchor="middle" font-size="9" fill="#374151">BULK: newsletters, digest → Kafka bulk topic (rate-limited)</text>
+
+  <!-- SECTION 2: Critical lane delivery -->
+  <rect x="8" y="200" width="884" height="14" rx="3" fill="#e05252" opacity="0.15"/>
+  <text x="450" y="211" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">2 · CRITICAL LANE — bypass quiet hours + frequency caps; concurrent multi-channel send (push + SMS simultaneously); SLA &lt;5s; no batching</text>
+
+  <line x1="240" y1="230" x2="430" y2="230" stroke="#e05252" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="224" text-anchor="middle" font-size="9" fill="#374151">CRITICAL: send push AND SMS in parallel (no pref filter)</text>
+
+  <line x1="240" y1="244" x2="620" y2="244" stroke="#e05252" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="430" y="238" text-anchor="middle" font-size="9" fill="#374151">also send email as durable copy (1-click unsubscribe still honored for legal)</text>
+
+  <!-- Critical box -->
+  <rect x="20" y="254" width="360" height="24" rx="6" fill="#fff" stroke="#e05252" stroke-width="1"/>
+  <text x="200" y="270" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">OTP/2FA: CRITICAL + quiet hours override + frequency cap bypass. User cannot opt out of transactional.</text>
+
+  <!-- SECTION 3: Normal + bulk lanes -->
+  <rect x="8" y="286" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="297" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">3 · NORMAL + BULK LANES — normal: pref-checked, single best channel; bulk: batched every 15min, digest aggregation, sending window 9am–6pm local TZ</text>
+
+  <line x1="430" y1="316" x2="240" y2="316" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="335" y="310" text-anchor="middle" font-size="9" fill="#374151">NORMAL: read prefs → best channel → single send</text>
+
+  <line x1="620" y1="330" x2="430" y2="330" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="525" y="324" text-anchor="middle" font-size="9" fill="#374151">BULK: aggregate 15min window → one digest email</text>
+
+  <!-- Bulk box -->
+  <rect x="400" y="340" width="370" height="24" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="585" y="356" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Bulk rate limit: 1,000 emails/min per domain (SES limits); exponential spread</text>
+
+  <!-- SECTION 4: SLA monitoring + escalation -->
+  <rect x="8" y="372" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="383" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · SLA MONITORING + ESCALATION — Kafka consumer lag alert; critical SLA breach → PagerDuty; failed delivery → fallback channel; dead-letter queue after 3 retries</text>
+
+  <line x1="240" y1="402" x2="809" y2="402" stroke="#e05252" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="524" y="396" text-anchor="middle" font-size="9" fill="#374151">critical delivery &gt;5s → PagerDuty alert + fallback SMS via alternate provider</text>
+
+  <line x1="809" y1="416" x2="430" y2="416" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="619" y="410" text-anchor="middle" font-size="9" fill="#374151">3 retries failed → DLQ → oncall alert + manual review</text>
+
+  <line x1="430" y1="430" x2="90" y2="430" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="260" y="424" text-anchor="middle" font-size="9" fill="#374151">delivery rate dashboard: per-lane p50/p99 latency, failure rates</text>
+
+  <!-- Footer -->
+  <rect x="8" y="448" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="464" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Critical SLA</text>
+  <text x="90" y="478" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&lt;5s end-to-end</text>
+  <text x="255" y="464" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Normal SLA</text>
+  <text x="255" y="478" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&lt;60s</text>
+  <text x="450" y="464" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Bulk Window</text>
+  <text x="450" y="478" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">15min batch / 9–18 TZ</text>
+  <text x="645" y="464" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">DLQ Retries</text>
+  <text x="645" y="478" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">3× then DLQ</text>
+  <text x="820" y="464" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Bulk Rate</text>
+  <text x="820" y="478" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">1K emails/min</text>
+</svg>

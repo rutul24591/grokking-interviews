@@ -1,0 +1,118 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Route Optimization UI — Graph Routing &amp; ETA Pipeline</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Map Client</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">origin + dest</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Route API</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">geocode + dispatch</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Graph Engine</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">CH / A* routing</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Traffic Service</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">live edge weights</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">ETA Model</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">ML arrival time</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Route request + geocoding -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · ROUTE REQUEST — geocode origin/destination to lat/lng; snap to nearest road graph node; dispatch to routing engine partition by region</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">POST /routes {origin, destination, mode: driving}</text>
+
+  <line x1="240" y1="164" x2="430" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="158" text-anchor="middle" font-size="9" fill="#374151">geocode both ends → snap to graph node (nearest edge)</text>
+
+  <rect x="200" y="170" width="300" height="22" rx="5" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="350" y="185" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Road graph: 100M nodes, 1B edges; partitioned by H3 hex region</text>
+
+  <!-- SECTION 2: Contraction Hierarchies routing -->
+  <rect x="8" y="200" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="211" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · CH ROUTING — Contraction Hierarchies precomputed shortcuts; bidirectional Dijkstra on CH graph; city-scale route in &lt;200ms</text>
+
+  <line x1="240" y1="230" x2="430" y2="230" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="224" text-anchor="middle" font-size="9" fill="#374151">bidirectional CH Dijkstra from origin node + dest node</text>
+
+  <line x1="430" y1="244" x2="620" y2="244" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="525" y="238" text-anchor="middle" font-size="9" fill="#374151">fetch live edge weights for route segments</text>
+
+  <line x1="620" y1="258" x2="430" y2="258" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="525" y="252" text-anchor="middle" font-size="9" fill="#374151">adjusted travel times (GPS probe aggregates, 30s refresh)</text>
+
+  <line x1="430" y1="272" x2="240" y2="272" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="335" y="266" text-anchor="middle" font-size="9" fill="#374151">optimal path: ordered node sequence + total distance</text>
+
+  <!-- SECTION 3: ETA + alternatives -->
+  <rect x="8" y="288" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="299" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · ETA + ALTERNATIVES — ML model predicts arrival considering time-of-day, day-of-week, incidents; 3 route alternatives ranked by ETA</text>
+
+  <line x1="240" y1="318" x2="809" y2="318" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="524" y="312" text-anchor="middle" font-size="9" fill="#374151">route polyline + distance + segment speeds → ETA inference</text>
+
+  <line x1="809" y1="332" x2="240" y2="332" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="524" y="326" text-anchor="middle" font-size="9" fill="#374151">predicted ETA with ±confidence interval (p50 / p90)</text>
+
+  <line x1="240" y1="346" x2="90" y2="346" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="340" text-anchor="middle" font-size="9" fill="#374151">3 routes: fastest / shortest / eco + ETAs</text>
+
+  <!-- SECTION 4: Turn-by-turn navigation -->
+  <rect x="8" y="362" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="373" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · LIVE NAVIGATION — GPS position sent every 5s; re-route if deviation &gt;50m; traffic incident reroute via SSE push; lane guidance overlay</text>
+
+  <line x1="75" y1="392" x2="240" y2="392" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="386" text-anchor="middle" font-size="9" fill="#374151">POST /nav/position {routeId, lat, lng, speed}</text>
+
+  <line x1="240" y1="406" x2="430" y2="406" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="335" y="400" text-anchor="middle" font-size="9" fill="#374151">match position to route; detect off-route (&gt;50m deviation)</text>
+
+  <line x1="430" y1="420" x2="240" y2="420" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="335" y="414" text-anchor="middle" font-size="9" fill="#374151">re-route trigger → new CH query → SSE push updated route</text>
+
+  <line x1="240" y1="440" x2="90" y2="440" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+  <text x="157" y="434" text-anchor="middle" font-size="9" fill="#374151">next maneuver + distance + lane guidance</text>
+
+  <!-- Footer -->
+  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Routing Algo</text>
+  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">CH bidirectional</text>
+  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Route Latency</text>
+  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&lt;200ms city scale</text>
+  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Traffic Refresh</text>
+  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">GPS probe 30s agg</text>
+  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">ETA Model</text>
+  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">ML p50/p90 bounds</text>
+  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Re-route Trigger</text>
+  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&gt;50m deviation</text>
+</svg>

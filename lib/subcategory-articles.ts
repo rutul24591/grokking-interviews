@@ -4233,6 +4233,23 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Comprehensive guide to API versioning, schema evolution, backward compatibility strategies, deprecation policies, and migration patterns for staff/principal engineer interviews."
     }
   ],
+  "system-design-problems/high-level-design/ads-monetization-systems": [
+    {
+      "slug": "ads-analytics-dashboard",
+      "title": "Design an Ads Analytics Dashboard (like Google Ads Manager)",
+      "description": "Architecture for an ads analytics dashboard: impression and click beacon deduplication via Redis SETNX 60-second window, Kafka event stream partitioned by campaignId, Flink 1-minute tumbling window aggregation into ClickHouse columnar store, pre-aggregated hourly and daily rollup tables for sub-second dashboard queries, Redis 60-second cache for live last-hour data, multi-dimensional breakdowns by creative and geo and device, anomaly detection for CTR spikes and budget exhaustion alerts via webhook, and Redis INCRBYFLOAT budget pacing with hourly throttle-rate controller."
+    },
+    {
+      "slug": "ads-delivery-targeting-ui",
+      "title": "Design an Ads Delivery & Targeting UI (like Google Ads / Facebook Ads)",
+      "description": "Architecture for a real-time bidding ads delivery system: publisher ad slot request with userId and page context, user segment resolution from Redis under 2ms, OpenRTB bid request broadcast to 50 DSPs in parallel with 80ms hard deadline, second-price Vickrey auction with eCPM = bid × pCTR ranking, winning creative served via CDN in isolated iframe sandbox, impression and click beacons published to Kafka asynchronously, frequency capping with Redis INCR per user per day, click deduplication in 60-second window, conversion pixel for downstream purchase attribution, and invalid traffic (IVT) detection before billing."
+    },
+    {
+      "slug": "creator-monetization-dashboard",
+      "title": "Design a Creator Monetization Dashboard (like YouTube Studio / Substack)",
+      "description": "Architecture for a creator monetization dashboard: double-entry immutable ledger recording ad revenue, subscriptions, tips, affiliate commissions, and merchandise cuts per creator per content piece, daily batch job closing previous day books with RPM calculation, real-time balance from ledger SUM query cached in Redis 5 minutes, multi-revenue-stream breakdown UI, tax form gating (W-9/W-8BEN) before first payout, idempotent Stripe transfer with payoutId idempotency key, webhook-driven ledger debit on payout confirmation, threshold and minimum balance enforcement, and hold mechanics for fraud review and disputed transactions."
+    }
+  ],
   "system-design-problems/high-level-design/ai-modern-systems": [
     {
       "slug": "ai-chatbot-frontend",
@@ -4347,6 +4364,28 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Architecture for scalable user onboarding: progressive profiling, activation milestone tracking, personalization, A/B testing, fraud detection, and retention loop integration."
     }
   ],
+  "system-design-problems/high-level-design/cross-platform-mobile-systems": [
+    {
+      "slug": "hybrid-app-webview-native-bridge",
+      "title": "Design a Hybrid App (WebView + Native Bridge)",
+      "description": "Architecture for a hybrid mobile app combining WebView and native code: JavaScript-to-native bridge design (message passing vs. injected APIs), native capability exposure (camera, biometrics, push notifications, Bluetooth), WebView sandboxing and security (content security policy, navigation whitelisting), performance optimization for WebView rendering (hardware acceleration, avoiding bridge bottlenecks), deep link routing between native screens and WebView pages, feature flag system for native vs. web screen routing, and over-the-air updates for WebView content without app store review."
+    },
+    {
+      "slug": "pwa-offline-sync",
+      "title": "Design a PWA with Offline Sync",
+      "description": "Architecture for a Progressive Web App with offline sync: service worker lifecycle (install, activate, fetch interception), cache strategies (cache-first, network-first, stale-while-revalidate) per resource type, IndexedDB mutation queue for offline writes with Background Sync API replay, conflict resolution for concurrent edits (last-write-wins, server-authoritative merge), push notification delivery via Web Push API, app manifest for installability, and update notification UI for new service worker versions."
+    },
+    {
+      "slug": "responsive-cross-device-architecture",
+      "title": "Design a Responsive Cross-Device Frontend Architecture",
+      "description": "Architecture for a responsive cross-device frontend: fluid grid systems with CSS custom properties, container queries for component-level breakpoints, adaptive image delivery with srcset and art direction, device capability detection for progressive enhancement, touch vs pointer event normalization, viewport-relative typography with clamp(), responsive navigation patterns (hamburger to full nav), and performance budgets per device tier with resource hints for network-adaptive loading."
+    },
+    {
+      "slug": "web-react-native-shared-system",
+      "title": "Design a Web + React Native Shared System",
+      "description": "Architecture for a web and React Native code-sharing system: monorepo structure with shared business logic, API clients, and state management; platform-specific component implementations via .native.tsx and .web.tsx file extensions; design token system shared across platforms; navigation architecture differences (React Navigation vs React Router); shared form validation and error handling; deep link handling; push notification integration; and CI/CD pipeline for simultaneous web and mobile deployments."
+    }
+  ],
   "system-design-problems/high-level-design/data-heavy-systems": [
     {
       "slug": "alerting-anomaly-detection-dashboard",
@@ -4377,6 +4416,45 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "time-series-visualization",
       "title": "Design a Time-Series Visualization System",
       "description": "Architecture for a time-series visualization system: multi-resolution storage (raw + pre-aggregated rollups), adaptive query routing to the appropriate resolution, synchronized multi-panel layouts with shared time cursor, annotation overlays for deployments and incidents, comparison mode (current vs prior period), query language (PromQL/InfluxQL) editor with auto-complete, alert threshold lines on charts, and export to PNG/CSV."
+    }
+  ],
+  "system-design-problems/high-level-design/data-import-export-systems": [
+    {
+      "slug": "bulk-data-import-system",
+      "title": "Design a Bulk Data Import System (CSV/Excel Uploads)",
+      "description": "End-to-end design of a production-grade bulk import pipeline: presigned S3 uploads, async worker validation, streaming batch ingestion, idempotency, error reporting, and retry semantics for millions of rows."
+    },
+    {
+      "slug": "data-export-report-generation-system",
+      "title": "Design a Data Export / Report Generation System",
+      "description": "Staff-level design of an async data export pipeline: cursor-paginated reads from OLAP/replicas, S3 multipart streaming render (CSV/Excel/PDF/Parquet), presigned download URLs, scheduled report cron, and delivery semantics."
+    },
+    {
+      "slug": "etl-pipeline-monitoring-ui",
+      "title": "Design an ETL Pipeline Monitoring UI",
+      "description": "End-to-end design of an ETL observability platform: pipeline DAG execution, Prometheus metrics emission, data quality scoring, SLA breach alerting, Grafana dashboards, PagerDuty routing, and checkpoint-based retry for reliable data pipelines."
+    }
+  ],
+  "system-design-problems/high-level-design/developer-experience-systems": [
+    {
+      "slug": "api-playground",
+      "title": "Design an API Playground (like Postman)",
+      "description": "Architecture for an API playground like Postman or Insomnia: request builder with URL, method, headers, and body editors; environment variables with secret masking; response viewer with syntax-highlighted JSON/XML, status code display, timing breakdown, and raw response toggle; request history and collection organization; authentication presets (Bearer token, OAuth 2.0, API key, Basic auth); code snippet generation for multiple languages; team workspaces with shared collections; and browser-based request proxying to bypass CORS restrictions."
+    },
+    {
+      "slug": "cicd-dashboard",
+      "title": "Design a CI/CD Dashboard (like GitHub Actions)",
+      "description": "Architecture for a CI/CD dashboard like GitHub Actions: pipeline run list with real-time status streaming via SSE, live log tail with ANSI color rendering and virtual scroll, DAG visualization of job dependencies, artifact download links, flaky test detection with historical pass-rate charts, branch and PR-scoped pipeline views, re-run and cancel actions with optimistic UI, deployment approval gates with audit log, and notification routing for pipeline failures."
+    },
+    {
+      "slug": "developer-documentation-system",
+      "title": "Design a Developer Documentation System (like Notion/Docusaurus)",
+      "description": "Architecture for a developer documentation system: markdown/MDX authoring with live preview, versioned documentation tied to software releases, full-text search with code snippet indexing, API reference auto-generation from OpenAPI/AsyncAPI specs, interactive code playground embeds with executable examples, feedback and contribution workflows (edit on GitHub), table of contents with scroll-spy, and documentation health metrics (broken links, stale pages, missing examples)."
+    },
+    {
+      "slug": "package-registry-ui",
+      "title": "Design a Package Registry UI (like npm)",
+      "description": "Architecture for a package registry UI like npm or PyPI: package search with typosquatting detection and relevance ranking, package detail page with version selector and changelog diff, dependency tree visualization with vulnerability overlay from OSV/CVE data, weekly download trend sparklines, bundle size impact estimator using bundlephobia-style analysis, package deprecation and security advisory banners, publisher trust indicators (verified publisher, provenance attestation), and unpublish/deprecate controls for package owners."
     }
   ],
   "system-design-problems/high-level-design/ecommerce-marketplace": [
@@ -4416,6 +4494,28 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Architecture for a subscription billing frontend: plan selection UI with feature comparison, trial-to-paid conversion flow, payment method management with PCI DSS compliance, subscription state machine (active/paused/cancelled/past_due), proration calculation for plan upgrades, dunning management for failed payments, invoice history, usage-based billing meter UI, and webhook-driven UI state sync."
     }
   ],
+  "system-design-problems/high-level-design/emerging-future-systems": [
+    {
+      "slug": "ar-vr-interface-system",
+      "title": "Design an AR/VR Interface System",
+      "description": "Architecture for an AR/VR interface system: WebXR session lifecycle management, 3D scene graph with frame-rate-locked render loop (90Hz target), hand tracking and gaze-based interaction models, spatial audio positioning, 6DoF tracking and world anchors for persistent AR content, foveated rendering for GPU budget management, progressive asset loading with LOD (level of detail) switching, passthrough camera integration, and comfort guidelines for preventing motion sickness."
+    },
+    {
+      "slug": "on-device-ai-inference-ui",
+      "title": "Design an On-Device AI Inference UI",
+      "description": "Architecture for an on-device AI inference UI: model loading and caching strategy (ONNX/TensorFlow.js, IndexedDB model storage, progressive chunk loading), WebGPU vs. WebAssembly execution backends, quantization tradeoffs (INT8/FP16 vs. FP32), streaming token generation with ReadableStream for LLM output, model selection UI (capability vs. size tradeoff), inference progress and cancellation, privacy-by-default architecture (no data leaves the device), memory pressure management (model eviction, tensor cleanup), and graceful degradation to cloud API when on-device inference is too slow."
+    },
+    {
+      "slug": "voice-based-ui-system",
+      "title": "Design a Voice-Based UI System",
+      "description": "Architecture for a voice-based UI system: wake word detection running on-device for privacy (Porcupine/Picovoice), streaming speech-to-text pipeline (WebSpeech API vs. Whisper streaming API), intent classification and slot filling for command parsing, text-to-speech response with prosody and SSML markup, conversation state machine for multi-turn dialogue, voice activity detection (VAD) with noise cancellation, voice persona management, accessibility compliance for deaf/hard-of-hearing users, and latency budget breakdown for sub-500ms response time."
+    },
+    {
+      "slug": "web3-wallet-frontend",
+      "title": "Design a Web3 Wallet Frontend (like MetaMask)",
+      "description": "Architecture for a Web3 wallet frontend: HD wallet key derivation (BIP-39 mnemonic, BIP-44 derivation path), secure key storage in browser extension secure storage, transaction signing flow with EIP-712 typed data display, gas estimation and fee priority selection, dApp connection management (EIP-1193 provider injection), multi-chain support with network switching, token balance aggregation with real-time price feeds, phishing site detection, transaction history from block explorer APIs, and hardware wallet integration via WebHID."
+    }
+  ],
   "system-design-problems/high-level-design/enterprise-saas-systems": [
     {
       "slug": "admin-audit-logs",
@@ -4451,6 +4551,108 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "workflow-automation-system",
       "title": "Design a Workflow Automation System (Zapier-like)",
       "description": "Architecture for a workflow automation system: visual workflow builder with trigger and action nodes, condition branching and loops, connector integrations (webhooks, OAuth, REST APIs), execution engine with retry and backoff, real-time execution logs, workflow versioning and rollback, rate limiting per connector, error handling with dead letter queues, and multi-step data transformation with a mapping UI."
+    }
+  ],
+  "system-design-problems/high-level-design/error-handling-reliability-systems": [
+    {
+      "slug": "global-error-handling-fallback-ui",
+      "title": "Design a Global Error Handling & Fallback UI System",
+      "description": "Architecture for a production-grade global error handling system: React Error Boundaries with hierarchical scope, error classification (network / chunk-load / render / permission), stale-cache and skeleton fallbacks, Sentry enrichment with session replay and build SHA, stack-fingerprint deduplication, exponential backoff retry, chunk-load hard reload, localStorage draft recovery, and spike-based PagerDuty alerting."
+    },
+    {
+      "slug": "incident-debugging-dashboard",
+      "title": "Design an Incident / Debugging Dashboard for Users",
+      "description": "Architecture for a production incident and debugging dashboard: multi-signal ingestion (errors, metrics, logs) via Kafka, error grouping by stack fingerprint, correlation with deployments and feature flags via traceId, static and ML anomaly alerting with 3-sigma detection, session replay drill-down, distributed trace waterfall, PagerDuty routing, status page publishing, and auto-drafted postmortem on resolution."
+    },
+    {
+      "slug": "retry-failure-recovery-ux",
+      "title": "Design a Retry & Failure Recovery UX",
+      "description": "Architecture for a production retry and failure recovery system: exponential backoff with full jitter, idempotency keys per mutation, client-side circuit breaker (closed / open / half-open), IndexedDB offline queue with Service Worker replay, optimistic UI rollback, countdown retry UI, degraded-mode banners, and automatic session restoration on reconnect."
+    }
+  ],
+  "system-design-problems/high-level-design/experimentation-growth-systems": [
+    {
+      "slug": "ab-testing-platform-ui",
+      "title": "Design an A/B Testing Platform UI",
+      "description": "Architecture for an A/B testing platform UI: experiment creation with hypothesis and metric selection, deterministic user bucketing via hashed user ID, assignment service with consistent allocation, real-time result dashboard with statistical significance calculation, sample ratio mismatch detection, guardrail metric alerting, segment analysis (by country, device, cohort), experiment lifecycle management (draft, running, paused, concluded), and mutual exclusion groups to prevent experiment interference."
+    },
+    {
+      "slug": "feature-rollout-experimentation-system",
+      "title": "Design a Feature Rollout & Experimentation System",
+      "description": "Architecture for a feature rollout and experimentation system: feature flag evaluation at the edge with user targeting rules, percentage-based progressive rollouts with automatic rollback on error rate spike, kill switch for instant feature shutdown, SDK design for zero-latency flag reads, flag configuration storage and propagation, override rules for internal testing, audit log for flag changes, and integration with deployment pipelines for flag-gated releases."
+    },
+    {
+      "slug": "user-funnel-analytics-dashboard",
+      "title": "Design a User Funnel Analytics Dashboard",
+      "description": "Architecture for a user funnel analytics dashboard: event ingestion pipeline with client-side beacon batching and server-side enrichment, funnel definition engine with ordered step matching and re-entry rules, conversion rate computation with time-to-convert distribution, drop-off attribution by segment (browser, country, acquisition channel), cohort analysis (day-0 to day-30 retention), session replay integration for drop-off investigation, real-time vs. batch metric freshness tradeoffs, and funnel alert system for conversion rate regression detection."
+    }
+  ],
+  "system-design-problems/high-level-design/feature-configuration-admin-systems": [
+    {
+      "slug": "dynamic-config-management-ui",
+      "title": "Design a Dynamic Config Management UI (like Consul / LaunchDarkly Config)",
+      "description": "Architecture for a dynamic configuration management system: namespaced key-value store with type-enforced schemas and environment-scoped values, immutable versioned rows with diff tracking and one-click rollback, approval workflow for production changes, Redis pub/sub fan-out pushing config deltas to all subscribed service pods via SSE within 500ms, polling fallback every 30 seconds with version watermark, service-side local in-memory cache with 5-minute TTL as circuit-breaker, and immutable audit log recording who changed what value in which environment from which IP address."
+    },
+    {
+      "slug": "kill-switch-emergency-control-panel",
+      "title": "Design a Kill-Switch / Emergency Control Panel",
+      "description": "Architecture for a kill-switch and emergency control panel: MFA-gated activation with optional second-approver for critical switches, Redis SET with TTL for sub-5ms state write, Redis pub/sub fan-out propagating switch state to all service pods within 500ms, service-level 5-second safety-net polling as fallback, graceful degradation responses (stale cache / 503 / maintenance page) on active switch, automatic TTL expiry to prevent indefinite lockout, immutable append-only audit log with PagerDuty alert on every activation, scope targeting (all traffic / specific region / specific user segment), and heartbeat dashboard confirming acknowledgment percentage across pods."
+    },
+    {
+      "slug": "remote-app-configuration-system",
+      "title": "Design a Remote App Configuration System (like Firebase Remote Config)",
+      "description": "Architecture for a Firebase Remote Config-like system: client SDK sends user context (userId, appVersion, platform, country) to server-side targeting engine that evaluates priority-ordered rules and returns a resolved config map, CDN-served global defaults with ETag 304 short-circuit for non-targeted payloads under 5ms, on-device rule caching for offline evaluation, stale-while-revalidate SDK fetch pattern, Redis-cached rule sets with 60-second TTL, config publish triggers Redis pub/sub and CDN purge, and A/B experiment assignment embedded in the config evaluation response."
+    }
+  ],
+  "system-design-problems/high-level-design/file-storage-cloud-drive-systems": [
+    {
+      "slug": "cloud-storage-ui",
+      "title": "Design a Cloud Storage UI (like Google Drive)",
+      "description": "Architecture for a Google Drive-like cloud storage system: client-side chunked upload (5MB parts) with SHA-256 deduplication via server-side copy, S3 multipart upload with resumable state, virus scanning and thumbnail generation as async Kafka consumers, adjacency-list folder tree with materialised path for subtree queries, cursor-paginated file listing, CDN-served presigned download URLs with 15-minute TTL, quota enforcement with storage accounting, full-text and metadata search via Elasticsearch, and real-time sync across devices via WebSocket delta events."
+    },
+    {
+      "slug": "file-sharing-permission-system",
+      "title": "Design a File Sharing & Permission System (like Google Drive ACL)",
+      "description": "Architecture for a file sharing and permission system: per-resource ACL rows (resourceId, principalId, role) with role hierarchy owner > editor > commenter > viewer, folder permission inheritance propagated to children with explicit child overrides, 128-bit random share link tokens with scope/expiry/password and view-count limits, ancestor-walk access check with Redis 60s cache per (userId, fileId), revoke with immediate Redis invalidation, immutable append-only access audit log, and DLP scanning for sensitive data in shared links."
+    },
+    {
+      "slug": "file-version-history-restore",
+      "title": "Design a File Version History & Restore System (like Google Drive / Dropbox)",
+      "description": "Architecture for a file version history and restore system: version row per save (versionId, fileId, s3Key, deltaKey, size, createdAt), bsdiff binary delta for text/docs vs full copy for binary files >50% changed, delta chain with max depth 100 before a new full snapshot, version list timeline with author and size delta, non-destructive restore via delta chain reconstruction uploaded as a new version, retention policy (free: 30 versions/30 days, paid: unlimited), nightly GC with 7-day grace period, and 30-day soft-delete trash with one-click restore."
+    }
+  ],
+  "system-design-problems/high-level-design/knowledge-content-systems": [
+    {
+      "slug": "learning-platform-course-progress",
+      "title": "Design a Learning Platform (Course + Progress Tracking)",
+      "description": "Architecture for an online learning platform: course content delivery with video streaming (adaptive bitrate HLS), progress tracking with per-lesson completion events and resume playback, interactive exercises with automated grading, certificate issuance on course completion, learning path recommendations, cohort-based discussion forums, offline download with DRM-protected content, instructor dashboard with student engagement analytics, and spaced repetition review system for retention."
+    },
+    {
+      "slug": "medium-like-article-platform",
+      "title": "Design a Medium-like Article Platform",
+      "description": "Architecture for a Medium-like article publishing platform: rich text editor with autosave and collaborative drafts, publish pipeline with SEO metadata generation and canonical URL management, content delivery with ISR for published articles, reading progress tracking and highlight/annotation system, recommendation engine for personalized feeds, clap/reaction system with eventual consistency, paywall and member-only content gating, author analytics dashboard, and comment threading with moderation queue."
+    },
+    {
+      "slug": "qa-system-stackoverflow",
+      "title": "Design a Q&A System (StackOverflow-like)",
+      "description": "Architecture for a StackOverflow-like Q&A platform: question posting with tag taxonomy and duplicate detection, Markdown editor with live preview and code syntax highlighting, voting system with reputation score propagation, answer ranking algorithm (accepted answer priority, vote score, recency), full-text search with tag filtering and semantic similarity, notification system for question activity, moderation tools (flag, close, delete), badge award engine, and audit log for content edits."
+    }
+  ],
+  "system-design-problems/high-level-design/maps-location-intelligence": [
+    {
+      "slug": "location-based-recommendation-system",
+      "title": "Design a Location-Based Recommendation System",
+      "description": "Architecture for a location-based recommendation system: Redis GEORADIUS fetching up to 200 candidate places within 5km in under 5ms, S2 cell level-14 spatial index sharded by city geohash prefix, multi-signal ranking (proximity 40%, rating 30%, personal affinity 20%, popularity 10%), user affinity profile built from visit history and cuisine preferences cached in Redis 10-minute TTL, real-time feedback loop via Kafka visit events updating affinity scores near-real-time, open-now filtering using RRULE-based business hours, and session-aware deduplication to exclude recently visited places."
+    },
+    {
+      "slug": "maps-exploration-ui",
+      "title": "Design a Maps Exploration UI (like Google Maps)",
+      "description": "Architecture for a Google Maps-like exploration UI: Mapbox Vector Tile (MVT) format rendered client-side with WebGL, z/x/y tile addressing with 30-day CDN cache for base tiles and 30-second TTL for traffic overlays, tile server rendering from OpenStreetMap vector data on CDN miss, PostGIS GIST index with KNN for proximity search, prefix-trie autocomplete under 20ms p50, place detail cards with real-time busyness data, GPS probe aggregation into per-road-segment speed tiles refreshed every 30 seconds, and S2 geometry library for spatial indexing."
+    },
+    {
+      "slug": "route-optimization-ui",
+      "title": "Design a Route Optimization UI (like Google Maps Navigation)",
+      "description": "Architecture for a Google Maps navigation system: road graph with 100M nodes and 1B edges partitioned by H3 hexagon, Contraction Hierarchies (CH) precomputed shortcuts enabling bidirectional Dijkstra in under 200ms at city scale, GPS probe ingestion via Kafka with 30-second Flink aggregation into per-segment speed classifications, ML ETA model predicting arrival with p50/p90 confidence bounds using time-of-day and incident signals, live navigation with position matching every 5 seconds and off-route re-trigger at 50m deviation, and SSE-pushed reroutes on traffic incidents."
     }
   ],
   "system-design-problems/high-level-design/media-rich-content-systems": [
@@ -4495,6 +4697,50 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Architecture for a video player system: encoding pipeline with multi-rendition transcoding, HLS/DASH segmentation, AES-128 encryption, Widevine/FairPlay DRM, adaptive bitrate (ABR) logic with BOLA, buffer management, and QoE metrics."
     }
   ],
+  "system-design-problems/high-level-design/messaging-communication": [
+    {
+      "slug": "email-client-frontend",
+      "title": "Design Email Client (Gmail-like)",
+      "description": "Architecture for a Gmail-like email client frontend: IMAP/JMAP synchronization with delta sync, virtual scroll for inbox with thousands of messages, rich text compose with autosave drafts to IndexedDB, thread grouping and label management, full-text search with Elasticsearch query syntax, attachment upload with resumable multipart, undo-send with 5-second cancel window, spam filtering feedback loop, keyboard shortcut system, and offline inbox access via service worker."
+    },
+    {
+      "slug": "multi-channel-communication-hub",
+      "title": "Design a Multi-Channel Communication Hub",
+      "description": "Architecture for a multi-channel communication hub like Intercom or Zendesk: unified inbox aggregating messages from email, live chat, WhatsApp, SMS, and social media; channel adapter pattern for normalizing heterogeneous message formats; agent assignment and round-robin routing; conversation state machine (open, pending, resolved, snoozed); real-time agent presence with typing relay; collision detection when multiple agents view the same conversation; SLA timer tracking per conversation; and canned response search with keyboard shortcuts."
+    },
+    {
+      "slug": "notification-inbox-system",
+      "title": "Design a Notification Inbox System",
+      "description": "Architecture for a notification inbox like GitHub notifications or Linear: real-time notification delivery via WebSocket push, notification grouping and deduplication (same actor, same object within 5 minutes), mark-as-read cursor with optimistic update, notification type routing (mention, assignment, comment, system), notification preferences per type and channel, badge count across browser tabs via BroadcastChannel API, notification snooze and mute, and infinite scroll notification list with virtual rendering."
+    },
+    {
+      "slug": "threaded-messaging-system",
+      "title": "Design a Threaded Messaging System",
+      "description": "Architecture for a threaded messaging system like Slack threads or Discourse: parent message with reply thread, nested reply rendering with indent levels, unread reply counts per thread, thread participant tracking, cross-thread quoting and deep-linking, infinite scroll within thread reply list, real-time reply arrival via WebSocket, thread subscription and notification management, and thread search with context highlighting."
+    },
+    {
+      "slug": "whatsapp-slack-frontend",
+      "title": "Design WhatsApp Web / Slack Frontend",
+      "description": "Architecture for a real-time chat frontend like WhatsApp Web or Slack: WebSocket connection management with exponential backoff reconnection, message ordering via Lamport timestamps and sequence numbers, optimistic message sending with local IDs, read receipt and delivery status tracking, channel and DM sidebar with unread counts, message search with Elasticsearch, file upload with resumable multipart, end-to-end encryption key management, presence and typing indicators, and offline queue replay on reconnection."
+    }
+  ],
+  "system-design-problems/high-level-design/notification-delivery-platform": [
+    {
+      "slug": "notification-preferences-system",
+      "title": "Design a User Notification Preferences System",
+      "description": "Architecture for a notification preferences system: per-category per-channel preference matrix, quiet hours with timezone enforcement, frequency capping with Redis INCR counters and daily digest fallback, optimistic UI updates with ETag conflict detection, RFC 8058 one-click unsubscribe with signed JWT tokens, CAN-SPAM/GDPR suppression list management, legal channel immutability (transactional cannot be opted out), and Kafka event-driven cache invalidation across all notification service instances."
+    },
+    {
+      "slug": "priority-notification-delivery-ui",
+      "title": "Design a Priority-Based Notification Delivery UI",
+      "description": "Architecture for priority-based notification delivery: four SLA lanes (critical <5s bypassing preferences, high <15s, normal <60s, bulk <4hr batched), Kafka priority topic partitioning with consumer group weight allocation, parallel multi-channel send for critical events (push + SMS simultaneously), bulk rate limiting (1K emails/min per domain), SLA breach detection with PagerDuty escalation, dead-letter queue management, Kafka consumer lag monitoring, and delivery rate dashboards per lane."
+    },
+    {
+      "slug": "unified-notification-platform",
+      "title": "Design a Unified Notification Platform (Push + Email + SMS + In-app)",
+      "description": "Architecture for a multi-channel notification platform: event ingestion via Kafka with deduplication, per-user preference and opt-out enforcement, Handlebars template rendering per channel, fan-out to dedicated channel workers (FCM/APNs push, Amazon SES email, Twilio SMS, in-app SSE), exponential backoff retry with fallback chain, provider webhook tracking for open/click analytics, Redis unread badge counter, and real-time delivery status dashboard."
+    }
+  ],
   "system-design-problems/high-level-design/other": [
     {
       "slug": "customer-support-dashboard",
@@ -4515,6 +4761,28 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "survey-form-analytics-system",
       "title": "Design a Survey / Form Analytics System",
       "description": "Architecture for a survey and form analytics system: form builder with conditional logic, response ingestion pipeline, real-time aggregation, completion funnel analytics, drop-off detection, partial response recovery, response export, spam/bot filtering, and multi-tenant access control."
+    }
+  ],
+  "system-design-problems/high-level-design/payments-fintech-systems": [
+    {
+      "slug": "fraud-detection-risk-alert-ui",
+      "title": "Design a Fraud Detection / Risk Alert UI",
+      "description": "Architecture for a payment fraud detection and risk alert system: real-time transaction scoring pipeline (rule engine + ML model, sub-100ms decision), velocity checks (card/device/IP rate limiting), device fingerprinting and behavioral biometrics, step-up authentication for high-risk transactions (OTP, biometric), analyst review queue with case management, model feature engineering (transaction graph, merchant category, time-of-day patterns), feedback loop for false positive reduction, risk score explanation for declined transactions, and chargeback prediction to proactively flag disputes."
+    },
+    {
+      "slug": "payment-gateway-integration-ui",
+      "title": "Design a Payment Gateway Integration UI (like Stripe Checkout)",
+      "description": "Architecture for a payment gateway integration UI: PCI-DSS compliant iframe-based card capture with Stripe Elements, payment intent lifecycle (created → processing → succeeded/failed), 3D Secure authentication flow, idempotency keys for safe retries, webhook handling for async payment events, retry logic with exponential backoff, saved payment method management, multi-currency display and conversion, partial capture and refund flows, and checkout abandonment recovery."
+    },
+    {
+      "slug": "transaction-history-reconciliation-ui",
+      "title": "Design a Transaction History & Reconciliation UI",
+      "description": "Architecture for a transaction history and reconciliation UI: paginated transaction ledger with cursor-based pagination, multi-dimensional filtering (date range, status, category, amount range), real-time transaction streaming via SSE for live balance updates, statement export in CSV/PDF with async generation, bank statement reconciliation (match merchant records against bank settlement files), discrepancy detection and alert system, dispute management workflow, running balance computation, and audit trail for all financial record modifications."
+    },
+    {
+      "slug": "upi-wallet-payment-flow",
+      "title": "Design a UPI / Wallet Payment Flow (India-Specific Scale)",
+      "description": "Architecture for a UPI and digital wallet payment flow at India-scale: UPI collect flow vs. UPI intent flow, VPA (Virtual Payment Address) resolution and validation, UPI PIN entry via a PCI-compliant SDK, NPCI switch integration and response handling, wallet top-up via net banking and UPI, wallet balance management with distributed ledger, P2P and P2M payment flows, payment link generation and deep link handling, failure recovery and refund automation, and scale considerations for 300M daily transactions."
     }
   ],
   "system-design-problems/high-level-design/performance-scale-edge-cases": [
@@ -4552,33 +4820,6 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "progressive-hydration-system",
       "title": "Design a Progressive Hydration System",
       "description": "Architecture for progressive hydration: SSR-rendered HTML is sent immediately for fast FCP, then JavaScript hydrates components incrementally by priority — above-the-fold critical components first (synchronous hydration on main thread), interactive components on interaction (event-triggered hydration), non-critical components on idle (requestIdleCallback hydration), and below-fold components when visible (IntersectionObserver hydration). Eliminates the monolithic TTI cliff of full-bundle hydration."
-    }
-  ],
-  "system-design-problems/high-level-design/messaging-communication": [
-    {
-      "slug": "whatsapp-slack-frontend",
-      "title": "Design WhatsApp Web / Slack Frontend",
-      "description": "Architecture for a real-time chat frontend like WhatsApp Web or Slack: WebSocket connection management with exponential backoff reconnection, message ordering via Lamport timestamps and sequence numbers, optimistic message sending with local IDs, read receipt and delivery status tracking, channel and DM sidebar with unread counts, message search, file upload with resumable multipart, presence and typing indicators, and offline queue replay on reconnection."
-    },
-    {
-      "slug": "email-client-frontend",
-      "title": "Design Email Client (Gmail-like)",
-      "description": "Architecture for a Gmail-like email client frontend: IMAP/JMAP synchronization with delta sync, virtual scroll for inbox with thousands of messages, rich text compose with autosave drafts to IndexedDB, thread grouping and label management, full-text search with Elasticsearch query syntax, attachment upload with resumable multipart, undo-send with 5-second cancel window, and offline inbox access via service worker."
-    },
-    {
-      "slug": "threaded-messaging-system",
-      "title": "Design a Threaded Messaging System",
-      "description": "Architecture for a threaded messaging system like Slack threads or Discourse: parent message with reply thread, nested reply rendering with indent levels, unread reply counts per thread, thread participant tracking, cross-thread quoting and deep-linking, infinite scroll within thread reply list, real-time reply arrival via WebSocket, thread subscription and notification management, and thread search with context highlighting."
-    },
-    {
-      "slug": "notification-inbox-system",
-      "title": "Design a Notification Inbox System",
-      "description": "Architecture for a notification inbox like GitHub notifications or Linear: real-time notification delivery via WebSocket push, notification grouping and deduplication, mark-as-read cursor with optimistic update, notification type routing, notification preferences per type and channel, badge count across browser tabs via BroadcastChannel API, notification snooze and mute, and infinite scroll notification list with virtual rendering."
-    },
-    {
-      "slug": "multi-channel-communication-hub",
-      "title": "Design a Multi-Channel Communication Hub",
-      "description": "Architecture for a multi-channel communication hub like Intercom or Zendesk: unified inbox aggregating messages from email, live chat, WhatsApp, SMS, and social media; channel adapter pattern for normalizing heterogeneous message formats; agent assignment and round-robin routing; conversation state machine; real-time agent presence with typing relay; collision detection; SLA timer tracking per conversation; and canned response search."
     }
   ],
   "system-design-problems/high-level-design/personalization-systems": [
@@ -4702,6 +4943,23 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "description": "Architecture for a browser-based video conferencing client: WebRTC mesh vs SFU, media negotiation, adaptive quality, layout management, and resilience under poor network conditions."
     }
   ],
+  "system-design-problems/high-level-design/scheduling-calendar-systems": [
+    {
+      "slug": "google-calendar-system",
+      "title": "Design a Calendar System (like Google Calendar)",
+      "description": "Architecture for a Google Calendar-like system: event data model with RRULE recurrence stored once and expanded on query, EXDATE exception handling for single-occurrence edits, iCalendar .ics format for interoperability, CalDAV sync with server-side syncToken for delta updates, timezone-aware storage and rendering, shared calendar ACL with viewer/editor/owner roles, reminder pipeline with timezone-correct alarm delivery, conflict detection for overlapping events, and real-time push via WebSocket for collaborative editing."
+    },
+    {
+      "slug": "meeting-scheduling-system",
+      "title": "Design a Meeting Scheduling System (like Calendly)",
+      "description": "Architecture for a Calendly-like meeting scheduling system: event type configuration with working hours RRULE and buffer rules, real-time free/busy aggregation from Google and Outlook calendar APIs, Redis SETNX slot locking to prevent double-booking during form fill, atomic booking commit with idempotency on reservation token, Google Calendar event creation with conferencing data for Meet/Zoom link, signed JWT reschedule/cancel links requiring no login, round-robin host assignment for team scheduling, and timezone-aware availability display for global guests."
+    },
+    {
+      "slug": "resource-booking-system",
+      "title": "Design a Resource Booking System (Rooms, Desks, Slots)",
+      "description": "Architecture for a resource booking system: interval overlap query to find available rooms and desks, SELECT FOR UPDATE atomic booking with unique constraint to prevent double-booking races, QR/NFC check-in with no-show auto-release at start+15min, Redis sorted set waitlist with 10-minute claim window, recurring maintenance block scheduling, capacity and amenity filtering, admin override and force-release, SSE real-time availability updates, and booking analytics for utilization reporting."
+    }
+  ],
   "system-design-problems/high-level-design/search-discovery-systems": [
     {
       "slug": "faceted-search-large-datasets",
@@ -4732,6 +4990,33 @@ export const subcategoryArticles: Record<string, Array<{slug: string; title: str
       "slug": "youtube-search-recommendation-ui",
       "title": "Design YouTube Search + Recommendation UI",
       "description": "Architecture for a YouTube-like search and recommendation UI: search results page with video cards (thumbnail, duration badge, view count, channel avatar), recommendation sidebar on watch page, next-video autoplay with countdown, homepage feed personalization, search filter chips (upload date, duration, type, features, sort), thumbnail hover-to-preview, channel subscription signal integration into recommendations, trending/explore tab, and watch history influence on ranking."
+    }
+  ],
+  "system-design-problems/high-level-design/security-auth-privacy-systems": [
+    {
+      "slug": "account-security-dashboard",
+      "title": "Design an Account Security Dashboard (Sessions, Devices)",
+      "description": "Architecture for an account security dashboard: active session listing with device fingerprint, IP geolocation, and last-active timestamp; session revocation with real-time WebSocket push to invalidate the revoked session; device trust management with remembered and untrusted device lists; login history with anomaly highlighting (new location, unusual time); two-factor authentication enrollment and backup codes; password change with breach check via HaveIBeenPwned k-anonymity API; security event timeline; and account recovery options management."
+    },
+    {
+      "slug": "authentication-system",
+      "title": "Design an Authentication System (OAuth, SSO, MFA Flows)",
+      "description": "Architecture for a complete authentication system frontend: OAuth 2.0 authorization code flow with PKCE, SSO with SAML and OIDC, multi-factor authentication (TOTP, WebAuthn, SMS OTP), session management with refresh token rotation, silent token refresh via hidden iframe, login form with credential autofill and passkey support, brute-force protection UI, account recovery flows, and cross-domain SSO session propagation."
+    },
+    {
+      "slug": "permission-access-control-ui",
+      "title": "Design a Permission & Access Control System UI",
+      "description": "Architecture for a permission and access control system UI: role-based access control (RBAC) with role inheritance, resource-level permission matrix, UI-level permission enforcement (hide vs. disable), permission evaluation at the edge using JWT claims, real-time permission propagation when roles change, attribute-based access control (ABAC) for context-aware permissions, team and workspace membership management, and audit log for permission changes."
+    },
+    {
+      "slug": "privacy-consent-management",
+      "title": "Design a Privacy & Consent Management System",
+      "description": "Architecture for a GDPR/CCPA-compliant privacy and consent management system: cookie consent banner with granular category toggles (necessary, analytics, marketing, personalization), consent version tracking and re-prompting on policy updates, consent storage in a tamper-proof audit log, data subject rights UI (access, deletion, portability requests), privacy preference center, consent propagation to third-party tags via a tag manager integration, cookie scanning and categorization, and Do Not Sell / Do Not Track signal handling."
+    },
+    {
+      "slug": "secure-token-session-handling",
+      "title": "Design a Secure Token & Session Handling System",
+      "description": "Architecture for a secure token and session handling system: token storage strategies (in-memory access token vs. HttpOnly cookie vs. localStorage tradeoffs), JWT anatomy and signature validation, CSRF protection via the double-submit cookie pattern and SameSite cookie attribute, XSS-resistant token storage, refresh token rotation with family revocation for replay attack prevention, session fixation prevention on privilege escalation, silent refresh via hidden iframe or service worker, token binding to device fingerprint, and logout that invalidates all layers of the token chain."
     }
   ],
   "system-design-problems/high-level-design/social-engagement": [

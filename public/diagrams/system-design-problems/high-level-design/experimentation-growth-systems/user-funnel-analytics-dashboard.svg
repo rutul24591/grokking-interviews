@@ -1,0 +1,121 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">User Funnel Analytics Dashboard — Ingestion &amp; Computation Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors: 5 boxes -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Client SDK</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">5s batch queue</text>
+
+  <rect x="198" y="65" width="110" height="40" rx="8" fill="#2563eb"/>
+  <text x="253" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Kafka</text>
+  <text x="253" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">event stream</text>
+
+  <rect x="385" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="442" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Flink / Spark</text>
+  <text x="442" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">stream + batch</text>
+
+  <rect x="575" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="632" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">ClickHouse</text>
+  <text x="632" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">windowFunnel()</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Dashboard API</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">live + historical</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="253" y1="105" x2="253" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="442" y1="105" x2="442" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="632" y1="105" x2="632" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Event Ingestion -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · EVENT INGESTION — 5s batch flush / 20-event threshold / sendBeacon on unload → POST /api/events/batch → Kafka</text>
+
+  <line x1="75" y1="150" x2="238" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="156" y="144" text-anchor="middle" font-size="9" fill="#374151">POST /api/events/batch (204 fire-and-forget)</text>
+
+  <line x1="238" y1="164" x2="427" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="332" y="158" text-anchor="middle" font-size="9" fill="#374151">partition by userId hash → topic: raw-events</text>
+
+  <line x1="75" y1="180" x2="238" y2="180" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="156" y="174" text-anchor="middle" font-size="9" fill="#374151">late event (&gt;5min delta) → late-arrival buffer</text>
+
+  <!-- SECTION 2: Streaming Path -->
+  <rect x="8" y="198" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="209" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · STREAMING PATH — Flink per-user state (RocksDB), windowFunnel step matching, emit aggregate to ClickHouse every 60s</text>
+
+  <line x1="427" y1="228" x2="617" y2="228" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="522" y="222" text-anchor="middle" font-size="9" fill="#374151">per-user: {step, completedAt[], sessionId} in RocksDB</text>
+
+  <line x1="617" y1="242" x2="457" y2="242" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="537" y="236" text-anchor="middle" font-size="9" fill="#374151">60s emit: step counts → ClickHouse materialized view</text>
+
+  <!-- Flink state box -->
+  <rect x="20" y="252" width="330" height="32" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="185" y="267" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">24hr watermark: event-time semantics, late events → cold batch</text>
+  <text x="185" y="281" text-anchor="middle" font-size="9" fill="#374151">timeout → count as drop-off; reset state on re-entry</text>
+
+  <!-- SECTION 3: Dashboard Query -->
+  <rect x="8" y="294" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="305" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · DASHBOARD QUERY — live (1hr, 60s refresh) vs. historical (7/30/90d, nightly batch); ClickHouse windowFunnel()</text>
+
+  <line x1="809" y1="324" x2="647" y2="324" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="728" y="318" text-anchor="middle" font-size="9" fill="#374151">SELECT windowFunnel(window)(ts, step1, step2, step3)</text>
+
+  <line x1="647" y1="338" x2="809" y2="338" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="728" y="332" text-anchor="middle" font-size="9" fill="#374151">{step: N, count: X, pct: Y%} per funnel step</text>
+
+  <!-- Segment breakdown box -->
+  <rect x="450" y="348" width="360" height="32" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="630" y="364" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Drop-off segments: browser / OS / country / channel / plan</text>
+  <text x="630" y="378" text-anchor="middle" font-size="9" fill="#374151">async secondary queries; lift-ranked "Insights" auto-highlight</text>
+
+  <!-- SECTION 4: Alerts + Session Replay -->
+  <rect x="8" y="390" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
+  <text x="450" y="401" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · ALERTS + SESSION REPLAY — 15min cron; absolute + relative thresholds; 1hr suppression; drop-off → replay search link</text>
+
+  <line x1="809" y1="420" x2="647" y2="420" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="728" y="414" text-anchor="middle" font-size="9" fill="#374151">cron 15min: rate vs. threshold + 7d baseline</text>
+
+  <line x1="647" y1="434" x2="809" y2="434" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="728" y="428" text-anchor="middle" font-size="9" fill="#374151">fire: Slack+email+PagerDuty; recover: same channels</text>
+
+  <line x1="809" y1="448" x2="647" y2="448" stroke="#be123c" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
+  <text x="728" y="442" text-anchor="middle" font-size="9" fill="#374151">drop-off panel → replay search API → session list</text>
+
+  <!-- Footer metrics -->
+  <rect x="8" y="468" width="884" height="44" rx="6" fill="#1a1822"/>
+  <text x="90" y="484" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Batch Flush</text>
+  <text x="90" y="498" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5s / 20 events</text>
+  <text x="255" y="484" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Live Freshness</text>
+  <text x="255" y="498" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">60s</text>
+  <text x="450" y="484" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Late Event Watermark</text>
+  <text x="450" y="498" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">24 hours</text>
+  <text x="650" y="484" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Alert Cron</text>
+  <text x="650" y="498" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">15 min / 1hr suppress</text>
+  <text x="820" y="484" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Cohort Retention</text>
+  <text x="820" y="498" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">day-0 → day-30</text>
+  <text x="90" y="508" text-anchor="middle" font-size="9" fill="#c4b5fd">sendBeacon unload</text>
+  <text x="255" y="508" text-anchor="middle" font-size="9" fill="#93c5fd">historical: 24hr batch</text>
+  <text x="450" y="508" text-anchor="middle" font-size="9" fill="#6ee7b7">cold batch beyond watermark</text>
+  <text x="650" y="508" text-anchor="middle" font-size="9" fill="#fcd34d">P1 &gt;20% drop, P2 10–20%</text>
+  <text x="820" y="508" text-anchor="middle" font-size="9" fill="#fca5a5">weekly / monthly cuts</text>
+</svg>

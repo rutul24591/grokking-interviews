@@ -1,0 +1,137 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="600" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Responsive Cross-Device Frontend Architecture</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="14" y="52" width="80" height="36" rx="7" fill="#6d5bd0"/>
+  <text x="54" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Browser</text>
+  <text x="54" y="82" text-anchor="middle" font-size="9" fill="#edeaf5">any device</text>
+
+  <rect x="152" y="52" width="90" height="36" rx="7" fill="#2563eb"/>
+  <text x="197" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Token System</text>
+  <text x="197" y="82" text-anchor="middle" font-size="9" fill="#dbeafe">CSS custom props</text>
+
+  <rect x="308" y="52" width="90" height="36" rx="7" fill="#2f9d74"/>
+  <text x="353" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Layout Grid</text>
+  <text x="353" y="82" text-anchor="middle" font-size="9" fill="#d1fae5">container query</text>
+
+  <rect x="462" y="52" width="90" height="36" rx="7" fill="#d97843"/>
+  <text x="507" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Image CDN</text>
+  <text x="507" y="82" text-anchor="middle" font-size="9" fill="#fef3c7">srcset + AVIF</text>
+
+  <rect x="616" y="52" width="90" height="36" rx="7" fill="#7c3aed"/>
+  <text x="661" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Network API</text>
+  <text x="661" y="82" text-anchor="middle" font-size="9" fill="#ede9fe">effectiveType</text>
+
+  <rect x="786" y="52" width="90" height="36" rx="7" fill="#be123c"/>
+  <text x="831" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Nav Component</text>
+  <text x="831" y="82" text-anchor="middle" font-size="9" fill="#fecdd3">responsive</text>
+
+  <!-- Lifelines -->
+  <line x1="54" y1="88" x2="54" y2="566" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="197" y1="88" x2="197" y2="566" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="353" y1="88" x2="353" y2="566" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="507" y1="88" x2="507" y2="566" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="661" y1="88" x2="661" y2="566" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="831" y1="88" x2="831" y2="566" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- BAND A: Token System -->
+  <rect x="8" y="98" width="878" height="16" rx="3" fill="#2563eb" opacity="0.2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="bold">PATH A — TOKEN SYSTEM (primitive→semantic→component; clamp() fluid type; 4px grid; dark mode remap)</text>
+
+  <line x1="187" y1="128" x2="64" y2="128" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="125" y="122" text-anchor="middle" font-size="9" fill="#374151">:root --color-primary:#6d5bd0; --space-4:16px; --font-size-base:clamp(1rem,0.5rem+2vw,1.5rem)</text>
+
+  <rect x="20" y="136" width="480" height="26" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+  <text x="260" y="151" text-anchor="middle" font-size="8.5" fill="#1d4ed8" font-weight="600">Token tiers: primitive (--color-blue-500) → semantic (--color-interactive-primary) → component (--btn-bg)</text>
+  <text x="260" y="163" text-anchor="middle" font-size="8" fill="#374151">[data-theme="dark"] remaps semantic tokens only | components unchanged | max-width:75ch prose</text>
+
+  <!-- BAND B: Container Queries -->
+  <rect x="8" y="178" width="878" height="16" rx="3" fill="#2f9d74" opacity="0.2"/>
+  <text x="450" y="190" text-anchor="middle" font-size="9" fill="#065f46" font-weight="bold">PATH B — CONTAINER QUERIES (@container vs @media; component-level breakpoints; portable across layouts)</text>
+
+  <line x1="54" y1="208" x2="343" y2="208" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="198" y="202" text-anchor="middle" font-size="9" fill="#374151">grid renders; .product-card-wrapper &#123;container-type:inline-size&#125;</text>
+
+  <rect x="20" y="216" width="480" height="30" rx="4" fill="#f0fdf4" stroke="#2f9d74" stroke-width="1"/>
+  <text x="260" y="231" text-anchor="middle" font-size="8.5" fill="#065f46" font-weight="600">@container product-card (min-width:320px) → flex-direction:row (horizontal card)</text>
+  <text x="260" y="244" text-anchor="middle" font-size="8" fill="#374151">below 320px → vertical stack | same component works in 3-col grid and 1-col feed | fallback: mobile default</text>
+
+  <!-- BAND C: Adaptive Images -->
+  <rect x="8" y="256" width="878" height="16" rx="3" fill="#d97843" opacity="0.2"/>
+  <text x="450" y="268" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">PATH C — ADAPTIVE IMAGES (srcset+sizes; AVIF→WebP; art-direction picture; preload imagesrcset; aspect-ratio CLS)</text>
+
+  <line x1="54" y1="286" x2="497" y2="286" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="275" y="280" text-anchor="middle" font-size="9" fill="#374151">&lt;link rel="preload" as="image" imagesrcset="hero-400w 400w, hero-800w 800w" imagesizes="100vw"&gt;</text>
+
+  <line x1="497" y1="300" x2="64" y2="300" stroke="#d97843" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="280" y="294" text-anchor="middle" font-size="9" fill="#374151">browser selects AVIF (50% smaller) → WebP fallback; &lt;picture&gt; art-direction portrait/landscape; aspect-ratio→CLS=0</text>
+
+  <!-- BAND D: Pointer Events + Touch -->
+  <rect x="8" y="316" width="878" height="16" rx="3" fill="#7c3aed" opacity="0.15"/>
+  <text x="450" y="328" text-anchor="middle" font-size="9" fill="#5b21b6" font-weight="bold">PATH D — TOUCH/POINTER NORMALIZATION (Pointer Events API; touch-action:pan-y; conditional hover media)</text>
+
+  <line x1="54" y1="346" x2="343" y2="346" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="198" y="340" text-anchor="middle" font-size="9" fill="#374151">pointerdown/pointermove/pointerup unify touch + mouse</text>
+
+  <rect x="20" y="354" width="520" height="26" rx="4" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1"/>
+  <text x="270" y="369" text-anchor="middle" font-size="8.5" fill="#5b21b6" font-weight="600">touch-action:pan-y on scroll containers → no delay | @media(hover:hover) and (pointer:fine) for true hover only</text>
+
+  <!-- BAND E: Performance Tier -->
+  <rect x="8" y="390" width="878" height="16" rx="3" fill="#be123c" opacity="0.15"/>
+  <text x="450" y="402" text-anchor="middle" font-size="9" fill="#9f1239" font-weight="bold">PATH E — PERF TIER (effectiveType + hardwareConcurrency → lazy load; data attr CSS adapt; Save-Data hard gate)</text>
+
+  <line x1="54" y1="420" x2="651" y2="420" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="352" y="414" text-anchor="middle" font-size="9" fill="#374151">read navigator.connection.effectiveType + hardwareConcurrency → set &lt;html data-network="3g" data-cores="4"&gt;</text>
+
+  <line x1="651" y1="434" x2="64" y2="434" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="357" y="428" text-anchor="middle" font-size="9" fill="#374151">low-end: &lt;100KB JS no animations system-font | mid: &lt;200KB | high-end: lazy import Framer Motion (~60KB)</text>
+
+  <line x1="54" y1="450" x2="343" y2="450" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="198" y="462" text-anchor="middle" font-size="9" fill="#374151">Save-Data header || prefers-reduced-motion → hard gate: no animations / no hi-res images regardless of tier</text>
+
+  <!-- BAND F: Responsive Nav -->
+  <rect x="8" y="474" width="878" height="16" rx="3" fill="#2563eb" opacity="0.15"/>
+  <text x="450" y="486" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="bold">PATH F — RESPONSIVE NAV (single &lt;nav&gt;; CSS show/hide; focus trap drawer; aria-expanded; Escape close)</text>
+
+  <line x1="54" y1="504" x2="821" y2="504" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="437" y="498" text-anchor="middle" font-size="9" fill="#374151">mobile tap hamburger → isDrawerOpen=true → focus to close btn; Tab cycles inside; Escape → close + focus hamburger</text>
+
+  <line x1="821" y1="518" x2="64" y2="518" stroke="#be123c" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="437" y="512" text-anchor="middle" font-size="9" fill="#374151">single DOM &lt;nav&gt; at all times; CSS visibility:hidden (not display:none) keeps links in focus order for a11y</text>
+
+  <!-- Metrics footer -->
+  <rect x="8" y="534" width="878" height="50" rx="6" fill="#1a1822"/>
+  <text x="70" y="552" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Typography</text>
+  <text x="70" y="570" text-anchor="middle" font-size="12" fill="white" font-weight="700">clamp() fluid</text>
+
+  <text x="210" y="552" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">@container</text>
+  <text x="210" y="570" text-anchor="middle" font-size="12" fill="white" font-weight="700">portable</text>
+
+  <text x="370" y="552" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Images</text>
+  <text x="370" y="570" text-anchor="middle" font-size="12" fill="white" font-weight="700">AVIF 50% win</text>
+
+  <text x="530" y="552" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Low-end JS</text>
+  <text x="530" y="570" text-anchor="middle" font-size="12" fill="white" font-weight="700">&lt;100KB budget</text>
+
+  <text x="700" y="552" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">CLS</text>
+  <text x="700" y="570" text-anchor="middle" font-size="12" fill="white" font-weight="700">aspect-ratio=0</text>
+
+  <text x="855" y="552" text-anchor="middle" font-size="9" fill="#fecdd3" font-weight="600">Nav DOM</text>
+  <text x="855" y="570" text-anchor="middle" font-size="12" fill="white" font-weight="700">single &lt;nav&gt;</text>
+</svg>

@@ -1,0 +1,115 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Transaction History &amp; Reconciliation UI</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
+    </marker>
+  </defs>
+
+  <!-- 5 actors -->
+  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">User / Merchant</text>
+  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">filter + export</text>
+
+  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
+  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Txn Ledger API</text>
+  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">cursor pagination</text>
+
+  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Recon Engine</text>
+  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">bank file matching</text>
+
+  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
+  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Export Worker</text>
+  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">CSV / PDF → S3</text>
+
+  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
+  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">SSE / Audit</text>
+  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">balance stream + log</text>
+
+  <!-- Lifelines -->
+  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- SECTION 1: Cursor Pagination + Filter -->
+  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · CURSOR PAGINATION + FILTER — ULID txnId cursor (no offset drift); server-side WHERE clauses; URL-serialized filter state</text>
+
+  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">GET /api/transactions?after=txn_ULID&amp;limit=25&amp;filters</text>
+
+  <line x1="240" y1="164" x2="90" y2="164" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="158" text-anchor="middle" font-size="9" fill="#374151">WHERE id &gt; cursor ORDER BY id DESC; TanStack Virtual scroll</text>
+
+  <!-- SECTION 2: SSE Balance + Real-time -->
+  <rect x="8" y="180" width="884" height="14" rx="3" fill="#2563eb" opacity="0.15"/>
+  <text x="450" y="191" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e3a8a">2 · REAL-TIME BALANCE — SSE /api/balance/stream; balance_updated event {newBalance, delta, txnId}; Last-Event-ID reconnect</text>
+
+  <line x1="75" y1="210" x2="809" y2="210" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-r)"/>
+  <text x="442" y="204" text-anchor="middle" font-size="9" fill="#374151">EventSource /api/balance/stream (per-user, session-cookie auth)</text>
+
+  <line x1="809" y1="224" x2="90" y2="224" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="449" y="218" text-anchor="middle" font-size="9" fill="#374151">balance_updated: {newBalance: 12450, delta: +500} → header update</text>
+
+  <!-- SECTION 3: Reconciliation Engine -->
+  <rect x="8" y="242" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
+  <text x="450" y="253" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">3 · RECONCILIATION — bank CSV/MT940 upload → 3-pass matching: exact ref → fuzzy date±1d → manual queue; fee discrepancy auto-credit</text>
+
+  <line x1="75" y1="272" x2="430" y2="272" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="252" y="266" text-anchor="middle" font-size="9" fill="#374151">upload bank settlement file → S3 → trigger recon job</text>
+
+  <line x1="430" y1="286" x2="240" y2="286" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="335" y="280" text-anchor="middle" font-size="9" fill="#374151">pass 1: JOIN on txnRef + amount → reconciled</text>
+
+  <!-- Recon result box -->
+  <rect x="20" y="296" width="400" height="32" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="220" y="311" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Pass 2: fuzzy (amount + date ±1d) | Pass 3: manual review queue</text>
+  <text x="220" y="326" text-anchor="middle" font-size="9" fill="#374151">fee discrepancy → auto debit entry | duplicate → flag, no double-credit</text>
+
+  <!-- SECTION 4: Export + Dispute + Audit -->
+  <rect x="8" y="338" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
+  <text x="450" y="349" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">4 · EXPORT + DISPUTE + AUDIT — async export (job → S3 presigned 24hr); dispute API + SLA alert at 7d; immutable append-only audit table</text>
+
+  <line x1="75" y1="368" x2="620" y2="368" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="347" y="362" text-anchor="middle" font-size="9" fill="#374151">POST /api/exports → job ID; poll /api/exports/{id} every 5s</text>
+
+  <line x1="620" y1="382" x2="90" y2="382" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="355" y="376" text-anchor="middle" font-size="9" fill="#374151">done → S3 presigned URL (24hr TTL) → download notification</text>
+
+  <line x1="75" y1="398" x2="809" y2="398" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="442" y="392" text-anchor="middle" font-size="9" fill="#374151">dispute: reason + S3 evidence → payment processor API; 45-day SLA (alert at 7d)</text>
+
+  <line x1="240" y1="412" x2="809" y2="412" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
+  <text x="524" y="406" text-anchor="middle" font-size="9" fill="#374151">all modifications → append-only audit table (no UPDATE/DELETE privileges)</text>
+
+  <!-- Footer -->
+  <rect x="8" y="428" width="884" height="36" rx="6" fill="#1a1822"/>
+  <text x="90" y="444" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Cursor Type</text>
+  <text x="90" y="458" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">ULID (no drift)</text>
+  <text x="255" y="444" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">SSE Reconnect</text>
+  <text x="255" y="458" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Last-Event-ID</text>
+  <text x="450" y="444" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Export S3 TTL</text>
+  <text x="450" y="458" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">24 hours</text>
+  <text x="645" y="444" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Dispute SLA</text>
+  <text x="645" y="458" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">45 days (alert 7d)</text>
+  <text x="820" y="444" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Recon Fuzzy</text>
+  <text x="820" y="458" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">date ±1 day</text>
+
+  <!-- Running balance note -->
+  <rect x="8" y="468" width="884" height="20" rx="4" fill="#312e81" opacity="0.85"/>
+  <text x="450" y="482" text-anchor="middle" font-size="9" fill="#e0e7ff" font-weight="600">Running balance: monthly checkpoint snapshot + forward delta (snapshot invalidated on recon correction). Ledger is append-only — corrections via compensating transactions.</text>
+</svg>
