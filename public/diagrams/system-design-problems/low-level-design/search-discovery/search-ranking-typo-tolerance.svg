@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Search Ranking &amp; Typo Tolerance — Frontend LLD</text>
+
+  <rect x="16" y="44" width="420" height="176" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="44" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Typo Tolerance — Edit Distance &amp; Phonetics</text>
+  <text x="26" y="89" font-size="9.5" fill="#1a1822">Levenshtein distance: min insertions/deletions/substitutions to transform query → token</text>
+  <text x="26" y="106" font-size="9.5" fill="#1a1822">Damerau-Levenshtein: adds transpositions (ab→ba = 1 edit) — better for typos</text>
+  <text x="26" y="123" font-size="9.5" fill="#1a1822">Threshold: allow edit distance 1 for len ≥ 5, edit distance 2 for len ≥ 9</text>
+  <text x="26" y="140" font-size="9.5" fill="#1a1822">BK-tree: metric tree over vocabulary — O(log n) lookup of words within distance k</text>
+  <text x="26" y="157" font-size="9.5" fill="#1a1822">Trigram index: split "hello" → "hel","ell","llo" → find terms sharing ≥ N trigrams</text>
+  <text x="26" y="174" font-size="9.5" fill="#1a1822">Soundex / Metaphone: phonetic encoding — "Smith" ≈ "Smyth" → same bucket</text>
+  <text x="26" y="191" font-size="9.5" fill="#1a1822">Did-you-mean: suggest top-1 correction below threshold + query frequency signal</text>
+  <text x="26" y="208" font-size="9.5" fill="#1a1822">Prefix match always beats fuzzy — prioritize exact &gt; prefix &gt; fuzzy in ranking</text>
+
+  <rect x="464" y="44" width="420" height="176" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="44" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Ranking Pipeline — Multi-Signal Scoring</text>
+  <text x="474" y="89" font-size="9.5" fill="#1a1822">Stage 1 — Retrieval: BM25 (TF-IDF with field length normalization) → candidate set</text>
+  <text x="474" y="106" font-size="9.5" fill="#1a1822">BM25 score = IDF × (TF × (k1+1)) / (TF + k1 × (1 - b + b×dl/avgdl))</text>
+  <text x="474" y="123" font-size="9.5" fill="#1a1822">Stage 2 — Boost signals: field boost (title &gt; description), recency, popularity</text>
+  <text x="474" y="140" font-size="9.5" fill="#1a1822">Click-through rate (CTR): position-normalized CTR boosts items users actually click</text>
+  <text x="474" y="157" font-size="9.5" fill="#1a1822">Personalization: user history / preferences → per-user score multiplier</text>
+  <text x="474" y="174" font-size="9.5" fill="#1a1822">Stage 3 — Re-rank: lightweight ML model (LambdaRank / XGBoost) on top-K results</text>
+  <text x="474" y="191" font-size="9.5" fill="#1a1822">Diversity: MMR (Maximal Marginal Relevance) — penalize repeated categories</text>
+  <text x="474" y="208" font-size="9.5" fill="#1a1822">Tie-breaking: deterministic secondary sort (createdAt DESC) → stable pagination</text>
+
+  <rect x="16" y="236" width="420" height="176" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="236" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Query Understanding &amp; Expansion</text>
+  <text x="26" y="280" font-size="9.5" fill="#1a1822">Tokenization: lowercase, strip punctuation, split on whitespace + camelCase</text>
+  <text x="26" y="297" font-size="9.5" fill="#1a1822">Stop words: remove "the","a","of" — but keep in phrase queries ("band of brothers")</text>
+  <text x="26" y="314" font-size="9.5" fill="#1a1822">Stemming: "running" → "run" (Porter/Snowball) — increases recall, may hurt precision</text>
+  <text x="26" y="331" font-size="9.5" fill="#1a1822">Lemmatization: "better" → "good" — context-aware, heavier than stemming</text>
+  <text x="26" y="348" font-size="9.5" fill="#1a1822">Synonym expansion: "sofa" → OR("sofa","couch","settee") — query-time or index-time</text>
+  <text x="26" y="365" font-size="9.5" fill="#1a1822">Query classification: detect intent (navigational / informational / transactional)</text>
+  <text x="26" y="382" font-size="9.5" fill="#1a1822">Spell correction: language model P(correction|query) + edit distance — Noisy Channel</text>
+  <text x="26" y="399" font-size="9.5" fill="#1a1822">Query rewriting: "cheap flights NYC" → structured {price:asc, destination:"NYC"}</text>
+
+  <rect x="464" y="236" width="420" height="176" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="236" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Frontend Search UX &amp; Analytics</text>
+  <text x="474" y="280" font-size="9.5" fill="#1a1822">Debounce: 200–300ms before firing search request — cancel on new keystroke</text>
+  <text x="474" y="297" font-size="9.5" fill="#1a1822">Instant results: client-side filter on cached recent queries — feels instant</text>
+  <text x="474" y="314" font-size="9.5" fill="#1a1822">Result highlighting: wrap matched tokens in &lt;mark&gt;, handle multi-word phrase match</text>
+  <text x="474" y="331" font-size="9.5" fill="#1a1822">Facet counts: estimated counts (not exact) for performance — warn user of approximation</text>
+  <text x="474" y="348" font-size="9.5" fill="#1a1822">Empty results: show did-you-mean, related categories, popular searches — not blank page</text>
+  <text x="474" y="365" font-size="9.5" fill="#1a1822">Analytics: log query, result count, click position, dwell time — feed back to ranking</text>
+  <text x="474" y="382" font-size="9.5" fill="#1a1822">Zero-result rate: alert if &gt;5% queries return 0 results — signals index or query gap</text>
+  <text x="474" y="399" font-size="9.5" fill="#1a1822">URL sync: encode q, filters, sort, page in URL — shareable, bookmarkable, SEO-friendly</text>
+
+  <defs>
+    <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="132" x2="458" y2="132" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <line x1="226" y1="220" x2="226" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <line x1="674" y1="220" x2="674" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="455" text-anchor="middle" font-size="10" fill="white">Typo: DL distance ≤ 1 (len≥5), ≤ 2 (len≥9)</text>
+  <text x="270" y="455" text-anchor="middle" font-size="10" fill="white">BM25 → boost signals → ML re-rank → diversity</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="white">Synonym expansion at query-time or index-time</text>
+  <text x="630" y="455" text-anchor="middle" font-size="10" fill="white">Debounce 200ms, instant from cache, URL sync</text>
+  <text x="810" y="455" text-anchor="middle" font-size="10" fill="white">Analytics: CTR + dwell time → ranking feedback loop</text>
+</svg>
