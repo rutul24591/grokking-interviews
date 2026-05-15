@@ -1,0 +1,65 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Graph Coloring — Chromatic Number &amp; Greedy Algorithms</text>
+
+  <rect x="16" y="48" width="420" height="170" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="48" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Problem Definition &amp; Chromatic Number</text>
+  <text x="26" y="93" font-size="9.5" fill="#1a1822">• k-coloring: assign one of k colors to each vertex</text>
+  <text x="26" y="110" font-size="9.5" fill="#1a1822">  so no two adjacent vertices share a color</text>
+  <text x="26" y="127" font-size="9.5" fill="#1a1822">• χ(G) = chromatic number = minimum k for valid coloring</text>
+  <text x="26" y="144" font-size="9.5" fill="#1a1822">• χ(G) = 1 iff G has no edges (empty graph)</text>
+  <text x="26" y="161" font-size="9.5" fill="#1a1822">• χ(G) = 2 iff G is bipartite (2-colorable)</text>
+  <text x="26" y="178" font-size="9.5" fill="#1a1822">• χ(complete graph Kₙ) = n (every vertex needs unique color)</text>
+  <text x="26" y="195" font-size="9.5" fill="#1a1822">• Computing χ(G) exactly is NP-hard for general graphs</text>
+
+  <rect x="464" y="48" width="420" height="170" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="48" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Greedy Coloring &amp; Welsh-Powell</text>
+  <text x="474" y="93" font-size="9.5" fill="#1a1822">• Greedy: for each vertex (in some order), assign lowest color</text>
+  <text x="474" y="110" font-size="9.5" fill="#1a1822">  not used by any neighbor → O(V + E)</text>
+  <text x="474" y="127" font-size="9.5" fill="#1a1822">• Result ≤ Δ(G) + 1 colors (Δ = max degree) — often optimal</text>
+  <text x="474" y="144" font-size="9.5" fill="#1a1822">• Welsh-Powell: sort vertices by degree descending, then greedy</text>
+  <text x="474" y="161" font-size="9.5" fill="#1a1822">  → better color count in practice, same O(V log V + E) complexity</text>
+  <text x="474" y="178" font-size="9.5" fill="#1a1822">• DSatur: choose vertex with most distinct neighbor colors next</text>
+  <text x="474" y="195" font-size="9.5" fill="#1a1822">  → finds χ(G) exactly for many practical graph classes</text>
+
+  <rect x="16" y="234" width="420" height="170" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="234" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Special Graph Classes</text>
+  <text x="26" y="279" font-size="9.5" fill="#1a1822">• Bipartite graphs: χ = 2, detect via BFS 2-coloring O(V+E)</text>
+  <text x="26" y="296" font-size="9.5" fill="#1a1822">• Planar graphs: χ ≤ 4 (Four Color Theorem, 1976)</text>
+  <text x="26" y="313" font-size="9.5" fill="#1a1822">• Interval graphs: χ = clique number ω(G), greedy on endpoint order</text>
+  <text x="26" y="330" font-size="9.5" fill="#1a1822">• Chordal graphs: perfect graphs — greedy on perfect elimination order</text>
+  <text x="26" y="347" font-size="9.5" fill="#1a1822">• Cycle graphs: χ = 2 (even cycle) or χ = 3 (odd cycle)</text>
+  <text x="26" y="364" font-size="9.5" fill="#1a1822">• Trees: always χ = 2 (bipartite), greedy BFS coloring works</text>
+  <text x="26" y="381" font-size="9.5" fill="#1a1822">• Brook's theorem: χ(G) ≤ Δ(G) unless G is Kₙ or odd cycle</text>
+
+  <rect x="464" y="234" width="420" height="170" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="234" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Applications</text>
+  <text x="474" y="279" font-size="9.5" fill="#1a1822">• Register allocation: variables = vertices, conflicts = edges</text>
+  <text x="474" y="296" font-size="9.5" fill="#1a1822">  colors = registers → k-coloring with k = # physical registers</text>
+  <text x="474" y="313" font-size="9.5" fill="#1a1822">• Exam scheduling: courses = vertices, shared students = edges</text>
+  <text x="474" y="330" font-size="9.5" fill="#1a1822">  colors = time slots → minimize exam periods (χ time slots)</text>
+  <text x="474" y="347" font-size="9.5" fill="#1a1822">• Map coloring: regions = vertices, borders = edges (χ ≤ 4)</text>
+  <text x="474" y="364" font-size="9.5" fill="#1a1822">• Frequency assignment: transmitters = vertices, interference = edges</text>
+  <text x="474" y="381" font-size="9.5" fill="#1a1822">• Task scheduling with conflicts: parallel execution with constraints</text>
+  <text x="474" y="398" font-size="9.5" fill="#1a1822">• Sudoku: graph coloring on a 81-vertex conflict graph (9 colors)</text>
+
+  <defs>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="133" x2="458" y2="133" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <line x1="226" y1="218" x2="226" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <line x1="674" y1="218" x2="674" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="420" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="447" text-anchor="middle" font-size="10" fill="white">Exact χ(G): NP-hard in general</text>
+  <text x="270" y="447" text-anchor="middle" font-size="10" fill="white">Greedy: O(V+E), uses ≤ Δ+1 colors</text>
+  <text x="450" y="447" text-anchor="middle" font-size="10" fill="white">Bipartite check: O(V+E) via BFS</text>
+  <text x="630" y="447" text-anchor="middle" font-size="10" fill="white">Planar graphs: χ ≤ 4 (Four Color Thm)</text>
+  <text x="810" y="447" text-anchor="middle" font-size="10" fill="white">Key app: register allocation</text>
+</svg>

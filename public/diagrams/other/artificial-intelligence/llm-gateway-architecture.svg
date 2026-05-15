@@ -1,0 +1,135 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#1a1822">LLM Gateway — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="12" fill="#555">Auth &amp; routing · Rate limiting · Semantic cache · Cost attribution &amp; logging</text>
+
+  <!-- Section A: AUTH & ROUTING (purple) -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="74" width="425" height="14" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">A: AUTH &amp; ROUTING</text>
+
+  <!-- A1 inner box -->
+  <rect x="24" y="98" width="192" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="120" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">A1: Unified Auth</text>
+  <text x="32" y="133" font-size="9" fill="#333">• API key per team/service</text>
+  <text x="32" y="148" font-size="9" fill="#333">• Scoped: models + features</text>
+  <text x="32" y="163" font-size="9" fill="#333">• Key rotation: 90-day policy</text>
+  <text x="32" y="178" font-size="9" fill="#333">• Audit: every call logged w/ keyId</text>
+  <text x="32" y="193" font-size="9" fill="#333">• Provider creds: gateway holds</text>
+  <text x="32" y="208" font-size="9" fill="#333">• Clients never see provider keys</text>
+
+  <!-- A2 inner box -->
+  <rect x="226" y="98" width="199" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="325" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">A2: Model Routing</text>
+  <text x="234" y="133" font-size="9" fill="#333">• Rules: cost / quality / latency</text>
+  <text x="234" y="148" font-size="9" fill="#333">• Fallback: GPT-4o → Claude → mini</text>
+  <text x="234" y="163" font-size="9" fill="#333">• Load balance: round-robin</text>
+  <text x="234" y="178" font-size="9" fill="#333">• Circuit breaker: 5xx &gt;10%</text>
+  <text x="234" y="193" font-size="9" fill="#333">• Sticky: same provider per session</text>
+  <text x="234" y="208" font-size="9" fill="#333">• Priority: tiered queue per team</text>
+
+  <!-- Section B: RATE LIMITING (blue) -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="74" width="425" height="14" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">B: RATE LIMITING</text>
+
+  <!-- B1 inner box -->
+  <rect x="475" y="98" width="192" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="571" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">B1: Limit Tiers</text>
+  <text x="483" y="133" font-size="9" fill="#333">• Global: org-wide tokens/min cap</text>
+  <text x="483" y="148" font-size="9" fill="#333">• Per-team: allocated quota</text>
+  <text x="483" y="163" font-size="9" fill="#333">• Per-user: prevents runaway</text>
+  <text x="483" y="178" font-size="9" fill="#333">• Per-model: provider limits</text>
+  <text x="483" y="193" font-size="9" fill="#333">• Token bucket: smooth bursts</text>
+  <text x="483" y="208" font-size="9" fill="#333">• Leaky bucket: strict rate</text>
+
+  <!-- B2 inner box -->
+  <rect x="677" y="98" width="199" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="776" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">B2: Quota Management</text>
+  <text x="685" y="133" font-size="9" fill="#333">• Soft limit: warn at 80%</text>
+  <text x="685" y="148" font-size="9" fill="#333">• Hard limit: block at 100%</text>
+  <text x="685" y="163" font-size="9" fill="#333">• Reserved: emergency pool 10%</text>
+  <text x="685" y="178" font-size="9" fill="#333">• Reset: rolling 1min/1hr/1day</text>
+  <text x="685" y="193" font-size="9" fill="#333">• Overage: queue vs reject vs fallback</text>
+  <text x="685" y="208" font-size="9" fill="#333">• Alert: Slack/PagerDuty on breach</text>
+
+  <!-- Arrow A → B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Section C: SEMANTIC CACHE (green) -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="299" width="425" height="14" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">C: SEMANTIC CACHE</text>
+
+  <!-- C1 inner box -->
+  <rect x="24" y="323" width="192" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="120" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#2f9d74">C1: Cache Architecture</text>
+  <text x="32" y="358" font-size="9" fill="#333">• Exact: hash(model+prompt+params)</text>
+  <text x="32" y="373" font-size="9" fill="#333">• Semantic: embed → ANN search</text>
+  <text x="32" y="388" font-size="9" fill="#333">• Threshold: cosine &gt;0.95 = hit</text>
+  <text x="32" y="403" font-size="9" fill="#333">• TTL: facts 24h / events 5min</text>
+  <text x="32" y="418" font-size="9" fill="#333">• Store: Redis (exact), vector DB (sem)</text>
+
+  <!-- C2 inner box -->
+  <rect x="226" y="323" width="199" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="325" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#2f9d74">C2: Cache Operations</text>
+  <text x="234" y="358" font-size="9" fill="#333">• Hit: return cached, cost $0</text>
+  <text x="234" y="373" font-size="9" fill="#333">• Miss: forward to provider</text>
+  <text x="234" y="388" font-size="9" fill="#333">• Invalidation: TTL + manual purge</text>
+  <text x="234" y="403" font-size="9" fill="#333">• Metrics: hit rate per team</text>
+  <text x="234" y="418" font-size="9" fill="#333">• ROI: cost saved / cache infra cost</text>
+
+  <!-- Section D: COST & OBSERVABILITY (amber) -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="299" width="425" height="14" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">D: COST &amp; OBSERVABILITY</text>
+
+  <!-- D1 inner box -->
+  <rect x="475" y="323" width="192" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="571" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#d97843">D1: Cost Attribution</text>
+  <text x="483" y="358" font-size="9" fill="#333">• Per-call: tokens × price</text>
+  <text x="483" y="373" font-size="9" fill="#333">• Per-team: daily/weekly/monthly</text>
+  <text x="483" y="388" font-size="9" fill="#333">• Per-feature: tag with feature label</text>
+  <text x="483" y="403" font-size="9" fill="#333">• Chargeback: internal billing</text>
+  <text x="483" y="418" font-size="9" fill="#333">• Anomaly: 3σ spike detection</text>
+
+  <!-- D2 inner box -->
+  <rect x="677" y="323" width="199" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="776" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#d97843">D2: Request Logging</text>
+  <text x="685" y="358" font-size="9" fill="#333">• Structured log: requestId, model</text>
+  <text x="685" y="373" font-size="9" fill="#333">• Fields: tokens, latency, cost, cached</text>
+  <text x="685" y="388" font-size="9" fill="#333">• Retention: 90 days</text>
+  <text x="685" y="403" font-size="9" fill="#333">• PII: redact before storage</text>
+  <text x="685" y="418" font-size="9" fill="#333">• Trace: OpenTelemetry per request</text>
+
+  <!-- Arrow A → C -->
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- Arrow B → D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="2" marker-end="url(#arr2)"/>
+  <!-- Arrow C → D -->
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="450" y="497" text-anchor="middle" font-size="9.5" fill="#ccc">Cache hit target: &gt;40%  |  Rate limit: token bucket per team  |  Circuit breaker: 5xx rate &gt;10%  |  Cost log: per-call attribution  |  Key rotation: 90 days</text>
+  <text x="450" y="511" text-anchor="middle" font-size="9" fill="#888">Clients → Gateway (auth + rate-limit + cache) → Provider (OpenAI / Anthropic / Gemini) → Response logged + attributed</text>
+</svg>

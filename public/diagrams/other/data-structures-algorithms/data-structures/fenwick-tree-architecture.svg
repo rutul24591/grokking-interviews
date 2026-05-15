@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="34" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#1a1822">Fenwick Tree (Binary Indexed Tree)</text>
+
+  <!-- ===== Section A: BIT Structure & Indexing (top-left) ===== -->
+  <rect x="20" y="50" width="420" height="175" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="20" y="50" width="420" height="26" rx="6" fill="#6d5bd0"/>
+  <rect x="20" y="64" width="420" height="12" fill="#6d5bd0"/>
+  <text x="230" y="68" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">A — BIT Structure &amp; Indexing</text>
+
+  <text x="34" y="95" font-family="sans-serif" font-size="9.5" fill="#1a1822">• 1-indexed array: BIT[1..n] (index 0 unused)</text>
+  <text x="34" y="110" font-family="sans-serif" font-size="9.5" fill="#1a1822">• BIT[i] stores the sum of range (i − lowbit(i) + 1) to i</text>
+  <text x="34" y="125" font-family="sans-serif" font-size="9.5" fill="#1a1822">• lowbit(i) = i &amp; (−i)  →  isolates the lowest set bit of i</text>
+  <text x="34" y="140" font-family="sans-serif" font-size="9.5" fill="#1a1822">• BIT[6] = BIT[110₂], lowbit(6)=2, covers [5, 6]</text>
+  <text x="34" y="155" font-family="sans-serif" font-size="9.5" fill="#1a1822">• BIT[8] = BIT[1000₂], lowbit(8)=8, covers [1, 8]</text>
+
+  <!-- Coverage visual: indices 1-8 -->
+  <text x="34" y="172" font-family="sans-serif" font-size="8.5" font-weight="bold" fill="#6d5bd0">Index coverage (n=8):</text>
+  <!-- boxes for indices 1-8 -->
+  <g font-family="sans-serif" font-size="8" fill="#1a1822">
+    <rect x="34" y="177" width="28" height="14" rx="2" fill="#c4b8f0" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="48" y="188" text-anchor="middle">1:[1]</text>
+    <rect x="66" y="177" width="28" height="14" rx="2" fill="#c4b8f0" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="80" y="188" text-anchor="middle">2:[1,2]</text>
+    <rect x="98" y="177" width="28" height="14" rx="2" fill="#c4b8f0" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="112" y="188" text-anchor="middle">3:[3]</text>
+    <rect x="130" y="177" width="36" height="14" rx="2" fill="#c4b8f0" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="148" y="188" text-anchor="middle">4:[1..4]</text>
+    <rect x="170" y="177" width="28" height="14" rx="2" fill="#c4b8f0" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="184" y="188" text-anchor="middle">5:[5]</text>
+    <rect x="202" y="177" width="36" height="14" rx="2" fill="#a78bfa" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="220" y="188" text-anchor="middle" fill="#fff">6:[5,6]</text>
+    <rect x="242" y="177" width="28" height="14" rx="2" fill="#c4b8f0" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="256" y="188" text-anchor="middle">7:[7]</text>
+    <rect x="274" y="177" width="44" height="14" rx="2" fill="#7c3aed" stroke="#6d5bd0" stroke-width="1"/>
+    <text x="296" y="188" text-anchor="middle" fill="#fff">8:[1..8]</text>
+  </g>
+
+  <!-- ===== Section B: Prefix Sum Query (top-right) ===== -->
+  <rect x="460" y="50" width="420" height="175" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="460" y="50" width="420" height="26" rx="6" fill="#2563eb"/>
+  <rect x="460" y="64" width="420" height="12" fill="#2563eb"/>
+  <text x="670" y="68" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">B — Prefix Sum Query</text>
+
+  <text x="474" y="95" font-family="sans-serif" font-size="9.5" fill="#1a1822">• query(i): returns prefix sum [1..i]</text>
+  <text x="474" y="110" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Loop: ans += BIT[i],  then i −= lowbit(i), until i = 0</text>
+  <text x="474" y="125" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Range query [l, r] = query(r) − query(l − 1)</text>
+  <text x="474" y="140" font-family="sans-serif" font-size="9.5" fill="#1a1822">• O(log n) steps — each step clears the lowest set bit</text>
+  <text x="474" y="158" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#2563eb">Example: query(6)</text>
+  <text x="474" y="173" font-family="sans-serif" font-size="9.5" fill="#1a1822">  i=6 (110₂) → ans+=BIT[6], i−=2 → i=4 (100₂) → ans+=BIT[4], i−=4 → i=0  ✓</text>
+  <!-- step boxes -->
+  <g font-family="sans-serif" font-size="8.5" fill="#1a1822">
+    <rect x="474" y="178" width="56" height="16" rx="3" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+    <text x="502" y="190" text-anchor="middle">i=6 (110₂)</text>
+    <text x="536" y="190">→</text>
+    <rect x="546" y="178" width="56" height="16" rx="3" fill="#60a5fa" stroke="#2563eb" stroke-width="1"/>
+    <text x="574" y="190" text-anchor="middle">i=4 (100₂)</text>
+    <text x="608" y="190">→</text>
+    <rect x="618" y="178" width="42" height="16" rx="3" fill="#3b82f6" stroke="#2563eb" stroke-width="1"/>
+    <text x="639" y="190" text-anchor="middle" fill="#fff">i=0 done</text>
+  </g>
+
+  <!-- Arrow A → B (horizontal top) -->
+  <line x1="440" y1="110" x2="458" y2="110" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ===== Section C: Point Update (bottom-left) ===== -->
+  <rect x="20" y="247" width="420" height="175" rx="6" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="20" y="247" width="420" height="26" rx="6" fill="#2f9d74"/>
+  <rect x="20" y="261" width="420" height="12" fill="#2f9d74"/>
+  <text x="230" y="265" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">C — Point Update</text>
+
+  <text x="34" y="292" font-family="sans-serif" font-size="9.5" fill="#1a1822">• update(i, delta): add delta to position i</text>
+  <text x="34" y="307" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Loop: BIT[i] += delta,  then i += lowbit(i), until i &gt; n</text>
+  <text x="34" y="322" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Propagates to every BIT node whose range covers position i</text>
+  <text x="34" y="337" font-family="sans-serif" font-size="9.5" fill="#1a1822">• O(log n) steps — each step sets a higher bit</text>
+  <text x="34" y="355" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#2f9d74">Example: update(3, delta)</text>
+  <text x="34" y="370" font-family="sans-serif" font-size="9.5" fill="#1a1822">  i=3 (011₂) → BIT[3]+=delta, i+=1 → i=4 (100₂) → BIT[4]+=delta, i+=4 → i=8 → BIT[8]+=delta</text>
+  <!-- step boxes -->
+  <g font-family="sans-serif" font-size="8.5" fill="#1a1822">
+    <rect x="34" y="378" width="46" height="16" rx="3" fill="#6ee7b7" stroke="#2f9d74" stroke-width="1"/>
+    <text x="57" y="390" text-anchor="middle">BIT[3]</text>
+    <text x="86" y="390">→</text>
+    <rect x="96" y="378" width="46" height="16" rx="3" fill="#34d399" stroke="#2f9d74" stroke-width="1"/>
+    <text x="119" y="390" text-anchor="middle">BIT[4]</text>
+    <text x="148" y="390">→</text>
+    <rect x="158" y="378" width="46" height="16" rx="3" fill="#059669" stroke="#2f9d74" stroke-width="1"/>
+    <text x="181" y="390" text-anchor="middle" fill="#fff">BIT[8]</text>
+    <text x="210" y="390">→ done</text>
+  </g>
+
+  <!-- Arrow A → C (vertical left) -->
+  <line x1="230" y1="225" x2="230" y2="245" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Arrow B → C (diagonal) -->
+  <line x1="462" y1="228" x2="442" y2="248" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ===== Section D: Variants & Applications (bottom-right) ===== -->
+  <rect x="460" y="247" width="420" height="175" rx="6" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="460" y="247" width="420" height="26" rx="6" fill="#d97843"/>
+  <rect x="460" y="261" width="420" height="12" fill="#d97843"/>
+  <text x="670" y="265" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">D — Variants &amp; Applications</text>
+
+  <text x="474" y="292" font-family="sans-serif" font-size="9.5" fill="#1a1822">• 2D BIT: nested BIT loops for 2D prefix sums — O(log²n) per op</text>
+  <text x="474" y="307" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Order statistics / rank queries: coordinate compress, BIT counts freq</text>
+  <text x="474" y="322" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Range update + point query: difference array stored in BIT</text>
+  <text x="474" y="337" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Range update + range query: use two BITs (B1, B2) simultaneously</text>
+  <text x="474" y="352" font-family="sans-serif" font-size="9.5" fill="#1a1822">• Inversion count: process array right-to-left, query prefix sums</text>
+  <text x="474" y="370" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#d97843">LeetCode:</text>
+  <text x="474" y="385" font-family="sans-serif" font-size="9.5" fill="#1a1822">  307 Range Sum Query Mutable  |  315 Count Smaller Numbers After Self</text>
+  <text x="474" y="400" font-family="sans-serif" font-size="9.5" fill="#1a1822">  493 Reverse Pairs  |  218 The Skyline Problem (coordinate compression)</text>
+
+  <!-- Arrow defs -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- ===== Footer bar ===== -->
+  <rect x="0" y="444" width="900" height="44" fill="#1a1822"/>
+  <text x="450" y="460" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#ffffff" font-weight="bold">
+    Prefix Query: O(log n)  |  Point Update: O(log n)  |  Space: O(n)  |  lowbit(i) = i &amp; (−i)  |  Simpler than Segment Tree
+  </text>
+  <text x="450" y="478" text-anchor="middle" font-family="sans-serif" font-size="8.5" fill="#a0a0b0">
+    BIT[i] covers (i − lowbit(i) + 1) to i  ·  Query traverses ancestors toward 0  ·  Update traverses children toward n
+  </text>
+</svg>

@@ -1,0 +1,70 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Persistent Data Structures — Immutable Versioned State</text>
+
+  <!-- Section A -->
+  <rect x="16" y="48" width="420" height="170" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="48" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Path Copying — Persistent BST/Trie</text>
+  <text x="26" y="93" font-size="9.5" fill="#1a1822">• Persistent = old versions remain accessible after updates</text>
+  <text x="26" y="110" font-size="9.5" fill="#1a1822">• Path copying: on update, copy only nodes on root→leaf path</text>
+  <text x="26" y="127" font-size="9.5" fill="#1a1822">• New root → new version; old root unchanged → old version</text>
+  <text x="26" y="144" font-size="9.5" fill="#1a1822">• Shared structure: unchanged subtrees shared between versions</text>
+  <text x="26" y="161" font-size="9.5" fill="#1a1822">• Cost per update: O(log n) new nodes for balanced BST</text>
+  <text x="26" y="178" font-size="9.5" fill="#1a1822">• Cost per update: O(L) new nodes for trie of depth L</text>
+  <text x="26" y="195" font-size="9.5" fill="#1a1822">• Total space for k updates: O(n + k log n)</text>
+
+  <!-- Section B -->
+  <rect x="464" y="48" width="420" height="170" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="48" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Persistent Segment Tree (Merge Sort Tree)</text>
+  <text x="474" y="93" font-size="9.5" fill="#1a1822">• Version array: roots[0..k] — one root per version</text>
+  <text x="474" y="110" font-size="9.5" fill="#1a1822">• Update creates O(log n) new nodes along update path</text>
+  <text x="474" y="127" font-size="9.5" fill="#1a1822">• Query on version v: traverse from roots[v]</text>
+  <text x="474" y="144" font-size="9.5" fill="#1a1822">• Offline range kth-smallest: build k versions (sort by value)</text>
+  <text x="474" y="161" font-size="9.5" fill="#1a1822">  query(l,r,k) = walk two version trees simultaneously</text>
+  <text x="474" y="178" font-size="9.5" fill="#1a1822">• LeetCode 315 (Count Smaller) solvable with persistent seg tree</text>
+  <text x="474" y="195" font-size="9.5" fill="#1a1822">• Space: O(n log n) for n versions of n-element array</text>
+
+  <!-- Section C -->
+  <rect x="16" y="234" width="420" height="170" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="234" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Fat Node &amp; Node Copying Methods</text>
+  <text x="26" y="279" font-size="9.5" fill="#1a1822">• Fat Node: each node stores list of (value, timestamp) pairs</text>
+  <text x="26" y="296" font-size="9.5" fill="#1a1822">  → O(1) update, O(log k) query (binary search on timestamp)</text>
+  <text x="26" y="313" font-size="9.5" fill="#1a1822">  → Space O(k) total; but poor cache behavior</text>
+  <text x="26" y="330" font-size="9.5" fill="#1a1822">• Node copying (Driscoll et al.): each node has fixed extra fields</text>
+  <text x="26" y="347" font-size="9.5" fill="#1a1822">  → When extra fields full, copy node + update parent</text>
+  <text x="26" y="364" font-size="9.5" fill="#1a1822">  → Amortized O(log n) per update, O(log n) per query</text>
+  <text x="26" y="381" font-size="9.5" fill="#1a1822">• Functional persistence: immutable nodes + garbage collection</text>
+  <text x="26" y="398" font-size="9.5" fill="#1a1822">  → Natural in Haskell, Clojure, Scala immutable collections</text>
+
+  <!-- Section D -->
+  <rect x="464" y="234" width="420" height="170" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="234" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Applications &amp; Real-World Use</text>
+  <text x="474" y="279" font-size="9.5" fill="#1a1822">• Version control (Git): DAG of immutable tree snapshots</text>
+  <text x="474" y="296" font-size="9.5" fill="#1a1822">• Undo/redo: version stack of persistent data structure states</text>
+  <text x="474" y="313" font-size="9.5" fill="#1a1822">• Functional languages: Clojure PersistentHashMap (HAMT)</text>
+  <text x="474" y="330" font-size="9.5" fill="#1a1822">• React: immutable state → cheap referential equality checks</text>
+  <text x="474" y="347" font-size="9.5" fill="#1a1822">• Database MVCC: each transaction sees its own consistent snapshot</text>
+  <text x="474" y="364" font-size="9.5" fill="#1a1822">• Competitive programming: offline range kth-smallest in O(n log n)</text>
+  <text x="474" y="381" font-size="9.5" fill="#1a1822">• Time-travel debugging: record all state versions, replay any point</text>
+  <text x="474" y="398" font-size="9.5" fill="#1a1822">• CRDTs: conflict-free replicated data types use persistence ideas</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="133" x2="458" y2="133" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="226" y1="218" x2="226" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="674" y1="218" x2="674" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="0" y="420" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="447" text-anchor="middle" font-size="10" fill="white">Path copy: O(log n) new nodes/update</text>
+  <text x="270" y="447" text-anchor="middle" font-size="10" fill="white">Space: O(n + k log n) for k updates</text>
+  <text x="450" y="447" text-anchor="middle" font-size="10" fill="white">Query any version: O(log n)</text>
+  <text x="630" y="447" text-anchor="middle" font-size="10" fill="white">Persistent seg tree: O(n log n) space</text>
+  <text x="810" y="447" text-anchor="middle" font-size="10" fill="white">Used in: Git, MVCC, Clojure, React</text>
+</svg>

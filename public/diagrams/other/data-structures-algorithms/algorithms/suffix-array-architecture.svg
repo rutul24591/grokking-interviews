@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f0f4ff" rx="0"/>
+
+  <!-- Title -->
+  <text x="450" y="36" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#1a1822" text-anchor="middle">Suffix Array &amp; LCP Array</text>
+
+  <!-- ===== Section A: Suffix Array Construction (top-left) ===== -->
+  <rect x="20" y="54" width="420" height="170" rx="10" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="20" y="54" width="420" height="32" rx="10" fill="#6d5bd0"/>
+  <rect x="20" y="74" width="420" height="12" fill="#6d5bd0"/>
+  <text x="230" y="75" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">A — Suffix Array Construction</text>
+
+  <text x="36" y="104" font-family="Arial, sans-serif" font-size="11.5" fill="#2d2550">string s = "banana$"</text>
+  <text x="36" y="122" font-family="Arial, sans-serif" font-size="11" fill="#2d2550">All suffixes: 0:banana$  1:anana$  2:nana$  3:ana$</text>
+  <text x="36" y="138" font-family="Arial, sans-serif" font-size="11" fill="#2d2550">           4:na$      5:a$      6:$</text>
+  <text x="36" y="154" font-family="Arial, sans-serif" font-size="11" fill="#2d2550">Sort lexicographically → SA = [6, 5, 3, 1, 0, 4, 2]</text>
+  <text x="36" y="170" font-family="Arial, sans-serif" font-size="11" fill="#2d2550">Naive O(n² log n) · Prefix doubling O(n log n)</text>
+  <text x="36" y="186" font-family="Arial, sans-serif" font-size="11" fill="#2d2550">SA-IS induced sorting: O(n) — optimal construction</text>
+  <text x="36" y="202" font-family="Arial, sans-serif" font-size="11" fill="#2d2550">Final SA = sorted suffix starting indices</text>
+
+  <!-- ===== Section B: LCP Array (top-right) ===== -->
+  <rect x="460" y="54" width="420" height="170" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="460" y="54" width="420" height="32" rx="10" fill="#2563eb"/>
+  <rect x="460" y="74" width="420" height="12" fill="#2563eb"/>
+  <text x="670" y="75" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">B — LCP Array</text>
+
+  <text x="476" y="104" font-family="Arial, sans-serif" font-size="11.5" fill="#1e3a8a">LCP[i] = longest common prefix of SA[i-1] and SA[i]</text>
+  <text x="476" y="120" font-family="Arial, sans-serif" font-size="11" fill="#1e3a8a">Adjacent entries in sorted suffix order</text>
+  <text x="476" y="136" font-family="Arial, sans-serif" font-size="11" fill="#1e3a8a">Kasai's algorithm computes LCP in O(n) from SA</text>
+  <text x="476" y="152" font-family="Arial, sans-serif" font-size="11" fill="#1e3a8a">LCP for "banana$": [0, 1, 3, 0, 0, 2, 0]</text>
+  <text x="476" y="168" font-family="Arial, sans-serif" font-size="11" fill="#1e3a8a">min LCP in range [l,r] = LCP of any two suffixes</text>
+  <text x="476" y="184" font-family="Arial, sans-serif" font-size="11" fill="#1e3a8a">in that window — enables RMQ for substring queries</text>
+  <text x="476" y="200" font-family="Arial, sans-serif" font-size="11" fill="#1e3a8a">Space: O(n) alongside SA</text>
+
+  <!-- ===== Section C: Pattern Matching (bottom-left) ===== -->
+  <rect x="20" y="248" width="420" height="170" rx="10" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="20" y="248" width="420" height="32" rx="10" fill="#2f9d74"/>
+  <rect x="20" y="268" width="420" height="12" fill="#2f9d74"/>
+  <text x="230" y="269" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">C — Pattern Matching &amp; Search</text>
+
+  <text x="36" y="298" font-family="Arial, sans-serif" font-size="11.5" fill="#065f46">Binary search on SA to find pattern P in text T</text>
+  <text x="36" y="314" font-family="Arial, sans-serif" font-size="11" fill="#065f46">lo = leftmost index: binary search where T[SA[mid]..] ≥ P</text>
+  <text x="36" y="330" font-family="Arial, sans-serif" font-size="11" fill="#065f46">hi = rightmost index: binary search where T[SA[mid]..] ≤ P</text>
+  <text x="36" y="346" font-family="Arial, sans-serif" font-size="11" fill="#065f46">All occurrences at positions SA[lo], SA[lo+1], …, SA[hi]</text>
+  <text x="36" y="362" font-family="Arial, sans-serif" font-size="11" fill="#065f46">O(|P| log |T|) naive · O(|P| + log |T|) with LCP acceleration</text>
+  <text x="36" y="378" font-family="Arial, sans-serif" font-size="11" fill="#065f46">Count of occurrences = hi − lo + 1</text>
+  <text x="36" y="396" font-family="Arial, sans-serif" font-size="11" fill="#065f46">No preprocessing of pattern required</text>
+
+  <!-- ===== Section D: Advanced Applications (bottom-right) ===== -->
+  <rect x="460" y="248" width="420" height="170" rx="10" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="460" y="248" width="420" height="32" rx="10" fill="#d97843"/>
+  <rect x="460" y="268" width="420" height="12" fill="#d97843"/>
+  <text x="670" y="269" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">D — Advanced Applications</text>
+
+  <text x="476" y="298" font-family="Arial, sans-serif" font-size="11.5" fill="#78350f">Longest repeated substring = max value in LCP array</text>
+  <text x="476" y="314" font-family="Arial, sans-serif" font-size="11" fill="#78350f">Distinct substrings = n(n+1)/2 − sum(LCP)</text>
+  <text x="476" y="330" font-family="Arial, sans-serif" font-size="11" fill="#78350f">Longest common substring: concatenate strings with sentinels</text>
+  <text x="476" y="346" font-family="Arial, sans-serif" font-size="11" fill="#78350f">build unified SA, find LCP window across different strings</text>
+  <text x="476" y="362" font-family="Arial, sans-serif" font-size="11" fill="#78350f">Burrows-Wheeler Transform for bzip2 compression</text>
+  <text x="476" y="378" font-family="Arial, sans-serif" font-size="11" fill="#78350f">Suffix automaton comparison for advanced string problems</text>
+  <text x="476" y="396" font-family="Arial, sans-serif" font-size="11" fill="#78350f">LeetCode 1044: Longest Duplicate Substring</text>
+
+  <!-- ===== Arrows ===== -->
+  <!-- A → B -->
+  <line x1="440" y1="139" x2="460" y2="139" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <!-- B → C -->
+  <line x1="670" y1="224" x2="670" y2="238" stroke="#2563eb" stroke-width="2"/>
+  <line x1="670" y1="238" x2="230" y2="238" stroke="#2563eb" stroke-width="2"/>
+  <line x1="230" y1="238" x2="230" y2="248" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <!-- A → D -->
+  <line x1="230" y1="224" x2="230" y2="232" stroke="#2f9d74" stroke-width="2"/>
+  <line x1="230" y1="232" x2="670" y2="232" stroke="#2f9d74" stroke-width="2"/>
+  <line x1="670" y1="232" x2="670" y2="248" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- ===== Footer bar ===== -->
+  <rect x="0" y="434" width="900" height="44" fill="#1a1822" rx="0"/>
+  <text x="90" y="460" font-family="Arial, sans-serif" font-size="11" fill="#e2e8f0" text-anchor="middle">SA Construction: O(n log n)</text>
+  <line x1="180" y1="442" x2="180" y2="470" stroke="#4a4560" stroke-width="1"/>
+  <text x="270" y="460" font-family="Arial, sans-serif" font-size="11" fill="#e2e8f0" text-anchor="middle">SA-IS: O(n)</text>
+  <line x1="360" y1="442" x2="360" y2="470" stroke="#4a4560" stroke-width="1"/>
+  <text x="450" y="460" font-family="Arial, sans-serif" font-size="11" fill="#e2e8f0" text-anchor="middle">Pattern Search: O(P log n)</text>
+  <line x1="540" y1="442" x2="540" y2="470" stroke="#4a4560" stroke-width="1"/>
+  <text x="630" y="460" font-family="Arial, sans-serif" font-size="11" fill="#e2e8f0" text-anchor="middle">LCP via Kasai: O(n)</text>
+  <line x1="720" y1="442" x2="720" y2="470" stroke="#4a4560" stroke-width="1"/>
+  <text x="810" y="460" font-family="Arial, sans-serif" font-size="11" fill="#e2e8f0" text-anchor="middle">Space: O(n)</text>
+</svg>

@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="system-ui, sans-serif">
+  <title>Segment Tree and Lazy Propagation architecture diagram showing tree structure build query lazy propagation and variants</title>
+
+  <defs>
+    <marker id="arrowST" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#1a1822">Segment Tree &amp; Lazy Propagation</text>
+
+  <!-- ===== Section A: Tree Structure & Node Layout (top-left) ===== -->
+  <rect x="20" y="48" width="420" height="170" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="20" y="48" width="420" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="20" y="62" width="420" height="12" fill="#6d5bd0"/>
+  <text x="230" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">A: Tree Structure &amp; Node Layout</text>
+
+  <!-- Array visualization -->
+  <text x="36" y="94" font-size="9" font-weight="700" fill="#6d5bd0">Input Array:</text>
+  <rect x="108" y="82" width="24" height="18" fill="#6d5bd0" rx="2"/>
+  <text x="120" y="95" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">2</text>
+  <rect x="134" y="82" width="24" height="18" fill="#6d5bd0" rx="2"/>
+  <text x="146" y="95" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">4</text>
+  <rect x="160" y="82" width="24" height="18" fill="#6d5bd0" rx="2"/>
+  <text x="172" y="95" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">6</text>
+  <rect x="186" y="82" width="24" height="18" fill="#6d5bd0" rx="2"/>
+  <text x="198" y="95" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">8</text>
+  <text x="216" y="94" font-size="9" fill="#4c3d8f">&#8594; sums build tree bottom-up</text>
+
+  <!-- Tree nodes -->
+  <!-- Root: node 1, sum=20 -->
+  <rect x="195" y="104" width="40" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="215" y="119" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">20 [1]</text>
+
+  <!-- Level 2: node 2 sum=6, node 3 sum=14 -->
+  <rect x="120" y="136" width="40" height="22" rx="4" fill="#8b7ed8"/>
+  <text x="140" y="151" text-anchor="middle" font-size="9" fill="#fff">6 [2]</text>
+  <rect x="270" y="136" width="40" height="22" rx="4" fill="#8b7ed8"/>
+  <text x="290" y="151" text-anchor="middle" font-size="9" fill="#fff">14 [3]</text>
+
+  <!-- Lines root to children -->
+  <line x1="210" y1="126" x2="152" y2="136" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="220" y1="126" x2="282" y2="136" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <!-- Level 3: leaves -->
+  <rect x="80" y="168" width="32" height="20" rx="4" fill="#b9aff0"/>
+  <text x="96" y="182" text-anchor="middle" font-size="9" fill="#1a1822">2 [4]</text>
+  <rect x="153" y="168" width="32" height="20" rx="4" fill="#b9aff0"/>
+  <text x="169" y="182" text-anchor="middle" font-size="9" fill="#1a1822">4 [5]</text>
+  <rect x="233" y="168" width="32" height="20" rx="4" fill="#b9aff0"/>
+  <text x="249" y="182" text-anchor="middle" font-size="9" fill="#1a1822">6 [6]</text>
+  <rect x="306" y="168" width="32" height="20" rx="4" fill="#b9aff0"/>
+  <text x="322" y="182" text-anchor="middle" font-size="9" fill="#1a1822">8 [7]</text>
+
+  <line x1="135" y1="158" x2="100" y2="168" stroke="#8b7ed8" stroke-width="1.2"/>
+  <line x1="145" y1="158" x2="168" y2="168" stroke="#8b7ed8" stroke-width="1.2"/>
+  <line x1="282" y1="158" x2="252" y2="168" stroke="#8b7ed8" stroke-width="1.2"/>
+  <line x1="298" y1="158" x2="322" y2="168" stroke="#8b7ed8" stroke-width="1.2"/>
+
+  <!-- Key properties -->
+  <text x="36" y="200" font-size="9" fill="#4c3d8f">&#8226; parent = sum(children) &#8226; height = &#8968;log&#8322;n&#8969; &#8226; 1-indexed array storage</text>
+  <text x="36" y="213" font-size="9" fill="#4c3d8f">&#8226; node i has children 2i and 2i+1 &#8226; leaf nodes = array elements</text>
+
+  <!-- ===== Section B: Build & Query (top-right) ===== -->
+  <rect x="460" y="48" width="420" height="170" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="460" y="48" width="420" height="26" rx="8" fill="#2563eb"/>
+  <rect x="460" y="62" width="420" height="12" fill="#2563eb"/>
+  <text x="670" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">B: Build &amp; Query</text>
+
+  <text x="476" y="90" font-size="10" font-weight="700" fill="#1e40af">Build — O(n) bottom-up:</text>
+  <text x="476" y="104" font-size="9" fill="#1e3a8a">Fill leaves at index n..2n-1, then compute parents from i=n-1 down to 1.</text>
+  <text x="476" y="116" font-size="9" fill="#1e3a8a">Merge operation is configurable: sum, min, max, gcd, product.</text>
+
+  <text x="476" y="132" font-size="10" font-weight="700" fill="#1e40af">Range Sum Query — O(log n):</text>
+  <text x="476" y="145" font-size="9" fill="#1e3a8a">if node range &#8838; query range &#8594; return node val (full overlap)</text>
+  <text x="476" y="157" font-size="9" fill="#1e3a8a">if no overlap &#8594; return 0 (identity element)</text>
+  <text x="476" y="169" font-size="9" fill="#1e3a8a">else recurse both children and combine results (partial overlap)</text>
+
+  <text x="476" y="184" font-size="10" font-weight="700" fill="#1e40af">Point Update — O(log n):</text>
+  <text x="476" y="197" font-size="9" fill="#1e3a8a">Update leaf at position, then propagate up recalculating each parent.</text>
+  <text x="476" y="209" font-size="9" fill="#1e3a8a">At each ancestor: tree[i] = tree[2i] + tree[2i+1].</text>
+
+  <!-- ===== Section C: Lazy Propagation (bottom-left) ===== -->
+  <rect x="20" y="238" width="420" height="170" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="20" y="238" width="420" height="26" rx="8" fill="#2f9d74"/>
+  <rect x="20" y="252" width="420" height="12" fill="#2f9d74"/>
+  <text x="230" y="256" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C: Lazy Propagation</text>
+
+  <text x="36" y="280" font-size="10" font-weight="700" fill="#065f46">Without lazy — range update cost O(n log n):</text>
+  <text x="36" y="293" font-size="9" fill="#064e3b">Updating every element in a range then rebuilding is O(n) per update.</text>
+
+  <text x="36" y="309" font-size="10" font-weight="700" fill="#065f46">Lazy tag defers updates — achieves O(log n) range update:</text>
+  <text x="36" y="322" font-size="9" fill="#064e3b">Store a pending tag at each node. Tag means &quot;apply this to all descendants.&quot;</text>
+  <text x="36" y="334" font-size="9" fill="#064e3b">Push-down before accessing children: propagate tag to lazy[2i] and lazy[2i+1].</text>
+  <text x="36" y="346" font-size="9" fill="#064e3b">Update: val[node] += tag &#215; range_size, then clear tag at node.</text>
+
+  <text x="36" y="362" font-size="10" font-weight="700" fill="#065f46">Push-down rule:</text>
+  <text x="36" y="375" font-size="9" fill="#064e3b">lazy[2i] += tag, val[2i] += tag &#215; left_size</text>
+  <text x="36" y="387" font-size="9" fill="#064e3b">lazy[2i+1] += tag, val[2i+1] += tag &#215; right_size</text>
+  <text x="36" y="399" font-size="9" fill="#064e3b">&#8226; Additive lazy: identity = 0 &#8226; Multiplicative lazy: identity = 1</text>
+
+  <!-- ===== Section D: Variants & Applications (bottom-right) ===== -->
+  <rect x="460" y="238" width="420" height="170" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="460" y="238" width="420" height="26" rx="8" fill="#d97843"/>
+  <rect x="460" y="252" width="420" height="12" fill="#d97843"/>
+  <text x="670" y="256" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">D: Variants &amp; Applications</text>
+
+  <text x="476" y="280" font-size="10" font-weight="700" fill="#92400e">Tree Variants:</text>
+  <text x="476" y="293" font-size="9" fill="#78350f">&#8226; Range Min/Max Query — identity is +&#8734; for min, -&#8734; for max</text>
+  <text x="476" y="305" font-size="9" fill="#78350f">&#8226; Range XOR — identity is 0, no lazy multiplication needed</text>
+  <text x="476" y="317" font-size="9" fill="#78350f">&#8226; Persistent Segment Tree — functional updates, O(log n) new nodes per version</text>
+  <text x="476" y="329" font-size="9" fill="#78350f">&#8226; Coordinate Compressed — map values to sorted indices, reduce space</text>
+  <text x="476" y="341" font-size="9" fill="#78350f">&#8226; 2D Segment Tree — nested trees for 2D range queries, O(log&#178;n)</text>
+
+  <text x="476" y="357" font-size="10" font-weight="700" fill="#92400e">LeetCode Problems:</text>
+  <text x="476" y="370" font-size="9" fill="#78350f">307 Range Sum Query Mutable &#8226; 315 Count of Smaller Numbers</text>
+  <text x="476" y="382" font-size="9" fill="#78350f">699 Falling Squares &#8226; 2407 Longest Increasing Subsequence II</text>
+
+  <text x="476" y="398" font-size="10" font-weight="700" fill="#92400e">Real-world uses:</text>
+  <text x="476" y="411" font-size="9" fill="#78350f">DB range aggregations &#8226; Computational geometry &#8226; Competitive programming</text>
+
+  <!-- ===== Arrows between sections ===== -->
+  <!-- A → B (top, horizontal) -->
+  <line x1="440" y1="133" x2="458" y2="133" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowST)"/>
+
+  <!-- A → C (left, vertical) -->
+  <line x1="230" y1="218" x2="230" y2="236" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowST)"/>
+
+  <!-- B → C (diagonal) -->
+  <line x1="462" y1="218" x2="442" y2="240" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowST)"/>
+
+  <!-- ===== Footer bar ===== -->
+  <rect x="0" y="428" width="900" height="44" rx="0" fill="#1a1822"/>
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+
+  <!-- Footer metrics -->
+  <text x="80" y="455" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Build: O(n)</text>
+  <line x1="158" y1="434" x2="158" y2="466" stroke="#ffffff" stroke-width="0.8" opacity="0.4"/>
+  <text x="255" y="455" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Query: O(log n)</text>
+  <line x1="352" y1="434" x2="352" y2="466" stroke="#ffffff" stroke-width="0.8" opacity="0.4"/>
+  <text x="448" y="455" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Update: O(log n)</text>
+  <line x1="544" y1="434" x2="544" y2="466" stroke="#ffffff" stroke-width="0.8" opacity="0.4"/>
+  <text x="638" y="455" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Space: O(n)</text>
+  <line x1="732" y1="434" x2="732" y2="466" stroke="#ffffff" stroke-width="0.8" opacity="0.4"/>
+  <text x="820" y="455" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">Lazy: O(n) range update</text>
+</svg>

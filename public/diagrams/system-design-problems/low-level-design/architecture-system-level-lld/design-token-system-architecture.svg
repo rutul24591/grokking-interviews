@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Design Token System Architecture — LLD</text>
+
+  <rect x="16" y="44" width="420" height="176" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="44" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Token Hierarchy &amp; Taxonomy</text>
+  <text x="26" y="89" font-size="9.5" fill="#1a1822">Primitive tokens: raw values — blue-500: #3b82f6, space-4: 16px</text>
+  <text x="26" y="106" font-size="9.5" fill="#1a1822">Semantic tokens: meaning-bearing — color-action-primary: {blue-500}</text>
+  <text x="26" y="123" font-size="9.5" fill="#1a1822">Component tokens: scoped to component — btn-primary-bg: {color-action-primary}</text>
+  <text x="26" y="140" font-size="9.5" fill="#1a1822">3-layer chain: primitive → semantic → component (never skip layers)</text>
+  <text x="26" y="157" font-size="9.5" fill="#1a1822">Token categories: color, typography, spacing, border, shadow, motion</text>
+  <text x="26" y="174" font-size="9.5" fill="#1a1822">Naming convention: {category}-{variant}-{state} e.g. color-text-disabled</text>
+  <text x="26" y="191" font-size="9.5" fill="#1a1822">Source of truth: single JSON/YAML file (Style Dictionary, Tokens Studio)</text>
+  <text x="26" y="208" font-size="9.5" fill="#1a1822">Platform outputs: CSS vars, iOS Swift, Android XML — one source, many targets</text>
+
+  <rect x="464" y="44" width="420" height="176" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="44" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">CSS Variable Injection &amp; Runtime Theming</text>
+  <text x="474" y="89" font-size="9.5" fill="#1a1822">CSS custom properties: --color-action-primary: #3b82f6 on :root</text>
+  <text x="474" y="106" font-size="9.5" fill="#1a1822">Theme switching: override vars on [data-theme="dark"] selector</text>
+  <text x="474" y="123" font-size="9.5" fill="#1a1822">No JS required for theme switch — CSS vars cascade automatically</text>
+  <text x="474" y="140" font-size="9.5" fill="#1a1822">SSR: add data-theme to html element server-side to avoid FOUC</text>
+  <text x="474" y="157" font-size="9.5" fill="#1a1822">localStorage: persist theme choice; read before first paint (inline script)</text>
+  <text x="474" y="174" font-size="9.5" fill="#1a1822">System preference: prefers-color-scheme media query as default</text>
+  <text x="474" y="191" font-size="9.5" fill="#1a1822">CSS-in-JS: tokens as JS object passed via ThemeProvider context</text>
+  <text x="474" y="208" font-size="9.5" fill="#1a1822">Shadow DOM: CSS vars pierce shadow boundaries — shared tokens work</text>
+
+  <rect x="16" y="236" width="420" height="176" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="236" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Multi-Brand &amp; White-Label Architecture</text>
+  <text x="26" y="280" font-size="9.5" fill="#1a1822">Brand tokens: separate primitive set per brand, shared semantic layer</text>
+  <text x="26" y="297" font-size="9.5" fill="#1a1822">Token resolution at build: generate brand-specific CSS var files</text>
+  <text x="26" y="314" font-size="9.5" fill="#1a1822">Runtime brand switch: replace :root CSS vars on brand change event</text>
+  <text x="26" y="331" font-size="9.5" fill="#1a1822">Theme isolation: load brand stylesheet asynchronously; low CLS impact</text>
+  <text x="26" y="348" font-size="9.5" fill="#1a1822">Component agnostic: components reference semantic tokens only</text>
+  <text x="26" y="365" font-size="9.5" fill="#1a1822">Tenant customization: override component-level tokens per tenant config</text>
+  <text x="26" y="382" font-size="9.5" fill="#1a1822">Token API: REST endpoint returns brand tokens as JSON → CSS vars</text>
+  <text x="26" y="399" font-size="9.5" fill="#1a1822">Fallback chain: tenant tokens → brand tokens → default tokens</text>
+
+  <rect x="464" y="236" width="420" height="176" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="236" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tooling, Distribution &amp; Governance</text>
+  <text x="474" y="280" font-size="9.5" fill="#1a1822">Style Dictionary: transforms JSON tokens → platform outputs in CI</text>
+  <text x="474" y="297" font-size="9.5" fill="#1a1822">Tokens Studio (Figma): designers edit tokens in Figma → sync to repo</text>
+  <text x="474" y="314" font-size="9.5" fill="#1a1822">NPM package: publish @org/tokens with typed JS + CSS files</text>
+  <text x="474" y="331" font-size="9.5" fill="#1a1822">Versioning: semantic versioning; breaking token changes = major bump</text>
+  <text x="474" y="348" font-size="9.5" fill="#1a1822">Visual regression: Chromatic/Percy screenshots on token change PR</text>
+  <text x="474" y="365" font-size="9.5" fill="#1a1822">Token linting: stylelint-no-unknown-custom-property detects undefined vars</text>
+  <text x="474" y="382" font-size="9.5" fill="#1a1822">Deprecation: mark old tokens with @deprecated; migration codemod</text>
+  <text x="474" y="399" font-size="9.5" fill="#1a1822">Governance: design team owns primitives/semantics; eng owns component tokens</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="132" x2="458" y2="132" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="226" y1="220" x2="226" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="674" y1="220" x2="674" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="455" text-anchor="middle" font-size="10" fill="white">3 layers: primitive → semantic → component</text>
+  <text x="270" y="455" text-anchor="middle" font-size="10" fill="white">CSS vars on :root; data-theme override for dark</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="white">SSR: set data-theme server-side to prevent FOUC</text>
+  <text x="630" y="455" text-anchor="middle" font-size="10" fill="white">Style Dictionary: one JSON → CSS/iOS/Android</text>
+  <text x="810" y="455" text-anchor="middle" font-size="10" fill="white">Governance: designers own primitives, eng owns components</text>
+</svg>

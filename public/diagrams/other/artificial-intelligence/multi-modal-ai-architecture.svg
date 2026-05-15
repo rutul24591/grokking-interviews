@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="900" height="520" fill="#0f0e17"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#f0eeff">Multi-Modal AI — Architecture</text>
+  <text x="450" y="50" text-anchor="middle" font-size="11" fill="#9e8fcb">VLM vision · Document pipeline · Audio transcription · Multi-modal RAG</text>
+
+  <!-- Section A: VISION LANGUAGE MODELS (purple) -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="74" width="425" height="12" rx="0" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">VISION LANGUAGE MODELS</text>
+
+  <!-- A1: VLM Input -->
+  <rect x="24" y="98" width="190" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">VLM Input</text>
+  <text x="34" y="133" font-size="9" fill="#3b2f6e">image → encode as base64 or URL</text>
+  <text x="34" y="148" font-size="9" fill="#3b2f6e">resize: model-specific (768px max)</text>
+  <text x="34" y="163" font-size="9" fill="#3b2f6e">tile: large images split into tiles</text>
+  <text x="34" y="178" font-size="9" fill="#3b2f6e">(GPT-4V: up to 2048px with tiling)</text>
+  <text x="34" y="193" font-size="9" fill="#3b2f6e">tokens: ~170 per 512×512 tile</text>
+  <text x="34" y="208" font-size="9" fill="#3b2f6e">cost: image tokens billed separately</text>
+  <text x="34" y="223" font-size="9" fill="#3b2f6e">models: GPT-4o, Claude 3, Gemini</text>
+  <text x="34" y="238" font-size="9" fill="#3b2f6e">detail: low/high mode controls cost</text>
+
+  <!-- A2: Vision Tasks -->
+  <rect x="226" y="98" width="197" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Vision Tasks</text>
+  <text x="236" y="133" font-size="9" fill="#3b2f6e">captioning: describe image content</text>
+  <text x="236" y="148" font-size="9" fill="#3b2f6e">OCR: extract text from image/scan</text>
+  <text x="236" y="163" font-size="9" fill="#3b2f6e">VQA: answer questions about image</text>
+  <text x="236" y="178" font-size="9" fill="#3b2f6e">document: analyze charts/tables</text>
+  <text x="236" y="193" font-size="9" fill="#3b2f6e">grounding: locate objects by desc.</text>
+  <text x="236" y="208" font-size="9" fill="#3b2f6e">structured output: extract form fields</text>
+  <text x="236" y="223" font-size="9" fill="#3b2f6e">diagram analysis: architecture/flow</text>
+  <text x="236" y="238" font-size="9" fill="#3b2f6e">diff: compare before/after images</text>
+
+  <!-- Section B: DOCUMENT PIPELINE (blue) -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="26" rx="8" fill="#2563eb"/>
+  <rect x="463" y="74" width="425" height="12" rx="0" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">DOCUMENT PIPELINE</text>
+
+  <!-- B1: PDF Extraction -->
+  <rect x="485" y="98" width="190" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="580" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">PDF Extraction</text>
+  <text x="490" y="133" font-size="9" fill="#1e3a5f">pdfplumber / PyMuPDF: text + bbox</text>
+  <text x="490" y="148" font-size="9" fill="#1e3a5f">OCR fallback: Tesseract for scanned</text>
+  <text x="490" y="163" font-size="9" fill="#1e3a5f">table: camelot / tabula extraction</text>
+  <text x="490" y="178" font-size="9" fill="#1e3a5f">layout: preserve reading order</text>
+  <text x="490" y="193" font-size="9" fill="#1e3a5f">images: extract → process separately</text>
+  <text x="490" y="208" font-size="9" fill="#1e3a5f">chunking: page-aware boundaries</text>
+  <text x="490" y="223" font-size="9" fill="#1e3a5f">detect: text-based vs scanned PDF</text>
+  <text x="490" y="238" font-size="9" fill="#1e3a5f">cache: store extraction results in S3</text>
+
+  <!-- B2: Document Intelligence -->
+  <rect x="682" y="98" width="193" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="778" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Document Intelligence</text>
+  <text x="687" y="133" font-size="9" fill="#1e3a5f">Azure Doc Intelligence / AWS Textract</text>
+  <text x="687" y="148" font-size="9" fill="#1e3a5f">layout-aware: reading order preserved</text>
+  <text x="687" y="163" font-size="9" fill="#1e3a5f">form fields: key-value pairs extracted</text>
+  <text x="687" y="178" font-size="9" fill="#1e3a5f">tables: row+column structure intact</text>
+  <text x="687" y="193" font-size="9" fill="#1e3a5f">invoices: structured extraction</text>
+  <text x="687" y="208" font-size="9" fill="#1e3a5f">accuracy: &gt;95% for standard forms</text>
+  <text x="687" y="223" font-size="9" fill="#1e3a5f">cost: $1–10 per 1000 pages</text>
+  <text x="687" y="238" font-size="9" fill="#1e3a5f">async: webhook on completion</text>
+
+  <!-- Arrows -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <!-- Section C: AUDIO INTEGRATION (green) -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="26" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="299" width="425" height="12" rx="0" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">AUDIO INTEGRATION</text>
+
+  <!-- C1: Transcription Pipeline -->
+  <rect x="24" y="323" width="190" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Transcription Pipeline</text>
+  <text x="34" y="358" font-size="9" fill="#14532d">Whisper: open-source, multilingual</text>
+  <text x="34" y="373" font-size="9" fill="#14532d">word timestamps for alignment</text>
+  <text x="34" y="388" font-size="9" fill="#14532d">streaming: faster-whisper realtime</text>
+  <text x="34" y="403" font-size="9" fill="#14532d">cloud: Deepgram / AssemblyAI prod</text>
+  <text x="34" y="418" font-size="9" fill="#14532d">chunking: 30s chunks for long audio</text>
+  <text x="34" y="433" font-size="9" fill="#14532d">latency: ~1s for 30s chunk</text>
+
+  <!-- C2: Audio Features -->
+  <rect x="226" y="323" width="197" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Audio Features</text>
+  <text x="236" y="358" font-size="9" fill="#14532d">diarization: who said what (speaker)</text>
+  <text x="236" y="373" font-size="9" fill="#14532d">sentiment: per-utterance tone</text>
+  <text x="236" y="388" font-size="9" fill="#14532d">topic detection: segment by subject</text>
+  <text x="236" y="403" font-size="9" fill="#14532d">PII redaction: mask in transcript</text>
+  <text x="236" y="418" font-size="9" fill="#14532d">translation: Whisper multilingual</text>
+  <text x="236" y="433" font-size="9" fill="#14532d">custom vocab: boost domain terms</text>
+
+  <!-- Arrow C→D -->
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Section D: MULTI-MODAL RAG (amber) -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="26" rx="8" fill="#d97843"/>
+  <rect x="463" y="299" width="425" height="12" rx="0" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">MULTI-MODAL RAG</text>
+
+  <!-- D1: Multi-modal Index -->
+  <rect x="485" y="323" width="190" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="580" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Multi-modal Index</text>
+  <text x="490" y="358" font-size="9" fill="#78350f">text chunks: embed normally</text>
+  <text x="490" y="373" font-size="9" fill="#78350f">images: caption → embed caption</text>
+  <text x="490" y="388" font-size="9" fill="#78350f">tables: convert to text → embed</text>
+  <text x="490" y="403" font-size="9" fill="#78350f">audio: transcribe → chunk → embed</text>
+  <text x="490" y="418" font-size="9" fill="#78350f">store: {type, content, embedding,</text>
+  <text x="490" y="433" font-size="9" fill="#78350f">source_doc, page, bbox}</text>
+
+  <!-- D2: Multi-modal Retrieval -->
+  <rect x="682" y="323" width="193" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="778" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Multi-modal Retrieval</text>
+  <text x="687" y="358" font-size="9" fill="#78350f">query: embed as text (unified)</text>
+  <text x="687" y="373" font-size="9" fill="#78350f">retrieve: unified search all types</text>
+  <text x="687" y="388" font-size="9" fill="#78350f">rerank: cross-modal reranker</text>
+  <text x="687" y="403" font-size="9" fill="#78350f">VLM synthesis: pass images directly</text>
+  <text x="687" y="418" font-size="9" fill="#78350f">citation: {source, page, bbox}</text>
+  <text x="687" y="433" font-size="9" fill="#78350f">context assembly: mix modalities</text>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="20" y="506" font-size="9" fill="#9e8fcb">Image tokens: ~170 per 512×512 tile</text>
+  <text x="215" y="506" font-size="9" fill="#9e8fcb">| PDF OCR: Tesseract fallback</text>
+  <text x="380" y="506" font-size="9" fill="#9e8fcb">| Whisper: 30s chunks</text>
+  <text x="510" y="506" font-size="9" fill="#9e8fcb">| Multi-modal embed: caption images</text>
+  <text x="710" y="506" font-size="9" fill="#9e8fcb">| Table → text + embed</text>
+</svg>

@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">OAuth 2.0 / OIDC / SSO — Frontend LLD</text>
+
+  <rect x="16" y="44" width="420" height="176" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="44" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">OAuth 2.0 Authorization Code + PKCE Flow</text>
+  <text x="26" y="89" font-size="9.5" fill="#1a1822">1. User clicks "Sign in with Google" → generate code_verifier (random 32 bytes)</text>
+  <text x="26" y="106" font-size="9.5" fill="#1a1822">2. code_challenge = BASE64URL(SHA256(code_verifier)) → store verifier in sessionStorage</text>
+  <text x="26" y="123" font-size="9.5" fill="#1a1822">3. Redirect to /authorize?response_type=code&amp;client_id&amp;redirect_uri&amp;scope&amp;code_challenge</text>
+  <text x="26" y="140" font-size="9.5" fill="#1a1822">4. IdP authenticates user → redirects back with ?code=AUTH_CODE&amp;state=NONCE</text>
+  <text x="26" y="157" font-size="9.5" fill="#1a1822">5. Verify state === sessionStorage nonce (CSRF protection)</text>
+  <text x="26" y="174" font-size="9.5" fill="#1a1822">6. POST /token: {code, code_verifier, redirect_uri} → {access_token, id_token, refresh_token}</text>
+  <text x="26" y="191" font-size="9.5" fill="#1a1822">7. Validate id_token JWT: sig, iss, aud, exp, nonce — extract user claims</text>
+  <text x="26" y="208" font-size="9.5" fill="#1a1822">8. Store access_token in memory only; refresh_token in httpOnly cookie via BFF</text>
+
+  <rect x="464" y="44" width="420" height="176" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="44" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Token Lifecycle &amp; Silent Refresh</text>
+  <text x="474" y="89" font-size="9.5" fill="#1a1822">• Access token: short-lived (15–60 min), stored in-memory (React context/Zustand)</text>
+  <text x="474" y="106" font-size="9.5" fill="#1a1822">• Refresh token: long-lived (days), stored in httpOnly Secure SameSite=Strict cookie</text>
+  <text x="474" y="123" font-size="9.5" fill="#1a1822">• Silent refresh: POST /token with grant_type=refresh_token (via BFF, no JS access)</text>
+  <text x="474" y="140" font-size="9.5" fill="#1a1822">• Proactive refresh: schedule refresh 60s before expiry using exp claim from JWT</text>
+  <text x="474" y="157" font-size="9.5" fill="#1a1822">• Refresh token rotation: IdP issues new refresh token on each use (detect replay)</text>
+  <text x="474" y="174" font-size="9.5" fill="#1a1822">• Token interception: Axios/fetch interceptor queues concurrent requests during refresh</text>
+  <text x="474" y="191" font-size="9.5" fill="#1a1822">• Failed refresh → clear state → redirect to /login with returnUrl preserved</text>
+  <text x="474" y="208" font-size="9.5" fill="#1a1822">• Cross-tab sync: BroadcastChannel propagates token refresh / logout to all tabs</text>
+
+  <rect x="16" y="236" width="420" height="176" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="236" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Enterprise SSO (SAML / OIDC Federation)</text>
+  <text x="26" y="280" font-size="9.5" fill="#1a1822">• SP-initiated SAML: redirect to IdP → SAML assertion POST back to ACS URL</text>
+  <text x="26" y="297" font-size="9.5" fill="#1a1822">• OIDC federation: IdP discovery via .well-known/openid-configuration endpoint</text>
+  <text x="26" y="314" font-size="9.5" fill="#1a1822">• Email-based IdP routing: extract domain → map to tenant IdP config</text>
+  <text x="26" y="331" font-size="9.5" fill="#1a1822">• JIT provisioning: create user on first SSO login from SAML attributes/OIDC claims</text>
+  <text x="26" y="348" font-size="9.5" fill="#1a1822">• Session bridging: SSO session lifetime ≠ app session — track both independently</text>
+  <text x="26" y="365" font-size="9.5" fill="#1a1822">• Global logout (SLO): receive logout request from IdP → invalidate local session</text>
+  <text x="26" y="382" font-size="9.5" fill="#1a1822">• Attribute mapping: SAML attributes → app roles/permissions via claim transformations</text>
+  <text x="26" y="399" font-size="9.5" fill="#1a1822">• Multi-IdP: support Google, Okta, Azure AD — abstract behind AuthProvider interface</text>
+
+  <rect x="464" y="236" width="420" height="176" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="236" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Security, Scopes &amp; Edge Cases</text>
+  <text x="474" y="280" font-size="9.5" fill="#1a1822">• PKCE mandatory for SPAs (replaces client_secret for public clients)</text>
+  <text x="474" y="297" font-size="9.5" fill="#1a1822">• state parameter: random nonce stored in sessionStorage, verified on callback</text>
+  <text x="474" y="314" font-size="9.5" fill="#1a1822">• Scope negotiation: request minimal scopes (openid profile email), incremental auth</text>
+  <text x="474" y="331" font-size="9.5" fill="#1a1822">• Consent screen: show requested scopes, allow partial grant, handle scope_denied</text>
+  <text x="474" y="348" font-size="9.5" fill="#1a1822">• Token binding: bind access token to client TLS cert (mTLS) for high-security apps</text>
+  <text x="474" y="365" font-size="9.5" fill="#1a1822">• Edge: popup vs redirect — popup breaks on mobile; use redirect with returnUrl param</text>
+  <text x="474" y="382" font-size="9.5" fill="#1a1822">• id_token nonce: embed nonce in auth request, verify in id_token to prevent replay</text>
+  <text x="474" y="399" font-size="9.5" fill="#1a1822">• Clock skew: allow ±60s leeway when validating exp/iat claims in id_token</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="132" x2="458" y2="132" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="226" y1="220" x2="226" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="674" y1="220" x2="674" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="455" text-anchor="middle" font-size="10" fill="white">PKCE: code_verifier → SHA256 → BASE64URL</text>
+  <text x="270" y="455" text-anchor="middle" font-size="10" fill="white">Access token: in-memory only (not localStorage)</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="white">Silent refresh: 60s before exp, queue concurrent reqs</text>
+  <text x="630" y="455" text-anchor="middle" font-size="10" fill="white">SSO: email domain → IdP routing → JIT provision</text>
+  <text x="810" y="455" text-anchor="middle" font-size="10" fill="white">SLO: IdP logout → invalidate all local sessions</text>
+</svg>

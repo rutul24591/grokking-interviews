@@ -487,6 +487,210 @@ export default function ArticlePage() {
       </section>
 
       <section>
+        <h2>PEFT, TGI Serving &amp; MLOps Governance</h2>
+        <div className="space-y-4">
+          <p>
+            Three topics that distinguish engineers who have operated
+            open-source models in production from those who have only used the
+            Hugging Face Inference API.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">PEFT: Parameter-Efficient Fine-Tuning</h3>
+          <p>
+            Full fine-tuning of a 7B-parameter model requires ~112GB of GPU
+            memory (model weights + gradients + optimizer states in float32).
+            PEFT (Parameter-Efficient Fine-Tuning) methods adapt a pre-trained
+            model to a new task by training only a small fraction of additional
+            parameters, dramatically reducing memory and compute requirements.
+          </p>
+          <p>
+            <strong>LoRA (Low-Rank Adaptation)</strong> is the dominant PEFT
+            method. For each weight matrix W in the model, LoRA adds two low-rank
+            matrices A and B (where rank r ≪ min(d_in, d_out)) and trains only
+            A and B while keeping W frozen. During inference, the adapted weights
+            are W + BA — a simple addition. LoRA with rank 16 on a 7B model
+            trains ~8M parameters (0.1% of 7B) with 4-8× lower memory than full
+            fine-tuning. The Hugging Face PEFT library implements LoRA, QLoRA
+            (quantized LoRA for further memory reduction), IA3, prefix tuning,
+            and prompt tuning with a consistent API.
+          </p>
+          <p>
+            <strong>QLoRA</strong> (Dettmers et al., 2023) combines 4-bit
+            quantization of the frozen base model with LoRA adapters in float16.
+            A 65B model fine-tuned with QLoRA fits on a single 48GB A100 GPU
+            — previously requiring 8× A100s for full fine-tuning. QLoRA achieves
+            within 1-2% of full fine-tuning quality on most benchmarks at 20%
+            of the compute cost.
+          </p>
+          <p>
+            When to use PEFT vs. full fine-tuning: use PEFT (LoRA/QLoRA) when
+            adapting a model to a new domain or task format and you have limited
+            GPU budget. Use full fine-tuning only when you need to deeply change
+            the model&apos;s knowledge (not just its behavior pattern) and have
+            A100/H100 cluster access. In practice, 90%+ of production fine-tuning
+            uses LoRA or QLoRA.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Text Generation Inference (TGI) for Production Serving</h3>
+          <p>
+            The Transformers library&apos;s <code>pipeline()</code> is convenient
+            for development but lacks the performance optimizations required for
+            production. TGI (Text Generation Inference, Hugging Face&apos;s
+            open-source serving framework) adds:
+          </p>
+          <p>
+            <strong>Continuous batching:</strong> instead of waiting for a full
+            batch to complete before starting the next, TGI inserts new requests
+            into the batch as soon as slot capacity is available. This eliminates
+            padding waste and increases GPU utilization from ~30% (static batching)
+            to ~85%. Throughput improvements of 5-10× are typical.
+          </p>
+          <p>
+            <strong>Flash Attention 2:</strong> an IO-aware attention
+            implementation that reduces memory reads/writes by tiling the
+            attention computation. On a 7B model with 4K context, Flash Attention
+            2 reduces attention memory from O(n²) to O(n) and speeds up prefill
+            by 2-4×.
+          </p>
+          <p>
+            <strong>Tensor parallelism:</strong> TGI distributes model layers
+            across multiple GPUs using tensor parallelism. A 70B model that
+            doesn&apos;t fit on a single 80GB A100 can be sharded across 2-4
+            GPUs with near-linear throughput scaling.
+          </p>
+          <p>
+            <strong>Speculative decoding:</strong> a small draft model generates
+            K candidate tokens; the main model verifies them in a single forward
+            pass. If all K are accepted, you get K tokens for the cost of one
+            main model forward pass. TGI supports speculative decoding natively.
+            Typical speedup: 2-3× for text that the draft model predicts
+            accurately (repetitive or templated outputs).
+          </p>
+          <p>
+            TGI exposes an OpenAI-compatible REST API, enabling drop-in
+            replacement of OpenAI endpoints for self-hosted models. This is
+            critical for avoiding vendor lock-in — you can switch between
+            OpenAI, Anthropic, and self-hosted models by changing the base URL.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">MLOps Governance for Open-Source Models</h3>
+          <p>
+            Open-source models introduce governance challenges that hosted API
+            models do not: you own the entire stack, including data lineage,
+            model provenance, and compliance documentation.
+          </p>
+          <p>
+            <strong>Model cards and provenance:</strong> every model deployed
+            to production must have a model card documenting: base model
+            (including its license), fine-tuning dataset (license, data source,
+            preprocessing steps), evaluation results (accuracy on benchmark
+            datasets, bias evaluation on demographic subgroups), intended use
+            cases, known limitations, and contact for model-related issues. Model
+            cards are required for EU AI Act high-risk systems and are expected
+            by enterprise procurement teams for SOC 2 compliance reviews.
+          </p>
+          <p>
+            <strong>License compliance:</strong> open-source model licenses
+            vary widely — from permissive (MIT, Apache 2.0) to restrictive
+            (Llama 2&apos;s license prohibits use if you have &gt;700M monthly
+            active users; Llama 3&apos;s acceptable use policy prohibits
+            certain categories of application). Before deploying any
+            Hugging Face model in a commercial product, verify the license
+            is compatible with your business model and use case. Track license
+            compliance in a model registry alongside the model artifact.
+          </p>
+          <p>
+            <strong>Model registry and versioning:</strong> store model artifacts
+            in a private registry (AWS SageMaker Model Registry, GCP Model
+            Registry, MLflow, or a private Hugging Face Hub organization) with
+            immutable versioning. Each deployment references a specific model
+            version by digest (SHA-256), not by tag (tags are mutable). This
+            enables reproducibility: if a model regression occurs, you can
+            identify exactly which weights were deployed and roll back to the
+            prior version with confidence.
+          </p>
+          <p>
+            <strong>Continuous evaluation:</strong> run a suite of evals on
+            every model candidate before promotion to production — accuracy on
+            task-specific benchmarks, safety evaluations (ToxiGen, BBQ for
+            bias), and performance benchmarks (latency, throughput at target
+            batch size). Gate promotion on all metrics passing defined thresholds.
+            Track eval results in a model card and require human sign-off for
+            any production model update.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Interview Questions</h2>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">
+            Q5: Design the MLOps pipeline for fine-tuning, evaluating, and
+            serving a 7B open-source LLM in production with SOC 2 compliance
+            requirements and a team of 4 ML engineers.
+          </h3>
+          <p>
+            This is a principal-level question testing the ability to design
+            a complete MLOps workflow for open-source models.
+          </p>
+          <p className="mt-2">
+            <strong>Fine-tuning pipeline:</strong> use QLoRA (4-bit quantization
+            + rank-16 LoRA adapters) on 2× A100 40GB GPUs. Fine-tuning data
+            is stored in S3 with versioned dataset manifests (SHA-256 of every
+            file in the training set). The training job runs in a container with
+            pinned Transformers/PEFT versions. Output: LoRA adapter weights
+            (stored in S3) + merged model checkpoint. Training run metadata
+            (hyperparameters, data version, base model version, GPU hours) is
+            logged to MLflow.
+          </p>
+          <p className="mt-2">
+            <strong>Evaluation gate:</strong> after training, an automated
+            eval job runs: (a) task-specific accuracy on a held-out test set;
+            (b) ToxiGen and BBQ for safety/bias; (c) latency benchmark at
+            batch size 1 and batch size 32 on target hardware. Results are
+            written to the model card. A GitHub Actions workflow gates promotion
+            to the staging environment — if any metric is below the defined
+            threshold, the workflow fails and the model is not promoted.
+            Human sign-off is required before production promotion.
+          </p>
+          <p className="mt-2">
+            <strong>Model registry:</strong> promoted models are stored in a
+            private Hugging Face Hub organization with immutable versioning
+            (tagged by commit SHA, not by &quot;latest&quot;). The registry
+            entry includes: model card, evaluation results, data manifest SHA,
+            base model ID + checksum, license, and intended use documentation.
+            This satisfies SOC 2 CC7.2 (change management) and EU AI Act
+            technical documentation requirements.
+          </p>
+          <p className="mt-2">
+            <strong>Serving:</strong> TGI on 2× A100 40GB with tensor
+            parallelism. Flash Attention 2 and continuous batching enabled.
+            Target SLA: P95 TTFT &lt;500ms, throughput &gt;50 tokens/s per
+            user at 100 concurrent users. TGI exposes an OpenAI-compatible
+            endpoint behind an LLM gateway (LiteLLM) that adds auth, rate
+            limiting, cost tracking, and model routing.
+          </p>
+          <p className="mt-2">
+            <strong>Monitoring:</strong> log every inference request (input
+            token count, output token count, model version, latency) to
+            ClickHouse for cost and quality analytics. Run a nightly sample
+            (2% of requests) through an LLM-as-judge scorer to detect quality
+            drift. Alert if quality score drops below threshold or if latency
+            P95 exceeds SLA. Model rollback is a one-command operation
+            (update the TGI deployment to the prior model version SHA).
+          </p>
+          <p className="mt-2">
+            <strong>SOC 2 controls:</strong> audit log of all model promotions
+            (who approved, what was the eval result, when); access control on
+            the model registry (only the ML platform team can push to production);
+            immutable model artifacts (Object Lock on S3); data lineage tracking
+            linking each production model to its training data version.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>References</h2>
         <ul className="space-y-2 text-sm text-muted">
           <li>

@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="900" height="520" fill="#0f0e17"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#f0eeff">Prompt Optimization — Architecture</text>
+  <text x="450" y="50" text-anchor="middle" font-size="11" fill="#9e8fcb">DSPy pipeline · Self-consistency · Tree-of-thought · A/B testing &amp; CI</text>
+
+  <!-- Section A: DSPY FRAMEWORK (purple) -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="74" width="425" height="12" rx="0" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">DSPY FRAMEWORK</text>
+
+  <!-- A1: DSPy Signatures -->
+  <rect x="24" y="98" width="190" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">DSPy Signatures</text>
+  <text x="34" y="133" font-size="9" fill="#3b2f6e">Signature: input_fields → output_fields</text>
+  <text x="34" y="148" font-size="9" fill="#3b2f6e">example: question: str → answer: str</text>
+  <text x="34" y="163" font-size="9" fill="#3b2f6e">typed: enforce types on I/O fields</text>
+  <text x="34" y="178" font-size="9" fill="#3b2f6e">description: per-field docstring</text>
+  <text x="34" y="193" font-size="9" fill="#3b2f6e">guides LLM without writing prompt</text>
+  <text x="34" y="208" font-size="9" fill="#3b2f6e">compile: optimizer finds best few-shots</text>
+  <text x="34" y="223" font-size="9" fill="#3b2f6e">+ instructions automatically</text>
+  <text x="34" y="238" font-size="9" fill="#3b2f6e">module: ChainOfThought, ReAct, etc.</text>
+
+  <!-- A2: DSPy Optimizers -->
+  <rect x="226" y="98" width="197" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">DSPy Optimizers</text>
+  <text x="236" y="133" font-size="9" fill="#3b2f6e">BootstrapFewShot: auto-select demos</text>
+  <text x="236" y="148" font-size="9" fill="#3b2f6e">from training set by metric score</text>
+  <text x="236" y="163" font-size="9" fill="#3b2f6e">MIPRO: multi-prompt instruction opt.</text>
+  <text x="236" y="178" font-size="9" fill="#3b2f6e">BayesianSignatureOpt: Bayesian search</text>
+  <text x="236" y="193" font-size="9" fill="#3b2f6e">metric: user-defined score function</text>
+  <text x="236" y="208" font-size="9" fill="#3b2f6e">eval set: 50–500 labeled examples</text>
+  <text x="236" y="223" font-size="9" fill="#3b2f6e">runtime: 30min–4hr per optimizer</text>
+  <text x="236" y="238" font-size="9" fill="#3b2f6e">output: compiled program (saved JSON)</text>
+
+  <!-- Section B: ADVANCED TECHNIQUES (blue) -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="26" rx="8" fill="#2563eb"/>
+  <rect x="463" y="74" width="425" height="12" rx="0" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">ADVANCED TECHNIQUES</text>
+
+  <!-- B1: Self-Consistency -->
+  <rect x="485" y="98" width="190" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="580" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Self-Consistency</text>
+  <text x="490" y="133" font-size="9" fill="#1e3a5f">sample N responses (5–20)</text>
+  <text x="490" y="148" font-size="9" fill="#1e3a5f">at temperature &gt; 0 (0.5–1.0)</text>
+  <text x="490" y="163" font-size="9" fill="#1e3a5f">majority vote: most common answer</text>
+  <text x="490" y="178" font-size="9" fill="#1e3a5f">benefit: 5–15% accuracy gain</text>
+  <text x="490" y="193" font-size="9" fill="#1e3a5f">on reasoning/math/classification</text>
+  <text x="490" y="208" font-size="9" fill="#1e3a5f">cost: N× inference cost</text>
+  <text x="490" y="223" font-size="9" fill="#1e3a5f">not for: open-ended generation</text>
+  <text x="490" y="238" font-size="9" fill="#1e3a5f">cache: dedupe identical inputs</text>
+
+  <!-- B2: Tree-of-Thought -->
+  <rect x="682" y="98" width="193" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="778" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Tree-of-Thought</text>
+  <text x="687" y="133" font-size="9" fill="#1e3a5f">generate K thoughts per step</text>
+  <text x="687" y="148" font-size="9" fill="#1e3a5f">evaluate: "is this promising?"</text>
+  <text x="687" y="163" font-size="9" fill="#1e3a5f">select best M (beam search)</text>
+  <text x="687" y="178" font-size="9" fill="#1e3a5f">expand each M to next depth</text>
+  <text x="687" y="193" font-size="9" fill="#1e3a5f">terminate: answer found or depth limit</text>
+  <text x="687" y="208" font-size="9" fill="#1e3a5f">cost: K × depth inference calls</text>
+  <text x="687" y="223" font-size="9" fill="#1e3a5f">best for: multi-step planning/puzzles</text>
+  <text x="687" y="238" font-size="9" fill="#1e3a5f">requires: capable model (GPT-4 class)</text>
+
+  <!-- Arrows -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <!-- Section C: PROMPT A/B TESTING (green) -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="26" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="299" width="425" height="12" rx="0" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">PROMPT A/B TESTING</text>
+
+  <!-- C1: Experiment Design -->
+  <rect x="24" y="323" width="190" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Experiment Design</text>
+  <text x="34" y="358" font-size="9" fill="#14532d">hypothesis: variant B improves accuracy</text>
+  <text x="34" y="373" font-size="9" fill="#14532d">metric: primary + guardrail (cost/lat)</text>
+  <text x="34" y="388" font-size="9" fill="#14532d">sample size: power analysis (α=0.05)</text>
+  <text x="34" y="403" font-size="9" fill="#14532d">assignment: hash(requestId) routing</text>
+  <text x="34" y="418" font-size="9" fill="#14532d">holdout: 10% control always active</text>
+  <text x="34" y="433" font-size="9" fill="#14532d">duration: until significance or 2 weeks</text>
+
+  <!-- C2: Statistical Analysis -->
+  <rect x="226" y="323" width="197" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Statistical Analysis</text>
+  <text x="236" y="358" font-size="9" fill="#14532d">t-test / Mann-Whitney U for cont.</text>
+  <text x="236" y="373" font-size="9" fill="#14532d">chi-squared for categorical metrics</text>
+  <text x="236" y="388" font-size="9" fill="#14532d">significance: p&lt;0.05 with Bonferroni</text>
+  <text x="236" y="403" font-size="9" fill="#14532d">correction for multiple variants</text>
+  <text x="236" y="418" font-size="9" fill="#14532d">practical significance: min delta</text>
+  <text x="236" y="433" font-size="9" fill="#14532d">(e.g. +2% accuracy threshold)</text>
+
+  <!-- Arrow C→D -->
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Section D: CI/CD FOR PROMPTS (amber) -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="26" rx="8" fill="#d97843"/>
+  <rect x="463" y="299" width="425" height="12" rx="0" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">CI/CD FOR PROMPTS</text>
+
+  <!-- D1: Prompt Regression Testing -->
+  <rect x="485" y="323" width="190" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="580" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Prompt Regression Testing</text>
+  <text x="490" y="358" font-size="9" fill="#78350f">golden dataset: 100–500 labeled evals</text>
+  <text x="490" y="373" font-size="9" fill="#78350f">eval script: score each prompt version</text>
+  <text x="490" y="388" font-size="9" fill="#78350f">gate: block if accuracy drops &gt;2%</text>
+  <text x="490" y="403" font-size="9" fill="#78350f">versioning: prompts in git with semver</text>
+  <text x="490" y="418" font-size="9" fill="#78350f">changelog: why each prompt changed</text>
+  <text x="490" y="433" font-size="9" fill="#78350f">rollback: revert prompt like code</text>
+
+  <!-- D2: Prompt Registry -->
+  <rect x="682" y="323" width="193" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="778" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Prompt Registry</text>
+  <text x="687" y="358" font-size="9" fill="#78350f">central store: name+version+template</text>
+  <text x="687" y="373" font-size="9" fill="#78350f">A/B weights: registry controls routing</text>
+  <text x="687" y="388" font-size="9" fill="#78350f">audit: every change logged w/ author</text>
+  <text x="687" y="403" font-size="9" fill="#78350f">canary: 5% traffic to new version first</text>
+  <text x="687" y="418" font-size="9" fill="#78350f">promote: increase weight on metrics</text>
+  <text x="687" y="433" font-size="9" fill="#78350f">rollback: revert weight in seconds</text>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="20" y="506" font-size="9" fill="#9e8fcb">Self-consistency: 5–20 samples</text>
+  <text x="200" y="506" font-size="9" fill="#9e8fcb">| ToT: K thoughts × depth</text>
+  <text x="360" y="506" font-size="9" fill="#9e8fcb">| DSPy compile: 30min–4hr</text>
+  <text x="545" y="506" font-size="9" fill="#9e8fcb">| Regression gate: &gt;2% accuracy drop</text>
+  <text x="745" y="506" font-size="9" fill="#9e8fcb">| Canary: 5% first</text>
+</svg>

@@ -1,0 +1,72 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Splay Tree — Self-Adjusting BST with Amortized O(log n)</text>
+
+  <!-- Section A: Splay Operation -->
+  <rect x="16" y="48" width="420" height="170" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="48" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Splay Operation — Zig, Zig-Zig, Zig-Zag</text>
+  <text x="26" y="93" font-size="9.5" fill="#1a1822">• splay(x): rotate x to root using 3 cases</text>
+  <text x="26" y="110" font-size="9.5" fill="#1a1822">• Zig: x is child of root → single rotation</text>
+  <text x="26" y="127" font-size="9.5" fill="#1a1822">• Zig-Zig: x and parent same side → rotate parent first, then x</text>
+  <text x="26" y="144" font-size="9.5" fill="#1a1822">• Zig-Zag: x and parent opposite sides → rotate x twice</text>
+  <text x="26" y="161" font-size="9.5" fill="#1a1822">• After every access (find/insert/delete) → splay accessed node</text>
+  <text x="26" y="178" font-size="9.5" fill="#1a1822">• Recently accessed nodes stay near root → temporal locality</text>
+  <text x="26" y="195" font-size="9.5" fill="#1a1822">• No balance info stored — just BST pointers</text>
+
+  <!-- Section B: Operations -->
+  <rect x="464" y="48" width="420" height="170" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="48" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">BST Operations via Splay</text>
+  <text x="474" y="93" font-size="9.5" fill="#1a1822">• find(x): BST search → splay(x) if found, splay(predecessor) if not</text>
+  <text x="474" y="110" font-size="9.5" fill="#1a1822">• insert(x): BST insert → splay(x) → x becomes root</text>
+  <text x="474" y="127" font-size="9.5" fill="#1a1822">• delete(x): splay(x) → split into left/right subtrees</text>
+  <text x="474" y="144" font-size="9.5" fill="#1a1822">  → splay max of left subtree → attach right as its right child</text>
+  <text x="474" y="161" font-size="9.5" fill="#1a1822">• split(x): splay(x) → left subtree = keys &lt; x, right = keys &gt; x</text>
+  <text x="474" y="178" font-size="9.5" fill="#1a1822">• join(L, R): splay(max of L) → attach R as right child</text>
+  <text x="474" y="195" font-size="9.5" fill="#1a1822">• All ops amortized O(log n) — worst case O(n) per single op</text>
+
+  <!-- Section C: Amortized Analysis -->
+  <rect x="16" y="234" width="420" height="170" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="234" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Amortized Analysis — Potential Method</text>
+  <text x="26" y="279" font-size="9.5" fill="#1a1822">• Potential Φ = Σ rank(x) for all nodes x in tree</text>
+  <text x="26" y="296" font-size="9.5" fill="#1a1822">• rank(x) = floor(log₂(size of subtree rooted at x))</text>
+  <text x="26" y="313" font-size="9.5" fill="#1a1822">• Amortized cost of splay = O(rank(root) - rank(x)) + O(1)</text>
+  <text x="26" y="330" font-size="9.5" fill="#1a1822">• Since rank(root) = O(log n), each splay is O(log n) amortized</text>
+  <text x="26" y="347" font-size="9.5" fill="#1a1822">• Access Lemma: amortized cost ≤ 3(rank(t) - rank(x)) + 1</text>
+  <text x="26" y="364" font-size="9.5" fill="#1a1822">• Working Set Property: m ops on n items, item accessed t_i times</text>
+  <text x="26" y="381" font-size="9.5" fill="#1a1822">  ago costs O(log t_i) — adapts to access frequency automatically</text>
+  <text x="26" y="398" font-size="9.5" fill="#1a1822">• Dynamic Finger: sequential access costs O(n) total → O(1) amortized</text>
+
+  <!-- Section D: Variants & Applications -->
+  <rect x="464" y="234" width="420" height="170" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="234" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Variants &amp; Real-World Applications</text>
+  <text x="474" y="279" font-size="9.5" fill="#1a1822">• vs AVL/Red-Black: no balance info → simpler node, better locality</text>
+  <text x="474" y="296" font-size="9.5" fill="#1a1822">• vs AVL/Red-Black: worst-case O(n) per op (ok if amortized suffices)</text>
+  <text x="474" y="313" font-size="9.5" fill="#1a1822">• Link-Cut Trees: splay trees on paths → dynamic tree connectivity</text>
+  <text x="474" y="330" font-size="9.5" fill="#1a1822">• GNU libstdc++ rope uses splay tree for string concatenation</text>
+  <text x="474" y="347" font-size="9.5" fill="#1a1822">• Cache simulation: LRU approximation via Working Set property</text>
+  <text x="474" y="364" font-size="9.5" fill="#1a1822">• Network routing: frequently accessed routes near root</text>
+  <text x="474" y="381" font-size="9.5" fill="#1a1822">• Conjecture (Sleator &amp; Tarjan): splay trees are dynamically optimal</text>
+  <text x="474" y="398" font-size="9.5" fill="#1a1822">  (unproven — one of the great open problems in data structures)</text>
+
+  <!-- Arrows -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="133" x2="458" y2="133" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="226" y1="218" x2="226" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="674" y1="218" x2="674" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="420" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="447" text-anchor="middle" font-size="10" fill="white">All ops: O(log n) amortized</text>
+  <text x="270" y="447" text-anchor="middle" font-size="10" fill="white">Worst case: O(n) per op</text>
+  <text x="450" y="447" text-anchor="middle" font-size="10" fill="white">Space: O(n) — no balance fields</text>
+  <text x="630" y="447" text-anchor="middle" font-size="10" fill="white">3 rotation cases: Zig/Zig-Zig/Zig-Zag</text>
+  <text x="810" y="447" text-anchor="middle" font-size="10" fill="white">Dynamic Optimality (conjectured)</text>
+</svg>

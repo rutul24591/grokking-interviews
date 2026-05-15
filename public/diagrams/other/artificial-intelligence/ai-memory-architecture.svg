@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Inter, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="900" height="520" fill="#0f0e17"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#f0eeff">AI Memory Architecture — Production Design</text>
+  <text x="450" y="50" text-anchor="middle" font-size="11" fill="#9e8fcb">Memory types · Storage backends · Consolidation · Privacy &amp; retrieval</text>
+
+  <!-- Section A: MEMORY TYPES (purple) -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="74" width="425" height="12" rx="0" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">MEMORY TYPES</text>
+
+  <!-- A1: Episodic Memory -->
+  <rect x="24" y="98" width="190" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Episodic Memory</text>
+  <text x="34" y="133" font-size="9" fill="#3b2f6e">specific past events &amp; interactions</text>
+  <text x="34" y="148" font-size="9" fill="#3b2f6e">stored as: embedding + metadata</text>
+  <text x="34" y="163" font-size="9" fill="#3b2f6e">+ raw text payload</text>
+  <text x="34" y="178" font-size="9" fill="#3b2f6e">query: "what did user X say</text>
+  <text x="34" y="193" font-size="9" fill="#3b2f6e">about Y last week?"</text>
+  <text x="34" y="208" font-size="9" fill="#3b2f6e">decay: older memories lower priority</text>
+  <text x="34" y="223" font-size="9" fill="#3b2f6e">compression: summarize old episodes</text>
+  <text x="34" y="238" font-size="9" fill="#3b2f6e">→ semantic facts (nightly batch)</text>
+
+  <!-- A2: Semantic Memory -->
+  <rect x="226" y="98" width="197" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Semantic Memory</text>
+  <text x="236" y="133" font-size="9" fill="#3b2f6e">facts &amp; knowledge distilled from episodes</text>
+  <text x="236" y="148" font-size="9" fill="#3b2f6e">stored as: structured KV or graph</text>
+  <text x="236" y="163" font-size="9" fill="#3b2f6e">example: "user prefers Python over JS"</text>
+  <text x="236" y="178" font-size="9" fill="#3b2f6e">"user's timezone is PST"</text>
+  <text x="236" y="193" font-size="9" fill="#3b2f6e">durable: high retention priority</text>
+  <text x="236" y="208" font-size="9" fill="#3b2f6e">update: overwrite on contradiction</text>
+  <text x="236" y="223" font-size="9" fill="#3b2f6e">access: exact key or semantic search</text>
+  <text x="236" y="238" font-size="9" fill="#3b2f6e">scope: user-scoped or global knowledge</text>
+
+  <!-- Section B: STORAGE BACKENDS (blue) -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="26" rx="8" fill="#2563eb"/>
+  <rect x="463" y="74" width="425" height="12" rx="0" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">STORAGE BACKENDS</text>
+
+  <!-- B1: Vector Memory -->
+  <rect x="485" y="98" width="190" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="580" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Vector Memory</text>
+  <text x="490" y="133" font-size="9" fill="#1e3a5f">embed memory → ANN search</text>
+  <text x="490" y="148" font-size="9" fill="#1e3a5f">store: Pinecone / Qdrant / pgvector</text>
+  <text x="490" y="163" font-size="9" fill="#1e3a5f">metadata: {userId, ts, type,</text>
+  <text x="490" y="178" font-size="9" fill="#1e3a5f">importance_score}</text>
+  <text x="490" y="193" font-size="9" fill="#1e3a5f">recall: top-k cosine sim + recency</text>
+  <text x="490" y="208" font-size="9" fill="#1e3a5f">capacity: millions per user</text>
+  <text x="490" y="223" font-size="9" fill="#1e3a5f">MMR: diverse non-redundant results</text>
+  <text x="490" y="238" font-size="9" fill="#1e3a5f">namespace: per userId isolation</text>
+
+  <!-- B2: Key-Value Memory -->
+  <rect x="682" y="98" width="193" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="778" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Key-Value Memory</text>
+  <text x="687" y="133" font-size="9" fill="#1e3a5f">structured facts: {key: "user.lang"</text>
+  <text x="687" y="148" font-size="9" fill="#1e3a5f">value: "Python"}</text>
+  <text x="687" y="163" font-size="9" fill="#1e3a5f">lookup: exact key match (O(1))</text>
+  <text x="687" y="178" font-size="9" fill="#1e3a5f">update: SET semantics (overwrite)</text>
+  <text x="687" y="193" font-size="9" fill="#1e3a5f">use: preferences, settings, facts</text>
+  <text x="687" y="208" font-size="9" fill="#1e3a5f">TTL: per-key expiry for temp context</text>
+  <text x="687" y="223" font-size="9" fill="#1e3a5f">backend: Redis or DynamoDB</text>
+  <text x="687" y="238" font-size="9" fill="#1e3a5f">scan: userId prefix for purge</text>
+
+  <!-- Arrows A→B and A→C -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <!-- Section C: CONSOLIDATION (green) -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="26" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="299" width="425" height="12" rx="0" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">CONSOLIDATION</text>
+
+  <!-- C1: Memory Consolidation -->
+  <rect x="24" y="323" width="190" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Memory Consolidation</text>
+  <text x="34" y="358" font-size="9" fill="#14532d">nightly batch: summarize episodes</text>
+  <text x="34" y="373" font-size="9" fill="#14532d">→ semantic facts via LLM</text>
+  <text x="34" y="388" font-size="9" fill="#14532d">dedup: merge similar facts</text>
+  <text x="34" y="403" font-size="9" fill="#14532d">conflict: newer fact wins</text>
+  <text x="34" y="418" font-size="9" fill="#14532d">importance: score by access freq</text>
+  <text x="34" y="433" font-size="9" fill="#14532d">+ recency + user feedback signal</text>
+
+  <!-- C2: Forgetting & Decay -->
+  <rect x="226" y="323" width="197" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Forgetting &amp; Decay</text>
+  <text x="236" y="358" font-size="9" fill="#14532d">explicit delete: "forget about X"</text>
+  <text x="236" y="373" font-size="9" fill="#14532d">TTL: session memories expire 24h</text>
+  <text x="236" y="388" font-size="9" fill="#14532d">importance decay: score × 0.99^days</text>
+  <text x="236" y="403" font-size="9" fill="#14532d">GDPR right-to-erasure: cascade</text>
+  <text x="236" y="418" font-size="9" fill="#14532d">delete all memories by userId</text>
+  <text x="236" y="433" font-size="9" fill="#14532d">audit: log all memory deletions</text>
+
+  <!-- Arrow C→D -->
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <!-- Section D: RETRIEVAL & PRIVACY (amber) -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="26" rx="8" fill="#d97843"/>
+  <rect x="463" y="299" width="425" height="12" rx="0" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">RETRIEVAL &amp; PRIVACY</text>
+
+  <!-- D1: Memory Retrieval -->
+  <rect x="485" y="323" width="190" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="580" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Memory Retrieval</text>
+  <text x="490" y="358" font-size="9" fill="#78350f">query: context → embed → ANN search</text>
+  <text x="490" y="373" font-size="9" fill="#78350f">augment: inject top-k into prompt</text>
+  <text x="490" y="388" font-size="9" fill="#78350f">MMR: non-redundant diverse memories</text>
+  <text x="490" y="403" font-size="9" fill="#78350f">rerank: recency × relevance × importance</text>
+  <text x="490" y="418" font-size="9" fill="#78350f">budget: max ~2000 tokens injected</text>
+  <text x="490" y="433" font-size="9" fill="#78350f">fallback: KV lookup for known facts</text>
+
+  <!-- D2: Privacy Controls -->
+  <rect x="682" y="323" width="193" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="778" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Privacy Controls</text>
+  <text x="687" y="358" font-size="9" fill="#78350f">per-user isolation: namespace by userId</text>
+  <text x="687" y="373" font-size="9" fill="#78350f">encryption: at-rest with user key</text>
+  <text x="687" y="388" font-size="9" fill="#78350f">consent: explicit opt-in required</text>
+  <text x="687" y="403" font-size="9" fill="#78350f">audit: who accessed which memories</text>
+  <text x="687" y="418" font-size="9" fill="#78350f">purge: user-initiated full wipe</text>
+  <text x="687" y="433" font-size="9" fill="#78350f">retention: configurable 30/90/365 days</text>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="20" y="506" font-size="9" fill="#9e8fcb">Memory types: episodic + semantic + procedural</text>
+  <text x="210" y="506" font-size="9" fill="#9e8fcb">| Consolidation: nightly batch</text>
+  <text x="370" y="506" font-size="9" fill="#9e8fcb">| Decay: score × 0.99^days</text>
+  <text x="530" y="506" font-size="9" fill="#9e8fcb">| MMR for diversity</text>
+  <text x="660" y="506" font-size="9" fill="#9e8fcb">| Purge: cascade delete by userId</text>
+</svg>

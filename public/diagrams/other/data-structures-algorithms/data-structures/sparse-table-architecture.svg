@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="system-ui, sans-serif">
+  <title>Sparse Table &amp; Range Minimum Query (RMQ)</title>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1822">Sparse Table &amp; Range Minimum Query (RMQ)</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- ===== SECTION A: Sparse Table Structure (top-left) ===== -->
+  <rect x="20" y="52" width="420" height="190" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="20" y="52" width="420" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="20" y="68" width="420" height="16" fill="#6d5bd0"/>
+  <text x="230" y="73" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">A — Sparse Table Structure</text>
+
+  <text x="36" y="101" font-size="12" fill="#1a1822" font-weight="600">2D table: st[j][i] = min/max of subarray [i, i + 2&#x2a;&#x2a;j &#x2212; 1]</text>
+  <text x="36" y="118" font-size="11.5" fill="#3d3652">j = 0 .. log&#x2082;n levels, one level per power of 2</text>
+
+  <text x="36" y="138" font-size="11" fill="#1a1822" font-weight="600">j=0:</text>
+  <text x="68" y="138" font-size="11" fill="#3d3652">single elements — st[0][i] = arr[i]</text>
+  <text x="36" y="154" font-size="11" fill="#1a1822" font-weight="600">j=1:</text>
+  <text x="68" y="154" font-size="11" fill="#3d3652">pairs — st[1][i] = min(arr[i], arr[i+1])</text>
+  <text x="36" y="170" font-size="11" fill="#1a1822" font-weight="600">j=2:</text>
+  <text x="68" y="170" font-size="11" fill="#3d3652">quadruples — windows of size 4</text>
+
+  <line x1="36" y1="179" x2="424" y2="179" stroke="#6d5bd0" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+  <text x="36" y="196" font-size="11" fill="#1a1822" font-weight="600">Build (bottom-up recurrence):</text>
+  <text x="36" y="212" font-size="11" fill="#3d3652">st[j][i] = min(st[j&#x2212;1][i], st[j&#x2212;1][i + 2&#x2a;&#x2a;(j&#x2212;1)])</text>
+  <text x="36" y="228" font-size="11" fill="#3d3652">O(n log n) build time &amp;amp; O(n log n) space</text>
+
+  <!-- ===== SECTION B: O(1) RMQ Query (top-right) ===== -->
+  <rect x="460" y="52" width="420" height="190" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="460" y="52" width="420" height="32" rx="8" fill="#2563eb"/>
+  <rect x="460" y="68" width="420" height="16" fill="#2563eb"/>
+  <text x="670" y="73" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">B — O(1) RMQ Query</text>
+
+  <text x="476" y="101" font-size="12" fill="#1a1822" font-weight="600">query(l, r):</text>
+  <text x="476" y="117" font-size="11" fill="#3d3652">  k = floor(log&#x2082;(r &#x2212; l + 1))</text>
+  <text x="476" y="133" font-size="11" fill="#3d3652">  return min(st[k][l], st[k][r &#x2212; 2&#x2a;&#x2a;k + 1])</text>
+
+  <line x1="476" y1="142" x2="864" y2="142" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+  <text x="476" y="158" font-size="11" fill="#1a1822" font-weight="600">Why overlapping intervals work:</text>
+  <text x="476" y="174" font-size="11" fill="#3d3652">min is idempotent: min(x, x) = x</text>
+  <text x="476" y="190" font-size="11" fill="#3d3652">Taking min of an element twice = taking min once</text>
+
+  <line x1="476" y1="199" x2="864" y2="199" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+  <text x="476" y="215" font-size="11" fill="#1a1822" font-weight="600">Idempotent ops only:</text>
+  <text x="476" y="231" font-size="11" fill="#3d3652">min, max, gcd — NOT sum, product</text>
+  <text x="476" y="247" font-size="11.5" fill="#1d4ed8" font-weight="600">Example: RMQ(2,7) k=2 → overlap st[2][2] &amp;amp; st[2][4]</text>
+
+  <!-- ===== SECTION C: Comparison (bottom-left) ===== -->
+  <rect x="20" y="262" width="420" height="200" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="20" y="262" width="420" height="32" rx="8" fill="#2f9d74"/>
+  <rect x="20" y="278" width="420" height="16" fill="#2f9d74"/>
+  <text x="230" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">C — Comparison with Other RMQ Solutions</text>
+
+  <text x="36" y="311" font-size="11.5" fill="#1a1822" font-weight="700">Naive:</text>
+  <text x="80" y="311" font-size="11" fill="#065f46">O(1) build, O(n) query</text>
+  <text x="36" y="328" font-size="11.5" fill="#1a1822" font-weight="700">Segment Tree:</text>
+  <text x="122" y="328" font-size="11" fill="#065f46">O(n) build, O(log n) query, O(log n) update — supports updates</text>
+  <text x="36" y="345" font-size="11.5" fill="#1a1822" font-weight="700">Sparse Table:</text>
+  <text x="118" y="345" font-size="11" fill="#065f46">O(n log n) build, O(1) query — STATIC only, no updates</text>
+  <text x="36" y="362" font-size="11.5" fill="#1a1822" font-weight="700">Fischer-Heun:</text>
+  <text x="122" y="362" font-size="11" fill="#065f46">O(n) build, O(1) query — but significantly complex</text>
+
+  <line x1="36" y1="372" x2="424" y2="372" stroke="#2f9d74" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+  <text x="36" y="389" font-size="11.5" fill="#1a1822" font-weight="700">Sparse Table wins when:</text>
+  <text x="36" y="406" font-size="11" fill="#065f46">&#x2022; Data is static (no updates ever needed)</text>
+  <text x="36" y="422" font-size="11" fill="#065f46">&#x2022; Many queries expected vs. build cost</text>
+  <text x="36" y="438" font-size="11" fill="#065f46">&#x2022; Constant-time per query is critical (latency SLA)</text>
+
+  <!-- ===== SECTION D: Applications (bottom-right) ===== -->
+  <rect x="460" y="262" width="420" height="200" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="460" y="262" width="420" height="32" rx="8" fill="#d97843"/>
+  <rect x="460" y="278" width="420" height="16" fill="#d97843"/>
+  <text x="670" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">D — Applications</text>
+
+  <text x="476" y="311" font-size="11" fill="#451a03">&#x2022; LCP queries on suffix arrays (SA + LCP + Sparse Table → O(1) suffix LCP)</text>
+  <text x="476" y="328" font-size="11" fill="#451a03">&#x2022; Cartesian tree construction from array in O(n)</text>
+  <text x="476" y="345" font-size="11" fill="#451a03">&#x2022; Level Ancestor queries in rooted trees</text>
+  <text x="476" y="362" font-size="11" fill="#451a03">&#x2022; Lowest Common Ancestor (LCA) via Euler tour + RMQ</text>
+  <text x="476" y="379" font-size="11" fill="#451a03">&#x2022; Offline range min/max in competitive programming</text>
+  <text x="476" y="396" font-size="11" fill="#451a03">&#x2022; Database query optimization for static lookup tables</text>
+  <text x="476" y="418" font-size="11.5" fill="#92400e" font-weight="600">Key: any problem reducible to RMQ on a static array</text>
+  <text x="476" y="434" font-size="11" fill="#92400e">benefits from O(1) per lookup after O(n log n) preprocessing</text>
+
+  <!-- ===== ARROWS ===== -->
+  <!-- A → B -->
+  <line x1="440" y1="147" x2="456" y2="147" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrA)"/>
+
+  <!-- B → C -->
+  <line x1="670" y1="242" x2="670" y2="256" stroke="#2563eb" stroke-width="2" marker-end="url(#arrB)"/>
+  <line x1="670" y1="256" x2="230" y2="256" stroke="#2563eb" stroke-width="2"/>
+  <line x1="230" y1="256" x2="230" y2="259" stroke="#2563eb" stroke-width="2" marker-end="url(#arrB)"/>
+
+  <!-- A → D -->
+  <line x1="230" y1="242" x2="230" y2="256" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="670" y1="242" x2="670" y2="256" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- ===== FOOTER ===== -->
+  <rect x="0" y="476" width="900" height="44" rx="0" fill="#1a1822"/>
+  <rect x="0" y="476" width="900" height="44" fill="#1a1822"/>
+
+  <!-- Footer dividers -->
+  <line x1="160" y1="482" x2="160" y2="514" stroke="#ffffff" stroke-width="0.6" opacity="0.3"/>
+  <line x1="320" y1="482" x2="320" y2="514" stroke="#ffffff" stroke-width="0.6" opacity="0.3"/>
+  <line x1="540" y1="482" x2="540" y2="514" stroke="#ffffff" stroke-width="0.6" opacity="0.3"/>
+  <line x1="720" y1="482" x2="720" y2="514" stroke="#ffffff" stroke-width="0.6" opacity="0.3"/>
+
+  <text x="80" y="494" text-anchor="middle" font-size="10" font-weight="700" fill="#a78bfa">Build</text>
+  <text x="80" y="509" text-anchor="middle" font-size="10.5" fill="#ffffff">O(n log n)</text>
+
+  <text x="240" y="494" text-anchor="middle" font-size="10" font-weight="700" fill="#60a5fa">Query</text>
+  <text x="240" y="509" text-anchor="middle" font-size="10.5" fill="#ffffff">O(1)</text>
+
+  <text x="430" y="494" text-anchor="middle" font-size="10" font-weight="700" fill="#6ee7b7">Space</text>
+  <text x="430" y="509" text-anchor="middle" font-size="10.5" fill="#ffffff">O(n log n)</text>
+
+  <text x="630" y="494" text-anchor="middle" font-size="10" font-weight="700" fill="#fcd34d">Idempotent ops only</text>
+  <text x="630" y="509" text-anchor="middle" font-size="10.5" fill="#ffffff">min / max / gcd</text>
+
+  <text x="810" y="494" text-anchor="middle" font-size="10" font-weight="700" fill="#fca5a5">Limitation</text>
+  <text x="810" y="509" text-anchor="middle" font-size="10.5" fill="#ffffff">No updates supported</text>
+</svg>

@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Internationalization (i18n) System — LLD</text>
+
+  <rect x="16" y="44" width="420" height="176" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="44" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Translation Architecture &amp; Loading</text>
+  <text x="26" y="89" font-size="9.5" fill="#1a1822">Message catalog: JSON per locale {key: "translated string"} or ICU format</text>
+  <text x="26" y="106" font-size="9.5" fill="#1a1822">Namespace splitting: split by route/feature — load only what's needed per page</text>
+  <text x="26" y="123" font-size="9.5" fill="#1a1822">Dynamic loading: import(`./locales/${locale}/common.json`) on locale switch</text>
+  <text x="26" y="140" font-size="9.5" fill="#1a1822">Fallback chain: requested locale → base language → default locale</text>
+  <text x="26" y="157" font-size="9.5" fill="#1a1822">Missing key strategy: return key itself as fallback; log to monitoring</text>
+  <text x="26" y="174" font-size="9.5" fill="#1a1822">SSR: pass locale + translations as server props; avoid client refetch</text>
+  <text x="26" y="191" font-size="9.5" fill="#1a1822">CDN caching: translation files cached at edge; bust on deploy (content hash)</text>
+  <text x="26" y="208" font-size="9.5" fill="#1a1822">Over-the-air updates: fetch translations independently of app deploy</text>
+
+  <rect x="464" y="44" width="420" height="176" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="44" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Pluralization, Formatting &amp; ICU</text>
+  <text x="474" y="89" font-size="9.5" fill="#1a1822">Plural rules: CLDR defines 6 categories (zero/one/two/few/many/other)</text>
+  <text x="474" y="106" font-size="9.5" fill="#1a1822">ICU MessageFormat: "{count, plural, one {# item} other {# items}}"</text>
+  <text x="474" y="123" font-size="9.5" fill="#1a1822">Variables in strings: "Hello, {name}" — never concatenate strings</text>
+  <text x="474" y="140" font-size="9.5" fill="#1a1822">Date formatting: Intl.DateTimeFormat(locale, options) — no moment.js</text>
+  <text x="474" y="157" font-size="9.5" fill="#1a1822">Number formatting: Intl.NumberFormat for currencies, percentages, units</text>
+  <text x="474" y="174" font-size="9.5" fill="#1a1822">Relative time: Intl.RelativeTimeFormat("2 hours ago") — locale-aware</text>
+  <text x="474" y="191" font-size="9.5" fill="#1a1822">List formatting: Intl.ListFormat("a, b, and c") — conjunction/disjunction</text>
+  <text x="474" y="208" font-size="9.5" fill="#1a1822">Rich text: Trans component renders HTML tags within translated strings safely</text>
+
+  <rect x="16" y="236" width="420" height="176" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="236" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">RTL, Layout &amp; Text Direction</text>
+  <text x="26" y="280" font-size="9.5" fill="#1a1822">RTL locales: Arabic, Hebrew, Persian, Urdu — dir="rtl" on html element</text>
+  <text x="26" y="297" font-size="9.5" fill="#1a1822">CSS logical properties: margin-inline-start vs margin-left — RTL-safe</text>
+  <text x="26" y="314" font-size="9.5" fill="#1a1822">Flexbox direction: row-reverse not needed if using logical properties</text>
+  <text x="26" y="331" font-size="9.5" fill="#1a1822">Icons: mirror directional icons (arrows, back) for RTL; non-directional stay</text>
+  <text x="26" y="348" font-size="9.5" fill="#1a1822">Text expansion: German/Finnish 30-40% longer than English — leave room</text>
+  <text x="26" y="365" font-size="9.5" fill="#1a1822">CJK: Chinese/Japanese/Korean — no word-wrap spaces; overflow: break-word</text>
+  <text x="26" y="382" font-size="9.5" fill="#1a1822">Font loading: load locale-specific subsets (CJK subsets 2MB+ without subsetting)</text>
+  <text x="26" y="399" font-size="9.5" fill="#1a1822">Testing: Playwright with RTL viewport; screenshot diff for layout regression</text>
+
+  <rect x="464" y="236" width="420" height="176" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="236" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Locale Detection, Routing &amp; Workflow</text>
+  <text x="474" y="280" font-size="9.5" fill="#1a1822">Detection priority: user preference → Accept-Language header → geo IP → default</text>
+  <text x="474" y="297" font-size="9.5" fill="#1a1822">URL strategy: /en/page, /de/page — SEO-friendly; Next.js i18n routing</text>
+  <text x="474" y="314" font-size="9.5" fill="#1a1822">Cookie persistence: save locale choice in cookie; respect on return visit</text>
+  <text x="474" y="331" font-size="9.5" fill="#1a1822">hreflang: link rel=alternate hreflang="de" href="/de/page" in head</text>
+  <text x="474" y="348" font-size="9.5" fill="#1a1822">Translation workflow: source strings extracted → sent to TMS (Phrase/Lokalise)</text>
+  <text x="474" y="365" font-size="9.5" fill="#1a1822">Pseudo-localization: replace chars with accented equivalents to catch hardcoded strings</text>
+  <text x="474" y="382" font-size="9.5" fill="#1a1822">Key extraction: i18next-parser / formatjs extract CLI in CI pipeline</text>
+  <text x="474" y="399" font-size="9.5" fill="#1a1822">Translation coverage check: fail build if new source strings have no translation</text>
+
+  <defs>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="132" x2="458" y2="132" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <line x1="226" y1="220" x2="226" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <line x1="674" y1="220" x2="674" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="455" text-anchor="middle" font-size="10" fill="white">Namespace splitting: load only page translations</text>
+  <text x="270" y="455" text-anchor="middle" font-size="10" fill="white">ICU MessageFormat for plurals and variables</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="white">CSS logical properties: RTL-safe without overrides</text>
+  <text x="630" y="455" text-anchor="middle" font-size="10" fill="white">URL routing: /en/page for SEO + hreflang tags</text>
+  <text x="810" y="455" text-anchor="middle" font-size="10" fill="white">Pseudo-loc in CI catches hardcoded strings early</text>
+</svg>

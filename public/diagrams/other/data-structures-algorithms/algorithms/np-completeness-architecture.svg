@@ -1,0 +1,66 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">NP-Completeness &amp; Computational Complexity</text>
+
+  <rect x="16" y="48" width="420" height="170" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="48" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Complexity Classes</text>
+  <text x="26" y="93" font-size="9.5" fill="#1a1822">• P: problems solvable in polynomial time O(nᵏ) deterministically</text>
+  <text x="26" y="110" font-size="9.5" fill="#1a1822">• NP: problems verifiable in polynomial time given a certificate</text>
+  <text x="26" y="127" font-size="9.5" fill="#1a1822">  → not "non-polynomial" — Non-deterministic Polynomial</text>
+  <text x="26" y="144" font-size="9.5" fill="#1a1822">• NP-hard: at least as hard as every problem in NP</text>
+  <text x="26" y="161" font-size="9.5" fill="#1a1822">• NP-complete: in NP AND NP-hard (hardest problems in NP)</text>
+  <text x="26" y="178" font-size="9.5" fill="#1a1822">• P ⊆ NP — whether P = NP is the biggest open problem in CS</text>
+  <text x="26" y="195" font-size="9.5" fill="#1a1822">• co-NP: complement of NP (verify NO instances in poly time)</text>
+
+  <rect x="464" y="48" width="420" height="170" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="48" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Polynomial Reductions</text>
+  <text x="474" y="93" font-size="9.5" fill="#1a1822">• A ≤ₚ B: A reduces to B — solving B solves A</text>
+  <text x="474" y="110" font-size="9.5" fill="#1a1822">• If B ∈ P and A ≤ₚ B then A ∈ P</text>
+  <text x="474" y="127" font-size="9.5" fill="#1a1822">• If B is NP-hard and B ≤ₚ C then C is NP-hard</text>
+  <text x="474" y="144" font-size="9.5" fill="#1a1822">• Cook-Levin theorem: SAT is NP-complete (first proof, 1971)</text>
+  <text x="474" y="161" font-size="9.5" fill="#1a1822">• Reduction chain: SAT → 3-SAT → Independent Set → Clique</text>
+  <text x="474" y="178" font-size="9.5" fill="#1a1822">  → Vertex Cover → Hamiltonian Cycle → TSP</text>
+  <text x="474" y="195" font-size="9.5" fill="#1a1822">• To prove X NP-hard: reduce known NP-hard problem Y to X</text>
+
+  <rect x="16" y="234" width="420" height="170" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="234" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Classic NP-Complete Problems</text>
+  <text x="26" y="279" font-size="9.5" fill="#1a1822">• SAT / 3-SAT: satisfiability of boolean formula</text>
+  <text x="26" y="296" font-size="9.5" fill="#1a1822">• Independent Set: largest set of non-adjacent vertices</text>
+  <text x="26" y="313" font-size="9.5" fill="#1a1822">• Vertex Cover: smallest set covering all edges</text>
+  <text x="26" y="330" font-size="9.5" fill="#1a1822">• Clique: largest complete subgraph</text>
+  <text x="26" y="347" font-size="9.5" fill="#1a1822">• Hamiltonian Cycle: cycle visiting every vertex once</text>
+  <text x="26" y="364" font-size="9.5" fill="#1a1822">• TSP (decision): tour of cost ≤ k? (optimization: find min tour)</text>
+  <text x="26" y="381" font-size="9.5" fill="#1a1822">• Graph k-Coloring (k ≥ 3): is χ(G) ≤ k?</text>
+  <text x="26" y="398" font-size="9.5" fill="#1a1822">• Subset Sum: does subset of integers sum to target T?</text>
+
+  <rect x="464" y="234" width="420" height="170" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="234" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Coping Strategies for NP-Hard Problems</text>
+  <text x="474" y="279" font-size="9.5" fill="#1a1822">• Exact algorithms for small n: branch-and-bound, dynamic programming</text>
+  <text x="474" y="296" font-size="9.5" fill="#1a1822">  → TSP: O(n² 2ⁿ) DP (Held-Karp), feasible for n ≤ 20</text>
+  <text x="474" y="313" font-size="9.5" fill="#1a1822">• Approximation algorithms: PTAS, FPTAS, constant-factor approx</text>
+  <text x="474" y="330" font-size="9.5" fill="#1a1822">  → TSP with triangle inequality: 2-approximation (Christofides 1.5x)</text>
+  <text x="474" y="347" font-size="9.5" fill="#1a1822">  → Vertex Cover: 2-approximation via maximal matching</text>
+  <text x="474" y="364" font-size="9.5" fill="#1a1822">• Fixed-parameter tractable (FPT): O(f(k) × nᶜ) where k is parameter</text>
+  <text x="474" y="381" font-size="9.5" fill="#1a1822">• Heuristics: simulated annealing, genetic algorithms, local search</text>
+  <text x="474" y="398" font-size="9.5" fill="#1a1822">• Special cases: many NP-hard problems are poly on restricted inputs</text>
+
+  <defs>
+    <marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="133" x2="458" y2="133" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr5)"/>
+  <line x1="226" y1="218" x2="226" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr5)"/>
+  <line x1="674" y1="218" x2="674" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+  <rect x="0" y="420" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="447" text-anchor="middle" font-size="10" fill="white">P ⊆ NP — P=NP? unsolved</text>
+  <text x="270" y="447" text-anchor="middle" font-size="10" fill="white">SAT: first NP-complete (Cook 1971)</text>
+  <text x="450" y="447" text-anchor="middle" font-size="10" fill="white">Prove NP-hard: reduce known → target</text>
+  <text x="630" y="447" text-anchor="middle" font-size="10" fill="white">TSP approx: 1.5x (Christofides)</text>
+  <text x="810" y="447" text-anchor="middle" font-size="10" fill="white">Vertex Cover: 2-approximation</text>
+</svg>

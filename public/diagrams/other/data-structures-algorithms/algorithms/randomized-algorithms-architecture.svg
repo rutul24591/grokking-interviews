@@ -1,0 +1,67 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Randomized Algorithms — Las Vegas &amp; Monte Carlo</text>
+
+  <rect x="16" y="48" width="420" height="170" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="48" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Las Vegas vs Monte Carlo</text>
+  <text x="26" y="93" font-size="9.5" fill="#1a1822">• Las Vegas: always correct, expected runtime varies</text>
+  <text x="26" y="110" font-size="9.5" fill="#1a1822">  → Randomized QuickSort: O(n log n) expected, O(n²) worst</text>
+  <text x="26" y="127" font-size="9.5" fill="#1a1822">  → Randomized QuickSelect: O(n) expected</text>
+  <text x="26" y="144" font-size="9.5" fill="#1a1822">• Monte Carlo: fixed runtime, correct with high probability</text>
+  <text x="26" y="161" font-size="9.5" fill="#1a1822">  → Miller-Rabin primality test: O(k log²n) with error prob 4⁻ᵏ</text>
+  <text x="26" y="178" font-size="9.5" fill="#1a1822">  → Bloom filter membership: no false negatives, bounded false +</text>
+  <text x="26" y="195" font-size="9.5" fill="#1a1822">  → Karger's min-cut: O(V²) per trial, run O(V² log V) times</text>
+
+  <rect x="464" y="48" width="420" height="170" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="48" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Randomized QuickSort &amp; QuickSelect</text>
+  <text x="474" y="93" font-size="9.5" fill="#1a1822">• QuickSort: pick pivot uniformly at random from subarray</text>
+  <text x="474" y="110" font-size="9.5" fill="#1a1822">  → Each element is pivot O(log n) times in expectation</text>
+  <text x="474" y="127" font-size="9.5" fill="#1a1822">  → E[comparisons] = 2n ln n ≈ 1.39 n log₂ n</text>
+  <text x="474" y="144" font-size="9.5" fill="#1a1822">  → Adversarial inputs impossible: random pivot defeats sorted input</text>
+  <text x="474" y="161" font-size="9.5" fill="#1a1822">• QuickSelect: find kth smallest — only recurse into one partition</text>
+  <text x="474" y="178" font-size="9.5" fill="#1a1822">  → E[comparisons] = O(n) — T(n) = T(n/2) + O(n) on average</text>
+  <text x="474" y="195" font-size="9.5" fill="#1a1822">  → Worst case O(n²) but probability exponentially small</text>
+
+  <rect x="16" y="234" width="420" height="170" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="234" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Hashing &amp; Probabilistic Techniques</text>
+  <text x="26" y="279" font-size="9.5" fill="#1a1822">• Universal hashing: family H where Pr[h(x)=h(y)] ≤ 1/m for x≠y</text>
+  <text x="26" y="296" font-size="9.5" fill="#1a1822">  → Expected O(1) ops per hash table operation</text>
+  <text x="26" y="313" font-size="9.5" fill="#1a1822">• 2-universal: Pr[h(x)=h(y)] ≤ 1/m — sufficient for chaining</text>
+  <text x="26" y="330" font-size="9.5" fill="#1a1822">• Reservoir sampling: sample k items from stream of unknown size n</text>
+  <text x="474" y="313" font-size="9.5" fill="#1a1822">  → each item i: keep with prob k/i, replace random kept item</text>
+  <text x="26" y="347" font-size="9.5" fill="#1a1822">• Treap: BST with random priorities → expected O(log n) height</text>
+  <text x="26" y="364" font-size="9.5" fill="#1a1822">• Skip list: each node promoted with prob p → O(log n) expected</text>
+  <text x="26" y="381" font-size="9.5" fill="#1a1822">• Rabin-Karp: rolling hash for O(n+m) expected string matching</text>
+  <text x="26" y="398" font-size="9.5" fill="#1a1822">• Randomized MST (Karger-Klein-Tarjan): O(E) expected</text>
+
+  <rect x="464" y="234" width="420" height="170" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="234" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Analysis Techniques &amp; Applications</text>
+  <text x="474" y="279" font-size="9.5" fill="#1a1822">• Linearity of expectation: E[X+Y] = E[X]+E[Y] always</text>
+  <text x="474" y="296" font-size="9.5" fill="#1a1822">  → QuickSort analysis: E[comparisons] = Σᵢ&lt;ⱼ Pr[i compared to j]</text>
+  <text x="474" y="313" font-size="9.5" fill="#1a1822">• Markov inequality: Pr[X ≥ t] ≤ E[X]/t (one-sided bound)</text>
+  <text x="474" y="330" font-size="9.5" fill="#1a1822">• Chernoff bound: tail bound for sum of independent RVs</text>
+  <text x="474" y="347" font-size="9.5" fill="#1a1822">  → Pr[X ≥ (1+δ)μ] ≤ e^(-δ²μ/3) for δ ≤ 1</text>
+  <text x="474" y="364" font-size="9.5" fill="#1a1822">• Load balancing: n balls into n bins → max load O(log n/log log n)</text>
+  <text x="474" y="381" font-size="9.5" fill="#1a1822">• Power of two choices: max load O(log log n) — used in NGINX</text>
+  <text x="474" y="398" font-size="9.5" fill="#1a1822">• Applications: distributed systems, crypto, approx algorithms</text>
+
+  <defs>
+    <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="133" x2="458" y2="133" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <line x1="226" y1="218" x2="226" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <line x1="674" y1="218" x2="674" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+  <rect x="0" y="420" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="447" text-anchor="middle" font-size="10" fill="white">Las Vegas: always correct</text>
+  <text x="270" y="447" text-anchor="middle" font-size="10" fill="white">Monte Carlo: correct w.h.p.</text>
+  <text x="450" y="447" text-anchor="middle" font-size="10" fill="white">QuickSort: E[O(n log n)]</text>
+  <text x="630" y="447" text-anchor="middle" font-size="10" fill="white">QuickSelect: E[O(n)]</text>
+  <text x="810" y="447" text-anchor="middle" font-size="10" fill="white">Power of 2 choices: O(log log n) load</text>
+</svg>

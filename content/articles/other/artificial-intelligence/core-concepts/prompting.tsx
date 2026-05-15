@@ -414,6 +414,142 @@ export default function ArticlePage() {
       </section>
 
       <section>
+        <h2>Advanced Prompting Techniques</h2>
+        <div className="space-y-4">
+          <p>
+            Beyond the standard CoT and few-shot patterns, four techniques
+            separate production-grade AI engineers from prompt hobbyists:
+            self-consistency sampling, tree-of-thought search, automated prompt
+            optimization (DSPy/OPRO), and systematic A/B testing.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Self-Consistency Sampling</h3>
+          <p>
+            Self-consistency (Wang et al., 2023) addresses the fragility of
+            greedy CoT decoding: a single reasoning chain can make an early error
+            that propagates to a wrong final answer. Self-consistency generates
+            N independent reasoning chains (typically 5-20) using temperature
+            &gt;0 and selects the answer by majority vote. For a math problem,
+            if 14 out of 20 chains arrive at &quot;42&quot; via different paths,
+            the answer is almost certainly 42 regardless of whether any individual
+            chain is flawless.
+          </p>
+          <p>
+            When to use it: tasks where correctness is verifiable (math, code,
+            logic) and the 5-20× latency/cost increase is acceptable. In practice,
+            the sweet spot is N=5-10; beyond N=20, marginal accuracy gains are
+            negligible. Self-consistency improves accuracy on GSM8K math
+            benchmarks by 6-12 points over greedy CoT on current frontier models.
+            Combine with a cheap verifier (unit tests for code, a calculator call
+            for arithmetic) to replace the majority vote with a correctness check.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Tree-of-Thought (ToT) Reasoning</h3>
+          <p>
+            Tree-of-thought (Yao et al., 2023) generalizes CoT from a linear
+            chain to a tree search: the model generates multiple candidate
+            next-steps at each reasoning node, evaluates their promise (using a
+            second LLM call or a heuristic), and expands only the most promising
+            branches. This makes complex, exploratory tasks tractable — problems
+            where a greedy chain commits to a suboptimal path early.
+          </p>
+          <p>
+            Practical implementation: use BFS (explore all nodes at depth k
+            before depth k+1) for shallow problems where you want exhaustive
+            exploration, and DFS with backtracking for deep problems where the
+            first valid solution is acceptable. The evaluation step is the
+            bottleneck — each node requires an additional LLM call to score.
+            Total cost scales as O(branching_factor × depth × LLM_cost). ToT
+            is most practical for problems with intermediate checkpoints that
+            a domain evaluator (unit tests, constraint checks) can score without
+            a full LLM call.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Automated Prompt Optimization: DSPy &amp; OPRO</h3>
+          <p>
+            Manual prompt engineering is expensive and brittle — small prompt
+            changes can cause large quality regressions, and finding the optimal
+            prompt is a high-dimensional search problem. Two frameworks automate
+            this:
+          </p>
+          <p>
+            <strong>DSPy</strong> (Stanford, 2023) replaces hand-written prompts
+            with declarative &quot;signatures&quot; that describe inputs and
+            outputs (e.g., <code>question -&gt; answer</code>). DSPy&apos;s
+            compiler optimizes the prompt for a given metric by running examples
+            through the pipeline, evaluating outputs, and using feedback to
+            update the prompt instructions and few-shot examples. Critically,
+            DSPy optimizes the entire pipeline — including retrieval queries,
+            intermediate reasoning steps, and final generation — not just the
+            final prompt. This is valuable for multi-hop RAG and agent systems
+            where the full chain must be optimized jointly.
+          </p>
+          <p>
+            <strong>OPRO</strong> (Google DeepMind, 2023) uses a meta-LLM to
+            directly optimize prompt instructions. The meta-LLM receives the
+            current prompt, its performance on a training set, and descriptions
+            of failure cases, then proposes improved instructions. OPRO iterates
+            this loop 20-50 times, exploring the space of instruction phrasings.
+            In experiments, OPRO discovered instructions like &quot;Take a deep
+            breath and work on this problem step by step&quot; that outperformed
+            human-written instructions on GSM8K by up to 8%.
+          </p>
+          <p>
+            Use DSPy when you have a well-defined metric and a multi-step pipeline
+            to optimize. Use OPRO when you have a single-step task and want to
+            discover better instruction phrasings automatically. Both require a
+            labeled evaluation dataset — without a reliable metric, optimization
+            is directionless.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Systematic A/B Testing for Prompts</h3>
+          <p>
+            Intuition about which prompt is &quot;better&quot; is unreliable.
+            Systematic A/B testing applies the same statistical rigor used for
+            UI experiments to prompt changes. The key difference from UI A/B
+            tests: LLM outputs are often non-binary (quality is a spectrum,
+            not pass/fail), and the evaluation function itself may be an LLM,
+            introducing additional variance.
+          </p>
+          <p>
+            A production prompt A/B testing workflow:
+          </p>
+          <p>
+            (1) <strong>Define the metric before the experiment</strong>. Common
+            choices: LLM-as-judge score (1-5 scale), task-specific metric
+            (ROUGE for summarization, pass@1 for code), or user signal (thumbs
+            up/down, re-prompt rate). Never design the metric after seeing results.
+          </p>
+          <p>
+            (2) <strong>Power analysis</strong>: determine the minimum sample
+            size required to detect the minimum effect size of interest with
+            80% power. For LLM-as-judge with high variance (σ≈1.0 on a 1-5
+            scale), detecting a 0.2-point improvement requires ~400 samples
+            per variant. Underpowered tests produce false confidence.
+          </p>
+          <p>
+            (3) <strong>Stratified sampling</strong>: ensure both variants see
+            the same distribution of query types (difficulty, topic, user segment).
+            A prompt that excels on simple queries but fails on complex ones may
+            look superior in an unstratified test.
+          </p>
+          <p>
+            (4) <strong>Regression gate</strong>: in addition to the primary
+            metric, check a battery of regression metrics (format compliance,
+            safety classifier score, latency, cost). A prompt that improves
+            accuracy but doubles cost or breaks JSON parsing is not a net win.
+          </p>
+          <p>
+            (5) <strong>Gradual rollout</strong>: deploy the new prompt to
+            5% → 20% → 50% → 100% of traffic with automated rollback if the
+            primary metric degrades by more than one standard error. LangSmith,
+            Braintrust, and PromptLayer all support prompt versioning and
+            experiment tracking natively.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions with Detailed Answers</h2>
         <HighlightBlock as="p" tier="crucial">
           Interview focus: answer with constraints, decisions, trade-offs, and how you’d validate/operate the system.

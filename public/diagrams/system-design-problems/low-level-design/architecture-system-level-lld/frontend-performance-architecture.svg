@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Frontend Performance Architecture — LLD</text>
+
+  <rect x="16" y="44" width="420" height="176" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="44" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Core Web Vitals &amp; Rendering Pipeline</text>
+  <text x="26" y="89" font-size="9.5" fill="#1a1822">LCP (Largest Contentful Paint): &lt;2.5 s — hero image, above-fold text</text>
+  <text x="26" y="106" font-size="9.5" fill="#1a1822">INP (Interaction to Next Paint): &lt;200 ms — replaces FID in 2024</text>
+  <text x="26" y="123" font-size="9.5" fill="#1a1822">CLS (Cumulative Layout Shift): &lt;0.1 — reserve space for images, fonts</text>
+  <text x="26" y="140" font-size="9.5" fill="#1a1822">Critical rendering path: HTML parse → CSSOM → Render tree → Layout → Paint</text>
+  <text x="26" y="157" font-size="9.5" fill="#1a1822">Render-blocking: inline critical CSS; defer/async non-critical scripts</text>
+  <text x="26" y="174" font-size="9.5" fill="#1a1822">LCP fix: preload hero image; use priority={true} in Next.js Image</text>
+  <text x="26" y="191" font-size="9.5" fill="#1a1822">INP fix: break long tasks (&gt;50 ms) with scheduler.yield() / setTimeout(0)</text>
+  <text x="26" y="208" font-size="9.5" fill="#1a1822">CLS fix: width/height attributes on img; font-display: optional for web fonts</text>
+
+  <rect x="464" y="44" width="420" height="176" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="44" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Bundle Optimization &amp; Code Splitting</text>
+  <text x="474" y="89" font-size="9.5" fill="#1a1822">Tree shaking: ESM + side-effect-free packages; check package.json sideEffects</text>
+  <text x="474" y="106" font-size="9.5" fill="#1a1822">Code splitting: dynamic import() at route level — reduces initial bundle</text>
+  <text x="474" y="123" font-size="9.5" fill="#1a1822">Granular chunks: split vendor / framework / page / shared — cache each layer</text>
+  <text x="474" y="140" font-size="9.5" fill="#1a1822">Bundle analysis: webpack-bundle-analyzer / Next.js bundle analyzer</text>
+  <text x="474" y="157" font-size="9.5" fill="#1a1822">Import cost: avoid barrel imports (import * from 'lodash') — use lodash-es</text>
+  <text x="474" y="174" font-size="9.5" fill="#1a1822">Preload: link rel=modulepreload for next route's chunk on hover/idle</text>
+  <text x="474" y="191" font-size="9.5" fill="#1a1822">Compression: Brotli &gt; gzip — 15-25% better; set on CDN and server</text>
+  <text x="474" y="208" font-size="9.5" fill="#1a1822">Target: initial JS &lt;170 KB (gzip); per-route chunk &lt;50 KB</text>
+
+  <rect x="16" y="236" width="420" height="176" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="236" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Image, Font &amp; Resource Optimization</text>
+  <text x="26" y="280" font-size="9.5" fill="#1a1822">Next-gen formats: WebP (30% smaller than JPEG), AVIF (50% smaller)</text>
+  <text x="26" y="297" font-size="9.5" fill="#1a1822">Responsive images: srcset + sizes — browser picks optimal resolution</text>
+  <text x="26" y="314" font-size="9.5" fill="#1a1822">Lazy loading: loading="lazy" for below-fold images; IntersectionObserver fallback</text>
+  <text x="26" y="331" font-size="9.5" fill="#1a1822">Blur placeholder: generate 8px blurred base64 during build; swap on load</text>
+  <text x="26" y="348" font-size="9.5" fill="#1a1822">Font subsetting: only include used glyph ranges via unicode-range descriptor</text>
+  <text x="26" y="365" font-size="9.5" fill="#1a1822">FOUT mitigation: font-display: swap + size-adjust to match fallback metrics</text>
+  <text x="26" y="382" font-size="9.5" fill="#1a1822">CDN: serve static assets from edge with far-future Cache-Control: max-age=31536000</text>
+  <text x="26" y="399" font-size="9.5" fill="#1a1822">HTTP/2 push → HTTP/3 QUIC: multiplexing eliminates head-of-line blocking</text>
+
+  <rect x="464" y="236" width="420" height="176" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="236" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Runtime Performance &amp; Measurement</text>
+  <text x="474" y="280" font-size="9.5" fill="#1a1822">Virtualization: render only visible rows (react-virtual) — not all 100k rows</text>
+  <text x="474" y="297" font-size="9.5" fill="#1a1822">Memoization: React.memo / useMemo / useCallback for expensive re-renders</text>
+  <text x="474" y="314" font-size="9.5" fill="#1a1822">Debounce/throttle: resize, scroll, input handlers — avoid per-frame work</text>
+  <text x="474" y="331" font-size="9.5" fill="#1a1822">Web Workers: move heavy computation (JSON parse, image processing) off main thread</text>
+  <text x="474" y="348" font-size="9.5" fill="#1a1822">requestAnimationFrame: batch DOM mutations; use for animations not setTimeout</text>
+  <text x="474" y="365" font-size="9.5" fill="#1a1822">Profiling: Chrome DevTools Performance tab → long tasks, layout thrash</text>
+  <text x="474" y="382" font-size="9.5" fill="#1a1822">RUM: web-vitals library → report to analytics; field data beats lab data</text>
+  <text x="474" y="399" font-size="9.5" fill="#1a1822">Performance budget: enforce in CI via Lighthouse CI with budget.json thresholds</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="132" x2="458" y2="132" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="226" y1="220" x2="226" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="674" y1="220" x2="674" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="455" text-anchor="middle" font-size="10" fill="white">LCP &lt;2.5 s | INP &lt;200 ms | CLS &lt;0.1</text>
+  <text x="270" y="455" text-anchor="middle" font-size="10" fill="white">Initial bundle &lt;170 KB gzip; route chunks &lt;50 KB</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="white">Break long tasks &gt;50 ms with scheduler.yield()</text>
+  <text x="630" y="455" text-anchor="middle" font-size="10" fill="white">AVIF/WebP + srcset; font-display: swap</text>
+  <text x="810" y="455" text-anchor="middle" font-size="10" fill="white">RUM via web-vitals; enforce budget in CI</text>
+</svg>

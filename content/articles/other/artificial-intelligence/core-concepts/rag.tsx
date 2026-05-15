@@ -538,6 +538,175 @@ export default function ArticlePage() {
       </section>
 
       <section>
+        <h2>Advanced RAG Patterns</h2>
+        <div className="space-y-4">
+          <p>
+            Naive RAG — chunk, embed, retrieve, generate — fails at scale for
+            complex queries and large corpora. Production systems layer several
+            advanced retrieval strategies on top of the baseline.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">HyDE (Hypothetical Document Embeddings)</h3>
+          <p>
+            Sparse queries like &quot;what is the refund policy for enterprise
+            contracts?&quot; embed poorly because they are short and abstract.
+            HyDE inverts the problem: generate a <em>hypothetical answer</em>
+            with the LLM (without retrieval), embed that answer, and use it as
+            the retrieval query. The hypothetical answer uses domain vocabulary
+            and sentence structure similar to real documents, so it lands closer
+            to the relevant chunk in embedding space. In practice HyDE improves
+            recall by 10-25% on knowledge-base Q&amp;A tasks at the cost of one
+            extra LLM call (~100ms). Use it when short queries produce poor
+            recall and latency budget permits.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Multi-Query Retrieval</h3>
+          <p>
+            A single query reformulation can miss relevant documents. Multi-query
+            retrieval uses the LLM to generate 3-5 alternate phrasings of the
+            user query, retrieves candidates for each, and deduplicates using
+            reciprocal rank fusion before passing results to the generator.
+            This is especially effective for ambiguous queries where the correct
+            interpretation is unclear. Parallelise the vector lookups; total
+            retrieval latency overhead is typically under 50ms.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Parent-Child Chunking</h3>
+          <p>
+            Context windows need rich surrounding text to answer questions, but
+            embedding quality degrades for long chunks. Parent-child chunking
+            resolves this tension: index small child chunks (128-256 tokens) for
+            precise semantic matching, but return the parent chunk (512-1024
+            tokens) to the generator. The child chunk wins the retrieval; the
+            parent provides the full context. Implement by storing parent IDs in
+            chunk metadata and fetching parents after retrieval. This pattern is
+            natively supported in LlamaIndex as &quot;Small-to-Big Retrieval.&quot;
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Iterative / Multi-Hop Retrieval</h3>
+          <p>
+            Complex questions require chaining retrievals. A question like
+            &quot;What are the tax implications of the acquisition announced in
+            the Q3 2024 earnings call?&quot; requires first finding the
+            acquisition announcement, then retrieving tax-related documents for
+            that specific deal. Iterative retrieval solves this by having the LLM
+            extract sub-queries from its intermediate reasoning, retrieving for
+            each, and compiling a final answer. This is the retrieval pattern at
+            the core of agentic RAG — see the dedicated Agentic RAG article for
+            full architectural detail including tool selection, loop termination,
+            and latency management.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">GraphRAG</h3>
+          <p>
+            Vector similarity retrieval treats documents as independent; it
+            misses relational structure. GraphRAG builds a knowledge graph from
+            entities and relationships extracted from the corpus. Retrieval
+            traverses the graph — starting from entities matched by the query
+            and following edges — capturing multi-hop relationships that are
+            invisible in embedding space. This is critical for questions like
+            &quot;which subsidiaries are affected by the new EU regulation?&quot;
+            The tradeoff: graph construction (entity extraction, deduplication,
+            relationship extraction) is expensive both in compute and LLM calls.
+            Microsoft Research released an open-source GraphRAG implementation
+            in 2024; it requires 10-100× the ingestion cost of vector RAG but
+            improves accuracy on relationship-heavy queries by 30-50%.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Enterprise Multi-Tenant RAG</h3>
+          <p>
+            When many tenants share an infrastructure, the central failure mode
+            is <strong>cross-tenant leakage</strong> — Tenant A retrieving
+            documents that belong only to Tenant B. Mitigation has three layers:
+            (1) <strong>Namespace isolation at the vector store</strong> — every
+            upsert and query includes the tenant ID as a mandatory metadata
+            filter; the vector store enforces this at query time; (2)
+            <strong>Embedding-time segregation</strong> — separate index
+            namespaces (Pinecone) or collections (Qdrant/Weaviate) per tenant,
+            which provides hard isolation at the cost of higher index overhead;
+            (3) <strong>Row-level security in the relational metadata store</strong>
+            — chunk metadata is also stored in PostgreSQL with tenant-scoped RLS
+            policies so that even metadata queries cannot leak. In addition, the
+            system prompt should instruct the LLM to cite only documents
+            explicitly provided in context and to refuse to answer questions
+            that require knowledge outside the provided context, preventing
+            prompt-injection-based leakage.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Citation Integrity</h3>
+          <p>
+            LLMs hallucinate citations even when retrieving real documents. A
+            production RAG system must verify that every factual claim in the
+            generated answer is traceable to a specific retrieved chunk. The
+            standard pattern is <strong>post-generation attribution</strong>: after
+            generating the answer, run a second LLM pass that maps each sentence
+            in the answer to the chunk it was derived from. Flag answers where
+            any sentence cannot be attributed. For lower latency, use structured
+            generation to force the model to emit inline citations as
+            <code>[source_id]</code> markers during generation, then validate
+            those source IDs against the retrieved chunk IDs. Citiation hit rate
+            (fraction of sentences with a valid source) is a key production metric.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Interview Questions</h2>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">
+            Q5: Design an agentic RAG system for an enterprise legal platform
+            with 500K documents. Requirements: multi-hop reasoning, citation
+            guarantees, &lt;2s P95 latency, and strict tenant isolation.
+          </h3>
+          <p>
+            This is a staff/principal-level question testing the ability to
+            decompose a complex system with competing constraints.
+          </p>
+          <p className="mt-2">
+            <strong>Retrieval architecture:</strong> Use parent-child chunking
+            (256-token children indexed, 1024-token parents returned). Run
+            HyDE for queries under 10 tokens to boost embedding quality. For
+            queries containing entity names, run a parallel graph traversal over
+            a pre-built entity-relationship graph (case law citations,
+            statute references). Merge results with reciprocal rank fusion.
+          </p>
+          <p className="mt-2">
+            <strong>Multi-hop orchestration:</strong> Implement a ReAct loop
+            capped at 3 hops with a hard 1.2s wall-clock budget for retrieval.
+            The LLM emits structured JSON with &#123;action: &quot;retrieve&quot;,
+            query: &quot;...&quot;&#125; or &#123;action: &quot;answer&quot;, text: &quot;...&quot;&#125;. After 3 hops
+            or 1.2s, force the answer action regardless of confidence.
+          </p>
+          <p className="mt-2">
+            <strong>Citation guarantees:</strong> Force structured generation
+            with inline citations using constrained decoding (Outlines or
+            Guidance). Each claim must be followed by <code>[doc_id:chunk_id]</code>.
+            A post-generation validator resolves all citation IDs against the
+            retrieved chunk manifest and rejects answers with unresolvable citations,
+            triggering a retry with an explicit &quot;cite only retrieved chunks&quot;
+            instruction.
+          </p>
+          <p className="mt-2">
+            <strong>Tenant isolation:</strong> Each tenant has a dedicated Qdrant
+            collection. All queries include a signed JWT whose tenant claim is
+            verified in the retrieval middleware — no query reaches the vector
+            store without this check. The LLM gateway rate-limits per tenant to
+            prevent token amplification abuse.
+          </p>
+          <p className="mt-2">
+            <strong>Latency budget allocation:</strong> HyDE generation 200ms,
+            parallel retrieval across vector + graph 300ms, reranking 100ms,
+            generation with constrained decoding 800ms, citation validation 100ms
+            — total budget ~1.5s P50, 2s P95 at 10 concurrent requests. Scale
+            with horizontal generation replicas; use prefix caching on the system
+            prompt (constant across all requests in the session) to cut TTFT by
+            40%.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>References</h2>
         <ul className="space-y-2 text-sm text-muted">
           <li>

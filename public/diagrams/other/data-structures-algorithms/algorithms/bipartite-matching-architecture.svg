@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="34" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1a1822">Bipartite Matching — Augmenting Paths &amp; Hopcroft-Karp</text>
+
+  <!-- Section A: Bipartite Graph & Matching (top-left) -->
+  <rect x="20" y="50" width="420" height="185" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="20" y="50" width="420" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="20" y="66" width="420" height="16" fill="#6d5bd0"/>
+  <text x="230" y="71" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">A — Bipartite Graph &amp; Matching</text>
+  <text x="36" y="102" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">• Two disjoint vertex sets L (left) and R (right)</text>
+  <text x="36" y="119" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">• Edges only between L and R — none within the same set</text>
+  <text x="36" y="136" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">• Matching M = subset of edges with no shared vertices</text>
+  <text x="36" y="153" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">• Maximum matching = largest possible M</text>
+  <text x="36" y="170" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">• Perfect matching = every vertex is matched</text>
+  <text x="36" y="187" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">• Augmenting path: alternates unmatched / matched / unmatched</text>
+  <text x="36" y="204" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">  edges from a free vertex to another free vertex</text>
+  <text x="36" y="221" font-family="Arial, sans-serif" font-size="11" fill="#2d2440">• 2-colorable ⟺ no odd-length cycles</text>
+
+  <!-- Section B: Hungarian / Augmenting Path Method (top-right) -->
+  <rect x="460" y="50" width="420" height="185" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="460" y="50" width="420" height="32" rx="8" fill="#2563eb"/>
+  <rect x="460" y="66" width="420" height="16" fill="#2563eb"/>
+  <text x="670" y="71" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">B — Hungarian / Augmenting Path Method</text>
+  <text x="476" y="102" font-family="Arial, sans-serif" font-size="11" fill="#1e3a6e">• For each unmatched left vertex: DFS/BFS for augmenting path</text>
+  <text x="476" y="119" font-family="Arial, sans-serif" font-size="11" fill="#1e3a6e">  to an unmatched right vertex</text>
+  <text x="476" y="136" font-family="Arial, sans-serif" font-size="11" fill="#1e3a6e">• If found: flip matched/unmatched along path (augment)</text>
+  <text x="476" y="153" font-family="Arial, sans-serif" font-size="11" fill="#1e3a6e">• Repeat until no augmenting path exists</text>
+  <text x="476" y="170" font-family="Arial, sans-serif" font-size="11" fill="#1e3a6e">• O(VE) total — O(V) augmentations, each O(E)</text>
+  <text x="476" y="187" font-family="Arial, sans-serif" font-size="11" fill="#1e3a6e">• Classic algorithm; correct for any bipartite graph</text>
+  <text x="476" y="204" font-family="Arial, sans-serif" font-size="11" fill="#1e3a6e">• Practical for small graphs or sparse matchings</text>
+
+  <!-- Section C: Hopcroft-Karp (bottom-left) -->
+  <rect x="20" y="260" width="420" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="20" y="260" width="420" height="32" rx="8" fill="#2f9d74"/>
+  <rect x="20" y="276" width="420" height="16" fill="#2f9d74"/>
+  <text x="230" y="281" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">C — Hopcroft-Karp Algorithm</text>
+  <text x="36" y="312" font-family="Arial, sans-serif" font-size="11" fill="#14532d">• BFS finds all shortest augmenting paths simultaneously</text>
+  <text x="36" y="329" font-family="Arial, sans-serif" font-size="11" fill="#14532d">  (builds layered graph from all free left vertices)</text>
+  <text x="36" y="346" font-family="Arial, sans-serif" font-size="11" fill="#14532d">• DFS augments all vertex-disjoint shortest paths in that layer</text>
+  <text x="36" y="363" font-family="Arial, sans-serif" font-size="11" fill="#14532d">• O(√V × E) total complexity</text>
+  <text x="36" y="380" font-family="Arial, sans-serif" font-size="11" fill="#14532d">• Key insight: after each phase shortest augmenting path</text>
+  <text x="36" y="397" font-family="Arial, sans-serif" font-size="11" fill="#14532d">  length increases by ≥ 2, so at most O(√V) phases needed</text>
+  <text x="36" y="414" font-family="Arial, sans-serif" font-size="11" fill="#14532d">• Significantly faster for large, dense bipartite graphs</text>
+
+  <!-- Section D: Applications & Variants (bottom-right) -->
+  <rect x="460" y="260" width="420" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="460" y="260" width="420" height="32" rx="8" fill="#d97843"/>
+  <rect x="460" y="276" width="420" height="16" fill="#d97843"/>
+  <text x="670" y="281" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">D — Applications &amp; Variants</text>
+  <text x="476" y="312" font-family="Arial, sans-serif" font-size="11" fill="#78350f">• Job assignment (workers to tasks)</text>
+  <text x="476" y="329" font-family="Arial, sans-serif" font-size="11" fill="#78350f">• Medical residency matching (NRMP / Gale-Shapley)</text>
+  <text x="476" y="346" font-family="Arial, sans-serif" font-size="11" fill="#78350f">• Max bipartite matching via max flow (unit capacities)</text>
+  <text x="476" y="363" font-family="Arial, sans-serif" font-size="11" fill="#78350f">• König's theorem: max matching = min vertex cover</text>
+  <text x="476" y="380" font-family="Arial, sans-serif" font-size="11" fill="#78350f">• Maximum independent set = |V| − max matching</text>
+  <text x="476" y="397" font-family="Arial, sans-serif" font-size="11" fill="#78350f">• Hall's theorem: perfect matching exists iff ∀ S ⊆ L,</text>
+  <text x="476" y="414" font-family="Arial, sans-serif" font-size="11" fill="#78350f">  |N(S)| ≥ |S|</text>
+
+  <!-- Arrow A → B -->
+  <line x1="440" y1="142" x2="458" y2="142" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowAB)"/>
+  <defs>
+    <marker id="arrowAB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Arrow B → C -->
+  <path d="M 670 235 Q 670 248 450 248 Q 230 248 230 258" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowBC)"/>
+  <defs>
+    <marker id="arrowBC" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <!-- Arrow A → D -->
+  <path d="M 440 185 Q 450 210 460 310" fill="none" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowAD)"/>
+  <defs>
+    <marker id="arrowAD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Footer bar -->
+  <rect x="0" y="476" width="900" height="44" fill="#1a1822"/>
+  <text x="450" y="494" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">
+    <tspan x="60" dy="0">Augmenting Path: O(VE)</tspan>
+    <tspan x="240" dy="0">Hopcroft-Karp: O(√V · E)</tspan>
+    <tspan x="440" dy="0">Via Max Flow: O(E√V)</tspan>
+    <tspan x="620" dy="0">König's: max match = min cover</tspan>
+    <tspan x="820" dy="0">Hall's: |N(S)|≥|S|</tspan>
+  </text>
+  <!-- Footer second line for readability -->
+  <text x="450" y="511" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#aab4cc">Key complexity benchmarks and structural theorems for bipartite matching</text>
+</svg>

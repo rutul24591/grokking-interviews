@@ -1,0 +1,157 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+    <marker id="arr4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#d97706"/></marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Structured Output — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">JSON mode · Function calling · Constrained decoding · Validation &amp; retry</text>
+
+  <!-- Section A: OUTPUT METHODS (purple, top-left) -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#ede9fe" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="80" width="425" height="8" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="white">A: OUTPUT METHODS</text>
+
+  <!-- A1 sub-box -->
+  <rect x="22" y="96" width="196" height="162" rx="5" fill="white" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="120" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#5b21b6">A1: JSON Mode</text>
+  <text x="30" y="126" font-size="9" fill="#374151">• response_format: {type: "json_object"}</text>
+  <text x="30" y="139" font-size="9" fill="#374151">• Model constrained to valid JSON only</text>
+  <text x="30" y="152" font-size="9" fill="#374151">• No schema enforcement: any valid JSON</text>
+  <text x="30" y="165" font-size="9" fill="#374151">• Use when: need JSON, schema is flexible</text>
+  <text x="30" y="178" font-size="9" fill="#374151">• Limitation: required fields not guaranteed</text>
+  <text x="30" y="191" font-size="9" fill="#374151">• Works on: GPT-4, GPT-3.5-turbo, Gemini</text>
+  <text x="30" y="204" font-size="9" fill="#374151">• Still validate output after receiving</text>
+  <text x="30" y="217" font-size="9" fill="#374151">• Failure mode: missing keys, wrong types</text>
+  <text x="30" y="230" font-size="9" fill="#374151">• Parse failure rate: 1-5% in practice</text>
+
+  <!-- A2 sub-box -->
+  <rect x="228" y="96" width="197" height="162" rx="5" fill="white" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="326" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#5b21b6">A2: Structured Output API</text>
+  <text x="236" y="126" font-size="9" fill="#374151">• response_format: {type: "json_schema"}</text>
+  <text x="236" y="139" font-size="9" fill="#374151">• Schema enforcement: field presence guaranteed</text>
+  <text x="236" y="152" font-size="9" fill="#374151">• Type checking: string, number, boolean</text>
+  <text x="236" y="165" font-size="9" fill="#374151">• Enum values: constrain valid options</text>
+  <text x="236" y="178" font-size="9" fill="#374151">• Required fields: model cannot omit them</text>
+  <text x="236" y="191" font-size="9" fill="#374151">• Supported: OpenAI gpt-4o+, Anthropic tools</text>
+  <text x="236" y="204" font-size="9" fill="#374151">• Latency: 5-15ms overhead vs JSON mode</text>
+  <text x="236" y="217" font-size="9" fill="#374151">• Parse failure rate: &lt;0.1% with good schema</text>
+  <text x="236" y="230" font-size="9" fill="#374151">• Prefer over JSON mode for prod pipelines</text>
+
+  <!-- Section B: FUNCTION CALLING (blue, top-right) -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="80" width="425" height="8" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="white">B: FUNCTION CALLING</text>
+
+  <!-- B1 sub-box -->
+  <rect x="473" y="96" width="196" height="162" rx="5" fill="white" stroke="#93c5fd" stroke-width="1"/>
+  <text x="571" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#1d4ed8">B1: Tool Call API</text>
+  <text x="481" y="126" font-size="9" fill="#374151">• tools: [{name, description, input_schema}]</text>
+  <text x="481" y="139" font-size="9" fill="#374151">• Model emits: {type: "tool_use", input: {}}</text>
+  <text x="481" y="152" font-size="9" fill="#374151">• Parallel calls: multiple tools one response</text>
+  <text x="481" y="165" font-size="9" fill="#374151">• Forced: tool_choice: {type: "tool", name}</text>
+  <text x="481" y="178" font-size="9" fill="#374151">• Result injection: add tool_result to msgs</text>
+  <text x="481" y="191" font-size="9" fill="#374151">• Streaming: tool inputs arrive in chunks</text>
+  <text x="481" y="204" font-size="9" fill="#374151">• Multi-turn: model sees all prior tool results</text>
+  <text x="481" y="217" font-size="9" fill="#374151">• Use for: agent actions, data extraction</text>
+  <text x="481" y="230" font-size="9" fill="#374151">• Native in: OpenAI, Anthropic, Gemini APIs</text>
+
+  <!-- B2 sub-box -->
+  <rect x="679" y="96" width="197" height="162" rx="5" fill="white" stroke="#93c5fd" stroke-width="1"/>
+  <text x="777" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#1d4ed8">B2: Schema Design</text>
+  <text x="687" y="126" font-size="9" fill="#374151">• input_schema: JSON Schema draft 7</text>
+  <text x="687" y="139" font-size="9" fill="#374151">• Required vs optional: be explicit</text>
+  <text x="687" y="152" font-size="9" fill="#374151">• Field descriptions: crucial for accuracy</text>
+  <text x="687" y="165" font-size="9" fill="#374151">• Enum: constrain categorical values</text>
+  <text x="687" y="178" font-size="9" fill="#374151">• Nested: max 3 levels deep recommended</text>
+  <text x="687" y="191" font-size="9" fill="#374151">• Avoid: ambiguous field names</text>
+  <text x="687" y="204" font-size="9" fill="#374151">• Arrays: specify minItems/maxItems</text>
+  <text x="687" y="217" font-size="9" fill="#374151">• Pattern: use regex for formatted strings</text>
+  <text x="687" y="230" font-size="9" fill="#374151">• Test: adversarial inputs before prod</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Section C: CONSTRAINED DECODING (green, bottom-left) -->
+  <rect x="12" y="285" width="425" height="195" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="305" width="425" height="8" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="12" font-weight="bold" fill="white">C: CONSTRAINED DECODING</text>
+
+  <!-- C1 sub-box -->
+  <rect x="22" y="321" width="196" height="147" rx="5" fill="white" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="120" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#065f46">C1: Outlines / Guidance</text>
+  <text x="30" y="351" font-size="9" fill="#374151">• Intercept logits at each decode step</text>
+  <text x="30" y="364" font-size="9" fill="#374151">• Mask invalid tokens per grammar state</text>
+  <text x="30" y="377" font-size="9" fill="#374151">• Guarantee: output matches regex or schema</text>
+  <text x="30" y="390" font-size="9" fill="#374151">• No retries needed: structurally correct</text>
+  <text x="30" y="403" font-size="9" fill="#374151">• Overhead: 10-30ms parse per step</text>
+  <text x="30" y="416" font-size="9" fill="#374151">• Supports: JSON, regex, CFG grammars</text>
+  <text x="30" y="429" font-size="9" fill="#374151">• Requires: local model (open weights)</text>
+  <text x="30" y="442" font-size="9" fill="#374151">• Outlines: pip install outlines</text>
+
+  <!-- C2 sub-box -->
+  <rect x="228" y="321" width="197" height="147" rx="5" fill="white" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="326" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#065f46">C2: Grammar-based Tools</text>
+  <text x="236" y="351" font-size="9" fill="#374151">• LMQL: query language for LLMs</text>
+  <text x="236" y="364" font-size="9" fill="#374151">• Guidance: templated generation + logic</text>
+  <text x="236" y="377" font-size="9" fill="#374151">• Jsonformer: JSON-only, model-agnostic</text>
+  <text x="236" y="390" font-size="9" fill="#374151">• Token budget: fewer tokens than retries</text>
+  <text x="236" y="403" font-size="9" fill="#374151">• FSM: finite state machine per schema</text>
+  <text x="236" y="416" font-size="9" fill="#374151">• Tradeoff: needs model access (no APIs)</text>
+  <text x="236" y="429" font-size="9" fill="#374151">• Vocab index: precomputed per schema</text>
+  <text x="236" y="442" font-size="9" fill="#374151">• Best: high-volume extraction pipelines</text>
+
+  <!-- Section D: VALIDATION & RETRY (amber, bottom-right) -->
+  <rect x="463" y="285" width="425" height="195" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97706"/>
+  <rect x="463" y="305" width="425" height="8" fill="#d97706"/>
+  <text x="675" y="304" text-anchor="middle" font-size="12" font-weight="bold" fill="white">D: VALIDATION &amp; RETRY</text>
+
+  <!-- D1 sub-box -->
+  <rect x="473" y="321" width="196" height="147" rx="5" fill="white" stroke="#fcd34d" stroke-width="1"/>
+  <text x="571" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">D1: Client Validation</text>
+  <text x="481" y="351" font-size="9" fill="#374151">• Pydantic/Zod: parse + validate response</text>
+  <text x="481" y="364" font-size="9" fill="#374151">• Field presence check: required fields</text>
+  <text x="481" y="377" font-size="9" fill="#374151">• Type coercion: "42" → 42 where safe</text>
+  <text x="481" y="390" font-size="9" fill="#374151">• Enum membership: reject unknown values</text>
+  <text x="481" y="403" font-size="9" fill="#374151">• Custom validators: business logic checks</text>
+  <text x="481" y="416" font-size="9" fill="#374151">• Fallback: regex extract JSON from text</text>
+  <text x="481" y="429" font-size="9" fill="#374151">• Monitor: parse_failure_rate metric</text>
+  <text x="481" y="442" font-size="9" fill="#374151">• Alert: if failure rate &gt;1% in prod</text>
+
+  <!-- D2 sub-box -->
+  <rect x="679" y="321" width="197" height="147" rx="5" fill="white" stroke="#fcd34d" stroke-width="1"/>
+  <text x="777" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">D2: Retry Strategy</text>
+  <text x="687" y="351" font-size="9" fill="#374151">• Attempt 1: standard call</text>
+  <text x="687" y="364" font-size="9" fill="#374151">• Attempt 2: add validation error to prompt</text>
+  <text x="687" y="377" font-size="9" fill="#374151">• Attempt 3: simplify schema + retry</text>
+  <text x="687" y="390" font-size="9" fill="#374151">• Attempt 4: fallback to text + post-process</text>
+  <text x="687" y="403" font-size="9" fill="#374151">• Max: 3 retries (cost &amp; latency budget)</text>
+  <text x="687" y="416" font-size="9" fill="#374151">• Exponential backoff on rate limit errors</text>
+  <text x="687" y="429" font-size="9" fill="#374151">• Log: every failure + schema + raw output</text>
+  <text x="687" y="442" font-size="9" fill="#374151">• Alert: if retry rate &gt;5% in production</text>
+
+  <!-- Arrow A→C -->
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- Arrow B→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="2" marker-end="url(#arr2)"/>
+  <!-- Arrow C→D -->
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="491" width="900" height="29" fill="#1a1822"/>
+  <text x="90" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">Field descriptions improve accuracy</text>
+  <text x="270" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">Constrained decode: no retries needed</text>
+  <text x="450" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">Retry max: 3 attempts with error context</text>
+  <text x="630" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">Pydantic: validate + coerce + alert</text>
+  <text x="810" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">Parallel tools: multiple calls one response</text>
+</svg>

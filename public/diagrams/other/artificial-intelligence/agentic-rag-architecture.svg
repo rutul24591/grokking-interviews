@@ -1,0 +1,135 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#1a1822">Agentic RAG — Advanced Retrieval Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="12" fill="#555">Query transform · Multi-hop · GraphRAG · Structured data &amp; multi-tenant</text>
+
+  <!-- Section A: QUERY TRANSFORMATION (purple) -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="74" width="425" height="14" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">A: QUERY TRANSFORMATION</text>
+
+  <!-- A1 inner box -->
+  <rect x="24" y="98" width="192" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="120" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">A1: HyDE</text>
+  <text x="32" y="133" font-size="9" fill="#333">• Generate fake answer to query</text>
+  <text x="32" y="148" font-size="9" fill="#333">• Embed fake answer (not query)</text>
+  <text x="32" y="163" font-size="9" fill="#333">• Search with fake-answer embedding</text>
+  <text x="32" y="178" font-size="9" fill="#333">• Rationale: answer-space ≈ doc-space</text>
+  <text x="32" y="193" font-size="9" fill="#333">• Gain: 10-30% recall on open-domain QA</text>
+  <text x="32" y="208" font-size="9" fill="#333">• Avoid for factual lookup queries</text>
+
+  <!-- A2 inner box -->
+  <rect x="226" y="98" width="199" height="160" rx="5" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
+  <text x="325" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">A2: Multi-Query Retrieval</text>
+  <text x="234" y="133" font-size="9" fill="#333">• Rephrase query 3-5 ways</text>
+  <text x="234" y="148" font-size="9" fill="#333">• Retrieve for each variant</text>
+  <text x="234" y="163" font-size="9" fill="#333">• Union results, dedup by doc id</text>
+  <text x="234" y="178" font-size="9" fill="#333">• Rerank the union set</text>
+  <text x="234" y="193" font-size="9" fill="#333">• Cost: N× embed + N× ANN search</text>
+  <text x="234" y="208" font-size="9" fill="#333">• Benefit: catches phrasing variants</text>
+
+  <!-- Section B: MULTI-HOP REASONING (blue) -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="74" width="425" height="14" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">B: MULTI-HOP REASONING</text>
+
+  <!-- B1 inner box -->
+  <rect x="475" y="98" width="192" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="571" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">B1: Iterative Retrieval</text>
+  <text x="483" y="133" font-size="9" fill="#333">• Step 1: retrieve for original query</text>
+  <text x="483" y="148" font-size="9" fill="#333">• Step 2: LLM finds missing info</text>
+  <text x="483" y="163" font-size="9" fill="#333">• Step 3: retrieve for missing info</text>
+  <text x="483" y="178" font-size="9" fill="#333">• Repeat until answer complete</text>
+  <text x="483" y="193" font-size="9" fill="#333">• Max hops: 3-5 (hard limit)</text>
+  <text x="483" y="208" font-size="9" fill="#333">• Cost: O(hops) retrieval calls</text>
+
+  <!-- B2 inner box -->
+  <rect x="677" y="98" width="199" height="160" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="776" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#2563eb">B2: Query Decomposition</text>
+  <text x="685" y="133" font-size="9" fill="#333">• Complex → sub-questions</text>
+  <text x="685" y="148" font-size="9" fill="#333">• Parallel: retrieve all sub-Qs</text>
+  <text x="685" y="163" font-size="9" fill="#333">• Sequential: each depends on prior</text>
+  <text x="685" y="178" font-size="9" fill="#333">• Merge: synthesize sub-answers</text>
+  <text x="685" y="193" font-size="9" fill="#333">• Use case: multi-entity comparison</text>
+  <text x="685" y="208" font-size="9" fill="#333">• Use case: research summaries</text>
+
+  <!-- Arrow A → B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Section C: GRAPHRAG & STRUCTURED (green) -->
+  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="299" width="425" height="14" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">C: GRAPHRAG &amp; STRUCTURED</text>
+
+  <!-- C1 inner box -->
+  <rect x="24" y="323" width="192" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="120" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#2f9d74">C1: GraphRAG</text>
+  <text x="32" y="358" font-size="9" fill="#333">• KG: entities + relations from corpus</text>
+  <text x="32" y="373" font-size="9" fill="#333">• Leiden clustering → summaries</text>
+  <text x="32" y="388" font-size="9" fill="#333">• Global: community summary search</text>
+  <text x="32" y="403" font-size="9" fill="#333">• Local: graph traversal</text>
+  <text x="32" y="418" font-size="9" fill="#333">• Best for: global thematic questions</text>
+
+  <!-- C2 inner box -->
+  <rect x="226" y="323" width="199" height="135" rx="5" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="325" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#2f9d74">C2: Text-to-SQL</text>
+  <text x="234" y="358" font-size="9" fill="#333">• NL → SQL via LLM + schema ctx</text>
+  <text x="234" y="373" font-size="9" fill="#333">• Schema: table + col descriptions</text>
+  <text x="234" y="388" font-size="9" fill="#333">• Few-shot: 3-5 NL→SQL examples</text>
+  <text x="234" y="403" font-size="9" fill="#333">• Validate: EXPLAIN before execute</text>
+  <text x="234" y="418" font-size="9" fill="#333">• Error: feed back to LLM for fix</text>
+
+  <!-- Section D: ENTERPRISE PATTERNS (amber) -->
+  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
+  <rect x="463" y="299" width="425" height="14" fill="#d97843"/>
+  <text x="675" y="304" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">D: ENTERPRISE PATTERNS</text>
+
+  <!-- D1 inner box -->
+  <rect x="475" y="323" width="192" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="571" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#d97843">D1: Multi-tenant RAG</text>
+  <text x="483" y="358" font-size="9" fill="#333">• Namespace per tenant in vector DB</text>
+  <text x="483" y="373" font-size="9" fill="#333">• Filter: tenant_id on every query</text>
+  <text x="483" y="388" font-size="9" fill="#333">• Isolation: separate collections</text>
+  <text x="483" y="403" font-size="9" fill="#333">• Filter before ANN (not after)</text>
+  <text x="483" y="418" font-size="9" fill="#333">• Audit: log every retrieval + tenantId</text>
+
+  <!-- D2 inner box -->
+  <rect x="677" y="323" width="199" height="135" rx="5" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
+  <text x="776" y="341" text-anchor="middle" font-size="10" font-weight="700" fill="#d97843">D2: Index Management</text>
+  <text x="685" y="358" font-size="9" fill="#333">• Chunking: semantic &gt; fixed</text>
+  <text x="685" y="373" font-size="9" fill="#333">• Overlap: 10-15% of chunk size</text>
+  <text x="685" y="388" font-size="9" fill="#333">• Re-index: if &gt;20% doc changed</text>
+  <text x="685" y="403" font-size="9" fill="#333">• Embed queue: async + DLQ</text>
+  <text x="685" y="418" font-size="9" fill="#333">• Blue-green swap on re-index done</text>
+
+  <!-- Arrow A → C -->
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- Arrow B → D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="2" marker-end="url(#arr2)"/>
+  <!-- Arrow C → D -->
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
+  <text x="450" y="497" text-anchor="middle" font-size="9.5" fill="#ccc">HyDE: 10-30% recall gain  |  Multi-query: 3-5 rephrasings  |  Multi-hop max: 3-5 steps  |  GraphRAG: community summaries  |  Text-to-SQL: schema + few-shot</text>
+  <text x="450" y="511" text-anchor="middle" font-size="9" fill="#888">Query → classify complexity → choose strategy → retrieve → rerank → synthesize → validate citations → respond</text>
+</svg>

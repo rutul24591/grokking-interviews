@@ -441,6 +441,136 @@ export default function ArticlePage() {
             changes (new product features, updated policies, changed code APIs).
           </p>
         </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">
+            Q5: Explain KV cache prefix sharing and agentic token amplification.
+            How do you cost-optimize a multi-agent system at scale?
+          </h3>
+          <p>
+            This is a staff-level question testing deep understanding of both
+            inference economics and agent system design.
+          </p>
+          <p className="mt-2">
+            <strong>KV cache prefix sharing:</strong> Modern LLM inference
+            servers (vLLM with PagedAttention, TGI) cache the key-value
+            tensors for each token position in the context. If two requests
+            share a common prefix — identical up to position k — the server
+            computes the KV values for those k tokens only once and reuses
+            them for both requests. This is &quot;prefix caching&quot; or
+            &quot;prompt caching.&quot; Anthropic and OpenAI expose this as an
+            API feature (cached input tokens are billed at 10-25% of the
+            standard rate).
+          </p>
+          <p className="mt-2">
+            The economic impact is large when the prefix is long and reused
+            frequently. A system prompt of 10,000 tokens shared by 10,000
+            requests per day saves 9M tokens × (standard rate - cache rate).
+            At $3/M tokens standard and $0.30/M cached, that is $24.30/day or
+            ~$8,900/year from prefix caching alone, for a single prompt.
+            Design implication: keep the system prompt identical across all
+            requests in a session or product (no per-request customization that
+            would break prefix matching).
+          </p>
+          <p className="mt-2">
+            <strong>Agentic token amplification:</strong> A single user message
+            in a multi-agent system is amplified into many LLM calls, each with
+            its own full context window. The amplification factor is roughly:
+            (number of agent steps) × (average context window per step). A
+            5-step orchestration where each step sees 8K tokens of history
+            costs 40K tokens, not 8K. For a complex 20-step agentic task with
+            15K token contexts, the true cost is 300K tokens — 30× the naive
+            estimate.
+          </p>
+          <p className="mt-2">
+            <strong>Optimization strategy for multi-agent systems:</strong>
+          </p>
+          <p>
+            (1) <strong>Hierarchical summarization</strong>: the supervisor
+            agent summarizes completed sub-task results before passing them to
+            the next agent. Never pass the full conversation history — pass a
+            3-5 sentence summary of relevant outputs. This caps context growth
+            at O(summary_size × steps) instead of O(full_history × steps).
+          </p>
+          <p>
+            (2) <strong>Model tiering</strong>: use expensive models only for
+            planning (supervisor), judgment (critic), and high-stakes decisions.
+            Use cheap models (Haiku, GPT-4o mini) for data formatting,
+            classification, extraction, and search query generation. In a
+            5-agent system, 4 cheap-model calls + 1 expensive call costs ~3×
+            less than 5 expensive calls with comparable quality.
+          </p>
+          <p>
+            (3) <strong>Prefix caching for agent prompts</strong>: structure
+            agent system prompts so the constant portion (role description,
+            tool definitions, output format) comes first, and the variable
+            portion (current task, history summary) comes at the end. The
+            constant prefix is cached; only the variable suffix incurs full
+            input token cost.
+          </p>
+          <p>
+            (4) <strong>Hard token budgets per orchestration</strong>: expose
+            the remaining token budget to the supervisor as a context variable.
+            The supervisor must complete the task within budget, selecting
+            cheaper strategies (fewer agents, less exhaustive search) when the
+            budget is tight. This prevents runaway orchestrations from
+            consuming 10× the expected tokens on unexpectedly complex tasks.
+          </p>
+          <p>
+            (5) <strong>Batch independent subtasks</strong>: when an agent
+            needs to process N independent items (e.g., summarize 10 documents),
+            batch them into a single LLM call rather than making 10 separate
+            calls. This reduces per-call overhead (API round-trip, cold start)
+            and preserves prefix caching across items.
+          </p>
+          <p className="mt-2">
+            At scale (10K orchestrations/day, average 20 steps, 15K tokens/step):
+            unoptimized cost = 3B tokens/day × $3/M = $9,000/day. With model
+            tiering (80% cheap model at $0.15/M): $1,440/day. Add prefix caching
+            (50% hit rate on system prompts): $1,080/day. Add summarization
+            (reduce average context by 40%): $648/day. Total: 93% cost reduction
+            from $9,000 to $648/day.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions with Detailed Answers</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Interview focus: answer with constraints, decisions, trade-offs, and how you'd validate/operate the system.
+        </HighlightBlock>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">
+            Q4: How effective is response caching for reducing AI costs?
+          </h3>
+          <p>
+            Response caching is one of the most effective cost optimization
+            strategies because it eliminates LLM calls entirely for cached
+            requests. Exact caching (matching identical prompts at temperature
+            0) typically achieves 10-20% cache hit rates in production
+            applications, eliminating 10-20% of API calls. Semantic caching
+            (matching similar prompts using embedding similarity with a
+            configurable threshold) can achieve an additional 10-15% hit rate,
+            bringing total cache effectiveness to 20-35%.
+          </p>
+          <p>
+            The effectiveness depends on the application: FAQ-style
+            applications (customer support, documentation Q&amp;A) have high
+            cache hit rates because many users ask the same questions. Creative
+            applications (content generation, brainstorming) have low cache
+            hit rates because each request is unique. Code assistants have
+            moderate cache hit rates because the same function signatures and
+            API patterns generate repeated requests.
+          </p>
+          <p>
+            Cache management involves setting appropriate TTLs (short for
+            time-sensitive content, long for stable content), monitoring cache
+            hit rates and quality (ensuring cached responses are still
+            appropriate), and invalidating caches when the underlying knowledge
+            changes (new product features, updated policies, changed code APIs).
+          </p>
+        </div>
       </section>
 
       <section>

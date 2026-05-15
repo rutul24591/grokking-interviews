@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Micro-Frontend Architecture — LLD</text>
+
+  <rect x="16" y="44" width="420" height="176" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="44" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Composition Strategies</text>
+  <text x="26" y="89" font-size="9.5" fill="#1a1822">Build-time: npm packages — tight coupling, shared deps, no independent deploy</text>
+  <text x="26" y="106" font-size="9.5" fill="#1a1822">Server-side: edge/SSR stitching via ESI or Nginx includes — zero JS overhead</text>
+  <text x="26" y="123" font-size="9.5" fill="#1a1822">Client-side (Module Federation): runtime import() from remote URLs — most flexible</text>
+  <text x="26" y="140" font-size="9.5" fill="#1a1822">Module Federation: host exposes remoteEntry.js; remote declares exposes map</text>
+  <text x="26" y="157" font-size="9.5" fill="#1a1822">Shared singletons: React, ReactDOM in shared: {singleton: true, requiredVersion}</text>
+  <text x="26" y="174" font-size="9.5" fill="#1a1822">iframes: perfect isolation, hard to style, poor a11y, no shared routing</text>
+  <text x="26" y="191" font-size="9.5" fill="#1a1822">Web Components: custom elements as integration boundary — framework-agnostic</text>
+  <text x="26" y="208" font-size="9.5" fill="#1a1822">Single-SPA: lifecycle hooks (bootstrap/mount/unmount) per micro app</text>
+
+  <rect x="464" y="44" width="420" height="176" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="44" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Routing, State &amp; Communication</text>
+  <text x="474" y="89" font-size="9.5" fill="#1a1822">Shell router owns URL; micro-apps get path prefix — no full URL control</text>
+  <text x="474" y="106" font-size="9.5" fill="#1a1822">Cross-app events: CustomEvent on window — loose coupling, no shared store</text>
+  <text x="474" y="123" font-size="9.5" fill="#1a1822">Shared context: host provides auth/theme via window.__APP_CONFIG__ or props</text>
+  <text x="474" y="140" font-size="9.5" fill="#1a1822">State isolation: each micro-app owns its store — no shared Redux/Zustand</text>
+  <text x="474" y="157" font-size="9.5" fill="#1a1822">BroadcastChannel: cross-tab, cross-frame messaging for shared session state</text>
+  <text x="474" y="174" font-size="9.5" fill="#1a1822">postMessage: iframe ↔ host communication with origin validation</text>
+  <text x="474" y="191" font-size="9.5" fill="#1a1822">Contract testing: Pact/schema tests verify host↔remote interface stability</text>
+  <text x="474" y="208" font-size="9.5" fill="#1a1822">Avoid: shared mutable state across boundaries — causes tight coupling</text>
+
+  <rect x="16" y="236" width="420" height="176" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="236" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Performance &amp; Dependency Management</text>
+  <text x="26" y="280" font-size="9.5" fill="#1a1822">Dependency duplication: without sharing, React loaded N times — critical issue</text>
+  <text x="26" y="297" font-size="9.5" fill="#1a1822">Module Federation shared config: eager: false to avoid double-init on startup</text>
+  <text x="26" y="314" font-size="9.5" fill="#1a1822">Version negotiation: MF picks highest compatible version if ranges overlap</text>
+  <text x="26" y="331" font-size="9.5" fill="#1a1822">Lazy load micro-apps: import() on route change — not in shell bundle</text>
+  <text x="26" y="348" font-size="9.5" fill="#1a1822">Prefetch on hover: link rel=prefetch for next likely micro-app</text>
+  <text x="26" y="365" font-size="9.5" fill="#1a1822">Independent CI/CD: each micro-app deploys its remoteEntry.js to CDN</text>
+  <text x="26" y="382" font-size="9.5" fill="#1a1822">Cache busting: content-hash filenames; remoteEntry.js versioned separately</text>
+  <text x="26" y="399" font-size="9.5" fill="#1a1822">Fallback: if remote fails, shell renders error boundary + placeholder</text>
+
+  <rect x="464" y="236" width="420" height="176" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="236" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Design System, A11y &amp; Trade-offs</text>
+  <text x="474" y="280" font-size="9.5" fill="#1a1822">Shared design system: published as npm package imported by all micro-apps</text>
+  <text x="474" y="297" font-size="9.5" fill="#1a1822">CSS isolation: CSS Modules / Shadow DOM / BEM namespacing per micro-app</text>
+  <text x="474" y="314" font-size="9.5" fill="#1a1822">Global styles: CSS custom properties on :root from shell — shared tokens</text>
+  <text x="474" y="331" font-size="9.5" fill="#1a1822">Focus management: shell traps focus on route change; micro-app sets initial focus</text>
+  <text x="474" y="348" font-size="9.5" fill="#1a1822">ARIA landmarks: each micro-app declares its own region; shell wraps main</text>
+  <text x="474" y="365" font-size="9.5" fill="#1a1822">When to use MFE: 5+ teams, different deploy cadences, distinct domains</text>
+  <text x="474" y="382" font-size="9.5" fill="#1a1822">When NOT to use: small team, shared data model, same deploy cadence</text>
+  <text x="474" y="399" font-size="9.5" fill="#1a1822">Cost: operational complexity, duplicate infra, harder debugging across bundles</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="132" x2="458" y2="132" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="226" y1="220" x2="226" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="674" y1="220" x2="674" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="455" text-anchor="middle" font-size="10" fill="white">Module Federation: singleton React in shared config</text>
+  <text x="270" y="455" text-anchor="middle" font-size="10" fill="white">Cross-app events via CustomEvent — loose coupling</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="white">Independent CI/CD: each team deploys remoteEntry.js</text>
+  <text x="630" y="455" text-anchor="middle" font-size="10" fill="white">CSS isolation: Modules/Shadow DOM per micro-app</text>
+  <text x="810" y="455" text-anchor="middle" font-size="10" fill="white">Use MFE only when 5+ teams, distinct deploy cadences</text>
+</svg>

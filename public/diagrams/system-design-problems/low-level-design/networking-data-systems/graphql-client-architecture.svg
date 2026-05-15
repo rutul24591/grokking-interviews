@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">GraphQL Client Architecture — Frontend LLD</text>
+
+  <rect x="16" y="44" width="420" height="176" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="44" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Normalized Cache &amp; Query Lifecycle</text>
+  <text x="26" y="89" font-size="9.5" fill="#1a1822">Normalized store: flatten by __typename + id → {User:1: {...}, Post:42: {...}}</text>
+  <text x="26" y="106" font-size="9.5" fill="#1a1822">Query result → walk AST → resolve each field → store by cache key</text>
+  <text x="26" y="123" font-size="9.5" fill="#1a1822">Cache-first: read from store → stale? → background refetch → update UI</text>
+  <text x="26" y="140" font-size="9.5" fill="#1a1822">Network-only: always fetch, hydrate store, useful for real-time accuracy</text>
+  <text x="26" y="157" font-size="9.5" fill="#1a1822">Cache-and-network: serve stale immediately + refetch → second render on update</text>
+  <text x="26" y="174" font-size="9.5" fill="#1a1822">Eviction: LRU per query — gc() removes unreachable refs after component unmount</text>
+  <text x="26" y="191" font-size="9.5" fill="#1a1822">Pagination: merge: (existing, incoming) custom policy — cursor-based relay spec</text>
+  <text x="26" y="208" font-size="9.5" fill="#1a1822">Key fields: custom cache key beyond id (e.g. {Product: ['sku', 'region']})</text>
+
+  <rect x="464" y="44" width="420" height="176" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="44" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="63" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Mutations, Optimistic Updates &amp; Error Handling</text>
+  <text x="474" y="89" font-size="9.5" fill="#1a1822">Optimistic response: write expected result immediately to cache before server response</text>
+  <text x="474" y="106" font-size="9.5" fill="#1a1822">On success: server result overwrites optimistic entry — reconcile if diverged</text>
+  <text x="474" y="123" font-size="9.5" fill="#1a1822">On failure: rollback optimistic write — restore previous cache value automatically</text>
+  <text x="474" y="140" font-size="9.5" fill="#1a1822">Update function: manual cache.modify() after mutation to avoid refetch round-trip</text>
+  <text x="474" y="157" font-size="9.5" fill="#1a1822">GraphQL errors: distinguish network errors (HTTP 5xx) vs field errors ({errors: [...]})</text>
+  <text x="474" y="174" font-size="9.5" fill="#1a1822">Partial success: GraphQL returns data + errors simultaneously — handle both</text>
+  <text x="474" y="191" font-size="9.5" fill="#1a1822">Error codes: use extensions.code (UNAUTHENTICATED, FORBIDDEN, NOT_FOUND)</text>
+  <text x="474" y="208" font-size="9.5" fill="#1a1822">Retry link: retry on network error (not on GraphQL error) with exponential backoff</text>
+
+  <rect x="16" y="236" width="420" height="176" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="236" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Subscriptions, Batching &amp; Persisted Queries</text>
+  <text x="26" y="280" font-size="9.5" fill="#1a1822">Subscriptions: WebSocket (graphql-ws protocol) — operation_id per subscription</text>
+  <text x="26" y="297" font-size="9.5" fill="#1a1822">Subscription lifecycle: subscribe → receive events → complete (cleanup on unmount)</text>
+  <text x="26" y="314" font-size="9.5" fill="#1a1822">Merge subscription data into cache: writeQuery / updateQuery on each event</text>
+  <text x="26" y="331" font-size="9.5" fill="#1a1822">Query batching: batch link collects queries in 10ms window → single HTTP request</text>
+  <text x="26" y="348" font-size="9.5" fill="#1a1822">Persisted queries: hash query body → send only hash → server looks up full query</text>
+  <text x="26" y="365" font-size="9.5" fill="#1a1822">APQ (Automatic Persisted Queries): send hash → 404 → resend full query → cached</text>
+  <text x="26" y="382" font-size="9.5" fill="#1a1822">Request deduplication: same query in-flight → share single promise (no duplicate fetch)</text>
+  <text x="26" y="399" font-size="9.5" fill="#1a1822">Field-level loading: @defer / @stream for progressive data delivery (Apollo 3.7+)</text>
+
+  <rect x="464" y="236" width="420" height="176" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="236" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="255" text-anchor="middle" font-size="12" font-weight="bold" fill="white">N+1 Prevention, Auth Links &amp; Devtools</text>
+  <text x="474" y="280" font-size="9.5" fill="#1a1822">N+1 on server: DataLoader batches DB calls per request (keys → VALUES IN (...))</text>
+  <text x="474" y="297" font-size="9.5" fill="#1a1822">Fragment colocation: component declares its own data needs → compose at query root</text>
+  <text x="474" y="314" font-size="9.5" fill="#1a1822">Apollo Link chain: authLink → retryLink → errorLink → httpLink (or wsLink)</text>
+  <text x="474" y="331" font-size="9.5" fill="#1a1822">Auth link: inject Authorization header; on 401 → trigger token refresh → retry</text>
+  <text x="474" y="348" font-size="9.5" fill="#1a1822">Schema introspection: disable in prod (info leakage), enable in dev for tooling</text>
+  <text x="474" y="365" font-size="9.5" fill="#1a1822">Query complexity limits: server rejects queries above cost threshold (prevent DoS)</text>
+  <text x="474" y="382" font-size="9.5" fill="#1a1822">Apollo DevTools: inspect cache, trace queries, replay operations — essential in dev</text>
+  <text x="474" y="399" font-size="9.5" fill="#1a1822">Code generation: graphql-codegen → typed hooks from schema + operations (zero runtime)</text>
+
+  <defs>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="132" x2="458" y2="132" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <line x1="226" y1="220" x2="226" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+  <line x1="674" y1="220" x2="674" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+  <rect x="0" y="428" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="455" text-anchor="middle" font-size="10" fill="white">Normalize by __typename + id → merge updates</text>
+  <text x="270" y="455" text-anchor="middle" font-size="10" fill="white">Optimistic UI: write → confirm/rollback on response</text>
+  <text x="450" y="455" text-anchor="middle" font-size="10" fill="white">Subscriptions: WS per operation, cleanup on unmount</text>
+  <text x="630" y="455" text-anchor="middle" font-size="10" fill="white">APQ: hash-first → fallback to full query body</text>
+  <text x="810" y="455" text-anchor="middle" font-size="10" fill="white">Link chain: auth → retry → error → http/ws</text>
+</svg>

@@ -512,6 +512,240 @@ export default function ArticlePage() {
       </section>
 
       <section>
+        <h2>Production Scaling &amp; Framework Comparison</h2>
+        <div className="space-y-4">
+          <p>
+            The gap between a working multi-agent prototype and a production
+            system is wide. Three problem areas dominate: state management at
+            scale, cost control, and framework selection.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Production Scaling: Concurrent Orchestrations</h3>
+          <p>
+            A single supervisor coordinating 5 sub-agents is straightforward.
+            A platform running 1,000 concurrent orchestrations across 50,000
+            sub-agent steps per hour requires a fundamentally different
+            architecture. Key production concerns:
+          </p>
+          <p>
+            <strong>Distributed state storage:</strong> Agent memory and
+            intermediate results cannot live in-process. Use Redis for hot
+            working memory (current step state, tool call results), PostgreSQL
+            for durable task records, and an object store (S3) for large
+            artifacts (generated code, documents). Each orchestration is
+            identified by a UUID and all state is addressed by
+            &#123;orchestration_id, agent_id, step&#125;.
+          </p>
+          <p>
+            <strong>Worker pool architecture:</strong> Decouple the orchestration
+            engine from the LLM inference calls. The orchestrator submits agent
+            step requests to a job queue (SQS, Celery, Temporal workflows).
+            Workers pull jobs, make LLM API calls, store results, and emit events
+            that trigger the next step. This makes the system horizontally
+            scalable (add workers) and resilient (failed workers restart without
+            losing orchestration state).
+          </p>
+          <p>
+            <strong>Temporal / workflow engines:</strong> Temporal (open-source)
+            is the production standard for durable multi-agent workflows. It
+            provides: automatic retries with configurable backoff, exactly-once
+            semantics for tool calls, full execution history for debugging, and
+            deterministic replay for debugging failed runs. The tradeoff is
+            operational complexity — Temporal requires its own cluster. For
+            simpler cases, AWS Step Functions or Inngest provide similar
+            guarantees with less infrastructure overhead.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Dynamic Agent Spawning</h3>
+          <p>
+            Static agent teams (fixed roles, fixed count) fail for tasks of
+            unknown complexity. A research task might need 3 agents or 30
+            depending on the scope of the question. Dynamic spawning lets the
+            orchestrator create new agents on demand:
+          </p>
+          <p>
+            The supervisor maintains an agent pool with a maximum concurrency
+            cap (e.g., 20 sub-agents per orchestration). When a subtask is
+            identified, the supervisor checks if capacity is available; if so,
+            it spawns a new agent instance with a scoped system prompt and tool
+            set. When the subtask completes, the agent is terminated and its
+            resources released. The supervisor collects results via an async
+            event channel.
+          </p>
+          <p>
+            The critical guard is the <strong>recursion depth limit</strong> — a
+            sub-agent must not be able to spawn further sub-agents without the
+            supervisor&apos;s knowledge, or the system can produce exponential
+            agent growth. Enforce this by only granting the
+            &quot;spawn_agent&quot; tool to the supervisor role; sub-agents have
+            no access to it.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Token Amplification &amp; Cost Modeling</h3>
+          <p>
+            Multi-agent systems have a severe cost multiplier effect. A single
+            user query that would cost $0.01 in direct generation can cost
+            $0.50-$2.00 in a multi-agent system due to:
+          </p>
+          <p>
+            (1) <strong>Message passing overhead:</strong> every inter-agent
+            message includes the full conversation history. An orchestration with
+            5 agents and 10 rounds of communication multiplies token consumption
+            by ~50× vs. a single call.
+          </p>
+          <p>
+            (2) <strong>Redundant context:</strong> each agent re-reads the task
+            description and prior results from scratch on every step because LLMs
+            are stateless.
+          </p>
+          <p>
+            Cost mitigation strategies: (a) <strong>Aggressive summarization</strong>
+            — the supervisor summarizes completed sub-task results before passing
+            them to the next sub-agent, rather than passing the full conversation
+            history; (b) <strong>Model tiering</strong> — use expensive frontier
+            models only for planning (supervisor) and specialized judgment
+            (critic); use cheaper models (GPT-4o mini, Claude Haiku) for
+            routine sub-tasks like data formatting, classification, and
+            extraction; (c) <strong>Prefix caching</strong> — keep the system
+            prompt and task description identical across sub-agents to maximize
+            KV cache hit rate on the inference server; (d) <strong>Budget caps</strong>
+            — set hard token budgets per orchestration; the supervisor agent
+            receives its remaining token budget as context and must plan within
+            it.
+          </p>
+          <p>
+            A realistic cost model for a software development agent team
+            (planner + 4 coders + reviewer) producing 200-line code: ~150K
+            tokens per orchestration at $0.50 on GPT-4o, or ~$0.05 on Claude
+            Haiku for the sub-agents with GPT-4o only for planning. Model tiering
+            is typically the highest-leverage cost reduction.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Framework Comparison: LangGraph vs. CrewAI vs. AutoGen</h3>
+          <p>
+            Three frameworks dominate production multi-agent development in 2025:
+          </p>
+          <p>
+            <strong>LangGraph</strong> (LangChain) models agent workflows as a
+            directed graph where nodes are LLM calls or tool executions and edges
+            encode control flow (conditional transitions, loops). The programming
+            model is explicit — you write the graph structure, which makes
+            complex control flows (parallel branches, cycles, checkpointing)
+            transparent and debuggable. Drawback: verbose for simple workflows;
+            you write a lot of graph definition code. Best for: production systems
+            where control flow correctness is critical; systems that need
+            LangSmith observability integration.
+          </p>
+          <p>
+            <strong>CrewAI</strong> uses a role-based agent abstraction — you
+            define agents as team members with roles, goals, and backstories.
+            The orchestration is handled by a built-in crew manager. The
+            programming model is higher-level and faster to prototype. Drawback:
+            less control over execution flow; the built-in orchestration can
+            produce unexpected agent interactions. Best for: rapid prototyping;
+            business-workflow automations where the role metaphor maps cleanly
+            to the domain.
+          </p>
+          <p>
+            <strong>AutoGen</strong> (Microsoft) implements the
+            ConversableAgent pattern: agents are participants in a conversation,
+            and complex behaviors emerge from message exchange patterns. The
+            GroupChat abstraction lets you define multi-agent conversations with
+            configurable turn-taking rules. Best for: research settings, debate
+            patterns (multiple agents critiquing each other), and scenarios where
+            emergent conversation structure is acceptable. Less suited to
+            production systems with strict control flow requirements.
+          </p>
+          <p>
+            <strong>Decision rule:</strong> For production systems with defined
+            workflows, use LangGraph. For business process automation prototypes,
+            use CrewAI. For research and experimental agent patterns, use AutoGen.
+            All three support the same underlying models (OpenAI, Anthropic,
+            local via Ollama).
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Interview Questions</h2>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">
+            Q5: Design a production multi-agent system for complex software
+            development automation: given a GitHub issue, the system should plan
+            the implementation, write code across multiple files, run tests,
+            fix failures, and open a pull request. Design for correctness,
+            cost efficiency, and observability.
+          </h3>
+          <p>
+            This is a principal-level question testing the ability to design a
+            multi-agent system with real production constraints.
+          </p>
+          <p className="mt-2">
+            <strong>Agent architecture (5 agents):</strong>
+          </p>
+          <p>
+            <em>Planner agent</em> (GPT-4o): reads the GitHub issue and codebase
+            context (retrieved via RAG over the repo), produces a structured
+            implementation plan: &#123;files_to_modify: [], new_files: [], test_strategy: &quot;...&quot;,
+            estimated_complexity: &quot;S/M/L&quot;&#125;. Aborts if complexity is XL
+            (escalates to human).
+          </p>
+          <p>
+            <em>Coder agents</em> (Claude Haiku, spawned dynamically): one per
+            file to modify. Each receives the implementation plan, the specific
+            file to edit, and the relevant context (adjacent files, type
+            definitions). Produces a unified diff. Operates in parallel across
+            files.
+          </p>
+          <p>
+            <em>Integrator agent</em> (GPT-4o mini): applies all diffs to a
+            git branch in a sandboxed container, resolves merge conflicts, runs
+            the test suite, and collects test output.
+          </p>
+          <p>
+            <em>Debugger agent</em> (Claude Haiku, up to 3 iterations): receives
+            failing test output and the relevant code, produces targeted fixes.
+            Exits when all tests pass or after 3 failed attempts (escalates to
+            human).
+          </p>
+          <p>
+            <em>Reviewer agent</em> (GPT-4o): performs final code review against
+            a style guide checklist, generates the PR description with change
+            summary, test evidence, and open questions.
+          </p>
+          <p className="mt-2">
+            <strong>Cost control:</strong> Planner and Reviewer use expensive
+            models; Coders and Debugger use cheap models. The Planner summarizes
+            the implementation plan before handing off (not the full issue
+            thread). Prefix caching on the repository context prompt shared by
+            all Coders reduces input token cost by ~40%.
+          </p>
+          <p className="mt-2">
+            <strong>Orchestration:</strong> Temporal workflow. Each agent step
+            is a Temporal activity with a 2-minute timeout and 3 retries. The
+            full orchestration has a 30-minute wall-clock cap. All intermediate
+            state (plans, diffs, test results) is stored in S3 keyed by
+            &#123;issue_id, run_id&#125;.
+          </p>
+          <p className="mt-2">
+            <strong>Observability:</strong> Every agent call is traced with
+            LangSmith (span per agent, input/output tokens, latency, cost).
+            A dashboard tracks: success rate (PR opened), debugger loop
+            iterations (leading indicator of task difficulty), total cost per
+            issue, and escalation rate. Alerts fire when cost per issue exceeds
+            $2 or success rate drops below 70%.
+          </p>
+          <p className="mt-2">
+            <strong>Safety:</strong> The sandboxed container has no credentials
+            (read-only repo clone). The Integrator writes to an isolated git
+            branch. Human review is required before merge — the agent opens a
+            PR, never merges.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>References</h2>
         <ul className="space-y-2 text-sm text-muted">
           <li>

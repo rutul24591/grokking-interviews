@@ -1,0 +1,67 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="900" height="520" fill="#f0f4ff"/>
+  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Range Query Pattern — Segment Tree, BIT &amp; Sparse Table</text>
+
+  <rect x="16" y="48" width="420" height="170" rx="8" fill="#edeaf5"/>
+  <rect x="16" y="48" width="420" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="226" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Pattern Recognition — When to Use</text>
+  <text x="26" y="93" font-size="9.5" fill="#1a1822">• Array with queries on [l, r] subarrays → range query pattern</text>
+  <text x="26" y="110" font-size="9.5" fill="#1a1822">• Static array + range min/max: Sparse Table O(n log n) / O(1)</text>
+  <text x="26" y="127" font-size="9.5" fill="#1a1822">• Mutable array + prefix sum: Fenwick Tree O(n) / O(log n)</text>
+  <text x="26" y="144" font-size="9.5" fill="#1a1822">• Mutable array + range update + range query: Segment Tree</text>
+  <text x="26" y="161" font-size="9.5" fill="#1a1822">• Keywords: "range sum", "range min/max", "point update"</text>
+  <text x="26" y="178" font-size="9.5" fill="#1a1822">• Keywords: "range update", "query after updates", "subarray aggregate"</text>
+  <text x="26" y="195" font-size="9.5" fill="#1a1822">• Offline vs online: offline → Mo's algorithm; online → seg tree/BIT</text>
+
+  <rect x="464" y="48" width="420" height="170" rx="8" fill="#dbeafe"/>
+  <rect x="464" y="48" width="420" height="28" rx="8" fill="#2563eb"/>
+  <text x="674" y="67" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Decision Matrix</text>
+  <text x="474" y="88" font-size="9.5" font-weight="bold" fill="#1a1822">Operation                    Structure         Complexity</text>
+  <text x="474" y="105" font-size="9" fill="#1a1822">Static range min/max         Sparse Table      O(1) query</text>
+  <text x="474" y="120" font-size="9" fill="#1a1822">Mutable prefix sum           Fenwick Tree      O(log n)</text>
+  <text x="474" y="135" font-size="9" fill="#1a1822">Mutable range sum+update     Segment Tree      O(log n)</text>
+  <text x="474" y="150" font-size="9" fill="#1a1822">Range update + range query   Seg Tree+Lazy     O(log n)</text>
+  <text x="474" y="165" font-size="9" fill="#1a1822">Offline kth smallest [l,r]   Persistent Seg    O(log n)</text>
+  <text x="474" y="180" font-size="9" fill="#1a1822">Offline arbitrary queries     Mo's Algorithm   O((n+q)√n)</text>
+  <text x="474" y="195" font-size="9" fill="#1a1822">Static range sum             Prefix Sum Array  O(1) query</text>
+
+  <rect x="16" y="234" width="420" height="170" rx="8" fill="#d1fae5"/>
+  <rect x="16" y="234" width="420" height="28" rx="8" fill="#2f9d74"/>
+  <text x="226" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Classic LeetCode Problems</text>
+  <text x="26" y="279" font-size="9.5" fill="#1a1822">• 303 Range Sum Query Immutable → prefix sum array</text>
+  <text x="26" y="296" font-size="9.5" fill="#1a1822">• 307 Range Sum Query Mutable → Fenwick Tree or Segment Tree</text>
+  <text x="26" y="313" font-size="9.5" fill="#1a1822">• 315 Count of Smaller Numbers After Self → BIT or persistent seg tree</text>
+  <text x="26" y="330" font-size="9.5" fill="#1a1822">• 493 Reverse Pairs → merge sort or BIT with coord compression</text>
+  <text x="26" y="347" font-size="9.5" fill="#1a1822">• 699 Falling Squares → segment tree with lazy propagation</text>
+  <text x="26" y="364" font-size="9.5" fill="#1a1822">• 732 My Calendar III → segment tree with lazy propagation</text>
+  <text x="26" y="381" font-size="9.5" fill="#1a1822">• 1074 Number of Submatrices That Sum to Target → 2D prefix sum</text>
+  <text x="26" y="398" font-size="9.5" fill="#1a1822">• 2407 Longest Increasing Subsequence II → segment tree on values</text>
+
+  <rect x="464" y="234" width="420" height="170" rx="8" fill="#fef3c7"/>
+  <rect x="464" y="234" width="420" height="28" rx="8" fill="#d97843"/>
+  <text x="674" y="253" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Templates &amp; Edge Cases</text>
+  <text x="474" y="279" font-size="9.5" fill="#1a1822">• BIT is 1-indexed: always add 1 to 0-indexed input coordinates</text>
+  <text x="474" y="296" font-size="9.5" fill="#1a1822">• Range query [l,r] on BIT: query(r) - query(l-1)</text>
+  <text x="474" y="313" font-size="9.5" fill="#1a1822">• Seg tree node range: [node*2, node*2+1] for children (1-indexed)</text>
+  <text x="474" y="330" font-size="9.5" fill="#1a1822">• Lazy propagation: push-down before accessing children</text>
+  <text x="474" y="347" font-size="9.5" fill="#1a1822">• Coordinate compression: map large values to [1..n] before BIT/seg</text>
+  <text x="474" y="364" font-size="9.5" fill="#1a1822">• Mo's algorithm order: sort queries by (block of l, r direction)</text>
+  <text x="474" y="381" font-size="9.5" fill="#1a1822">• Sparse table: only for idempotent ops (min/max/gcd, NOT sum)</text>
+  <text x="474" y="398" font-size="9.5" fill="#1a1822">• Overflow: use long/BigInt for large sums over large ranges</text>
+
+  <defs>
+    <marker id="arr6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+  <line x1="436" y1="133" x2="458" y2="133" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr6)"/>
+  <line x1="226" y1="218" x2="226" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr6)"/>
+  <line x1="674" y1="218" x2="674" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr6)"/>
+
+  <rect x="0" y="420" width="900" height="44" fill="#1a1822"/>
+  <text x="90" y="447" text-anchor="middle" font-size="10" fill="white">Prefix Sum: O(1) static range sum</text>
+  <text x="270" y="447" text-anchor="middle" font-size="10" fill="white">BIT: O(log n) mutable prefix sum</text>
+  <text x="450" y="447" text-anchor="middle" font-size="10" fill="white">Seg Tree: O(log n) any range op</text>
+  <text x="630" y="447" text-anchor="middle" font-size="10" fill="white">Sparse Table: O(1) static RMQ</text>
+  <text x="810" y="447" text-anchor="middle" font-size="10" fill="white">Persistent Seg: offline kth smallest</text>
+</svg>

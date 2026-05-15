@@ -502,6 +502,276 @@ export default function ArticlePage() {
       </section>
 
       <section>
+        <h2>OWASP LLM Top 10 &amp; Advanced Threat Vectors</h2>
+        <div className="space-y-4">
+          <p>
+            The OWASP Top 10 for LLM Applications (2025 edition) defines the
+            canonical threat landscape for production AI systems. Every AI
+            engineer should be able to describe the attack vector and primary
+            mitigation for each.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">OWASP LLM01-10 Summary</h3>
+          <p>
+            <strong>LLM01 — Prompt Injection:</strong> Malicious input redirects
+            LLM behavior. Mitigate with structural role separation (system vs.
+            user context), input sanitization, and output validation.
+          </p>
+          <p>
+            <strong>LLM02 — Insecure Output Handling:</strong> LLM output is
+            passed unsanitized to downstream systems (SQL queries, HTML renderers,
+            shell commands). Treat all LLM output as untrusted input. Sanitize
+            before use in any downstream system.
+          </p>
+          <p>
+            <strong>LLM03 — Training Data Poisoning:</strong> Corrupted training
+            data embeds backdoors or biases. Mitigate with data provenance
+            tracking, anomaly detection on training corpora, and model evaluation
+            against adversarial benchmark sets.
+          </p>
+          <p>
+            <strong>LLM04 — Model Denial of Service:</strong> Adversarial inputs
+            consume disproportionate compute (long context, recursive prompts).
+            Mitigate with token limits, rate limiting, cost-based request
+            throttling, and prompt complexity budgets.
+          </p>
+          <p>
+            <strong>LLM05 — Supply Chain Vulnerabilities:</strong> Malicious
+            model weights, poisoned fine-tuning datasets, or compromised
+            third-party plugins. Mitigate with checksum verification of model
+            artifacts, signed model provenance (model cards with cryptographic
+            attestation), dependency pinning for plugins.
+          </p>
+          <p>
+            <strong>LLM06 — Sensitive Information Disclosure:</strong> Model
+            memorizes and regurgitates PII or confidential training data.
+            Mitigate with differential privacy during fine-tuning, membership
+            inference testing, and output DLP scanning.
+          </p>
+          <p>
+            <strong>LLM07 — Insecure Plugin Design:</strong> Agent tool calls
+            invoke plugins with excessive permissions. Mitigate with principle
+            of least privilege for every tool (read-only where possible), tool
+            call approval workflows for irreversible actions, and sandboxed
+            execution environments.
+          </p>
+          <p>
+            <strong>LLM08 — Excessive Agency:</strong> The LLM is given more
+            autonomy than warranted — it can take irreversible actions without
+            human confirmation. Mitigate by classifying actions as reversible
+            vs. irreversible; require explicit human approval for irreversible
+            actions (file deletion, email sending, database writes).
+          </p>
+          <p>
+            <strong>LLM09 — Overreliance:</strong> Users trust LLM outputs
+            without verification. Mitigate with citation systems, confidence
+            indicators, explicit uncertainty statements in the system prompt,
+            and human review gates for high-stakes decisions.
+          </p>
+          <p>
+            <strong>LLM10 — Model Theft:</strong> Adversary reconstructs a
+            functional copy of a proprietary model via repeated API queries.
+            Mitigate with rate limiting, query pattern detection (systematic
+            probing), output watermarking, and differential privacy in training.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Model Extraction &amp; Membership Inference Attacks</h3>
+          <p>
+            <strong>Model extraction</strong> is a targeted version of LLM10:
+            an adversary queries an API systematically — varying inputs across
+            the input space — to train a surrogate model that mimics the
+            proprietary model&apos;s behavior. Detection relies on query pattern
+            analysis: extraction campaigns produce statistically different
+            query distributions (broad coverage, low semantic similarity between
+            consecutive queries) versus normal user sessions. Defenses include
+            rate limiting, output perturbation (introducing small noise that
+            does not affect usefulness but degrades surrogate training), and
+            cryptographic output watermarking (embedding detectable patterns
+            that survive model distillation, allowing proof of theft).
+          </p>
+          <p>
+            <strong>Membership inference attacks</strong> determine whether a
+            specific record was in the training set. This is a PII risk: an
+            attacker could confirm that a specific person&apos;s medical record was
+            used for training. The attack exploits the fact that models are more
+            confident on training examples than on novel inputs. Defenses:
+            differential privacy during training (ε-DP guarantees bound
+            membership inference advantage), output confidence calibration
+            (preventing overconfident outputs on training examples), and strict
+            limits on the number of logprob values returned by the API.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Supply Chain Attacks on AI Systems</h3>
+          <p>
+            AI supply chains are uniquely vulnerable because model weights are
+            opaque binary artifacts. A compromised model weight file can embed
+            backdoors that are invisible to standard testing — the model behaves
+            normally on all test inputs but produces attacker-specified outputs
+            when a trigger phrase appears in the prompt. Defense layers:
+          </p>
+          <p>
+            (1) <strong>Model provenance verification</strong>: check SHA-256
+            checksums of all downloaded model artifacts against published values.
+            For Hugging Face models, verify the model card&apos;s security audit
+            status before use in production.
+          </p>
+          <p>
+            (2) <strong>Behavioral red-teaming</strong> of all third-party
+            models before deployment — run a systematic probe of potential
+            trigger phrases and check for anomalous outputs.
+          </p>
+          <p>
+            (3) <strong>Plugin/tool dependency pinning</strong>: LangChain and
+            similar frameworks have large plugin ecosystems. Pin versions and
+            scan plugin source code for unexpected network calls or credential
+            access patterns.
+          </p>
+          <p>
+            (4) <strong>Sandboxed execution</strong>: run model inference in
+            containers with no outbound network access, restricted filesystem,
+            and no access to host credentials. A backdoored model cannot
+            exfiltrate data it cannot reach.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Red-Teaming Methodology</h3>
+          <p>
+            Red-teaming an LLM application is systematic adversarial testing
+            to discover failure modes before attackers do. A production
+            red-teaming program has four phases:
+          </p>
+          <p>
+            <strong>Phase 1 — Threat modelling:</strong> enumerate assets
+            (system prompt, tool definitions, knowledge base, user data),
+            adversary goals (data exfiltration, safety bypass, denial of service,
+            reputation damage), and attack surfaces (direct prompt injection,
+            indirect injection via RAG documents, plugin exploitation).
+          </p>
+          <p>
+            <strong>Phase 2 — Manual red-teaming:</strong> human testers attempt
+            injection attacks, jailbreaks, data extraction, and multi-turn
+            manipulation. Document successful attacks with exact inputs, model
+            versions, and outputs. Use frameworks like Garak (open-source LLM
+            vulnerability scanner) to systematically probe known attack categories.
+          </p>
+          <p>
+            <strong>Phase 3 — Automated scaling:</strong> use LLM-as-attacker
+            to generate novel attack variants at scale. Fine-tune an attacker
+            LLM on successful red-team inputs from Phase 2, then run it against
+            the target system continuously. This discovers attack vectors that
+            human testers miss.
+          </p>
+          <p>
+            <strong>Phase 4 — Regression gates:</strong> convert successful
+            attacks from Phases 2-3 into a test suite that runs on every model
+            or prompt template update. A deployment is blocked if it regresses
+            on any known attack. This prevents &quot;security drift&quot; — where
+            prompt engineering changes inadvertently remove defenses.
+          </p>
+
+          <h3 className="text-lg font-semibold mt-4">Regulatory Frameworks: EU AI Act &amp; NIST AI RMF</h3>
+          <p>
+            The <strong>EU AI Act</strong> (in force August 2024, most obligations
+            apply from August 2026) imposes risk-tiered requirements. High-risk
+            AI systems (HR, credit scoring, law enforcement, biometric
+            identification) must: maintain conformity assessments, technical
+            documentation, event logging for traceability, human oversight
+            mechanisms, and demonstrate accuracy/robustness/cybersecurity.
+            For AI engineers, the practical obligations are: (a) implement
+            comprehensive audit logging of all AI decisions with enough context
+            to reconstruct the decision post-hoc; (b) design human-in-the-loop
+            override mechanisms for every automated decision; (c) maintain
+            model cards documenting training data, intended use, known
+            limitations, and evaluation results.
+          </p>
+          <p>
+            The <strong>NIST AI Risk Management Framework (AI RMF)</strong>
+            organises AI risk management into four functions: <em>Govern</em>
+            (policies, roles, accountability), <em>Map</em> (identify and
+            classify AI risks in context), <em>Measure</em> (quantify risks
+            using metrics and testing), and <em>Manage</em> (prioritise and
+            treat risks). The AI RMF is voluntary in the US but is frequently
+            cited in procurement requirements and SOC 2 AI trust service criteria.
+            For engineering teams, the most actionable output is the NIST AI RMF
+            Playbook, which provides specific practices for each function.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Interview Questions</h2>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">
+            Q5: Design the security architecture for an enterprise AI platform
+            that processes customer PII, must pass SOC 2 Type II audit, and
+            needs to handle prompt injection, data leakage, and supply chain
+            risks at scale (1M requests/day).
+          </h3>
+          <p>
+            This is a principal-level question testing security architecture
+            breadth and the ability to translate compliance requirements into
+            engineering controls.
+          </p>
+          <p className="mt-2">
+            <strong>Threat model first:</strong> The three highest-risk attack
+            surfaces are (1) prompt injection via user input exfiltrating other
+            users&apos; PII from the context, (2) model memorization exposing PII
+            from training data, and (3) insecure plugin execution granting
+            excessive access to backend systems.
+          </p>
+          <p className="mt-2">
+            <strong>Input layer:</strong> All user input passes through a DLP
+            scanner (Google Cloud DLP or AWS Macie equivalent) that detects
+            and redacts 18 HIPAA identifiers and common credential patterns before
+            the prompt is assembled. Input is also scanned against an embedding-based
+            injection classifier (trained on known injection patterns). Queries
+            flagging above a confidence threshold are blocked and logged.
+          </p>
+          <p className="mt-2">
+            <strong>Prompt assembly:</strong> System prompt and user content are
+            passed in structurally separated roles (never concatenated as a single
+            string). Tenant context is injected into the system role, not the
+            user role, preventing users from overriding tenant-level instructions.
+          </p>
+          <p className="mt-2">
+            <strong>Output layer:</strong> All responses pass through a DLP
+            scanner before delivery. Responses containing PII patterns not present
+            in the user&apos;s own permitted data are blocked. A secondary classifier
+            checks for injection-success signals (model repeating system prompt
+            contents, switching language mid-response, producing structured data
+            that matches internal schema patterns).
+          </p>
+          <p className="mt-2">
+            <strong>Tool/plugin layer:</strong> Every tool call is evaluated by
+            a policy engine before execution. Read-only tools execute automatically;
+            state-mutating tools require a human approval step for operations
+            above a risk threshold (defined per tool). All tool calls are logged
+            with the full input and output for audit traceability.
+          </p>
+          <p className="mt-2">
+            <strong>Supply chain:</strong> Model artifacts are SHA-256 verified
+            and stored in a private artifact registry. Inference containers have
+            no outbound network access. All dependencies (LangChain, vector store
+            clients) are pinned and scanned with Dependabot + Snyk.
+          </p>
+          <p className="mt-2">
+            <strong>SOC 2 controls mapping:</strong> Audit logging → CC7.2 (monitoring);
+            access control on tool execution → CC6.3 (logical access); DLP on
+            output → CC6.7 (data transmission controls); red-teaming quarterly →
+            CC4.1 (risk assessment procedures); model version pinning and
+            rollback capability → A1.2 (availability).
+          </p>
+          <p className="mt-2">
+            <strong>Scale:</strong> At 1M requests/day (~12 req/s average,
+            ~100 req/s peak), DLP scanning must be sub-50ms per call. Use async
+            parallel scanning (input DLP + injection classifier run concurrently).
+            Audit logs go to an append-only WORM store (S3 Object Lock or
+            equivalent) to satisfy SOC 2 tamper-evidence requirements.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>References</h2>
         <ul className="space-y-2 text-sm text-muted">
           <li>

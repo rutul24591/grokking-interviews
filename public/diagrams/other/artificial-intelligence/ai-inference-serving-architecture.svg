@@ -1,0 +1,158 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+    <marker id="arr4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#d97706"/></marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f0f4ff"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">AI Inference Serving — Architecture</text>
+  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Request scheduler · Continuous batching · KV cache · Quantization &amp; GPU</text>
+
+  <!-- Section A: REQUEST SCHEDULING (purple, top-left) -->
+  <rect x="12" y="60" width="425" height="210" rx="8" fill="#ede9fe" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="12" y="80" width="425" height="8" fill="#6d5bd0"/>
+  <text x="224" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="white">A: REQUEST SCHEDULING</text>
+
+  <!-- A1 sub-box -->
+  <rect x="22" y="96" width="196" height="162" rx="5" fill="white" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="120" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#5b21b6">A1: Request Lifecycle</text>
+  <text x="30" y="126" font-size="9" fill="#374151">• Arrive → waiting queue</text>
+  <text x="30" y="139" font-size="9" fill="#374151">• Prefill phase: process prompt tokens</text>
+  <text x="30" y="152" font-size="9" fill="#374151">  (one forward pass, all tokens parallel)</text>
+  <text x="30" y="165" font-size="9" fill="#374151">• Decode phase: generate output tokens</text>
+  <text x="30" y="178" font-size="9" fill="#374151">  one at a time (autoregressive)</text>
+  <text x="30" y="191" font-size="9" fill="#374151">• TTFT: time-to-first-token (prefill cost)</text>
+  <text x="30" y="204" font-size="9" fill="#374151">• TPS: tokens/sec after first token</text>
+  <text x="30" y="217" font-size="9" fill="#374151">• TTFT and TPS are separate SLOs</text>
+  <text x="30" y="230" font-size="9" fill="#374151">• Streaming: flush tokens as generated</text>
+  <text x="30" y="243" font-size="9" fill="#374151">• Preemption: evict low-priority requests</text>
+
+  <!-- A2 sub-box -->
+  <rect x="228" y="96" width="197" height="162" rx="5" fill="white" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="326" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#5b21b6">A2: Continuous Batching</text>
+  <text x="236" y="126" font-size="9" fill="#374151">• Static: wait for all reqs to finish</text>
+  <text x="236" y="139" font-size="9" fill="#374151">• Continuous: iteration-level scheduling</text>
+  <text x="236" y="152" font-size="9" fill="#374151">• New reqs join mid-batch as slots free</text>
+  <text x="236" y="165" font-size="9" fill="#374151">• Throughput: 10-30x vs static batching</text>
+  <text x="236" y="178" font-size="9" fill="#374151">• PagedAttention: non-contiguous KV</text>
+  <text x="236" y="191" font-size="9" fill="#374151">• Chunked prefill: split large prompts</text>
+  <text x="236" y="204" font-size="9" fill="#374151">• Preemption via swap or recompute</text>
+  <text x="236" y="217" font-size="9" fill="#374151">• Priority queues: SLA-based scheduling</text>
+  <text x="236" y="230" font-size="9" fill="#374151">• GPU util target: 85-95% for best cost</text>
+
+  <!-- Section B: KV CACHE MANAGEMENT (blue, top-right) -->
+  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
+  <rect x="463" y="80" width="425" height="8" fill="#2563eb"/>
+  <text x="675" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="white">B: KV CACHE MANAGEMENT</text>
+
+  <!-- B1 sub-box -->
+  <rect x="473" y="96" width="196" height="162" rx="5" fill="white" stroke="#93c5fd" stroke-width="1"/>
+  <text x="571" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#1d4ed8">B1: PagedAttention</text>
+  <text x="481" y="126" font-size="9" fill="#374151">• KV cache: key-value tensors per layer</text>
+  <text x="481" y="139" font-size="9" fill="#374151">• Paged: fixed-size blocks (16-32 tokens)</text>
+  <text x="481" y="152" font-size="9" fill="#374151">• Physical blocks: actual GPU memory</text>
+  <text x="481" y="165" font-size="9" fill="#374151">• Logical blocks: per-sequence mapping</text>
+  <text x="481" y="178" font-size="9" fill="#374151">• No fragmentation: blocks allocated on demand</text>
+  <text x="481" y="191" font-size="9" fill="#374151">• Copy-on-write for beam search / parallel</text>
+  <text x="481" y="204" font-size="9" fill="#374151">• Memory waste reduced from 60% to &lt;4%</text>
+  <text x="481" y="217" font-size="9" fill="#374151">• Block table: maps logical→physical</text>
+  <text x="481" y="230" font-size="9" fill="#374151">• Eviction: swap to CPU RAM or recompute</text>
+
+  <!-- B2 sub-box -->
+  <rect x="679" y="96" width="197" height="162" rx="5" fill="white" stroke="#93c5fd" stroke-width="1"/>
+  <text x="777" y="111" text-anchor="middle" font-size="10" font-weight="bold" fill="#1d4ed8">B2: Prefix Caching</text>
+  <text x="687" y="126" font-size="9" fill="#374151">• Share KV blocks for common prefix</text>
+  <text x="687" y="139" font-size="9" fill="#374151">• System prompt: cache once, reuse</text>
+  <text x="687" y="152" font-size="9" fill="#374151">• Hash-based block identity (token IDs)</text>
+  <text x="687" y="165" font-size="9" fill="#374151">• Hit rate: 40-80% for chatbot workloads</text>
+  <text x="687" y="178" font-size="9" fill="#374151">• Eviction: LRU when GPU memory full</text>
+  <text x="687" y="191" font-size="9" fill="#374151">• Cold start: first request pays full cost</text>
+  <text x="687" y="204" font-size="9" fill="#374151">• Cross-request sharing: read-only blocks</text>
+  <text x="687" y="217" font-size="9" fill="#374151">• Warm-up: pre-fill cache at startup</text>
+  <text x="687" y="230" font-size="9" fill="#374151">• vLLM: automatic_prefix_caching=True</text>
+
+  <!-- Arrow A→B -->
+  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Section C: QUANTIZATION IN SERVING (green, bottom-left) -->
+  <rect x="12" y="285" width="425" height="195" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="12" y="305" width="425" height="8" fill="#2f9d74"/>
+  <text x="224" y="304" text-anchor="middle" font-size="12" font-weight="bold" fill="white">C: QUANTIZATION IN SERVING</text>
+
+  <!-- C1 sub-box -->
+  <rect x="22" y="321" width="196" height="147" rx="5" fill="white" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="120" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#065f46">C1: Weight Quantization</text>
+  <text x="30" y="351" font-size="9" fill="#374151">• FP16: baseline (2 bytes/param)</text>
+  <text x="30" y="364" font-size="9" fill="#374151">• INT8: 50% memory, ~1% quality loss</text>
+  <text x="30" y="377" font-size="9" fill="#374151">• INT4/GPTQ: 75% memory, 2-3% loss</text>
+  <text x="30" y="390" font-size="9" fill="#374151">• AWQ: activation-aware, better than GPTQ</text>
+  <text x="30" y="403" font-size="9" fill="#374151">• GGUF: CPU+GPU hybrid (llama.cpp)</text>
+  <text x="30" y="416" font-size="9" fill="#374151">• FP8: next-gen (H100 native), &lt;1% loss</text>
+  <text x="30" y="429" font-size="9" fill="#374151">• Calibration dataset: 128-512 samples</text>
+  <text x="30" y="442" font-size="9" fill="#374151">• Eval before prod: perplexity + task metrics</text>
+
+  <!-- C2 sub-box -->
+  <rect x="228" y="321" width="197" height="147" rx="5" fill="white" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="326" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#065f46">C2: KV Cache Quantization</text>
+  <text x="236" y="351" font-size="9" fill="#374151">• FP16 KV → INT8 KV: 50% KV memory</text>
+  <text x="236" y="364" font-size="9" fill="#374151">• Enables longer context or larger batch</text>
+  <text x="236" y="377" font-size="9" fill="#374151">• FP8 KV: experimental, 75% reduction</text>
+  <text x="236" y="390" font-size="9" fill="#374151">• Quality tradeoff: monitor perplexity</text>
+  <text x="236" y="403" font-size="9" fill="#374151">• vLLM: --kv-cache-dtype fp8_e5m2</text>
+  <text x="236" y="416" font-size="9" fill="#374151">• Per-token scaling factors for accuracy</text>
+  <text x="236" y="429" font-size="9" fill="#374151">• Combined: weight INT4 + KV INT8</text>
+  <text x="236" y="442" font-size="9" fill="#374151">• Test at p99 context length before prod</text>
+
+  <!-- Section D: FRAMEWORK COMPARISON (amber, bottom-right) -->
+  <rect x="463" y="285" width="425" height="195" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97706"/>
+  <rect x="463" y="305" width="425" height="8" fill="#d97706"/>
+  <text x="675" y="304" text-anchor="middle" font-size="12" font-weight="bold" fill="white">D: FRAMEWORK COMPARISON</text>
+
+  <!-- D1 sub-box -->
+  <rect x="473" y="321" width="196" height="147" rx="5" fill="white" stroke="#fcd34d" stroke-width="1"/>
+  <text x="571" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">D1: vLLM vs TGI</text>
+  <text x="481" y="351" font-size="9" fill="#374151">• vLLM: PagedAttention + cont. batching</text>
+  <text x="481" y="364" font-size="9" fill="#374151">• vLLM: best raw throughput (OSS models)</text>
+  <text x="481" y="377" font-size="9" fill="#374151">• vLLM: OpenAI-compatible REST API</text>
+  <text x="481" y="390" font-size="9" fill="#374151">• TGI: production-hardened by HuggingFace</text>
+  <text x="481" y="403" font-size="9" fill="#374151">• TGI: tensor parallelism + flash attention</text>
+  <text x="481" y="416" font-size="9" fill="#374151">• TGI: speculative decoding built-in</text>
+  <text x="481" y="429" font-size="9" fill="#374151">• TGI: easier HuggingFace Hub integration</text>
+  <text x="481" y="442" font-size="9" fill="#374151">• Both: good for most OSS LLM serving</text>
+
+  <!-- D2 sub-box -->
+  <rect x="679" y="321" width="197" height="147" rx="5" fill="white" stroke="#fcd34d" stroke-width="1"/>
+  <text x="777" y="336" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">D2: TensorRT-LLM vs Custom</text>
+  <text x="687" y="351" font-size="9" fill="#374151">• TensorRT-LLM: NVIDIA-optimized kernels</text>
+  <text x="687" y="364" font-size="9" fill="#374151">• Fastest on A100/H100 (20-40% vs vLLM)</text>
+  <text x="687" y="377" font-size="9" fill="#374151">• Compilation overhead: 10-30 min build</text>
+  <text x="687" y="390" font-size="9" fill="#374151">• NVIDIA-only, model support lag</text>
+  <text x="687" y="403" font-size="9" fill="#374151">• Ollama: dev/local, not for high load</text>
+  <text x="687" y="416" font-size="9" fill="#374151">• llama.cpp: CPU inference, GGUF format</text>
+  <text x="687" y="429" font-size="9" fill="#374151">• Custom: use only at &gt;1B requests/day</text>
+  <text x="687" y="442" font-size="9" fill="#374151">• Start with vLLM; switch if benchmarks say</text>
+
+  <!-- Arrow A→C -->
+  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- Arrow B→D -->
+  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="2" marker-end="url(#arr2)"/>
+  <!-- Arrow C→D -->
+  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr3)"/>
+
+  <!-- Footer -->
+  <rect x="0" y="491" width="900" height="29" fill="#1a1822"/>
+  <text x="90" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">PagedAttention: 16-32 token blocks</text>
+  <text x="270" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">Prefix cache hit: 40-80%</text>
+  <text x="450" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">INT8 quant: 50% memory reduction</text>
+  <text x="630" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">Continuous batching: 10-30x vs static</text>
+  <text x="810" y="510" text-anchor="middle" font-size="9" fill="#a5b4fc">TTFT vs TPS: separate SLOs</text>
+</svg>
