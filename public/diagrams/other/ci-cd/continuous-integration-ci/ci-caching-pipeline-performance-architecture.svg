@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Cache Key Hierarchy and Invalidation Boundaries</title>
+  <desc id="desc">Cache hierarchy diagram for CI Caching and Pipeline Performance</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Cache Key Hierarchy and Invalidation Boundaries</text>
+  <rect x="42" y="62" width="816" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="70" y="90" width="170" height="300" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="155" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Cache key inputs</text>
+  <text x="92" y="127" font-size="9" fill="#1a1822">• OS + arch</text>
+  <text x="92" y="145" font-size="9" fill="#1a1822">• runtime version</text>
+  <text x="92" y="163" font-size="9" fill="#1a1822">• lockfile hash</text>
+  <text x="92" y="181" font-size="9" fill="#1a1822">• toolchain image</text>
+  <text x="92" y="199" font-size="9" fill="#1a1822">• source subset</text>
+  <line x1="240" y1="240" x2="335" y2="240" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 335 240 L 327.0 244.4 L 327.0 235.6 Z" fill="#6d5bd0"/>
+  <rect x="335" y="90" width="200" height="300" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="435" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Cache layers</text>
+  <rect x="370" y="132" width="130" height="25" rx="5" fill="#f59e0b"/>
+  <text x="435" y="148.5" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">dependency cache</text>
+  <rect x="370" y="180" width="130" height="25" rx="5" fill="#6d5bd0"/>
+  <text x="435" y="196.5" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">compiler cache</text>
+  <rect x="370" y="228" width="130" height="25" rx="5" fill="#228B22"/>
+  <text x="435" y="244.5" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">test result cache</text>
+  <rect x="370" y="276" width="130" height="25" rx="5" fill="#db2777"/>
+  <text x="435" y="292.5" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">remote build cache</text>
+  <line x1="535" y1="240" x2="625" y2="240" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 625 240 L 617.0 244.4 L 617.0 235.6 Z" fill="#f59e0b"/>
+  <rect x="625" y="90" width="205" height="300" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="727.5" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Invalidation rules</text>
+  <text x="645" y="127" font-size="9" fill="#1a1822">• lockfile change: deps</text>
+  <text x="645" y="145" font-size="9" fill="#1a1822">• compiler change: rebuild</text>
+  <text x="645" y="163" font-size="9" fill="#1a1822">• source change: affected</text>
+  <text x="645" y="181" font-size="9" fill="#1a1822">• secret change: no cache</text>
+  <rect x="85" y="415" width="730" height="24" rx="6" fill="#cc3333"/>
+  <text x="450" y="431" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Bad cache keys create fast but incorrect CI. Correctness beats cache-hit percentage.</text>
+</svg>

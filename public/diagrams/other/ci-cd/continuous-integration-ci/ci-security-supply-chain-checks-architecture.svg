@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Supply Chain Trust Chain in CI</title>
+  <desc id="desc">Supply chain trust chain diagram for CI Security and Supply Chain Checks</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Supply Chain Trust Chain in CI</text>
+  <rect x="42" y="62" width="816" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="70" y="126" width="100" height="34" rx="5" fill="#6d5bd0"/>
+  <text x="120" y="147" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">reviewed commit</text>
+  <line x1="170" y1="143" x2="250" y2="143" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 250 143 L 242.0 147.4 L 242.0 138.6 Z" fill="#6d5bd0"/>
+  <rect x="250" y="126" width="105" height="34" rx="5" fill="#f59e0b"/>
+  <text x="302.5" y="147" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">trusted runner</text>
+  <line x1="355" y1="143" x2="435" y2="143" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 435 143 L 427.0 147.4 L 427.0 138.6 Z" fill="#f59e0b"/>
+  <rect x="435" y="126" width="95" height="34" rx="5" fill="#db2777"/>
+  <text x="482.5" y="147" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">scan + SBOM</text>
+  <line x1="530" y1="143" x2="610" y2="143" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 610 143 L 602.0 147.4 L 602.0 138.6 Z" fill="#db2777"/>
+  <rect x="610" y="126" width="95" height="34" rx="5" fill="#228B22"/>
+  <text x="657.5" y="147" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">sign</text>
+  <line x1="705" y1="143" x2="780" y2="143" stroke="#228B22" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 780 143 L 772.0 147.4 L 772.0 138.6 Z" fill="#228B22"/>
+  <circle cx="806" cy="143" r="26" fill="#ecfdf5" stroke="#228B22" stroke-width="2"/>
+  <text x="806" y="147" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1822">verify</text>
+  <rect x="80" y="225" width="205" height="120" rx="8" fill="#fff1f2" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="182.5" y="247" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">Threats blocked</text>
+  <text x="102" y="260" font-size="9" fill="#1a1822">• dependency confusion</text>
+  <text x="102" y="276" font-size="9" fill="#1a1822">• secret leakage</text>
+  <text x="102" y="292" font-size="9" fill="#1a1822">• tampered artifact</text>
+  <rect x="350" y="225" width="205" height="120" rx="8" fill="#f9f7ff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="452.5" y="247" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Evidence produced</text>
+  <text x="372" y="260" font-size="9" fill="#1a1822">• provenance</text>
+  <text x="372" y="276" font-size="9" fill="#1a1822">• vulnerability report</text>
+  <text x="372" y="292" font-size="9" fill="#1a1822">• signed digest</text>
+  <rect x="620" y="225" width="205" height="120" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="722.5" y="247" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Deploy verifier</text>
+  <text x="642" y="260" font-size="9" fill="#1a1822">• reject unsigned</text>
+  <text x="642" y="276" font-size="9" fill="#1a1822">• check builder ID</text>
+  <text x="642" y="292" font-size="9" fill="#1a1822">• enforce policy</text>
+  <text x="450" y="408" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">CI is a production trust boundary because it touches source, secrets, artifacts, and deploy identity.</text>
+</svg>

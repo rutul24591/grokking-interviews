@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Signal Trust Score Over Repeated Runs</title>
+  <desc id="desc">Signal trust scoring for Flaky Test Detection and Quarantine</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Signal Trust Score Over Repeated Runs</text>
+  <rect x="45" y="62" width="810" height="386" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polyline points="90,350 210,310 330,330 450,210 570,245 690,160 805,130" fill="none" stroke="#6d5bd0" stroke-width="4"/>
+  <line x1="90" y1="120" x2="90" y2="365" stroke="#d7d1e6" stroke-width="1"/>
+  <line x1="90" y1="365" x2="810" y2="365" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="130" font-size="9" fill="#1a1822">high</text>
+  <text x="54" y="360" font-size="9" fill="#1a1822">low</text>
+  <text x="395" y="396" font-size="10" fill="#1a1822">repeated runs over time</text>
+  <text x="118" y="95" font-size="11" font-weight="700" fill="#6d5bd0">Trust score trend</text>
+  <rect x="565" y="98" width="240" height="86" rx="8" fill="#ecfdf5" stroke="#228B22"/>
+  <text x="685" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Stable signal</text>
+  <text x="585" y="150" font-size="9" fill="#1a1822">• blocks merge confidently</text>
+  <text x="585" y="165" font-size="9" fill="#1a1822">• low retry count</text>
+  <rect x="120" y="235" width="220" height="84" rx="8" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="230" y="261" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Unstable signal</text>
+  <text x="140" y="286" font-size="9" fill="#1a1822">• rerun correlation</text>
+  <text x="140" y="301" font-size="9" fill="#1a1822">• environment tags</text>
+  <text x="450" y="434" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">A red build must mean product risk, not CI lottery.</text>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Affected Target Graph in a Monorepo</title>
+  <desc id="desc">Affected target graph for Monorepo CI at Scale</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Affected Target Graph in a Monorepo</text>
+  <rect x="42" y="62" width="816" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <circle cx="165" cy="165" r="38" fill="#fdf2f8" stroke="#db2777" stroke-width="2"/><text x="165" y="169" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">ui-kit</text>
+  <circle cx="330" cy="120" r="34" fill="#f9f7ff" stroke="#6d5bd0" stroke-width="2"/><text x="330" y="124" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">web</text>
+  <circle cx="330" cy="245" r="34" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/><text x="330" y="249" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">admin</text>
+  <circle cx="500" cy="120" r="34" fill="#ecfdf5" stroke="#228B22" stroke-width="2"/><text x="500" y="124" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">checkout</text>
+  <circle cx="500" cy="245" r="34" fill="#ecfdf5" stroke="#228B22" stroke-width="2"/><text x="500" y="249" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">billing</text>
+  <circle cx="670" cy="185" r="38" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/><text x="670" y="189" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">docs</text>
+  <line x1="203" y1="160" x2="296" y2="128" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 296 128 L 289.9 134.8 L 287.0 126.4 Z" fill="#db2777"/>
+  <line x1="203" y1="175" x2="296" y2="236" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 296 236 L 286.9 235.3 L 291.7 227.9 Z" fill="#db2777"/>
+  <line x1="364" y1="120" x2="466" y2="120" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 466 120 L 458.0 124.4 L 458.0 115.6 Z" fill="#6d5bd0"/>
+  <line x1="364" y1="245" x2="466" y2="245" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 466 245 L 458.0 249.4 L 458.0 240.6 Z" fill="#f59e0b"/>
+  <line x1="534" y1="138" x2="635" y2="174" stroke="#228B22" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 635 174 L 626.0 175.5 L 628.9 167.2 Z" fill="#228B22"/>
+  <rect x="95" y="318" width="250" height="82" rx="8" fill="#fdf2f8" stroke="#db2777"/>
+  <text x="220" y="345" text-anchor="middle" font-size="11" font-weight="700" fill="#db2777">Change in shared ui-kit</text>
+  <text x="220" y="368" text-anchor="middle" font-size="9" fill="#1a1822">affected: web, admin, checkout</text>
+  <rect x="455" y="318" width="300" height="82" rx="8" fill="#ecfdf5" stroke="#228B22"/>
+  <text x="605" y="345" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Unaffected packages skipped</text>
+  <text x="605" y="368" text-anchor="middle" font-size="9" fill="#1a1822">correct graph saves CI minutes safely</text>
+</svg>

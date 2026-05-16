@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Risk Tier Approval Matrix</title>
+  <desc id="desc">Risk tier approval matrix for Release Governance, Approvals, and Auditability</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Risk Tier Approval Matrix</text>
+  <rect x="45" y="62" width="810" height="386" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="145" y="96" font-size="11" font-weight="700" fill="#6d5bd0">Risk tier</text>
+  <text x="315" y="96" font-size="11" font-weight="700" fill="#6d5bd0">Required evidence</text>
+  <text x="575" y="96" font-size="11" font-weight="700" fill="#6d5bd0">Approval</text>
+  <rect x="85" y="122" width="730" height="48" rx="7" fill="#ffffff" stroke="#cc3333"/>
+  <text x="115" y="142" font-size="10" font-weight="700" fill="#cc3333">Tier 0</text>
+  <text x="115" y="158" font-size="8" fill="#1a1822">auth, payments, platform</text>
+  <text x="315" y="150" font-size="9" fill="#1a1822">tests + SLO gate + security + rollback plan</text>
+  <text x="575" y="150" font-size="9" fill="#1a1822">owner + incident commander</text>
+  <rect x="85" y="189" width="730" height="48" rx="7" fill="#f9f7ff" stroke="#f59e0b"/>
+  <text x="115" y="209" font-size="10" font-weight="700" fill="#f59e0b">Tier 1</text>
+  <text x="115" y="225" font-size="8" fill="#1a1822">customer-facing services</text>
+  <text x="315" y="217" font-size="9" fill="#1a1822">tests + canary + audit record</text>
+  <text x="575" y="217" font-size="9" fill="#1a1822">service owner</text>
+  <rect x="85" y="256" width="730" height="48" rx="7" fill="#ffffff" stroke="#228B22"/>
+  <text x="115" y="276" font-size="10" font-weight="700" fill="#228B22">Tier 2</text>
+  <text x="115" y="292" font-size="8" fill="#1a1822">internal tools</text>
+  <text x="315" y="284" font-size="9" fill="#1a1822">tests + deploy log</text>
+  <text x="575" y="284" font-size="9" fill="#1a1822">automated policy</text>
+  <rect x="85" y="323" width="730" height="48" rx="7" fill="#f9f7ff" stroke="#db2777"/>
+  <text x="115" y="343" font-size="10" font-weight="700" fill="#db2777">Emergency</text>
+  <text x="115" y="359" font-size="8" fill="#1a1822">active incident</text>
+  <text x="315" y="351" font-size="9" fill="#1a1822">minimum viable evidence</text>
+  <text x="575" y="351" font-size="9" fill="#1a1822">break-glass + review</text>
+  <text x="450" y="425" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Governance scales when approvals are risk-tiered and evidence is captured automatically.</text>
+</svg>

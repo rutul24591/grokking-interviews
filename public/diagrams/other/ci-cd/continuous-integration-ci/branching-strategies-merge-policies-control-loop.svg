@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Merge Policy Router by Risk and Urgency</title>
+  <desc id="desc">Risk-based merge policy routing for Branching Strategies and Merge Policies</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Merge Policy Router by Risk and Urgency</text>
+  <rect x="45" y="62" width="810" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Merge Policy Decision Router</text>
+  <rect x="70" y="118" width="170" height="250" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="155" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Low risk</text>
+  <text x="90" y="155" font-size="9" fill="#1a1822">• docs / copy</text>
+  <text x="90" y="172" font-size="9" fill="#1a1822">• small UI changes</text>
+  <text x="90" y="189" font-size="9" fill="#1a1822">• owned package</text>
+  <rect x="95" y="260" width="120" height="28" rx="5" fill="#228B22"/>
+  <text x="155" y="278" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">auto-merge</text>
+  <rect x="95" y="303" width="120" height="28" rx="5" fill="#228B22"/>
+  <text x="155" y="321" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">fast checks</text>
+  <rect x="280" y="118" width="170" height="250" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="365" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Medium risk</text>
+  <text x="300" y="155" font-size="9" fill="#1a1822">• shared lib</text>
+  <text x="300" y="172" font-size="9" fill="#1a1822">• API contract</text>
+  <text x="300" y="189" font-size="9" fill="#1a1822">• dependency bump</text>
+  <rect x="305" y="260" width="120" height="28" rx="5" fill="#f59e0b"/>
+  <text x="365" y="278" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">merge queue</text>
+  <rect x="305" y="303" width="120" height="28" rx="5" fill="#f59e0b"/>
+  <text x="365" y="321" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">contract tests</text>
+  <rect x="490" y="118" width="170" height="250" rx="8" fill="#fff1f2" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="575" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">High risk</text>
+  <text x="510" y="155" font-size="9" fill="#1a1822">• auth / payment</text>
+  <text x="510" y="172" font-size="9" fill="#1a1822">• schema change</text>
+  <text x="510" y="189" font-size="9" fill="#1a1822">• infra policy</text>
+  <rect x="515" y="260" width="120" height="28" rx="5" fill="#cc3333"/>
+  <text x="575" y="278" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">review + gate</text>
+  <rect x="515" y="303" width="120" height="28" rx="5" fill="#cc3333"/>
+  <text x="575" y="321" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">deep validation</text>
+  <rect x="700" y="118" width="130" height="250" rx="8" fill="#fdf2f8" stroke="#db2777" stroke-width="1.5"/>
+  <text x="765" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#db2777">Emergency</text>
+  <text x="715" y="155" font-size="9" fill="#1a1822">• prod incident</text>
+  <text x="715" y="172" font-size="9" fill="#1a1822">• security patch</text>
+  <text x="715" y="189" font-size="9" fill="#1a1822">• customer outage</text>
+  <rect x="715" y="260" width="100" height="28" rx="5" fill="#db2777"/>
+  <text x="765" y="278" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">break glass</text>
+  <rect x="715" y="303" width="100" height="28" rx="5" fill="#db2777"/>
+  <text x="765" y="321" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">audit later</text>
+  <rect x="70" y="398" width="760" height="32" rx="7" fill="#6d5bd0"/>
+  <text x="450" y="419" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Good merge policy is risk-proportional, not one-size-fits-all.</text>
+</svg>

@@ -26,6 +26,7 @@ const PATH_MAPPINGS: Record<string, string> = {
   "other/artificial-intelligence": "other/artificial-intelligence",
   "other/data-structures-algorithms": "other/data-structures-algorithms",
   "other/leetcode": "other/leetcode",
+  "other/ci-cd": "other/ci-cd",
 };
 
 // Map sidebar slugs back to filesystem paths (for subcategory manifest)
@@ -38,6 +39,8 @@ const SIDEBAR_TO_FS_MAP: Record<string, string> = {
   "system-design-problems/low-level-design": "system-design-problems/low-level-design",
   "other/artificial-intelligence/core-concepts": "other/artificial-intelligence/core-concepts",
   "other/artificial-intelligence/additional-topics": "other/artificial-intelligence/additional-topics",
+  "other/ci-cd/continuous-integration-ci": "other/ci-cd/continuous-integration-ci",
+  "other/ci-cd/continuous-deployment-cd": "other/ci-cd/continuous-deployment-cd",
 };
 
 function main() {

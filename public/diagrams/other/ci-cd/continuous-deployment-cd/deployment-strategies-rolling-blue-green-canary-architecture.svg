@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Deployment Strategy Comparison</title>
+  <desc id="desc">Deployment strategy comparison for Deployment Strategies: Rolling, Blue-Green, Canary</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Deployment Strategy Comparison</text>
+  <rect x="35" y="62" width="830" height="388" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="55" y="92" width="250" height="285" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="180" y="114" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Rolling</text>
+  <rect x="85" y="135" width="55" height="28" rx="5" fill="#d7d1e6"/>
+  <text x="112.5" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">v1</text><rect x="150" y="135" width="55" height="28" rx="5" fill="#d7d1e6"/>
+  <text x="177.5" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">v1</text><rect x="215" y="135" width="55" height="28" rx="5" fill="#228B22"/>
+  <text x="242.5" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">v2</text>
+  <rect x="85" y="185" width="55" height="28" rx="5" fill="#d7d1e6"/>
+  <text x="112.5" y="203" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">v1</text><rect x="150" y="185" width="55" height="28" rx="5" fill="#228B22"/>
+  <text x="177.5" y="203" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">v2</text><rect x="215" y="185" width="55" height="28" rx="5" fill="#228B22"/>
+  <text x="242.5" y="203" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">v2</text>
+  <text x="85" y="255" font-size="9" fill="#1a1822">• low extra capacity</text>
+  <text x="85" y="272" font-size="9" fill="#1a1822">• gradual replacement</text>
+  <text x="85" y="289" font-size="9" fill="#1a1822">• rollback may be mixed</text>
+  <rect x="325" y="92" width="250" height="285" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="450" y="114" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">Blue-Green</text>
+  <rect x="370" y="140" width="75" height="75" rx="8" fill="#dbeafe" stroke="#2563eb"/><text x="407" y="181" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">blue</text>
+  <rect x="455" y="140" width="75" height="75" rx="8" fill="#ecfdf5" stroke="#228B22"/><text x="492" y="181" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">green</text>
+  <line x1="410" y1="245" x2="492" y2="245" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 492 245 L 484.0 249.4 L 484.0 240.6 Z" fill="#2563eb"/>
+  <text x="450" y="266" text-anchor="middle" font-size="9" fill="#1a1822">traffic switch</text>
+  <text x="355" y="300" font-size="9" fill="#1a1822">• fast rollback</text>
+  <text x="355" y="317" font-size="9" fill="#1a1822">• needs spare capacity</text>
+  <text x="355" y="334" font-size="9" fill="#1a1822">• state compatibility</text>
+  <rect x="595" y="92" width="250" height="285" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="720" y="114" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Canary</text>
+  <rect x="630" y="150" width="165" height="28" rx="5" fill="#228B22"/><text x="712" y="169" text-anchor="middle" font-size="9" fill="#ffffff">95% v1</text>
+  <rect x="630" y="190" width="45" height="28" rx="5" fill="#f59e0b"/><rect x="675" y="190" width="120" height="28" rx="5" fill="#228B22"/>
+  <text x="652" y="209" text-anchor="middle" font-size="9" fill="#ffffff">5%</text><text x="735" y="209" text-anchor="middle" font-size="9" fill="#ffffff">v1</text>
+  <text x="625" y="255" font-size="9" fill="#1a1822">• small blast radius</text>
+  <text x="625" y="272" font-size="9" fill="#1a1822">• metric gates</text>
+  <text x="625" y="289" font-size="9" fill="#1a1822">• slower rollout</text>
+  <text x="450" y="426" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Choose strategy by blast radius, capacity headroom, state compatibility, and rollback speed.</text>
+</svg>

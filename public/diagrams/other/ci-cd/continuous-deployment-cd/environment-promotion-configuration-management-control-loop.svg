@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Configuration Drift Detection and Promotion Records</title>
+  <desc id="desc">Configuration drift diagram for Environment Promotion and Configuration Management</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Configuration Drift Detection and Promotion Records</text>
+  <rect x="45" y="62" width="810" height="386" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="70" y="95" width="210" height="120" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="175" y="117" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Declared config</text>
+  <text x="92" y="130" font-size="9" fill="#1a1822">• versioned defaults</text>
+  <text x="92" y="146" font-size="9" fill="#1a1822">• env overrides</text>
+  <text x="92" y="162" font-size="9" fill="#1a1822">• secret references</text>
+  <line x1="280" y1="155" x2="380" y2="155" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 380 155 L 372.0 159.4 L 372.0 150.6 Z" fill="#6d5bd0"/>
+  <rect x="380" y="95" width="170" height="120" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="465" y="117" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Runtime state</text>
+  <text x="402" y="130" font-size="9" fill="#1a1822">• resolved values</text>
+  <text x="402" y="146" font-size="9" fill="#1a1822">• secret versions</text>
+  <text x="402" y="162" font-size="9" fill="#1a1822">• feature exposure</text>
+  <line x1="550" y1="155" x2="650" y2="155" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 650 155 L 642.0 159.4 L 642.0 150.6 Z" fill="#f59e0b"/>
+  <rect x="650" y="95" width="170" height="120" rx="8" fill="#fff1f2" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="735" y="117" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">Drift report</text>
+  <text x="672" y="130" font-size="9" fill="#1a1822">• manual edits</text>
+  <text x="672" y="146" font-size="9" fill="#1a1822">• missing secret</text>
+  <text x="672" y="162" font-size="9" fill="#1a1822">• wrong region</text>
+  <rect x="95" y="282" width="710" height="86" rx="8" fill="#ecfdf5" stroke="#228B22"/>
+  <text x="450" y="310" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Promotion record</text>
+  <text x="450" y="334" text-anchor="middle" font-size="9" fill="#1a1822">artifact digest + config version + secret version + approver + timestamp + environment</text>
+  <text x="450" y="352" text-anchor="middle" font-size="9" fill="#1a1822">This is what lets teams debug &quot;works in staging, fails in prod&quot; quickly.</text>
+</svg>

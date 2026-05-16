@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Promotion Timeline with Evidence Gates</title>
+  <desc id="desc">Promotion timeline diagram for CD Fundamentals and Release Pipeline Architecture</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Promotion Timeline with Evidence Gates</text>
+  <rect x="45" y="62" width="810" height="386" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="70" y="116" width="110" height="32" rx="5" fill="#6d5bd0"/>
+  <text x="125" y="136" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">artifact digest</text>
+  <line x1="180" y1="132" x2="260" y2="132" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 260 132 L 252.0 136.4 L 252.0 127.6 Z" fill="#6d5bd0"/>
+  <rect x="260" y="116" width="110" height="32" rx="5" fill="#f59e0b"/>
+  <text x="315" y="136" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">staging</text>
+  <line x1="370" y1="132" x2="450" y2="132" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 450 132 L 442.0 136.4 L 442.0 127.6 Z" fill="#f59e0b"/>
+  <rect x="450" y="116" width="110" height="32" rx="5" fill="#db2777"/>
+  <text x="505" y="136" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">canary</text>
+  <line x1="560" y1="132" x2="640" y2="132" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 640 132 L 632.0 136.4 L 632.0 127.6 Z" fill="#db2777"/>
+  <rect x="640" y="116" width="110" height="32" rx="5" fill="#228B22"/>
+  <text x="695" y="136" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">production</text>
+  <line x1="125" y1="185" x2="695" y2="185" stroke="#d7d1e6" stroke-width="2"/>
+  <circle cx="125" cy="185" r="9" fill="#6d5bd0"/><circle cx="315" cy="185" r="9" fill="#f59e0b"/><circle cx="505" cy="185" r="9" fill="#db2777"/><circle cx="695" cy="185" r="9" fill="#228B22"/>
+  <rect x="90" y="245" width="195" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="187.5" y="267" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Before promotion</text>
+  <text x="112" y="280" font-size="9" fill="#1a1822">• signature verified</text>
+  <text x="112" y="295" font-size="9" fill="#1a1822">• policy passed</text>
+  <text x="112" y="310" font-size="9" fill="#1a1822">• config resolved</text>
+  <rect x="355" y="245" width="195" height="100" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="452.5" y="267" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">During rollout</text>
+  <text x="377" y="280" font-size="9" fill="#1a1822">• health checks</text>
+  <text x="377" y="295" font-size="9" fill="#1a1822">• SLO burn rate</text>
+  <text x="377" y="310" font-size="9" fill="#1a1822">• business metrics</text>
+  <rect x="620" y="245" width="195" height="100" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="717.5" y="267" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">After rollout</text>
+  <text x="642" y="280" font-size="9" fill="#1a1822">• audit record</text>
+  <text x="642" y="295" font-size="9" fill="#1a1822">• rollback marker</text>
+  <text x="642" y="310" font-size="9" fill="#1a1822">• learning event</text>
+  <text x="450" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">Promotion is an evidence decision, not just a deploy command.</text>
+</svg>

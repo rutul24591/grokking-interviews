@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Test Pyramid Mapped to CI Stages</title>
+  <desc id="desc">Test pyramid mapped to CI stages for Test Automation Strategy in CI</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Test Pyramid Mapped to CI Stages</text>
+  <rect x="42" y="62" width="816" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="450,90 130,390 770,390" fill="#f9f7ff" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="250" y1="278" x2="650" y2="278" stroke="#d7d1e6" stroke-width="2"/>
+  <line x1="330" y1="205" x2="570" y2="205" stroke="#d7d1e6" stroke-width="2"/>
+  <line x1="390" y1="150" x2="510" y2="150" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">E2E smoke</text>
+  <text x="450" y="185" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Integration + contract</text>
+  <text x="450" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Component + service tests</text>
+  <text x="450" y="344" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Unit + static checks</text>
+  <rect x="50" y="102" width="175" height="84" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="137.5" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Pre-merge</text>
+  <text x="68" y="135" font-size="9" fill="#1a1822">• fast</text>
+  <text x="68" y="149" font-size="9" fill="#1a1822">• deterministic</text>
+  <text x="68" y="163" font-size="9" fill="#1a1822">• high signal</text>
+  <rect x="675" y="102" width="175" height="84" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="762.5" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Post-merge</text>
+  <text x="693" y="135" font-size="9" fill="#1a1822">• expensive</text>
+  <text x="693" y="149" font-size="9" fill="#1a1822">• environmental</text>
+  <text x="693" y="163" font-size="9" fill="#1a1822">• release confidence</text>
+  <rect x="75" y="412" width="750" height="24" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="428" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Put the fastest, most deterministic checks closest to the developer.</text>
+</svg>

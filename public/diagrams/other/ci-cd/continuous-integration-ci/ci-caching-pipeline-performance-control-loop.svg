@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Pipeline Latency Budget: Before and After Cache Design</title>
+  <desc id="desc">Pipeline latency budget diagram for CI Caching and Pipeline Performance</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Pipeline Latency Budget: Before and After Cache Design</text>
+  <rect x="45" y="62" width="810" height="386" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="120" y="93" font-size="11" font-weight="700" fill="#cc3333">Before</text>
+  <rect x="105" y="115" width="170" height="34" fill="#fff1f2" stroke="#cc3333"/><text x="190" y="137" text-anchor="middle" font-size="9" fill="#1a1822">install 8m</text>
+  <rect x="275" y="115" width="150" height="34" fill="#fff7ed" stroke="#f59e0b"/><text x="350" y="137" text-anchor="middle" font-size="9" fill="#1a1822">build 7m</text>
+  <rect x="425" y="115" width="230" height="34" fill="#fdf2f8" stroke="#db2777"/><text x="540" y="137" text-anchor="middle" font-size="9" fill="#1a1822">tests 11m</text>
+  <rect x="655" y="115" width="95" height="34" fill="#f9f7ff" stroke="#6d5bd0"/><text x="702" y="137" text-anchor="middle" font-size="9" fill="#1a1822">scan 4m</text>
+  <text x="120" y="206" font-size="11" font-weight="700" fill="#228B22">After</text>
+  <rect x="105" y="228" width="75" height="34" fill="#ecfdf5" stroke="#228B22"/><text x="142" y="250" text-anchor="middle" font-size="9" fill="#1a1822">2m</text>
+  <rect x="180" y="228" width="85" height="34" fill="#ecfdf5" stroke="#228B22"/><text x="222" y="250" text-anchor="middle" font-size="9" fill="#1a1822">3m</text>
+  <rect x="265" y="228" width="105" height="34" fill="#ecfdf5" stroke="#228B22"/><text x="317" y="250" text-anchor="middle" font-size="9" fill="#1a1822">5m</text>
+  <rect x="370" y="228" width="95" height="34" fill="#f9f7ff" stroke="#6d5bd0"/><text x="417" y="250" text-anchor="middle" font-size="9" fill="#1a1822">4m</text>
+  <text x="560" y="248" font-size="10" font-weight="700" fill="#228B22">30m -&gt; 14m without deleting gates</text>
+  <rect x="105" y="305" width="230" height="88" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="220" y="327" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Performance guardrail</text>
+  <text x="127" y="339" font-size="9" fill="#1a1822">• cache hit rate by stage</text>
+  <text x="127" y="354" font-size="9" fill="#1a1822">• fallback on miss</text>
+  <text x="127" y="369" font-size="9" fill="#1a1822">• detect stale output</text>
+  <rect x="420" y="305" width="250" height="88" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="545" y="327" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Correctness guardrail</text>
+  <text x="442" y="339" font-size="9" fill="#1a1822">• include toolchain in key</text>
+  <text x="442" y="354" font-size="9" fill="#1a1822">• scope by branch trust</text>
+  <text x="442" y="369" font-size="9" fill="#1a1822">• never cache secrets</text>
+</svg>

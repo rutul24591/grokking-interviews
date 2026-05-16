@@ -385,6 +385,88 @@
           ]
         },
         {
+          "name": "CI/CD",
+          "slug": "ci-cd",
+          "subcategories": [
+            {
+              "name": "Continuous Integration (CI)",
+              "slug": "continuous-integration-ci",
+              "topics": [
+                {
+                  "name": "CI Fundamentals and Pipeline Architecture",
+                  "slug": "ci-fundamentals-pipeline-architecture"
+                },
+                {
+                  "name": "Branching Strategies and Merge Policies",
+                  "slug": "branching-strategies-merge-policies"
+                },
+                {
+                  "name": "Build Systems and Artifact Management",
+                  "slug": "build-systems-artifact-management"
+                },
+                {
+                  "name": "Test Automation Strategy in CI",
+                  "slug": "test-automation-strategy-ci"
+                },
+                {
+                  "name": "Flaky Test Detection and Quarantine",
+                  "slug": "flaky-test-detection-quarantine"
+                },
+                {
+                  "name": "CI Caching and Pipeline Performance",
+                  "slug": "ci-caching-pipeline-performance"
+                },
+                {
+                  "name": "Monorepo CI at Scale",
+                  "slug": "monorepo-ci-at-scale"
+                },
+                {
+                  "name": "CI Security and Supply Chain Checks",
+                  "slug": "ci-security-supply-chain-checks"
+                }
+              ]
+            },
+            {
+              "name": "Continuous Deployment (CD)",
+              "slug": "continuous-deployment-cd",
+              "topics": [
+                {
+                  "name": "CD Fundamentals and Release Pipeline Architecture",
+                  "slug": "cd-fundamentals-release-pipeline-architecture"
+                },
+                {
+                  "name": "Deployment Strategies: Rolling, Blue-Green, Canary",
+                  "slug": "deployment-strategies-rolling-blue-green-canary"
+                },
+                {
+                  "name": "Progressive Delivery and Feature Flags",
+                  "slug": "progressive-delivery-feature-flags"
+                },
+                {
+                  "name": "Environment Promotion and Configuration Management",
+                  "slug": "environment-promotion-configuration-management"
+                },
+                {
+                  "name": "Infrastructure as Code in Deployment Pipelines",
+                  "slug": "infrastructure-as-code-deployment-pipelines"
+                },
+                {
+                  "name": "Deployment Observability, SLO Gates, and Automated Rollback",
+                  "slug": "deployment-observability-slo-gates-rollback"
+                },
+                {
+                  "name": "Database Migrations in Continuous Deployment",
+                  "slug": "database-migrations-continuous-deployment"
+                },
+                {
+                  "name": "Release Governance, Approvals, and Auditability",
+                  "slug": "release-governance-approvals-auditability"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "Data Structures & Algorithms",
           "slug": "data-structures-algorithms",
           "subcategories": [

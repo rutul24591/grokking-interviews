@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Approval Evidence Flow</title>
+  <desc id="desc">Release governance evidence flow for Release Governance, Approvals, and Auditability</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Approval Evidence Flow</text>
+  <rect x="42" y="62" width="816" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="70" y="125" width="110" height="34" rx="5" fill="#6d5bd0"/>
+  <text x="125" y="146" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">change intent</text>
+  <line x1="180" y1="142" x2="265" y2="142" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 265 142 L 257.0 146.4 L 257.0 137.6 Z" fill="#6d5bd0"/>
+  <rect x="265" y="125" width="120" height="34" rx="5" fill="#f59e0b"/>
+  <text x="325" y="146" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">policy checks</text>
+  <line x1="385" y1="142" x2="470" y2="142" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 470 142 L 462.0 146.4 L 462.0 137.6 Z" fill="#f59e0b"/>
+  <rect x="470" y="125" width="125" height="34" rx="5" fill="#db2777"/>
+  <text x="532.5" y="146" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">human judgment</text>
+  <line x1="595" y1="142" x2="680" y2="142" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 680 142 L 672.0 146.4 L 672.0 137.6 Z" fill="#db2777"/>
+  <rect x="680" y="125" width="120" height="34" rx="5" fill="#228B22"/>
+  <text x="740" y="146" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">release record</text>
+  <rect x="90" y="230" width="210" height="112" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="195" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Automated evidence</text>
+  <text x="112" y="265" font-size="9" fill="#1a1822">• tests passed</text>
+  <text x="112" y="281" font-size="9" fill="#1a1822">• artifact signed</text>
+  <text x="112" y="297" font-size="9" fill="#1a1822">• SLO gate green</text>
+  <rect x="345" y="230" width="210" height="112" rx="8" fill="#fdf2f8" stroke="#db2777" stroke-width="1.5"/>
+  <text x="450" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#db2777">Approval meaning</text>
+  <text x="367" y="265" font-size="9" fill="#1a1822">• business timing</text>
+  <text x="367" y="281" font-size="9" fill="#1a1822">• risk acceptance</text>
+  <text x="367" y="297" font-size="9" fill="#1a1822">• exception reason</text>
+  <rect x="600" y="230" width="210" height="112" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="705" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Audit trail</text>
+  <text x="622" y="265" font-size="9" fill="#1a1822">• who, what, why</text>
+  <text x="622" y="281" font-size="9" fill="#1a1822">• policy version</text>
+  <text x="622" y="297" font-size="9" fill="#1a1822">• timestamp</text>
+  <text x="450" y="408" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">Approval without evidence is ceremony; evidence without accountability is incomplete governance.</text>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">CD Control Plane: Artifact to Production</title>
+  <desc id="desc">Detailed architecture diagram for CD Fundamentals and Release Pipeline Architecture</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">CD Control Plane: Artifact to Production</text>
+  <rect x="35" y="58" width="830" height="382" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="79" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">CD Fundamentals and Release Pipeline Architecture</text>
+  <rect x="62" y="118" width="118" height="75" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="121" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Registry</text>
+  <text x="121" y="166" text-anchor="middle" font-size="9" fill="#5f5a6f">stage</text>
+  <line x1="180" y1="155" x2="214" y2="155" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 214 155 L 206.0 159.4 L 206.0 150.6 Z" fill="#6d5bd0"/>
+  <rect x="220" y="118" width="118" height="75" rx="8" fill="#f9f7ff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="279" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Promote</text>
+  <text x="279" y="166" text-anchor="middle" font-size="9" fill="#5f5a6f">stage</text>
+  <line x1="338" y1="155" x2="372" y2="155" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 372 155 L 364.0 159.4 L 364.0 150.6 Z" fill="#6d5bd0"/>
+  <rect x="378" y="118" width="118" height="75" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="437" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Deploy</text>
+  <text x="437" y="166" text-anchor="middle" font-size="9" fill="#5f5a6f">risk gate</text>
+  <line x1="496" y1="155" x2="530" y2="155" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 530 155 L 522.0 159.4 L 522.0 150.6 Z" fill="#6d5bd0"/>
+  <rect x="536" y="118" width="118" height="75" rx="8" fill="#f9f7ff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="595" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Observe</text>
+  <text x="595" y="166" text-anchor="middle" font-size="9" fill="#5f5a6f">stage</text>
+  <line x1="654" y1="155" x2="688" y2="155" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 688 155 L 680.0 159.4 L 680.0 150.6 Z" fill="#6d5bd0"/>
+  <rect x="694" y="118" width="118" height="75" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="753" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Rollback</text>
+  <text x="753" y="166" text-anchor="middle" font-size="9" fill="#5f5a6f">evidence</text>
+  <rect x="70" y="238" width="220" height="135" rx="8" fill="#fdf2f8" stroke="#db2777" stroke-width="1.5"/>
+  <text x="180" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#db2777">What this diagram teaches</text>
+  <text x="88" y="288" font-size="9" fill="#1a1822">• risk increases as blast radius grows</text>
+  <text x="88" y="306" font-size="9" fill="#1a1822">• evidence must be durable</text>
+  <text x="88" y="324" font-size="9" fill="#1a1822">• ownership should be explicit</text>
+  <rect x="340" y="238" width="220" height="135" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="450" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#228B22">Staff-level control</text>
+  <text x="358" y="288" font-size="9" fill="#1a1822">• classify change risk</text>
+  <text x="358" y="306" font-size="9" fill="#1a1822">• choose proportional gates</text>
+  <text x="358" y="324" font-size="9" fill="#1a1822">• keep rollback path visible</text>
+  <rect x="610" y="238" width="220" height="135" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="720" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">Interview signal</text>
+  <text x="628" y="288" font-size="9" fill="#1a1822">• explain failure behavior</text>
+  <text x="628" y="306" font-size="9" fill="#1a1822">• avoid tool-only answers</text>
+  <text x="628" y="324" font-size="9" fill="#1a1822">• connect to DORA metrics</text>
+  <rect x="70" y="400" width="760" height="26" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="417" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Core principle: release automation promotes a verified artifact, never an unverified rebuild.</text>
+</svg>

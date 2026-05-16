@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Feature Flag Targeting and Kill Switch Architecture</title>
+  <desc id="desc">Feature flag architecture for Progressive Delivery and Feature Flags</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Feature Flag Targeting and Kill Switch Architecture</text>
+  <rect x="42" y="62" width="816" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="60" y="100" width="170" height="115" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="145" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Flag service</text>
+  <text x="82" y="135" font-size="9" fill="#1a1822">• rules</text>
+  <text x="82" y="151" font-size="9" fill="#1a1822">• segments</text>
+  <text x="82" y="167" font-size="9" fill="#1a1822">• kill switch</text>
+  <line x1="230" y1="158" x2="330" y2="158" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 330 158 L 322.0 162.4 L 322.0 153.6 Z" fill="#6d5bd0"/>
+  <rect x="330" y="90" width="200" height="135" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="430" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Evaluation layer</text>
+  <text x="352" y="130" font-size="9" fill="#1a1822">• tenant</text>
+  <text x="352" y="147" font-size="9" fill="#1a1822">• cohort</text>
+  <text x="352" y="164" font-size="9" fill="#1a1822">• entitlement</text>
+  <text x="352" y="181" font-size="9" fill="#1a1822">• geo</text>
+  <line x1="530" y1="158" x2="630" y2="158" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 630 158 L 622.0 162.4 L 622.0 153.6 Z" fill="#f59e0b"/>
+  <rect x="630" y="100" width="190" height="115" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="725" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">User experience</text>
+  <text x="652" y="135" font-size="9" fill="#1a1822">• old path</text>
+  <text x="652" y="151" font-size="9" fill="#1a1822">• new path</text>
+  <text x="652" y="167" font-size="9" fill="#1a1822">• fallback</text>
+  <rect x="105" y="285" width="230" height="90" rx="8" fill="#fdf2f8" stroke="#db2777" stroke-width="1.5"/>
+  <text x="220" y="307" text-anchor="middle" font-size="11" font-weight="700" fill="#db2777">Decouple deploy</text>
+  <text x="127" y="320" font-size="9" fill="#1a1822">• code can ship dark</text>
+  <text x="127" y="335" font-size="9" fill="#1a1822">• risk moves to exposure</text>
+  <text x="127" y="350" font-size="9" fill="#1a1822">• rollback is config</text>
+  <rect x="465" y="285" width="300" height="90" rx="8" fill="#fff1f2" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="615" y="307" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">Operational debt</text>
+  <text x="487" y="320" font-size="9" fill="#1a1822">• stale flags</text>
+  <text x="487" y="335" font-size="9" fill="#1a1822">• inconsistent targeting</text>
+  <text x="487" y="350" font-size="9" fill="#1a1822">• hidden product states</text>
+</svg>

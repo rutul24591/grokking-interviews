@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Hermetic Build and Provenance Chain</title>
+  <desc id="desc">Hermetic build and artifact provenance diagram for Build Systems and Artifact Management</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Hermetic Build and Provenance Chain</text>
+  <rect x="40" y="62" width="820" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="60" y="98" width="155" height="105" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="137.5" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Inputs</text>
+  <text x="78" y="132" font-size="9" fill="#1a1822">• source revision</text>
+  <text x="78" y="147" font-size="9" fill="#1a1822">• lockfiles</text>
+  <text x="78" y="162" font-size="9" fill="#1a1822">• build image</text>
+  <line x1="215" y1="150" x2="295" y2="150" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 295 150 L 287.0 154.4 L 287.0 145.6 Z" fill="#6d5bd0"/>
+  <rect x="295" y="88" width="190" height="125" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="390" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Hermetic Builder</text>
+  <text x="318" y="125" font-size="9" fill="#1a1822">• network restricted</text>
+  <text x="318" y="140" font-size="9" fill="#1a1822">• pinned toolchain</text>
+  <text x="318" y="155" font-size="9" fill="#1a1822">• clean workspace</text>
+  <line x1="485" y1="150" x2="575" y2="150" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 575 150 L 567.0 154.4 L 567.0 145.6 Z" fill="#f59e0b"/>
+  <rect x="575" y="98" width="255" height="105" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="702.5" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Outputs</text>
+  <text x="598" y="132" font-size="9" fill="#1a1822">• container digest</text>
+  <text x="598" y="147" font-size="9" fill="#1a1822">• package version</text>
+  <text x="598" y="162" font-size="9" fill="#1a1822">• compiled assets</text>
+  <line x1="390" y1="213" x2="390" y2="285" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="4,4"/>
+  <line x1="390" y1="285" x2="390" y2="316" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 390 316 L 385.6 308.0 L 394.4 308.0 Z" fill="#6d5bd0"/>
+  <rect x="255" y="316" width="270" height="86" rx="8" fill="#fdf2f8" stroke="#db2777" stroke-width="1.5"/>
+  <text x="390" y="338" text-anchor="middle" font-size="11" font-weight="700" fill="#db2777">Provenance Envelope</text>
+  <text x="280" y="350" font-size="9" fill="#1a1822">• builder identity</text>
+  <text x="280" y="364" font-size="9" fill="#1a1822">• dependency graph</text>
+  <text x="280" y="378" font-size="9" fill="#1a1822">• checks passed</text>
+  <text x="280" y="392" font-size="9" fill="#1a1822">• signature</text>
+  <line x1="525" y1="358" x2="610" y2="358" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 610 358 L 602.0 362.4 L 602.0 353.6 Z" fill="#db2777"/>
+  <rect x="610" y="316" width="220" height="86" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="720" y="338" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Artifact Registry</text>
+  <text x="720" y="354" text-anchor="middle" font-size="10" fill="#1a1822">immutable digest</text>
+  <text x="720" y="372" text-anchor="middle" font-size="10" fill="#1a1822">promoted, never rebuilt</text>
+</svg>

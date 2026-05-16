@@ -717,5 +717,89 @@ export const otherArticles: Record<string, Array<{slug: string; title: string; d
       "title": "Union-Find Pattern",
       "description": "Disjoint-set union for online connectivity, MST construction, cycle detection, and equivalence-class problems — near-O(1) per operation with path compression and union by rank."
     }
+  ],
+  "other/ci-cd/continuous-deployment-cd": [
+    {
+      "slug": "cd-fundamentals-release-pipeline-architecture",
+      "title": "CD Fundamentals and Release Pipeline Architecture",
+      "description": "Staff-level guide to CD Fundamentals and Release Pipeline Architecture with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "database-migrations-continuous-deployment",
+      "title": "Database Migrations in Continuous Deployment",
+      "description": "Staff-level guide to Database Migrations in Continuous Deployment with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "deployment-observability-slo-gates-rollback",
+      "title": "Deployment Observability, SLO Gates, and Automated Rollback",
+      "description": "Staff-level guide to Deployment Observability, SLO Gates, and Automated Rollback with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "deployment-strategies-rolling-blue-green-canary",
+      "title": "Deployment Strategies: Rolling, Blue-Green, Canary",
+      "description": "Staff-level guide to Deployment Strategies: Rolling, Blue-Green, Canary with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "environment-promotion-configuration-management",
+      "title": "Environment Promotion and Configuration Management",
+      "description": "Staff-level guide to Environment Promotion and Configuration Management with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "infrastructure-as-code-deployment-pipelines",
+      "title": "Infrastructure as Code in Deployment Pipelines",
+      "description": "Staff-level guide to Infrastructure as Code in Deployment Pipelines with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "progressive-delivery-feature-flags",
+      "title": "Progressive Delivery and Feature Flags",
+      "description": "Staff-level guide to Progressive Delivery and Feature Flags with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "release-governance-approvals-auditability",
+      "title": "Release Governance, Approvals, and Auditability",
+      "description": "Staff-level guide to Release Governance, Approvals, and Auditability with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    }
+  ],
+  "other/ci-cd/continuous-integration-ci": [
+    {
+      "slug": "branching-strategies-merge-policies",
+      "title": "Branching Strategies and Merge Policies",
+      "description": "Staff-level guide to Branching Strategies and Merge Policies with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "build-systems-artifact-management",
+      "title": "Build Systems and Artifact Management",
+      "description": "Staff-level guide to Build Systems and Artifact Management with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "ci-caching-pipeline-performance",
+      "title": "CI Caching and Pipeline Performance",
+      "description": "Staff-level guide to CI Caching and Pipeline Performance with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "ci-fundamentals-pipeline-architecture",
+      "title": "CI Fundamentals and Pipeline Architecture",
+      "description": "Staff-level guide to CI Fundamentals and Pipeline Architecture with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "ci-security-supply-chain-checks",
+      "title": "CI Security and Supply Chain Checks",
+      "description": "Staff-level guide to CI Security and Supply Chain Checks with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "flaky-test-detection-quarantine",
+      "title": "Flaky Test Detection and Quarantine",
+      "description": "Staff-level guide to Flaky Test Detection and Quarantine with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "monorepo-ci-at-scale",
+      "title": "Monorepo CI at Scale",
+      "description": "Staff-level guide to Monorepo CI at Scale with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    },
+    {
+      "slug": "test-automation-strategy-ci",
+      "title": "Test Automation Strategy in CI",
+      "description": "Staff-level guide to Test Automation Strategy in CI with topic-specific architecture, trade-offs, failure modes, interview questions, and production delivery guidance."
+    }
   ]
 };

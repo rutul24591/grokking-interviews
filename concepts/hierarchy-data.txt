@@ -1399,7 +1399,28 @@
 
         6. C++
 
-    c.  Data Structures & Algorithms
+    c.  CI/CD
+        1. Continuous Integration(CI)
+        •   CI Fundamentals and Pipeline Architecture
+        •   Branching Strategies and Merge Policies
+        •   Build Systems and Artifact Management
+        •   Test Automation Strategy in CI
+        •   Flaky Test Detection and Quarantine
+        •   CI Caching and Pipeline Performance
+        •   Monorepo CI at Scale
+        •   CI Security and Supply Chain Checks
+
+        2. Continuous Deployment(CD)
+        •   CD Fundamentals and Release Pipeline Architecture
+        •   Deployment Strategies: Rolling, Blue-Green, Canary
+        •   Progressive Delivery and Feature Flags
+        •   Environment Promotion and Configuration Management
+        •   Infrastructure as Code in Deployment Pipelines
+        •   Deployment Observability, SLO Gates, and Automated Rollback
+        •   Database Migrations in Continuous Deployment
+        •   Release Governance, Approvals, and Auditability
+
+    d.  Data Structures & Algorithms
         1. Data Structures
 
         •   Arrays
@@ -1422,7 +1443,7 @@
         •   Backtracking Algorithms
         •   Divide and Conquer Algorithms
 
-    d.  Leetcode
+    e.  Leetcode
         1. Patterns
 
         •   Two-pointer
@@ -1521,6 +1542,5 @@
         •   Merge K Sorted Lists - https://leetcode.com/problems/merge-k-sorted-lists/
         •   Top K Frequent Elements - https://leetcode.com/problems/top-k-frequent-elements/
         •   Find Median from Data Stream - https://leetcode.com/problems/find-median-from-data-stream/
-
 
 

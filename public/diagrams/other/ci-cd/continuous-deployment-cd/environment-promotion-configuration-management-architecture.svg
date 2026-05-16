@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Same Artifact, Environment-Specific Configuration</title>
+  <desc id="desc">Environment promotion architecture for Environment Promotion and Configuration Management</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Same Artifact, Environment-Specific Configuration</text>
+  <rect x="42" y="62" width="816" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="65" y="130" width="145" height="36" rx="5" fill="#6d5bd0"/>
+  <text x="137.5" y="152" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">artifact digest</text>
+  <line x1="210" y1="148" x2="300" y2="148" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 300 148 L 292.0 152.4 L 292.0 143.6 Z" fill="#6d5bd0"/>
+  <rect x="300" y="90" width="140" height="190" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="370" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Dev</text>
+  <rect x="480" y="90" width="140" height="190" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="550" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Staging</text>
+  <rect x="660" y="90" width="140" height="190" rx="8" fill="#fff1f2" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="730" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">Production</text>
+  <text x="320" y="130" font-size="9" fill="#1a1822">• small data</text>
+  <text x="320" y="146" font-size="9" fill="#1a1822">• debug config</text>
+  <text x="320" y="162" font-size="9" fill="#1a1822">• test secrets</text>
+  <text x="500" y="130" font-size="9" fill="#1a1822">• prod-like</text>
+  <text x="500" y="146" font-size="9" fill="#1a1822">• synthetic data</text>
+  <text x="500" y="162" font-size="9" fill="#1a1822">• release config</text>
+  <text x="680" y="130" font-size="9" fill="#1a1822">• real users</text>
+  <text x="680" y="146" font-size="9" fill="#1a1822">• locked secrets</text>
+  <text x="680" y="162" font-size="9" fill="#1a1822">• audit log</text>
+  <rect x="90" y="330" width="720" height="70" rx="8" fill="#f9f7ff" stroke="#6d5bd0"/>
+  <text x="450" y="357" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Invariant</text>
+  <text x="450" y="379" text-anchor="middle" font-size="9" fill="#1a1822">Promote the same artifact; vary only configuration, secrets, capacity, and traffic policy.</text>
+</svg>

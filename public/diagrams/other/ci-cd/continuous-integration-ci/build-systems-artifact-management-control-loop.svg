@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Immutable Artifact Lifecycle</title>
+  <desc id="desc">Immutable artifact lifecycle for Build Systems and Artifact Management</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Immutable Artifact Lifecycle</text>
+  <rect x="45" y="62" width="810" height="385" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="80" y="95" font-size="11" font-weight="700" fill="#6d5bd0">Artifact lifecycle</text>
+  <rect x="75" y="130" width="120" height="34" rx="5" fill="#6d5bd0"/>
+  <text x="135" y="151" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">build</text>
+  <line x1="195" y1="147" x2="270" y2="147" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 270 147 L 262.0 151.4 L 262.0 142.6 Z" fill="#6d5bd0"/>
+  <rect x="270" y="130" width="120" height="34" rx="5" fill="#f59e0b"/>
+  <text x="330" y="151" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">scan</text>
+  <line x1="390" y1="147" x2="465" y2="147" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 465 147 L 457.0 151.4 L 457.0 142.6 Z" fill="#f59e0b"/>
+  <rect x="465" y="130" width="120" height="34" rx="5" fill="#db2777"/>
+  <text x="525" y="151" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">sign</text>
+  <line x1="585" y1="147" x2="660" y2="147" stroke="#db2777" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 660 147 L 652.0 151.4 L 652.0 142.6 Z" fill="#db2777"/>
+  <rect x="660" y="130" width="120" height="34" rx="5" fill="#228B22"/>
+  <text x="720" y="151" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">publish</text>
+  <rect x="75" y="205" width="705" height="68" rx="8" fill="#f9f7ff" stroke="#6d5bd0"/>
+  <text x="95" y="231" font-size="10" font-weight="700" fill="#1a1822">Immutable identity</text>
+  <text x="95" y="252" font-size="9" fill="#1a1822">source SHA + dependency lock + builder image + artifact digest + signature</text>
+  <rect x="75" y="305" width="220" height="78" rx="8" fill="#fff1f2" stroke="#cc3333"/>
+  <text x="185" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">Never overwrite</text>
+  <text x="185" y="355" text-anchor="middle" font-size="9" fill="#1a1822">new fix = new artifact</text>
+  <rect x="315" y="305" width="220" height="78" rx="8" fill="#ecfdf5" stroke="#228B22"/>
+  <text x="425" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Promote by digest</text>
+  <text x="425" y="355" text-anchor="middle" font-size="9" fill="#1a1822">same bits across envs</text>
+  <rect x="555" y="305" width="225" height="78" rx="8" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="668" y="333" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Retain evidence</text>
+  <text x="668" y="355" text-anchor="middle" font-size="9" fill="#1a1822">incident + audit queries</text>
+</svg>

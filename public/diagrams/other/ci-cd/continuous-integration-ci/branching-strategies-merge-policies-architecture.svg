@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Branch Topology: Trunk, Feature, Release, Hotfix</title>
+  <desc id="desc">Branch topology comparison for Branching Strategies and Merge Policies</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Branch Topology: Trunk, Feature, Release, Hotfix</text>
+  <rect x="45" y="62" width="810" height="390" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="80" y="93" font-size="12" font-weight="700" fill="#6d5bd0">Trunk-based flow</text>
+  <line x1="100" y1="145" x2="770" y2="145" stroke="#228B22" stroke-width="5" stroke-linecap="round"/>
+  <rect x="120" y="122" width="90" height="28" rx="5" fill="#228B22"/>
+  <text x="165" y="140" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">commit A</text>
+  <rect x="260" y="122" width="90" height="28" rx="5" fill="#228B22"/>
+  <text x="305" y="140" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">commit B</text>
+  <rect x="470" y="122" width="100" height="28" rx="5" fill="#f59e0b"/>
+  <text x="520" y="140" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">merge queue</text>
+  <rect x="650" y="122" width="90" height="28" rx="5" fill="#228B22"/>
+  <text x="695" y="140" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">main</text>
+  <path d="M 300 238 C 385 185 485 185 560 238" fill="none" stroke="#6d5bd0" stroke-width="3"/>
+  <text x="430" y="202" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">short-lived feature branch</text>
+  <rect x="330" y="230" width="80" height="24" rx="5" fill="#6d5bd0"/>
+  <text x="370" y="246" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">feature</text>
+  <rect x="460" y="230" width="80" height="24" rx="5" fill="#6d5bd0"/>
+  <text x="500" y="246" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">rebase</text>
+  <line x1="540" y1="238" x2="580" y2="156" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 580 156 L 580.4 165.1 L 572.5 161.3 Z" fill="#6d5bd0"/>
+  <line x1="100" y1="330" x2="770" y2="330" stroke="#d7d1e6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 250 330 C 300 290 380 290 430 330" fill="none" stroke="#f59e0b" stroke-width="4"/>
+  <path d="M 590 330 C 640 285 720 285 770 330" fill="none" stroke="#cc3333" stroke-width="4"/>
+  <text x="165" y="304" font-size="10" font-weight="700" fill="#1a1822">Release branch</text>
+  <text x="310" y="286" font-size="9" fill="#5f5a6f">stabilize + patch</text>
+  <text x="625" y="282" font-size="10" font-weight="700" fill="#cc3333">Hotfix branch</text>
+  <text x="647" y="302" font-size="9" fill="#5f5a6f">urgent prod fix</text>
+  <rect x="70" y="385" width="760" height="42" rx="7" fill="#fdf2f8" stroke="#db2777"/>
+  <text x="450" y="411" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Interview point: choose branch topology by integration frequency, release risk, and rollback expectations.</text>
+</svg>

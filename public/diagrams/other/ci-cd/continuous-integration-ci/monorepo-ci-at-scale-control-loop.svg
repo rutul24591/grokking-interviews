@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">Scheduler, Remote Cache, and Runner Pool at Scale</title>
+  <desc id="desc">Monorepo CI scheduler diagram for Monorepo CI at Scale</desc>
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Scheduler, Remote Cache, and Runner Pool at Scale</text>
+  <rect x="45" y="62" width="810" height="386" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="70" y="100" width="155" height="120" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="147.5" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Merge queue</text>
+  <text x="90" y="135" font-size="9" fill="#1a1822">• batch compatible PRs</text>
+  <text x="90" y="150" font-size="9" fill="#1a1822">• rebase before merge</text>
+  <text x="90" y="165" font-size="9" fill="#1a1822">• preserve green main</text>
+  <line x1="225" y1="160" x2="315" y2="160" stroke="#6d5bd0" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 315 160 L 307.0 164.4 L 307.0 155.6 Z" fill="#6d5bd0"/>
+  <rect x="315" y="88" width="190" height="145" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="410" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#f59e0b">Work scheduler</text>
+  <text x="338" y="126" font-size="9" fill="#1a1822">• split by project</text>
+  <text x="338" y="142" font-size="9" fill="#1a1822">• respect owners</text>
+  <text x="338" y="158" font-size="9" fill="#1a1822">• balance runtimes</text>
+  <text x="338" y="174" font-size="9" fill="#1a1822">• retry infra only</text>
+  <line x1="505" y1="160" x2="600" y2="160" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 600 160 L 592.0 164.4 L 592.0 155.6 Z" fill="#f59e0b"/>
+  <rect x="600" y="100" width="220" height="120" rx="8" fill="#ecfdf5" stroke="#228B22" stroke-width="1.5"/>
+  <text x="710" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#228B22">Runner pool</text>
+  <text x="622" y="135" font-size="9" fill="#1a1822">• linux / mac / windows</text>
+  <text x="622" y="150" font-size="9" fill="#1a1822">• autoscale by queue</text>
+  <text x="622" y="165" font-size="9" fill="#1a1822">• isolate secrets</text>
+  <rect x="110" y="285" width="300" height="90" rx="8" fill="#f9f7ff" stroke="#6d5bd0"/>
+  <text x="260" y="312" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Remote cache</text>
+  <text x="260" y="336" text-anchor="middle" font-size="9" fill="#1a1822">shared outputs by digest, toolchain, and inputs</text>
+  <text x="260" y="354" text-anchor="middle" font-size="9" fill="#1a1822">prevents repeated work across teams</text>
+  <rect x="490" y="285" width="300" height="90" rx="8" fill="#fff1f2" stroke="#cc3333"/>
+  <text x="640" y="312" text-anchor="middle" font-size="11" font-weight="700" fill="#cc3333">Failure isolation</text>
+  <text x="640" y="336" text-anchor="middle" font-size="9" fill="#1a1822">only affected owners block the PR</text>
+  <text x="640" y="354" text-anchor="middle" font-size="9" fill="#1a1822">infra failures are retried separately</text>
+</svg>
