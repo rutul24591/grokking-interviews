@@ -227,6 +227,11 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
       "description": "Architecture for a developer documentation system: markdown/MDX authoring with live preview, versioned documentation tied to software releases, full-text search with code snippet indexing, API reference auto-generation from OpenAPI/AsyncAPI specs, interactive code playground embeds with executable examples, feedback and contribution workflows (edit on GitHub), table of contents with scroll-spy, and documentation health metrics (broken links, stale pages, missing examples)."
     },
     {
+      "slug": "frontend-testing-architecture",
+      "title": "Design a Frontend Testing Architecture",
+      "description": "End-to-end architecture for frontend testing at scale: testing pyramid strategy, component and integration testing with RTL and MSW, visual regression, Playwright E2E with POM, contract testing, performance budgets in CI, coverage governance, and flake management."
+    },
+    {
       "slug": "package-registry-ui",
       "title": "Design a Package Registry UI (like npm)",
       "description": "Architecture for a package registry UI like npm or PyPI: package search with typosquatting detection and relevance ranking, package detail page with version selector and changelog diff, dependency tree visualization with vulnerability overlay from OSV/CVE data, weekly download trend sparklines, bundle size impact estimator using bundlephobia-style analysis, package deprecation and security advisory banners, publisher trust indicators (verified publisher, provenance attestation), and unpublish/deprecate controls for package owners."
