@@ -1,119 +1,53 @@
-# Tree View / Folder Explorer — Implementation Walkthrough
+# Design a Tree View / Folder Explorer - example-1 Explanation
 
-## Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/tree-view-folder-explorer`. The article is about Complete LLD solution for a production-grade tree view / folder explorer with lazy loading nodes, move/copy operations, multi-select, drag-and-drop, context menus, search/filter, and keyboard navigation.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Component Interaction Flow.
 
-This implementation provides a production-grade tree view / folder explorer component with lazy loading, multi-select, drag-and-drop with cycle detection, context menus, search/filter, keyboard navigation, and breadcrumb display.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## Architecture
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-The system follows a **flat map + Zustand store** architecture:
+## File-by-file walkthrough
+- `components/tree-breadcrumb.tsx`: Implements the main logic, including TreeBreadcrumb, nodes, selectedIds, selectNode, firstSelectedId.
+- `components/tree-context-menu.tsx`: Implements the main logic, including ContextMenuItem, TreeContextMenu, contextMenu, selectedCount, hasClipboard.
+- `components/tree-node-list.tsx`: Implements the main logic, including TreeNodeList, nodes, expandedIds, searchQuery, node.
+- `components/tree-node.tsx`: Implements the main logic, including TreeNode, renameInputRef, handleRenameSubmit, newName, success.
+- `components/tree-search-bar.tsx`: Implements the main logic, including TreeSearchBar.
+- `components/tree-view.tsx`: Implements the main logic, including TreeView, containerRef, nodes, expandedIds, selectedIds.
+- `hooks/use-tree-drag.ts`: Implements the main logic, including useTreeDrag, nodes, moveNode, dragImageRef, handleDragStart.
+- `hooks/use-tree-node.ts`: Implements the main logic, including useTreeNode, node, isExpanded, isLoading, isSelected.
+- `hooks/use-tree-search.ts`: Implements the main logic, including useTreeSearch, nodes, rootIds, setSearch, timer.
+- `hooks/use-tree-selection.ts`: Implements the main logic, including useTreeSelection, selectedIds, lastSelectedId, selectNode, deselectNode.
+- `lib/tree-store.ts`: Models client or service state transitions and update behavior.
+- `lib/tree-types.ts`: Implements the main logic, including FILE_ICONS, FOLDER_OPEN_ICON, FOLDER_CLOSED_ICON.
 
-- **Nodes are stored in a flat `Map<string, TreeNode>`** rather than a nested tree structure. This enables O(1) node lookup, O(d) ancestor traversal for cycle detection, and simple immutable updates.
-- **Tree hierarchy is implicit** via `parentId` references. The visual tree is derived at render time by filtering nodes with a given `parentId`.
-- **Zustand provides selector-based subscriptions** so only affected TreeNode components re-render on state changes.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## File Structure
+## Important implementation behavior
+- timeout and deadline handling
+- pagination or cursor handling
+- idempotency or duplicate protection
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- offline, reconnect, resume, or sync behavior
 
-```
-example-1/
-├── lib/
-│   ├── tree-types.ts      — Type definitions (TreeNode, SelectionState, ContextMenuAction)
-│   ├── tree-store.ts      — Zustand store with all tree operations
-│   └── tree-utils.ts      — Pure utility functions (buildTree, getPath, detectCircularRef, filterTree)
-├── hooks/
-│   ├── use-tree-node.ts   — Per-node hook: expand/collapse, selection, context menu
-│   ├── use-tree-selection.ts — Multi-select with Ctrl/Shift, range selection
-│   ├── use-tree-drag.ts   — Drag-to-move with cycle detection
-│   └── use-tree-search.ts — Debounced search with highlight extraction
-└── components/
-    ├── tree-view.tsx      — Root container with keyboard navigation
-    ├── tree-node.tsx      — Individual node with icon, label, checkbox, drag
-    ├── tree-node-list.tsx — List of nodes at a given depth
-    ├── tree-context-menu.tsx — Right-click menu
-    ├── tree-breadcrumb.tsx — Path breadcrumb for selected node
-    └── tree-search-bar.tsx — Search input with real-time filtering
-```
+## Edge cases and failure modes
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Large result sets need stable pagination and empty-page behavior.
+- Duplicate submissions or replayed messages must not create duplicate side effects.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Reconnect and resume flows need conflict handling and progress recovery.
 
-## Key Design Decisions
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Flat Map vs Nested Tree
-
-A nested tree (children as nested arrays) makes move, copy, and find-by-ID operations require full tree traversal (O(n)). The flat Map approach:
-
-- **O(1) lookup** via `Map.get(id)`
-- **O(d) cycle detection** by walking `parentId` pointers upward
-- **Simple immutable updates** — modify only affected entries in the Map
-- **Easy deletion** — delete entries by ID from the Map
-
-The trade-off is that rendering requires computing the visible tree via BFS from root IDs through expanded nodes. This is O(v) where v is visible nodes, which is small compared to total nodes in a lazy-loaded tree.
-
-### Cycle Detection
-
-When moving folder A into folder B, we must ensure A is not an ancestor of B. The algorithm:
-
-1. Start at B and follow `parentId` upward.
-2. At each step, check if the current node ID equals A's ID.
-3. If match found → cycle detected, reject the move.
-4. If root reached (parentId is null) → no cycle, allow the move.
-
-This is O(d) where d is the depth of B. For a tree with depth 10, this is 10 comparisons — far more efficient than O(n) full-tree traversal.
-
-### Lazy Loading
-
-When a folder is expanded for the first time:
-
-1. Store checks `isLoaded` flag. If false, sets `loading` flag.
-2. Calls the provided `fetchChildren` function (an API call in production).
-3. On success, children are inserted into the node Map, parent's `children` array is updated, `isLoaded` is set to true, `loading` is cleared.
-4. On failure, `loading` is cleared but `isLoaded` remains false, allowing retry UI to render.
-
-Duplicate fetches are prevented by checking the `loadingIds` set before starting a new fetch.
-
-### Multi-Select
-
-Three selection modes:
-
-- **Single select**: Click clears previous selection, selects current node.
-- **Ctrl+Click**: Toggles the clicked node without affecting others.
-- **Shift+Click**: Selects all visible nodes between `lastSelectedId` and the current node.
-
-The range computation finds the indices of both nodes in the visible node array and selects everything between them.
-
-### Search/Filter
-
-Search works in two passes:
-
-1. **First pass**: Scan all loaded nodes, find those whose name contains the query (case-insensitive).
-2. **Second pass**: For each match, walk up the ancestor chain (via `parentId`) and mark all ancestors as visible.
-
-The TreeView then only renders nodes in the visible set. Matching text within node names is highlighted by splitting the name at match positions and wrapping matching segments in a `<mark>` element.
-
-### Keyboard Navigation
-
-The TreeView container handles global keyboard events:
-
-| Key | Action |
-|-----|--------|
-| ArrowDown | Focus next visible node |
-| ArrowUp | Focus previous visible node |
-| ArrowRight | Expand collapsed folder |
-| ArrowLeft | Collapse expanded folder (or focus parent) |
-| Enter | Select focused node |
-| Space | Toggle checkbox (multi-select mode) |
-| Ctrl+A | Select all visible nodes |
-
-ARIA roles (`role="tree"`, `role="treeitem"`, `aria-expanded`, `aria-selected`, `aria-level`) ensure screen readers announce the tree structure correctly.
-
-## Performance Considerations
-
-- **Selector-based subscriptions**: Each TreeNode subscribes to its own node by ID. Expanding one folder does not re-render unrelated nodes.
-- **Virtualization-ready**: The visible node array (computed via BFS) can be passed to `@tanstack/react-virtual` for windowed rendering. Only ~20-50 nodes in the viewport render at a time.
-- **Debounced search**: 300ms debounce prevents O(n) scan on every keystroke.
-- **Stable IDs**: Using `crypto.randomUUID()` for copy operations prevents ID collisions.
-
-## Extension Points
-
-- **Undo/Redo**: Add a command history stack. Each operation records a reverse command.
-- **Real-time sync**: Use WebSockets for file system events, update the Map store accordingly.
-- **Fuzzy search**: Replace substring matching with Fuse.js for ranked, fuzzy results.
-- **File preview**: On hover, fetch and render a thumbnail in a portal-rendered tooltip.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

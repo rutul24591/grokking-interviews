@@ -1,54 +1,31 @@
-# Example 1: Hierarchical Multi-Agent System with Supervisor
+# Multi-Agent Systems — Coordinated AI Agent Architectures - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/multi-agents`. The article is about Comprehensive guide to multi-agent systems covering agent orchestration patterns, coordination strategies, debate and consensus mechanisms, role specialization, conflict resolution, and production-scale multi-agent architectures.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: When should you use a multi-agent system instead of a single agent with more tools?; Q2: How does the debate pattern improve output quality and when is it most effective?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** Standard library only (`dataclasses`, `datetime`, `time`). No external packages required.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a **hierarchical multi-agent architecture** where a supervisor agent delegates tasks to specialist agents, each with a focused role and tool set. The research agent handles information gathering, the coding agent writes and tests code, the analysis agent processes data, and the review agent performs quality checks. This pattern mirrors production multi-agent systems where a central orchestrator breaks down complex requests and distributes work to specialized agents.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- error handling and fallback behavior
 
-### Key Classes and Data Structures
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- High load can expose latency, memory, cache, or backpressure issues.
 
-- **`AgentResult`** (dataclass): Encapsulates the outcome of a single agent's execution, including agent name, task description, result dictionary, success flag, latency in milliseconds, and an ISO-format timestamp.
-- **`AgentObservability`** (dataclass): Tracks per-agent metrics including total requests, successful/failed counts, total latency, and last error. It provides computed properties `success_rate` and `avg_latency`. The `record()` method updates metrics after each execution.
-- **`SpecialistAgent`**: Represents a focused agent with a specific role (research, coding, analysis, review) and a list of available tools. The `execute()` method simulates domain-specific work:
-  - **research** → returns findings and source count.
-  - **coding** → returns code and test pass status.
-  - **analysis** → returns insights and confidence score.
-  - **review** → returns issues list, quality score, and approval status.
-  Each execution records timing and success/failure to its observability tracker.
-- **`SupervisorAgent`**: The orchestrator that maintains a registry of specialist agents (keyed by role). Key methods:
-  - `register()` — adds a specialist agent to the supervisor's registry.
-  - `handle_request()` — processes a request by delegating to each required specialist in sequence, collecting results, and synthesizing a combined output with per-agent statistics.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow (Step-by-Step)
-
-1. **Supervisor initialization**: A `SupervisorAgent` is created with an empty specialist registry.
-2. **Register specialists**: Four agents are registered — researcher (research role), coder (coding role), analyst (analysis role), reviewer (review role). Each has its own tool list.
-3. **Handle request**: `handle_request()` is called with the request string "Implement and review a new authentication feature" and required roles `["research", "coding", "review"]`.
-4. **Delegate to research**: The supervisor finds the researcher agent and calls `execute()`. The agent simulates research work, records latency, and returns findings.
-5. **Delegate to coding**: The supervisor finds the coder agent and calls `execute()`. The agent simulates coding work and returns code with test results.
-6. **Delegate to review**: The supervisor finds the reviewer agent and calls `execute()`. The agent simulates code review and returns quality score with approval status.
-7. **Synthesize output**: The supervisor combines all results into a single dictionary containing the original request, overall success flag, per-agent results, and per-agent observability statistics (success rate and average latency).
-8. **Print output**: Results are printed showing each agent's contribution and their observability metrics.
-
-### Important Variables
-
-- `self.specialists` (in `SupervisorAgent`): Dictionary mapping role name to `SpecialistAgent` instance — this is the delegation routing table.
-- `self.observability` (in `SpecialistAgent`): Per-agent metrics tracker that accumulates success/failure counts and latency across all executions.
-- `required_roles` parameter: Determines which specialists are invoked for a given request, enabling flexible task routing.
-
-## Key Takeaways
-
-- **Hierarchical delegation**: The supervisor-agent pattern separates orchestration (deciding what to do and in what order) from execution (actually doing the work), enabling clean separation of concerns in multi-agent systems.
-- **Role-based specialization**: Each agent has a focused role and limited tool set, which reduces hallucination (agents can't use tools outside their domain) and improves output quality through specialization.
-- **Built-in observability**: Every agent tracks its own success rate and latency, providing production-ready monitoring without external instrumentation.
-- **Sequential execution**: The supervisor invokes specialists in order, collecting results — this is a simple but effective pattern for workflows where later steps depend on earlier results.
-- **Graceful degradation**: If a required role has no registered agent, the supervisor records an error for that role but continues processing other roles, returning partial results rather than failing entirely.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

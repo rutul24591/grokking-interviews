@@ -1,61 +1,34 @@
-# Tool Call Router with Input/Output Validation
+# Plugins - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/plugins`. The article is about Plugins. The most relevant article sections for this example are: Definition and context; Core concepts; Architecture and flow; Best practices.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`typing`, `json`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a tool call router that sits between an LLM and plug-in tool implementations, enforcing validation at every boundary: validating tool existence, checking input arguments against JSON schemas, verifying permissions before execution, and validating outputs before returning results to the LLM.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- empty, missing, or null-state handling
 
-### Key Class
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-- **`ToolCallRouter`**: The core router that manages tool registration, permission enforcement, input/output validation, and execution routing. Maintains a registry of tools keyed by tool name and a permission map keyed by plugin_id.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Methods
-
-1. **`register_tool(plugin_id, tool_name, description, input_schema, output_schema, required_permissions, implementation)`**: Registers a tool with its full metadata and implementation function. Stores the tool in the router's registry.
-2. **`set_permissions(plugin_id, permissions)`**: Sets the granted permissions for a plug-in. Controls which operations the plug-in is authorized to perform.
-3. **`validate_input(tool_name, arguments)`**: Validates tool call arguments against the tool's input JSON schema:
-   - Checks that all required fields are present.
-   - Checks that each argument's type matches the schema (string, integer, etc.).
-   - Returns an error string if validation fails, or `None` if valid.
-4. **`check_permissions(tool_name)`**: Checks whether the plug-in owning this tool has all required permissions granted. Returns an error string if any permission is missing.
-5. **`execute(tool_name, arguments)`**: The main execution entry point with a five-step validation pipeline:
-   - Step 1: Verify tool exists in registry.
-   - Step 2: Validate input arguments against schema.
-   - Step 3: Check plug-in permissions.
-   - Step 4: Execute the tool implementation.
-   - Step 5: Return validated result (or error at any step).
-
-### Execution Flow
-
-1. **`main()`** creates a router and registers two tools:
-   - `search_repositories` (GitHub plugin, requires read permission).
-   - `query_table` (Database plugin, requires read permission).
-2. Permissions are set: GitHub gets read, Database gets read-only.
-3. Three test cases demonstrate the validation pipeline:
-   - **Valid call**: `search_repositories(query='python web framework')` -- passes all validations, executes successfully.
-   - **Missing required field**: `search_repositories({})` -- fails input validation (query is required).
-   - **Unknown tool**: `delete_repository(...)` -- fails tool existence check.
-
-### Important Variables
-
-- `self.tools`: Dictionary mapping tool names to their full metadata including implementation function.
-- `self.plugin_permissions`: Dictionary mapping plugin IDs to their granted permission lists.
-- Input schema `required` field: Specifies which fields must be present in the arguments.
-- Five-step validation pipeline: Each step is a gate -- failure at any step returns an error without proceeding further.
-
-## Key Takeaways
-
-- Validation at every boundary (input, permissions, output) is essential for safe tool execution -- the LLM should never be able to call tools with invalid arguments or unauthorized permissions.
-- JSON Schema-based input validation provides automatic, declarative argument checking without writing custom validation code for each tool.
-- The five-step validation pipeline ensures fail-fast behavior: errors are caught at the earliest possible stage, preventing unnecessary execution.
-- Permission enforcement at the router level (not just the plug-in level) provides a centralized security checkpoint for all tool calls.
-- Production tool routers add output schema validation, rate limiting, argument sanitization, execution timeouts, and structured logging for every tool call.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

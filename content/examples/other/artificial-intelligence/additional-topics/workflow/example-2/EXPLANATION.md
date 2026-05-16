@@ -1,58 +1,28 @@
-# Human-in-the-Loop Approval Workflow
+# AI Workflow Design — Pipelines, Evaluation Loops, and CI/CD for AI - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/workflow`. The article is about Comprehensive guide to AI workflow design covering pipeline patterns, evaluation loops, CI/CD for AI systems, human-in-the-loop processes, and production workflow architecture.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you design evaluation loops for an AI workflow?; Q2: What is CI/CD for AI and how does it differ from traditional CI/CD?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `enum`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a human-in-the-loop (HITL) approval workflow where an AI generates draft outputs, humans review and approve/edit/reject them, high-confidence outputs can be auto-approved, and quality metrics are tracked to measure AI performance and human editing effort over time.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`ApprovalStatus`** (Enum): Represents the possible human decisions: PENDING, APPROVED, EDITED, REJECTED, ESCALATED.
-- **`ReviewRecord`** (dataclass): Records a single review event with `item_id`, `ai_output`, `human_decision`, optional `human_edit` text, `confidence` of the AI, and `review_time_seconds`.
-- **`HITLWorkflow`**: The core workflow class managing draft generation, review processing, auto-approval, and quality metrics calculation.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Methods
-
-1. **`generate_draft(input_data)`**: Simulates AI draft generation with a confidence score between 0.70 and 0.99. If confidence exceeds `auto_approve_threshold` (0.95), the draft is marked for auto-approval.
-2. **`process_item(item_id, input_data, human_action, human_edit)`**: Processes a single item through the HITL workflow:
-   - Generates an AI draft with confidence.
-   - Auto-approves if confidence >= threshold and human hasn't acted yet.
-   - Records the review decision and tracks edit distance (ratio of edit length to draft length).
-   - Returns the final output (edited text if human edited, otherwise the AI draft).
-3. **`get_quality_metrics()`**: Calculates aggregate metrics: approval rate, edit rate, rejection rate, average AI confidence, and average edit distance.
-
-### Execution Flow
-
-1. **`main()`** creates a workflow with `auto_approve_threshold=0.95`.
-2. Five items are processed with different human actions:
-   - **item-1**: Approved as-is (AI draft accepted).
-   - **item-2**: Edited by human (AI draft revised with updated data).
-   - **item-3**: Approved as-is.
-   - **item-4**: Escalated (requires further review).
-   - **item-5**: Rejected (AI draft unusable).
-3. Each item shows its AI confidence, auto-approve status, and human decision.
-4. Quality metrics summarize the overall review performance: approval rate, edit rate, rejection rate, average confidence, and average edit distance.
-
-### Important Variables
-
-- `auto_approve_threshold = 0.95`: AI drafts with confidence >= 95% bypass human review.
-- `edit_distance`: Ratio of human edit length to draft length -- measures how much the human had to change.
-- `self.reviews`: List of all review records for metric calculation.
-- `self.edit_distance_log`: Tracks edit distances for items that were human-edited.
-
-## Key Takeaways
-
-- HITL workflows balance automation with human oversight -- high-confidence AI outputs are auto-approved to reduce human workload, while uncertain outputs get human review.
-- Quality metrics (approval rate, edit rate, rejection rate) track AI performance over time and identify areas where the AI needs improvement.
-- Edit distance measures the effort required from human reviewers -- high edit distances indicate poor AI draft quality.
-- The auto-approve threshold is a tunable parameter: higher thresholds mean more human review (safer but slower), lower thresholds mean more automation (faster but riskier).
-- Production HITL systems add continuous learning: human edits are fed back into the AI training pipeline to improve future draft quality, creating a virtuous improvement loop.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

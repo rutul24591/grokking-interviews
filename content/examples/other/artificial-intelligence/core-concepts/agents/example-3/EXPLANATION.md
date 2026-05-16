@@ -1,90 +1,32 @@
-# Example 3: Agent Memory Management with Context Compression
+# AI Agents — Autonomous LLM-Powered Systems - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/agents`. The article is about Comprehensive guide to AI agents covering agent loops, ReAct paradigm, tool use and function calling, memory systems, planning strategies, and action execution for building autonomous LLM-powered systems.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What is the ReAct paradigm and why does it work better than reasoning-only or acting-only approaches?; Q2: How do you design effective tools for an LLM agent?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None beyond the Python 3 standard library. Uses only built-in modules (`typing`, `dataclasses`, `json`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a **three-tier memory system** for AI agents — short-term (active context window), working (scratchpad), and long-term (persisted knowledge) — with **automatic context compression** when the token budget approaches its limit. It demonstrates the critical challenge of managing finite LLM context windows: as an agent accumulates observations and reasoning traces, the system must decide which information to keep in the active window, which to summarize, and which to archive for later retrieval.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- cache freshness, staleness, or invalidation
+- authentication or authorization boundaries
+- observability and operational signals
 
-### Key Data Structures
+## Edge cases and failure modes
+- Cached data can become stale and needs invalidation or freshness checks.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`MemoryItem` (dataclass)** — A single unit of memory with four fields:
-  - `content` (string) — The actual text (observation, fact, goal, or reasoning).
-  - `item_type` (string) — One of `"observation"`, `"fact"`, `"goal"`, or `"reasoning"`, used for categorization and formatting.
-  - `importance` (float, 0.0–1.0) — A score that determines whether the item should be preserved in context. Critical facts score high (0.8+), incidental details score low (0.2–0.4).
-  - `iteration` (int) — The agent loop iteration when the memory was created.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Core Class: `MemoryManager`
-
-| Member | Purpose |
-|---|---|
-| `max_context_tokens` (int) | The LLM's context window capacity (default 100,000). |
-| `summarize_threshold` (float) | Fraction of max tokens that triggers compression (default 0.7 = 70%). |
-| `importance_threshold` (float) | Minimum importance score to retain in short-term memory (default 0.6). |
-| `short_term` (List[MemoryItem]) | Items currently in the active context window. |
-| `working` (Dict[str, Any]) | Scratchpad for temporary variables during the current task. |
-| `long_term` (List[Dict]) | Archived facts persisted for later retrieval (simulated vector store). |
-| `current_tokens` (int) | Running token count of short-term memory. |
-
-### Key Methods
-
-**`add(content, item_type, importance, iteration)`** — Creates a `MemoryItem`, appends it to `short_term`, updates `current_tokens`, and triggers `_compress()` if the token budget exceeds `summarize_threshold`.
-
-**`_compress()`** — The core compression algorithm:
-1. **Categorizes items** into three buckets:
-   - **Keep** (importance >= 0.8): Critical facts that remain in the active context window unchanged.
-   - **Archive** (importance >= `importance_threshold`): Moved to `long_term` storage for future retrieval.
-   - **Summarize** (importance < `importance_threshold`): Condensed into a single summary string.
-2. **Generates a summary** of low-importance items via `_generate_summary()`, which truncates each observation to 50 characters and joins them. The summary itself becomes a single `MemoryItem` of type `"summary"` with importance 0.5.
-3. **Archives** mid-importance items to `long_term` as structured dicts.
-4. **Replaces** `short_term` with only the kept items + the new summary, then recalculates `current_tokens`.
-
-**`get_context()`** — Formats all `short_term` items into a readable string for the LLM, prefixing each line with a type tag (`[OBS]`, `[FACT]`, `[GOAL]`, `[THOUGHT]`, `[SUMMARY]`).
-
-**`retrieve_relevant(query, top_k)`** — Simulates a vector-database retrieval from `long_term` using keyword overlap scoring. In production, this would use actual embeddings and cosine similarity.
-
-**`get_status()`** — Returns a monitoring dict with token utilization, item counts, and working-memory keys — useful for agent health dashboards.
-
-### Execution Flow (step-by-step)
-
-1. **`main()`** creates a `MemoryManager` with `max_context_tokens=100,000`.
-2. Seven high-value memory items are added (iterations 1–5), simulating an incident investigation:
-   - A **goal** (importance 0.95): "Investigate the production latency spike".
-   - **Observations** (importance 0.85–0.95): P99 latency spike, 503 errors, Redis node failure.
-   - A **fact** (importance 0.8): "Payment-service depends on Redis cache cluster".
-   - **Reasoning** steps (importance 0.3–0.4): "Need to check which service is affected".
-3. Nine low-importance items (iterations 6–14, importance 0.2) are added to simulate routine investigation details that accumulate context but are individually unimportant.
-4. After enough items are added, `_compress()` triggers because `current_tokens` exceeds 70% of `max_context_tokens`.
-5. During compression:
-   - High-importance items (goal, critical observations, the Redis fact) are **kept** in short-term memory.
-   - Mid-importance items (none in this demo, since all non-low items are >= 0.8) would be **archived**.
-   - Low-importance items (the nine step-6-through-14 observations) are **summarized** into a single summary string.
-6. The script prints:
-   - **Memory status**: short-term item count, long-term item count, current tokens, utilization percentage, and working-memory keys.
-   - **Current context** (truncated to 500 chars): Shows the compressed short-term memory with type-tagged lines.
-   - **Long-term memory**: Archived facts with their type and content preview.
-   - **Retrieval results** for the query `"Redis cluster"`: Returns matching items from long-term memory ranked by keyword overlap.
-
-### Important Design Notes
-
-- **Token estimation** (`_estimate_tokens`) uses a simple `word_count * 1.3` heuristic. Production systems use the actual tokenizer (e.g., tiktoken for OpenAI models) for accurate counts.
-- **Importance scoring** is a simplification. In real systems, importance is determined by the LLM itself (self-assessment), by heuristics (e.g., goal-related items score higher), or by a separate scoring model.
-- **Long-term retrieval** here uses naive keyword overlap. Production agents use embedding models (e.g., OpenAI's `text-embedding-3-small`) with vector databases (Pinecone, Weaviate, pgvector) for semantic similarity search.
-- The **three-tier memory model** mirrors cognitive architectures in cognitive science (sensory/working/long-term memory) and is a common pattern in production agent frameworks like AutoGPT, LangGraph, and custom agent runtimes.
-
-## Key Takeaways
-
-- **Context windows are finite** — agents must actively manage what stays in the active context window through compression, summarization, and archival to avoid losing critical information or exceeding token limits.
-- The **three-tier memory separation** (short-term, working, long-term) maps to real architectural needs: fast access to recent context, a scratchpad for current-task state, and persistent storage for facts needed across sessions.
-- **Importance scoring** is the key mechanism for deciding what to keep, summarize, or archive — items that represent goals, critical facts, or major findings score high; incidental observations score low.
-- **Automatic compression** prevents context overflow by summarizing low-value observations into a single condensed entry while preserving high-importance items verbatim.
-- **Retrieval from long-term memory** allows the agent to "remember" facts it has archived — in production, this is done via vector similarity search over embeddings, enabling the agent to recall relevant information even when it's no longer in the active context window.
-- The working memory (`working` dict) serves as a **task-local scratchpad** — useful for storing intermediate computation results, loop counters, or partial aggregations that don't need to persist beyond the current task.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

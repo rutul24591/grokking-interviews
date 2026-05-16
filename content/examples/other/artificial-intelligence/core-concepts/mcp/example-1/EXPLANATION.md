@@ -1,68 +1,30 @@
-# Example 1: Minimal MCP Server Implementation
+# Model Context Protocol (MCP) - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/mcp`. The article is about Comprehensive guide to the Model Context Protocol covering standardized tool-use architecture, resource discovery, server/client design, integrations, and building MCP-compatible tools and servers.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What problem does MCP solve and why is it important for the AI ecosystem?; Q2: Compare MCP with OpenAPI-based tool discovery. When would you use each?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None — uses only the Python standard library (`json`, `sys`, `typing`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
----
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-## What This Demonstrates
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-This example shows how to build a minimal MCP (Model Context Protocol) server from scratch using plain Python. It exposes two database-like resources (`db://users` and `db://orders`) and two query tools (`query_users`, `query_orders`), handling all communication through JSON-RPC over stdio. The demo proves you do not need a framework to implement an MCP server — just a request router, a data store, and stdio transport.
+## Important implementation behavior
+- input validation and schema safety
+- error handling and fallback behavior
 
----
+## Edge cases and failure modes
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
 
-## Code Walkthrough
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Classes & Variables
-
-| Symbol | Type | Purpose |
-|---|---|---|
-| `MCPServer` | class | The core server that handles JSON-RPC requests, exposes resources, and executes tools. |
-| `MCPServer.resources` | list[dict] | Registry of discoverable resources, each with a `uri`, `name`, `description`, and `mimeType`. |
-| `MCPServer.tools` | list[dict] | Registry of discoverable tools, each with a `name`, `description`, and JSON Schema `inputSchema`. |
-| `MCPServer._data` | dict | In-memory simulated database keyed by resource URI (e.g. `"db://users"`). |
-| `MCPServer.initialized` | bool | Flag set to `True` after the `initialize` handshake. |
-| `handle_request()` | method | Main dispatcher — inspects `method` field and delegates to the appropriate handler. |
-| `_result()` / `_error()` | methods | Helpers that construct well-formed JSON-RPC response envelopes. |
-
-### Execution Flow (Step-by-Step)
-
-1. **`main()` starts** — instantiates `MCPServer`.
-2. **Demo requests array** is defined containing 5 JSON-RPC requests:
-   - `initialize` — protocol version handshake.
-   - `resources/list` — asks the server what resources it exposes.
-   - `tools/list` — asks the server what tools it exposes.
-   - `tools/call` — invokes `query_users` with filter `{status: "active"}`.
-   - `resources/read` — reads the full `db://orders` resource.
-3. For each request, `main()` calls `server.handle_request(req)`:
-   - `handle_request()` extracts `method`, `id`, and `params`.
-   - It matches the method string to an internal handler via `elif` chain.
-4. **`_handle_initialize()`** sets `self.initialized = True` and returns protocol version `2024-11-05`, advertised capabilities (`resources` + `tools`), and server metadata.
-5. **`_handle_resources_list()`** returns the `self.resources` array as-is.
-6. **`_handle_tools_list()`** returns the `self.tools` array as-is.
-7. **`_handle_tools_call()`** — looks up the tool name from `params["name"]`:
-   - For `query_users`: retrieves data from `self._data["db://users"]`, applies filter dict by checking `all(u.get(k) == v for k, v in filters.items())`, applies `limit`, and returns JSON-serialized results.
-   - For `query_orders`: same logic against `self._data["db://orders"]`.
-   - Unknown tool names return a JSON-RPC error with code `-32000`.
-8. **`_handle_resources_read()`** — looks up `params["uri"]` in `self._data`. If found, wraps the data in a `contents` array with `uri`, `mimeType`, and `text` (JSON-serialized). If not found, returns error.
-9. Each response is printed to stdout with the method name and a truncated JSON result.
-
-### Helper Methods
-
-- **`_result(request_id, result)`** → returns `{"jsonrpc": "2.0", "id": request_id, "result": result}`.
-- **`_error(request_id, code, message)`** → returns `{"jsonrpc": "2.0", "id": request_id, "error": {"code": code, "message": message}}`.
-
----
-
-## Key Takeaways
-
-- **MCP is transport-agnostic** — this example uses stdio (stdin/stdout) but the same JSON-RPC logic works over HTTP, WebSockets, or any byte stream.
-- **Resources and tools are self-describing** — every resource has a URI, name, description, and MIME type; every tool has a name, description, and JSON Schema. An LLM client discovers capabilities through `resources/list` and `tools/list` before calling anything.
-- **JSON-RPC envelope is minimal** — every request and response carries `jsonrpc: "2.0"`, an `id` for correlation, and either `result` (success) or `error` (failure with code + message).
-- **Tool execution is just filtered data access** — the `query_users` and `query_orders` handlers demonstrate that tools are essentially parameterized functions with typed input schemas and structured text output.
-- **No framework required** — the entire server is ~150 lines of plain Python, proving the MCP protocol is simple enough to implement without any SDK.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

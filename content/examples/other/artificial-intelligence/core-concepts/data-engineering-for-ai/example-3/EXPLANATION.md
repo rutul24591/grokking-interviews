@@ -1,50 +1,30 @@
-# LLM-Assisted Labeling Pipeline
+# Data Engineering for AI — Training Data Pipelines and Curation - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/data-engineering-for-ai`. The article is about Comprehensive guide to data engineering for AI covering data pipelines for training and fine-tuning, data cleaning, synthetic data generation, data labeling strategies, dataset versioning, and data quality management.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you ensure training data quality for fine-tuning?; Q2: What is synthetic data generation and when should you use it?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `List`, `Dict`, `Any`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a human-in-the-loop labeling pipeline where an LLM generates draft labels for a dataset, high-confidence labels are auto-accepted, and low-confidence labels are routed for human review. It also includes a calibration report that tracks LLM labeling accuracy across different confidence buckets.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- main happy-path behavior
+- failure and boundary behavior should be inspected through the listed files
 
-### Key Classes
+## Edge cases and failure modes
+- Invalid input, empty data, and dependency failures should be tested explicitly.
+- Production implementations should add observability around latency, errors, and state transitions.
 
-- **`LabeledExample`** (dataclass): Represents a labeled example with `id`, `input_text`, `llm_label`, `llm_confidence`, `human_label`, `needs_review` flag, and `agreed` flag (whether LLM and human labels match).
-- **`LLMAssistedLabeler`**: The core labeling pipeline class managing LLM label generation, human review routing, auto-acceptance, and calibration reporting.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Methods
-
-1. **`generate_llm_label(input_text)`**: Simulates LLM label generation with confidence scores. Returns a label (positive/negative/neutral) and a confidence value (0.50-0.92). In production, this calls an actual LLM API.
-2. **`label_dataset(inputs)`**: Labels all input examples with LLM-generated labels. Sets `needs_review=True` for examples below the confidence threshold.
-3. **`auto_accept_high_confidence()`**: Auto-accepts labels where LLM confidence exceeds the threshold (0.85 by default). Returns count of auto-accepted examples.
-4. **`human_review(example_id, human_label)`**: Applies a human label to a specific example, marks it as reviewed, and sets whether the LLM label agreed with the human label.
-5. **`get_calibration_report()`**: Produces a calibration report showing overall LLM accuracy, accuracy by confidence bucket, and how many examples still need review.
-
-### Execution Flow
-
-1. **`main()`** creates a labeler with a confidence threshold of 0.85.
-2. Eight input examples with varying sentiment cues are labeled by the LLM.
-3. High-confidence labels (>= 0.85) are auto-accepted without human review.
-4. Three remaining examples (with lower confidence) receive human labels.
-5. A calibration report shows overall LLM accuracy and per-bucket accuracy.
-
-### Important Variables
-
-- `confidence_threshold = 0.85`: Labels above this are auto-accepted; below it, human review is required.
-- `needs_review`: Boolean flag indicating whether an example requires human review.
-- `agreed`: Boolean flag tracking whether the LLM label matched the human label.
-
-## Key Takeaways
-
-- LLM-assisted labeling dramatically reduces human labeling costs by auto-accepting high-confidence labels and only routing uncertain cases to humans.
-- The confidence threshold is a tunable trade-off: higher thresholds mean more human review (safer but more expensive); lower thresholds mean more auto-acceptance (cheaper but riskier).
-- Calibration reports are essential for tracking LLM labeling accuracy over time and identifying confidence ranges where the LLM is unreliable.
-- This pattern is particularly effective for sentiment analysis, intent classification, and other categorical labeling tasks where LLMs perform well on clear cases.
-- Production systems should periodically re-evaluate auto-accepted labels with human spot-checks to detect accuracy drift.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -15,101 +15,412 @@ export const metadata: ArticleMetadata = {
   slug: "ai-prompt-management-ui",
   wordCount: 5000,
   readingTime: 30,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "ai", "prompt-engineering", "versioning", "ab-testing", "llm", "evaluation"],
+  lastUpdated: "2026-05-16",
+  tags: ["hld", "ai", "prompt-engineering", "versioning", "ab-testing", "llm", "evaluation", "cost"],
   relatedTopics: ["ai-chatbot-frontend", "copilot-style-ai-assistant"],
 };
 
 export default function AiPromptManagementUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A prompt management system is the operational infrastructure for teams that use LLMs in production. Without it, prompts are hardcoded strings buried in application code, modified by developers without review, deployed without testing, and rolled back by reverting commits. The consequences: a prompt change that seemed like an improvement in local testing degrades production quality at scale, there is no way to compare prompt versions empirically, no visibility into which prompts are expensive, and no mechanism for non-engineer stakeholders (content, product, legal) to iterate on prompts without a deployment cycle.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">A prompt management UI solves this by treating prompts as versioned, testable artifacts—analogous to how feature flags treat configuration as a first-class deployable. The key capabilities are: a template system (parameterized prompts with typed variable slots), version history with diff view, an evaluation playground (run the prompt against test inputs and score outputs), A/B deployment (gradually shift traffic to a new prompt version and compare metrics), and observability (latency, cost, and quality metrics per version).</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The system manages prompts used in server-side LLM calls (not client-side). Each prompt is a system prompt template with optional user prompt templates. Variables are declared with types (string, enum, list) and defaults. Prompt versions are stored in a backend database (not in version control, though they can be exported to version control on demand). The evaluation scorer uses an LLM-as-judge approach (a separate judge LLM scores the prompt's output on defined dimensions). A/B testing uses a deterministic hash of a request attribute (userId or requestId) to assign traffic to champion or challenger versions.</p>
-      </section>
+      <p>
+        Prompt management is the configuration management discipline applied to AI systems.
+        A prompt is a production artifact: it defines how an LLM behaves for millions of
+        user interactions. Changing a prompt without a systematic process — without version
+        history, evaluation gates, rollback capability, or A/B testing infrastructure —
+        is equivalent to changing production code without version control, tests, or
+        deployment tooling. Teams that treat prompts as configuration strings edited
+        directly in production will eventually ship a regression that degrades quality
+        for all users with no ability to quickly identify which change caused it or revert
+        to the last known-good state. Prompt management UI provides the tooling to
+        prevent this.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Prompt template library:</strong> Users can create, browse, and organize prompt templates. Templates support typed variable slots (&#123;&#123;company&#125;&#125;, &#123;&#123;tone&#125;&#125;, &#123;&#123;product&#125;&#125;). Templates are organized by category and tag. Access control allows owners, editors, and view-only collaborators per template.</li>
-          <li><strong>Version history:</strong> Every saved change creates a new version. The UI shows a timeline of versions with author, timestamp, and change summary. A side-by-side diff view highlights added, removed, and changed lines between any two versions.</li>
-          <li><strong>Evaluation playground:</strong> Users can test any prompt version by providing variable values and a user message, then running the prompt against a configured model. The playground shows the model's response, token counts, estimated cost, and latency. A golden test set can be run in batch to score all test cases automatically.</li>
-          <li><strong>LLM-as-judge scoring:</strong> Prompt outputs are evaluated on defined dimensions (correctness, relevance, tone, safety, conciseness) using a separate judge LLM. Each dimension is scored 1–5 with an explanation. Aggregate scores are tracked per prompt version.</li>
-          <li><strong>A/B deployment:</strong> A new prompt version can be deployed as a challenger alongside the current production (champion) version. Traffic is split by percentage. The dashboard shows side-by-side metrics (score, latency, cost, user feedback rate). Auto-promote promotes the challenger if its score exceeds the champion's by a configured threshold over a minimum sample size.</li>
-          <li><strong>Rollback:</strong> Any previous version can be restored to production in one click. Rollback triggers a deployment event and closes any active A/B tests.</li>
-        </ul>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-prompt-management-ui-architecture.svg"
+        alt="Prompt management UI architecture showing template library with variable schemas, version history with diff view, evaluation suite runner, champion/challenger A/B deployment, traffic routing layer, cost and quality observability dashboard, and rollback mechanism"
+        caption="Prompt management architecture: template library, version control, evaluation gates, A/B deployment, and cost observability"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Prompt resolution latency:</strong> Fetching the active prompt version and resolving variable bindings must add under 5ms to the LLM call path (served from an in-memory cache, not a database query per request).</li>
-          <li><strong>Evaluation throughput:</strong> Running a golden test set of 100 cases against a prompt version must complete within 5 minutes (parallelized LLM calls).</li>
-          <li><strong>A/B assignment consistency:</strong> A given user must always receive the same prompt version within an active A/B test (deterministic assignment, not random per request).</li>
-        </ul>
-      </section>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Prompt management complexity scales with team size and system complexity:
+      </p>
+      <p>
+        <strong>Single prompt or a library?</strong> A product with one AI feature needs
+        one prompt. A platform with 20 AI features needs a library of 50+ prompts
+        (system prompts, user instruction templates, few-shot example sets, tool descriptions)
+        with relationships between them. The library case requires namespacing, categorization,
+        and search.
+      </p>
+      <p>
+        <strong>Who edits prompts?</strong> If only engineers edit prompts (in code),
+        version control is Git and no separate UI is needed. If product managers, designers,
+        or domain experts also edit prompts (a common pattern for customer-facing AI
+        features), a non-technical UI is necessary. The UI's complexity mirrors the
+        editor audience.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Evaluation gates are the most critical feature and the most commonly absent
+        one. Without an automated evaluation that runs before a new prompt version can
+        be deployed, prompt regressions ship to production regularly. Evaluation gates
+        treat prompt changes like code changes: a change must pass a quality bar before
+        it reaches users. Building the evaluation infrastructure (test cases, judge model,
+        scoring pipeline) is more work than building the version history or A/B testing
+        UI, but it's what makes the system production-grade rather than a documentation
+        tool.
+      </HighlightBlock>
 
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system has three layers. The management UI (browser): the prompt editor, version timeline, evaluation playground, A/B dashboard, and analytics charts. The prompt service (backend): stores prompt versions, resolves the active version for a given prompt ID and request context, manages A/B assignment, and exposes evaluation APIs. The observability pipeline: collects per-call metrics (latency, token count, cost, user feedback) tagged by prompt ID and version, aggregated into a time-series store for the analytics dashboard.</HighlightBlock>
-      </section>
+      <h2>Template Library and Variable Schema</h2>
+      <p>
+        A prompt template is a parameterized text with named variables that are substituted
+        at runtime. The variable schema defines each variable's name, type (string, number,
+        list, JSON object), and whether it's required or optional with a default value.
+        A customer support prompt might have variables: customer_name (string, required),
+        account_tier (string, enum of "standard" | "premium" | "enterprise", required),
+        recent_orders (list of objects, optional), and language (string, default "en").
+      </p>
+      <p>
+        The template library organizes prompts by product area, AI feature, and function.
+        Metadata per prompt: name, description, owner (team or individual), tags, the
+        AI feature it powers, the model it's designed for, creation and last-modified
+        timestamps, and the currently deployed version ID. The library view supports
+        search by name and tag, and filter by owner and product area.
+      </p>
+      <p>
+        Template inheritance: a base template defines common instructions shared across
+        a product's prompts ("You are a helpful assistant for AcmeCorp. Always respond
+        in the user's language."). Child templates extend the base with feature-specific
+        instructions. When the base template changes, all children inherit the change
+        automatically (or are flagged for review before inheriting — configurable). This
+        prevents the "copy-paste" drift problem where a shared instruction is manually
+        copied into 20 prompts and then updated in 18 of them.
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-prompt-management-ui-architecture.svg"
-          alt="Prompt management UI architecture showing three panels: Prompt Library (template browser, variable schema with double-brace syntax, version history v1 to v3, deployment tags draft/staging/production, access control owner/editor/viewer, usage analytics calls/day, prompt lifecycle states), Prompt Editor and Playground (system prompt editor with variable highlights and token count, variable bindings test values, user prompt test input, Run button, Compare Versions button, model config temperature/max-tokens/stop-seq), and Testing and Deployment (evaluation suite with golden test set and LLM-as-judge scoring correctness/relevance/tone, regression guard blocks promotion if score drops 5%, A/B deployment champion/challenger with traffic split, rollback, observability latency P95 error rate cache hit)."
-          caption="Prompt management architecture: template library with variable schemas → versioned editor → evaluation suite (golden tests + LLM-as-judge) → A/B deployment (champion/challenger) → observability"
-        />
-      </section>
+      <h2>Version History and Diff View</h2>
+      <p>
+        Every prompt edit creates a new immutable version. Versions are never edited in
+        place — this is the Git commit model applied to prompts. The version record contains:
+        versionId (auto-incrementing integer), content (full prompt text), variableSchema
+        (the variable definitions at this version), authorId, parentVersionId (the version
+        this was derived from), label (optional human-readable note: "Added structured
+        output instruction"), createdAt, and a metrics snapshot (evaluation scores when
+        this version was last tested).
+      </p>
+      <p>
+        The version history panel shows a timeline with author avatar, timestamp, and
+        label. Clicking any version shows its full content and metrics. Selecting two
+        versions for comparison shows a word-level diff: additions highlighted in green,
+        removals in red with strikethrough, unchanged lines collapsed. For long prompts
+        with small changes, the diff view focuses attention on what changed rather than
+        requiring the user to scan the full text.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Rollback is creating a new version identical to a historical one — not restoring
+        the historical version in place. The "Rollback to v7" action creates version 23
+        with content identical to version 7. This preserves the audit trail: the history
+        shows that someone rolled back to v7, when, and why (the rollback reason is
+        captured as the new version's label). Mutating historical versions would break
+        audit integrity and make the history unreliable as a debugging tool.
+      </HighlightBlock>
 
-      <section>
-        <h2>Detailed Design</h2>
+      <h2>Evaluation Suite and Quality Gates</h2>
+      <p>
+        Each prompt version must pass an evaluation suite before it can be marked as
+        deployable. The evaluation suite consists of test cases: (input variables, expected
+        output or acceptance criteria) pairs maintained by the prompt's owner.
+      </p>
+      <p>
+        Test case types: exact match (the output must contain a specific string — for
+        highly constrained outputs), LLM-as-judge (a judge model evaluates the output
+        on specified criteria: accuracy, tone, format compliance, absence of hallucination),
+        and structural validation (the output must parse as valid JSON with a specific
+        schema — for structured output prompts). For creative prompts (marketing copy,
+        product descriptions), exact match is inappropriate — LLM-as-judge is the
+        only viable automated scoring mechanism.
+      </p>
+      <p>
+        Running the evaluation suite: the suite runner executes each test case against
+        the new prompt version in parallel, collecting outputs and scores. Progress is
+        shown in real time (the UI shows each test case's result as it completes). The
+        final report shows: overall pass rate, pass/fail per test case, score distributions
+        across dimensions, and a regression comparison against the baseline (the current
+        deployed version). A version that passes all test cases and shows no regression
+        on any dimension is marked as "evaluation approved" — the only state from which
+        deployment is allowed.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Evaluation suites must be maintained continuously. A test suite that was built
+        when the prompt was first created and never updated will miss new failure modes
+        discovered in production. Operationalize test case creation: when a production
+        incident (a user complaint about an AI response) is resolved, add the failing
+        input as a test case. When a prompt change is made to fix a specific edge case,
+        add a test case for that edge case. Over time, the evaluation suite becomes a
+        comprehensive regression safety net covering the real failure modes the team
+        has encountered.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Template System and Variable Schema</h3>
-        <HighlightBlock as="p" tier="important">A prompt template is a string with named variable slots: &#123;&#123;company&#125;&#125;, &#123;&#123;tone&#125;&#125;, &#123;&#123;context&#125;&#125;. Each variable is declared in a schema attached to the template: name (string), type (string / enum / list / number), description (for UI display and LLM documentation), default value (optional), and required (boolean). The schema serves three purposes: input validation (the playground and production call path validate that all required variables are provided before rendering the prompt), documentation (the schema is displayed in the template browser so other users know how to use the template), and token estimation (variable defaults are used for token count estimation in the editor's cost display).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Prompt rendering: at call time (in the LLM proxy), the prompt template is fetched from the in-memory cache, variables are substituted, and the rendered prompt string is sent to the model. The rendering is pure string substitution—no server-side template engine is invoked. If a required variable is missing, the proxy returns a 400 error before making the LLM call, preventing unrendered &#123;&#123;variable&#125;&#125; literals from reaching the model.</HighlightBlock>
-        <p>Prompt composition: large prompts can be composed from smaller sub-templates using an include directive (&#123;&#123;include: safety-rules-v2&#125;&#125;). The prompt service resolves includes at rendering time, assembling the full prompt from its parts. This allows common sections (safety guidelines, tone instructions, citation formatting rules) to be maintained once and referenced across many templates. Include targets are pinned to a specific version of the included sub-template to prevent unexpected changes to the including template when the included one is updated.</p>
+      <h2>A/B Deployment: Champion/Challenger Pattern</h2>
+      <p>
+        When a new prompt version passes evaluation, it can be deployed to a fraction
+        of production traffic in a champion/challenger experiment. The champion is the
+        currently deployed version receiving the majority of traffic. The challenger
+        is the new version being tested on a small fraction (typically 5–10%).
+      </p>
+      <p>
+        Traffic routing: each incoming request is assigned to champion or challenger
+        using a consistent hash of a stable user identifier (userId or sessionId). Consistent
+        hashing ensures the same user always gets the same version within an experiment —
+        a user who sees the champion for the first two interactions doesn't suddenly get
+        the challenger for the third. This consistency is important for features where
+        the AI maintains context across sessions (the prompt may affect how the model
+        responds to follow-ups).
+      </p>
+      <p>
+        Evaluation metrics in production: collect user feedback (thumbs up/down), implicit
+        signals (copy rate, rephrasing rate), and task completion metrics specific to
+        the AI feature. Compare these metrics between champion and challenger cohorts.
+        Statistical significance testing (two-proportion z-test for binary metrics,
+        t-test for continuous metrics) determines when the challenger has demonstrated
+        a reliable improvement or regression.
+      </p>
+      <p>
+        Promotion and rollback: if the challenger shows statistically significant
+        improvement (p-value below 0.05, effect size above the minimum meaningful
+        threshold), promote it to champion (increase its traffic to 100%). If the
+        challenger shows a regression, roll back to 0% challenger traffic immediately
+        — don't wait for the experiment to run its course. The rollback action is available
+        in the experiment dashboard and executes within seconds (the traffic routing
+        table is updated in the configuration layer, propagates to all edge nodes within
+        the CDN's configuration propagation time).
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Version History and Diff View</h3>
-        <p>Every save operation (manual save or auto-save after a 30-second idle period) creates a new version record: versionId, promptId, authorId, createdAt, changeDescription (user-provided or auto-generated from diff), and the full prompt content. Versions are immutable: once created, a version's content cannot be modified. Version labels (draft, staging, production) are metadata attached to versions, not properties of the content itself—the same content exists in one place; labels are pointers to it.</p>
-        <HighlightBlock as="p" tier="important">The diff view uses a line-level diff algorithm (Myers diff) between any two selected versions. Additions are shown in green, deletions in red, and unchanged lines in gray. For variable slots, the diff treats &#123;&#123;variable_name&#125;&#125; as an atomic unit (not as individual characters), so a renamed variable shows as a deletion + addition rather than a character-level edit. Token count deltas are shown per-diff: "v3 adds 47 tokens vs v2 (est. +$0.0008/call at 1K calls/day)." This makes the cost impact of prompt changes visible at the point of decision.</HighlightBlock>
+      <h2>Cost and Token Observability</h2>
+      <p>
+        Prompt changes affect token consumption, which directly affects cost. A prompt
+        that adds 200 tokens to the system message raises cost by 200 tokens per
+        request — at $0.01/1K tokens and 1M requests/day, that's $2,000/day in additional
+        cost.
+      </p>
+      <p>
+        Token tracking: for each deployed prompt version, track the average input token
+        count (system prompt tokens plus average user message tokens), average output
+        token count, and the resulting cost per request at the model's current pricing.
+        The version history shows token count and cost per request alongside quality
+        metrics, making the cost-quality trade-off visible: "version 7 increased quality
+        by 8% but increased cost per request by 15%."
+      </p>
+      <HighlightBlock as="p" tier="important">
+        System prompt optimization: long system prompts are expensive. The prompt management
+        UI should flag unusually long prompts and provide a token count breakdown per
+        section. Tools like prompt compression (removing redundant instructions while
+        preserving meaning) and few-shot example pruning (testing whether removing some
+        examples from the prompt degrades quality) can reduce token consumption without
+        quality loss. Show the expected monthly cost at production volume for each version
+        — this makes cost implications concrete and allows teams to make informed trade-off
+        decisions between quality and cost.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Evaluation Playground and Golden Test Sets</h3>
-        <p>The playground allows interactive testing: the user enters variable values and a user message, clicks Run, and sees the model's response streamed in real time alongside token counts and latency. The playground also shows the rendered system prompt (with variable substitutions applied) so the user can verify that the substitution worked correctly before running. Multiple runs with different variable values can be saved as test cases and added to the template's golden test set.</p>
-        <p>Golden test sets are collections of &#123;variables, userMessage, expectedOutput&#125; tuples associated with a template. Running the golden test set against a prompt version executes all test cases in parallel (rate-limited to the LLM provider's concurrency limit) and collects outputs. Each output is then scored by the LLM-as-judge on the configured evaluation dimensions. The judge LLM receives: the original user message, the prompt version's output, the expected output (if provided), and a scoring rubric for each dimension. It returns a score (1–5) and justification for each dimension. Aggregate scores are compared to the baseline (the previous production version's scores on the same test set) to determine whether the new version represents an improvement or regression.</p>
+      <h2>Integration with CI/CD</h2>
+      <p>
+        Prompt management should integrate with the engineering team's existing CI/CD
+        pipeline. Prompt versions stored in the management system can be exported as
+        JSON or YAML configuration files that are committed to the source repository.
+        A CI step runs the evaluation suite on any changed prompt files and blocks the
+        merge if evaluation fails. Deployment is triggered by the same pipeline that
+        deploys application code, with prompt deployment separated from application
+        code deployment (so prompts can be updated without a full application redeploy).
+      </p>
+      <p>
+        This integration makes prompt changes first-class engineering changes: they appear
+        in code review, they go through CI, they have deployment history tied to commits.
+        It also allows reverting a prompt change as part of a broader rollback (git revert
+        the commit that updated the prompt file, redeploy).
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">A/B Deployment and Champion/Challenger Pattern</h3>
-        <p>When a prompt version passes the golden test evaluation and is promoted to an A/B test, the prompt service begins routing a configured percentage of calls (typically 10%) to the challenger version while the remaining 90% continue to use the champion. Assignment is deterministic: for a given promptId and requestIdentifier (userId or sessionId), the prompt service computes a hash (MurmurHash of promptId + requestIdentifier + experimentSeed) modulo 100, and routes to the challenger if the result is below the traffic percentage. This ensures a given user always sees the same prompt version throughout the experiment.</p>
-        <HighlightBlock as="p" tier="important">All calls are tagged with their prompt version in the telemetry pipeline. The A/B dashboard shows the champion and challenger side-by-side with metrics updated in near-real time (5-minute aggregation windows): LLM-as-judge average score, latency P50/P95, token cost per call, user feedback rate (thumbs up / thumbs down), and error rate. Statistical significance is computed using a Welch t-test on the score samples; the dashboard shows whether the observed difference is statistically significant at p &lt; 0.05. Auto-promotion triggers when: minimum sample size (configurable, default 500 calls on the challenger) is reached, the challenger's score is significantly higher, and no regressions in latency or error rate exceed the configured thresholds. Manual override is always available.</HighlightBlock>
+      <h2>Interview Q&A</h2>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">In-Path Prompt Resolution</h3>
-        <HighlightBlock as="p" tier="important">Production LLM calls must not be slowed by prompt management overhead. The prompt service maintains an in-memory cache of the active prompt version for each promptId. Cache entries include the rendered template string (pre-compiled, with variable slots extracted as a list for fast substitution), the A/B experiment configuration (traffic percentage, challenger versionId, experiment seed), and the model configuration (temperature, max tokens, stop sequences). Cache TTL is 30 seconds; invalidation is event-driven (a deployment event pushes a cache-bust signal to all prompt service instances).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">At call time: the LLM proxy receives a promptId and a variable map. It looks up the cache entry (under 1ms), determines the version via A/B hash (under 1ms), renders the prompt (string substitution, under 1ms), and appends the rendered system prompt to the LLM request. Total prompt resolution overhead: under 5ms. Errors in variable resolution (missing required variables) are returned as 400s before any LLM call is made, preventing unrendered prompts from reaching the model and consuming tokens.</HighlightBlock>
+      <h3>Q: How do you handle prompts that have different behavior depending on model version?</h3>
+      <p>
+        Prompts are model-specific: a prompt optimized for GPT-4 may produce different
+        behavior on Claude or a fine-tuned model. The prompt version record includes a
+        target_model field. When the model is updated (provider upgrades from gpt-4 to
+        gpt-4-turbo), the evaluation suite is re-run against the new model version —
+        even if the prompt text hasn't changed. A model update that degrades evaluation
+        scores triggers an investigation: either the prompt needs adaptation for the new
+        model, or the model change should be rolled back. Never upgrade models without
+        re-evaluating all affected prompts.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cost Observability</h3>
-        <HighlightBlock as="p" tier="important">Every LLM call tagged with a promptId reports its token counts (input tokens, output tokens, cached tokens) to the observability pipeline. The pipeline computes cost per call using the model's pricing table (updated when model pricing changes) and aggregates cost by promptId, version, model, and time period. The analytics dashboard shows: cost per call (average, P95), total daily cost per prompt, cost breakdown between input and output tokens, and cache hit rate (if the model supports prompt caching, such as Anthropic's prompt caching for repeated system prompts). A cost estimator in the editor shows the projected monthly cost of a prompt version at a given call volume, updated as the user edits the prompt (reflecting token count changes in real time).</HighlightBlock>
-      </section>
+      <h3>Q: How would you implement prompt access control for a team with multiple AI products?</h3>
+      <p>
+        RBAC with three tiers: viewers (can read prompt content and evaluation results),
+        editors (can create new versions and run evaluations), and deployers (can promote
+        versions to production and manage A/B experiments). Prompt ownership is assigned
+        to a team or individual. Viewers, editors, and deployers are configured per prompt
+        (not just per system) — a user may be an editor for their team's prompts but
+        a viewer for other teams'. Deployment to production requires both evaluation
+        approval and a deployer-role approval action (similar to the two-person rule
+        for production deployments). Audit log records every read, edit, evaluation,
+        and deployment action with the actor and timestamp.
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-prompt-management-ui-versioning.svg"
-          alt="Prompt versioning showing timeline with v1 deprecated, v2 deprecated, v3 production champion (green circle), v4 staging challenger (purple circle), v5 draft (dashed circle), and diff view showing deleted line (red) vs added line (green) for v3 vs v4. A/B test dashboard with champion v3 90% traffic showing score 4.12, P95 1240ms, cost $0.0022, thumbs-up 82%; challenger v4 10% traffic showing score 4.31 up arrow, latency 1180ms down arrow, cost $0.0031 up arrow (concern), thumbs-up 86% up arrow; Promote to Prod and Rollback buttons. Right panel with 5 evaluation dimensions (correctness, relevance, tone adherence, safety/refusal, conciseness) and cost estimator formula."
-          caption="Version timeline (draft→staging→production A/B), diff view, champion vs challenger metrics dashboard, evaluation dimensions, and cost estimator"
-        />
-      </section>
+      <h2>Prompt Caching and Cost Optimization</h2>
+      <p>
+        System prompt tokens are billed on every API call. For a 2,000-token system prompt
+        at $0.01 per 1K tokens and 1 million daily requests, that is $20,000 per day
+        exclusively from the system prompt. Prompt caching (supported by Anthropic's
+        cache_control parameter and OpenAI's context caching in preview) allows the provider
+        to store the system prompt's KV cache server-side. Subsequent requests that share
+        the same prefix hit the cache and are billed at a fraction of the standard input
+        token rate — Anthropic charges 10% of the standard rate for cache read hits.
+      </p>
+      <p>
+        The prompt management UI should expose cache breakpoint placement. A long prompt
+        with a stable prefix (the base instructions shared across all users) and a dynamic
+        suffix (few-shot examples or user-specific context appended per request) is structured
+        with the cache breakpoint at the boundary between stable and dynamic content.
+        The stable prefix is cached; the dynamic suffix is billed at full rate. The UI
+        shows the expected cache hit rate (percentage of requests that will hit the stable
+        prefix) and the resulting cost savings at production volume. Changing the stable
+        prefix — even a small edit — invalidates the cache for all users until the new
+        prefix is cached by the provider, causing a transient cost spike during the warm-up
+        period (typically the first few hundred requests).
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Monitor cache hit rates as a production metric alongside token cost and quality
+        scores. A cache hit rate below 60% indicates either the stable prefix is too short,
+        the dynamic suffix is unexpectedly large and consuming most of the prompt, or
+        request diversity is preventing consistent prefix matching. The prompt management
+        dashboard should plot cache hit rate per version alongside cost per request,
+        making the cache efficiency visible as a first-class optimization target.
+      </HighlightBlock>
+      <p>
+        Beyond provider-level caching, the prompt management system itself can implement
+        semantic deduplication: before generating a new evaluation run, check whether
+        an existing version with near-identical content (above 95% token overlap) has
+        already been evaluated against the same test suite. Reuse cached evaluation scores
+        rather than re-running the expensive evaluation pipeline. This is particularly
+        useful when minor formatting tweaks are made to an existing prompt — the evaluation
+        results from the previous version are highly predictive of the tweaked version's
+        performance.
+      </p>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">LLM-as-judge reliability: using an LLM to score another LLM's outputs is convenient but introduces evaluation noise. The judge LLM may score the same output differently across runs (low reliability), may be biased toward outputs stylistically similar to its own generation patterns, and cannot evaluate factual correctness for domain-specific knowledge it does not have. Mitigations: run each test case through the judge 3 times and average the scores (reduces noise), use a different model family for the judge than the model being evaluated (reduces stylistic bias), and supplement LLM-as-judge with deterministic checks (exact-match tests for outputs that have a single correct answer, regex checks for format compliance).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Prompt version explosion: teams that iterate rapidly on prompts can accumulate hundreds of versions quickly. The version history UI becomes unwieldy without a policy for pruning or archiving old versions. A practical approach: retain full version history (for audit and rollback) but show only significant versions in the timeline (a significant version is one that was promoted to staging or production, or was explicitly labeled by a user). Intermediate auto-saves appear only when the user expands the timeline for that time range.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Access control granularity: who can promote a prompt to production? Allowing all editors to promote creates risk (a well-intentioned but untested change can break production). Requiring owner approval for every promotion creates a bottleneck. A practical policy: editors can promote to staging and run A/B tests; only owners (and designated release managers) can confirm auto-promotion or manually promote a challenger to champion. This separates the ability to experiment (open to editors) from the ability to make production decisions (reserved for owners).</HighlightBlock>
-      </section>
+      <h2>Cross-Environment Promotion</h2>
+      <p>
+        A mature prompt management system mirrors the software deployment model: prompts
+        move through a sequence of environments (development, staging, production) with
+        gates between each transition. In the development environment, engineers and prompt
+        authors iterate freely — any version can be deployed without evaluation. Staging
+        requires evaluation approval: the version must pass the evaluation suite before
+        it can be promoted to staging, but staging traffic is synthetic or internal users.
+        Production requires both evaluation approval and a human deployer action, with
+        the staging deployment providing additional behavioral evidence before the commit
+        to production traffic.
+      </p>
+      <p>
+        The promotion workflow: a prompt author creates and refines version N in development,
+        runs the evaluation suite, and initiates a promotion request to staging. The
+        promotion request shows the evaluation results, a diff against the current staging
+        version, and a comment field for the rationale. A deployer reviews and approves
+        the staging promotion. After staging validates against internal traffic for a
+        configurable soak period (typically 24–72 hours), the deployer initiates production
+        promotion. The production champion/challenger A/B experiment begins with 5% traffic
+        to the challenger. Automatic promotion to 100% occurs if the challenger meets
+        the statistical significance threshold within the experiment window.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Environment isolation is not just for safety — it enables reliable attribution.
+        When a production quality regression is reported, the environment history provides
+        a precise timeline: which versions were deployed to staging and production, when
+        each promotion occurred, and who approved each step. Without environment isolation,
+        a prompt change that caused a regression may have also been running in development
+        for days before going to production, making the timeline ambiguous. Isolated
+        environments make the causal chain clear.
+      </HighlightBlock>
+      <p>
+        Configuration inheritance across environments: a staging environment should mirror
+        the production configuration as closely as possible to detect issues early. If
+        staging uses a different model version or different rate limits than production,
+        behavioral differences observed in staging may not reflect what production will
+        actually do. Automate the configuration sync between environments and flag
+        discrepancies: "Staging is using GPT-4-turbo but production is using GPT-4 —
+        evaluation results may not transfer."
+      </p>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A prompt management UI treats prompts as versioned, testable, deployable artifacts. The template system supports typed variable schemas (&#123;&#123;name&#125;&#125; slots with declared types and defaults) and sub-template includes (for shared sections). Every save creates an immutable version; the diff view shows line-level additions/deletions and token count impact between versions. The evaluation playground runs prompts against test inputs and scores outputs using an LLM-as-judge on dimensions (correctness, relevance, tone, safety, conciseness). A/B deployment follows a champion/challenger pattern: 10% traffic to the challenger with deterministic per-user assignment, real-time metrics (score, latency, cost, feedback) on the dashboard, and auto-promotion triggered when significance and sample size thresholds are met. In-path prompt resolution uses an in-memory cache (30s TTL, event-driven invalidation) for under 5ms overhead per LLM call. The observability pipeline reports cost per call by version, enabling data-driven decisions about whether a quality improvement is worth its token cost increase. The defining design principle: prompts should be managed with the same rigor as code—version control, testing, gradual rollout, and rollback capability—because in an LLM-powered product, the prompt is as consequential as the code.</HighlightBlock>
-      </section>
+      <h2>Prompt Dependency Resolution</h2>
+      <p>
+        Complex AI systems have prompts that depend on other prompts. A customer support
+        system might have a routing prompt (determines which specialist agent handles the
+        query), multiple specialist prompts (billing, technical, account management), and
+        a synthesizer prompt (combines specialist outputs into a coherent response).
+        Changing the routing prompt affects which specialist is invoked; changing a
+        specialist prompt affects the quality of its output domain. These dependencies
+        must be tracked and surfaced in the prompt management UI.
+      </p>
+      <p>
+        The dependency graph: each prompt declares its dependencies (which prompts it calls,
+        which prompt versions it was designed to work with). The graph view shows these
+        relationships — a directed graph where edges represent dependency. When a prompt
+        is updated, the dependency graph highlights all prompts that depend on it and
+        flags them for review: "Routing prompt v12 was designed for specialist prompt
+        v5. You are deploying specialist prompt v7 — verify compatibility." This prevents
+        silent integration failures where a prompt change breaks the behavior of downstream
+        dependent prompts.
+      </p>
+      <p>
+        Version pinning: a prompt can pin a specific version of a dependency rather than
+        always using the latest. Pinning ensures stability — the prompt's behavior doesn't
+        change when a dependency is updated. The UI tracks pin staleness: "This prompt
+        is pinned to routing prompt v5. v8 is the current version — consider reviewing
+        compatibility and upgrading the pin." A dependency graph view makes the entire
+        pinning state visible: green nodes are on the latest version, yellow nodes are
+        pinned to older versions, and red nodes are pinned to versions that have been
+        deprecated.
+      </p>
+
+      <h3>Q: How do you prevent prompt bloat where prompts accumulate instructions over time and become unmanageable?</h3>
+      <p>
+        Prompt bloat is a maintenance problem caused by additive-only editing: each issue
+        discovered in production leads to adding a new instruction to prevent it, but
+        instructions are never removed. After months of iteration, a prompt may have
+        contradictory instructions, redundant rules, and a token count 3x higher than
+        necessary. Combat this with scheduled prompt audits: quarterly review of each
+        production prompt to identify instructions that address issues that no longer occur
+        in production (remove them), instructions that are captured by the model's
+        updated behavior (test removal, measure no regression), and instructions that
+        conflict (resolve the conflict explicitly). The evaluation suite is the safety
+        net that makes removal safe — removing an instruction and running the full test
+        suite reveals immediately if any test case breaks.
+      </p>
+
+      <h3>Q: How do you handle prompts that use tools and function calling — do the tool schemas count as part of the prompt?</h3>
+      <p>
+        Tool schemas (JSON schemas passed to the LLM API alongside the messages) are
+        definitionally part of the prompt — they consume context window tokens, they
+        define available behaviors, and changing them changes model behavior. The prompt
+        management system should version tool schemas as first-class entities alongside
+        prompt text. A version record includes: the message templates, the system prompt,
+        and the associated tool schemas. Evaluation runs test the prompt and tool schema
+        combination as a unit. Changing the tool schema without updating the prompt version
+        is equivalent to changing code without updating the version tag — invisible changes
+        that cannot be traced in the audit log.
+      </p>
+
+      <h3>Q: How do you manage prompt versioning for multi-modal prompts that include images as few-shot examples?</h3>
+      <p>
+        Vision-capable models accept image inputs as part of the prompt — for example,
+        a visual inspection system might include two or three example images showing
+        the correct output format. These images are part of the prompt and must be
+        versioned alongside the text. The prompt version record stores image assets
+        by content hash (SHA-256 of the binary) rather than by URL — URLs can change
+        without changing the content. The diff view for multi-modal prompts shows
+        text changes as a word diff and image changes as a before/after thumbnail
+        comparison. Token counting for multi-modal prompts includes image tokens
+        (computed from image dimensions using the provider's documented formula —
+        Anthropic and OpenAI both provide a pixel-to-token conversion rule) to give
+        accurate cost estimates.
+      </p>
     </ArticleLayout>
   );
 }

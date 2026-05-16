@@ -1,94 +1,30 @@
-# Example 3: Tool Description Quality Evaluator for MCP Servers
+# Model Context Protocol (MCP) - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/mcp`. The article is about Comprehensive guide to the Model Context Protocol covering standardized tool-use architecture, resource discovery, server/client design, integrations, and building MCP-compatible tools and servers.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What problem does MCP solve and why is it important for the AI ecosystem?; Q2: Compare MCP with OpenAPI-based tool discovery. When would you use each?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None — uses only the Python standard library (`typing`, `dataclasses`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
----
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-## What This Demonstrates
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-This example implements a scoring system that evaluates the quality of MCP tool descriptions along six dimensions: action description, usage guidance, argument documentation, return value documentation, examples, and overall clarity. It demonstrates why tool description quality directly impacts LLM comprehension and shows three tiers of description quality (bad, mediocre, good) with scored output and actionable recommendations.
+## Important implementation behavior
+- authentication or authorization boundaries
+- input validation and schema safety
 
----
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
 
-## Code Walkthrough
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Classes & Variables
-
-| Symbol | Type | Purpose |
-|---|---|---|
-| `ToolDescriptionScore` | dataclass | Holds per-tool evaluation results and computes a weighted total score. |
-| `ToolDescriptionScore.tool_name` | str | Name of the evaluated tool. |
-| `ToolDescriptionScore.has_action_description` | bool | Whether the description says what the tool does (first sentence > 10 chars). |
-| `ToolDescriptionScore.has_usage_guidance` | bool | Whether it includes phrases like "use when", "use to", "call when", etc. |
-| `ToolDescriptionScore.has_argument_docs` | bool | Whether every argument property in the schema has a `description` field. |
-| `ToolDescriptionScore.has_return_docs` | bool | Whether the description mentions return values ("returns" or "return" keyword). |
-| `ToolDescriptionScore.has_examples` | bool | Whether the description includes examples ("example", "e.g.", "for instance"). |
-| `ToolDescriptionScore.description_length` | int | Character count of the description string. |
-| `ToolDescriptionScore.clarity_score` | float | Heuristic clarity: `min(1.0, len(desc) / 200)` — 200+ chars = full clarity. |
-| `ToolDescriptionScore.total_score` | float | Weighted composite score (0.0 – 1.0). |
-| `evaluate_tool_description()` | function | Analyzes a tool dict and returns a `ToolDescriptionScore` instance. |
-
-### Weights Used in `compute_total()`
-
-| Dimension | Weight | Rationale |
-|---|---|---|
-| `has_action_description` | 0.25 | Most important — the LLM must understand what the tool does. |
-| `has_usage_guidance` | 0.20 | Tells the LLM *when* to invoke the tool. |
-| `has_argument_docs` | 0.20 | Ensures the LLM passes correct arguments. |
-| `has_return_docs` | 0.15 | Helps the LLM interpret the tool's output. |
-| `has_examples` | 0.10 | Concrete examples reduce hallucination. |
-| `clarity_score` | 0.10 | Scales with description length (capped at 200 chars). |
-
-### Execution Flow (Step-by-Step)
-
-1. **`main()` starts** — defines three tool descriptions of varying quality:
-   - **`bad_tool`**: description is `"Gets data."` — 10 chars, no usage guidance, no argument docs, no return docs, no examples.
-   - **`mediocre_tool`**: describes what it does and what it returns, but has no argument descriptions, no usage guidance, and no examples.
-   - **`good_tool`**: ~300 chars, includes action description, "use when" usage guidance, argument descriptions in the schema, return value documentation, and a concrete example call.
-2. **Prints a table header** with columns: Tool, Score, Action, Usage, Args, Return, Ex, Len.
-3. **For each tool**, calls `evaluate_tool_description(tool)`:
-   - Extracts `description` and `inputSchema`.
-   - **Action check**: splits on first period; if first sentence > 10 chars, passes. Otherwise fails.
-   - **Usage check**: searches for phrases like `"use when"`, `"use to"`, `"call when"`, `"for finding"`, `"for querying"`, `"for creating"` (case-insensitive).
-   - **Argument docs check**: iterates over all `properties` in the schema; passes only if every property has a `"description"` key.
-   - **Return check**: looks for `"returns"` or `"return"` in the description (case-insensitive).
-   - **Examples check**: looks for `"example"`, `"e.g."`, or `"for instance"` in the description.
-   - **Clarity**: computed as `min(1.0, len(desc) / 200)`.
-   - Returns a `ToolDescriptionScore` dataclass with all boolean flags and scores.
-4. **Calls `score.compute_total()`** — applies the weighted formula and stores the result in `score.total_score`.
-5. **Prints one row per tool** showing the total score and checkmarks/crosses for each dimension.
-6. **Prints recommendations** — iterates tools again, evaluates, and categorizes:
-   - Score < 0.5 → **POOR**: rewrite with action, usage guidance, and argument docs.
-   - Score 0.5–0.8 → **FAIR**: add usage guidance ("use when...") and return value description.
-   - Score >= 0.8 → **GOOD**: well-structured description.
-
-### Expected Output
-
-```
-Tool                  Score  Action  Usage  Args  Return  Ex   Len
------------------------------------------------------------------
-bad_tool              0.000       ✗      ✗     ✗       ✗   ✗    10
-mediocre_tool         0.450       ✓      ✗     ✗       ✓   ✗    82
-good_tool             1.000       ✓      ✓     ✓       ✓   ✓   297
-
-=== Recommendations ===
-  bad_tool: POOR — Rewrite description with action, usage guidance, and argument docs
-  mediocre_tool: FAIR — Add usage guidance ('use when...') and return value description
-  good_tool: GOOD — Well-structured description
-```
-
----
-
-## Key Takeaways
-
-- **Tool descriptions are the LLM's API docs** — the LLM has no source code access; it relies entirely on the `description` and `inputSchema` to decide when and how to call a tool. Poor descriptions lead to missed calls, wrong arguments, or hallucinated parameters.
-- **Structured evaluation catches gaps** — the six-dimension scorer makes it easy to spot exactly what is missing. `bad_tool` fails every dimension; `mediocre_tool` passes action and return but lacks usage guidance and argument docs; `good_tool` passes everything.
-- **"Use when" phrasing is critical** — the evaluator specifically checks for usage guidance phrases. This pattern ("Use when you need to...") tells the LLM the invocation context, which is the single biggest factor in correct tool selection.
-- **Argument documentation prevents silent failures** — without per-property `description` fields in the JSON Schema, the LLM may pass wrong types, omit required fields, or invent parameters that don't exist. The `has_argument_docs` check ensures schema completeness.
-- **Length correlates with clarity** — the heuristic `min(1.0, len(desc) / 200)` is simple but effective: descriptions under 100 chars score at most 0.5 on clarity, while 200+ char descriptions get full clarity credit. This incentivizes thorough, specific descriptions.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

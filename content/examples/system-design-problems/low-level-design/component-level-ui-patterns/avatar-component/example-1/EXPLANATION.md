@@ -1,175 +1,51 @@
-# Avatar Component — Example Explanation
+# Design an Avatar Component - example-1 Explanation
 
-## Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/avatar-component`. The article is about Complete LLD solution for a production-grade avatar component with fallback handling, initials generation, lazy image loading, status indicators, grouped avatar stacks, and full accessibility.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Component Interaction Flow.
 
-This is a production-ready Avatar component implementation with:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-- **Fallback chain**: image → initials (from name) → generic user icon
-- **Lazy loading**: IntersectionObserver with 50px rootMargin for preloading
-- **Error tracking**: Zustand store keyed by URL, with retry limits (max 3)
-- **Status indicators**: colored dots (online/offline/away/busy) at bottom-right
-- **Avatar groups**: overlapping stacks with "+N more" overflow badge
-- **Accessibility**: aria-label, role="img", status announcements, keyboard support
-- **Internationalization**: CJK character support, emoji-aware grapheme slicing
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## File Structure
+## File-by-file walkthrough
+- `components/avatar-fallback.tsx`: Implements the main logic, including COLOR_PALETTE, djb2Hash, hash, i, AvatarFallback.
+- `components/avatar-group.tsx`: Implements the main logic, including OVERLAP_MARGIN, FIRST_CHILD_PADDING, BADGE_TEXT_SIZE, AvatarGroup, childArray.
+- `components/avatar-image.tsx`: Implements the main logic, including AvatarImage, AvatarImage, px.
+- `components/avatar-status.tsx`: Implements the main logic, including STATUS_DOT_SIZE, STATUS_BORDER, AvatarStatus, dotSize, borderWidth.
+- `components/avatar.tsx`: Implements the main logic, including AvatarImageWrapper, AvatarFallbackWrapper, Avatar, shapeClass, handleError.
+- `hooks/use-avatar-image.ts`: Implements the main logic, including useAvatarImage, mountedRef, elementRef, observerRef, getEntry.
+- `hooks/use-avatar-status.ts`: Implements the main logic, including useAvatarStatus.
+- `lib/avatar-store.ts`: Models client or service state transitions and update behavior.
+- `lib/avatar-types.ts`: Implements the main logic, including AVATAR_SIZE_PX, AVATAR_SHAPE_CLASSES, MAX_RETRIES, STATUS_COLORS, STATUS_LABELS.
+- `lib/initials-generator.ts`: Implements the main logic, including generateInitials, trimmed, cjkRegex, words, first.
 
-```
-example-1/
-├── lib/
-│   ├── avatar-types.ts        — TypeScript interfaces and constants
-│   ├── initials-generator.ts  — Name parsing, CJK/emoji handling
-│   └── avatar-store.ts        — Zustand store for error tracking
-├── hooks/
-│   ├── use-avatar-image.ts    — Image loading lifecycle hook
-│   └── use-avatar-status.ts   — Status color/label mapping
-└── components/
-    ├── avatar.tsx             — Main component (compound pattern)
-    ├── avatar-image.tsx       — Image renderer with lazy loading
-    ├── avatar-fallback.tsx    — Initials or generic icon
-    ├── avatar-status.tsx      — Status indicator dot
-    └── avatar-group.tsx       — Overlapping avatar stack
-```
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Architecture Decisions
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- cache freshness, staleness, or invalidation
+- pagination or cursor handling
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
 
-### 1. Fallback Chain Design
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Cached data can become stale and needs invalidation or freshness checks.
+- Large result sets need stable pagination and empty-page behavior.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
 
-The component follows a three-tier fallback:
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-1. **Image**: If `src` is provided and loading succeeds, render `<img>` with `object-fit: cover`.
-2. **Initials**: If the image fails, extract initials from `name` using `generateInitials()`. Display in a hash-derived color container.
-3. **Generic Icon**: If no `name` is available, render a simple SVG user silhouette.
-
-The fallback transition is synchronous — as soon as `onError` fires on the `<img>`, the component re-renders with the fallback. No animation is applied by default (can be added via Framer Motion).
-
-### 2. Lazy Loading Strategy
-
-Two layers of lazy loading:
-
-- **IntersectionObserver**: Triggers when the avatar enters within 50px of the viewport. Shows a skeleton placeholder until then.
-- **Native `loading="lazy"`**: Browser-native lazy loading as a secondary safeguard.
-
-The IntersectionObserver approach gives precise control over when loading begins and allows skeleton placeholders that prevent layout shift (CLS).
-
-### 3. Error Tracking with Zustand
-
-The `useAvatarStore` tracks error state per URL (not per component instance). This is important because:
-
-- The same image URL may appear in multiple avatars (e.g., in a thread where the same user commented multiple times).
-- If the URL is broken, all avatars using it should fail consistently.
-- Retry on hover should be coordinated — no point retrying from multiple components simultaneously.
-
-The store enforces a maximum of 3 retries per URL per session to prevent network storms.
-
-### 4. Initials Generation
-
-The `generateInitials()` function handles several edge cases:
-
-- **Empty/whitespace**: Returns `null`, triggering the generic icon fallback.
-- **Single word**: Returns the first character (e.g., "Madonna" → "M").
-- **Multi-word**: Returns first char of first word + first char of last word (e.g., "John Doe" → "JD").
-- **CJK names**: Each character is one logical unit. Takes first 2 characters directly (e.g., 王小明 → 王小).
-- **Emoji**: Uses `Intl.Segmenter` with `granularity: 'grapheme'` for correct emoji slicing.
-- **Color derivation**: DJB2 hash of the name modulo a 20-color palette ensures consistent coloring for the same name.
-
-### 5. Compound Component Pattern
-
-The main `Avatar` component attaches sub-components as static properties:
-
-```tsx
-Avatar.Image = AvatarImageWrapper;
-Avatar.Fallback = AvatarFallbackWrapper;
-Avatar.Status = AvatarStatus;
-Avatar.Group = AvatarGroup;
-```
-
-This enables flexible composition:
-
-```tsx
-<Avatar name="John Doe" size="lg">
-  <Avatar.Image src="..." alt="John" />
-  <Avatar.Fallback />
-  <Avatar.Status status="online" />
-</Avatar>
-```
-
-Or simple usage with automatic fallback:
-
-```tsx
-<Avatar src="..." name="John Doe" status="online" />
-```
-
-### 6. Avatar Group
-
-The `AvatarGroup` component:
-
-- Renders up to `max` (default: 4) children with negative left margin for overlap.
-- Renders an overflow badge for the remainder (e.g., "+3 more").
-- The badge uses the same dimensions as avatars for visual consistency.
-- Uses `React.Children.toArray()` for safe child manipulation and `cloneElement()` for injecting margin classes.
-
-### 7. Accessibility
-
-- Each avatar has `role="img"` and `aria-label` with the full name (not initials).
-- Status is appended to the aria-label: "John Doe, online".
-- The generic icon fallback has `aria-label="Anonymous user"`.
-- If the avatar is clickable (`onClick` provided), it gets `tabIndex={0}` and keyboard Enter/Space handling.
-- Status dots have `aria-hidden="true"` (status is announced via the parent's aria-label, not the dot itself).
-
-### 8. SSR Safety
-
-- IntersectionObserver is set up in `useEffect`, so it only runs on the client.
-- During SSR, the component renders the fallback (since `isInView` defaults to `false`).
-- No hydration mismatch occurs because the initial render path is deterministic.
-
-## Usage Examples
-
-### Basic Avatar
-
-```tsx
-import Avatar from './components/avatar';
-
-<Avatar src="/users/john.jpg" name="John Doe" size="md" />
-```
-
-### Avatar with Status
-
-```tsx
-<Avatar
-  src="/users/jane.jpg"
-  name="Jane Smith"
-  size="lg"
-  status="online"
-/>
-```
-
-### Avatar Without Image (Initials Only)
-
-```tsx
-<Avatar name="Alex Johnson" size="sm" shape="rounded-square" />
-```
-
-### Avatar Group
-
-```tsx
-import Avatar from './components/avatar';
-
-<Avatar.Group max={3} size="md">
-  <Avatar src="/u1.jpg" name="Alice" />
-  <Avatar src="/u2.jpg" name="Bob" />
-  <Avatar src="/u3.jpg" name="Charlie" />
-  <Avatar src="/u4.jpg" name="Diana" />
-  <Avatar src="/u5.jpg" name="Eve" />
-</Avatar.Group>
-```
-
-### Clickable Avatar
-
-```tsx
-<Avatar
-  name="John Doe"
-  size="xl"
-  onClick={() => router.push(`/profile/john`)}
-/>
-```
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

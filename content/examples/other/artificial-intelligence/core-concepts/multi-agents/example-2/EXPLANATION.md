@@ -1,51 +1,29 @@
-# Example 2: Debate Pattern — Independent Analysis with Judge
+# Multi-Agent Systems — Coordinated AI Agent Architectures - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/multi-agents`. The article is about Comprehensive guide to multi-agent systems covering agent orchestration patterns, coordination strategies, debate and consensus mechanisms, role specialization, conflict resolution, and production-scale multi-agent architectures.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: When should you use a multi-agent system instead of a single agent with more tools?; Q2: How does the debate pattern improve output quality and when is it most effective?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** Standard library only (`dataclasses`, `random`). No external packages required.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements the **debate pattern** where multiple AI agents independently analyze the same question, potentially using different underlying models, and a judge agent compares their answers to find consensus or select the best response. This pattern is used in production systems to improve answer quality through diverse reasoning — different models have different strengths (e.g., GPT-4 excels at reasoning, Claude at code review, Gemini at creative tasks), and combining their outputs reduces individual model blind spots and biases.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- main happy-path behavior
+- failure and boundary behavior should be inspected through the listed files
 
-### Key Classes and Data Structures
+## Edge cases and failure modes
+- High load can expose latency, memory, cache, or backpressure issues.
 
-- **`AgentAnswer`** (dataclass): Holds a single agent's answer including agent name, underlying model name, the answer itself, the reasoning behind it, and a confidence score (0.0 to 1.0).
-- **`DebateJudge`**: A static utility class that evaluates multiple agent answers and selects the best one. The `evaluate()` method:
-  - Groups answers by their answer text to find consensus.
-  - Identifies the most common answer (the consensus winner).
-  - Calculates average confidence among agents that gave the consensus answer.
-  - Determines the verdict: `strong_consensus` (all agents agree), `majority` (more than half agree), or `no_consensus` (no clear winner).
-- **`simulate_agent_analysis()`**: Simulates an agent's analysis of a question using a pre-defined lookup table. Different models have different predefined answers for different question types, capturing real model behavior differences (e.g., Gemini misses a SQL injection vulnerability that GPT-4 and Claude both catch).
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow (Step-by-Step)
-
-1. **Define questions**: Two questions are tested — `code_review` (detecting SQL injection) and `math` (solving a linear equation).
-2. **For each question**:
-   - Three agents independently analyze the question, each using a different simulated model (GPT-4, Claude-3, Gemini).
-   - `simulate_agent_analysis()` returns a pre-defined `AgentAnswer` based on the model and question type.
-   - Each agent's answer and confidence is printed.
-3. **Judge evaluation**: `DebateJudge.evaluate()` groups the three answers by answer text:
-   - For `code_review`: GPT-4 and Claude both answer "has_sql_injection" (consensus of 2/3), Gemini answers "no_issues" (disagreement). Verdict: `majority`.
-   - For `math`: GPT-4 and Claude both answer "42" (consensus of 2/3), Gemini answers "44" (incorrect). Verdict: `majority`.
-4. **Print verdict**: Shows the selected answer, consensus count, verdict classification, average confidence, and number of disagreeing agents.
-
-### Important Variables
-
-- `answer_groups` (in `evaluate()`): Dictionary mapping answer text to list of agents that gave that answer — this is the core consensus-finding mechanism.
-- `consensus_count` and `disagreement`: Track how many agents agree vs. disagree, determining the verdict strength.
-- Model-specific analyses in `simulate_agent_analysis()`: Demonstrates that different models produce different answers with different confidence levels for the same question.
-
-## Key Takeaways
-
-- **Diverse model strengths**: Different models have different capabilities — GPT-4 and Claude correctly identify the SQL injection vulnerability, while Gemini misses it. The debate pattern surfaces these differences and lets the judge select the majority answer.
-- **Consensus-based quality**: When multiple independent agents arrive at the same answer, confidence in that answer increases significantly — this is the core value proposition of the debate pattern.
-- **Confidence as a signal**: Each agent provides a confidence score, and the judge calculates average confidence among agreeing agents. High-confidence disagreement (e.g., Gemini's 0.6 confidence in "no_issues") flags areas needing human review.
-- **Independent analysis**: Agents analyze the question independently without seeing each other's answers, preventing anchoring bias — this is critical for getting genuinely diverse perspectives.
-- **Verdict classification**: The three-tier verdict (`strong_consensus`, `majority`, `no_consensus`) provides a clear signal about answer reliability — strong consensus answers can be auto-applied, while no-consensus answers should be escalated to humans.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

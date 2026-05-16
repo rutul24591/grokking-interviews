@@ -1,49 +1,47 @@
-# Notification Center / Inbox — Implementation Walkthrough
+# Design a Notification Center / Inbox - example-1 Explanation
 
-## Architecture
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/notification-center-inbox`. The article is about Notification center with notification store, toast queue, inbox view with real-time delivery, badge count management, grouping, and expiry TTL.. The most relevant article sections for this example are: Clarifying the Requirements; The Notification Data Model; The Notification Store; Real-Time Delivery; The Toast Queue; Badge Count and Cross-Tab Synchronization; Inbox UI and Virtual Scrolling; Notification Expiry; Accessibility; Interview Q&A.
 
-```
-┌─────────────────────────────────────────┐
-│ Notifications               [Mark all]  │
-│ 🔴 12 unread                            │
-├─────────────────────────────────────────┤
-│ [All] [Mentions] [System] [Unread]      │
-├─────────────────────────────────────────┤
-│ 🔵 Alice commented on your post   2m    │
-│    "Great work! I think we should..."    │
-│ 🔵 Bob and 4 others liked your post 15m  │
-│ ⚪ System: Your build succeeded    1h    │
-│ ⚪ System: Deployment completed     3h   │
-└─────────────────────────────────────────┘
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## Key Design Decisions
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-1. **Normalized store** — Map-based notification lookup, unread count O(1)
-2. **Grouping engine** — Collapses same-key notifications with count and sample text
-3. **WebSocket real-time** — New notifications, read sync, badge count
-4. **Virtualized list** — 1000+ notifications, only visible rendered
-5. **Badge with doc title** — Updates document title prefix for background tab alerts
+## File-by-file walkthrough
+- `components/notification-badge.tsx`: Implements the main logic, including NotificationBadge, originalTitleRef, prefix, currentTitle, useDocumentTitleBadge.
+- `components/notification-center.tsx`: Implements the main logic, including NotificationCenter, unreadCount, grouped, filtered, groups.
+- `components/notification-item.tsx`: Implements the main logic, including NotificationItem, handleMarkRead, handleDismiss, handleActionClick, timeAgo.
+- `hooks/use-notification-badge.ts`: Implements the main logic, including useNotificationBadge, originalTitleRef, displayCount, formattedCount, shouldShow.
+- `hooks/use-notifications.ts`: Implements the main logic, including useNotifications, wsRef, pollingTimerRef, isMountedRef, notificationIdsRef.
+- `lib/notification-types.ts`: Implements the executable logic or UI behavior for the example.
 
-## File Structure
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-- `lib/notification-types.ts` — Notification, GroupedNotification types
-- `lib/notification-store.ts` — Zustand store with unread count, filters, pagination
-- `lib/grouping-engine.ts` — Groups by key, generates sample text
-- `hooks/use-notifications.ts` — Main hook with WebSocket, lazy loading
-- `components/notification-center.tsx` — Root panel with list, filters, mark-all-read
-- `components/notification-item.tsx` — Individual notification with read/unread styling
-- `components/notification-badge.tsx` — Unread count badge with document title
-- `EXPLANATION.md`
+## Important implementation behavior
+- timeout and deadline handling
+- idempotency or duplicate protection
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
+- empty, missing, or null-state handling
 
-## Performance
+## Edge cases and failure modes
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Duplicate submissions or replayed messages must not create duplicate side effects.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-- addNotification: O(1) Map set
-- Grouping: O(n) single pass, incremental O(1) for new notifications
-- Virtualization: 20 visible items, 10-item overscan
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-## Testing
-
-- Unit: store (add/mark read/mark all read), grouping engine, badge counter
-- Integration: WebSocket delivery, mark-all-read, filter changes
-- Accessibility: aria-live for new notifications, keyboard navigation
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

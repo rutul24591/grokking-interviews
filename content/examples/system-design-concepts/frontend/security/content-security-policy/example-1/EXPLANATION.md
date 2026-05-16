@@ -1,21 +1,42 @@
-## Why CSP exists
+# Content Security Policy (CSP) - example-1 Explanation
 
-CSP is a browser-enforced policy that reduces the blast radius of XSS by restricting:
-- where scripts can load from
-- whether inline scripts can execute
-- where data can be sent (`connect-src`)
+## Article context
+This example supports the article `frontend/security/content-security-policy`. The article is about Comprehensive guide to Content Security Policy (CSP), directive configuration, nonce-based security, violation reporting, and production deployment strategies for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition & Context; Key Insight: CSP Is Defense-in-Depth, Not a Silver Bullet; How CSP Works; CSP Enforcement Flow; CSP Header Format; CSP Delivery Methods; CSP Directives Reference; Core Directives; Source Values; Keyword Sources.
 
 ## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Nonce-based CSP is a common production approach:
-- generate a nonce per response
-- include it in `Content-Security-Policy: script-src 'nonce-…'`
-- set `nonce="…"` on trusted inline scripts
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-This keeps inline scripts possible (for SSR bootstraps) while blocking unexpected inline scripts injected via XSS.
+## File-by-file walkthrough
+- `app/csp-demo/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `lib/csp.ts`: Implements the main logic, including buildCsp, directives.
+- `next-env.d.ts`: Implements the executable logic or UI behavior for the example.
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `postcss.config.mjs`: Provides supporting example content: const config = { plugins: { "@tailwindcss/postcss": {} } }; export default config;.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `tsconfig.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
 
-## Production notes
-- Full-app CSP for Next dev often requires additional allowances (`unsafe-eval`) and careful handling of inline scripts.
-  That’s why this example scopes CSP to a plain HTML route.
-- CSP is defense-in-depth; still do sanitization/output encoding.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
+## Important implementation behavior
+- pagination or cursor handling
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
+
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Security-sensitive paths need least-privilege checks and safe failure behavior.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

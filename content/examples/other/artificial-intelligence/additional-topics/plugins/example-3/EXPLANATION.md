@@ -1,61 +1,34 @@
-# Plug-In Quality Monitoring and Anomaly Detection
+# Plugins - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/plugins`. The article is about Plugins. The most relevant article sections for this example are: Definition and context; Core concepts; Architecture and flow; Best practices.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `datetime`, `collections`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a quality monitoring system for plug-in execution that tracks call frequency, error rates, and latency per plug-in, detects anomalous behavior (high error rates, excessive latency, zero usage), and generates comprehensive quality reports for operational oversight.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- timeout and deadline handling
+- rate limiting or throttling
+- error handling and fallback behavior
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Burst traffic and abusive callers need fair throttling without blocking critical paths.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`ToolCallRecord`** (dataclass): Represents a single tool call event with `plugin_id`, `tool_name`, `timestamp`, `success` boolean, `latency_ms`, and optional `error` message.
-- **`PluginMonitor`**: The core monitoring class that collects call records, computes per-plug-in statistics, detects anomalies, and generates quality reports.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Methods
-
-1. **`record_call(record)`**: Appends a tool call record to the monitor's event log.
-2. **`get_plugin_stats()`**: Aggregates call records by plug-in to compute:
-   - Total call count.
-   - Error rate (errors / total calls).
-   - Average latency in milliseconds.
-   - Unique tools used and list of tool names.
-3. **`detect_anomalies()`**: Identifies problematic plug-in behavior using three thresholds:
-   - **High error rate** (> 20%): Triggers investigation into tool implementation or description clarity.
-   - **High latency** (> 5000ms): Suggests the need for optimization or timeout configuration.
-   - **Zero usage**: Indicates the LLM may not understand when to use the tool (poor descriptions or discovery).
-4. **`get_quality_report()`**: Combines plugin statistics and anomaly detection into a comprehensive report.
-
-### Execution Flow
-
-1. **`main()`** creates a monitor and records nine simulated tool call events across three plug-ins (GitHub, Database, Web-Search).
-2. The simulated data includes:
-   - GitHub: 3 calls (2 success, 1 error from API timeout).
-   - Database: 3 calls (2 success, 1 error from table not found).
-   - Web-Search: 3 calls (all failures from rate limiting and timeouts, with high latency).
-3. A quality report is generated showing per-plug-in statistics (call count, error rate, avg latency, tools used).
-4. Anomaly detection identifies the Web-Search plug-in as having both a high error rate (100%) and high latency (averaging 6167ms).
-
-### Important Variables
-
-- `anomaly_thresholds`: Configuration dictionary with three thresholds:
-  - `error_rate = 0.2` (20% error rate triggers anomaly).
-  - `avg_latency_ms = 5000` (5 seconds triggers anomaly).
-  - `zero_usage_days = 7` (7 days without usage triggers review -- not used in this demo).
-- `self.records`: Append-only log of all tool call events.
-- Per-plug-in stats computed dynamically from raw call records.
-
-## Key Takeaways
-
-- Quality monitoring is essential for plug-in ecosystems -- individual plug-in failures can degrade the overall AI system's reliability without proper observability.
-- Anomaly detection thresholds (error rate, latency) should be tunable per plug-in based on its criticality and expected behavior.
-- Zero-usage detection identifies tools that the LLM never calls, which typically indicates poor tool descriptions or inadequate discovery in the agent's tool selection logic.
-- High latency detection helps identify plug-ins that need optimization -- slow tools block the agent's reasoning loop and degrade user experience.
-- Production monitoring systems integrate with alerting platforms (PagerDuty, Slack alerts), track trends over time (not just point-in-time), and provide dashboards for operational teams.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

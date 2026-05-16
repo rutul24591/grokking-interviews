@@ -1,55 +1,48 @@
-# Form Validation Engine — Production-Style Implementation
+# Design a Form Validation Engine - example-1 Explanation
 
-Example 1 is a production-style, reusable **form validation engine** you can plug into many UI components (forms, wizards, inline editors).
+## Article context
+This example supports the article `low-level-design/forms-input-systems/form-validation-engine`. The article is about LLD for a reusable validation engine supporting sync/async rules, schema-driven validation, cross-field dependencies, and i18n in React/Next.js.. The most relevant article sections for this example are: 🎯 Problem Context and Scope Definition; Problem Statement; User Context; Assumptions; Non-Goals; Functional Requirements; Core (Must-have); Secondary (Nice-to-have); Out of Scope; Non-Functional Requirements.
 
-It focuses on what interviewers probe at mid/senior/staff levels:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-- A validator model that supports **sync + async** rules.
-- **Race-cancellation** so stale async results do not overwrite newer input.
-- A predictable **error shape** that can power both UI and analytics.
-- A store-driven design (Zustand) with selector-friendly updates to reduce re-renders.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## Architecture Overview
+## File-by-file walkthrough
+- `components/example-form.tsx`: Implements the main logic, including plan, email, u, u, ExampleForm.
+- `hooks/use-form.ts`: Implements the main logic, including useForm, store, values, errors, touched.
+- `index.ts`: Implements the executable logic or UI behavior for the example.
+- `lib/form-store.ts`: Models client or service state transitions and update behavior.
+- `lib/types.ts`: Implements the executable logic or UI behavior for the example.
+- `lib/validation-engine.ts`: Implements the main logic, including pushIssues, issue, field, normalizeIssues, fieldErrors.
+- `README.md`: Documents how to run, inspect, or reason about the example.
 
-The core idea: treat validation as a small “subsystem” with explicit inputs/outputs.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-- `validation-engine.ts` evaluates rules and returns a normalized `ValidationResult`.
-- `form-store.ts` holds values/touched/errors and coordinates async validation via tokens.
-- `use-form.ts` provides the component-friendly API.
+## Important implementation behavior
+- request cancellation and cleanup
+- timeout and deadline handling
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
 
-## File Structure
+## Edge cases and failure modes
+- Requests can be cancelled, abandoned, or completed out of order.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
 
-```
-example-1/
-  lib/
-    types.ts
-    validation-engine.ts
-    form-store.ts
-  hooks/
-    use-form.ts
-  components/
-    example-form.tsx
-  index.ts
-  EXPLANATION.md
-  README.md
-```
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-## What to Look For
-
-1) **Async validator cancellation**
-
-When the user types quickly, async validators can return out-of-order (slow response for “a”, fast response for “ab”). The store assigns a monotonically increasing token per field. Only the latest token is allowed to write errors.
-
-2) **Error normalization**
-
-Rules can emit multiple messages (or structured codes). The engine normalizes to `{ fieldErrors, formErrors, isValid }`.
-
-3) **Policy vs mechanism**
-
-The engine is intentionally policy-light:
-
-- It doesn’t decide when to validate (onChange vs onBlur). The caller/store decides.
-- It doesn’t “render” errors. It only returns normalized data.
-
-This separation keeps it reusable across UI patterns.
-
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

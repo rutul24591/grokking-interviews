@@ -9,107 +9,425 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-ai-model-comparison-testing-interface",
   title: "Design an AI Model Comparison & Testing Interface",
   description:
-    "Architecture for a model evaluation UI: parallel test execution, multi-dimensional scoring (LLM-as-judge + deterministic), side-by-side comparison, blind human preference voting with Elo, cost-quality Pareto analysis, and regression detection.",
+    "Architecture for a model evaluation UI: parallel test execution, multi-dimensional scoring (LLM-as-judge plus deterministic), side-by-side comparison, blind preference voting with Elo, cost-quality Pareto analysis, and regression detection.",
   category: "high-level-design",
   subcategory: "ai-modern-systems",
   slug: "ai-model-comparison-testing-interface",
   wordCount: 5000,
   readingTime: 30,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "ai", "evaluation", "llm-judge", "ab-testing", "benchmarking", "cost-analysis"],
+  lastUpdated: "2026-05-16",
+  tags: ["hld", "ai", "evaluation", "llm-judge", "ab-testing", "benchmarking", "cost-analysis", "elo"],
   relatedTopics: ["ai-prompt-management-ui", "rag-based-ui-system"],
 };
 
 export default function AiModelComparisonTestingInterfaceArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Choosing between AI models—or between versions of the same model—is one of the most consequential decisions in LLM product development. A model that scores 5% higher on a general benchmark may perform 20% worse on your specific task distribution. A model that is cheaper per token may be more expensive per successful task completion if it requires more tokens to complete the same task. A faster model may be the wrong trade-off if latency is not the bottleneck and quality is. None of these trade-offs are visible without a structured testing interface that runs models against your actual workload and scores results on dimensions that matter for your use case.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The evaluation interface must solve two distinct problems: automated evaluation (running a defined test suite against multiple models in parallel, scoring outputs on multiple dimensions, and aggregating results into a leaderboard) and human evaluation (blind pairwise preference voting to capture quality dimensions that automated scorers miss). Both are necessary: LLM-as-judge scoring is reproducible and scalable, but it is biased toward models in the same family as the judge; human preference voting is expensive but captures subjective quality that automated scorers systematically miss (such as tone, naturalness, and persuasiveness).</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The interface compares multiple model providers (Anthropic, OpenAI, Google, open-source). Evaluation runs call model APIs directly from the backend (not the browser). Responses are cached by (model, version, prompt hash) to avoid re-billing for repeated evaluation runs with changed scorers. The scorer can be configured per test suite: LLM-as-judge (with a separate judge model and rubric), deterministic (regex, exact match, JSON schema validation), or a combination. Human preference voting uses blind presentation (model identities hidden until the vote is cast) and Elo rating aggregation.</p>
-      </section>
+      <p>
+        Choosing between LLM models or prompt versions is a decision with significant
+        quality and cost implications. A model that costs 10x more may be 5% better
+        or 50% better on the tasks that matter — the difference depends entirely on
+        the evaluation benchmark and how well it represents real production usage.
+        An AI model comparison and testing interface gives teams the tooling to make
+        this decision empirically: run a curated test suite against multiple models,
+        score outputs across multiple dimensions, collect human preference votes,
+        and visualize the cost-quality trade-off surface before committing to a
+        production deployment.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Test suite management:</strong> Users can create, organize, and version test suites containing test cases (prompt, expected output, scoring rubric). Test cases are categorized as golden examples, adversarial cases, edge cases, and regression tests.</li>
-          <li><strong>Parallel model execution:</strong> Running a test suite fans out all prompts to all selected models concurrently. The UI shows live progress (cases completed / total, per model). Results are cached: if a model's response for a prompt hash is already in the response store, the cached response is used without an API call.</li>
-          <li><strong>Multi-dimensional scoring:</strong> Each response is scored on configured dimensions (correctness, relevance, conciseness, safety, format compliance) using the configured scorer (LLM-as-judge, deterministic checks, or both). Scores are stored per (model, version, test case, dimension).</li>
-          <li><strong>Side-by-side comparison:</strong> The comparison view shows two or more models' responses to the same prompt in adjacent columns, with scores and metric diffs highlighted. Semantic diff highlighting identifies claims unique to each model and claims that contradict between models.</li>
-          <li><strong>Blind preference voting:</strong> The human evaluation mode shows responses without model labels. The voter selects the preferred response; the model labels are revealed after voting. Elo ratings are updated per vote. A minimum sample size (configurable, default 30 pairwise votes) is required before the Elo ranking is considered stable.</li>
-          <li><strong>Cost-quality Pareto chart:</strong> A scatter plot showing each model's aggregate quality score on the y-axis and cost per call on the x-axis. The Pareto frontier (models not dominated on both dimensions) is highlighted, identifying the optimal quality-cost trade-offs.</li>
-          <li><strong>Regression detection:</strong> When a new model version is evaluated against the current production model's test results, the system flags regressions: any dimension where the new version's score is more than 5% lower, or latency is more than 20% higher.</li>
-        </ul>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-model-comparison-testing-interface-architecture.svg"
+        alt="Model comparison interface architecture showing test case library, parallel execution engine (runs against multiple models/prompts simultaneously), multi-dimensional scoring (LLM-as-judge plus deterministic metrics), side-by-side comparison view, Elo rating from human preference votes, cost analysis overlay, and regression detection dashboard"
+        caption="Model comparison architecture: test library, parallel execution, multi-dimensional scoring, human preference Elo, cost-quality Pareto, and regression detection"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Evaluation throughput:</strong> A 100-case test suite against 4 models completes within 5 minutes (parallelized API calls, rate-limited per provider).</li>
-          <li><strong>Response caching:</strong> Cache hit rate above 80% for repeated eval runs (only scorer or rubric changes trigger cache misses, not model re-calls).</li>
-          <li><strong>Cost cap enforcement:</strong> A per-run budget cap (configured in USD) prevents runaway costs. The eval run stops and reports partial results when the cap is reached.</li>
-        </ul>
-      </section>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Model evaluation use cases have different requirements:
+      </p>
+      <p>
+        <strong>Model selection vs prompt optimization?</strong> Comparing two LLM providers
+        (GPT-4 vs Claude) is a large-scale evaluation — the fundamental model capability
+        differs, and a comprehensive test suite is needed. Comparing two prompt versions
+        for the same model is a smaller-scale evaluation — the model is constant, only
+        the instruction changes, and smaller test sets can detect meaningful differences.
+      </p>
+      <p>
+        <strong>Automated or human-annotated scoring?</strong> Automated scoring
+        (LLM-as-judge, ROUGE, F1) is fast and cheap but can miss what humans care about.
+        Human scoring is expensive and slow but is the ground truth. Production evaluation
+        systems use both: automated scoring for fast iteration, human preference votes
+        for final decisions on close calls.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        The test suite is the hardest artifact to build and the most valuable. An
+        evaluation is only as good as its test cases. If the test suite doesn't represent
+        the actual distribution of production queries — the edge cases, the difficult
+        requests, the ambiguous prompts — the evaluation will show misleading results.
+        Invest heavily in test suite construction: sample from production logs (with PII
+        removal), identify categories of hard cases, and curate examples that distinguish
+        models meaningfully. A 200-case test suite with well-chosen examples outperforms
+        a 2000-case suite of easy, similar examples.
+      </HighlightBlock>
 
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The pipeline has five stages. The test suite is loaded (prompts + expected outputs). The model runner fans out each prompt to each selected model in parallel, applying provider-specific rate limits. Each response is stored in the response store keyed by hash(model, version, prompt). The scorer evaluates each response against the rubric. Results are aggregated in the results database and served to the dashboard UI. The human voting UI operates independently of the automated scoring, drawing from the same response store but presenting responses without scores or model labels.</HighlightBlock>
-      </section>
+      <h2>Test Case Library</h2>
+      <p>
+        The test case library is the foundational data structure. Each test case contains:
+        a unique ID, a prompt (the user input), an optional reference answer (the gold
+        standard correct response), metadata (category, difficulty level, expected
+        capabilities being tested), and tags (for filtering during evaluation runs).
+      </p>
+      <p>
+        Categories organize test cases by the capability being tested: factual recall
+        (does the model know the fact?), reasoning (can the model solve a multi-step
+        problem?), instruction following (does the model comply with format or style
+        instructions?), safety (does the model refuse harmful requests appropriately?),
+        and domain-specific tasks (code generation, summarization, translation). Running
+        evaluations against subsets of the library by category allows targeted analysis:
+        "Model A is better at reasoning but Model B follows instructions more reliably."
+      </p>
+      <p>
+        Test case sources: manual curation by domain experts (high quality, low volume),
+        sampling from production logs with PII removal (high volume, representative of
+        actual usage), adversarial generation (deliberately constructed to expose model
+        weaknesses), and automated generation using an LLM to propose test cases for
+        given categories. The library should grow continuously — new failure cases
+        encountered in production are added as regression tests.
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-model-comparison-testing-interface-architecture.svg"
-          alt="Model comparison testing interface showing evaluation pipeline (test suite → model runner parallel API calls → response store cached per model-prompt → scorer LLM judge + deterministic → results DB → dashboard), UI panels: model configuration (model selector, parameter sweep, prompt variants, budget cap, parallelism with fan-out and caching), side-by-side comparison view (claude vs gpt-4o responses, score rows, preference vote buttons, semantic diff highlighting legend), and rankings leaderboard with 4 models ranked by composite score with cost and latency, plus regression guard showing regression detected block deploy."
-          caption="Evaluation pipeline: parallel fan-out to models → cached response store → multi-dimensional scoring → side-by-side comparison with semantic diff + blind preference voting → leaderboard and regression detection"
-        />
-      </section>
+      <h2>Parallel Execution Engine</h2>
+      <p>
+        When a comparison run is initiated (user selects models A and B, selects a
+        test suite, configures generation parameters), the execution engine runs each
+        test case against each model concurrently. Parallelism at two levels: across
+        test cases (run multiple test cases simultaneously against the same model),
+        and across models (run the same test case against both models at the same time).
+      </p>
+      <p>
+        Rate limit management: LLM provider APIs have per-minute token limits. The
+        execution engine maintains a token budget tracker per provider and queues requests
+        when the budget is near exhaustion, preventing 429 errors. Different models
+        from the same provider share the same rate limit, so comparing three OpenAI
+        models within a single run requires rate limit distribution across three concurrent
+        workloads.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Result caching: if a test case's prompt and model configuration haven't changed,
+        reuse the cached response from a previous run rather than generating a new one.
+        This dramatically reduces evaluation cost for iterative prompt comparisons where
+        one model's responses are stable across prompt changes. Cache key: hash of (test
+        case prompt, model identifier, temperature, max tokens, system prompt). Cache
+        invalidation: when the test case itself is edited, its cached responses are
+        invalidated. Cache TTL: 7 days (model behavior may drift slightly over longer
+        periods due to provider-side updates).
+      </HighlightBlock>
+      <p>
+        Progress tracking: the UI shows a live progress view during run execution —
+        the percentage of test cases completed, estimated time remaining (based on average
+        latency so far), any failures (test cases where the API returned an error), and
+        the real-time cost accumulation (token count × pricing per token, updated as
+        responses arrive). Users can cancel a run if it's taking longer or costing more
+        than expected.
+      </p>
 
-      <section>
-        <h2>Detailed Design</h2>
+      <h2>Multi-Dimensional Scoring</h2>
+      <p>
+        A single quality score misrepresents model performance. Different tasks care
+        about different dimensions, and a model can excel on one while failing on another.
+        The scoring system evaluates responses across multiple dimensions, giving evaluators
+        a nuanced view of the quality trade-offs.
+      </p>
+      <p>
+        <strong>LLM-as-judge scoring.</strong> A powerful judge model (Claude Opus or
+        GPT-4) evaluates each response on configurable dimensions: accuracy (does the
+        response contain correct information?), relevance (does it address the question?),
+        completeness (does it cover all required aspects?), format compliance (does it
+        follow the format specified in the prompt?), and safety (does it avoid harmful
+        content?). Each dimension is scored 1–5 with a brief justification. Using JSON
+        mode for the judge model ensures structured, parseable output.
+      </p>
+      <p>
+        The judge prompt design is critical and often overlooked. A poorly calibrated
+        judge systematically favors longer responses (length bias), favors responses
+        that match the judge model's own style (self-preference bias), or fails to
+        detect factual errors outside its training data. Calibrate the judge against
+        human labels on a held-out set — if the judge's scores correlate poorly with
+        human preferences (below 0.7 Spearman correlation), the judge prompt needs
+        revision.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Deterministic metrics complement LLM scoring for tasks with objective correct
+        answers: ROUGE-L (n-gram overlap with reference answer — for summarization),
+        exact match (for classification or extraction tasks), execution correctness
+        (for code generation — does the generated code pass unit tests?), and string
+        parsing success rate (for format-constrained tasks — does the output parse as
+        valid JSON?). These metrics are cheaper, faster, and more reliable than LLM
+        scoring for well-defined tasks. Use LLM scoring for subjective dimensions;
+        use deterministic metrics for objective dimensions.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Test Suite Design</h3>
-        <HighlightBlock as="p" tier="important">A test suite is a collection of test cases organized by category. Golden examples are curated (input, expected output) pairs representing the core task—the canonical inputs the model should handle well. Adversarial cases test robustness: jailbreak attempts, inputs containing harmful requests (the model should refuse), out-of-distribution queries, and inputs with intentional ambiguity. Edge cases cover boundary conditions: empty input, maximum-length input, inputs with only special characters, multilingual inputs if the model claims multilingual support. Regression tests are cases collected from past failures—prompts where a previous model version produced incorrect or unsafe output—which must now pass as a gating condition for deployment.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Test case schema: each case stores prompt (the user message), systemPrompt (optional, used if the model needs specific context), expectedOutput (optional, used for exact-match and LLM judge scoring), scoringConfig (which scorer to use, which dimensions, which rubric), and tags (golden, adversarial, regression). Test suites are versioned: adding, removing, or modifying test cases creates a new suite version. Evaluation results are linked to a specific (suite version, model version) pair, enabling comparison across both suite changes and model changes.</HighlightBlock>
+      <h2>Side-by-Side Comparison View</h2>
+      <p>
+        The primary evaluation view shows two models' responses to the same test case
+        side-by-side. The comparison view includes: both responses (with syntax highlighting
+        for code, markdown rendering for prose), LLM judge scores per dimension (displayed
+        as a radar chart or score grid), deterministic metrics (ROUGE-L, execution pass
+        rate), and a preference voting control.
+      </p>
+      <p>
+        Response diffing: for cases where the responses are similar, a word-level diff
+        highlights where they diverge. This is especially useful for comparing prompt
+        versions where most of the response is identical — the diff shows exactly what
+        changed due to the prompt modification.
+      </p>
+      <p>
+        Batch view: for reviewing many test cases efficiently, a batch comparison list
+        shows all test cases with their aggregate scores, sorted by the dimension where
+        the models differ most (highest disagreement first). This allows reviewers to
+        focus on the cases where the choice between models is most consequential.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Parallel Model Execution and Response Caching</h3>
-        <HighlightBlock as="p" tier="important">The model runner receives a list of (model, testCase) pairs and fans them out in parallel batches. Each provider has a different rate limit (tokens per minute, requests per minute); the runner maintains a per-provider token bucket and respects limits without manual delay loops. API calls are made from the backend (not the browser) to keep API keys server-side. Responses are stored immediately on arrival: key = hash(modelId, modelVersion, promptHash, systemPromptHash), value = (responseText, tokenCount, latencyMs, timestamp).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cache behavior: on a new eval run, the runner checks the response store before making an API call. If a cached response exists and its age is below the TTL (7 days), it is used. This means changing the scorer or rubric does not require re-calling models—the cached response is re-scored with the new rubric. Cache invalidation triggers on model version change (the modelVersion is part of the cache key), explicit cache bust (the user requests a fresh run), or cache expiry. The cache hit rate above 80% is achievable when the same test suite is run repeatedly with scorer tuning—the common workflow when iterating on evaluation rubrics.</HighlightBlock>
+      <h2>Blind Human Preference Voting and Elo Ratings</h2>
+      <p>
+        LLM-as-judge scores are helpful but can miss what humans actually prefer. Blind
+        preference voting (the reviewer sees both responses without knowing which model
+        generated them) provides a pure preference signal uncontaminated by model reputation
+        bias.
+      </p>
+      <p>
+        The blind voting UI: two response panels labeled "Response A" and "Response B"
+        (not the model names). The reviewer selects which was more helpful, or marks
+        them as equivalent. After voting, the model assignments are revealed. Blind
+        presentation prevents anchoring — if reviewers know they're voting for "Claude
+        vs GPT-4," their prior beliefs about these models influence their judgment.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Elo rating converts pairwise preference votes into a single ranking. Starting
+        both models at 1000 Elo, each preference vote updates both models' ratings using
+        the Elo update formula: winner gains K * (1 - expected_win_probability) points,
+        loser loses the same. After 100+ votes, the Elo ratings stabilize and provide
+        a reliable ranking. Elo naturally handles the case where model A beats model B
+        but model B beats model C and model C beats model A (transitivity violations in
+        human preferences). The Elo system provides a ranking even when not every model
+        pair has been compared directly.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Scoring Pipeline</h3>
-        <p>The scorer evaluates each (response, testCase) pair on the configured dimensions. Deterministic scorers: format compliance (regex match on required output format), exact match (normalized string equality for expected output), JSON schema validation (the response must be valid JSON matching a declared schema), and token count compliance (response token count within a declared acceptable range). These scorers run synchronously in milliseconds and do not require external API calls.</p>
-        <p>LLM-as-judge scoring: for dimensions requiring semantic judgment (correctness, relevance, safety, tone), the scorer sends the prompt, the model's response, the expected output, and a scoring rubric to a designated judge model. The rubric defines the scale (1–5 for each dimension) and provides examples of high and low scores to anchor the judge's calibration. The judge returns a score and a one-sentence justification per dimension. To reduce judge variance, each test case is scored 3 times by the judge (3 separate API calls with temperature 0.2) and the median score is used. The judge model should be from a different model family than the models being evaluated (a GPT-4-class judge evaluating Claude outputs introduces less bias than a Claude judge evaluating Claude outputs).</p>
+      <h2>Cost-Quality Pareto Analysis</h2>
+      <p>
+        Model quality cannot be evaluated in isolation from cost. The cost-quality
+        trade-off surface (a scatter plot where x-axis is cost per 1000 tokens and y-axis
+        is quality score) visualizes whether a more expensive model is worth its premium.
+        Points on the Pareto frontier (no other model is cheaper and better) are the
+        rational choices — any point below the frontier is dominated by a Pareto-optimal
+        option.
+      </p>
+      <p>
+        Cost calculation: for each model, track the total input and output tokens across
+        all test cases, multiply by the model's per-token pricing, and compute the average
+        cost per test case. For production estimation, multiply by expected production
+        query volume to project monthly cost.
+      </p>
+      <p>
+        Latency is a third axis in the trade-off: the P50 and P95 time-to-first-token
+        for each model, and the total generation time per test case. A model that is
+        cheaper and better quality but 3x slower may be unacceptable for interactive
+        use cases. The interface allows filtering models by latency constraint ("only
+        show models with P95 TTFT under 800ms") to scope the comparison to production-viable
+        options.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Side-by-Side Comparison and Semantic Diff</h3>
-        <p>The comparison view shows two models' responses to the same test case in adjacent columns. Below each response, dimension scores are shown in a row table with color-coded diffs: green if the model scores higher than the comparison model, orange if lower, gray if equal. Semantic diff highlighting identifies: claims present in both responses (green underline, models agree), claims present in only one response (orange underline, unique to this model), and claims that contradict between responses (red underline, factual disagreement). The semantic diff is computed by sentence-level embedding similarity between the two responses—sentences with high mutual similarity are "shared claims"; sentences with low similarity to any sentence in the other response are "unique claims"; sentence pairs with high similarity but directional contradiction (detected by the judge model) are "contradicting claims."</p>
-        <HighlightBlock as="p" tier="important">The comparison view also shows the raw metrics side-by-side: latency P95, token count (input and output), estimated cost per call, and cache hit status (whether the response was from cache or a fresh API call). This gives the user full context for the quality-cost trade-off decision.</HighlightBlock>
+      <h2>Regression Detection</h2>
+      <p>
+        When a new model version or prompt change is deployed, run the test suite against
+        both the current and new configuration to detect regressions before production.
+        A regression is defined as: a statistically significant decrease in any evaluation
+        dimension (using a one-sided Wilcoxon signed-rank test on the paired scores),
+        or a decrease above a configurable threshold (e.g., more than 3 percentage points
+        in quality score on any category).
+      </p>
+      <p>
+        The regression report shows: which test case categories regressed, the magnitude
+        of the regression, and example test cases where the new configuration performed
+        worse. This allows developers to understand whether the regression is widespread
+        or isolated to specific task types, guiding the decision to deploy, revert, or
+        investigate further.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Integrate regression detection into CI/CD. When a prompt change is proposed,
+        automatically run the evaluation suite in CI and block the merge if a regression
+        above threshold is detected. This makes evaluation a continuous practice rather
+        than an occasional manual activity — the same discipline applied to software
+        testing (don't merge regressions) applied to AI quality. Without CI integration,
+        evaluations are run when someone remembers, which is not a reliable process.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Blind Human Preference Voting and Elo Rating</h3>
-        <HighlightBlock as="p" tier="important">The human evaluation view presents two responses side-by-side without model labels. The prompt is shown above both responses. The voter clicks their preferred response (or "tie"). After voting, the model identities are revealed alongside the current Elo ratings. Elo updates use the standard formula: new rating = old rating + K × (actual score - expected score), where K=32 for new pairs and K=16 for established pairs, and expected score is computed from the rating difference. A minimum of 30 pairwise votes is required before the ranking is surfaced in the leaderboard, ensuring statistical stability.</HighlightBlock>
-        <p>Bias mitigations in blind voting: the response order is randomized per case (left/right assignment is random, not fixed by model). The voter cannot see previous votes for the same case before voting. After voting, they can see the aggregate preference distribution for that case, enabling calibration. Voters who show systematic bias (always preferring the left response regardless of content) are flagged and their votes are excluded from rating calculation.</p>
+      <h2>Interview Q&A</h2>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cost-Quality Pareto Analysis</h3>
-        <HighlightBlock as="p" tier="important">The Pareto chart plots each evaluated model as a point: x-axis is cost per call (in USD), y-axis is composite quality score (weighted average of all scored dimensions). The Pareto frontier is the set of models where no other model is both cheaper and higher quality—models on the frontier represent the efficient frontier of quality-cost trade-offs. Models below and to the right of the frontier are dominated (more expensive and lower quality) and should be deprioritized. The "optimal" model for a given use case is the frontier point where the user's quality floor is met at the lowest cost: if the required quality score is 4.0, the optimal model is the cheapest frontier model scoring at or above 4.0.</HighlightBlock>
-      </section>
+      <h3>Q: How do you handle non-determinism (temperature greater than 0) when comparing models?</h3>
+      <p>
+        Non-zero temperature means the same model on the same prompt produces different
+        responses each run. A single-sample comparison may show model A beating model B
+        due to lucky sampling, not genuine quality difference. Solution: run each
+        (test case, model) pair N times (typically N=3–5) and average the scores across
+        runs. This increases cost N-fold but dramatically reduces variance in the comparison.
+        For final model selection decisions (high stakes), N=5 is justified. For iterative
+        prompt development (lower stakes, many comparisons), N=1 with a larger test suite
+        achieves similar statistical power more efficiently. Report confidence intervals
+        (not just mean scores) so evaluators understand the uncertainty in the comparison.
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-model-comparison-testing-interface-metrics.svg"
-          alt="Evaluation dimensions showing 6 scoring dimensions (correctness LLM judge, relevance LLM judge, conciseness deterministic, safety/refusal LLM judge, format compliance regex, human preference blind Elo vote), radar chart overlay comparing two models across dimensions, scatter Pareto chart with quality vs cost axes showing 4 model data points (llama, gpt-4o, gemini, claude) with Pareto frontier dashed orange line, test suite design panel with 4 case types (golden examples, adversarial, edge cases, regression suite), blind evaluation protocol (names hidden, responses shuffled, Elo rated, min 30 votes), and caching strategy (key hash of model version prompt, TTL 7 days, re-score without re-calling)."
-          caption="Six scoring dimensions, radar overlay, cost-quality Pareto scatter, test suite case types, blind Elo voting protocol, and response caching strategy"
-        />
-      </section>
+      <h3>Q: How do you evaluate models on safety and refusal behavior?</h3>
+      <p>
+        Safety evaluation requires two complementary test sets: harmful prompts (requests
+        that the model should refuse) and edge-case prompts (benign requests that sound
+        superficially harmful but should be answered). The model is scored on: refusal
+        rate on harmful prompts (higher is better — fewer false negatives), over-refusal
+        rate on edge-case prompts (lower is better — fewer false positives), and quality
+        of refusal (does the refusal explain why without being preachy?). LLM-as-judge
+        is reliable for evaluating refusal appropriateness — ask the judge "was this
+        refusal appropriate for this request, and was it communicated well?" Safety
+        evaluation is a distinct category that should be run in every comparison, not
+        treated as optional.
+      </p>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">LLM judge model selection: the judge model's own capabilities bound the quality of LLM-as-judge scoring. A weak judge cannot reliably score nuanced dimensions like factual correctness in specialized domains. The judge should be a strong, general-purpose model—typically the strongest available model even if it is not the model being evaluated. The cost of judge calls is additional to the evaluation model calls: for 100 test cases scored on 5 dimensions with 3 judge repetitions, the scoring pipeline makes 1,500 judge API calls per model per run. This cost should be factored into the evaluation budget.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Static test suites decay: a test suite curated 6 months ago may not reflect the current task distribution of the product. If the product has evolved (new features, new user queries, changed output format requirements), the test suite should be updated before using it to evaluate new model versions. A practical governance policy: test suite owners review and update suites quarterly, adding recent failure cases from production logs as new regression tests and retiring outdated golden examples. The suite version history makes it possible to compare evaluation results across suite versions (to distinguish model improvements from suite drift).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Automated versus human evaluation weighting: automated scoring (LLM-as-judge + deterministic) is reproducible, cheap, and scalable but misses subjective quality dimensions. Human preference voting captures subjective quality but is expensive, slow, and subject to voter fatigue and bias. The right balance depends on the stakes: for a production deployment decision, both are required. For rapid iteration during development, automated scoring alone is sufficient. A practical policy: automated scoring runs on every eval run (every model change triggers a full automated eval); human preference voting runs on milestone decisions (choosing between finalists, validating a model upgrade before production deployment).</HighlightBlock>
-      </section>
+      <h2>Statistical Significance in Evaluation</h2>
+      <p>
+        A model comparison that shows Model A scoring 73.2% and Model B scoring 71.8%
+        on a 50-case test suite may be meaningless noise. Without statistical significance
+        testing, the team may incorrectly prefer Model A for a 1.4 percentage point
+        difference that could easily reverse on a different 50-case sample. The comparison
+        interface must surface confidence intervals and significance tests alongside raw
+        scores to prevent decisions based on sampling noise.
+      </p>
+      <p>
+        For binary metrics (pass/fail per test case), use the two-proportion z-test or
+        a bootstrapped confidence interval. Run 1,000 bootstrap samples of the N test
+        cases (with replacement), compute the score difference on each bootstrap, and
+        report the 95% confidence interval of the difference. If the confidence interval
+        includes zero, the observed difference is not statistically significant at the
+        0.05 level. For continuous metrics (LLM judge scores on a 1–5 scale), use the
+        Wilcoxon signed-rank test on paired scores (each test case provides one score
+        from each model, making this a paired comparison) — more powerful than the
+        independent samples t-test because it accounts for test case difficulty.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Statistical power determines the minimum detectable effect. With 50 test cases
+        and a target significance level of 0.05, the minimum detectable effect size is
+        roughly 15 percentage points. To detect a 5 percentage point improvement reliably,
+        you need approximately 500 test cases. The comparison interface should show the
+        minimum detectable effect for the current test suite size, so evaluators understand
+        what differences the suite can and cannot distinguish. "This comparison cannot
+        detect differences smaller than 12 percentage points with 80% power — results
+        within this range are inconclusive."
+      </HighlightBlock>
+      <p>
+        Multiple comparisons correction: when running a test suite with 10 evaluation
+        dimensions and comparing 3 models (30 comparisons), the probability of at least
+        one false-positive significant result is substantially higher than 5%. Apply the
+        Bonferroni correction (divide the significance threshold by the number of comparisons)
+        or the less conservative Benjamini-Hochberg procedure when reporting significance
+        across multiple dimensions. Without correction, an evaluator will observe several
+        "significant" differences that are actually noise, leading to incorrect model
+        selection decisions.
+      </p>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An AI model comparison and testing interface has five layers: test suite management (golden, adversarial, edge, regression cases), parallel model execution with per-provider rate limiting and response caching (key: hash(model, version, prompt), TTL 7 days, hit rate target above 80%), multi-dimensional scoring (LLM-as-judge for semantic dimensions, deterministic for format and token compliance, 3 judge repetitions with median aggregation), a side-by-side comparison UI with semantic diff highlighting (shared/unique/contradicting claims), and a leaderboard with blind Elo preference voting and a cost-quality Pareto chart. Regression detection compares new model version scores against the current production baseline, blocking promotion if any dimension drops more than 5% or latency rises more than 20%. The defining principle: test suites must reflect your actual task distribution—general benchmarks measure average capability across many domains, not performance on your specific prompts, edge cases, and quality requirements. Build and maintain evaluation infrastructure as a first-class product asset, not an afterthought.</HighlightBlock>
-      </section>
+      <h2>Test Suite Construction and Maintenance</h2>
+      <p>
+        A test suite is a living artifact that must evolve alongside the AI system. A
+        test suite written at product launch will miss failure modes discovered in production
+        six months later. The challenge is maintaining the suite with enough rigor to
+        remain meaningful without requiring unsustainable engineering effort.
+      </p>
+      <p>
+        Test suite stratification: organize cases by difficulty (easy, medium, hard,
+        adversarial) and by capability domain (reasoning, knowledge recall, instruction
+        following, format compliance, safety). A stratified suite provides diagnostic
+        signal beyond the aggregate score — "Model A is 8% better on adversarial cases
+        but identical on easy cases" gives actionable guidance. Aim for the hard and
+        adversarial categories to represent at least 40% of the suite — easy cases rarely
+        distinguish meaningfully between good models.
+      </p>
+      <p>
+        Production sampling pipeline: automate the pipeline from production query logs
+        to candidate test cases. The pipeline: (1) sample from production queries filtered
+        by quality signal (queries that received negative feedback, queries that triggered
+        manual review, queries where users rephrased immediately after receiving a response),
+        (2) strip PII from query text, (3) route to a review queue where domain experts
+        add reference answers and classify difficulty. A 10% conversion rate from sampled
+        queries to accepted test cases is realistic — most sampled queries are too similar
+        to existing cases or lack a clear correct answer. Monthly cadence: 20–50 new cases
+        from production sampling keeps the suite fresh without overwhelming the review team.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Retire stale test cases systematically. A test case that every evaluated model
+        passes with near-perfect scores provides no discriminating signal — it only adds
+        noise to the aggregate. Periodically audit the test suite for cases with above-95%
+        pass rates across all evaluated models and remove or replace them with harder
+        variants. The goal is a suite where the top-performing model scores 70–85% —
+        below this and the suite is too hard; above this and it's not challenging enough
+        to distinguish good models from exceptional ones.
+      </HighlightBlock>
+
+      <h2>Benchmarking Against Public Leaderboards</h2>
+      <p>
+        Public benchmarks (MMLU, HumanEval, MATH, MT-Bench, HellaSwag) provide a
+        reference point for comparing internally evaluated models against the broader
+        field. The model comparison interface can include published benchmark scores
+        alongside internal evaluation results, allowing the team to validate that their
+        internal evaluation is calibrated correctly. If Model A scores 90% on MMLU
+        (published by its provider) but only 65% on the team's reasoning test suite,
+        the discrepancy suggests either the internal suite is unusually hard or the team's
+        reasoning cases don't align with MMLU's difficulty profile.
+      </p>
+      <p>
+        Leaderboard contamination is the central problem with public benchmarks: models
+        trained on data collected after benchmark publication may have memorized the
+        benchmark test cases, inflating their scores beyond what performance on unseen
+        data would predict. A model that scores 95% on MMLU but fails at 60% on the
+        team's private test cases is likely contaminated. Private evaluation suites
+        constructed from production logs (which models have not seen during training)
+        are the gold standard for uncontaminated evaluation — public benchmarks provide
+        context but should not be the primary decision criterion.
+      </p>
+      <p>
+        Task-specific benchmark selection matters. A benchmark that tests general knowledge
+        (MMLU) may be largely irrelevant for a code generation product — HumanEval and
+        SWE-bench are more predictive. A benchmark that tests mathematical reasoning
+        (MATH) may be irrelevant for a customer support product. The model comparison
+        interface should support selecting which public benchmarks to display alongside
+        internal results, and which internal evaluation categories to weight most heavily
+        in the aggregate score, based on the product's actual task distribution.
+      </p>
+
+      <h3>Q: How do you handle the case where the LLM-as-judge disagrees with human preference votes at high rates?</h3>
+      <p>
+        High disagreement between LLM judge and human preference votes (below 0.65 Spearman
+        correlation) indicates a calibration problem in the judge. Diagnose by examining
+        the cases where they disagree: if the judge systematically prefers longer responses
+        while humans prefer concise ones, add a length-penalty instruction to the judge
+        prompt. If the judge gives high scores to responses that sound confident but contain
+        subtle factual errors that human experts catch, the judge prompt needs stronger
+        accuracy emphasis and factual verification instructions. Run calibration checks
+        quarterly: evaluate the judge's score distribution against a fresh batch of
+        human preference votes on 50–100 cases. If calibration has degraded (provider-side
+        model updates can shift judge behavior without any change to the judge prompt),
+        revise the judge prompt and re-calibrate against the human labels.
+      </p>
+
+      <h3>Q: How do you manage evaluation cost when comparing expensive frontier models at scale?</h3>
+      <p>
+        Frontier model evaluation at 500 test cases, 5 dimensions, 3 runs each, against
+        3 models totals 22,500 LLM judge calls plus 4,500 model generation calls — costs
+        can reach thousands of dollars per evaluation run. Manage this with tiered evaluation:
+        a fast tier (50 most discriminating cases, single run, 3 dimensions) runs in
+        minutes for under $50 and gives a directional signal. The full tier (500 cases,
+        3 runs, all dimensions) runs overnight for final decisions. Use the fast tier
+        for iterative prompt development — it gives enough signal to guide direction
+        without the full cost. Reserve the full tier for final model selection decisions
+        or significant architectural changes. Response caching (reuse prior responses
+        when model and prompt are unchanged) recovers 30–70% of generation costs for
+        iterative comparisons.
+      </p>
     </ArticleLayout>
   );
 }

@@ -1,46 +1,33 @@
-# GPU Memory Calculator for Model Serving
+# AI Model Deployment — Serving Patterns and Production Operations - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/ai-model-deployment`. The article is about Comprehensive guide to AI model deployment covering model serving patterns (batch, real-time, edge), model versioning, canary deployments for AI, model rollback, blue-green for models, and production serving infrastructure.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you deploy a new model version with zero downtime?; Q2: What is continuous batching and why is it important for LLM serving?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example calculates GPU memory requirements for serving large language models, breaking down memory into three components: model weights, KV cache, and activations. It shows how context length, model size, and quantization level impact both per-GPU capacity and maximum concurrent request throughput.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- cache freshness, staleness, or invalidation
+- authentication or authorization boundaries
+- concurrency, conflict, or transaction behavior
 
-### Key Functions
+## Edge cases and failure modes
+- Cached data can become stale and needs invalidation or freshness checks.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Concurrent updates can race and must protect shared invariants.
+- Real-time flows need reconnect, ordering, and duplicate-message handling.
 
-- **`calculate_gpu_memory()`**: The core calculator function. Takes model parameters (in billions), context length, architecture details (num_layers, num_heads, head_dim), data type bytes, and max concurrent requests. Returns a comprehensive memory breakdown.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Memory Breakdown
-
-1. **Model Weights**: `params_b * 1e9 * dtype_bytes` bytes. FP16 = 2 bytes/param, INT8 = 1 byte/param, INT4 = 0.5 bytes/param. Converted to GB for readability.
-2. **KV Cache**: Per-request KV cache = `2 * num_layers * num_heads * head_dim * context_length * dtype_bytes`. The factor of 2 accounts for both key and value tensors. Scales linearly with context length and concurrent requests.
-3. **Activations**: Estimated as 8% of weight memory. Used during forward pass computation.
-4. **Total**: Sum of weights + KV cache + activations.
-
-### Execution Flow
-
-1. **`main()`** defines two model configurations: Llama 3 8B (32 layers, 32 heads) and Llama 3 70B (80 layers, 64 heads).
-2. For each model, it evaluates three context lengths (4K, 32K, 131K tokens) across three quantization levels (FP16, INT8, INT4).
-3. For each combination, it prints weight memory, KV cache for 10 requests, total memory, and maximum concurrent requests that fit on an A100-80GB GPU.
-
-### Important Variables
-
-- `dtype_bytes`: Controls quantization level. FP16=2, INT8=1, INT4=0.5.
-- `context_length`: Dominates KV cache memory -- longer contexts dramatically increase per-request memory.
-- `max_requests_on_80gb`: Calculated as `(80GB - weights - activations) / kv_per_request` -- the key throughput metric.
-
-## Key Takeaways
-
-- KV cache scales linearly with context length -- serving 131K token contexts requires dramatically more memory than 4K contexts.
-- Quantization (INT8/INT4) reduces weight memory proportionally but does not reduce KV cache (which still uses FP16 in most implementations).
-- For large models (70B), weights alone consume most GPU memory, leaving little room for KV cache -- requiring tensor parallelism across multiple GPUs.
-- Maximum concurrent requests per GPU is primarily constrained by KV cache memory, not model weights.
-- Production serving systems use techniques like PagedAttention (vLLM) or continuous batching to maximize KV cache utilization and increase throughput.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

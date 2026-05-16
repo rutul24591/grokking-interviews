@@ -1,124 +1,53 @@
-# File Explorer UI — Implementation Walkthrough
+# Design a File Explorer UI - example-1 Explanation
 
-## Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/file-explorer-ui`. The article is about Complete LLD solution for a production-grade file explorer with thumbnails, context menus, bulk operations, search/filter, drag-and-drop, breadcrumb navigation, and accessibility.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Component Interaction Flow.
 
-This is a complete, production-ready implementation of a File Explorer UI component with:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-- **Grid and List views** with toggle
-- **Thumbnail rendering** with lazy loading via IntersectionObserver
-- **Context menus** with viewport-aware positioning
-- **Multi-selection** (click, Ctrl+click, Shift+click, Ctrl+A)
-- **Bulk operations** (delete, move, copy, download as ZIP) with progress tracking
-- **Search and filter** (text, type, date range, size range)
-- **Breadcrumb navigation**
-- **Sorting** (name, size, type, date modified)
-- **Drag and drop** (internal + desktop)
-- **Keyboard navigation** and full accessibility
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## File Structure
+## File-by-file walkthrough
+- `components/bulk-action-bar.tsx`: Implements the main logic, including BulkActionBar.
+- `components/explorer-toolbar.tsx`: Implements the main logic, including SORT_OPTIONS, ExplorerToolbar, timer, handleSortToggle, newDirection.
+- `components/file-context-menu.tsx`: Implements the main logic, including FileContextMenu, menuRef, menu, rect, viewportWidth.
+- `components/file-explorer.tsx`: Implements the main logic, including useMockStore, toggleSelection, next, setSelectionRange, selectAll.
+- `components/file-grid.tsx`: Implements the main logic, including FileGrid, handleDoubleClick, isSelected.
+- `components/file-list.tsx`: Implements the main logic, including COLUMNS, FileListRow, FileList, handleSortToggle, newDirection.
+- `components/file-thumbnail.tsx`: Implements the main logic, including FileThumbnail, imgRef, isImage, thumbnailUrl, element.
+- `hooks/use-drag-drop.ts`: Implements the main logic, including useDragDrop, draggedIdsRef, onDragStart, ids, onDragOver.
+- `hooks/use-file-filter.ts`: Implements the main logic, including matchesText, matchesCategory, matchesDateRange, fileDate, matchesSizeRange.
+- `hooks/use-file-selection.ts`: Implements the main logic, including useFileSelection, handleClick, anchorIndex, currentIndex, start.
+- `hooks/use-file-sort.ts`: Implements the main logic, including compareFiles, comparison, catA, catB, dateA.
+- `lib/bulk-operations.ts`: Implements the main logic, including processWithProgress, result, i, item, bulkDelete.
 
-```
-example-1/
-├── lib/
-│   ├── explorer-types.ts      — TypeScript interfaces
-│   ├── explorer-store.ts      — Zustand store
-│   ├── file-utils.ts          — File type detection, icon mapping, formatting
-│   └── bulk-operations.ts     — Multi-file operations with progress
-├── hooks/
-│   ├── use-file-selection.ts  — Selection logic
-│   ├── use-file-sort.ts       — Sorting logic
-│   ├── use-file-filter.ts     — Filtering logic
-│   └── use-drag-drop.ts       — Drag-and-drop logic
-├── components/
-│   ├── file-explorer.tsx      — Root component
-│   ├── file-grid.tsx          — Grid view
-│   ├── file-list.tsx          — List view (table)
-│   ├── file-thumbnail.tsx     — Lazy-loaded thumbnail
-│   ├── file-context-menu.tsx  — Right-click menu
-│   ├── explorer-toolbar.tsx   — Toolbar with search, sort, view toggle
-│   └── bulk-action-bar.tsx    — Bulk operations bar
-└── EXPLANATION.md             — This file
-```
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Data Flow
+## Important implementation behavior
+- request cancellation and cleanup
+- timeout and deadline handling
+- pagination or cursor handling
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
 
-### 1. Initialization
+## Edge cases and failure modes
+- Requests can be cancelled, abandoned, or completed out of order.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Large result sets need stable pagination and empty-page behavior.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-The `FileExplorer` component receives the initial file list and breadcrumb path as props. A mock store (in production, replace with the Zustand store from `explorer-store.ts`) initializes all state slices.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### 2. Pipeline: Filter then Sort
-
-The data pipeline processes files in two stages:
-
-```
-Raw File List → Filter Hook → Sort Hook → Rendered Output
-```
-
-This ordering is deliberate — filtering first reduces the dataset, making the subsequent sort faster. Both stages use `useMemo` for memoization.
-
-### 3. Selection Model
-
-The selection hook handles three interaction modes:
-
-- **Single click:** Sets selection to only the clicked item, updates the anchor.
-- **Ctrl+click:** Toggles the item in the selected Set.
-- **Shift+click:** Computes the range between the anchor and clicked item in the **filtered and sorted** list (not the raw list), selecting all items in between.
-
-### 4. Context Menu
-
-On right-click, the store captures the cursor position and target item. The `FileContextMenu` component renders at that position with viewport-aware adjustment (shifts left/up if near edges). Closes on outside click or Escape key.
-
-### 5. Thumbnail Lazy Loading
-
-Each `FileThumbnail` uses `IntersectionObserver` with a `rootMargin` of 200px to start loading slightly before the image enters the viewport. Images that fail to load fall back to file-type icons.
-
-### 6. Bulk Operations
-
-Bulk operations use the `bulk-operations.ts` module, which processes items sequentially with an `AbortController` for cancellation. Progress is reported as a percentage and displayed in the `BulkActionBar`. Download as ZIP uses JSZip to create a client-side archive.
-
-## Key Design Decisions
-
-### Zustand Store vs Context API
-
-Zustand provides selector-based subscriptions, so each sub-component only re-renders when its specific state slice changes. Context API would trigger re-renders for all consumers on any state change unless split into multiple contexts.
-
-### Filter Before Sort
-
-Filtering reduces the dataset before sorting, making the sort operation faster. Reversing the order (sort then filter) would sort items that are subsequently discarded.
-
-### Stable Sorting
-
-Uses `Array.prototype.toSorted()` which is stable by specification — items with equal sort keys retain their original relative order. This prevents confusing UI reordering when the sort key does not distinguish between items.
-
-### IntersectionObserver for Thumbnails
-
-Eagerly loading all thumbnails saturates the network and blocks the main thread with image decoding. IntersectionObserver ensures only visible (or nearly visible) thumbnails are loaded.
-
-### AbortController for Bulk Operations
-
-Each bulk operation creates an `AbortController`. On cancellation, the controller's signal is checked between each item operation, allowing clean termination with partial results.
-
-## Accessibility
-
-- **Grid view:** `role="grid"` with `role="gridcell"` and `aria-selected`
-- **List view:** `role="treegrid"` with `role="row"` and `aria-selected`
-- **Context menu:** `role="menu"` with `role="menuitem"`
-- **Keyboard:** Arrow keys, Enter, Delete, F2, Ctrl+A, Escape all mapped
-- **Screen readers:** Selection changes announced via future `aria-live` region integration
-
-## Performance Notes
-
-- **Filter + Sort:** O(n) filter + O(k log k) sort. For 5000 items, completes in under 100ms.
-- **Selection:** O(1) toggle via Set. O(r) range selection.
-- **Thumbnails:** Lazy-loaded, only in-viewport images are fetched.
-- **Memoization:** All derived state (filtered list, sorted list) is memoized with `useMemo`.
-
-## Production Considerations
-
-1. **Replace mock store** with the Zustand store from `explorer-store.ts`.
-2. **Add virtualization** for directories with 500+ items (react-window or react-virtuoso).
-3. **Connect API calls** in bulk operations and file actions.
-4. **Add error boundaries** around the explorer and individual components.
-5. **Add aria-live region** for screen reader announcements.
-6. **Server-side thumbnail generation** with multiple resolutions.
-7. **Real-time updates** via WebSocket for multi-user environments.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

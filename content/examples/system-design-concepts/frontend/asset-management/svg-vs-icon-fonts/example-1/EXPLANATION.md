@@ -1,13 +1,49 @@
-# Example 1 — SVG sprite pipeline (end-to-end)
+# SVG vs Icon Fonts - example-1 Explanation
 
-This example implements a small production-style pipeline:
+## Article context
+This example supports the article `frontend/asset-management/svg-vs-icon-fonts`. The article is about In-depth comparison of SVG icon systems and icon fonts covering sprite sheets, build pipelines, accessibility, styling, performance, tree shaking, and dynamic loading patterns for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; SVG Sprite Sheet System Architecture; Icon Font Rendering Pipeline; Performance and Capability Comparison; Trade-offs and Comparisons; Best Practices; Common Pitfalls; Real-World Use Cases.
 
-- Source icons live as individual SVG files under `icons/`.
-- A build step generates a single `public/sprite.svg` containing `<symbol>` entries.
-- The UI references icons via `<use href="/sprite.svg#icon-name" />`.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Benefits:
-- 1 network request for many icons
-- good caching for `sprite.svg`
-- easy theming via `currentColor`
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `icons/icon-lock.svg`: Provides supporting example content: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path fill="currentColor" d="M7 10V8a5 5 0 0 1 10 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0.
+- `icons/icon-search.svg`: Provides supporting example content: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path fill="currentColor" d="M10 2a8 8 0 1 0 4.9 14.3l4.4 4.4 1.4-1.4-4.4-4.4A8.
+- `next-env.d.ts`: Implements the executable logic or UI behavior for the example.
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `postcss.config.mjs`: Provides supporting example content: const config = { plugins: { "@tailwindcss/postcss": {}, }, }; export default config;.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `scripts/buildSprite.mjs`: Provides supporting example content: import fs from "node:fs"; import path from "node:path"; const ROOT = process.cwd(); const ICONS_DIR = path.join(ROOT, "icons"); const OUT = .
+- `tsconfig.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- pagination or cursor handling
+- error handling and fallback behavior
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+- High load can expose latency, memory, cache, or backpressure issues.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

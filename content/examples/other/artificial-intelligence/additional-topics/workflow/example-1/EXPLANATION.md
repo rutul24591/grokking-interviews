@@ -1,61 +1,40 @@
-# AI Workflow Pipeline with Quality Gates
+# AI Workflow Design — Pipelines, Evaluation Loops, and CI/CD for AI - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/workflow`. The article is about Comprehensive guide to AI workflow design covering pipeline patterns, evaluation loops, CI/CD for AI systems, human-in-the-loop processes, and production workflow architecture.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you design evaluation loops for an AI workflow?; Q2: What is CI/CD for AI and how does it differ from traditional CI/CD?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `random`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a production-grade AI workflow pipeline with quality gates at each stage, retry logic on transient failures, fallback paths when the primary LLM call fails, and structured error handling that tracks exactly which stage succeeded or failed.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- timeout and deadline handling
+- cache freshness, staleness, or invalidation
+- input validation and schema safety
+- error handling and fallback behavior
+- concurrency, conflict, or transaction behavior
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Cached data can become stale and needs invalidation or freshness checks.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Concurrent updates can race and must protect shared invariants.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`PipelineResult`** (dataclass): Represents the outcome of a pipeline execution with `success` boolean, `output`, `error` message, `stage` (the last stage reached), and `retries` count.
-- **`QualityGate`**: A static utility class with three validation methods:
-  - `validate_format()`: Checks if output contains expected keys/structure.
-  - `validate_length()`: Ensures output is within min/max character bounds.
-  - `validate_safety()`: Checks for blocked/inappropriate terms.
-- **`AIWorkflowPipeline`**: The core pipeline class managing multi-stage execution with retries and fallbacks.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Pipeline Stages
-
-1. **Input Validation**: Checks that user input is not empty and has a minimum length (5 characters).
-2. **Prompt Construction**: Wraps the user input in a structured prompt template.
-3. **LLM Call**: Calls the LLM with a 10% simulated failure rate (TimeoutError). On failure, retries up to `max_retries` times. If all retries fail, a fallback response is used.
-4. **Output Validation**: Runs length and safety checks on the LLM output.
-5. **Format and Deliver**: Wraps the output in a structured response dictionary with metadata.
-
-### Key Methods
-
-- **`_run_stage(stage_name, func, *args, **kwargs)`**: Generic stage runner with retry logic. Attempts the function up to `max_retries + 1` times. On success, logs the event and returns. On failure after all retries, returns a failed `PipelineResult`.
-- **`run(user_input)`**: The main pipeline entry point. Executes all five stages sequentially, short-circuiting on validation failures and using fallbacks for LLM failures.
-
-### Execution Flow
-
-1. **`main()`** creates a pipeline with `max_retries=2` and tests three inputs:
-   - A valid long query (should succeed through all stages).
-   - "Short" (too short, fails input validation).
-   - A valid comparison query (should succeed through all stages).
-2. Each test case prints whether it succeeded, which stage was reached, any errors, and the output.
-3. The execution log shows the complete stage-by-stage event timeline with retry counts.
-
-### Important Variables
-
-- `max_retries = 2`: Maximum retry attempts per stage before failure/fallback.
-- `blocked_terms = ["hack", "exploit", "bypass"]`: Safety gate blocking list.
-- `random.random() < 0.1`: 10% simulated LLM failure rate for testing retry logic.
-- `random.seed(42)`: Ensures reproducible test results.
-
-## Key Takeaways
-
-- Quality gates at each pipeline stage prevent bad inputs from reaching expensive LLM calls and bad outputs from reaching users.
-- Retry logic with bounded attempts handles transient failures (timeouts, rate limits) without infinite loops.
-- Fallback paths (e.g., cached/simpler responses) ensure graceful degradation when the primary LLM is unavailable.
-- Structured error reporting (which stage failed, how many retries) is essential for debugging production AI incidents.
-- Production pipelines add additional gates: PII detection, toxicity scoring, factual consistency checks, and output format validation against schemas.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

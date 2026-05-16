@@ -1,12 +1,39 @@
-This example covers an advanced but extremely practical pattern:
+# SLO / Error Budget Management - example-3 Explanation
 
-**Use error budgets to gate risk**, e.g. deployments, experiments, or capacity reductions.
+## Article context
+This example supports the article `non-functional-requirements/advanced-bonus/slo-error-budget-management`. The article is about Comprehensive guide to Service Level Objectives, error budgets, burn rate analysis, and availability management for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-world Use Cases; Common Interview Questions with Detailed Answers.
 
-It implements a “release gate” decision that considers:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-- Remaining budget percentage (e.g. freeze if < 20%).
-- Burn-rate alerts (fast/slow) as immediate risk signals.
-- Edge cases: new services (low traffic), objective=1.0, missing metrics.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-In real systems you’d wire this into CI/CD and use authenticated reads from a metrics backend.
+## File-by-file walkthrough
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `src/demo.ts`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `src/gate.ts`: Implements the main logic, including decideRelease, reasons, remediation.
+- `src/sample-report.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
+- `tsconfig.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
 
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- error handling and fallback behavior
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

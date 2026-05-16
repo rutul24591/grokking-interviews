@@ -1,52 +1,34 @@
-# Supervisor Pattern -- Task Decomposition and Delegation
+# Agent Orchestration — Multi-Agent Coordination Patterns - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/agent-orchestration`. The article is about Comprehensive guide to agent orchestration covering supervisor patterns, routing strategies, crew patterns, hierarchical planning, task decomposition, and production multi-agent architectures.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you decompose a complex goal into sub-tasks for multi-agent execution?; Q2: How do you handle partial failures in a multi-agent orchestration?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `enum`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements the supervisor pattern for multi-agent orchestration, where a supervisor agent decomposes a high-level goal into sub-tasks, delegates each task to a specialist agent (researcher, analyst, writer, reviewer), and executes them in a DAG-respecting order with parallel stage planning before synthesizing the results into a final output.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`TaskStatus`** (Enum): Represents the lifecycle state of a task: PENDING, IN_PROGRESS, COMPLETED, FAILED.
-- **`Task`** (dataclass): Represents a single task with `id`, `description`, `assigned_agent`, `status`, `result`, and `dependencies` (list of task IDs that must complete before this task can start).
-- **`SupervisorOrchestrator`**: The core orchestrator that decomposes goals, plans execution stages, runs tasks, and synthesizes results.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Methods
-
-1. **`decompose_goal(goal)`**: Simulates goal decomposition into four sequential tasks: researcher (research), analyst (analysis, depends on research), writer (report, depends on analysis), reviewer (validation, depends on report). Returns the task list and stores them in the orchestrator.
-2. **`get_execution_order()`**: Performs topological sort with parallel grouping. Identifies stages of tasks that can run in parallel (tasks whose dependencies are all completed). Detects circular dependencies and raises an error if found.
-3. **`execute_task(task_id)`**: Simulates task execution by updating status to IN_PROGRESS, computing a result string, and setting status to COMPLETED. Logs start and completion events.
-4. **`synthesize()`**: Combines all task results into a final output by concatenating individual results with separators.
-5. **`run(goal)`**: The main orchestration entry point that calls decompose, get_execution_order, execute all stages, and synthesize.
-
-### Execution Flow
-
-1. **`main()`** creates a `SupervisorOrchestrator` and runs it with the goal "Q3 market analysis for cloud services".
-2. The goal is decomposed into four tasks assigned to researcher, analyst, writer, and reviewer.
-3. The execution order is computed as four sequential stages (each task depends on the previous).
-4. Tasks are executed stage by stage, with results printed at each step.
-5. Results are synthesized into a final concatenated output.
-6. The execution log shows the complete event timeline.
-
-### Important Variables
-
-- `self.tasks`: Dictionary mapping task IDs to Task objects.
-- `self.execution_log`: Append-only log of all orchestration events.
-- Task dependencies: Define the execution DAG -- tasks can only start when all their dependencies are COMPLETED.
-
-## Key Takeaways
-
-- The supervisor pattern separates goal decomposition (what needs to be done) from execution (how it gets done), enabling flexible task allocation across specialist agents.
-- DAG-based execution planning with topological sort enables both sequential and parallel task execution, optimizing for dependencies.
-- The synthesizer phase is critical -- individual task results must be combined coherently into a final output that addresses the original goal.
-- Circular dependency detection prevents infinite execution loops and ensures the task graph is a valid DAG.
-- Production supervisor systems add error handling (task retry, fallback agents), dynamic task creation (supervisor can add/remove tasks mid-execution), and quality gates between stages.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -1,22 +1,31 @@
-# Graph Valid Tree (Leetcode Premium) — Example 1 (Less Optimized: DFS Cycle + Connectivity Check)
+# Graph Valid Tree - example-1 Explanation
 
-LeetCode: https://leetcode.com/problems/graph-valid-tree/
+## Article context
+This example supports the article `other/problems/graph-valid-tree`. The article is about Graph Valid Tree. The most relevant article sections for this example are: Definition and context; Core concepts; Architecture and flow; Best practices.
 
-## Approach
-A graph is a tree iff:
-1) it has no cycles
-2) it is fully connected
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Build an adjacency list, run DFS from node 0:
-- if we see an already-visited node that isn’t our parent ⇒ cycle
-- after DFS, if any node unvisited ⇒ disconnected
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## Complexity (step-by-step)
-1. Build adjacency list: O(n + E).
-2. DFS visits each node once: O(n).
-3. DFS inspects each undirected edge twice: O(E).
-4. Final pass to ensure all visited: O(n).
+## File-by-file walkthrough
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `Solution.java`: Provides supporting example content: import java.util.ArrayList; import java.util.List; public class Solution { static boolean validTreeDFS(int n, int[][] edges) { List<List<Int.
+- `solution.js`: Implements the main logic, including validTreeDFS, adj, visited, dfs, nxt.
+- `solution.py`: Implements the executable logic or UI behavior for the example.
 
-## Overall Complexity
-- Time: O(n + E)
-- Space: O(n + E) adjacency + O(n) visited (+ recursion stack)
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- observability and operational signals
+
+## Edge cases and failure modes
+- Metrics, logs, traces, or alerts must explain production failures.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

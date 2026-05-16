@@ -1,13 +1,53 @@
-# Why this matters
+# Authentication UX Flows - example-1 Explanation
 
-Authentication is both a **security** problem and a **UX** problem.
+## Article context
+This example supports the article `non-functional-requirements/frontend-nfr/authentication-ux-flows`. The article is about Comprehensive guide to authentication UX: login patterns, session management, token refresh, MFA UX, passwordless auth, and secure authentication flows.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers.
 
-Key points demonstrated here:
-- Distinguish errors: `401` (not authenticated) vs `403` (authenticated but needs step-up).
-- Keep step-up short-lived (this demo uses a 5-minute freshness window).
-- Rate limit login attempts to reduce brute force and credential stuffing impact.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Production notes:
-- Deliver step-up challenges out-of-band (TOTP/push), not via the same channel as the session.
-- Add device risk signals, lockout policies, and privacy-safe telemetry.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `app/api/auth/login/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/auth/logout/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/auth/me/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/auth/stepup/start/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/auth/stepup/verify/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/secret/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `lib/cookies.ts`: Implements the main logic, including COOKIE, sessionCookieName, getCookie, raw, part.
+- `lib/http.ts`: Implements the main logic, including jsonOk, jsonError, getClientIp, xf.
+- `lib/rateLimit.ts`: Implements the main logic, including FixedWindowRateLimiter, full, b.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- cache freshness, staleness, or invalidation
+- pagination or cursor handling
+- rate limiting or throttling
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- offline, reconnect, resume, or sync behavior
+
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Cached data can become stale and needs invalidation or freshness checks.
+- Large result sets need stable pagination and empty-page behavior.
+- Burst traffic and abusive callers need fair throttling without blocking critical paths.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Reconnect and resume flows need conflict handling and progress recovery.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -1,64 +1,34 @@
-## How to Run
+# Large Language Models (LLMs) - example-1 Explanation
 
-```bash
-python demo.py
-```
+## Article context
+This example supports the article `other/artificial-intelligence/large-language-models`. The article is about Comprehensive guide to Large Language Models covering transformer architecture, training methodology, scaling laws, capabilities, limitations, and production considerations for software engineers integrating LLMs into applications.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: Explain the difference between pre-training, fine-tuning, and RLHF. Why are all three phases necessary?; Q2: What is the "lost in the middle" phenomenon and how does it affect your system design?.
 
-No external dependencies required — uses only Python standard library (`time`, `random`, `typing`).
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## What This Demonstrates
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-This example implements a production-ready LLM API wrapper that simulates calling an LLM provider with **token tracking**, **cost estimation**, and **exponential backoff retry logic**. It shows how to build a resilient integration layer that tracks per-request token usage (input vs output), calculates costs based on model-specific pricing, and handles transient failures gracefully.
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-## Code Walkthrough
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-### Key Classes
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- observability and operational signals
 
-**`LLMResponse`** — A data class that encapsulates the response from an LLM API call. It stores three fields:
-- `content` (str): The generated text response from the model
-- `usage` (Dict[str, int]): A dictionary with three keys — `prompt_tokens` (input token count), `completion_tokens` (output token count), and `total_tokens` (sum of both)
-- `model` (str): The model identifier used for the request (e.g., "gpt-4o", "claude-sonnet-3-5")
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-This mirrors the actual response structure returned by OpenAI's `openai.types.chat.ChatCompletion` and Anthropic's `anthropic.types.Message` APIs.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Functions
-
-**`estimate_cost(usage, model)`** — Calculates the dollar cost of an API call based on token usage and model-specific pricing.
-
-- **`PRICING`** dictionary defines per-model pricing per 1M tokens, with separate rates for input and output tokens (output is typically 3-10x more expensive)
-- The function retrieves the pricing tier for the given model, then calculates: `input_cost = (prompt_tokens / 1,000,000) × input_rate` and `output_cost = (completion_tokens / 1,000,000) × output_rate`
-- Returns the sum rounded to 6 decimal places for accurate cost tracking
-- Returns 0.0 for unknown models (graceful degradation rather than crashing)
-
-**`call_llm_with_retry(prompt, model, max_retries, base_delay)`** — Calls the LLM with exponential backoff retry logic.
-
-- **`attempt`** loop: Iterates up to `max_retries` times (default 3)
-- On success: Returns an `LLMResponse` object with simulated token counts
-- On failure: Calculates a backoff delay using the formula `delay = base_delay × (2 ^ attempt) + random_jitter`, where jitter (0-1 second random float) prevents thundering herd problems when multiple clients retry simultaneously
-- **`base_delay`** defaults to 1.0 second, so retries happen at ~1s, ~2s, ~4s intervals (plus jitter)
-- On final failure: Raises the last exception rather than silently returning
-
-**`main()`** — The entry point that demonstrates the full flow:
-
-1. Creates a sample document text (simulating a financial report)
-2. Constructs a prompt that includes the document
-3. Calls `call_llm_with_retry()` with `model="gpt-4o"` and `max_retries=3`
-4. Passes the response's `usage` dictionary to `estimate_cost()`
-5. Prints a summary showing model name, token breakdown (prompt vs completion vs total), estimated cost, and response content
-
-## Execution Flow
-
-```
-main() → call_llm_with_retry() → [simulate API call] → LLMResponse
-                                    ↓
-                              estimate_cost() → cost in dollars
-                                    ↓
-                              print summary
-```
-
-## Key Takeaways
-
-- **Token tracking is essential**: Every LLM request should track input vs output tokens separately, as output tokens cost significantly more
-- **Cost estimation should be automatic**: Embed pricing lookup in your API wrapper so every request knows its cost without manual calculation
-- **Retry with jitter**: Exponential backoff with random jitter prevents synchronized retries that could overwhelm a recovering service
-- **Graceful degradation**: Unknown models return $0 cost rather than crashing, allowing the system to continue operating even when pricing data is stale
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

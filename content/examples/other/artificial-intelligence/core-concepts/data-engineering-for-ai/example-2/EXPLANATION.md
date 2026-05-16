@@ -1,50 +1,32 @@
-# Dataset Versioning and Provenance Tracker
+# Data Engineering for AI — Training Data Pipelines and Curation - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/data-engineering-for-ai`. The article is about Comprehensive guide to data engineering for AI covering data pipelines for training and fine-tuning, data cleaning, synthetic data generation, data labeling strategies, dataset versioning, and data quality management.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you ensure training data quality for fine-tuning?; Q2: What is synthetic data generation and when should you use it?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `datetime`, `hashlib`, `json`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a dataset registry that version-controls training datasets using content hashes, tracks data sources and processing rules, links model versions to their training datasets, and enables full lineage reconstruction for reproducibility and compliance.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`DatasetVersion`** (dataclass): Represents a versioned dataset with `version_id`, `created_at`, `sources`, `processing_rules`, `quality_metrics`, `document_count`, `token_count`, and `content_hash`.
-- **`DatasetRegistry`**: The core registry class managing dataset versions and model-to-dataset lineage mapping.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Methods
-
-1. **`compute_content_hash(documents)`**: Creates a deterministic hash by sorting documents, concatenating them, and computing SHA-256. Returns the first 16 hex characters as a short identifier.
-2. **`register_version()`**: Registers a new dataset version only if the content hash is unique (prevents duplicate registrations). Estimates token count using a 1.3 tokens-per-word heuristic.
-3. **`link_model_to_dataset(model_version, dataset_version)`**: Creates a mapping between a trained model and its training dataset for lineage tracking.
-4. **`get_model_lineage(model_version)`**: Reconstructs the full training lineage for a model, including dataset sources, processing rules, document counts, token counts, and quality metrics.
-
-### Execution Flow
-
-1. **`main()`** creates a `DatasetRegistry` and registers two dataset versions:
-   - **v1**: 3 documents from web crawl and books corpus with basic processing rules.
-   - **v2**: 5 documents (adds papers from arXiv) with an additional quality filter rule.
-2. Two model versions are linked to their respective training datasets (model-v1.0 -> ds-v1, model-v2.0 -> ds-v2).
-3. Version history is printed showing document counts, token counts, and source counts.
-4. Model lineage for model-v2.0 is reconstructed, showing the complete provenance chain.
-
-### Important Variables
-
-- `content_hash`: Deterministic identifier derived from sorted document content -- identical datasets always produce the same hash.
-- `model_dataset_map`: Dictionary mapping model version strings to dataset version IDs.
-- Token count estimate: `words * 1.3` -- approximate token count based on empirical ratio.
-
-## Key Takeaways
-
-- Dataset versioning with content hashes enables exact reproduc: any model can be traced back to its exact training data.
-- Processing rules (filters, language selection, dedup settings) must be versioned alongside data to ensure reproducible dataset reconstruction.
-- Model-dataset lineage is critical for compliance, debugging (did a model degrade because of bad training data?), and retraining decisions.
-- The content hash approach avoids storing duplicate datasets -- identical content always maps to the same version ID.
-- Production systems should also track data licenses, PII flags, and retention policies alongside version metadata.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

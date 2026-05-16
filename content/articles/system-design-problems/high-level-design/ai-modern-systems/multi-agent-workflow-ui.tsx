@@ -9,108 +9,413 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-multi-agent-workflow-ui",
   title: "Design a Multi-Agent Workflow UI",
   description:
-    "Architecture for a multi-agent workflow UI: agent graph builder, orchestrator/sub-agent pattern, live run monitoring with SSE, human-in-the-loop gates, parallel agent waterfall view, and run observability.",
+    "Architecture for a multi-agent workflow UI: agent graph builder, orchestrator/sub-agent pattern, live run monitoring with SSE, human-in-the-loop gates, parallel agent visualization, and run observability.",
   category: "high-level-design",
   subcategory: "ai-modern-systems",
   slug: "multi-agent-workflow-ui",
   wordCount: 5100,
-  readingTime: 31,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "ai", "multi-agent", "orchestration", "hitl", "sse", "llm", "workflow"],
+  readingTime: 30,
+  lastUpdated: "2026-05-16",
+  tags: ["hld", "ai", "multi-agent", "orchestration", "hitl", "sse", "llm", "workflow", "dag"],
   relatedTopics: ["ai-chatbot-frontend", "copilot-style-ai-assistant"],
 };
 
 export default function MultiAgentWorkflowUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A multi-agent workflow executes a complex task by distributing subtasks across specialized agents that run concurrently or sequentially, coordinated by an orchestrator. The UI challenge is fundamentally different from a single-agent chatbot: there are multiple streams of reasoning and tool calls happening simultaneously (or in sequence), each with their own state transitions, and the user needs to understand what is happening across all of them, intervene when needed, and review the final synthesized output. A chatbot UI designed for one conversation thread does not scale to this: you cannot render 4 parallel agents' streaming thought logs in a single chat bubble list without catastrophic information overload.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The workflow UI must solve three distinct problems: workflow design (the user defines the agent graph—which agents exist, what tools each has, how they connect), workflow execution monitoring (the user observes the run in progress, sees each agent's state, can pause or interrupt), and human-in-the-loop (HITL) gating (certain steps require explicit user approval before the agent proceeds—this is the safety mechanism for high-consequence actions). The UI must present these three modes cleanly, transitioning between them as the workflow moves from design to execution to review.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The orchestrator is an LLM that plans and delegates tasks to sub-agents. Each sub-agent is a separately configured LLM with a specific system prompt and tool set. Agents communicate through a shared run context (not via direct API calls to each other). The backend streams per-agent events (state changes, thought tokens, tool calls, HITL gates) via SSE. Workflows are defined as directed acyclic graphs (DAGs)—no cycles. HITL gates pause a specific agent's execution until the user approves or modifies the proposed action.</p>
-      </section>
+      <p>
+        A multi-agent workflow executes a complex task by distributing subtasks across
+        specialized agents running concurrently or sequentially, coordinated by an
+        orchestrator. The UI challenge is fundamentally different from a single-agent
+        chatbot: multiple streams of reasoning and tool calls happen simultaneously,
+        each with their own state transitions, and the user needs to monitor all of them,
+        intervene when needed, and review the synthesized output. A single chat thread
+        cannot represent 4 parallel agents — the information overload is catastrophic.
+        The multi-agent UI requires three distinct modes: workflow design (define the
+        agent graph), execution monitoring (observe live run progress), and human-in-the-loop
+        (approve before high-consequence steps proceed).
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Workflow builder:</strong> A drag-and-drop graph editor where users create agent nodes, configure each agent (model, tools, system prompt, temperature), and connect them with directed edges representing task dependencies and data flow.</li>
-          <li><strong>DAG validation:</strong> The builder validates the graph before execution: detecting cycles, verifying tool permissions per agent, and estimating the token budget for the planned run.</li>
-          <li><strong>Live agent monitoring:</strong> During execution, each agent node in the graph shows its current state (idle, planning, running, waiting on HITL, done, error) with a live status indicator. Clicking an agent node opens its streaming thought log (reasoning tokens streamed via SSE).</li>
-          <li><strong>Tool call trace:</strong> Each agent's tool calls are logged inline in the thought log: tool name, input parameters, and the returned result, shown as collapsible cards.</li>
-          <li><strong>Human-in-the-loop gates:</strong> Specific agent nodes (or specific tool calls within an agent) can be marked as requiring user approval. When reached, the agent pauses, a review card appears in the UI showing the proposed action, and the user can approve, modify, or reject. Modification pre-fills the agent's context with the user's edited version.</li>
-          <li><strong>Parallel waterfall view:</strong> A Gantt-style timeline showing each agent's execution span, tool call events, HITL pauses, and the final output, enabling the user to understand the run's parallelism and bottlenecks.</li>
-          <li><strong>Output artifacts panel:</strong> After the run, each agent's outputs (retrieved sources, data tables, draft text, review scores) are collected and displayed in a structured artifacts panel, alongside the orchestrator's final synthesized output.</li>
-        </ul>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/multi-agent-workflow-ui-architecture.svg"
+        alt="Multi-agent workflow UI architecture showing agent graph builder (DAG canvas, agent config panels, connection drawing), orchestrator engine (LLM planner, task distribution, shared run context), per-agent event streams (SSE per agent with state transitions), HITL gate UI (review card, approve/modify/reject), and run observability (timeline view, agent swimlane, artifacts panel)"
+        caption="Multi-agent workflow: graph builder, orchestrator/sub-agent pattern, per-agent SSE streams, HITL gates, and run observability with swimlane timeline"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>SSE delivery latency:</strong> Agent state changes and thought tokens must appear in the UI within 100ms of emission by the backend (excluding LLM generation time).</li>
-          <li><strong>Concurrent agent streams:</strong> The UI must handle up to 10 concurrent agent thought streams without frame drops (each stream is a separate SSE subscription or multiplexed on a single SSE connection with event tagging by agentId).</li>
-          <li><strong>Run history:</strong> Completed run logs (all agent events, tool calls, and outputs) are persisted and loadable for replay and debugging. Loading a completed run's history renders the waterfall view without an active SSE connection.</li>
-        </ul>
-      </section>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Multi-agent systems span a wide spectrum in complexity. Establish scope:
+      </p>
+      <p>
+        <strong>Fixed topology or dynamic?</strong> A fixed DAG (pre-defined agent graph,
+        same structure every run) is far simpler to build and monitor than a dynamic
+        topology where the orchestrator spawns agents at runtime based on the task
+        decomposition. Dynamic topologies are more powerful but produce unpredictable
+        run graphs that are harder to visualize and debug.
+      </p>
+      <p>
+        <strong>Fully autonomous or human-in-the-loop?</strong> A fully autonomous
+        workflow runs to completion without user interaction (except for the initial
+        trigger). A HITL workflow pauses at defined checkpoints for user review and
+        approval. Autonomous workflows are simpler to implement but are unsafe for
+        high-consequence actions (sending emails, making API calls to external systems,
+        modifying production data).
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Long-running workflows (research tasks, code generation pipelines, data processing)
+        can run for minutes to hours. The UI must handle browser tab closure and reopening
+        mid-run — the user should be able to resume monitoring a run that started before
+        they opened the tab. This requires server-side run state that is queryable at
+        any time, not just during the active SSE connection. Event replay (loading the
+        run's historical events on reconnect) allows the UI to reconstruct the full
+        run state from the server's event log.
+      </HighlightBlock>
 
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system has three layers. The workflow builder (browser, pre-run): a graph editor for defining the agent network. Built with a canvas renderer (D3.js or React Flow) where nodes are draggable agent boxes and edges are labeled directed connections. The run monitor (browser, during-run): switches the graph canvas from edit mode to monitor mode when a run starts—nodes display live status indicators, and the panel beside the canvas shows SSE-streamed agent logs. The results viewer (browser, post-run): the canvas shows final run states, and the artifacts panel shows all agent outputs. On the backend, a workflow runner service receives the graph definition and user inputs, instantiates agents in dependency order, manages parallelism, emits SSE events to the browser, and persists the run log.</HighlightBlock>
-      </section>
+      <h2>Workflow Design: The Agent Graph Builder</h2>
+      <p>
+        The workflow graph builder is a visual DAG editor. Nodes represent agents; edges
+        represent data dependencies (the output of agent A becomes an input to agent B).
+        The builder provides:
+      </p>
+      <p>
+        <strong>Agent node configuration.</strong> Each agent node has a name, a system
+        prompt defining its role and specialization ("You are a research agent. Search
+        the web for information about the given topic and return a structured summary"),
+        a model selection (different agents may use different models — a fast cheap model
+        for routing decisions, a powerful model for complex reasoning), and a tool list
+        (which tools this agent can invoke: web search, code execution, file I/O).
+      </p>
+      <p>
+        <strong>Connection drawing.</strong> The user draws directed edges between agent
+        nodes by clicking and dragging from one node's output port to another's input port.
+        An edge represents that the source agent's output (a structured artifact or a
+        natural language summary) is passed as input to the target agent's context.
+        Cycles are prevented — the graph must be a DAG (directed acyclic graph).
+      </p>
+      <p>
+        <strong>HITL gate placement.</strong> The user can add HITL gate nodes between
+        agents: "before the email-sending agent runs, pause and show the user a preview."
+        HITL gate nodes are visually distinct (dashed border, pause icon) and configurable:
+        what data to show in the review card (the proposed email content, the research
+        summary, the generated code), and what the user can do (approve, reject, edit
+        and approve).
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/multi-agent-workflow-ui-architecture.svg"
-          alt="Multi-agent workflow UI architecture showing orchestration graph at top (orchestrator agent delegating to Researcher, Analyst, Writer, Critic sub-agents with delegation arrows down and result arrows back up dashed), UI layer below with three panels: Workflow Builder (drag-and-drop agent graph, agent config panel, execution triggers, DAG validation for cycles and tool permissions), Run Monitor (live agent status idle/running/waiting/done/error, streaming thought log, human-in-the-loop gate, interrupt/resume/retry, tool call trace), and Results and Observability (run metrics wall time token cost error count, output artifacts per agent, SSE event types)."
-          caption="Multi-agent architecture: orchestrator delegates to parallel sub-agents → UI shows live status per node, streaming thought logs, HITL gates, and post-run artifacts"
-        />
-      </section>
+      <h2>Orchestrator and Sub-Agent Pattern</h2>
+      <p>
+        The orchestrator is the coordinating LLM that decomposes the user's high-level
+        task into subtasks and assigns them to specialized sub-agents. The sub-agents
+        execute their subtasks independently, producing outputs that the orchestrator
+        synthesizes into the final result.
+      </p>
+      <p>
+        The shared run context is the communication medium: a structured JSON document
+        maintained server-side that all agents can read from and write to. When a research
+        agent completes its task, it writes its findings to the run context under a named
+        key ("research_summary"). The orchestrator reads this and decides whether to
+        proceed to the writing agent or to request additional research. Sub-agents do not
+        communicate directly — all coordination flows through the orchestrator or the
+        shared run context.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Agent concurrency requires careful conflict handling in the shared run context.
+        When two parallel agents write to the run context simultaneously, the last writer
+        wins by default — which may cause data loss if both are writing to the same key.
+        Prevent this by assigning each agent a dedicated namespace in the run context:
+        agent A writes to "agent_a.output", agent B writes to "agent_b.output". The
+        orchestrator reads from each namespace independently. If agents need to share
+        a common resource (a list of URLs to fetch, a queue of tasks to process),
+        implement read-modify-write with optimistic locking: read the current list,
+        append the item, write back with an ETag; retry if the ETag has changed since
+        the read.
+      </HighlightBlock>
 
-      <section>
-        <h2>Detailed Design</h2>
+      <h2>Live Run Monitoring</h2>
+      <p>
+        During execution, the UI shows a live view of the run with per-agent status
+        and event streams. The visualization must convey: which agents are active, which
+        are waiting, which have completed; what each active agent is currently doing (tool
+        call in progress, generating text, waiting for dependencies); and where HITL gates
+        require user action.
+      </p>
+      <p>
+        The swimlane timeline: the run view shows the DAG as a horizontal swimlane layout,
+        with time on the x-axis and agents on the y-axis. Each agent's active period is
+        shown as a bar. Tool calls appear as events within the bar. HITL gates appear as
+        pause points where the bar pauses until the user approves. This view makes it
+        easy to see which agents ran in parallel, how long each took, and where time was
+        spent waiting for gates or upstream agents.
+      </p>
+      <p>
+        Expanding an agent lane shows its streaming reasoning output (the agent's chain-of-thought
+        and tool call events). Most users collapse these to see the high-level flow;
+        developers debugging an agent failure expand the lane to trace the exact sequence
+        of reasoning and tool calls that led to the bad output. The expand/collapse state
+        is per-lane and persisted across reconnects.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Workflow Builder and Graph Editor</h3>
-        <HighlightBlock as="p" tier="important">The graph editor renders the agent network as a canvas with draggable nodes (agents) and directed edges (dependencies). Each agent node has a configuration panel (opened by clicking the node) with: display name, model selection (from a list of available models), system prompt (textarea), tool selections (checkboxes from the available tool registry), temperature and max token settings, and a HITL gate toggle (marks this agent's tool calls as requiring approval). Edges are drawn by dragging from one node's output port to another's input port. Edge labels describe what data flows between the agents ("research findings," "analysis results," "draft text").</HighlightBlock>
-        <HighlightBlock as="p" tier="important">DAG validation runs on every graph edit. Cycle detection uses a depth-first search (DFS) from each node, marking a cycle if a back edge is found. If a cycle is detected, the offending edge is highlighted in red and a tooltip explains the error. Token budget estimation computes the maximum context window consumption for each agent (system prompt tokens + expected context from predecessor agents), flagging agents where the estimated context exceeds the model's context window. This prevents runtime failures caused by context overflow.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Tool permission validation checks that each agent's assigned tools are permitted by the current user's role. An analyst agent assigned a database-write tool but operated by a read-only user fails this validation, and the tool is flagged in the configuration panel with an error icon. Workflows cannot be launched with tool permission errors unresolved.</HighlightBlock>
+      <h2>SSE Event Stream Architecture</h2>
+      <p>
+        The backend maintains a server-side event log for each run. The frontend subscribes
+        via a single SSE connection for the entire run, receiving a multiplexed stream
+        of events from all agents. Each event has: runId, agentId, eventType, timestamp,
+        and a payload specific to the event type.
+      </p>
+      <p>
+        Event types: agent_started (agent transitioned from waiting to active), agent_token
+        (reasoning token from the active agent — for streaming display in the expanded
+        lane), tool_call_started (agent requested a tool with input parameters),
+        tool_call_completed (tool result returned), agent_completed (agent produced its
+        output artifact), hitl_gate_reached (run paused awaiting user approval),
+        run_completed (all agents finished, final output ready), run_failed (an agent
+        errored), run_cancelled (user cancelled the run).
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Event replay on reconnect: when the user closes and reopens the tab mid-run,
+        the SSE connection is re-established. On reconnect, the client sends the ID of
+        the last event it received (using the SSE Last-Event-ID header or a query
+        parameter). The server replays all events from that ID forward from the run's
+        event log. The client processes the replayed events to reconstruct the current
+        run state — agent statuses, completed artifacts, pending HITL gates — without
+        requiring a separate "get run state" API call. This makes the event log the
+        authoritative source of truth for run state.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Run Execution and SSE Event Multiplexing</h3>
-        <HighlightBlock as="p" tier="important">When the user launches a run, the browser opens a single SSE connection to the run endpoint (GET /runs/&#123;runId&#125;/stream). All agent events for the run are multiplexed on this single connection, tagged by agentId in the event payload. The frontend demultiplexes events by agentId into per-agent state stores. This is more efficient than opening one SSE connection per agent (which would consume browser connection slots) and simpler than WebSocket (no connection upgrade required, works through HTTP/2).</HighlightBlock>
-        <p>SSE event types: agent_status (&#123;agentId, state&#125;, emitted on every state transition), thought_token (&#123;agentId, token&#125;, emitted for each reasoning token the agent generates), tool_call (&#123;agentId, tool, input, output&#125;, emitted when a tool call completes), hitl_gate (&#123;agentId, proposedAction, options&#125;, emitted when an agent reaches a HITL checkpoint), and run_complete (&#123;artifacts, metrics&#125;, emitted when the orchestrator finishes aggregating results). The frontend handles each event type with a corresponding reducer: agent_status updates the node's status indicator in the graph, thought_token appends to the agent's log buffer (flushed to React state via rAF), tool_call appends a tool call card to the log, hitl_gate raises the approval overlay, and run_complete transitions the UI to the results view.</p>
+      <h2>Human-in-the-Loop Gate UI</h2>
+      <p>
+        When the run reaches a HITL gate, the entire run pauses (the downstream agents
+        do not start until the gate is resolved). The UI shows a prominent notification:
+        the run monitor's header changes color (amber) and a HITL gate card appears
+        in the run view at the gate's position in the DAG.
+      </p>
+      <p>
+        The gate card shows: what the agent upstream produced (the artifact that will
+        be passed through the gate), a clear description of what will happen next if
+        approved ("The email-sending agent will send this draft to customer@example.com"),
+        and three actions: Approve (proceed with the artifact as-is), Edit and Approve
+        (open an editable form with the artifact content pre-filled, allowing modification
+        before proceeding), and Reject (stop this branch of the workflow and notify the
+        orchestrator, which can decide to retry, escalate, or abort the run).
+      </p>
+      <p>
+        Gate timeout policy: if the user doesn't respond within the configured timeout
+        (configurable per gate, typically 24 hours for email-review gates, 5 minutes for
+        quick confirmation gates), the gate times out. The timeout behavior is configurable:
+        auto-approve (appropriate for low-stakes reviews where latency matters more than
+        human oversight), auto-reject (appropriate for high-stakes actions where proceeding
+        without review is worse than not proceeding), or notify and escalate (send an
+        alert to an alternate reviewer).
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Human-in-the-Loop Gate</h3>
-        <HighlightBlock as="p" tier="important">When an agent reaches a HITL checkpoint (either because the node is marked as HITL-gated, or because a specific tool is marked as requiring approval), the backend pauses the agent's execution, emits a hitl_gate event, and waits for a resume signal. The HITL gate can wait indefinitely—the backend persists the paused agent's state to durable storage (Redis or a job queue) so it survives server restarts. The UI renders an approval overlay: a card showing the proposed action (e.g., "The Researcher agent wants to search for: [query text]"), the agent's reasoning that led to this action (from the thought log), and three buttons: Approve (resumes with the proposed action), Modify (pre-fills an edit field with the proposed action text, allowing the user to change the query before approving), and Reject (sends a rejection signal to the agent, which then generates an alternative approach or terminates).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">HITL gate timing: the time the user spends reviewing and approving is tracked separately from the agent's execution time in the run metrics. The waterfall view shows HITL pauses as orange segments on the agent's timeline bar, distinct from active execution (colored) and waiting for predecessor completion (gray). This distinguishes human latency from agent latency when analyzing run performance.</HighlightBlock>
+      <h2>Run Observability and Artifacts</h2>
+      <p>
+        After a run completes (successfully or with failures), the observability view
+        lets users understand what happened, evaluate quality, and debug failures.
+      </p>
+      <p>
+        The artifacts panel shows all structured outputs produced during the run: research
+        summaries, generated documents, tool call results, the final output. Each artifact
+        is versioned (if the run was retried, multiple versions of the artifact exist from
+        different attempts) and linked to the agent that produced it.
+      </p>
+      <p>
+        Token accounting: each agent's reasoning token count is tracked and shown in the
+        run summary. The total cost (in dollars, estimated from token counts and model
+        pricing) is shown per run and per agent, allowing users to identify which agents
+        are most expensive and whether the cost is justified by the output quality.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Run retry and partial recovery: when an agent fails mid-run, the user can choose
+        to retry from the failed agent (rerunning only the failed agent and its dependents,
+        not the entire run) or to provide a correction and continue (useful when the agent
+        failed due to invalid input that the user can fix). Partial recovery requires the
+        orchestrator to checkpoint completed agents' outputs — if the run is retried from
+        agent C, agents A and B don't need to rerun; their outputs are loaded from the
+        checkpoint. Without checkpointing, any failure requires a full run restart, wasting
+        all the work done by upstream agents.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Streaming Thought Logs</h3>
-        <HighlightBlock as="p" tier="important">Each agent has a thought log panel that shows its streaming reasoning. The thought log is structured into three sections: Planning (the agent's initial breakdown of its task into steps), Execution (the agent's step-by-step reasoning and tool calls), and Result (the agent's final output passed to the orchestrator). Within the Execution section, tool call cards appear inline: a collapsed card showing "Called: web_search(query)" expands to show the full input parameters and the returned result. This gives the user visibility into the agent's tool use without overwhelming the log with raw API responses.</HighlightBlock>
-        <p>The thought log scrolls automatically to the latest token during active streaming (auto-scroll-to-bottom). If the user scrolls up to review earlier content, auto-scroll is suspended. A "scroll to latest" button appears in the bottom-right of the log panel when the user is not at the bottom; clicking it re-enables auto-scroll. This is the same scroll behavior used in chat UIs but applied per-agent panel.</p>
+      <h2>Interview Q&A</h2>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Parallel Waterfall View</h3>
-        <p>The waterfall view is a Gantt chart showing all agents as horizontal bars on a shared time axis. The x-axis is wall-clock time from run start. Each agent's bar is divided into segments: gray (waiting for predecessor), colored (actively running or streaming), orange (HITL pause), red (error/retry), green (done). Tool call events appear as vertical markers on the agent's bar. The orchestrator's bar spans the full run duration, showing planning and aggregation phases. Hovering a bar segment shows the tooltip with the time range and segment description. Hovering a tool call marker shows the tool name and input.</p>
-        <p>The waterfall view is rendered from the run log (either live-updated during execution or loaded from history for completed runs). The time axis auto-scales to fit the longest agent's duration, with zoom controls for runs that span many minutes. Long HITL pauses compress the time axis to keep the overall run visible—a 10-minute user review pause is shown as an annotated break in the timeline rather than wasted whitespace.</p>
+      <h3>Q: How do you handle a loop in agent communication where agent A's output triggers agent B, which then triggers agent A again?</h3>
+      <p>
+        The workflow DAG enforces acyclicity — the graph builder prevents the user from
+        drawing edges that create cycles. For dynamic topologies where the orchestrator
+        spawns agents at runtime, cycles are possible if the orchestrator is not constrained.
+        Prevent this with a max-iteration limit per agent: if the same agent is invoked
+        more than N times in a single run (typically 3–5), the run is flagged as potentially
+        stuck and paused for user review. The orchestrator's system prompt also includes
+        an explicit instruction to avoid re-invoking agents that have already completed
+        their task in the current run unless explicitly directed by the user.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Interrupt, Retry, and Rollback</h3>
-        <HighlightBlock as="p" tier="important">The run monitor provides three intervention actions. Interrupt stops a specific agent immediately; its output so far is preserved in the run log. The orchestrator receives an "agent interrupted" signal and either routes the task to a different agent or terminates the run. Retry re-queues a failed agent from the beginning of its task (not from the point of failure). Retries use exponential backoff: the first retry is immediate, the second waits 2s, the third waits 8s. After 3 retries, the agent enters a permanent error state and the orchestrator is notified. Cancel run terminates the entire run, emitting cancellation signals to all running agents and closing the SSE connection. The run is marked as "cancelled" in run history, with partial logs preserved for debugging.</HighlightBlock>
-      </section>
+      <h3>Q: How do you implement parallel agent execution with dependency resolution?</h3>
+      <p>
+        The orchestrator maintains a dependency graph (which agents are waiting on which
+        upstream agents to complete). At run initialization, the dependency graph is
+        computed from the DAG edges. Agents with no unsatisfied dependencies start immediately.
+        When an agent completes and writes its output to the run context, the orchestrator
+        evaluates which waiting agents now have all their dependencies satisfied and starts
+        them. This is a classic topological sort with event-driven readiness signaling.
+        The implementation: maintain a per-agent waiting_on set (agent IDs that must complete
+        before this agent starts). When any agent completes, scan the waiting_on sets of
+        all waiting agents and start those whose waiting_on set becomes empty.
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/multi-agent-workflow-ui-run-lifecycle.svg"
-          alt="Multi-agent run lifecycle showing agent state machine (idle → planning → running → done; or running → waiting on HITL → running on approval; or running → error → retry with exponential backoff), SSE event types (agent_status, thought_token, tool_call, hitl_gate, run_complete with payload schemas), and parallel waterfall Gantt chart showing Orchestrator bar spanning full 40s, Researcher and Analyst bars running in parallel 0-20s, HITL pause marker at 20s, Writer bar starting at 20s, Critic bar starting at 30s, final output at 40s; run summary metrics showing wall time 38s, total token cost $0.047, HITL pause 12s user review."
-          caption="Agent state machine (idle/planning/running/waiting/done/error), SSE event types, and parallel waterfall view showing concurrent agent execution, HITL gate pause, and run summary metrics"
-        />
-      </section>
+      <h3>Q: How would you design the workflow builder for non-technical users who don't understand DAG concepts?</h3>
+      <p>
+        Abstract the DAG concept with a higher-level UX: instead of showing nodes and
+        edges, show a linear task decomposition with optional "parallel tracks" for
+        subtasks that can run concurrently. The user describes what they want ("research
+        a company, then draft a sales email, then review it before sending"), and the
+        system suggests a workflow structure that the user confirms and customizes. The
+        underlying representation remains a DAG, but users interact with a sequenced
+        steps view with visual grouping for parallel tracks. Advanced users can switch
+        to a graph view for full control. This progressive disclosure approach makes the
+        system accessible to business users while remaining powerful enough for technical
+        users building complex workflows.
+      </p>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">DAG versus arbitrary graph: restricting the workflow to a DAG (no cycles) simplifies execution scheduling (topological sort), prevents infinite loops, and makes the waterfall view coherent (time progresses left-to-right). However, some AI workflows naturally involve iteration: a writer agent produces a draft, the critic scores it below a threshold, and the writer iterates. Supporting this requires either allowing cycles in the graph (with a maximum iteration count to prevent infinite loops) or modeling the iteration as a special "retry edge" pattern that the execution engine handles distinctly from dependency edges. Starting with a strict DAG and adding controlled iteration as a named pattern is the safer incremental path.</HighlightBlock>
-        <p>HITL gate granularity: marking an entire agent as HITL-gated (every action requires approval) is safe but creates high user burden for agents with many tool calls. Marking specific tool calls as HITL-gated (e.g., only the "send email" tool requires approval, but "web search" does not) is more precise but requires the tool registry to express this policy. The right granularity depends on the sensitivity of the action and the user's trust in the agent: a research agent's searches rarely need approval; an email agent's sends always do. The UI should allow HITL configuration at both the agent level (all actions) and the tool level (specific tools), with tool-level configuration taking precedence.</p>
-        <HighlightBlock as="p" tier="important">Token cost accumulation: multi-agent workflows multiply LLM costs—5 agents each spending 10K tokens is 50K tokens per run. Without budget controls, production workflows can generate unexpectedly large bills. The UI should show a cost estimate before launching (based on system prompt sizes and expected task sizes), a live cost meter during execution, and a configurable budget cap that stops the run and notifies the user if total token cost exceeds the configured limit. The budget cap is enforced server-side (not just in the UI) so it cannot be bypassed.</HighlightBlock>
-      </section>
+      <h2>Agent Memory and Shared State Management</h2>
+      <p>
+        Multi-agent workflows that run beyond a single LLM context window require persistent
+        memory — a structured store that agents can write to during their execution and
+        read from at the start of the next step. Without persistent memory, each agent
+        invocation starts cold, unable to build on the reasoning and discoveries of prior
+        steps. The shared state model defines where agent memory lives, what format it
+        uses, and how conflicts are resolved when multiple agents write concurrently.
+      </p>
+      <p>
+        The run context object serves as the short-term shared memory for a single run:
+        a JSON document stored server-side (Redis for fast reads, database for durability)
+        that all agents within the run can read and write. Long-term memory (across runs)
+        requires a persistent memory store — a vector database where key facts, decisions,
+        and learned patterns from prior runs are stored as embeddings. When a new run
+        starts, the orchestrator retrieves relevant long-term memory using the run's initial
+        task as the query, injecting the top-K retrieved memories into each agent's context.
+        This allows workflows that improve over time: a research workflow that has processed
+        10 similar tasks stores learnings about effective search strategies, source reliability,
+        and common pitfalls that are retrieved for the 11th similar task.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Memory write conflicts are the hardest operational problem in multi-agent shared
+        state. Two agents that attempt to write to the same key in the run context
+        simultaneously produce a race condition. Namespace isolation (each agent owns
+        a dedicated key prefix) prevents the most common cases. For shared resources
+        — a list of URLs to process, a queue of subtasks — use an atomic queue abstraction
+        (Redis RPOPLPUSH for work-stealing queues) rather than a shared list that multiple
+        agents read-modify-write. The UI should surface write conflict events in the
+        run trace so developers can diagnose unexpected behavior: "Agent B's write to
+        research_urls was overwritten by Agent C 200ms later."
+      </HighlightBlock>
+      <p>
+        Memory pruning and context management: agent context windows have a token limit.
+        The orchestrator is responsible for deciding what to inject from the run context
+        into each agent's context. A research agent starting its task does not need the
+        full output from all prior agents — only the relevant upstream outputs and the
+        initial task description. Context injection policies (what to include from the
+        run context for each agent type) are configurable per workflow and displayed
+        in the agent configuration panel, making the context budget visible and controllable.
+      </p>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A multi-agent workflow UI has three modes: builder (graph editor for defining agents and dependencies, with DAG validation and budget estimation before launch), monitor (live run view with per-agent status indicators, streaming thought logs, tool call traces, and HITL approval overlays, all delivered via a multiplexed SSE connection tagged by agentId), and results viewer (Gantt waterfall showing parallelism and HITL pauses, structured artifact panels per agent, and run summary metrics). The SSE event model emits agent_status, thought_token, tool_call, hitl_gate, and run_complete events; the frontend demultiplexes by agentId into per-agent state stores, using rAF batching for thought token rendering (same pattern as single-agent streaming). HITL gates persist paused agent state server-side (Redis) while awaiting user approval, which can be indefinite. Interrupt, retry (with exponential backoff), and cancel provide intervention controls. The defining design challenge is presenting multiple concurrent streams of AI reasoning to a human user without overwhelming them—solved by organizing information per-agent node, making thought logs drill-down rather than top-level, and using the waterfall view for temporal orientation across the full run.</HighlightBlock>
-      </section>
+      <h2>Debugging Agent Failures with Trace Replay</h2>
+      <p>
+        Multi-agent workflow failures are hard to debug. A failure in agent C may have
+        been caused by incorrect output from agent B, which was caused by incomplete input
+        from agent A. Debugging requires reconstructing the exact sequence of events,
+        agent reasoning, and data transformations that led to the failure — not just
+        the error message at the point of failure.
+      </p>
+      <p>
+        Trace replay is the debugging tool that makes this possible. The event log (which
+        records every agent transition, tool call, and context write with millisecond
+        timestamps) is the raw material. The trace replay UI presents this log in two
+        views: a chronological timeline (events in order of occurrence) and an agent-scoped
+        view (all events for a specific agent, in order). The developer can step through
+        the trace event by event, inspecting the run context state at each step — what
+        data was in the shared context when each agent started, what it wrote, and what
+        changed as a result.
+      </p>
+      <p>
+        Causal analysis: the trace UI highlights the causal chain from an agent's failure
+        back to its inputs. If agent C failed with "Expected field 'company_summary' in
+        run context but it was missing," the trace shows that agent B (which should have
+        written company_summary) completed without error but wrote to "company_sumary"
+        (a typo in the agent's system prompt). The trace replay surfaces this by showing
+        a diff between what the failing agent expected to find in the run context and what
+        was actually present at the time it started — making the root cause obvious without
+        requiring the developer to manually search through the event log.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Deterministic trace replay (being able to re-run the exact sequence of events from
+        a historical trace to reproduce a failure in a debugging environment) requires
+        capturing not just the events but the LLM responses verbatim, the tool call inputs
+        and outputs, and the run context state at each checkpoint. Without full state
+        capture, replay is approximate — using the same prompts but getting different
+        LLM responses due to non-determinism (temperature greater than 0). For debugging,
+        replay with temperature set to 0 and the original model version to maximize
+        reproducibility, but flag the replay as approximate when the original run used
+        temperature above 0.
+      </HighlightBlock>
+
+      <h2>Cost Management for Multi-Agent Runs</h2>
+      <p>
+        A multi-agent workflow can consume orders of magnitude more tokens than a single
+        LLM call. An orchestrator that plans by reasoning through a 1,000-token context,
+        dispatches 4 parallel agents each with 2,000-token contexts, and synthesizes
+        results in a 3,000-token context consumes over 12,000 tokens per run — before
+        any tool calls. At $0.01 per 1K tokens and 10,000 runs per day, that is $1,200
+        per day from a single workflow. Multi-agent workflows require cost visibility
+        and budget controls that single-LLM systems do not.
+      </p>
+      <p>
+        Per-run cost estimation: before executing a run, the orchestrator can estimate
+        cost based on the workflow topology (number of agents, expected context sizes,
+        tool call overhead) and the selected models. Show this estimate in the run
+        confirmation UI — "This workflow will cost approximately $0.12 to execute" —
+        allowing users to decide whether to proceed or choose a cheaper model configuration.
+        The estimate is based on median token counts from prior runs of the same workflow;
+        it will be inaccurate for first-ever runs or runs with highly variable inputs.
+      </p>
+      <p>
+        Budget enforcement: each workflow definition can have a per-run budget cap.
+        When the running cost exceeds the cap, the orchestrator pauses the run and
+        presents a HITL gate: "This run has exceeded its $0.50 budget cap with 3 agents
+        still pending. Approve additional budget or cancel remaining agents." This prevents
+        runaway costs from workflows that encounter unexpectedly verbose inputs or loops.
+        Budget caps are configured per workflow in the graph builder and are visible
+        in the run monitoring view alongside the real-time cost counter.
+      </p>
+
+      <h3>Q: How do you handle an agent that consistently produces low-quality output that degrades downstream agents?</h3>
+      <p>
+        Agent output quality monitoring requires evaluating each agent's output against
+        its expected output format and content criteria — not just checking whether the
+        agent completed without an error. The orchestrator can run an output validation
+        step between agents: an LLM judge evaluates the upstream agent's output against
+        configured quality criteria before passing it to the downstream agent. If the
+        output fails quality validation, the orchestrator can retry the upstream agent
+        (with a different sampling seed or a clarifying instruction), escalate to a
+        HITL gate for human correction, or abort the downstream agents with a clear
+        failure message explaining why. This quality gate prevents the "garbage in,
+        garbage out" cascade where a low-quality output from agent A causes agent B to
+        produce a low-quality output that causes agent C to fail entirely.
+      </p>
+
+      <h3>Q: How do you implement timeout and cancellation semantics for long-running agents?</h3>
+      <p>
+        Each agent invocation has a configurable timeout. If the agent has not completed
+        within the timeout, the orchestrator sends a cancellation signal — marking the
+        agent as timed-out in the run event log. The cancellation propagates to any
+        in-progress tool calls (web search requests are aborted, code execution containers
+        are killed). Downstream agents that depended on the timed-out agent are also
+        cancelled, or they can be configured to proceed with a default value for the
+        missing dependency. The run-level timeout (maximum total wall-clock time for
+        the entire run) is separate from the per-agent timeout. When the run-level
+        timeout fires, all active agents are cancelled simultaneously and the run is
+        marked as partially complete with a summary of completed artifacts and the
+        timeout context as the final output.
+      </p>
     </ArticleLayout>
   );
 }

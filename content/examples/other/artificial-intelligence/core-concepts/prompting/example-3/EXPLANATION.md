@@ -1,125 +1,38 @@
-# Example 3: Structured Output Validator with Auto-Retry
+# Prompt Engineering & Prompt Design Patterns - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/prompting`. The article is about Comprehensive guide to prompt engineering covering system prompts, few-shot prompting, chain-of-thought reasoning, structured output generation, prompt templating, versioning, and production prompt management.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Advanced Prompting Techniques; Self-Consistency Sampling; Tree-of-Thought (ToT) Reasoning.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** Requires [Pydantic](https://docs.pydantic.dev/), a data-validation library.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-```bash
-pip install pydantic
-```
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
----
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## What This Demonstrates
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- observability and operational signals
+- empty, missing, or null-state handling
 
-This example implements a **production-ready output validation pipeline** that enforces a JSON schema on LLM responses and automatically retries when validation fails. It uses Pydantic models to define the expected structure, catches both JSON parse errors and schema validation errors, and logs detailed per-field error messages — illustrating how to build reliability into LLM integrations where structured output is required.
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
----
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-## Code Walkthrough
-
-### Key Classes (Pydantic Models)
-
-#### `Finding` (BaseModel)
-
-Represents a single code review finding.
-
-| Field | Type | Constraints |
-|---|---|---|
-| `severity` | `str` | Must match pattern: `critical`, `high`, `medium`, or `low` |
-| `category` | `str` | Free-text category (e.g. `security`, `performance`, `quality`) |
-| `line` | `int` | Must be greater than 0 (`gt=0`) |
-| `description` | `str` | Between 10 and 500 characters |
-| `suggestion` | `str` | Between 10 and 500 characters |
-
-#### `CodeReviewResponse` (BaseModel)
-
-Represents the complete structured output from the LLM.
-
-| Field | Type | Constraints |
-|---|---|---|
-| `summary` | `str` | Between 20 and 200 characters |
-| `overall_risk` | `str` | Must match pattern: `low`, `medium`, `high`, or `critical` |
-| `findings` | `List[Finding]` | Between 0 and 50 findings |
-| `score` | `int` | Between 0 and 100 inclusive (`ge=0, le=100`) |
-
-These models serve as the **single source of truth** for the expected output shape. If the LLM returns anything that does not conform, Pydantic raises a `ValidationError` with precise per-field error descriptions.
-
-### Key Functions
-
-#### `validate_and_retry(llm_response: str, max_retries: int = 3) -> Optional[CodeReviewResponse]`
-
-The core validation loop. For each attempt (up to `max_retries`):
-
-1. **Parse JSON** — `json.loads(llm_response)`. If the string is not valid JSON, catches `json.JSONDecodeError`.
-2. **Validate against schema** — `CodeReviewResponse(**data)`. If the parsed JSON does not satisfy the Pydantic model constraints, catches `ValidationError`.
-3. **On success** — Returns the validated `CodeReviewResponse` object.
-4. **On failure** — Logs the error (including per-field details for `ValidationError`) and would, in production, re-prompt the LLM with the error message to request a corrected response.
-5. **After all retries exhausted** — Returns `None`.
-
-**Error types handled:**
-
-| Exception | Example Trigger |
-|---|---|
-| `json.JSONDecodeError` | Malformed JSON (e.g. `[}` instead of `[]`) |
-| `ValidationError` | Missing required field, invalid enum value, score out of range, line number ≤ 0, string too short/long |
-| `Exception` (catch-all) | Any other unexpected error |
-
-### Test Data
-
-#### `BROKEN_OUTPUTS` (4 cases)
-
-| # | Error | Why It Fails |
-|---|---|---|
-| 1 | Missing `line` field in a `Finding` | `Finding.line` is required; Pydantic raises `ValidationError` |
-| 2 | `overall_risk: "very_high"` | Does not match the allowed pattern (`low|medium|high|critical`) |
-| 3 | `score: 150` | Exceeds maximum of 100 (`le=100`) |
-| 4 | `{"findings": [}` | Invalid JSON syntax — unmatched bracket |
-
-#### `GOOD_OUTPUT`
-
-A well-formed response with:
-- A 20–200 character summary
-- `overall_risk: "high"` (valid pattern match)
-- Two findings, each with all required fields and valid constraint values
-- `score: 35` (within 0–100)
-
-### Execution Flow (`main()`)
-
-```
-print header
-
-for each broken_output in BROKEN_OUTPUTS:
-    result = validate_and_retry(broken_output, max_retries=3)
-    print "FAILED after 3 retries"  (since none include retry logic with corrected LLM response)
-
-result = validate_and_retry(GOOD_OUTPUT)
-print summary, risk, score, findings count
-for each finding:
-    print severity, line, category, description preview
-```
-
-Note: The broken outputs all fail because `validate_and_retry` retries with the **same** `llm_response` string. In production, each retry would call the LLM again with an error-feedback prompt (e.g. `"Fix the JSON: <error message>"`), which is noted in the commented-out code.
-
-### Key Variables
-
-| Variable | Purpose |
-|---|---|
-| `errors_log` | Accumulates error messages across retry attempts for audit/debugging |
-| `attempt` | Loop counter (0 to `max_retries - 1`) |
-| `validated` | The successfully parsed `CodeReviewResponse` object |
-
----
-
-## Key Takeaways
-
-- **Never trust raw LLM output**: LLMs frequently produce malformed JSON or responses that drift from the expected schema. A validation layer with explicit retries is essential for production reliability.
-- **Pydantic provides rich, per-field error messages**: Unlike basic JSON parsing, Pydantic's `ValidationError` tells you exactly which field failed and why (e.g. `"score: ensure this value is less than or equal to 100"`), enabling targeted error feedback to the LLM on retry.
-- **The retry-with-feedback pattern** is the standard approach for structured LLM output: validate → if error, feed the error back to the LLM → re-validate. This demo implements the validation skeleton; the actual LLM re-call is left as a commented placeholder.
-- **Schema-as-code**: Defining `Finding` and `CodeReviewResponse` as Pydantic models gives you type-safe Python objects downstream. Any code that receives the validated result can rely on correct types, valid enums, and constraint-satisfying values without additional checks.
-- **Constraint design matters**: The models use a mix of `pattern` (regex enum), `gt`/`ge`/`le` (numeric bounds), and `min_length`/`max_length` (string bounds) — covering the full range of validation needs for structured LLM output. Each constraint should be chosen deliberately based on what the downstream system requires.
-- **Max retries should be tuned**: Three retries is a reasonable default. Too few and you miss correctable errors; too many and you waste tokens and latency. In production, this should be configurable per-prompt and potentially backed off exponentially.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

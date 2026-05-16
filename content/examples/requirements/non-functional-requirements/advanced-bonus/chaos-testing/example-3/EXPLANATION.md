@@ -1,14 +1,37 @@
-Chaos tests often fail “for the wrong reason”:
+# Chaos Testing - example-3 Explanation
 
-- The window is too short → random noise looks like degradation.
-- The baseline is drifting → you compare apples to oranges.
-- The metric is sparse → error rate changes are not statistically meaningful.
+## Article context
+This example supports the article `non-functional-requirements/advanced-bonus/chaos-testing`. The article is about Comprehensive guide to chaos engineering, failure injection, resilience validation, and production readiness testing for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition and Context; Key Insight: Chaos Testing Is Not Random Breaking; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-world use cases; Common Interview Questions with Detailed Answers.
 
-This example demonstrates an interview-grade approach to avoid false positives:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-1) Collect baseline and experiment samples.
-2) Use a lightweight bootstrap to estimate confidence of degradation.
-3) Decide “meaningful regression” vs “noise”.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-In production you’d also control for seasonality, correlated failures, and sampling bias, but this runnable script gets the core idea across clearly.
+## File-by-file walkthrough
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `src/bootstrap.ts`: Implements the main logic, including mean, percentile, sorted, idx, sampleWithReplacement.
+- `src/demo.ts`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `src/simulate.ts`: Implements the main logic, including normal, u, v, z, simulateLatencySamples.
+- `tsconfig.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
 
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

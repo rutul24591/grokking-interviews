@@ -1,52 +1,39 @@
-# Kanban Board — Implementation Walkthrough
+# Design a Kanban Board - example-1 Explanation
 
-## Architecture
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/kanban-board`. The article is about Kanban board with fractional indexing for order, cross-column drag, optimistic reordering with conflict resolution, real-time multi-user updates, swimlanes, and accessibility.. The most relevant article sections for this example are: Clarifying the Requirements; The Card Order Problem and Fractional Indexing; The Drag and Drop State Machine; Optimistic Reordering; Real-Time Multi-User Sync; Column Reordering; Swimlanes; Keyboard Accessibility; WIP Limits; Interview Q&A.
 
-```
-┌───────────┬──────────────┬───────────┬──────────┐
-│ Backlog   │ In Progress  │ Review    │ Done     │
-├───────────┼──────────────┼───────────┼──────────┤
-│ ┌───────┐ │ ┌──────────┐ │ ┌───────┐ │ ┌──────┐ │
-│ │Task 1 │ │ │Task 3    │ │ │Task 5 │ │ │Task 2│ │
-│ │ 🏷bug  │ │ │🏷feature │ │ │🏷bug  │ │ │🏷feat│ │
-│ └───────┘ │ │ 👤Alice  │ │ └───────┘ │ └──────┘ │
-│ ┌───────┐ │ └──────────┘ │ ┌───────┐ │          │
-│ │Task 4 │ │ ┌──────────┐ │ │Task 6 │ │          │
-│ │ 🏷docs │ │ │Task 7    │ │ │🏷test │ │          │
-│ └───────┘ │ │ 👤Bob    │ │ └───────┘ │          │
-│           │ └──────────┘ │           │          │
-└───────────┴──────────────┴───────────┴──────────┘
-     Drag cards between columns and reorder within
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## Key Design Decisions
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-1. **Normalized store** — Cards Map for O(1) lookup, columns with ordered cardIds arrays
-2. **Optimistic moves** — UI updates instantly, server confirms, rollback on failure
-3. **Pointer Events drag** — Unified mouse/touch support, document-level listeners
-4. **WebSocket real-time** — Concurrent moves with vector clock conflict resolution
-5. **Keyboard navigation** — Arrow keys between cards/columns, Space to pick up, Enter to drop
+## File-by-file walkthrough
+- `components/kanban-board.tsx`: Implements the main logic, including KanbanBoard, moveCard, card, target, toCol.
+- `hooks/use-card-drag.ts`: Implements the main logic, including useCardDrag, startPosRef, hasStartedRef, DRAG_THRESHOLD, findColumnAtPoint.
+- `hooks/use-kanban.ts`: Implements the main logic, including useKanban, storeRef, wsRef, performMove, store.
+- `lib/kanban-store.ts`: Models client or service state transitions and update behavior.
+- `lib/kanban-types.ts`: Implements the executable logic or UI behavior for the example.
 
-## File Structure
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-- `lib/kanban-types.ts` — Card, Column, Swimlane, DragState types
-- `lib/board-store.ts` — Zustand store with normalized data, optimistic moves
-- `lib/conflict-resolver.ts` — Vector clock comparison, last-write-wins
-- `hooks/use-kanban.ts` — Main board hook
-- `hooks/use-card-drag.ts` — Pointer-based drag with column drop detection
-- `components/kanban-board.tsx` — Root board with columns
-- `components/kanban-column.tsx` — Column with card list, drop zone
-- `components/kanban-card.tsx` — Card with drag handle, labels, assignee
-- `EXPLANATION.md`
+## Important implementation behavior
+- pagination or cursor handling
+- asynchronous or event-driven flow
+- offline, reconnect, resume, or sync behavior
+- empty, missing, or null-state handling
 
-## Performance
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Empty, missing, or null data should produce intentional UI or service states.
+- Real-time flows need reconnect, ordering, and duplicate-message handling.
 
-- moveCard: O(n) column splice, O(1) card Map update
-- Drop target: O(columns × cards) hit-testing, optimized with spatial index
-- Virtualization for columns with 50+ cards
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-## Testing
-
-- Unit: store (move/rollback), conflict resolver, drag handler
-- Integration: drag between columns, real-time sync, keyboard navigation
-- Accessibility: aria-live for card moves, keyboard drag flow
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -1,52 +1,36 @@
-# Code Editor Component — Implementation Walkthrough
+# Design a Code Editor Component - example-1 Explanation
 
-## Architecture
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/code-editor-component`. The article is about Code editor with extension system, syntax tokenization, LSP integration, theme tokens, diff view, and the build-vs-embed Monaco decision.. The most relevant article sections for this example are: Build vs Embed: Monaco vs CodeMirror; CodeMirror 6 Architecture; Extension System; Syntax Highlighting; LSP Integration; Diff View; Theming; Accessibility; Interview Q&A; Q: Why is the document stored as a B-tree rather than a string in production editors?.
 
-```
-┌──────────────────────────────────────────────┐
-│ [File.ts]                            [⚙️]    │
-├──────┬───────────────────────────────────────┤
-│ 1    │ const x = "hello"; // syntax colored   │
-│ 2    │ function foo() {                       │
-│ 3    │   return x + " world";                 │
-│ 4    │ }                                      │
-│      │                                        │
-│      │ [cursor]                               │
-│      │                                        │
-└──────┴───────────────────────────────────────┘
- Line   Virtualized content with syntax highlighting
-numbers
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## Key Design Decisions
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-1. **CodeMirror 6 as base** — Modular, tree-shakeable (~50KB core), extensible via plugins
-2. **Piece table document model** — O(1) insert/delete, efficient undo/redo
-3. **Virtualized rendering** — Only visible lines rendered, total scroll height from line count × average height
-4. **Lazy tokenization** — Only visible lines tokenized, cached per line, invalidated on edit
-5. **IME support** — Composition events handled separately, tokenizer paused during composition
+## File-by-file walkthrough
+- `components/code-editor.tsx`: Implements the main logic, including CodeEditor, onChangeRef, handleChange.
+- `hooks/use-keymap.ts`: Implements the main logic, including useKeymap, onKeyDown.
+- `lib/editor-store.ts`: Models client or service state transitions and update behavior.
+- `lib/editor-types.ts`: Implements the executable logic or UI behavior for the example.
 
-## File Structure
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-- `lib/editor-types.ts` — TypeScript interfaces
-- `lib/document-model.ts` — Piece table for efficient insert/delete with undo/redo
-- `lib/tokenizer.ts` — Lezer-based syntax highlighting, per-line caching
-- `lib/bracket-matcher.ts` — Depth-counting bracket pair finder
-- `hooks/use-editor.ts` — Main editor hook with CodeMirror integration
-- `hooks/use-keymap.ts` — Keyboard shortcut handling (Ctrl+C/V/Z/F, etc.)
-- `components/code-editor.tsx` — Root editor with gutter, content area, minimap
-- `components/line-numbers.tsx` — Gutter with synced scroll
-- `components/find-replace.tsx` — Search widget with regex support
-- `EXPLANATION.md`
+## Important implementation behavior
+- pagination or cursor handling
+- asynchronous or event-driven flow
+- empty, missing, or null-state handling
 
-## Performance
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Empty, missing, or null data should produce intentional UI or service states.
+- Security-sensitive paths need least-privilege checks and safe failure behavior.
 
-- Virtualization: 20-30 lines rendered, 10-line overscan buffer
-- Token cache: O(1) lookup per line, invalidate only edited line
-- Canvas minimap: rendered as canvas, not DOM, updated incrementally
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-## Testing
-
-- Unit: document model (insert/delete/undo/redo), tokenizer, bracket matcher
-- Integration: type and highlight, virtual scroll, multi-cursor
-- Accessibility: screen reader announces line/column, keyboard shortcuts
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

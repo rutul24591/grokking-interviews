@@ -1,17 +1,53 @@
-Example 1 is an end-to-end **Client-Side Rendering (CSR)** reader app.
+# Client-Side Rendering (CSR) - example-1 Explanation
 
-What you get:
-- A Next.js UI that renders *everything* on the client (no SSR for the page).
-- A Node.js (Express) API that serves a feed + article detail, with realistic knobs:
-  - pagination + search
-  - simulated latency + failure injection
-  - ETag-based caching and `304 Not Modified`
-- A small client fetch layer that demonstrates CSR production concerns:
-  - request cancellation (AbortController)
-  - in-flight request deduplication
-  - basic retry with exponential backoff for transient failures
+## Article context
+This example supports the article `frontend/rendering-strategies/client-side-rendering`. The article is about Comprehensive guide to Client-Side Rendering (CSR) covering concepts, implementation, and best practices.. The most relevant article sections for this example are: Definition & Context; Core Concepts; Architecture & Flow; CSR Request Flow; Trade-offs & Comparisons; Best Practices; Common Pitfalls; Real-World Use Cases; When NOT to Use CSR; Common Interview Questions.
 
-Why it matters for CSR interviews:
-- CSR is mostly about **shipping JS + managing client runtime constraints** (network, CPU, memory, UX).
-- The “backend API” is often stable; the tricky part is correct, resilient, *user-perceived* performance in the browser.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
+
+## File-by-file walkthrough
+- `.env.example`: Provides supporting example content: NEXT_PUBLIC_API_ORIGIN=http://localhost:4000.
+- `api/server.ts`: Models an API boundary, request handling path, or backend contract.
+- `api/store.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `lib/fetchJson.ts`: Implements the main logic, including memoryCache, inflight, sleep, isRetriableStatus, fetchJson.
+- `lib/types.ts`: Implements the executable logic or UI behavior for the example.
+- `next-env.d.ts`: Implements the executable logic or UI behavior for the example.
+- `next.config.ts`: Implements the main logic, including nextConfig.
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `postcss.config.mjs`: Provides supporting example content: const config = { plugins: { "@tailwindcss/postcss": {}, }, }; export default config;.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- request cancellation and cleanup
+- retry, backoff, or jitter behavior
+- timeout and deadline handling
+- cache freshness, staleness, or invalidation
+- pagination or cursor handling
+- idempotency or duplicate protection
+- input validation and schema safety
+- error handling and fallback behavior
+
+## Edge cases and failure modes
+- Requests can be cancelled, abandoned, or completed out of order.
+- Retries must avoid retry storms and should only repeat safe operations.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Cached data can become stale and needs invalidation or freshness checks.
+- Large result sets need stable pagination and empty-page behavior.
+- Duplicate submissions or replayed messages must not create duplicate side effects.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

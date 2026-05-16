@@ -1,46 +1,29 @@
-# Continuous Batching Simulator
+# AI Model Deployment — Serving Patterns and Production Operations - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/ai-model-deployment`. The article is about Comprehensive guide to AI model deployment covering model serving patterns (batch, real-time, edge), model versioning, canary deployments for AI, model rollback, blue-green for models, and production serving infrastructure.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you deploy a new model version with zero downtime?; Q2: What is continuous batching and why is it important for LLM serving?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`random`, `time`, `dataclasses`, `typing`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example simulates and compares two approaches to processing LLM requests: single-request processing (one at a time) versus continuous batching (overlapping prefill and decode phases for multiple requests). It quantifies the throughput improvement and latency reduction achieved by continuous batching.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
 
-### Key Classes
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Real-time flows need reconnect, ordering, and duplicate-message handling.
 
-- **`Request`** (dataclass): Represents an incoming request with `id`, `arrival_time`, `prompt_tokens` (input length), `output_tokens` (generated length), and `completed_at` timestamp.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Functions
-
-- **`simulate_single_request()`**: Processes requests sequentially. Each request must fully complete (prefill + decode) before the next begins. Total latency is the sum of all processing times.
-- **`simulate_continuous_batching()`**: Simulates continuous batching where multiple requests are processed together. The prefill phase benefits from parallel processing (using `prefill_multiplier = 0.5` for 2x speedup), and the decode phase processes tokens sequentially but batches across requests.
-
-### Execution Flow
-
-1. **`main()`** generates 20 requests arriving every 100ms with variable prompt lengths (500-2000 tokens) and output lengths (50-500 tokens).
-2. Runs single-request simulation: each request is processed start-to-finish before the next begins.
-3. Runs continuous batching simulation with batch_size=4: prefill is 2x faster due to parallel token processing, and requests can overlap.
-4. Compares throughput (requests/second) and average latency between the two approaches.
-5. Prints throughput improvement factor and latency reduction percentage.
-
-### Important Variables
-
-- `token_latency_ms = 50`: Simulated milliseconds per token generation.
-- `prefill_multiplier = 0.5`: Prefill is 2x faster in batching mode due to parallel processing of prompt tokens.
-- `max_batch_size = 4`: Maximum number of requests processed together in a batch.
-
-## Key Takeaways
-
-- Continuous batching significantly improves GPU utilization by overlapping the compute-heavy prefill phase with the memory-bound decode phase across multiple requests.
-- Single-request processing leaves GPU idle during network I/O and between requests, wasting expensive GPU compute resources.
-- The throughput improvement from continuous batching is typically 2-4x in production systems, making it essential for cost-effective LLM serving.
-- Batch size is a tunable parameter: larger batches increase throughput but also increase tail latency for individual requests.
-- Production systems like vLLM implement continuous batching at the token level (iteration-level scheduling), allowing requests to enter and exit the batch dynamically.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

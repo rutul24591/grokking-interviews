@@ -1,22 +1,35 @@
-# Course Schedule — Example 1 (Less Optimized: Kahn’s Algorithm / BFS Toposort)
+# Course Schedule - example-1 Explanation
 
-LeetCode: https://leetcode.com/problems/course-schedule/
+## Article context
+This example supports the article `other/problems/course-schedule`. The article is about Course Schedule. The most relevant article sections for this example are: Definition and context; Core concepts; Architecture and flow; Best practices.
 
-## Approach
-Model prerequisites as a directed graph `prereq -> course`.
-Use Kahn’s algorithm:
-1) compute indegree for each node
-2) repeatedly take nodes with indegree 0
-3) reduce indegree of their outgoing neighbors
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-If we can “take” all courses, there is no cycle.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## Complexity (step-by-step)
-1. Build adjacency + indegree arrays from prerequisites: O(V + E).
-2. Initialize queue with indegree==0 nodes: O(V).
-3. Each node dequeued once: O(V).
-4. Each edge processed once when reducing indegree: O(E).
+## File-by-file walkthrough
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `Solution.java`: Provides supporting example content: import java.util.ArrayDeque; import java.util.ArrayList; import java.util.Deque; import java.util.List; public class Solution { static boole.
+- `solution.js`: Implements the main logic, including canFinishBFSKahn, indegree, adj, queue, i.
+- `solution.py`: Implements the executable logic or UI behavior for the example.
 
-## Overall Complexity
-- Time: O(V + E)
-- Space: O(V + E)
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- asynchronous or event-driven flow
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Asynchronous work can arrive late, out of order, or more than once.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

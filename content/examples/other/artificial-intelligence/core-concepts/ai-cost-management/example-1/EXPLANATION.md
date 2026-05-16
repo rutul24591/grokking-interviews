@@ -1,70 +1,32 @@
-# Example 1: Model Router for Cost-Optimized LLM Calls
+# AI Cost Management — Token Economics and Budget Optimization - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/ai-cost-management`. The article is about Comprehensive guide to AI cost management covering token economics, response caching, model selection for cost optimization, budget guardrails, usage quotas, and production cost control strategies.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you implement model routing for cost optimization?; Q2: How do you balance cost optimization with output quality?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None — uses only Python standard library (`typing`, `dataclasses`, `time`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements an intelligent model router that classifies prompt complexity and routes each request to the most cost-appropriate LLM tier — small, medium, or large. If the chosen model lacks confidence in its response, the request is automatically escalated to the next tier. This pattern reduces costs significantly by avoiding expensive model calls for simple tasks while maintaining quality through the escalation mechanism, making it a cornerstone of production AI cost optimization.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- observability and operational signals
 
-### Key Data Structure
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Security-sensitive paths need least-privilege checks and safe failure behavior.
+- High load can expose latency, memory, cache, or backpressure issues.
 
-**`ModelConfig`** — Defines an LLM model's properties:
-- `name` — Model identifier (e.g., `"llama-3-8b"`)
-- `tier` — Cost tier (`"small"`, `"medium"`, `"large"`)
-- `input_price_per_m` / `output_price_per_m` — Cost per million tokens
-- `max_tokens` — Maximum context window
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-**`MODELS`** — Three configured tiers:
-- **Small** — `llama-3-8b` at $0.05/M tokens (open-source, self-hosted cost). Used for simple classification and extraction.
-- **Medium** — `claude-sonnet` at $3.00/M input and $15.00/M output. Used for moderate tasks like summarization and explanation.
-- **Large** — `gpt-4o` at $2.50/M input and $10.00/M output. Used for complex analysis and reasoning.
-
-### Key Class
-
-**`ModelRouter`** — Routes requests through model tiers with cost tracking:
-
-**`classify_complexity(prompt)`** — Scores prompt complexity based on:
-- Word count: >200 words adds 3 points, >50 words adds 2 points.
-- Complex keywords (`analyze`, `compare`, `evaluate`, `synthesize`, `reason`, `architect`, `design`, `optimize`, `debug`, `refactor`): each adds 2 points.
-- Moderate keywords (`summarize`, `explain`, `convert`, `extract`, `classify`): each adds 1 point.
-- Score >= 4 routes to `"large"`, score >= 2 routes to `"medium"`, otherwise `"small"`.
-
-**`simulate_llm_call(model, prompt)`** — Simulates an LLM call:
-- Estimates input tokens from word count and sets output tokens by tier (100 for small, 300 for medium, 500 for large).
-- Calculates cost based on tier pricing.
-- Assigns confidence by tier (0.7 for small, 0.85 for medium, 0.95 for large).
-
-**`route_request(prompt)`** — The core routing method:
-1. Classifies the prompt to determine the initial tier.
-2. Starting from the initial tier, calls the model and checks confidence.
-3. If confidence >= 0.8 or the model is already the largest tier, returns the result.
-4. Otherwise, escalates to the next tier and repeats.
-5. Logs each attempt and accumulates total cost.
-
-**`get_cost_report()`** — Produces aggregate statistics: total requests, total cost, average cost per request, and request distribution across tiers.
-
-### Execution Flow (from `main()`)
-
-1. A `ModelRouter` is instantiated.
-2. Three prompts of increasing complexity are processed:
-   - Simple classification ("positive or negative") — routes to small tier.
-   - Summarization request — routes to medium tier.
-   - Complex architectural analysis — routes to large tier.
-3. For each prompt, the selected model, cost, and confidence are printed.
-4. A cost report summarizes total spending and tier distribution.
-
-## Key Takeaways
-
-- **Not every request needs the most powerful model** — Simple classification tasks can be handled by small models at a fraction of the cost, and routing intelligence ensures expensive models are only used when necessary.
-- **Confidence-based escalation maintains quality** — The escalation mechanism acts as a safety net: if a cheaper model is not confident, the request automatically moves to a more capable model, preventing quality degradation.
-- **Keyword-based classification is a practical starting point** — While more sophisticated classification (using a lightweight model to score complexity) is possible, keyword and length heuristics provide a simple, effective, and zero-cost classification method.
-- **Cost savings compound at scale** — Even modest per-request savings multiply dramatically at thousands or millions of requests per day, making model routing one of the highest-ROI cost optimization strategies.
-- **Tier configuration should reflect actual pricing** — The model configs should be updated regularly as providers change pricing, and new models (e.g., newer, cheaper alternatives) should be added to the tier list to maintain optimal cost-quality balance.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

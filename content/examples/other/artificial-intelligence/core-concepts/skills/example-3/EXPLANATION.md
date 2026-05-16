@@ -1,54 +1,30 @@
-# Example 3: Skill Composition Engine — Building Composite Skills
+# Skills — LLM Capability Discovery and Composition - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/skills`. The article is about Comprehensive guide to skill systems for LLM agents covering skill registration, capability discovery, composition, routing, and skill-based agent architecture.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What is the difference between a skill and a tool in an AI agent system, and when should you use each?; Q2: How do you design a skill system that scales to hundreds of capabilities?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** `pydantic` (imported but not actively used in this simplified version). Install with `pip install pydantic`. No other external dependencies required.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a **composition engine** that chains primitive skills together into composite workflows with defined data flow between steps. It demonstrates how complex multi-step operations (like "query database, analyze trends, format report, send email") can be declared as a pipeline of skill steps, where the output of one step is automatically mapped to the input of the next. This is the architectural pattern behind AI agent tool-use chains and workflow orchestration.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- error handling and fallback behavior
+- observability and operational signals
 
-### Key Classes and Data Structures
+## Edge cases and failure modes
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`SkillStep`** (dataclass): Represents a single step in a composite workflow. It has three fields:
-  - `skill_name` — the name of the primitive skill to execute.
-  - `input_mapping` — a dictionary that maps keys from the shared context to the input parameter names expected by the skill.
-  - `output_key` — the key under which the step's result will be stored in the shared context.
-- **`CompositionEngine`**: The core engine that builds and executes composite skills. It holds a dictionary of primitive skills (name to callable) and an execution log. Key methods:
-  - `compose()` — takes a list of `SkillStep` definitions and an output transformation function, and returns a callable that executes the full workflow.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow (Step-by-Step)
-
-1. **Define primitive skills**: Four standalone functions are created — `query_db`, `analyze_trends`, `format_report`, and `send_email`. Each takes specific inputs and returns a dictionary result.
-2. **Create engine**: `CompositionEngine` is initialized with all four primitive skills in its `primitive_skills` dictionary.
-3. **Compose composite skill**: `engine.compose()` is called with a chain of four `SkillStep` objects:
-   - **Step 0**: Execute `query_db` with initial inputs (`table`, `filters`), store result as `db_result`.
-   - **Step 1**: Execute `analyze_trends` with `db_result` mapped to its `data` parameter, store result as `analysis`.
-   - **Step 2**: Execute `format_report` with `analysis.trend`, `analysis.summary`, and initial `format` parameter, store result as `report`.
-   - **Step 3**: Execute `send_email` with `report.content` and initial `recipient` parameter, store result as `email_result`.
-4. **Execute composite skill**: The returned `monthly_report` callable is invoked with initial parameters (`table`, `filters`, `format`, `recipient`). The engine creates a shared `context` dictionary and iterates through steps:
-   - For each step, it builds the skill's input by looking up values from the context using the `input_mapping`.
-   - It executes the skill, stores the result in the context under `output_key`, and logs the execution.
-   - If any step fails, execution stops immediately and returns an error with the partial context.
-5. **Transform output**: After all steps succeed, the `output_transform` lambda extracts the final report content and email status from the context.
-6. **Print results**: The final result shows the composed report and whether the email was sent, along with a step-by-step execution log.
-
-### Important Variables
-
-- `context` (in `composite_impl`): A shared dictionary that accumulates results from each step, serving as the data pipeline between skills.
-- `input_mapping`: The critical mechanism for data flow — it declares how outputs from previous steps (or initial parameters prefixed with `_start`) feed into subsequent skill inputs.
-- `execution_log`: Records each step's skill name and status, providing observability into the composite workflow execution.
-
-## Key Takeaways
-
-- **Declarative workflow composition**: Complex multi-step operations are defined as data (a list of `SkillStep` objects) rather than hardcoded logic, making workflows configurable and inspectable.
-- **Shared context pattern**: All steps read from and write to a single shared context dictionary, enabling flexible data flow between any steps without tight coupling.
-- **Error propagation**: If any step fails, the entire chain aborts immediately and returns the error along with the partial context — this is critical for debugging failed workflows.
-- **Input mapping flexibility**: The `input_mapping` dictionary allows results from any previous step (or initial parameters) to be routed to any input of the current step, enabling non-linear data dependencies.
-- **Output transformation**: The final `output_transform` function gives full control over what the composite skill returns, abstracting away the internal pipeline structure from the caller.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

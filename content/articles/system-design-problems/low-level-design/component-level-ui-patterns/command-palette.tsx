@@ -9,481 +9,389 @@ export const metadata: ArticleMetadata = {
   id: "article-lld-command-palette",
   title: "Design a Command Palette / Spotlight Search",
   description:
-    "Production-grade command palette with keyboard-driven navigation, fuzzy matching, plugin architecture, and accessibility.",
+    "Command palette with fuzzy search ranking, plugin architecture, async data sources, keyboard navigation, recency weighting, and accessibility.",
   category: "low-level-design",
   subcategory: "component-level-ui-patterns",
   slug: "command-palette",
-  wordCount: 3200,
-  readingTime: 20,
-  lastUpdated: "2026-04-03",
+  wordCount: 5300,
+  readingTime: 32,
+  lastUpdated: "2026-05-16",
   tags: [
     "lld",
     "command-palette",
     "spotlight-search",
     "fuzzy-matching",
-    "keyboard-navigation",
     "plugin-architecture",
     "accessibility",
+    "Web Worker",
+    "recency-weighting",
   ],
-  relatedTopics: [
-    "search-autocomplete",
-    "tooltip-system",
-    "context-menu",
-  ],
+  relatedTopics: ["rich-text-editor", "multi-select-tag-input", "tooltip-system"],
 };
 
 export default function CommandPaletteArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          We need to design a command palette — a keyboard-driven search interface
-          (triggered by Cmd+K / Ctrl+K) that lets users quickly navigate to pages,
-          execute actions, or search content. The palette must support fuzzy matching
-          for flexible query matching, keyboard navigation through results, a plugin
-          architecture for extensibility (third-party commands), and full accessibility
-          for keyboard-only users.
-        </HighlightBlock>
-        <p>
-          <strong>Assumptions:</strong>
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">Triggered globally via Cmd+K (Mac) or Ctrl+K (Windows/Linux). Also accessible via a visible button.</HighlightBlock>
-          <HighlightBlock as="li" tier="important">Commands come from multiple sources: navigation (pages), actions (toggle theme, logout), and content (search articles).</HighlightBlock>
-          <li>Maximum visible results: 8-10. Excess results are scrollable.</li>
-          <li>Fuzzy matching scores and ranks results by relevance.</li>
-          <li>The palette is modal — it traps focus while open and closes on Escape.</li>
-        </ul>
-      </section>
+      <p>
+        The command palette (Cmd+K or Ctrl+K) is one of the most ergonomic power-user
+        interfaces in modern software — Figma, Vercel, Linear, GitHub, VS Code, and
+        Notion all have one. It surfaces any action or navigation target through a
+        single unified search interface, eliminating the need to navigate menus or
+        remember shortcut keys. Building a production command palette requires a fuzzy
+        search engine with ranking, an extensible command registry, async data sources,
+        keyboard-exclusive navigation, a recency/frequency weighting system, and
+        strict accessibility semantics. The design is interesting because it is a
+        microcosm of search infrastructure applied to a UI widget.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
+      <ArticleImage
+        src="/diagrams/system-design-problems/low-level-design/command-palette-architecture.svg"
+        alt="Command palette architecture diagram"
+        caption="Command palette architecture: command registry, fuzzy search, async data sources, keyboard navigation"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Global Trigger:</strong> Cmd+K / Ctrl+K opens the palette from anywhere in the app.</li>
-          <li><strong>Fuzzy Search:</strong> As the user types, results are filtered and ranked by fuzzy match score.</li>
-          <HighlightBlock as="li" tier="important"><strong>Keyboard Navigation:</strong> ArrowUp/Down moves the highlight. Enter executes the selected command. Escape closes the palette.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Command Execution:</strong> Each command has an execute callback that performs the action (navigate, toggle, open URL, etc.).</HighlightBlock>
-          <li><strong>Grouped Results:</strong> Results grouped by category (Navigation, Actions, Recent).</li>
-          <li><strong>Plugin Architecture:</strong> Third-party modules can register commands dynamically via a plugin API.</li>
-          <li><strong>Recent Commands:</strong> Tracks recently executed commands and surfaces them when query is empty.</li>
-          <li><strong>Loading State:</strong> Shows a loading indicator while async commands (content search) are fetching.</li>
-        </ul>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Key scope questions before designing:
+      </p>
+      <p>
+        <strong>Commands only, or also navigation?</strong> A pure command palette
+        (VS Code's Ctrl+Shift+P) shows only actions (commands). A hybrid Spotlight
+        (Figma's Cmd+K, Linear's Cmd+K) shows both commands ("Create issue") and
+        entities ("Go to issue ENG-123: Fix login bug"). The hybrid version requires
+        searching both a static command list and dynamic entity data (from the backend).
+      </p>
+      <p>
+        <strong>Sync or async results?</strong> A static command list can be searched
+        synchronously on the main thread. Dynamic entity results (searching issues,
+        pages, users) require async API calls. The UX must handle loading states,
+        errors, and stale results gracefully.
+      </p>
+      <p>
+        <strong>Nested menus?</strong> Some palettes support "scoped" commands — selecting
+        "Set status" opens a sub-menu of status options. This is a significant UX
+        pattern that requires a navigation stack (breadcrumbs showing where in the
+        command tree the user is).
+      </p>
+      <p>
+        <strong>Recent/frequent commands?</strong> A recently-used list that appears
+        when the palette opens with an empty query is a critical usability feature.
+        The ranking of results should weight recency and frequency.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Performance:</strong> Fuzzy matching runs in under 5ms for 1000 commands. Debounce async command fetching.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Focus trap, aria-combobox pattern, screen reader announcements for result count.</HighlightBlock>
-          <li><strong>Bundle Size:</strong> Core palette under 10KB gzipped. Plugin commands loaded on demand.</li>
-          <li><strong>Type Safety:</strong> Full TypeScript generics for command payload types.</li>
-        </ul>
+      <h2>The Command Registry</h2>
+      <p>
+        The command registry is a static list (or Map) of all available commands.
+        Each command has: an id (unique string), a label (displayed text), keywords
+        (alternative search terms — "remove" as a keyword for a "Delete" command),
+        an icon, a category (for grouping in search results), and an action (a
+        function to call when the command is selected).
+      </p>
+      <p>
+        The registry is populated at app initialization and augmented by plugins or
+        context-sensitive commands. Context-sensitive commands appear only when
+        specific conditions are met — "Delete selected item" appears only when
+        something is selected. These are registered dynamically: a React hook
+        (useRegisterCommand) registers a command on mount and unregisters on unmount.
+        The hook adds the command to the registry when the component mounts (and the
+        condition is met) and removes it on unmount. This way, the palette always
+        reflects the current application context.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Context-sensitive command registration is the key design insight that separates
+        a flexible command palette from a hardcoded one. Commands are owned by the
+        components that provide them, not by a central list. A "Delete layer" command
+        is registered by the layer panel component when a layer is selected; it
+        disappears when no layer is selected. This decouples the palette from knowing
+        anything about the application's domain model — it just searches whatever is
+        currently registered.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>Async commands return stale results after the user has changed the query — must discard via AbortController.</li>
-          <HighlightBlock as="li" tier="important">User rapidly types — debounce at 150ms for async commands, instant filtering for sync commands.</HighlightBlock>
-          <li>Palette opens on top of another modal — z-index stacking must place palette on top.</li>
-          <li>Command execution triggers navigation — palette must close before navigation to prevent flash.</li>
-          <li>Plugin registers duplicate commands (same ID) — must reject or overwrite with warning.</li>
-        </ul>
-      </section>
+      <h2>Fuzzy Search Algorithm</h2>
+      <p>
+        The search must find relevant results even when the user's query is not an
+        exact prefix match. Fuzzy matching allows for typographical flexibility:
+        "crt iss" should match "Create issue"; "fnt sz" should match "Font size."
+      </p>
+      <p>
+        The algorithm used by most command palettes (and by libraries like fuse.js
+        and the algorithm in VS Code's command palette) is a subsequence matcher with
+        scoring. A query matches a string if all characters of the query appear in
+        the string in order (as a subsequence), regardless of position or gaps between
+        them. "crt" matches "Create" because c, r, t appear in that order.
+      </p>
+      <p>
+        The score determines ranking. Higher scores are better. Score computation:
+        consecutive character matches score higher than non-consecutive matches
+        (matching "fi" in "file" at positions 0-1 scores higher than positions 0 and 3).
+        Matches at the start of a word (word boundary) score higher than matches in
+        the middle. A match at position 0 (the very start) scores highest. The total
+        score is the sum of match-quality scores for each matched character.
+      </p>
+      <p>
+        This bipartite matching approach is fast (O(n*m) where n is query length and
+        m is string length) and produces intuitively correct rankings. Fuse.js implements
+        a variant of the Bitap algorithm which is equivalent but bit-parallel and
+        extremely fast in practice.
+      </p>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">
-          The core idea is a <strong>command registry</strong> that collects commands
-          from all sources (static navigation, dynamic plugins, async content search).
-          A <strong>fuzzy matching engine</strong> filters and ranks commands against
-          the user&apos;s query. The UI renders results in grouped sections with keyboard
-          navigation. A <strong>Zustand store</strong> manages open/close state, query
-          text, highlighted index, and recent command history.
-        </HighlightBlock>
-        <p>
-          <strong>Alternative approaches:</strong>
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>External library (cmdk, kbar, fuse.js-based):</strong> Ready-made but limits customization of the matching algorithm and plugin architecture.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Simple filter (startsWith or includes):</strong> Fast but poor fuzzy matching quality. Users expect substring and out-of-order character matching.</HighlightBlock>
-        </ul>
-        <HighlightBlock as="p" tier="important">
-          <strong>Why custom fuzzy matching + plugin registry is optimal:</strong> Full
-          control over the matching algorithm (configurable scoring weights), extensible
-          command registration, and tailored accessibility. The plugin architecture
-          allows third-party features to add commands without modifying the core palette.
-        </HighlightBlock>
-      </section>
+      <h2>Search Result Ranking</h2>
+      <p>
+        Beyond fuzzy match score, result ranking incorporates recency and frequency.
+        Items the user has selected recently or frequently should rank higher for
+        the same query relevance score.
+      </p>
+      <p>
+        The recency/frequency store: maintain a Map from command ID (or entity ID)
+        to a score. On each selection, increment the score for the selected item.
+        Apply time decay: scores from older selections contribute less. A simple
+        implementation: store a list of timestamps for each item's selections; the
+        recency score is a weighted sum of inversely-time-decayed selection counts
+        (each selection at age t contributes weight = exp(-lambda * t) where lambda
+        controls the decay rate). Persist this store to localStorage so it survives
+        page reloads.
+      </p>
+      <p>
+        The final rank combines the fuzzy match score and the recency/frequency score.
+        Normalize each to [0, 1] and compute a weighted combination: total_score =
+        alpha * match_score + (1 - alpha) * recency_score, where alpha is tuned
+        (typically 0.7–0.8, heavily weighting match relevance). Items with zero match
+        score (the query does not match) are excluded regardless of recency.
+      </p>
+      <p>
+        When the query is empty (the palette was just opened), show the most recent N
+        items from the recency/frequency store rather than all commands. This is the
+        "recent items" view that makes the palette immediately useful without typing.
+      </p>
 
-      <section>
-        <h2>System Design</h2>
+      <h2>Async Data Sources</h2>
+      <p>
+        Entity search results (issues, documents, users, pages) are fetched from the
+        backend. The fetch is triggered by each query change, debounced by 150–200ms
+        to avoid a request on every keystroke.
+      </p>
+      <p>
+        The results from static (command registry) and dynamic (API) sources are merged
+        and displayed together. The merge strategy: show static results immediately
+        (they are available synchronously); show a loading indicator in the dynamic
+        results section; replace the loading indicator with API results when the
+        fetch completes.
+      </p>
+      <p>
+        Race condition handling: if the user types quickly, multiple fetch requests
+        are in flight. Only the response to the most recent query should be applied.
+        Use AbortController to cancel superseded requests: on each new fetch, abort
+        the previous controller and create a new one.
+      </p>
+      <p>
+        Error handling: if the API request fails, show a subtle error state in the
+        dynamic results section ("Could not load results — showing local results only")
+        and continue showing the static command results. Do not close the palette or
+        show a blocking error.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
-        <p>The system consists of seven modules:</p>
+      <h2>Grouping and Sectioning</h2>
+      <p>
+        Results are grouped by category for visual clarity. Categories: "Recent" (items
+        from the recency store), "Commands" (static command registry matches), "Pages"
+        (entity search results), "People" (user search results). Each category has a
+        heading and a list of items below it.
+      </p>
+      <p>
+        Category ordering: "Recent" is always first (if the query is empty); otherwise,
+        the most relevant category's results lead. Within a category, items are sorted
+        by their combined score.
+      </p>
+      <p>
+        Category collapsing: if a category has many results (more than 5–8), show only
+        the top N with a "Show more" button at the bottom of that section. Clicking it
+        expands to show all results in that category. This keeps the initial result
+        list compact.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">1. Types &amp; Interfaces (<code>command-palette-types.ts</code>)</h4>
-          <p>Defines <code>Command</code> (id, label, keywords, icon, group, execute, payload), <code>CommandGroup</code>, <code>CommandResult</code> (with match score), and <code>PluginRegistration</code>.</p>
-        </div>
+      <h2>Keyboard Navigation</h2>
+      <p>
+        The command palette is keyboard-first. Mouse support is secondary. The
+        interaction model:
+      </p>
+      <p>
+        Opening: a global keyboard shortcut (Cmd+K / Ctrl+K) opens the palette with
+        the text input focused. Register this as a keydown listener on document in a
+        useEffect at the app root. The palette renders in a portal on top of all other
+        content.
+      </p>
+      <p>
+        Navigation: Arrow Down moves selection to the next item; Arrow Up moves to the
+        previous. The selection wraps around (Down from the last item goes to the first).
+        Home moves to the first item; End moves to the last.
+      </p>
+      <p>
+        Selection: Enter activates the selected item's action. Escape closes the palette.
+        Tab should not move selection within the palette (it is keyboard navigation,
+        not focus management) — Tab closes the palette and returns focus to the
+        triggering element.
+      </p>
+      <p>
+        The text input always has keyboard focus. Arrow key events are intercepted
+        in the input's keydown handler, preventing cursor movement in the input when
+        the user intends to navigate the results list.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        The selection state is managed as a flat index into the linearized result list
+        (categories flattened with their items in order). Category headings are skipped
+        in navigation (they are not selectable). When the query changes and the result
+        list is rebuilt, reset the selection index to 0 (first item) so keyboard
+        navigation starts from the top of new results, not an arbitrary position in
+        the old list.
+      </HighlightBlock>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">2. Command Registry (<code>command-registry.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Central registry for all commands. Supports register, unregister, getCommands (by group), and duplicate detection. Commands are stored in a Map keyed by ID for O(1) lookup.</HighlightBlock>
-        </div>
+      <h2>Nested Commands (Sub-menus)</h2>
+      <p>
+        Some commands lead to a sub-menu — "Change status" opens a list of status
+        options. This is implemented as a navigation stack: the current palette view
+        is the top of the stack. Selecting a "parent" command pushes a new view onto
+        the stack (the sub-menu). Pressing Escape or selecting a "back" item pops
+        the stack to the previous view.
+      </p>
+      <p>
+        The breadcrumb trail at the top of the palette shows the current navigation
+        path: "Change status" appears as a breadcrumb when viewing the status sub-menu.
+        Clicking a breadcrumb item navigates back to that level.
+      </p>
+      <p>
+        The text input in a sub-menu filters only the items in that sub-menu, not all
+        commands. The search scope is always the current level.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">3. Fuzzy Matcher (<code>fuzzy-matcher.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Implements fuzzy string matching with scoring. Scores based on: exact match (highest), prefix match, substring match, fuzzy match (out-of-order characters). Returns sorted results by descending score.</HighlightBlock>
-        </div>
+      <h2>Portal and Focus Management</h2>
+      <p>
+        The palette renders in a React portal (ReactDOM.createPortal) at the document
+        body, avoiding z-index and overflow: hidden issues from ancestor elements.
+        It is wrapped in a modal focus trap: Tab inside the palette cycles between the
+        text input and any other focusable elements within the palette (the "Show more"
+        buttons, scrollable region). Focus does not escape the palette while it is open.
+      </p>
+      <p>
+        Opening: save the previously focused element in a ref. Move focus to the text
+        input. Closing: return focus to the saved element. This ensures keyboard users
+        return to their position in the application after using the palette.
+      </p>
+      <p>
+        The backdrop (the overlay behind the palette) closes the palette on click. It
+        does not steal focus from the palette while the palette is open.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">4. Command Palette Store (<code>command-palette-store.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Zustand store: open state, query text, highlighted index, filtered results, loading state, recent commands (LRU cache of last 10). Actions: open, close, setQuery, setHighlight, executeCommand, addToRecent.</HighlightBlock>
-        </div>
+      <h2>ARIA and Screen Reader Semantics</h2>
+      <p>
+        The palette's input element is a combobox: role="combobox" with aria-expanded,
+        aria-controls pointing to the listbox ID, and aria-autocomplete="list."
+        The results container has role="listbox." Each result item has role="option"
+        with aria-selected="true" for the currently selected item. Category headings
+        are rendered as aria-group with an aria-labelledby.
+      </p>
+      <p>
+        The combobox pattern is the correct ARIA widget for a searchable dropdown with
+        keyboard selection. Screen readers announce the number of matching options
+        (via a hidden aria-live="polite" status region: "5 results found") and the
+        currently selected option's label as the user navigates with arrow keys.
+      </p>
+      <p>
+        For the loading state, the status region announces "Loading results..." when
+        a fetch is in progress, and updates to "N results found" when the fetch
+        completes. This keeps screen reader users informed of the asynchronous state
+        without requiring them to navigate to a visual spinner.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">5. useCommandPalette Hook (<code>use-command-palette.ts</code>)</h4>
-          <HighlightBlock as="p" tier="crucial">Main orchestrator: registers global keyboard listener (Cmd+K/Ctrl+K), debounces query changes, triggers fuzzy matching, manages async command fetching with AbortController.</HighlightBlock>
-        </div>
+      <h2>Performance Optimizations</h2>
+      <p>
+        Fuzzy search over a large command registry (thousands of commands) can stall
+        the main thread if done synchronously. Move the search to a Web Worker: send
+        the query and the full command list to the worker; the worker returns ranked
+        results. The Worker approach adds a small latency (message passing) but keeps
+        the main thread free for animations and user input.
+      </p>
+      <p>
+        For the command list, use a small fixed-size result set (max 50 items total
+        across all categories). Rendering 1,000 list items in a virtualized list is
+        more complex than necessary for a command palette where the user finds the
+        target in the top 5–10 results. A fixed max of 50 keeps rendering simple and
+        fast.
+      </p>
+      <p>
+        The result list transitions (items appearing, reordering) should be kept
+        subtle. Aggressive animation on every keystroke causes visual noise.
+        A simple opacity fade-in for the entire list on query change (100ms duration)
+        is sufficient. Avoid per-item animation during search to prevent the constant
+        motion from distracting the user.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">6. Focus Trap (<code>focus-trap.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Focus trap implementation using Tab/Shift+Tab cycling within the palette. Returns focus to the trigger element on close. Handles edge case of no focusable elements.</HighlightBlock>
-        </div>
+      <h2>Interview Q&A</h2>
 
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/command-palette-architecture.svg"
-          alt="Command palette architecture showing fuzzy search, command registry, and focus management"
-          caption="Component Interaction Flow"
-        />
+      <h3>Q: How do you implement highlight of the matched characters in the result label?</h3>
+      <p>
+        The fuzzy matcher returns not just a score but the indices of the matched
+        characters within the result string. Use these indices to split the label
+        string into matched and unmatched segments, and render matched segments with
+        a highlight class (bold or background color). For example, if "ci" matches
+        "Create issue" at positions 0 and 7 (C and i), split the string into "C" (match),
+        "reate " (no match), "i" (match), "ssue" (no match), and wrap each segment in
+        a span with or without the highlight class. This makes it visually clear why
+        a result matched the query, improving user trust in the search.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
-        <ol className="space-y-2 list-decimal list-inside">
-          <li>User presses Cmd+K. Store sets open=true, focus moves to input.</li>
-          <li>User types &quot;theme&quot;. Fuzzy matcher scores all commands against query.</li>
-          <li>Results: &quot;Toggle Dark Theme&quot; (score: 95), &quot;Theme Settings&quot; (score: 80).</li>
-          <li>Results grouped by category, rendered with highlighted matching characters.</li>
-          <li>User presses ArrowDown — highlight moves to second result.</li>
-          <li>User presses Enter — executeCommand calls the command&apos;s execute callback.</li>
-          <li>Command runs (toggles theme), palette closes, command added to recent history.</li>
-        </ol>
-      </section>
+      <h3>Q: How do you handle a very large command registry efficiently?</h3>
+      <p>
+        For registries with thousands of commands, sequential fuzzy matching (O(n*m)
+        per command) scales linearly in the number of commands. Mitigations: pre-index
+        the registry using an inverted index (for each character pair, a list of
+        command IDs containing that bigram). On query, intersect the sets for each
+        bigram in the query to get candidate commands. Only run the full fuzzy match
+        on candidates, not all commands. This reduces the search space from all N
+        commands to O(k) candidates where k is typically much smaller. For command
+        palettes embedded in IDEs or design tools with thousands of extensions, this
+        approach (used by VS Code) keeps search latency below 10ms even with very
+        large registries.
+      </p>
 
-      <section>
-        <h2>Data Flow / Execution Flow</h2>
-        <HighlightBlock as="p" tier="crucial">
-          The data flow is: keyboard trigger → open palette → user types → debounce (150ms)
-          → fuzzy match sync commands → fetch async commands → merge results → render grouped
-          list → user selects → execute → close → record in recent history.
-        </HighlightBlock>
+      <h3>Q: How do you prevent the palette from showing stale results when the user types quickly?</h3>
+      <p>
+        Two mechanisms: debouncing and request cancellation. Debounce the search
+        trigger (150ms for synchronous search, 200–250ms for async) so the search
+        only runs when the user pauses typing. For async searches, cancel in-flight
+        requests using AbortController when a new query is submitted. For synchronous
+        fuzzy search running in a Web Worker, send a cancel message (or simply ignore
+        the response if a newer query's result arrives first — by tagging each request
+        with a sequence number and discarding responses whose sequence number is less
+        than the current one).
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
-        <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important"><strong>Stale async results:</strong> Each query increment a requestId. Async responses include the requestId they were generated for. If the current requestId differs, the response is discarded.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Duplicate command registration:</strong> The registry checks for existing IDs. If a duplicate is found, it logs a warning in development and overwrites the existing command.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Focus restoration:</strong> The store saves a reference to the element that had focus when the palette opened. On close, focus is returned to that element to maintain keyboard flow.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Z-index stacking:</strong> The palette renders in a Portal at the highest z-index (z-50 or higher). If another modal is open, the palette overlays it.</HighlightBlock>
-        </ul>
-      </section>
+      <h3>Q: How do you design the command palette to be extensible by third-party plugins?</h3>
+      <p>
+        The command registry exposes a public API: registerCommands(commands) and
+        unregisterCommands(ids). A plugin calls registerCommands at initialization
+        with its command definitions and unregisterCommands at teardown. The commands
+        are plain data objects (not React components), so plugins do not need access
+        to the palette's internal React tree. For context-sensitive commands, plugins
+        use the registerCommands API within their own React components (in a useEffect),
+        which are part of the main application's render tree. The palette reads only
+        from the registry and is oblivious to which plugin registered which command.
+        This is the same architecture used by VS Code's extension API and Figma's
+        plugin API.
+      </p>
 
-      <section>
-        <h2>Implementation</h2>
-        <p>
-          The full production implementation is available in the <strong>Example tab</strong>.
-          Below is a high-level overview of each module.
-        </p>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <HighlightBlock as="p" tier="important">
-            Complete production-ready implementation includes: command registry with
-            plugin API, fuzzy matcher with scoring, Zustand store with recent history,
-            Portal-rendered palette with focus trap, keyboard navigation, grouped results
-            with match highlighting, and async command support with AbortController.
-          </HighlightBlock>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Types &amp; Interfaces</h3>
-        <HighlightBlock as="p" tier="important">
-          Command interface with id, label, optional keywords array for improved matching,
-          icon (React node), group name, execute callback, and optional payload.
-          CommandResult extends Command with a match score. PluginRegistration includes
-          register and unregister functions returned when a plugin registers.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Command Registry</h3>
-        <HighlightBlock as="p" tier="important">
-          Singleton Map-based registry. <code>register(command)</code> adds to the map,
-          <code>unregister(id)</code> removes. <code>getAll()</code> returns all commands
-          as an array. <code>getByGroup(group)</code> filters by group name. Duplicate
-          detection logs a dev warning. Plugin registration returns an unregister function
-          for cleanup.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module 3: Fuzzy Matcher</h3>
-        <HighlightBlock as="p" tier="important">
-          Scores each command against the query. Scoring tiers: exact match (100 points),
-          prefix match (90 points), substring match (80 points), fuzzy match with
-          consecutive bonus (10 points per consecutive character match, plus base points
-          for each matched character). Results sorted by descending score. Only commands
-          with score above threshold (50) are returned.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Modules 4-6: Store, Hook, Focus Trap</h3>
-        <HighlightBlock as="p" tier="crucial">
-          The store manages palette state with LRU-cached recent commands. The hook
-          orchestrates keyboard triggers, debounced matching, and async fetching. The
-          focus trap uses Tab/Shift+Tab cycling with boundary detection, restoring focus
-          on close.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Performance &amp; Scalability</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
-        <div className="my-4 overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Operation</th>
-                <th className="p-2 text-left">Time</th>
-                <th className="p-2 text-left">Space</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-theme">
-              <tr>
-                <td className="p-2">Fuzzy match (sync commands)</td>
-                <td className="p-2">O(n × m) — n commands, m query length</td>
-                <td className="p-2">O(n) — result array</td>
-              </tr>
-              <tr>
-                <td className="p-2">Command registry lookup</td>
-                <td className="p-2">O(1) — Map.get()</td>
-                <td className="p-2">O(n) — command map</td>
-              </tr>
-              <tr>
-                <td className="p-2">Recent commands (LRU)</td>
-                <td className="p-2">O(1) — Map-based LRU</td>
-                <td className="p-2">O(k) — k recent entries</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Fuzzy matching on large command sets:</strong> 1000+ commands × 10-character query = 10,000 character comparisons. Mitigation: Web Worker for off-main-thread matching, or pre-filter by first character index.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Async command fetching:</strong> Multiple concurrent API calls for content search. Mitigation: AbortController cancellation, debounce at 150ms, max 3 concurrent fetches.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Result rendering:</strong> Large result sets cause slow DOM updates. Mitigation: cap visible results at 10, virtualize if exceeding 50.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>First-character index:</strong> Pre-index commands by first character. Only scan commands whose first character appears in the query. Reduces comparisons by 90% for alphabetic queries.</HighlightBlock>
-          <li><strong>Web Worker matching:</strong> Offload fuzzy matching to a Web Worker for command sets exceeding 5000 items.</li>
-          <HighlightBlock as="li" tier="important"><strong>Memoized results:</strong> Cache fuzzy match results by query string. Repeated queries (user backspaces then retypes) hit the cache.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Security Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <HighlightBlock as="p" tier="crucial">
-          The query string is used only for fuzzy matching — it is never rendered as HTML
-          or sent to the server without sanitization. Async command fetchers should sanitize
-          the query before API calls to prevent injection.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h4 className="mb-3 font-semibold">Keyboard Navigation</h4>
-          <ul className="space-y-2">
-            <li>Cmd+K / Ctrl+K opens the palette from anywhere.</li>
-            <li>ArrowUp/Down moves the highlight through results.</li>
-            <li>Enter executes the highlighted command.</li>
-            <li>Escape closes the palette and restores focus.</li>
-            <li>Tab/Shift+Tab cycles focus within the palette (focus trap).</li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h4 className="mb-3 font-semibold">ARIA Pattern</h4>
-          <ul className="space-y-2">
-            <HighlightBlock as="li" tier="important">Input has <code>role=&quot;combobox&quot;</code>, <code>aria-expanded</code>, <code>aria-activedescendant</code> linked to the highlighted result.</HighlightBlock>
-            <li>Results list has <code>role=&quot;listbox&quot;</code>. Each result has <code>role=&quot;option&quot;</code>.</li>
-            <li>An <code>aria-live=&quot;polite&quot;</code> region announces the number of results.</li>
-          </ul>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Plugin sandboxing:</strong> Plugin commands are registered via a controlled API. Plugins cannot access the store directly or execute arbitrary commands without user selection.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Rate limiting:</strong> The keyboard trigger is debounced at 300ms to prevent rapid open/close cycles from accidental key holding.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial"><strong>Fuzzy matcher:</strong> Test scoring for exact match, prefix, substring, fuzzy match, non-match. Verify sort order. Test edge cases (empty query, special characters, Unicode).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Command registry:</strong> Test register, unregister, duplicate detection, getByGroup. Test plugin registration and cleanup (unregister removes plugin commands).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Store:</strong> Test open/close, setQuery, highlight navigation (wrapping at boundaries), executeCommand triggers callback, addToRecent maintains LRU order.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li><strong>Full flow:</strong> Simulate Cmd+K, type query, verify results render, press ArrowDown + Enter, verify command executes and palette closes.</li>
-          <HighlightBlock as="li" tier="important"><strong>Async commands:</strong> Mock API with 200ms delay, type query, verify loading state appears, verify results appear after fetch, verify stale results are discarded when query changes.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Focus trap:</strong> Open palette, press Tab repeatedly, verify focus cycles within palette, press Escape, verify focus returns to trigger element.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility Tests</h3>
-        <ul className="space-y-2">
-          <li>Run axe-core on open palette — no violations.</li>
-          <li>Test with VoiceOver — results count is announced, arrow key navigation announces each option.</li>
-          <li>Verify focus trap works correctly with screen reader virtual cursor.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Interview-Focused Insights</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
-        <ul className="space-y-3">
-          <li><strong>No fuzzy matching:</strong> Using <code>includes()</code> or <code>startsWith()</code> only. Users expect forgiving search (e.g., &quot;dkt&quot; matches &quot;Toggle DarK Theme&quot;).</li>
-          <HighlightBlock as="li" tier="important"><strong>No focus trap:</strong> Tab key escapes the palette, focusing elements behind it. This breaks the modal experience for keyboard users.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>No debounce on async commands:</strong> Every keystroke triggers an API call. This overwhelms the server and creates race conditions with out-of-order responses.</HighlightBlock>
-          <li><strong>Not closing before navigation:</strong> Executing a navigation command while the palette is still open causes a flash of the palette on the new page. Must close before navigating.</li>
-          <li><strong>No recent commands:</strong> Power users repeat commands frequently. Without recent command surfacing, they must retype every time.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">Fuzzy Matching: Custom Algorithm vs Library (fuse.js)</h4>
-          <p>
-            A custom fuzzy matcher gives full control over scoring weights, consecutive
-            character bonuses, and performance tuning. However, it is more code to maintain.
-            fuse.js is a well-tested library with configurable scoring, but adds ~6KB
-            gzipped and may be overkill for small command sets. For 500+ commands, a
-            custom implementation with first-character indexing is faster than fuse.js.
-          </p>
-        </div>
-
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">Plugin Architecture: Registry vs Event Bus</h4>
-          <p>
-            A registry (Map-based) provides O(1) lookup and explicit registration/
-            unregistration. An event bus (pub/sub) is more decoupled but harder to debug
-            and lacks a clear command inventory. For a command palette, a registry is
-            better because you need to enumerate all commands for matching.
-          </p>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
-
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <HighlightBlock as="p" tier="important" className="font-semibold">Q: How would you add keyboard shortcut hints next to each command (e.g., &quot;⌘D&quot; next to &quot;Toggle Dark Mode&quot;)?</HighlightBlock>
-            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
-              A: Add a <code>shortcut</code> field to the Command interface. Render it
-              as a styled kbd element aligned to the right of each result. Register global
-              keyboard listeners for these shortcuts when the palette is closed. When the
-              palette is open, disable global shortcuts to avoid conflicts.
-            </HighlightBlock>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you handle command execution that requires user input (e.g., &quot;Go to file&quot; needs a file name)?</p>
-            <p className="mt-2 text-sm">
-              A: Two-phase execution. The first Enter opens a sub-palette with the
-              command-specific prompt (e.g., &quot;Enter file name&quot;). The user types
-              the input and presses Enter again to execute. This is how VS Code&apos;s
-              command palette works for parameterized commands.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you support non-English languages (CJK, RTL)?</p>
-            <p className="mt-2 text-sm">
-              A: For CJK, use Intl.Segmenter for proper character boundary detection in
-              the fuzzy matcher. For RTL languages, the palette layout flips
-              (<code>dir=&quot;rtl&quot;</code>), and the fuzzy matcher should normalize
-              Unicode directionality. The matching algorithm itself is language-agnostic
-              since it operates on character sequences.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you measure command palette effectiveness?</p>
-            <p className="mt-2 text-sm">
-              A: Track: (1) usage frequency (opens per session), (2) average commands
-              per session, (3) most-executed commands, (4) zero-result queries (indicates
-              missing commands or poor matching), (5) average time from open to execute.
-              Use this data to prioritize command additions and tune the fuzzy matcher.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent the palette from flickering on mount?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Render the palette with <code>opacity: 0</code> initially, then set
-              <code>opacity: 1</code> after one frame using requestAnimationFrame. This
-              ensures the browser has computed layout before the fade-in animation begins.
-              Use CSS transitions for the fade (0.15s ease-out).
-            </HighlightBlock>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you handle commands that are only available in certain contexts (e.g., &quot;Save&quot; only when editing)?</p>
-            <p className="mt-2 text-sm">
-              A: Add a <code>isVisible</code> predicate to the Command interface. The
-              registry evaluates this predicate before including the command in results.
-              Context-aware commands re-evaluate their visibility when the context changes
-              (e.g., when the user enters/exits edit mode, trigger a re-evaluation).
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://github.com/pacocoursey/cmdk" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              cmdk — Fast, Composable Command Palette for React
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/timc1/kbar" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              kbar — Keyboard-first Navigation
-            </a>
-          </li>
-          <li>
-            <a href="https://www.fusejs.io/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Fuse.js — Lightweight Fuzzy Search Library
-            </a>
-          </li>
-          <li>
-            <a href="https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              VS Code Command Palette — Reference UX
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/combobox/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              WAI-ARIA Combobox Pattern
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN — KeyboardEvent API
-            </a>
-          </li>
-        </ul>
-      </section>
+      <h3>Q: How would you implement a "scoped" palette that changes context based on the focused element?</h3>
+      <p>
+        Some palettes change their available commands based on what is focused — focusing
+        a canvas element shows "canvas commands"; focusing a table shows "table commands."
+        Implement this via a context scope system: each focusable region of the app
+        registers a scope name. The currently active scope is tracked in global state.
+        Commands in the registry have an optional scope field. When the palette opens,
+        the search preferentially shows commands matching the active scope (higher score
+        multiplier) while still including all commands without a scope constraint.
+        Commands with a scope that does not match the active scope are shown with lower
+        priority or in a separate "Other" category. This gives the user context-aware
+        results without hiding globally applicable commands.
+      </p>
     </ArticleLayout>
   );
 }

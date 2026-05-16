@@ -1,65 +1,37 @@
-# Example 3: AI Security Audit Log and Incident Tracker
+# AI Safety and Security — Prompt Injection, Data Leakage, and Governance - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/ai-safety-security`. The article is about Comprehensive guide to AI safety covering prompt injection attacks, data leakage prevention, output validation, adversarial attacks, content moderation, jailbreak detection, and responsible AI governance.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What is prompt injection and how do you defend against it in production systems?; Q2: How do you prevent data leakage through AI systems?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None — uses only Python standard library (`typing`, `dataclasses`, `datetime`, `enum`, `json`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a comprehensive audit logging system for AI interactions that tracks every event in the pipeline — from input receipt through output generation — with severity classification, session-level traceability, and security reporting. It provides the observability foundation required for compliance (SOC 2, ISO 27001), incident response, and security forensics in production AI systems.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
+- observability and operational signals
 
-### Key Enumerations
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Security-sensitive paths need least-privilege checks and safe failure behavior.
 
-**`EventType`** — Nine distinct event types covering the full AI pipeline lifecycle:
-- `INPUT_RECEIVED`, `PROMPT_BUILT`, `MODEL_CALLED`, `OUTPUT_GENERATED` — Normal pipeline stages
-- `INJECTION_DETECTED`, `OUTPUT_BLOCKED` — Security events
-- `PERMISSION_DENIED` — Access control violations
-- `TOOL_CALL_MADE` — External tool/API invocations
-- `ERROR_OCCURRED` — System errors
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-**`Severity`** — Four-level severity scale: `INFO`, `WARNING`, `HIGH`, `CRITICAL`.
-
-### Key Classes
-
-**`AuditEntry`** — A dataclass representing a single log entry with timestamp (ISO 8601), event type, severity, session ID, user ID, details dictionary, and optional metadata dictionary.
-
-**`AuditLogger`** — The core audit logging manager:
-
-**`__init__`** — Initializes an empty entries list and alert thresholds configured per severity level:
-- `CRITICAL`: alert after 1 event (immediate alerting)
-- `HIGH`: alert after 5 events within 1 hour
-- `WARNING`: alert after 20 events within 1 hour
-
-**`log(event_type, severity, session_id, user_id, details)`** — Creates an `AuditEntry` with the current timestamp and appends it to the entries list. In production, this would write to a persistent store (database, log aggregation service).
-
-**`get_session_trace(session_id)`** — Returns the complete chronological audit trail for a specific session as a list of dictionaries, each containing timestamp, event name, severity, and details. This is the primary debugging tool for understanding what happened during a specific user interaction.
-
-**`get_security_report(hours=24)`** — Generates an aggregate security report containing:
-- Total event count
-- Events broken down by severity level
-- Events broken down by type
-- Up to the 10 most recent critical/high severity events with timestamps, user IDs, and details
-
-### Execution Flow (from `main()`)
-
-1. An `AuditLogger` instance is created.
-2. Seven events are logged across three sessions (`sess-1`, `sess-2`, `sess-3`), simulating a realistic mix of normal operations and security incidents:
-   - `sess-1`: Normal RAG pipeline execution (input, prompt, model call, output)
-   - `sess-2`: Injection detection followed by output blocking
-   - `sess-3`: Critical permission denial (user attempted to read admin database)
-3. A security report is generated and printed, showing event counts by severity and type, plus details of critical/high events.
-4. A session trace for `sess-1` demonstrates the chronological audit trail for a single session.
-
-## Key Takeaways
-
-- **Every AI interaction must be auditable** — Complete audit trails are required for security compliance, incident investigation, and understanding system behavior over time.
-- **Session-level correlation is critical** — Grouping events by session ID enables reconstructing the full story of what happened during a specific user interaction, which is essential for debugging and forensics.
-- **Severity-based alerting thresholds prevent alert fatigue** — Different thresholds for different severity levels (immediate for critical, aggregated for warnings) ensure that security teams focus on what matters.
-- **Event type granularity enables targeted analysis** — Distinguishing between injection detection, output blocking, and permission denied events allows security teams to run targeted queries and build specific dashboards.
-- **Production systems need persistent storage** — The in-memory list in this example must be replaced with a database or log aggregation service (e.g., ELK stack, Datadog) that supports retention policies, search, and alerting.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

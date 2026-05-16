@@ -9,411 +9,335 @@ export const metadata: ArticleMetadata = {
   id: "article-lld-code-editor-component",
   title: "Design a Code Editor Component",
   description:
-    "Production-grade code editor with syntax highlighting, line numbers, bracket matching, minimap, and when to embed Monaco vs build custom.",
+    "Code editor with extension system, syntax tokenization, LSP integration, theme tokens, diff view, and the build-vs-embed Monaco decision.",
   category: "low-level-design",
   subcategory: "component-level-ui-patterns",
   slug: "code-editor-component",
-  wordCount: 3200,
-  readingTime: 20,
-  lastUpdated: "2026-04-03",
-  tags: ["lld", "code-editor", "syntax-highlighting", "monaco", "accessibility", "line-numbers"],
+  wordCount: 5300,
+  readingTime: 32,
+  lastUpdated: "2026-05-16",
+  tags: ["lld", "code-editor", "Monaco", "LSP", "syntax-highlighting", "CodeMirror", "diff", "accessibility"],
   relatedTopics: ["rich-text-editor", "spreadsheet-like-grid", "file-explorer-ui"],
 };
 
 export default function CodeEditorComponentArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          We need to design a code editor component — a text editor optimized for writing
-          and editing source code. The editor must provide syntax highlighting for multiple
-          languages, line numbers, bracket matching, auto-indentation, and optionally a
-          minimap (code overview on the right). The system must decide whether to embed an
-          existing editor (Monaco, CodeMirror) or build a custom one based on requirements.
-        </HighlightBlock>
-        <p>
-          <strong>Assumptions:</strong>
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">Supports multiple languages (JavaScript, TypeScript, Python, etc.) with language-specific syntax highlighting.</HighlightBlock>
-          <li>Handles large files (10,000+ lines) without performance degradation.</li>
-          <li>Supports both light and dark themes.</li>
-          <HighlightBlock as="li" tier="important">Must be keyboard-accessible for power users.</HighlightBlock>
-          <li>Integration with a React 19+ SPA.</li>
-        </ul>
-      </section>
+      <p>
+        A code editor component is the most technically sophisticated widget in any
+        developer tool product. It must tokenize code for syntax highlighting at
+        keystroke speed, integrate with a Language Server Protocol implementation for
+        autocomplete and diagnostics, handle large files without UI thread stalls,
+        support multiple themes and font families, provide diff views for version
+        comparison, and remain reasonably accessible. Most teams reach for Monaco or
+        CodeMirror rather than building from scratch — but understanding what these
+        libraries do internally is what an interviewer is testing.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
+      <ArticleImage
+        src="/diagrams/system-design-problems/low-level-design/code-editor-component-architecture.svg"
+        alt="Code editor component architecture diagram"
+        caption="Code editor architecture: extension system, syntax tokenization, LSP integration, theme and diff"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Syntax Highlighting:</strong> Language-aware tokenization and coloring for 20+ languages.</li>
-          <li><strong>Line Numbers:</strong> Gutter showing line numbers, sync-scrolls with content.</li>
-          <li><strong>Bracket Matching:</strong> Highlight matching opening/closing brackets when cursor is adjacent.</li>
-          <li><strong>Auto-Indentation:</strong> Indent on Enter, dedent on Shift+Tab, language-specific indent rules.</li>
-          <li><strong>Minimap:</strong> Condensed code overview on the right side, clickable to navigate.</li>
-          <li><strong>Find/Replace:</strong> Search with regex support, replace all, case sensitivity toggle.</li>
-          <HighlightBlock as="li" tier="important"><strong>Multi-Cursor:</strong> Alt+Click creates additional cursors, edit at multiple positions simultaneously.</HighlightBlock>
-          <li><strong>Undo/Redo:</strong> Unlimited undo history, grouped by word/line for natural editing feel.</li>
-        </ul>
+      <h2>Build vs Embed: Monaco vs CodeMirror</h2>
+      <p>
+        The first question in a code editor interview is always: build from scratch,
+        embed Monaco, or embed CodeMirror 6? The answer is almost always embed, with
+        the architecture decision being which library and how it is integrated.
+      </p>
+      <p>
+        <strong>Monaco Editor</strong> (the editor powering VS Code) is the most
+        feature-complete option. It has first-class TypeScript/JavaScript support with
+        full type checking in the browser (using the TypeScript compiler running in a
+        Web Worker), autocomplete, hover documentation, error diagnostics, find-and-replace,
+        minimap, split view, git diff view, and breadcrumbs. The tradeoff: Monaco is
+        large (2–5 MB gzipped depending on what languages are loaded), and its bundle
+        cannot be code-split easily. It is designed for a full-page editor, not an
+        inline widget.
+      </p>
+      <p>
+        <strong>CodeMirror 6</strong> is modular and significantly smaller when only
+        the needed features are bundled. Its architecture (described below) is designed
+        for embedding in larger applications. It has excellent performance on large
+        documents, a clean extension API, and growing ecosystem support. It is the
+        right choice for an inline editor widget in a SaaS product.
+      </p>
+      <p>
+        For a staff-level answer, describe the key architectural decisions that would
+        go into embedding and customizing either library, not just "we'd use Monaco."
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Performance:</strong> 10,000+ line files render smoothly. Virtualize off-screen lines.</li>
-          <li><strong>Bundle Size:</strong> Custom editor under 50KB gzipped. Monaco embedding adds 3MB+.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Screen reader announces line/column position, keyboard shortcuts for all actions.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Theme Support:</strong> Light/dark themes with CSS variable-based customization.</HighlightBlock>
-        </ul>
+      <h2>CodeMirror 6 Architecture</h2>
+      <p>
+        CodeMirror 6 is built around an immutable state model and a reactive extension
+        system. This makes it worth studying in depth for interview purposes because
+        the architecture is elegant and generalizable.
+      </p>
+      <p>
+        <strong>EditorState</strong> is the immutable document state: the text content
+        (as a Text object with a linked-list structure for efficient insertions in large
+        documents), the selection ranges, and all extension state (stored as field
+        values keyed by StateField tokens). State transitions produce new EditorState
+        objects rather than mutating in place — similar to Redux.
+      </p>
+      <p>
+        <strong>Transaction</strong> is the unit of change: a description of how the
+        state should change (text changes as a ChangeSet, selection changes, effect
+        dispatch). All user interactions — typing, deleting, pasting, undoing — produce
+        transactions. Extensions can intercept and transform transactions before they
+        are applied (the filter transaction mechanism), which is how features like
+        "smart indentation" and "auto-close brackets" work.
+      </p>
+      <p>
+        <strong>EditorView</strong> manages the DOM and bridges between the EditorState
+        and the browser. It subscribes to state changes, computes the diff between the
+        old and new state, and applies minimal DOM mutations to update the display.
+        The view uses a virtual scroll approach — only the lines visible in the viewport
+        are in the DOM; lines above and below are collapsed into spacer elements that
+        maintain the correct scroll height.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        The key performance insight in CodeMirror 6's design: the document is stored
+        as a balanced B-tree of string segments (the Text class), not a single string.
+        Insertions and deletions at arbitrary positions are O(log n) rather than O(n).
+        Line number lookups (given a line number, find the character offset) are also
+        O(log n). For a document with 100,000 lines, this is the difference between
+        microseconds and milliseconds per edit operation.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>Extremely long lines (no line breaks) — must not cause horizontal overflow.</li>
-          <li>Copy-paste with mixed indentation — normalize to editor&apos;s indent setting.</li>
-          <li>IME input for CJK characters — composition events must not interfere with editing.</li>
-          <li>Large file (1MB+) — must not freeze the UI during load or edit.</li>
-        </ul>
-      </section>
+      <h2>Extension System</h2>
+      <p>
+        CodeMirror 6's extension system allows any feature to be composed as an extension.
+        An extension is a value (or array of values) that contributes one or more of:
+        StateField (custom state stored alongside the editor state), StateEffect (typed
+        actions that can be dispatched), Facet (configuration values contributed by
+        multiple extensions, merged by a defined combiner), or ViewPlugin (imperative
+        DOM manipulation tied to state changes).
+      </p>
+      <p>
+        The extension priority system (Prec.highest, Prec.high, Prec.default,
+        Prec.low, Prec.lowest) determines which extension "wins" when multiple
+        extensions contribute conflicting values to the same facet. For example, the
+        keymap facet accepts multiple keymaps; higher priority keymaps are checked
+        first. This allows a user-provided keymap to override a library's default
+        keymap without forking the library.
+      </p>
+      <p>
+        Building a custom feature (e.g., a "link preview on hover" extension): define
+        a ViewPlugin that observes the cursor position on mousemove, checks if the
+        cursor is over a URL token (using the syntax tree), fetches a link preview
+        if the cursor stays still for 500ms, and renders the preview as a tooltip
+        using a Decoration. The tooltip is a DOM element attached to a specific
+        document position using EditorView.widgets. The whole feature is packaged
+        as a single Extension export, composable with other extensions.
+      </p>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">
-          The key decision is <strong>build vs embed</strong>. Embedding Monaco provides
-          VS Code&apos;s editor with all features out of the box but adds 3MB+ to the
-          bundle. Building custom gives full control but requires implementing syntax
-          highlighting, bracket matching, and virtualization from scratch. The hybrid
-          approach: use CodeMirror 6 for a balance of features and bundle size (~50KB
-          core + language packs).
-        </HighlightBlock>
-        <p>
-          <strong>Alternative approaches:</strong>
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Monaco Editor:</strong> Full VS Code editor. Best feature set, largest bundle. Ideal for IDE-like experiences.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>CodeMirror 6:</strong> Modular, tree-shakeable, extensible. Best balance of features and size for most use cases.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Custom contentEditable:</strong> Full control but requires implementing tokenization, virtualization, undo/redo, IME handling. High maintenance cost.</HighlightBlock>
-        </ul>
-        <HighlightBlock as="p" tier="important">
-          <strong>Recommendation:</strong> Use CodeMirror 6 for most applications. It
-          provides syntax highlighting (via Lezer parser), line numbers, bracket matching,
-          and virtualization out of the box. The modular architecture allows importing
-          only the languages and features needed. Reserve custom implementation for
-          highly specialized requirements (e.g., domain-specific query editors).
-        </HighlightBlock>
-      </section>
+      <h2>Syntax Highlighting</h2>
+      <p>
+        Syntax highlighting requires tokenizing the document text by the language's
+        grammar. CodeMirror uses Lezer — a fast incremental parser built specifically
+        for editor use. Lezer's key property: it parses only the changed parts of the
+        document on each edit (incremental parsing), reusing the existing parse tree
+        for unchanged regions. For a 10,000 line file, editing a single line re-parses
+        only the affected subtree, not the entire file.
+      </p>
+      <p>
+        The parse tree maps to highlight tokens. A decorator traverses the parse tree
+        for the visible range and emits Decoration.mark objects with CSS class names
+        corresponding to token types (cm-keyword, cm-string, cm-comment, etc.). These
+        decorations are applied to the EditorView's DOM, adding the classes to the
+        relevant text spans.
+      </p>
+      <p>
+        Monaco uses TextMate grammars (the same format as VS Code) for syntax
+        highlighting, powered by vscode-textmate running in a Web Worker. TextMate
+        grammars are more expressive than Lezer's context-free grammars (they can
+        match patterns across multiple lines using embedded language rules) but are
+        slower and less incremental. For most editor-in-product use cases, Lezer's
+        performance is superior.
+      </p>
 
-      <section>
-        <h2>System Design</h2>
+      <h2>LSP Integration</h2>
+      <p>
+        The Language Server Protocol is a standardized JSON-RPC protocol that language
+        servers use to provide language intelligence to editors. The server process (e.g.,
+        TypeScript Language Server, Pyright for Python) runs separately and communicates
+        via stdin/stdout in a CLI context, or via WebSocket when accessed remotely.
+      </p>
+      <p>
+        In a browser-based editor, the LSP server typically runs in one of three ways:
+        a server-side process accessed via WebSocket proxy (the editor sends LSP
+        requests to a WebSocket endpoint, which proxies them to the language server
+        running on the backend); a Web Worker that runs a stripped-down language server
+        in the browser (TypeScript's language server runs in a Worker with significant
+        setup); or a third-party service (GitHub Copilot's infrastructure, or CodeSandbox's
+        Sandpack which embeds the TypeScript LS in a Worker).
+      </p>
+      <p>
+        The LSP capabilities relevant to an editor component: textDocument/completion
+        (autocomplete suggestions as the user types), textDocument/hover (documentation
+        shown on cursor hover), textDocument/publishDiagnostics (error and warning
+        squiggles), textDocument/definition (go to definition), and
+        textDocument/formatting (format the entire file or a selection).
+      </p>
+      <p>
+        Autocomplete triggering: debounce the completion request by 150–200ms after
+        each keystroke to avoid sending a request on every character. Cancel the
+        previous request when a new one is started. Show a loading indicator in the
+        completion dropdown while the response is pending. Filter the received
+        completions client-side as the user continues typing, without waiting for
+        another server round-trip.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture (Custom Implementation)</h3>
+      <h2>Diff View</h2>
+      <p>
+        A diff view shows the differences between two versions of a file — the original
+        and the modified. Monaco provides a built-in DiffEditor component. For custom
+        implementations or CodeMirror, the diff algorithm (Myers diff or Patience diff)
+        computes the edit script: the minimal sequence of insertions and deletions that
+        transforms the original into the modified.
+      </p>
+      <p>
+        The diff is computed at the line level for the primary view (each changed line
+        is highlighted in red/green) and optionally at the character level within changed
+        lines (showing exactly which characters were modified). Character-level diff is
+        the more computationally expensive operation and is typically run only for
+        changed lines, not the entire file.
+      </p>
+      <p>
+        Rendering the diff: in a split view, the two editors are synchronized by scroll
+        position (scrolling one scrolls the other to the corresponding line). Unchanged
+        regions can be collapsed (folded) to show only the context around changes,
+        similar to GitHub's diff view.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">1. Types &amp; Interfaces (<code>editor-types.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Defines <code>CursorPosition</code> (line, column), <code>SelectionRange</code> (anchor, head), <code>Document</code> (line array), <code>Token</code> (start, end, type), and <code>EditorConfig</code> (tabSize, language, theme).</HighlightBlock>
-        </div>
+      <h2>Theming</h2>
+      <p>
+        Editor themes define colors for all token types (keywords, strings, comments,
+        identifiers) plus the editor chrome (background, gutter, selection highlight,
+        cursor). CodeMirror's theme system uses CSS classes on the editor's root element
+        and CSS rules scoped to those classes. Adding a theme is as simple as adding a
+        StyleModule with CSS rules and providing the root class name as a facet.
+      </p>
+      <p>
+        For a design system editor component, themes should use CSS custom properties
+        as the values, allowing the surrounding application's theme (light/dark mode)
+        to cascade into the editor. Define the token colors as CSS variables on the
+        editor root and change the variable values by toggling the data-theme attribute
+        on the application root — the same pattern as the overall theme system.
+      </p>
+      <p>
+        Monaco uses JSON theme definitions (similar to VS Code's theme format) with
+        token color rules and semantic highlight rules. Converting a design system's
+        color tokens to a Monaco theme requires mapping the token type names to the
+        design system's semantic color tokens.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">2. Document Model (<code>document-model.ts</code>)</h4>
-          <HighlightBlock as="p" tier="crucial">Piece table or gap buffer data structure for efficient insert/delete at cursor position. Supports undo/redo via operation history. Line-based indexing for O(1) line lookup.</HighlightBlock>
-        </div>
+      <h2>Accessibility</h2>
+      <p>
+        Code editors are notoriously difficult to make accessible. The core challenge:
+        a textarea element is the accessible baseline for text input, but all features
+        beyond basic text entry (syntax highlighting, autocomplete, error squiggles)
+        require custom rendering that the screen reader cannot interpret.
+      </p>
+      <p>
+        CodeMirror takes the approach of using a contenteditable element for the editor
+        content (which screen readers can interact with) but adds ARIA annotations to
+        express editor state. Monaco uses a visually hidden textarea for screen reader
+        interaction and a separate visual layer for the highlighted content.
+      </p>
+      <p>
+        The minimum accessibility requirements: the editor has role="textbox",
+        aria-multiline="true", and aria-label. Autocomplete dropdowns are a listbox
+        with role="listbox" and role="option" for each item. Error diagnostics are
+        announced via aria-live regions or aria-describedby on the affected lines.
+        Keyboard navigation must be entirely possible — Tab should indent (not exit
+        the editor); Escape followed by Tab should exit. The editor should expose
+        a "Use Tab to exit the editor" hint for keyboard users.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">3. Tokenizer (<code>tokenizer.ts</code>)</h4>
-          <p>Language-aware syntax highlighting using TextMate grammars or Lezer parser. Returns array of tokens per line with type (keyword, string, comment, etc.) for CSS class assignment.</p>
-        </div>
+      <h2>Interview Q&A</h2>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">4. Virtual Renderer (<code>virtual-renderer.tsx</code>)</h4>
-          <p>Renders only visible lines plus overscan buffer. Computes line heights, total scroll height, and visible window. Uses a spacer element for scroll height and absolute positioning for visible lines.</p>
-        </div>
+      <h3>Q: Why is the document stored as a B-tree rather than a string in production editors?</h3>
+      <p>
+        A string's concatenation cost is O(n) where n is the string length. Inserting
+        a character in the middle of a 1MB file requires allocating a new 1MB string.
+        At 60 keystrokes per second, this is 60 MB of string allocation per second —
+        triggering frequent garbage collection and frame drops. A B-tree of string
+        segments (the "rope" data structure) breaks the document into chunks of ~1,000
+        characters. Insertions modify only the affected chunk and update the tree's
+        metadata, both O(log n). The tree also maintains cumulative character counts,
+        enabling O(log n) line-by-line access and range lookups. The tradeoff: more
+        complex implementation and slightly higher constant-factor overhead than a
+        plain string for reads. For files under ~10,000 characters, the overhead
+        outweighs the benefit; production editors typically switch to a rope only above
+        a file size threshold.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">5. Bracket Matcher (<code>bracket-matcher.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Scans from cursor position to find matching opening/closing bracket pair. Handles nested brackets by counting depth. Highlights both brackets with CSS class.</HighlightBlock>
-        </div>
+      <h3>Q: How does autocomplete avoid making a server round-trip on every keystroke?</h3>
+      <p>
+        The completion protocol has two phases: triggering (requesting completions from
+        the language server) and filtering (narrowing the completion list as the user
+        continues typing). On trigger, send one request to the language server and
+        receive a full list of completions for the current context (e.g., all properties
+        of the object the user is accessing). Cache this list. As the user types
+        additional characters, filter the cached list client-side by fuzzy-matching
+        the typed prefix against the completion labels — no new server request needed.
+        A new trigger request is sent only when the completion context changes (e.g.,
+        the user moves the cursor to a different position, types a delimiter like a
+        period or space that opens a new context, or the previous list was marked as
+        non-complete by the server). This pattern reduces server requests to O(1) per
+        completion context rather than O(keystrokes).
+      </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/code-editor-component-architecture.svg"
-          alt="Code editor architecture showing input, store, and CodeMirror rendering"
-          caption="Code editor architecture: User Input → Editor Store → CodeMirror 6 Rendering"
-        />
+      <h3>Q: How do you implement "find and replace" in a large document without UI thread stalls?</h3>
+      <p>
+        The search itself (matching a regex or string across the document) can stall
+        the UI thread for large files. Mitigate by running the search in a Web Worker:
+        send the document text and the search pattern to the worker, which returns
+        the match positions. For incremental results (show matches as they are found
+        rather than waiting for the full file), the worker sends batches of match
+        positions back to the main thread as it processes the document in chunks.
+        On the main thread, decorate the received match positions using CodeMirror
+        Decoration.mark to highlight them. Replace-all is a batch transaction: compute
+        all match ranges, construct a ChangeSet that replaces each match with the
+        replacement text, and apply it as a single transaction. Undo-redo treats this
+        as one atomic operation.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
-        <ol className="space-y-2 list-decimal list-inside">
-          <li>Editor mounts with initial document and config.</li>
-          <li>Tokenizer parses first visible lines, returns tokens for syntax highlighting.</li>
-          <li>Virtual renderer computes visible window, renders highlighted lines.</li>
-          <HighlightBlock as="li" tier="important">User types character: document model inserts at cursor, tokenizer re-parses affected line, virtual renderer updates.</HighlightBlock>
-          <HighlightBlock as="li" tier="important">User moves cursor: bracket matcher checks for adjacent brackets, highlights pair if found.</HighlightBlock>
-          <li>User scrolls: virtual renderer updates visible window, fetches and renders new lines.</li>
-        </ol>
-      </section>
+      <h3>Q: How would you design a collaborative code editor (like Google Docs for code)?</h3>
+      <p>
+        Collaborative code editing requires an Operational Transformation (OT) or CRDT
+        layer on top of the editor's document model. Each keystroke produces a
+        ChangeSet (in CodeMirror terms) describing insertions and deletions. This
+        ChangeSet is sent to a server that applies it to the canonical document state
+        and broadcasts it to other connected editors. Each client applies received
+        ChangeSets using OT's transform function: if client A and client B both edit
+        at position 100, and A's change is applied first, B's change must be rebased
+        (offset by A's insertion length) before being applied. Yjs uses a CRDT approach:
+        each character has a globally unique ID, and the CRDT's merge rules guarantee
+        convergence without a central server. yjs-codemirror provides the binding
+        between Yjs's document model and CodeMirror 6's EditorState. The cursor
+        positions of other users are rendered as remote cursors using Decorations —
+        a small colored cursor element at each collaborator's position.
+      </p>
 
-      <section>
-        <h2>Data Flow / Execution Flow</h2>
-        <HighlightBlock as="p" tier="crucial">
-          The data flow is: user input → document model update → tokenizer re-parse
-          affected lines → virtual renderer updates visible lines → screen paint.
-          Scroll events trigger visible window recalculation without re-tokenizing
-          (tokens are cached per line).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
-        <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important"><strong>Long lines:</strong> Lines exceeding viewport width are rendered with <code>overflow-x: auto</code> on the line container. The minimap shows a condensed version.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>IME input:</strong> During composition, the tokenizer is paused. Raw input is rendered in a composition overlay. On compositionend, the final text is committed to the document model and tokenization resumes.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Large files:</strong> Files exceeding 10,000 lines use aggressive virtualization (only 20 lines rendered at a time). Tokenization is lazy — only visible lines are tokenized on demand.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation</h2>
-        <HighlightBlock as="p" tier="important">
-          The full production implementation is available in the <strong>Example tab</strong>.
-          Below is a high-level overview of each module.
-        </HighlightBlock>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <HighlightBlock as="p" tier="crucial">
-            Complete implementation using CodeMirror 6 with custom extensions: syntax
-            highlighting for JavaScript/TypeScript, line numbers gutter, bracket matching,
-            minimap, find/replace widget, multi-cursor support, and full keyboard navigation.
-          </HighlightBlock>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Modules Overview</h3>
-        <HighlightBlock as="p" tier="important">
-          The document model uses a piece table for efficient insert/delete. The tokenizer
-          uses Lezer parser for language-aware highlighting. The virtual renderer manages
-          the visible window with overscan buffer. The bracket matcher scans from cursor
-          with depth counting. The editor component composes all modules with a
-          contentEditable surface and gutter sidebar.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Performance &amp; Scalability</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
-        <div className="my-4 overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Operation</th>
-                <th className="p-2 text-left">Time</th>
-                <th className="p-2 text-left">Space</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-theme">
-              <tr>
-                <td className="p-2">Insert character</td>
-                <td className="p-2">O(1) — piece table insert</td>
-                <td className="p-2">O(1) — new piece node</td>
-              </tr>
-              <tr>
-                <td className="p-2">Tokenize line</td>
-                <td className="p-2">O(l) — l = line length</td>
-                <td className="p-2">O(t) — t tokens per line</td>
-              </tr>
-              <tr>
-                <td className="p-2">Bracket match</td>
-                <td className="p-2">O(d) — d = bracket depth</td>
-                <td className="p-2">O(1)</td>
-              </tr>
-              <tr>
-                <td className="p-2">Virtual render</td>
-                <td className="p-2">O(v) — v = visible lines</td>
-                <td className="p-2">O(v)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Tokenization on every keystroke:</strong> Re-parsing the entire file on each change is O(n). Mitigation: only re-tokenize the edited line and its immediate neighbors (for multi-line constructs like template literals).</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>DOM updates during fast typing:</strong> Updating the DOM on every keystroke at 60+ WPM causes jank. Mitigation: batch DOM updates via requestAnimationFrame, debounce tokenizer at 16ms (one frame).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Minimap rendering:</strong> Rendering a condensed version of all lines is expensive for large files. Mitigation: render minimap as a canvas element, not DOM nodes. Update only the changed region.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Token caching:</strong> Cache tokens per line, invalidate only on edit. Lookup is O(1) for cached lines.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Canvas minimap:</strong> Render the minimap as a canvas image, not DOM. Update incrementally on edit.</HighlightBlock>
-          <li><strong>Web Worker tokenizer:</strong> For very large files, offload tokenization to a Web Worker to avoid blocking the main thread during scroll.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Security Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <HighlightBlock as="p" tier="crucial">
-          The editor content is treated as plain text — never rendered as HTML. This
-          eliminates XSS concerns within the editor itself. However, when exporting or
-          displaying code elsewhere, it must be escaped. The editor should provide a
-          <code>getContent()</code> method that returns raw text, not HTML.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h4 className="mb-3 font-semibold">Screen Reader Support</h4>
-          <ul className="space-y-2">
-            <HighlightBlock as="li" tier="important">Announce line and column position on cursor move: &quot;Line 15, Column 8&quot;.</HighlightBlock>
-            <li>Announce syntax context: &quot;Inside string literal&quot; when cursor enters a string.</li>
-            <HighlightBlock as="li" tier="important">Use <code>aria-live=&quot;polite&quot;</code> for non-critical announcements.</HighlightBlock>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h4 className="mb-3 font-semibold">Keyboard Navigation</h4>
-          <ul className="space-y-2">
-            <li>All standard text editing shortcuts work (Ctrl+C/V/X, Ctrl+Z/Y, Ctrl+F).</li>
-            <li>Ctrl+G jumps to line. Ctrl+Home/End jumps to file start/end.</li>
-            <li>Alt+Click creates multi-cursor. Escape collapses to single cursor.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Document model:</strong> Test insert, delete, undo, redo with piece table. Verify document text matches expected output after operations.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Tokenizer:</strong> Test syntax highlighting for keywords, strings, comments, numbers, operators in each supported language.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Bracket matcher:</strong> Test matching for nested brackets, mismatched brackets, brackets inside strings (ignored).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li><strong>Type and highlight:</strong> Type JavaScript code, verify keywords are colored, strings are colored, comments are grayed.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Virtual scroll:</strong> Load 10,000-line file, scroll to middle, verify correct lines render, scroll position is accurate.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Multi-cursor:</strong> Create two cursors, type, verify text appears at both positions simultaneously.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Interview-Focused Insights</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
-        <ul className="space-y-3">
-          <HighlightBlock as="li" tier="crucial"><strong>Using contentEditable for code:</strong> contentEditable produces inconsistent HTML across browsers, making syntax highlighting and cursor management unreliable. A custom rendering layer (div-based or canvas) is preferred.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>No virtualization:</strong> Rendering all lines in DOM causes severe performance issues for files over 1000 lines. Virtualization is mandatory.</HighlightBlock>
-          <li><strong>Ignoring IME:</strong> CJK input methods produce composition events that interfere with custom key handlers. Candidates must mention IME handling.</li>
-          <li><strong>Tokenizing the entire file on every change:</strong> This is O(n) per keystroke. Only the edited line needs re-tokenization.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">Monaco vs CodeMirror vs Custom</h4>
-          <HighlightBlock as="p" tier="important">
-            Monaco is the gold standard but adds 3MB+ to the bundle. It is appropriate
-            for IDE-like applications (web-based dev environments). CodeMirror 6 is
-            modular and tree-shakeable (~50KB core + language packs), ideal for most
-            web applications that need code editing. Custom implementation is only
-            justified for domain-specific needs (e.g., a SQL query editor with
-            autocomplete for a specific schema).
-          </HighlightBlock>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
-
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement collaborative editing (Google Docs-style)?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Use CRDTs (Y.js or Automerge) for conflict-free concurrent edits. Each
-              participant has a unique client ID. Edits are operations (insert, delete)
-              with causal ordering. The CRDT merges concurrent edits deterministically.
-              Remote cursors are shown as colored markers with the user&apos;s name.
-            </HighlightBlock>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you add autocomplete/intellisense?</p>
-            <p className="mt-2 text-sm">
-              A: On each keystroke, extract the current word and query a language server
-              (LSP) or local symbol table for completions. Show a dropdown below the
-              cursor position. Filter results as the user types. Use fuzzy matching for
-              forgiving search. Insert the selected completion at the cursor.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you handle binary file viewing (hex editor)?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Detect binary content (null bytes, high ratio of non-printable chars).
-              Switch to hex view: display hex bytes on left, ASCII representation on
-              right. Group bytes in rows of 16. Allow editing hex values directly. Use
-              virtualization for large binary files.
-            </HighlightBlock>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you add inline linting and error squiggles?</p>
-            <p className="mt-2 text-sm">
-              A: Run a linter (ESLint, TypeScript compiler) on file save or debounce
-              (1-second idle). Map diagnostics to line/column ranges. Render red/green
-              squiggles via CSS <code>text-decoration: wavy underline</code> on the
-              affected token spans. Show diagnostic messages in a tooltip on hover.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle editor state persistence across page reloads?</p>
-            <p className="mt-2 text-sm">
-              A: Serialize cursor position (line, column), scroll offset, and open file
-              path to localStorage or URL query params. On mount, restore these values.
-              For undo/redo history, it is not practical to persist — the history stack
-              is too large and version-dependent. Clear it on reload.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement a split view (side-by-side diff)?</p>
-            <p className="mt-2 text-sm">
-              A: Two editor instances sharing a scroll position. When one scrolls, the
-              other scrolls proportionally. Added/removed lines are highlighted with
-              green/red backgrounds. Synchronization is maintained by computing the
-              scroll ratio (scrollLeftA / scrollLeftB) and applying it on scroll events.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://codemirror.net/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              CodeMirror 6 — Modular Code Editor for the Web
-            </a>
-          </li>
-          <li>
-            <a href="https://microsoft.github.io/monaco-editor/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Monaco Editor — VS Code&apos;s Editor in the Browser
-            </a>
-          </li>
-          <li>
-            <a href="https://lezer.codemirror.net/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Lezer — Incremental Parser System
-            </a>
-          </li>
-          <li>
-            <a href="https://www.davidairey.com/building-a-code-editor/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Building a Code Editor from Scratch — Implementation Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/wai-aria/#textbox" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              WAI-ARIA Textbox Role — Accessibility Guidelines
-            </a>
-          </li>
-        </ul>
-      </section>
+      <h3>Q: How does the gutter (line numbers and other annotations) stay in sync with the editor content during fast scrolling?</h3>
+      <p>
+        The gutter is part of the EditorView's virtualized DOM layer, rendered with
+        the same virtual scroll logic as the code lines themselves. Only the gutter
+        cells for visible lines are in the DOM. When the user scrolls, the view
+        recalculates which lines are visible, creates gutter cell DOM nodes for newly
+        visible lines, and removes nodes for lines that scrolled out of view. The
+        gutter cells are positioned absolutely at the same top offset as their
+        corresponding code lines, keeping them aligned. This is managed entirely
+        within the EditorView's layout phase — no separate scroll synchronization
+        logic is needed. Custom gutter annotations (breakpoint indicators, coverage
+        markers, error line highlights) are registered as GutterMarker extensions
+        that contribute a DOM element for specific line numbers; the view renders
+        them during its layout phase.
+      </p>
     </ArticleLayout>
   );
 }

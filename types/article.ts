@@ -11,8 +11,13 @@ export type ArticleMetadata = {
   wordCount: number;
   readingTime: number; // minutes
   lastUpdated: string;
+  difficulty?: string;
   tags: string[];
   relatedTopics?: string[]; // slugs of related articles
+  author?: {
+    name: string;
+    role?: string;
+  };
 };
 
 export type ArticleRegistry = {

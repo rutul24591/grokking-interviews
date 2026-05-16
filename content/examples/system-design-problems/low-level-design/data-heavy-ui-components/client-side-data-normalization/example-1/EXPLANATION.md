@@ -1,13 +1,31 @@
-# Client-side Data Normalization — Full Implementation
+# Design a Client-side Data Normalization System - example-1 Explanation
 
-Example 1 implements an entity-normalized client store:
+## Article context
+This example supports the article `low-level-design/data-heavy-ui-components/client-side-data-normalization`. The article is about LLD for normalizing nested API data on the client: entity store, references, denormalization for views, optimistic updates, and consistent cross-screen state.. The most relevant article sections for this example are: 🎯 Problem Context and Scope Definition; Problem Statement; User Context; Assumptions; Non-Goals; Functional Requirements; Core (Must-have); Secondary (Nice-to-have); Out of Scope; Non-Functional Requirements.
 
-- Entities by type + id
-- Relationship handling (store ids, not nested objects)
-- Merge strategies for partial updates
-- Selector-friendly reads to avoid re-renders
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Interview focus:
-- Why normalization helps (dedupe, consistent updates, caching).
-- How to handle pagination lists + entity updates without copying huge trees.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `entity-store.ts`: Models client or service state transitions and update behavior.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- pagination or cursor handling
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

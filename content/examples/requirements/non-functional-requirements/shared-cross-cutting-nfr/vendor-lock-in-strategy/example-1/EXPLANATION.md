@@ -1,45 +1,53 @@
-# Vendor Lock-in Strategy — what to do *in code*
+# Vendor Lock-in Strategy - example-1 Explanation
 
-Vendor lock-in typically happens when:
-- business logic depends directly on a specific vendor SDK,
-- vendor-specific semantics leak into your core data model,
-- migrations are treated as “future problems” with no plan or tests.
+## Article context
+This example supports the article `non-functional-requirements/shared-cross-cutting-nfr/vendor-lock-in-strategy`. The article is about Comprehensive guide to vendor lock-in covering make-vs-buy decisions, multi-cloud strategies, abstraction layers, exit strategies, and negotiation leverage for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers.
 
-This example demonstrates a pragmatic approach:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## 1) Put a hard boundary around vendor dependencies
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-Your domain code depends on `ObjectStore` (a small interface), not AWS/GCP/Azure libraries.
-Adapters live behind that interface.
+## File-by-file walkthrough
+- `app/api/mock-s3/objects/[key]/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/mock-s3/objects/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/objects/[key]/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/objects/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/reset/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `lib/http.ts`: Implements the main logic, including jsonOk, jsonError, baseUrlFromRequest, host, proto.
+- `lib/mockS3Store.ts`: Models client or service state transitions and update behavior.
+- `lib/objectStore.ts`: Models client or service state transitions and update behavior.
+- `lib/objectStores/localFs.ts`: Models client or service state transitions and update behavior.
 
-Benefits:
-- “swap provider” becomes a contained refactor
-- contract tests can validate behavior across providers
-- you can run local/dev without cloud dependencies
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## 2) Prefer portable protocols where possible
+## Important implementation behavior
+- cache freshness, staleness, or invalidation
+- pagination or cursor handling
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
 
-The `s3mock` adapter talks to a mock **S3-compatible** HTTP surface. In practice, this makes it easier to:
-- use MinIO in dev,
-- run multi-cloud,
-- or migrate from AWS S3 to another compatible store.
+## Edge cases and failure modes
+- Cached data can become stale and needs invalidation or freshness checks.
+- Large result sets need stable pagination and empty-page behavior.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-## 3) Capabilities, not vendor leakage
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-Providers differ. You still need a way to express “this backend can do X”.
-Instead of letting vendor features leak everywhere, expose *capabilities*:
-- `presignedGet`
-- `multipartUpload`
-
-Then, keep vendor-specific flows in isolated code paths that are easy to audit.
-
-## 4) Contract tests prevent accidental lock-in
-
-The agent (`src/agent/run.ts`) runs the same suite against both adapters by overriding the provider via a request header.
-In production, you would not allow header overrides; you would run the suite in CI with a real provider + a local provider.
-
-## Trade-offs / production notes
-- Local FS is great for dev, but not for multi-instance production (shared storage needed).
-- Real S3 implementations must handle retries, backoff, timeouts, and idempotency.
-- Migrations require a plan (dual-write, backfill, verification, cutover). See Example 3 for a runnable simulation.
-
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

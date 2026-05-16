@@ -1,55 +1,28 @@
-# Example 2: Cost Crossover Analysis — Fine-Tuning vs RAG
+# Fine-Tuning vs RAG — The Core Architectural Decision - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/fine-tuning-vs-rag`. The article is about Comprehensive guide to fine-tuning versus RAG trade-offs covering PEFT/LoRA/QLoRA, evaluation methodology, production decision frameworks, and when to use each approach.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: When should you fine-tune versus when should you use RAG?; Q2: What is LoRA and why has it become the dominant fine-tuning approach?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None — uses only Python standard library. No external packages required.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example calculates the total cost of ownership for RAG versus fine-tuning over a 180-day period across three request volume scenarios (1K, 10K, and 100K requests per day). It finds the crossover point — the day at which fine-tuning becomes cheaper than RAG — by factoring in API costs (which differ due to token count differences), infrastructure costs (vector database and embeddings for RAG, GPU serving for fine-tuning), and upfront training costs for fine-tuning. This analysis is essential for making economically informed architecture decisions.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
 
-### Key Function
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
 
-**`calculate_costs()`** — Computes cumulative daily costs for both approaches over a specified number of days:
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-**RAG cost model per day:**
-- API costs based on `daily_requests * rag_input_tokens` (typically ~3000 tokens for context + prompt) and `daily_requests * rag_output_tokens` (~500 tokens).
-- Daily vector database cost (`vector_db_monthly / 30`, default ~$3.33/day).
-- Daily embedding cost (`embedding_monthly / 30`, default ~$1.67/day).
-- These infrastructure costs are constant regardless of request volume, making RAG more expensive at low volumes.
-
-**Fine-tuning cost model per day:**
-- Upfront training cost ($500) added on day 1.
-- API costs based on `daily_requests * ft_input_tokens` (typically ~500 tokens, since the knowledge is baked into the model) and `daily_requests * ft_output_tokens` (~500 tokens).
-- Daily GPU serving cost (`gpu_serving_monthly / 30`, default ~$6.67/day).
-- Fine-tuning has lower per-request API costs because it does not need to include retrieved context in each prompt.
-
-**Crossover detection:**
-- Iterates through daily cumulative costs and identifies the first day where RAG's cumulative cost exceeds fine-tuning's cumulative cost.
-- If no crossover occurs within the analysis period, reports which approach is cheaper throughout.
-
-### Execution Flow (from `main()`)
-
-Three volume scenarios are analyzed over 180 days:
-
-1. **Low volume (1K/day)** — At this volume, the fixed infrastructure costs of RAG (vector DB + embeddings) and the fine-tuning training cost are both modest. The per-request API cost difference is small in absolute terms. The analysis shows which approach wins and whether a crossover occurs.
-
-2. **Medium volume (10K/day)** — The per-request cost difference becomes significant at this scale. RAG's higher token counts per request accumulate rapidly, while fine-tuning's upfront training cost is amortized over many requests. A crossover point is likely to appear.
-
-3. **High volume (100K/day)** — At this scale, the per-request cost difference dominates all other factors. Fine-tuning's lower token counts per request make it significantly cheaper after the initial training cost is amortized, and the crossover occurs early.
-
-For each scenario, the output shows the 6-month cumulative cost for both approaches and the crossover day (if any).
-
-## Key Takeaways
-
-- **Fine-tuning has higher upfront costs but lower per-request costs** — The training cost and GPU serving are fixed, but each request uses fewer tokens because knowledge is encoded in the model rather than retrieved as context.
-- **RAG has lower upfront costs but higher per-request costs** — No training is needed, but every request must include retrieved context (adding ~2000-3000 input tokens) plus vector database and embedding infrastructure.
-- **Crossover point depends on volume** — Higher request volumes amortize the upfront training cost faster and magnify the per-request savings, moving the crossover point earlier.
-- **Infrastructure costs matter** — The vector database and embedding costs for RAG, and GPU serving costs for fine-tuning, are often overlooked but contribute significantly to total cost of ownership.
-- **Volume projections should be conservative** — If actual traffic falls below projections, a fine-tuning investment may never reach its crossover point; if traffic exceeds projections, RAG costs can escalate faster than expected.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

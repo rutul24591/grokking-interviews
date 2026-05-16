@@ -1,92 +1,43 @@
-# Rich Text Editor — Example 2: Edge Cases & Advanced Scenarios
+# Design a Rich Text Editor - example-2 Explanation
 
-## Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/rich-text-editor`. The article is about Complete LLD solution for a production-grade rich text editor with mentions, image upload, collaborative editing hooks, undo/redo, serialization, and accessibility.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Component Interaction Flow.
 
-These examples address two of the most complex edge cases in rich text editing: CJK input method handling and pasted content sanitization — both frequent interview follow-up questions.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
----
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## 1. IME Composition (`ime-composition.ts`)
+## File-by-file walkthrough
+- `ime-composition.ts`: Implements the main logic, including useIMEComposition, elementRef, compositionIdRef, pendingInputQueueRef, shouldProcessInput.
+- `pasted-content-sanitizer.ts`: Implements the main logic, including DEFAULT_ALLOWED_TAGS, DEFAULT_ALLOWED_ATTRS, DEFAULT_TAG_ATTRS, DANGEROUS_PROTOCOLS, isSafeUrl.
 
-### The Problem
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-When users type CJK (Chinese, Japanese, Korean) characters, the IME goes through a **composition phase**:
+## Important implementation behavior
+- pagination or cursor handling
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
 
-1. User types "k" → IME shows candidate "か" (hiragana)
-2. User presses space → candidate changes to "が"
-3. User presses Enter → final character "画" is committed
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-During steps 1-2, the browser fires `input` events for each keystroke. If the editor processes these naively, it will:
-- Apply formatting (bold, italic) to intermediate states
-- Trigger auto-complete with partial data
-- Break the IME flow by intercepting keystrokes
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### The Solution
-
-Gate all input processing behind **composition state**:
-
-```
-compositionstart → suspend normal input handling
-compositionupdate (×N) → track intermediate candidates
-compositionend → process the final committed text
-```
-
-The `InputEvent.isComposing` property (standard in modern browsers) is the most reliable way to detect if an input event fired during active composition.
-
-### Key Implementation Details
-
-**Dual event listener attachment:** We attach both React synthetic events (for the component's event system) AND native DOM listeners (to catch composition events that React may not fully support across all browsers).
-
-**Browser quirks:** Safari's `compositionend.event.data` may be empty even when text was committed. Fallback: read `element.textContent` directly.
-
-**Custom keybindings during IME:** Shortcuts like Ctrl+B (bold) must check `isComposing` before processing — the IME may use the same keystrokes for candidate selection.
-
-### Interview Talking Points
-
-- **Why not just use `onInput`?** Because `onInput` fires for every IME keystroke, not just the committed result.
-- **Mobile IME:** Gboard for Japanese may not fire composition events consistently. Always read textContent directly as a fallback.
-- **contenteditable:** Let the browser manage the IME floating window — don't try to replicate it. Read the final state on `compositionend`.
-
----
-
-## 2. Pasted Content Sanitizer (`pasted-content-sanitizer.ts`)
-
-### The Problem
-
-Pasting from Word, Google Docs, or web pages brings a mess of HTML:
-- Inline styles (`style="font-family: Arial; font-size: 14px"`)
-- Proprietary tags (`<o:p>`, `<w:WordDocument>`)
-- Class names from the source site
-- Potentially malicious content (`<script>`, `javascript:` URLs, event handlers)
-- Images referencing local paths (`file:///Users/...`) or blob URLs
-
-### The Solution: DOMParser-based Whitelist Sanitization
-
-Instead of regex (fragile), we use `DOMParser` to parse HTML into a real DOM tree, then walk it removing anything not in our whitelist:
-
-**Allowed tags:** `p, br, strong, b, em, i, u, a, ul, ol, li, h1, h2, h3, blockquote, code, pre, span`
-
-**Strategy:**
-1. Parse HTML with `DOMParser`
-2. Walk the DOM tree recursively
-3. **Unwrap** disallowed tags (keep children, remove the wrapper)
-4. **Strip** disallowed attributes from allowed tags
-5. **Validate** URLs (block `javascript:`, `vbscript:`, `data:`)
-6. **Extract** images for upload to our CDN
-
-### Image Extraction Pipeline
-
-Images in pasted content need special handling:
-
-1. **Local file paths** (`file://`) — won't resolve in the app, need upload
-2. **Blob URLs** (`blob:https://...`) — temporary, need upload before page unload
-3. **Direct clipboard images** (screenshots) — available as `File` objects in `clipboardData.files`
-
-The `onImageExtracted` callback handles uploading each image and replacing blob URLs with permanent CDN URLs in the sanitized HTML.
-
-### Interview Talking Points
-
-- **Why DOMParser over regex?** Regex can't handle nested tags, escaped content, or malformed HTML correctly. DOMParser uses the browser's actual HTML parser.
-- **Unwrap vs remove:** When we encounter a disallowed tag like `<font>`, we unwrap it (keep its children) rather than deleting everything. This preserves the text content.
-- **Max images limit:** Prevents DoS from pasting a page with 10,000 images. Default cap is 10.
-- **Plain text fallback:** If clipboard has no HTML, wrap plain text in `<p>` tags, converting double newlines to paragraph breaks.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

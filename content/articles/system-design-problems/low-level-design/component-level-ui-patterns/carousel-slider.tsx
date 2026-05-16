@@ -3,240 +3,386 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-carousel-slider",
   title: "Design a Carousel / Slider",
   description:
-    "Carousel with touch support, autoplay, accessibility, lazy-loaded slides, and infinite loop.",
+    "Carousel with touch support, velocity-based swiping, FLIP animation, autoplay, accessibility, lazy-loaded slides, and infinite loop.",
   category: "low-level-design",
   subcategory: "component-level-ui-patterns",
   slug: "carousel-slider",
-  wordCount: 3200,
-  readingTime: 17,
-  lastUpdated: "2026-04-03",
-  tags: ["lld", "carousel", "slider", "touch", "autoplay", "accessibility", "lazy-loading"],
+  wordCount: 5200,
+  readingTime: 31,
+  lastUpdated: "2026-05-16",
+  tags: ["lld", "carousel", "slider", "touch", "autoplay", "accessibility", "lazy-loading", "FLIP"],
   relatedTopics: ["image-gallery-lightbox", "drag-drop-list", "infinite-scroll-virtualized-list"],
 };
 
 export default function CarouselSliderArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">We need to design a carousel / slider — a UI component that displays a
-          sequence of slides, one (or</HighlightBlock>
-<HighlightBlock as="p" tier="important">more) visible at a time, with navigation controls
-          (arrows, dots), autoplay with pause on hover,</HighlightBlock>
-<HighlightBlock as="p" tier="important">touch swipe support for mobile,
-          lazy loading of off-screen slides, and full keyboard accessibility.</HighlightBlock>
-        <p>
-          <strong>Assumptions:</strong> Slides contain images, text, and CTAs. The
-          carousel loops infinitely. Autoplay interval is configurable (default 5s).
-          Touch swipe threshold is 50px. The component is used in a React 19+ SPA.
-        </p>
-      </section>
+      <p>
+        A carousel sits at the intersection of animation engineering, touch event handling,
+        accessibility, and performance optimization. The surface area is deceptively large:
+        a product carousel on an e-commerce homepage needs to handle touch swipes with
+        velocity-based momentum, keyboard navigation for screen reader users, autoplay that
+        pauses when the user interacts, lazy loading of off-screen images for LCP
+        improvement, and infinite loop behavior that wraps slides without cloning DOM nodes.
+        Each of these requirements has hidden depth that separates a production-grade
+        implementation from a tutorial demo.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Slide Navigation:</strong> Previous/Next buttons, dot indicators, keyboard arrows.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Autoplay:</strong> Auto-advances at configurable interval. Pauses on hover/focus. Resumes on mouse leave.</HighlightBlock>
-          <li><strong>Touch Swipe:</strong> Swipe left/right on mobile to navigate. Momentum-based scroll.</li>
-          <li><strong>Infinite Loop:</strong> Last slide → Next goes to first. First slide → Previous goes to last.</li>
-          <li><strong>Lazy Loading:</strong> Off-screen slides load images only when adjacent to visible slide.</li>
-          <li><strong>Multiple Visible Slides:</strong> Configurable slides-per-view (1 for hero, 3 for product cards).</li>
-        </ul>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Performance:</strong> Slide transitions at 60fps using CSS transforms. No layout thrashing.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> aria-roledescription=&quot;carousel&quot;, aria-live for slide changes, keyboard navigation.</HighlightBlock>
-          <li><strong>Reduced Motion:</strong> Respects prefers-reduced-motion — disables autoplay and transitions.</li>
-        </ul>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>User swipes during autoplay — autoplay timer resets.</li>
-          <li>Tab hidden — pause autoplay when page is not visible (Page Visibility API).</li>
-          <li>Very wide carousel on mobile — must collapse to single slide with swipe.</li>
-        </ul>
-      </section>
+      <ArticleImage
+        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/carousel-slider-architecture.svg"
+        alt="Carousel component architecture diagram"
+        caption="Carousel architecture: slide state, touch/velocity engine, FLIP animation, autoplay and accessibility"
+      />
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">The core idea is a <strong>slide track</strong> — a flex container with all
-          slides, translated via <code>transform: translateX()</code> based on the
-          current slide index. A <strong>Zustand store</strong> manages the current
-          index, autoplay state, and touch position.</HighlightBlock>
-<HighlightBlock as="p" tier="important">Touch events are handled by a
-          <Highlight tier="important"><strong>swipe detector</strong></Highlight> that computes delta and triggers slide changes
-          when the threshold is crossed. Autoplay uses <code>setInterval</code> with
-          pause/resume on hover/focus.</HighlightBlock>
-      </section>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Before designing, establish the scope with the interviewer. The answers determine
+        which architectural decisions matter most.
+      </p>
+      <p>
+        <strong>How many slides?</strong> A marketing carousel with 5 hero images is
+        architecturally different from a product shelf with 200 items. Small carousels
+        can render all slides in the DOM simultaneously. Large carousels need virtualization:
+        only 3–5 slides around the current index are mounted; the rest are placeholders.
+      </p>
+      <p>
+        <strong>Infinite loop or finite?</strong> An infinite carousel that wraps from
+        the last slide to the first creates the illusion of an endless loop. Naively
+        this is implemented by cloning the first and last slides to create "buffer"
+        nodes, then silently jumping to the real nodes after the transition. A cleaner
+        approach uses modular arithmetic to calculate the visible slide index without
+        cloning.
+      </p>
+      <p>
+        <strong>Touch and mouse drag support?</strong> Touch support requires careful
+        pointer event handling. Mobile browsers impose a ~300ms delay if the touch
+        handler does not call preventDefault() fast enough. Passive event listeners
+        (added via addEventListener with passive: true) cannot call preventDefault(),
+        creating a tension between scroll performance and drag prevention. The solution
+        is to listen passively on touchstart to determine intent, then add a non-passive
+        touchmove listener only when a horizontal drag is detected.
+      </p>
+      <p>
+        <strong>Autoplay?</strong> Autoplay carousels are accessibility liabilities.
+        WCAG 2.1 Success Criterion 2.2.2 (Pause, Stop, Hide) requires that any
+        auto-advancing content can be paused. Autoplay must stop when the user interacts
+        with the carousel (hover, focus, drag, or keyboard press) and should never
+        resume automatically after interaction.
+      </p>
 
-      <section>
-        <h2>System Design</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">1. Types &amp; Store</h4>
-          <HighlightBlock as="p" tier="important"><code>CarouselState</code> (currentIndex, isPlaying, touchStart, touchDelta). Store with goTo, next, prev, play, pause actions.</HighlightBlock>
-        </div>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">2. Swipe Detector</h4>
-          <HighlightBlock as="p" tier="important">Pointer events: pointerdown records startX, pointermove computes delta, pointerup triggers slide change if delta exceeds threshold (50px).</HighlightBlock>
-        </div>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">3. Autoplay Manager</h4>
-          <HighlightBlock as="p" tier="crucial">setInterval with pause on mouseenter/focusin, resume on mouseleave/focusout. Resets interval on manual navigation. Pauses when document is hidden.</HighlightBlock>
-        </div>
+      <h2>The Slide State Model</h2>
+      <p>
+        The carousel's core state is a current index (integer) and a direction
+        (forward or backward) for animation purposes. In a finite carousel, the index
+        is clamped to [0, slideCount - 1]. In an infinite carousel, the index is kept
+        as an unbounded integer and the slide index is computed as index mod slideCount
+        (using a proper modulo that handles negative values: ((index % n) + n) % n).
+      </p>
+      <p>
+        The unbounded index approach for infinite carousels is elegant: going backward
+        from slide 0 produces index -1, which mod 3 resolves to slide 2 (the last slide).
+        This avoids the complexity of DOM cloning and the visual artifact of a silent
+        jump-reset. The rendered slides are the three slides at positions
+        [currentIndex - 1, currentIndex, currentIndex + 1] (previous, current, next),
+        mapped to their corresponding data via modular arithmetic.
+      </p>
+      <p>
+        During a transition, the carousel needs to know both the source and target slide
+        to animate between them. The state model therefore includes a transitioning flag
+        and a pending index. When the transition completes, the current index is updated
+        to the pending index and the transitioning flag is cleared. During transition,
+        user-initiated navigation is either queued (added to a pending actions queue)
+        or debounced (ignored until the current transition finishes). Queueing is
+        preferable for keyboard and button navigation; debouncing is preferable for
+        touch swipes where the user's intent changes rapidly.
+      </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/carousel-slider-architecture.svg"
-          alt="Carousel slider architecture showing slide track, touch handling, and autoplay management"
-          caption="Component Interaction Flow"
-        />
+      <h2>Touch and Pointer Event Handling</h2>
+      <p>
+        Robust touch handling is the most mechanically complex part of a carousel. The
+        implementation must distinguish horizontal swipes (carousel navigation) from
+        vertical swipes (page scroll) without requiring the user to commit to a direction
+        before the browser has determined intent.
+      </p>
+      <p>
+        The event lifecycle: touchstart records the initial touch position and timestamp.
+        touchmove computes the delta from the initial position. If the horizontal delta
+        exceeds the vertical delta in magnitude, the touch is interpreted as a carousel
+        swipe — call preventDefault() to suppress scrolling and begin live dragging of
+        the slide track. If the vertical delta is greater, do not call preventDefault()
+        and let the browser scroll normally (this touch interaction belongs to the page,
+        not the carousel).
+      </p>
+      <p>
+        Live dragging translates the slide track by the horizontal delta using a CSS
+        transform: translateX() applied directly to the DOM (bypassing React state for
+        performance — state updates through React are batched and may lag a fast touch
+        sequence). The transform is applied via a ref to the track element.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Velocity-based swipe detection determines whether to commit to a slide change
+        or snap back. On touchend, compute the velocity as delta pixels divided by
+        elapsed milliseconds. If velocity exceeds a threshold (typically 0.3–0.5 px/ms)
+        in either direction, commit to a slide change in that direction regardless of
+        how far the user dragged. If velocity is below the threshold, use the drag
+        distance to decide: commit if the user dragged more than 30–40% of the slide
+        width, snap back otherwise. This produces natural swipe behavior where a quick
+        flick navigates even if the user did not drag far.
+      </HighlightBlock>
+      <p>
+        Mouse drag support follows the same pattern using mousedown, mousemove, and
+        mouseup events. A complication: if the user drags and the mouse leaves the
+        carousel, the mouseup event fires on the document, not on the carousel. Handle
+        this by attaching the mousemove and mouseup listeners to the document on
+        mousedown and removing them on mouseup or mouseleave.
+      </p>
+      <p>
+        The Pointer Events API (pointerdown, pointermove, pointerup) unifies touch and
+        mouse into a single event stream, which simplifies the implementation. Use
+        setPointerCapture(event.pointerId) on pointerdown to ensure pointerup always
+        fires on the element even if the pointer leaves. This eliminates the document-level
+        listener workaround needed for mouse events.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
-        <ol className="space-y-2 list-decimal list-inside">
-          <li>Carousel mounts with autoplay enabled. Interval starts.</li>
-          <li>Slide track translates to current index × slide width.</li>
-          <HighlightBlock as="li" tier="important">User swipes: pointermove updates delta, pointerup triggers next/prev if threshold crossed.</HighlightBlock>
-          <li>Autoplay fires: next() called, interval resets.</li>
-          <li>Lazy loader: adjacent slides&apos; images load via IntersectionObserver.</li>
-        </ol>
-      </section>
+      <h2>FLIP Animation for Slide Transitions</h2>
+      <p>
+        The naive animation approach — CSS transition on the translateX of a slide track —
+        works for simple carousels but has limitations. If the track contains many slides,
+        sliding the entire track is inefficient. If slides have different widths (responsive
+        layouts), calculating the correct translateX requires reading DOM measurements. And
+        if the transition is interrupted (the user swipes while a transition is in progress),
+        reversing a track-based animation is complex.
+      </p>
+      <p>
+        FLIP (First, Last, Invert, Play) is a more robust alternative. The technique:
+        (F) Record the current position of the exiting slide. (L) Update state to the new
+        slide and let React render. (I) Compute the delta between where the new slide is
+        now (its "last" position) and where it should start (its "first" position, off-screen
+        to the left or right). Apply the inverse transform to start it off-screen. (P) Remove
+        the inverse transform with a CSS transition, playing the animation forward.
+      </p>
+      <p>
+        FLIP animation has several advantages: it works with any slide size (the
+        measurement is done after layout), it composites efficiently (transform animations
+        run on the compositor thread), and interrupted transitions can be handled by reading
+        the current animated transform and using it as the new "first" position.
+      </p>
+      <p>
+        For the entering and exiting slides: the exiting slide plays a complementary
+        FLIP animation in the opposite direction. Both animations run simultaneously,
+        giving the appearance of a single track sliding left or right. The Web Animations
+        API handles both animations, allowing them to be cancelled and reversed
+        mid-animation when the user swipes before the transition completes.
+      </p>
 
-      <section>
-        <h2>Data Flow / Execution Flow</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Autoplay interval → next() → index update → transform translateX → slide transition.
-          Swipe → delta computation → threshold check → next/prev → same flow.
-        </HighlightBlock>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling</h3>
-        <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important"><strong>Page visibility:</strong> document.visibilitychange event pauses autoplay when tab is hidden, resumes when visible.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Reduced motion:</strong> window.matchMedia(&apos;prefers-reduced-motion: reduce&apos;) disables autoplay and CSS transitions.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Infinite loop:</strong> Clone first and last slides. When the cloned last slide is visible, instantly jump to the real first slide (no animation).</HighlightBlock>
-        </ul>
-      </section>
+      <h2>Virtualization for Large Slide Sets</h2>
+      <p>
+        For carousels with many slides (product shelves, image galleries), rendering
+        all slides in the DOM is wasteful. A virtualized carousel renders only a
+        window of slides around the current index — typically the previous, current,
+        and next slide (a window of 3), with optional preloading of the slides 2 positions
+        away (a window of 5 for faster perceived navigation).
+      </p>
+      <p>
+        The virtualization window is a computed property of the current index. As the
+        index changes, slides enter and leave the window. Slides leaving the window are
+        unmounted; slides entering are mounted. For image slides, unmounting and
+        remounting causes re-fetching unless the images are cached by the browser —
+        which they will be if the original fetch included appropriate Cache-Control
+        headers. To avoid any fetch on remount, keep rendered but off-screen slides in
+        the DOM but set them to visibility: hidden and pointer-events: none. This
+        keeps the browser's image cache warm at the cost of some extra DOM nodes.
+      </p>
+      <p>
+        Lazy loading image slides: the slides at currentIndex - 1 and currentIndex + 1
+        should begin loading their images as soon as they enter the window. The current
+        slide's image should have fetchpriority="high". Slides outside the window should
+        not load at all. This is implemented using the loading="lazy" attribute on img
+        elements, but native lazy loading triggers based on scroll position, not slide
+        visibility — a custom IntersectionObserver or explicit src management is more
+        reliable for a horizontally-scrolling carousel viewport.
+      </p>
 
-      <section>
-        <h2>Implementation</h2>
-        <HighlightBlock as="p" tier="crucial">The full production implementation is available in the <strong>Example tab</strong>.
-          Key approach: CSS</HighlightBlock>
-<HighlightBlock as="p" tier="important">transform translateX for slide transitions, Pointer Events for
-          swipe detection, setInterval with</HighlightBlock>
-<HighlightBlock as="p" tier="important">visibility-aware autoplay, IntersectionObserver
-          for lazy loading, and full ARIA carousel pattern compliance.</HighlightBlock>
-      </section>
+      <h2>Autoplay and Pause Logic</h2>
+      <p>
+        Autoplay advances to the next slide on a timer. The interval (typically 3–5
+        seconds) should be configurable. The implementation uses setInterval, but there
+        is an important subtlety: if the tab is hidden (document.visibilityState is
+        'hidden'), the interval fires but the animation is suppressed by the browser,
+        causing the slide state to advance without any visual transition. The user
+        returns to the tab to find the carousel has jumped several slides. Fix: pause
+        the interval when the Page Visibility API reports the tab as hidden, and resume
+        when it becomes visible again.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Autoplay must pause on all of: mouseenter (hover), focus within (any element
+        inside the carousel receives focus), touchstart (user begins interacting on
+        mobile), and keyboard interaction. The carousel should not automatically resume
+        after any of these events — resuming autoplay while the user is actively engaged
+        is disorienting. The only time autoplay should resume is on mouseleave when no
+        element inside the carousel has focus.
+      </HighlightBlock>
+      <p>
+        The preferred implementation uses a useAutoplay hook that manages the interval
+        and exposes pause() and resume() methods. The carousel component calls pause()
+        in its event handlers (mouseenter, focus, keydown) and resume() in the inverse
+        handlers (mouseleave, when no child has focus). Focus tracking requires
+        maintaining a counter of focused elements inside the carousel rather than a
+        boolean — a user might tab from one dot indicator to another, causing a blur
+        event before the focus event, and a boolean would incorrectly resume autoplay
+        during this transition.
+      </p>
 
-      <section>
-        <h2>Performance &amp; Scalability</h2>
-        <HighlightBlock as="div" tier="crucial" className="my-4 overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
-            <thead><tr className="border-b border-theme"><th className="p-2 text-left">Operation</th><th className="p-2 text-left">Time</th><th className="p-2 text-left">Space</th></tr></thead>
-            <tbody className="divide-y divide-theme">
-              <HighlightBlock as="tr" tier="important"><td className="p-2">Slide transition</td><td className="p-2">O(1) — CSS transform</td><td className="p-2">O(1)</td></HighlightBlock>
-              <HighlightBlock as="tr" tier="important"><td className="p-2">Swipe detection</td><td className="p-2">O(1) — delta computation</td><td className="p-2">O(1)</td></HighlightBlock>
-              <HighlightBlock as="tr" tier="important"><td className="p-2">Lazy load check</td><td className="p-2">O(1) — IntersectionObserver callback</td><td className="p-2">O(1) per slide</td></HighlightBlock>
-            </tbody>
-          </table>
-        </HighlightBlock>
-      </section>
+      <h2>Accessibility: ARIA and Keyboard Model</h2>
+      <p>
+        The carousel widget should implement the ARIA carousel pattern. The outer
+        container has role="region" with an aria-label (e.g., "Featured products carousel"
+        or a descriptive aria-labelledby). This creates a landmark that screen reader
+        users can navigate to directly.
+      </p>
+      <p>
+        Inside the region, the slide container has aria-live="polite" — screen readers
+        announce when the displayed slide changes. However, aria-live on the entire
+        carousel would announce every change including autoplay advances, which is
+        extremely noisy. A better pattern: a visually hidden status element with
+        aria-live="polite" and aria-atomic="true" announces only the current slide
+        position ("Slide 2 of 5"). The slide container itself does not have aria-live.
+        When the slide changes, update the status element text.
+      </p>
+      <p>
+        Navigation buttons (previous/next) are plain button elements with descriptive
+        aria-label ("Next slide", "Previous slide"). They should have aria-disabled
+        (not the disabled attribute) on the boundary slides of a finite carousel,
+        so screen readers announce them as disabled but they remain focusable.
+      </p>
+      <p>
+        Dot indicators (the position indicators below the carousel) can be implemented
+        as a group of radio buttons (with role="radiogroup" on the container and
+        role="radio" on each dot) or as a tablist. Radio group semantics fit better:
+        only one dot is "selected" at a time, matching the radio button metaphor. Each
+        dot has aria-label="Go to slide N" and aria-checked="true" when it represents
+        the current slide.
+      </p>
 
-      <section>
-        <h2>Security Considerations &amp; Accessibility</h2>
-        <HighlightBlock as="p" tier="crucial">Carousel has <code>role=&quot;region&quot;</code> with
-          <code>aria-roledescription=&quot;carousel&quot;</code> and
-          <code>aria-label</code>. Each slide has <code>role=&quot;group&quot;</code>
-          with <code>aria-roledescription=&quot;slide&quot;</code> and
-          <code>aria-label=&quot;slide X of Y&quot;</code>.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">Navigation buttons have
-          descriptive labels. Keyboard: ArrowLeft/Right navigates, Tab focuses controls.
-          Autoplay pauses on focus for accessibility.</Highlight></HighlightBlock>
-      </section>
+      <h2>Keyboard Navigation Within the Carousel</h2>
+      <p>
+        Inside the carousel, the keyboard model depends on whether slides contain
+        interactive content (links, buttons) or are purely visual (images). For
+        purely visual carousels, the keyboard model is: Tab enters the carousel at
+        the previous button, Tab again moves to the next button, Tab again exits to
+        the dot indicators or to the next element after the carousel.
+      </p>
+      <p>
+        For content carousels (slides contain links or buttons), keyboard users need
+        to be able to tab into each slide's content. This means slides within the
+        visible window are in the tab order, but off-screen slides (not currently visible)
+        must not be tabbable. Set tabindex="-1" on all interactive elements in off-screen
+        slides, and ensure their visibility is hidden so screen readers do not announce
+        their content before or after the visible slide.
+      </p>
+      <p>
+        Arrow keys (Left/Right) should navigate between slides when focus is within
+        the carousel's navigation controls (previous/next buttons and dot indicators).
+        Inside slide content, arrow keys follow their natural behavior (scrolling text,
+        navigating within nested widgets). This distinction prevents arrow key
+        navigation from conflicting with content interaction.
+      </p>
 
-      <section>
-        <h2>Testing Strategy</h2>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Unit:</strong> Swipe detector — test threshold crossing, delta computation. Autoplay — test pause/resume, visibility API.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Integration:</strong> Simulate swipe, verify slide changes, verify transition completes. Test autoplay interval.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> axe-core on carousel, keyboard navigation, screen reader slide announcements, reduced motion preference.</HighlightBlock>
-        </ul>
-      </section>
+      <h2>Responsive Design and Slide Counts</h2>
+      <p>
+        Many carousels show multiple slides simultaneously — three product cards on
+        desktop, two on tablet, one on mobile. This "slides per view" configuration
+        requires the animation calculation to account for partial slide widths. The
+        track offset is not a single slide width but currentIndex times the slide
+        width divided by slidesPerView.
+      </p>
+      <p>
+        Responsive slidesPerView requires listening to ResizeObserver on the carousel
+        container and recalculating the configuration when the container width changes.
+        The breakpoints should be in container widths (not viewport widths) to support
+        carousels embedded in various layout contexts. This is a container query use
+        case — the configuration responds to the carousel's own width, not the viewport.
+      </p>
+      <p>
+        When slidesPerView changes (e.g., on rotation from portrait to landscape),
+        the current index must be adjusted if it would now show slides beyond the end
+        of the list. Clamp the index to the maximum valid position for the new
+        slidesPerView value and snap to that position without animation.
+      </p>
 
-      <section>
-        <h2>Interview-Focused Insights</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes</h3>
-        <ul className="space-y-3">
-          <li><strong>Animating left/margin instead of transform:</strong> Animating layout properties causes expensive reflows. transform: translateX() is GPU-composited.</li>
-          <HighlightBlock as="li" tier="important"><strong>No autoplay pause on hover/focus:</strong> Autoplay continuing while the user is trying to read a slide is frustrating. Pause on hover/focus is mandatory.</HighlightBlock>
-          <li><strong>No reduced motion support:</strong> Users with vestibular disorders need motion disabled. prefers-reduced-motion media query must be respected.</li>
-        </ul>
+      <h2>Interview Q&A</h2>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement a parallax effect within carousel slides?</p>
-            <HighlightBlock as="p" tier="crucial" className="mt-2 text-sm">
-              A: Use scroll-linked animations or touch delta to offset background images
-              at a different rate than foreground content. During swipe, compute the
-              swipe delta and apply a scaled transform to the background layer
-              (e.g., 0.5x the swipe distance for parallax).
-            </HighlightBlock>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you handle variable-width slides?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Instead of translateX(index × slideWidth), compute cumulative offsets
-              by summing each slide&apos;s offsetWidth. The track translates to the
-              cumulative offset of the current slide. This requires measuring each
-              slide&apos;s width on mount and on resize.
-            </HighlightBlock>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you add snap scrolling (CSS scroll-snap)?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Set <code>scroll-snap-type: x mandatory</code> on the track and
-              <code>scroll-snap-align: start</code> on each slide. Navigation buttons
-              use <code>{`scrollTo({ left: offset, behavior: 'smooth' })`}</code>.
-              Touch swipe works natively with scroll-snap. No JS animation needed.
-            </HighlightBlock>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you track carousel engagement metrics?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Track: (1) slides viewed per session, (2) CTA clicks per slide,
-              (3) average time spent per slide, (4) swipe vs button usage ratio,
-              (5) drop-off point (which slide users stop interacting). Use this data
-              to optimize slide content and autoplay interval.
-            </HighlightBlock>
-          </div>
-        </div>
-      </section>
+      <h3>Q: How do you implement an infinite carousel without cloning DOM nodes?</h3>
+      <p>
+        Use an unbounded integer as the current index and compute the actual slide
+        data index as (currentIndex mod slideCount) using a modulo function that handles
+        negative values. The slide window always renders three slides: at positions
+        [currentIndex - 1, currentIndex, currentIndex + 1]. Each position maps to a
+        data slot via modular arithmetic. Going backward from index 0 to -1 renders
+        the last slide ((-1 mod 3 + 3) mod 3 = 2) without any DOM manipulation. The
+        FLIP animation calculates positions purely from the current and target indices,
+        so the animation direction (left or right) is determined by whether the target
+        index is greater or less than the current index, naturally wrapping at the
+        boundaries.
+      </p>
 
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN — CSS Scroll Snap
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/tutorials/carousels/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              WAI — Accessible Carousel Design Pattern
-            </a>
-          </li>
-          <li>
-            <a href="https://css-tricks.com/intro-css-scroll-snap/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              CSS-Tricks — Introduction to CSS Scroll Snap
-            </a>
-          </li>
-        </ul>
-      </section>
+      <h3>Q: How do you prevent layout thrashing during touch-driven drag?</h3>
+      <p>
+        Apply the drag transform directly to the DOM via a ref, bypassing React state
+        entirely for the drag phase. React state updates are batched and processed
+        asynchronously; for a 60fps drag, this introduces perceptible lag. Instead,
+        use a mutable ref that holds the track element. In the pointermove handler,
+        compute the new translateX and set it directly via element.style.transform.
+        This is a synchronous DOM write, but it happens after the browser's layout phase
+        for the current frame (in the event handler, which runs before paint), so it
+        does not cause forced layout. Only commit to React state on pointerup, when
+        the final slide index and snap position are determined.
+      </p>
+
+      <h3>Q: How does WCAG compliance constrain the autoplay implementation?</h3>
+      <p>
+        WCAG 2.1 SC 2.2.2 (Pause, Stop, Hide) requires that any moving content lasting
+        more than 5 seconds can be paused, stopped, or hidden by the user. A carousel
+        with autoplay must provide a visible pause button. WCAG SC 2.3.1 (Three Flashes
+        or Below Threshold) means content should not flash more than three times per
+        second — relevant for rapid auto-advancing. For users who enable prefers-reduced-motion,
+        disable autoplay and all slide transition animations. The @media (prefers-reduced-motion:
+        reduce) media query in CSS and the matchMedia API in JavaScript both expose this
+        preference. A carousel that ignores prefers-reduced-motion can trigger vestibular
+        disorders in sensitive users.
+      </p>
+
+      <h3>Q: How would you support a carousel where each slide has different width?</h3>
+      <p>
+        Variable-width slides require measuring each slide's width and computing the
+        track offset as the sum of all previous slide widths, not as currentIndex times
+        a fixed width. Store an array of cumulative offsets computed by reading
+        slide.offsetWidth for each slide after mount (in a useLayoutEffect or ResizeObserver
+        callback). The translate offset for navigating to index N is the cumulative offset
+        at position N. FLIP animation still works because it measures the before/after
+        positions directly from the DOM. Update the cumulative offsets whenever a
+        ResizeObserver detects a slide width change (e.g., when images load with intrinsic
+        sizes). This approach handles heterogeneous slide content naturally but requires
+        DOM reads on mount and content changes.
+      </p>
+
+      <h3>Q: How would you handle a carousel that is part of a server-rendered page?</h3>
+      <p>
+        Server-render all slides in the DOM for SEO and LCP. The initial HTML includes
+        all slides; JavaScript hydrates the carousel and then sets up the virtual window.
+        During hydration, avoid running animations to prevent hydration mismatch.
+        After hydration, the carousel can take over and set slides outside the window
+        to be visually hidden. For the first slide, ensure the image has
+        fetchpriority="high" in the server-rendered HTML — this signals the browser to
+        prioritize it in the preload scanner, improving LCP. Use the loading="eager"
+        attribute on the first slide's image (not lazy) so it is not deferred.
+      </p>
     </ArticleLayout>
   );
 }

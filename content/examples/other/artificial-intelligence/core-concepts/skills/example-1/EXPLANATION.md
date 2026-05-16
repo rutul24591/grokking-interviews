@@ -1,49 +1,38 @@
-# Example 1: Skill Registry with Registration, Discovery, and Invocation
+# Skills — LLM Capability Discovery and Composition - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/skills`. The article is about Comprehensive guide to skill systems for LLM agents covering skill registration, capability discovery, composition, routing, and skill-based agent architecture.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What is the difference between a skill and a tool in an AI agent system, and when should you use each?; Q2: How do you design a skill system that scales to hundreds of capabilities?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** `pydantic` (for `BaseModel` and `ValidationError`). Install with `pip install pydantic`. No other external dependencies required.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a central **Skill Registry** pattern used in AI agent systems, where skills (discrete capabilities) are registered with typed input/output schemas, discovered through a catalog, and invoked with automatic validation. It shows how primitive skills (like `search_knowledge`) can be composed into composite skills (like `generate_report`) that internally call other registered skills, forming the foundation of a modular, extensible agent architecture.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- observability and operational signals
+- empty, missing, or null-state handling
 
-### Key Classes and Data Structures
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-- **`SkillMetadata`** (dataclass): Holds metadata for a skill including name, description, version, tags, preconditions, estimated cost, and estimated latency. This metadata is used by the LLM during skill discovery to decide which skill to invoke.
-- **`SkillRegistry`**: The central registry that stores all registered skills in a dictionary (`_skills`) and organizes them by category (`_categories`). It provides three core operations:
-  - `register()` — adds a skill with its input schema, output schema, implementation function, and metadata.
-  - `get_catalog()` — returns a list of skill descriptions with JSON schemas for the LLM to discover available skills.
-  - `invoke()` — validates inputs against the Pydantic schema, executes the implementation, validates outputs, and returns structured results.
-- **`SearchInput` / `SearchOutput`** (Pydantic models): Define the typed contract for the search skill.
-- **`ReportInput` / `ReportOutput`** (Pydantic models): Define the typed contract for the report generation skill.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow (Step-by-Step)
-
-1. **Registry initialization**: A `SkillRegistry` instance is created with empty `_skills` and `_categories` dictionaries.
-2. **Register primitive skill**: `search_knowledge` is registered with `SearchInput`/`SearchOutput` schemas, a lambda implementation that returns mock results, and metadata including tags and preconditions.
-3. **Register composite skill**: `generate_report` is registered with a real implementation (`generate_report_impl`) that internally calls `registry.invoke("search_knowledge", ...)` — demonstrating skill composition where one skill depends on another.
-4. **Discover skills**: `get_catalog()` iterates all registered skills and returns their name, description, input/output JSON schemas, tags, and preconditions — this is what an LLM would see to decide which skill to use.
-5. **Invoke skills**: `invoke("search_knowledge", query="Q3 revenue")` validates the input against `SearchInput`, executes the lambda, validates the output against `SearchOutput`, and returns `{"status": "success", "output": ...}`.
-6. **Invoke composite skill**: `invoke("generate_report", topic="Q3 revenue")` triggers the composite implementation, which calls `search_knowledge` internally, then formats a report.
-7. **Test input validation**: Calling `invoke("generate_report")` without the required `topic` parameter triggers Pydantic's `ValidationError`, which is caught and returned as a structured error response.
-
-### Important Variables
-
-- `self._skills`: Dictionary mapping skill name to its full registration (metadata, schemas, implementation, category).
-- `self._categories`: Dictionary mapping category name to list of skill names for filtered discovery.
-- `preconditions` in metadata: Lists requirements that must be met before a skill can be invoked (e.g., `["authenticated", "search_knowledge:available"]`).
-
-## Key Takeaways
-
-- **Schema-driven validation**: Using Pydantic models for input/output schemas ensures that skills receive correctly typed data and produce conformant outputs, catching errors before execution.
-- **Composite skills**: Skills can call other skills internally (`generate_report` calls `search_knowledge`), enabling complex workflows built from primitive building blocks.
-- **LLM discovery catalog**: The `get_catalog()` method exposes skill metadata and JSON schemas in a format an LLM can parse to decide which tool to invoke — this is the core mechanism behind function calling in modern LLM APIs.
-- **Preconditions and metadata**: Skills carry cost estimates, latency estimates, and preconditions that enable intelligent routing and orchestration decisions.
-- **Error handling**: Input validation errors and execution errors are caught and returned as structured responses rather than throwing exceptions, making the registry robust and predictable.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

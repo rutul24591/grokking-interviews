@@ -1,196 +1,33 @@
-# Modal Component — Edge Cases & Advanced Scenarios
+# Design a Modal / Dialog Component - example-2 Explanation
 
-This document covers two advanced modal scenarios that interviewers frequently ask as follow-ups: handling focus trap edge cases (iframes, Shadow DOM, programmatic focus loss), and managing nested modals with proper z-index stacking and independent focus traps.
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/modal-component`. The article is about Complete LLD solution for a production-grade modal component supporting multiple types (confirm, alert, custom), global control, focus trapping, z-index stacking, ARIA dialog pattern, and SSR-safe portal rendering.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Focus Trap Mechanics.
 
----
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## Edge Case 1: Focus Trap Edge Cases
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-### The naive approach (and why it fails)
+## File-by-file walkthrough
+- `focus-escape-guard.ts`: Centralizes business rules, validation, limits, or fallback decisions.
+- `nested-modal-manager.ts`: Implements the main logic, including BASE_Z_INDEX, Z_INDEX_INCREMENT, useNestedModalManager, stackRef, openModal.
 
-Most focus trap implementations listen for the `Tab` key and manually redirect focus:
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-```typescript
-element.addEventListener('keydown', (e) => {
-  if (e.key === 'Tab') {
-    // Redirect focus...
-  }
-});
-```
+## Important implementation behavior
+- asynchronous or event-driven flow
+- observability and operational signals
+- empty, missing, or null-state handling
 
-This fails in four scenarios:
+## Edge cases and failure modes
+- Asynchronous work can arrive late, out of order, or more than once.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-| Scenario | Why keydown approach fails |
-|----------|--------------------------|
-| **No focusable elements** | There's nothing to redirect TO. Focus escapes to the next focusable element in the document (e.g., the URL bar). |
-| **Iframe content** | Focus enters the iframe, but the keydown listener on the parent modal can't track focus inside the iframe's document (especially cross-origin). |
-| **Shadow DOM** | `querySelector('button')` doesn't find buttons inside a shadow root. The tab order is incomplete. |
-| **Programmatic focus loss** | A third-party library calls `someElement.focus()` — no keyboard event involved. The keydown listener never fires. |
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### The solution: Sentinels + RAF polling
-
-**Sentinel elements**: Two invisible, focusable `<span tabindex="0">` elements are placed at the start and end of the modal's tab order. When Tab naturally reaches the last element, focus moves to the end sentinel, which immediately redirects to the first element. Same logic in reverse for Shift+Tab.
-
-Why sentinels over keydown? Sentinels work for **all** focus mechanisms — Tab, Shift+Tab, mouse clicks, touch taps, and even screen reader navigation. A keydown listener only handles keyboard.
-
-**RAF polling**: A `requestAnimationFrame` loop continuously checks `document.activeElement`. If the active element is outside the modal (and not an allowed iframe), focus is pulled back. This catches **programmatic focus loss** — when some external code calls `.focus()` on an element outside the modal.
-
-### Shadow DOM traversal
-
-The `collectFocusableElements` function recursively traverses into shadow roots:
-
-```
-Light DOM query → finds host elements
-    ↓
-For each element with shadowRoot → recurse into shadow DOM
-    ↓
-Query shadow root for focusable elements
-    ↓
-Handle <slot> elements → check assigned nodes
-```
-
-This ensures that a custom element like `<my-dialog>` that renders buttons inside its shadow tree is properly included in the tab order.
-
-### MutationObserver for dynamic content
-
-Modals often load content asynchronously — a form might appear after an API call. A `MutationObserver` watches for DOM changes and triggers a re-scan of focusable elements. This is debounced at 100ms to avoid rescanning on every micro-mutation during a React render.
-
----
-
-## Edge Case 2: Nested Modal Management
-
-### The problem
-
-When a modal opens another modal, you now have two overlapping dialog contexts. The challenges:
-
-1. **Z-index**: The new modal must appear on top. But if the first modal used `z-index: 1000`, the second needs `1001` or higher. What about the third?
-2. **Focus trap**: Should both modals trap focus? No — only the topmost modal should. The lower modal's focus trap must be deactivated.
-3. **Escape key**: Pressing Escape should close only the topmost modal, not all of them at once.
-4. **Backdrop**: Should both modals show a backdrop? No — only the topmost one. Lower modals should hide their backdrops so the user can see through to them.
-5. **Scroll lock**: The body scroll should be locked when the first modal opens and only released when the last modal closes.
-
-### The stack-based solution
-
-The `NestedModalManager` maintains a stack:
-
-```
-Stack (bottom → top):
-[0] Settings modal      — zIndex: 1000, backdrop: hidden,  focusTrap: inactive
-[1] Change Password     — zIndex: 1100, backdrop: visible, focusTrap: active
-[2] Confirm Delete      — zIndex: 1200, backdrop: visible, focusTrap: active
-```
-
-**Push operation** (open new modal):
-1. Deactivate the current topmost's focus trap
-2. Hide the current topmost's backdrop
-3. Push the new modal with `zIndex = base + (depth * increment)`
-4. Activate the new modal's focus trap
-5. Show the new modal's backdrop
-
-**Pop operation** (close topmost modal):
-1. Deactivate the closing modal's focus trap
-2. Hide its backdrop
-3. Remove from stack
-4. The new topmost's focus trap is activated
-5. The new topmost's backdrop is re-shown
-
-### Z-index strategy
-
-We use `baseZIndex + (depth * increment)` rather than just incrementing by 1:
-
-```
-Depth 0: 1000
-Depth 1: 1100  (gap of 100)
-Depth 2: 1200
-```
-
-The gap of 100 provides room for internal modal elements (e.g., a dropdown inside a modal can use `z-index: 1050` without conflicting with the next modal).
-
-### Escape key routing
-
-A single global `keydown` listener (captured at the document level) intercepts Escape presses. It always routes to `stack[top]` — the topmost modal. That modal's `onEscape()` callback decides whether to close. This ensures Escape closes modals one at a time, from top to bottom.
-
----
-
-## Diagrams
-
-### Focus trap with sentinels
-
-```
-┌────────────────────────────────────────────┐
-│                Modal Container              │
-│                                            │
-│  ┌────────────────────────────────────┐    │
-│  │  [Sentinel Start] tabindex=0       │    │ ← Invisible
-│  │                                    │    │
-│  │  [Button: Cancel]  ← 1st real     │    │
-│  │  [Button: Save]    ← 2nd real     │    │
-│  │  [Input: Name]     ← 3rd real     │    │
-│  │                                    │    │
-│  │  [Sentinel End]   tabindex=0       │    │ ← Invisible
-│  └────────────────────────────────────┘    │
-│                                            │
-│  Tab order: Sentinel → Cancel → Save →    │
-│  Input → Sentinel → Cancel (loop)          │
-│                                            │
-│  RAF polling: Every frame, checks if      │
-│  document.activeElement is inside modal.   │
-│  If not → pull focus back.                 │
-└────────────────────────────────────────────┘
-```
-
-### Nested modal stack
-
-```
-                    Push Modal C
-                    ─────────────
-
-Before:                      After:
-┌──────────────┐            ┌──────────────┐
-│ Modal A      │            │ Modal A      │
-│ z: 1000      │            │ z: 1000      │
-│ backdrop: ✓  │            │ backdrop: ✗  │
-│ focus: ✓     │            │ focus: ✗     │
-└──────────────┘            ├──────────────┤
-                            │ Modal B      │
-                            │ z: 1100      │
-                            │ backdrop: ✗  │
-                            │ focus: ✗     │
-                            ├──────────────┤
-                            │ Modal C      │ ← NEW (topmost)
-                            │ z: 1200      │
-                            │ backdrop: ✓  │
-                            │ focus: ✓     │
-                            └──────────────┘
-
-Escape on C → C closes → B becomes topmost → B's focus: ✓, backdrop: ✓
-```
-
-### Focus polling loop
-
-```
-requestAnimationFrame loop (every ~16ms):
-    │
-    ▼
-┌─────────────────────────┐
-│ document.activeElement  │
-│ = ???                    │
-└────────┬────────────────┘
-         │
-    ┌────┴────┐
-    │ Inside  │  Yes → Continue polling
-    │ modal?  │  No  → Pull focus back to
-    └────┬────┘         first focusable element
-         │
-    ┌────┴────┐
-    │ Is it   │  Yes → Allow (iframe exception)
-    │ an      │  No  → Pull focus back
-    │ iframe? │
-    └─────────┘
-
-This catches:
-- Third-party .focus() calls
-- Toast notifications stealing focus
-- Analytics libraries focusing hidden elements
-- Auto-focus on dynamically loaded content
-```
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

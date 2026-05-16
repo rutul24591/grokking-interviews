@@ -1,9 +1,29 @@
-# Dynamic Conditional Form Engine — Follow-up: Incremental Re-evaluation
+# Design a Dynamic Conditional Form Engine - example-2 Explanation
 
-Example 2 focuses on the follow-up: “How do you avoid re-evaluating all rules on every keystroke?”
+## Article context
+This example supports the article `low-level-design/forms-input-systems/dynamic-conditional-form-engine`. The article is about LLD for a reactive conditional engine driving field visibility, enablement, requiredness, and computed values from a safe predicate DSL.. The most relevant article sections for this example are: 🎯 Problem Context and Scope Definition; Problem Statement; User Context; Assumptions; Non-Goals; Functional Requirements; Core (Must-have); Secondary (Nice-to-have); Out of Scope; Non-Functional Requirements.
 
-Strategy:
-- Pre-index rules by dependencies (`rulesByDependency`).
-- Re-evaluate only rules affected by the changed field.
-- Batch updates (microtask) to coalesce rapid typing.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
+
+## File-by-file walkthrough
+- `batched-recompute.ts`: Implements the main logic, including createBatcher, scheduled.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- asynchronous or event-driven flow
+
+## Edge cases and failure modes
+- Asynchronous work can arrive late, out of order, or more than once.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

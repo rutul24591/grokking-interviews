@@ -1,14 +1,53 @@
-## RBAC in frontend system design
+# Authorization & RBAC - example-1 Explanation
 
-Authorization answers: “What can this authenticated user do?”
+## Article context
+This example supports the article `frontend/security/authorization-rbac`. The article is about Comprehensive guide to authorization patterns, Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), and implementation strategies for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition & Context; Key Insight: Authorization Is Multi-Layered; Role-Based Access Control (RBAC); RBAC Components; RBAC Implementation; Common Role Hierarchies; RBAC Best Practices; When to Use RBAC; Attribute-Based Access Control (ABAC); ABAC Components.
 
-RBAC approach:
-- assign roles to users
-- define permissions per role
-- enforce on the server for every sensitive action
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Common pitfalls:
-- enforcing only in UI
-- role explosion (“too many roles”) → consider resource-scoped roles or ABAC hybrids
-- lack of audit logging for privileged actions
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `app/api/admin/users/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/articles/publish/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/auth/login/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/auth/logout/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/auth/me/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `lib/rbac.ts`: Implements the main logic, including ROLE_PERMS, hasPermission.
+- `lib/requestAuth.ts`: Implements the main logic, including getAuth, raw, parsed, session.
+- `lib/session.ts`: Implements the main logic, including COOKIE, SECRET, sessions, sign, cookieName.
+- `lib/users.ts`: Implements the main logic, including USERS, authenticate, u.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- cache freshness, staleness, or invalidation
+- pagination or cursor handling
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Cached data can become stale and needs invalidation or freshness checks.
+- Large result sets need stable pagination and empty-page behavior.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

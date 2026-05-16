@@ -1,9 +1,38 @@
-# Focus
+# Latency SLAs - example-3 Explanation
 
-Advanced latency control patterns:
+## Article context
+This example supports the article `non-functional-requirements/backend-nfr/latency-slas`. The article is about Comprehensive guide to latency SLAs — percentiles, tail latency, error budgets, SLI/SLO/SLA hierarchy, and latency optimization strategies for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition and Context; Key Distinction: SLI vs SLO vs SLA; Core Concepts; Percentiles and Tail Latency; Tail Latency Amplification; Error Budgets; Architecture and Flow; Measurement Architecture; SLO Design Process; Trade-Offs and Comparisons.
 
-- allocate budgets across hops (auth/db/cache)
-- hedge tail latencies (send a second request after a delay)
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-This example models when you would hedge based on observed p95.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `src/demo.ts`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `tsconfig.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- timeout and deadline handling
+- pagination or cursor handling
+- error handling and fallback behavior
+- observability and operational signals
+
+## Edge cases and failure modes
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Large result sets need stable pagination and empty-page behavior.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
+- High load can expose latency, memory, cache, or backpressure issues.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

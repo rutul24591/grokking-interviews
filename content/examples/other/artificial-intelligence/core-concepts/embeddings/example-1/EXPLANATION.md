@@ -1,45 +1,30 @@
-# Embedding Similarity and Search
+# Embeddings — Semantic Vector Representations - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/embeddings`. The article is about Comprehensive guide to embeddings covering embedding properties, dimensionality trade-offs, semantic similarity, clustering, classification, embedding model selection, and multimodal embeddings.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What makes a good embedding model and how do you evaluate one?; Q2: How do you choose the right embedding dimensionality?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`math`, `typing`, `hashlib`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example demonstrates the fundamental operations of vector embeddings: computing cosine similarity between embedding vectors, performing semantic search by ranking documents based on vector similarity to a query, and comparing three different similarity metrics (cosine, Euclidean distance, dot product) for measuring vector proximity.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- concurrency, conflict, or transaction behavior
+- observability and operational signals
 
-### Key Functions
+## Edge cases and failure modes
+- Concurrent updates can race and must protect shared invariants.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`cosine_similarity(a, b)`**: Computes the cosine of the angle between two vectors as `(a . b) / (||a|| * ||b||)`. Returns a value in [-1, 1] for normalized vectors, where 1 means identical direction.
-- **`euclidean_distance(a, b)`**: Computes the straight-line distance between two vectors. Lower values indicate closer vectors.
-- **`dot_product(a, b)`**: Computes the raw dot product. For L2-normalized vectors, this equals cosine similarity.
-- **`normalize(v)`**: L2-normalizes a vector by dividing each component by the vector's magnitude.
-- **`simulate_embedding(text, dim)`**: Generates a deterministic 8-dimensional embedding from text using SHA-256 hashing. Produces reproducible vectors for the same input text.
-- **`semantic_search(query, documents, top_k)`**: Embeds the query and all documents, computes cosine similarity for each document-query pair, sorts by similarity descending, and returns the top-k results.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow
-
-1. **`main()`** defines five text sentences spanning royal/leadership themes, animal activity, and furniture.
-2. **Similarity Matrix**: Computes pairwise cosine similarities for the first three sentences, showing that semantically related texts ("king ruled kingdom" and "queen governed realm") have higher similarity than unrelated pairs.
-3. **Semantic Search**: Searches for "royal leader of a nation" against the five documents. Results show the top 3 most semantically similar documents, with royal/leadership content ranking highest.
-4. **Metric Comparison**: Compares cosine similarity, Euclidean distance, and dot product for two pairs: king-queen (semantically related) and king-table (unrelated). Shows how different metrics capture different aspects of vector proximity.
-
-### Important Variables
-
-- `dim = 8`: Embedding dimension for the simulated embeddings (production embeddings use 384-1536+ dimensions).
-- `top_k = 3`: Number of results returned by semantic search.
-- Hash-based embedding: deterministic but not semantically meaningful -- production systems use trained neural network encoders.
-
-## Key Takeaways
-
-- Cosine similarity is the standard metric for embedding comparison because it measures directional alignment regardless of vector magnitude, making it robust for text embeddings of varying lengths.
-- Semantic search works by embedding both queries and documents in the same vector space, then retrieving documents closest to the query vector.
-- For L2-normalized vectors, cosine similarity and dot product are mathematically equivalent -- many vector databases use dot product for computational efficiency.
-- Euclidean distance measures absolute position difference, which is less useful for text embeddings where magnitude varies with document length.
-- Production semantic search systems use trained embedding models (e.g., text-embedding-ada-002, BGE, E5) that capture genuine semantic relationships, unlike the hash-based simulation here.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

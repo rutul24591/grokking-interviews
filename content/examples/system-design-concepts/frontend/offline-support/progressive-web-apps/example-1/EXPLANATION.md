@@ -1,21 +1,53 @@
-# PWA Example 1 — Production notes
+# Progressive Web Apps (PWA) - example-1 Explanation
 
-This example shows the three pillars of a minimal PWA:
+## Article context
+This example supports the article `frontend/offline-support/progressive-web-apps`. The article is about Comprehensive guide to Progressive Web Apps covering the app shell model, Web App Manifest, installability criteria, push notifications, and native-like capabilities in the browser.. The most relevant article sections for this example are: Definition & Context; Core Concepts; Architecture & Flow; App Shell Loading Flow; Update Flow; Trade-offs & Comparisons; Best Practices; Common Pitfalls; Real-World Use Cases; When NOT to Use PWA.
 
-1) **Web App Manifest** (install metadata)
-- Controls name, icons, start URL, display mode (standalone vs browser).
-- A real production PWA typically has multiple icon sizes, maskable icons, and sometimes shortcuts/share targets.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-2) **Install prompt UX**
-- Browsers decide *when* to surface install; apps can only react to `beforeinstallprompt`.
-- Always treat install as an enhancement; the app must remain fully usable without it.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-3) **Service worker as an offline entry-point**
-- This example uses a simple **offline navigation fallback** (`/offline`) to avoid a broken blank screen.
-- In production, avoid blindly caching `"/"` if your HTML is user-specific. Prefer an app shell that is safe to cache for all users, or scope caching behind auth boundaries.
+## File-by-file walkthrough
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/offline/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/pwa-client.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `lib/pwa/useInstallPrompt.ts`: Implements the main logic, including useInstallPrompt, onBeforeInstallPrompt, promptInstall, choice.
+- `lib/sw/registerServiceWorker.ts`: Implements the main logic, including registerServiceWorker, reg.
+- `next-env.d.ts`: Implements the executable logic or UI behavior for the example.
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `postcss.config.mjs`: Provides supporting example content: const config = { plugins: { "@tailwindcss/postcss": {} } }; export default config;.
+- `public/icon.svg`: Provides supporting example content: <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"> <rect x="0" y="0" width="512" height="512" rx="96" f.
+- `public/manifest.webmanifest`: Provides supporting example content: { "name": "Offline Support — PWA Example", "short_name": "OfflinePWA", "description": "Manifest + service worker + install prompt demonstrat.
 
-Operational trade-offs:
-- **Staleness vs availability**: aggressive caching improves offline availability but can serve outdated content.
-- **Update strategy**: you need a deliberate strategy (skip waiting vs controlled rollout). Example 3 focuses on this.
-- **Observability**: include logs/metrics for cache hit rates, update adoption, and failure modes where possible.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
+## Important implementation behavior
+- request cancellation and cleanup
+- cache freshness, staleness, or invalidation
+- pagination or cursor handling
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- offline, reconnect, resume, or sync behavior
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Requests can be cancelled, abandoned, or completed out of order.
+- Cached data can become stale and needs invalidation or freshness checks.
+- Large result sets need stable pagination and empty-page behavior.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

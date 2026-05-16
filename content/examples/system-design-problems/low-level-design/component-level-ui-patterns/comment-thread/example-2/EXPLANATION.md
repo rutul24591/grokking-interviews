@@ -1,88 +1,36 @@
-# Comment Thread — Example 2: Edge Cases & Advanced Scenarios
+# Design a Comment Thread System - example-2 Explanation
 
-## Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/comment-thread`. The article is about Complete LLD solution for a production-grade comment thread system with nested replies, lazy-loading, optimistic UI, rich text, real-time WebSocket updates, and accessibility.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Component Interaction Flow.
 
-These examples cover two critical challenges in comment thread implementations: optimistic UI with failure rollback, and managing deeply nested comment trees.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
----
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## 1. Optimistic Rollback (`optimistic-rollback.ts`)
+## File-by-file walkthrough
+- `deep-nesting-collapse.ts`: Implements the main logic, including collapseDeepComments, count, countDescendants, count, reply.
+- `optimistic-rollback.ts`: Implements the main logic, including OptimisticCommentManager, tempId, comment, comment, comment.
 
-### The Problem
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-When a user posts a comment, we want it to appear **immediately** (optimistic UI). But if the server request fails:
-1. The comment is visible in the UI but not persisted
-2. The user's content is lost if we simply remove it
-3. The user has to re-type and re-submit
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- error handling and fallback behavior
+- concurrency, conflict, or transaction behavior
+- empty, missing, or null-state handling
 
-### The Solution
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Concurrent updates can race and must protect shared invariants.
+- Empty, missing, or null data should produce intentional UI or service states.
+- Real-time flows need reconnect, ordering, and duplicate-message handling.
 
-A state machine for each comment's lifecycle:
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-```
-pending → published (server confirmed)
-pending → failed (server error, content preserved)
-failed → retrying → published (retry succeeded)
-failed → failed (retry also failed, max retries reached)
-failed → discarded (user chose to discard)
-```
-
-**Key design decisions:**
-
-**Optimistic IDs:** Before the server returns a real ID, we use a generated optimistic ID (`opt_<timestamp>_<random>`). On success, we swap it for the server ID.
-
-**Content preservation:** Failed comments retain their content. The user can edit the content before retrying if needed.
-
-**Exponential backoff:** Retries use `2^attempt * baseMs` delay, capped at 30 seconds. This prevents hammering a struggling server.
-
-**Duplicate detection:** A content+author hash prevents posting the same comment twice. If the server responds late (after a retry), we detect the duplicate and discard the late response.
-
-**In-flight tracking:** A `Set<optimisticId>` tracks pending requests. If the user navigates away, we cancel the request and ignore the response.
-
-### Interview Talking Points
-
-- **What if the server succeeds after the user discarded?** The duplicate hash prevents the late response from re-adding the comment. The server-side duplicate is harmless (same content from same author).
-- **Max retries:** Default is 3. After that, the comment stays in "failed" state permanently. The user can manually retry if they want.
-- **Why not auto-retry immediately?** Network errors are often transient but need time to resolve. Backoff gives the server time to recover.
-
----
-
-## 2. Deep Nesting Collapse (`deep-nesting-collapse.ts`)
-
-### The Problem
-
-Comment threads can go arbitrarily deep, causing:
-- **Staircase effect:** Each indent level eats horizontal space. At depth 10, comments are unreadable on normal screens.
-- **DOM explosion:** 10,000 comments = 10,000 DOM nodes, which kills performance.
-- **Lost context:** Users can't follow a thread that's 20 levels deep.
-
-### The Solution: Three-Tier Strategy
-
-**1. Max Visual Depth (5):** Comments deeper than level 5 render at the same indent as level 5. This prevents the staircase effect while still showing the thread continues.
-
-**2. Reply Collapsing:** Beyond depth 3, only show the first 5 replies. The rest are hidden behind "Show X more replies." Clicking expands inline.
-
-**3. Virtualization:** When total visible comments exceed 100, use virtualization (react-virtuoso) to only render what's in the viewport.
-
-### Tree Flattening Algorithm
-
-The nested tree is flattened into a linear array with display metadata:
-
-```typescript
-interface FlatComment {
-  comment: CommentNode;
-  visualDepth: number;        // Capped at maxIndentDepth
-  isCollapsed: boolean;       // Replies hidden?
-  hasHiddenReplies: boolean;  // "Show more" button needed?
-  hiddenReplyCount: number;   // How many replies are hidden
-}
-```
-
-The flattening function recursively walks the tree, applying collapse rules at each level.
-
-### Interview Talking Points
-
-- **Mobile adaptation:** On screens < 640px, reduce maxIndentDepth to 2 and collapseBeyondDepth to 1. Deep threads are unusable on mobile without aggressive collapsing.
-- **Server-side pagination:** For 10,000+ comment threads, the server should paginate replies (20 at a time). The client renders what it has and shows "Load more replies."
-- **Time complexity:** Tree flattening is O(N) where N = total comments. Collapse state changes trigger a full re-flatten, but this is cheap (100 comments = ~1ms).
-- **Why not CSS `max-width`?** CSS alone can't handle the "Show more replies" pattern or virtualization. We need to control which comments are rendered at the data level.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

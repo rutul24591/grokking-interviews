@@ -3,327 +3,349 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-notification-center-inbox",
   title: "Design a Notification Center / Inbox",
   description:
-    "Notification center with read/unread states, grouping, mark-all-read, real-time badge count, filtering, and accessibility.",
+    "Notification center with notification store, toast queue, inbox view with real-time delivery, badge count management, grouping, and expiry TTL.",
   category: "low-level-design",
   subcategory: "component-level-ui-patterns",
   slug: "notification-center-inbox",
-  wordCount: 3200,
-  readingTime: 20,
-  lastUpdated: "2026-04-03",
-  tags: ["lld", "notifications", "inbox", "real-time", "grouping", "accessibility"],
+  wordCount: 5200,
+  readingTime: 31,
+  lastUpdated: "2026-05-16",
+  tags: ["lld", "notifications", "inbox", "toast", "real-time", "WebSocket", "grouping", "badge"],
   relatedTopics: ["toast-notification-system", "chat-messaging-ui", "stepper-progress-tracker"],
 };
 
 export default function NotificationCenterInboxArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          We need to design a notification center / inbox — a centralized panel where
-          users view, manage, and interact with all their notifications. Notifications
-          have read/unread states, can be grouped by type or conversation, support
-          mark-as-read and mark-all-read actions, display a real-time unread badge
-          count, and can be filtered by type or date.
-        </HighlightBlock>
-        <p>
-          <strong>Assumptions:</strong>
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">Notifications arrive via WebSocket for real-time updates and via REST API for historical loading.</HighlightBlock>
-          <HighlightBlock as="li" tier="important">Each notification has: id, type, title, body, timestamp, read status, action link, grouping key.</HighlightBlock>
-          <HighlightBlock as="li" tier="important">Grouping: notifications with the same key (e.g., &quot;comment on post X&quot;) are collapsed into a single item with a count.</HighlightBlock>
-          <li>Unread badge count is displayed in the global header.</li>
-          <li>The component is used in a React 19+ SPA.</li>
-        </ul>
-      </section>
+      <p>
+        A notification center is deceptively complex. On the surface, it is a list of
+        messages with read/unread states. Under the hood, it must handle real-time
+        delivery via WebSocket or Server-Sent Events, an in-memory store that reconciles
+        server-fetched history with live-pushed events, a toast queue that controls
+        how many transient notifications appear simultaneously, grouping and deduplication
+        logic, a badge count that stays accurate across multiple browser tabs, and an
+        expiry mechanism that removes stale notifications. Building this correctly
+        reveals important tradeoffs in state management, real-time architecture, and
+        cross-tab synchronization.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
+      <ArticleImage
+        src="/diagrams/system-design-problems/low-level-design/notification-center-inbox-architecture.svg"
+        alt="Notification center architecture diagram"
+        caption="Notification center architecture: notification store, toast queue, inbox view, badge count and expiry"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Notification List:</strong> Paginated list of notifications, newest first, with read/unread visual distinction.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Mark as Read:</strong> Click notification or explicit &quot;mark read&quot; action. Updates status locally and on server.</HighlightBlock>
-          <li><strong>Mark All Read:</strong> Single action marks all notifications as read.</li>
-          <HighlightBlock as="li" tier="important"><strong>Grouping:</strong> Notifications with the same grouping key are collapsed (e.g., &quot;5 people liked your post&quot;).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Real-Time Badge:</strong> Unread count badge updates instantly on new notification arrival via WebSocket.</HighlightBlock>
-          <li><strong>Filtering:</strong> Filter by type (mention, comment, system), date range, read/unread.</li>
-          <li><strong>Actions:</strong> Each notification may have an action link (e.g., &quot;View comment&quot;, &quot;Approve request&quot;).</li>
-          <li><strong>Deletion:</strong> Dismiss individual notifications or clear all read notifications.</li>
-        </ul>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Before designing, establish the scope:
+      </p>
+      <p>
+        <strong>Transient toasts vs persistent inbox?</strong> Some products have only
+        transient toast notifications (appear briefly, disappear automatically). Others
+        have a persistent inbox (a notification history the user can review later). Many
+        have both: a toast appears immediately, and the notification is also added to
+        the inbox for later reference. These two concerns have different state models
+        (the toast queue is ephemeral; the inbox is persisted).
+      </p>
+      <p>
+        <strong>Real-time delivery?</strong> Does the notification center receive live
+        events via WebSocket or SSE? Or does it poll the server for new notifications?
+        Real-time delivery is the production standard for products with time-sensitive
+        events (new chat message, payment received, task assigned).
+      </p>
+      <p>
+        <strong>Multi-tab behavior?</strong> If the user has the app open in two tabs,
+        a notification pushed to Tab 1 should also appear in Tab 2, and marking it as
+        read in Tab 1 should update the badge in Tab 2. This requires cross-tab
+        synchronization.
+      </p>
+      <p>
+        <strong>Grouping?</strong> Multiple notifications of the same type (5 new
+        comments on the same post) may be collapsed into a single grouped notification
+        ("5 new comments on 'Your post'"). Grouping logic — when to group, how to
+        display group counts, how reading one expands the group — is a significant
+        feature requirement.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Real-Time Latency:</strong> New notifications appear within 200ms of WebSocket arrival.</li>
-          <li><strong>Performance:</strong> 1000+ notifications render smoothly with virtualization.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Screen reader announces new notifications, keyboard navigation between items.</HighlightBlock>
-          <li><strong>Badge Accuracy:</strong> Badge count is always consistent with server state, even after reconnect.</li>
-        </ul>
+      <h2>The Notification Data Model</h2>
+      <p>
+        Each notification has: a unique ID, a type (enum: mention, comment, reaction,
+        assignment, system), a timestamp, a read status (boolean), an actor (user who
+        triggered the notification), a target (the resource the notification is about),
+        a message (human-readable text), an action URL (where clicking takes the user),
+        and optional expiry (ISO 8601 timestamp after which the notification should
+        be removed from the inbox).
+      </p>
+      <p>
+        The notification type is used for grouping, filtering, and icon selection. An
+        extensible type system using string literals (not a closed enum) allows new
+        notification types to be added without a client code change — the client shows
+        a generic icon and message for unknown types.
+      </p>
+      <p>
+        Grouping metadata: a notification can be part of a group (groupId field). The
+        group is a computed aggregation: find all notifications with the same groupId
+        and type, sort by timestamp, collapse into a single entry in the inbox list
+        showing the most recent actor and a count. The individual notifications within
+        the group are accessible by expanding the group entry.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>WebSocket delivers same notification twice (duplicate delivery) — deduplicate by ID.</li>
-          <li>User marks notification as read on another device — sync via WebSocket or polling.</li>
-          <li>Grouped notification has 50 sub-items — expand with virtualized sub-list.</li>
-          <li>Notification action link navigates away — mark as read before navigation.</li>
-        </ul>
-      </section>
+      <h2>The Notification Store</h2>
+      <p>
+        The notification store is the central state for the inbox. It holds the full
+        list of notifications fetched from the server plus any live-pushed events that
+        arrived after the initial fetch. The store is implemented in Zustand (or an
+        equivalent state manager with selector support for component performance).
+      </p>
+      <p>
+        On mount, the store fetches the user's notification history from a paginated
+        API (most recent N notifications, with a cursor for loading older ones). On
+        each page fetch, the results are merged with any already-stored notifications.
+        Deduplication by notification ID prevents duplicates when a live push event
+        arrives for a notification that was also returned in the initial fetch.
+      </p>
+      <p>
+        The store exposes selectors: all notifications (sorted by timestamp descending),
+        unread notifications, notifications by type, and the unread count. Components
+        subscribe to specific selectors to avoid re-rendering when unrelated parts of
+        the store change.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        The unread count must be computed from the store's notification list, not
+        maintained as a separate counter. Separate counters inevitably diverge from
+        reality when notifications are marked read, deleted, or arrive out of order.
+        The unread count is simply the number of notifications in the store where
+        read is false. This is O(n) but notifications are bounded (max 200 in the
+        store) and count is only recomputed when the store changes.
+      </HighlightBlock>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The core idea is a <strong>notification store</strong> (Zustand) managing a
-          normalized list of notifications with read/unread state. A <strong>WebSocket
-          manager</strong> handles real-time notification delivery and read status sync.</HighlightBlock>
-<HighlightBlock as="p" tier="important">A <strong>grouping engine</strong> collapses notifications with the same key
-          into grouped items with counts. The UI renders a virtualized list with
-          read/unread visual distinction and filter controls.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          <strong>Why store + grouping engine is optimal:</strong> The normalized store
-          makes read/unread state management O(1). The grouping engine reduces visual
-          clutter for high-volume notification types. WebSocket integration ensures
-          real-time badge accuracy without polling.
-        </HighlightBlock>
-      </section>
+      <h2>Real-Time Delivery</h2>
+      <p>
+        Live notifications arrive via WebSocket or Server-Sent Events. The notification
+        service (backend) pushes a notification event whenever a notification is created
+        for the user. The client's WebSocket handler receives the event, deserializes
+        the notification payload, and dispatches an addNotification action to the store.
+      </p>
+      <p>
+        The addNotification action: check if a notification with the same ID already
+        exists in the store. If yes, skip (deduplication). If no, prepend to the
+        notification list. Then trigger the toast queue to display a transient toast
+        for this notification. The toast trigger is conditional: only show a toast if
+        the inbox panel is currently closed (showing a toast while the panel is open
+        and the user can already see the new notification is redundant).
+      </p>
+      <p>
+        Reconnection handling: if the WebSocket connection drops, the client reconnects
+        with exponential backoff. On reconnection, there is a gap between the last
+        received notification and the reconnect time. The client tracks the timestamp
+        of the most recently received notification and, on reconnection, fetches
+        notifications newer than that timestamp from the API to fill the gap. This
+        ensures no notifications are missed during disconnection.
+      </p>
 
-      <section>
-        <h2>System Design</h2>
+      <h2>The Toast Queue</h2>
+      <p>
+        The toast queue is a separate, ephemeral state layer (not persisted, not
+        server-backed). It controls how many toasts are visible simultaneously and
+        manages their auto-dismiss timers.
+      </p>
+      <p>
+        The queue has a maximum simultaneous display limit (typically 3–5 toasts).
+        When a new notification triggers a toast, it is added to the queue. If the
+        queue is at capacity, the new toast replaces the oldest one (FIFO). Each
+        toast has a display duration (default 5 seconds for most types, longer for
+        error/system notifications). A timer auto-dismisses each toast after its
+        duration.
+      </p>
+      <p>
+        Toast dismissal on hover: when the user hovers over a toast, pause its auto-
+        dismiss timer (the user is reading it). Resume the timer when the mouse leaves.
+        This is implemented by storing the remaining time when hover starts and
+        scheduling a new timer for the remaining duration when hover ends. Use
+        clearTimeout and setTimeout (or a ref-based timer) for this.
+      </p>
+      <p>
+        Toast stacking: toasts stack vertically with a CSS transition that slides
+        each toast up when the bottommost one is dismissed. The stack uses absolute
+        positioning with the bottom value increasing for each toast in the stack. When
+        a toast is dismissed, CSS transition animates the remaining toasts shifting
+        down (or up, depending on the stacking direction). Using CSS transform:
+        translateY for the position (rather than bottom) enables GPU-composited animation
+        without layout recalculation.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">1. Types &amp; Store</h4>
-          <HighlightBlock as="p" tier="crucial"><code>Notification</code> (id, type, title, body, timestamp, read, groupingKey, actionUrl). Store: normalized Map, unread count, pagination cursor, active filters.</HighlightBlock>
-        </div>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">2. Grouping Engine</h4>
-          <HighlightBlock as="p" tier="important">Groups notifications by groupingKey. Returns grouped items with sub-item count, last timestamp, and sample text (&quot;Alice and 4 others commented&quot;).</HighlightBlock>
-        </div>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">3. WebSocket Manager</h4>
-          <HighlightBlock as="p" tier="important">Receives new notifications, read confirmations, badge count sync. Reconnects with exponential backoff, reconciles missed notifications.</HighlightBlock>
-        </div>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">4. Badge Counter Manager</h4>
-          <HighlightBlock as="p" tier="important">Tracks unread count, syncs with server on reconnect, displays in global header. Uses <code>Document.title</code> prefix for background tab alerts.</HighlightBlock>
-        </div>
+      <h2>Badge Count and Cross-Tab Synchronization</h2>
+      <p>
+        The badge count (the red number on the bell icon) shows unread notifications.
+        In a single tab, this is just a derived value from the store's unread count.
+        Across tabs, updates must propagate so that marking a notification read in
+        Tab 1 clears or decrements the badge in Tab 2.
+      </p>
+      <p>
+        The BroadcastChannel API enables cross-tab communication within the same origin.
+        When the notification store changes (a notification is marked read, a new
+        notification arrives), publish the change to a named BroadcastChannel. All
+        other tabs subscribed to the same channel receive the event and update their
+        local store accordingly.
+      </p>
+      <p>
+        The events to broadcast: NOTIFICATION_READ (with the notification ID, so other
+        tabs can mark the same notification read in their store), NOTIFICATIONS_ALL_READ
+        (so all tabs clear their unread badges), and NOTIFICATION_RECEIVED (so a live
+        push to one tab also triggers a toast in other tabs). The BroadcastChannel
+        handler in each tab applies the incoming event to its local store without
+        re-broadcasting (to prevent infinite loops).
+      </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/notification-center-inbox-architecture.svg"
-          alt="Notification center architecture showing WebSocket updates, grouping engine, and badge management"
-          caption="Component Interaction Flow"
-        />
+      <h2>Inbox UI and Virtual Scrolling</h2>
+      <p>
+        The inbox panel renders the notification list. For most products, the list
+        is bounded (200 notifications maximum) and does not require virtualization.
+        If the product supports many years of notification history with thousands of
+        entries, virtualization with a library like react-virtual is appropriate.
+      </p>
+      <p>
+        The inbox has three views: all notifications, unread only, and by type
+        (tabs across the top). The filter is applied as a derived selector in the
+        store — no separate data fetch for each filter. The active filter is stored
+        in component state (not URL, since the inbox is typically a dropdown panel,
+        not a page).
+      </p>
+      <p>
+        Mark as read: clicking a notification item marks it read and navigates to its
+        action URL. Mark-all-read: sends a PATCH request to the server (batch update)
+        and optimistically updates all notifications in the store to read: true.
+        The server confirms; on error, roll back the optimistic update and show an
+        error toast.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Mark-as-read via viewport observation (notifications are considered read
+        when they scroll into view) is a tempting pattern but requires careful
+        implementation. Use an IntersectionObserver on each unread notification item.
+        When an item becomes 100% visible, trigger a read event. But only if the inbox
+        panel is focused/active — auto-marking-read on mount (before the user sees the
+        panel) would incorrectly mark all notifications as read. Gate the observer
+        on panel open state.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
-        <ol className="space-y-2 list-decimal list-inside">
-          <li>Panel opens: store fetches notifications, groups them, renders virtualized list.</li>
-          <HighlightBlock as="li" tier="important">New notification arrives via WebSocket: store adds it, grouping engine re-groups, badge increments.</HighlightBlock>
-          <li>User clicks notification: mark as read, navigate to action URL, badge decrements.</li>
-          <li>User clicks &quot;Mark all read&quot;: store marks all unread as read, sends bulk API request, badge resets to 0.</li>
-        </ol>
-      </section>
+      <h2>Notification Expiry</h2>
+      <p>
+        Notifications with an expiry timestamp should be removed from the inbox after
+        their expiry time. This is implemented with a cleanup routine that runs
+        periodically (every minute, using setInterval) and removes any notifications
+        whose expiry has passed. The server also excludes expired notifications from
+        API responses, so expired items do not reappear after a page reload.
+      </p>
+      <p>
+        For time-sensitive notifications (e.g., "Flash sale ends in 2 hours"), the
+        expiry timestamp drives both the deletion and a visible countdown in the
+        notification item. Use a relative time formatter (Intl.RelativeTimeFormat) that
+        shows "2 hours" or "3 minutes" based on the distance between now and expiry.
+        Update this display periodically (every 60 seconds for items expiring in hours,
+        every 10 seconds for items expiring in minutes) using a timer or React's
+        useSyncExternalStore with a time source.
+      </p>
 
-      <section>
-        <h2>Data Flow / Execution Flow</h2>
-        <HighlightBlock as="p" tier="important">
-          Data flow: WebSocket receive → store add → group → render → badge update.
-          Read flow: user click → optimistic mark read → store update → API send →
-          badge decrement → server confirmation.
-        </HighlightBlock>
+      <h2>Accessibility</h2>
+      <p>
+        The bell icon button opens the inbox panel. It has aria-label="Notifications"
+        and aria-expanded="true/false" based on panel visibility. The badge count is
+        announced via aria-label="Notifications, 5 unread" on the button.
+      </p>
+      <p>
+        The inbox panel is a dialog (role="dialog") or a listbox (role="listbox")
+        depending on whether it is modal. As a non-modal dropdown panel, it should
+        not have role="dialog" — it does not trap focus. It should have role="region"
+        with aria-label="Notification inbox."
+      </p>
+      <p>
+        Each notification item is a button or anchor element. Focus management: when
+        the inbox panel opens, move focus to the first notification or to a "Mark all
+        as read" button at the top. When the panel closes, return focus to the bell
+        icon button. The Escape key closes the panel and returns focus.
+      </p>
+      <p>
+        Toast notifications need a live region. A visually hidden div with
+        aria-live="polite" and aria-atomic="true" announces each new toast to screen
+        readers. Update its text with the notification's message when a new toast
+        appears. Screen readers announce the message without the user needing to
+        navigate to the toast.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling</h3>
-        <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important"><strong>Duplicate notifications:</strong> Store checks for existing ID before adding. If duplicate, increments the group count instead of creating a new entry.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Multi-device sync:</strong> When user marks a notification as read on another device, the server broadcasts a <code>notification:read</code> event. The store updates the local read status accordingly.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Reconciliation on reconnect:</strong> After WebSocket reconnect, fetch unread count from server. If local count differs, sync to server&apos;s authoritative count.</HighlightBlock>
-        </ul>
-      </section>
+      <h2>Interview Q&A</h2>
 
-      <section>
-        <h2>Implementation</h2>
-        <HighlightBlock as="p" tier="important">
-          The full production implementation is available in the <strong>Example tab</strong>.
-          Below is a high-level overview of each module.
-        </HighlightBlock>
+      <h3>Q: How does the notification store handle the initial fetch plus real-time events race condition?</h3>
+      <p>
+        The race: the client connects to the WebSocket before the initial REST fetch
+        completes. A notification pushed via WebSocket during the fetch may also appear
+        in the fetch response, creating a duplicate. The fix: the WebSocket handler
+        buffers incoming events until the initial fetch completes (store them in a
+        pending array). Once the fetch completes and the store is initialized, replay
+        the buffered events against the store, deduplicating by ID. Alternatively,
+        if the WebSocket connection always starts after the initial fetch, the race
+        does not occur — but this adds latency to the real-time connection. The buffer
+        approach is more resilient and is the production pattern used by Intercom and
+        similar products.
+      </p>
 
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <HighlightBlock as="p" tier="crucial">
-            Complete implementation includes: normalized notification store, grouping
-            engine, WebSocket manager with reconnect, badge counter with document title
-            prefix, virtualized notification list, filter controls, mark-all-read, and
-            full ARIA compliance.
-          </HighlightBlock>
-        </div>
+      <h3>Q: How do you limit notification spam when a user receives 100 notifications in 30 seconds?</h3>
+      <p>
+        Rate-limit toasts at the client layer: the toast queue has a maximum display
+        rate (e.g., max 3 toasts per 5 seconds). When the rate is exceeded, buffer
+        additional toasts and release them after the rate window passes. If more than
+        10 toasts are queued, collapse them into a single "You have 12 new notifications"
+        toast rather than showing all individually. The inbox still receives all
+        notifications in the store. This toast throttling prevents the UI from becoming
+        a wall of pop-ups during a high-activity period.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Modules Overview</h3>
-        <HighlightBlock as="p" tier="important">
-          The store uses a normalized Map for O(1) notification lookup. The grouping
-          engine clusters by groupingKey with sample text generation. WebSocket manager
-          handles real-time delivery and read sync. Badge manager tracks unread count
-          and updates document title. The UI renders a virtualized list with filter
-          controls and action links.
-        </HighlightBlock>
-      </section>
+      <h3>Q: How would you implement notification grouping at the store level?</h3>
+      <p>
+        Grouping is a derived transformation of the raw notification list. A selector
+        function takes the raw notification array and returns a grouped list: find all
+        consecutive notifications (by timestamp) with the same groupKey (type + targetId).
+        Collapse them into a GroupedNotification object that includes the count, the
+        most recent notification's content, the list of actor avatars, and a ref to
+        the constituent notification IDs. In the inbox view, grouped items render
+        with an expand button; expanding replaces the group item with the individual
+        items in the list. The grouping selector is pure and memoized (with useMemo
+        or Zustand's selector memoization) so it only recomputes when the raw list
+        changes.
+      </p>
 
-      <section>
-        <h2>Performance &amp; Scalability</h2>
+      <h3>Q: How do you persist the notification store across page reloads?</h3>
+      <p>
+        Persisting notifications to localStorage (or sessionStorage) allows the inbox
+        to appear instantly on reload without waiting for the API fetch. On store
+        initialization, read from localStorage first; then fetch from the API and merge
+        (newer API data takes precedence). On every store update, serialize the
+        notification list to localStorage. Limit the persisted list to the most recent
+        50 notifications (since localStorage has a 5–10 MB quota, and each notification
+        is small but still accumulates). Use a debounced write to localStorage
+        (100–200ms) to avoid writing on every individual notification event during
+        a burst. On logout, clear the persisted notifications to prevent data leakage
+        to the next user on the same device.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
-        <div className="my-4 overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Operation</th>
-                <th className="p-2 text-left">Time</th>
-                <th className="p-2 text-left">Space</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-theme">
-              <tr>
-                <td className="p-2">addNotification</td>
-                <td className="p-2">O(1) — Map set</td>
-                <td className="p-2">O(n) — n notifications</td>
-              </tr>
-              <tr>
-                <td className="p-2">markAsRead</td>
-                <td className="p-2">O(1) — Map update</td>
-                <td className="p-2">O(1)</td>
-              </tr>
-              <tr>
-                <td className="p-2">Grouping engine</td>
-                <td className="p-2">O(n) — single pass</td>
-                <td className="p-2">O(g) — g groups</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Regrouping on every new notification:</strong> O(n) pass. Mitigation: incremental grouping — only update the affected group, not all groups.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Virtualization for large lists:</strong> 1000+ notifications cause DOM bloat. Mitigation: virtualize with 20-item visible window plus 10-item overscan.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Incremental grouping:</strong> When a new notification arrives, check if its groupingKey already has a group. If yes, increment the count and update the sample text. If no, create a new group. O(1) instead of O(n).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Batched read receipts:</strong> Instead of sending a read receipt per notification, batch them: send one API call for all notifications marked read in the last 500ms.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Security Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation &amp; Accessibility</h3>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">Notification titles and bodies are sanitized before rendering. Action URLs
-          are validated against an allowlist to prevent open redirect attacks.</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">For
-          accessibility, new notifications are announced via <code>aria-live</code>
-          regions, and each notification item has <code>role=&quot;article&quot;</code>
-          with <code>aria-label</code> containing the notification text and read status.
-          Keyboard navigation uses ArrowUp/Down between items, Enter to open, Delete
-          to dismiss.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Store:</strong> Test add, mark read, mark all read, delete. Test unread count accuracy.</HighlightBlock>
-          <li><strong>Grouping engine:</strong> Test same-key grouping, sample text generation, count increment.</li>
-          <li><strong>Badge manager:</strong> Test increment/decrement, document title prefix, server sync on reconnect.</li>
-        </ul>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial"><strong>Real-time flow:</strong> Simulate WebSocket notification, verify it appears in list, badge increments, aria-live announces.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Mark all read:</strong> Click mark-all-read, verify all items visually marked read, badge resets, API call sent.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Interview-Focused Insights</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes</h3>
-        <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important"><strong>Polling instead of WebSocket:</strong> Polling for new notifications wastes bandwidth and introduces latency. WebSocket is the standard.</HighlightBlock>
-          <li><strong>No grouping:</strong> Showing 50 &quot;X liked your post&quot; notifications individually is overwhelming. Grouping is essential.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Badge drift:</strong> If the badge count is not synced with the server on reconnect, it becomes inaccurate. Server-authoritative count on reconnect is essential.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement notification preferences (per-type mute)?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Store user preferences as a map of notification type to enabled/disabled.
-              When a notification arrives, check preferences before adding to the store.
-              Muted notifications are still counted server-side (for email/digest) but
-              not shown in the in-app inbox.
-            </HighlightBlock>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement a digest summary (daily/weekly email)?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: A background job aggregates notifications per user per time window.
-              Groups by type, generates summary text (&quot;You have 12 new notifications:
-              5 comments, 4 likes, 3 mentions&quot;), and sends via email/push. The
-              in-app inbox is unaffected — digest is a separate delivery channel.
-            </HighlightBlock>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you handle notification expiration (auto-delete after 30 days)?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Server-side cron job deletes notifications older than 30 days. The
-              client receives a <code>notifications:expired</code> event with the IDs
-              of expired notifications. The store removes them and adjusts the unread
-              count accordingly.
-            </HighlightBlock>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement push notifications (browser native) alongside the in-app inbox?</p>
-            <p className="mt-2 text-sm">
-              A: Use the Web Push API with a Service Worker. When a notification arrives
-              via WebSocket, also send a push notification if the user has granted
-              permission. The Service Worker handles the push display even when the tab
-              is closed. Clicking the push notification opens the browser and navigates
-              to the relevant page.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN — Web Notifications API
-            </a>
-          </li>
-          <li>
-            <a href="https://www.nngroup.com/articles/notifications-inbox-best-practices/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Notification Inbox Best Practices
-            </a>
-          </li>
-          <li>
-            <a href="https://zustand-demo.pmnd.rs/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Zustand — State Management for Real-Time UIs
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/feed/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              WAI-ARIA Feed Pattern — Live Region Announcements
-            </a>
-          </li>
-        </ul>
-      </section>
+      <h3>Q: How does the badge count stay accurate when the user has multiple tabs open?</h3>
+      <p>
+        Each tab subscribes to a BroadcastChannel named "notifications." When any tab
+        marks a notification as read, it broadcasts a NOTIFICATION_READ event with
+        the notification ID. All other tabs receive this event and update their local
+        store — marking the same notification as read — which automatically decrements
+        their derived unread count (and badge). When a new notification arrives via
+        WebSocket in one tab, it broadcasts NOTIFICATION_RECEIVED so all tabs add it
+        to their stores and increment their badges. The BroadcastChannel is the
+        authoritative synchronization mechanism for cross-tab badge consistency.
+        localStorage-based solutions (watching for storage events) also work but are
+        more complex and have edge cases around event ordering.
+      </p>
     </ArticleLayout>
   );
 }

@@ -1,48 +1,28 @@
-# Training Data Quality Pipeline
+# Data Engineering for AI — Training Data Pipelines and Curation - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/data-engineering-for-ai`. The article is about Comprehensive guide to data engineering for AI covering data pipelines for training and fine-tuning, data cleaning, synthetic data generation, data labeling strategies, dataset versioning, and data quality management.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you ensure training data quality for fine-tuning?; Q2: What is synthetic data generation and when should you use it?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `hashlib`, `json`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a multi-stage data cleaning pipeline for AI training data, demonstrating text cleaning, language detection, exact deduplication via content hashing, and quality filtering with scoring. It tracks dataset statistics at each stage to measure data retention rates and output quality.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- idempotency or duplicate protection
 
-### Key Classes
+## Edge cases and failure modes
+- Duplicate submissions or replayed messages must not create duplicate side effects.
 
-- **`DataDocument`** (dataclass): Represents a single document with `id`, `content`, `source`, `quality_score`, and `is_duplicate` flag.
-- **`DataQualityPipeline`**: The core pipeline class with four processing stages and statistics tracking.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Pipeline Stages
-
-1. **Cleaning** (`clean_text`): Removes excessive whitespace, filters out documents shorter than 10 words, and strips surrounding whitespace.
-2. **Language Detection** (`detect_language`): Simple heuristic-based detection using common English word frequency. Documents with fewer than 2 common English words are filtered out.
-3. **Deduplication** (`compute_hash`): Computes SHA-256 hash of normalized (lowercased, whitespace-normalized) content. Duplicate hashes are filtered, keeping only the first occurrence.
-4. **Quality Filtering** (`score_quality`): Scores documents 0-1.0 based on length (longer = better up to 1000 words), vocabulary diversity (unique word ratio), and presence of structured elements (sentences with punctuation). Documents scoring below 0.5 are filtered out.
-
-### Execution Flow
-
-1. **`main()`** creates a pipeline with 6 input documents including a short spam document, a duplicate, and well-formed documents from different sources.
-2. `process()` runs documents through all four stages sequentially.
-3. Statistics are tracked at each stage: input count, cleaned count, deduped count, filtered count, and final output count.
-4. `get_report()` produces a summary with retention rate and average quality score of output documents.
-
-### Important Variables
-
-- `self.stats`: Dictionary tracking document counts at each pipeline stage.
-- `quality_score >= 0.5`: Minimum quality threshold for inclusion in training data.
-- `sha256` hash: Deterministic content fingerprint for exact deduplication.
-
-## Key Takeaways
-
-- Data quality directly determines model quality -- garbage in, garbage out is the fundamental principle of ML.
-- Deduplication is essential: training on duplicate content biases the model toward reproducing duplicated patterns.
-- Multi-stage pipelines allow fine-grained control over data quality and enable measuring loss at each stage.
-- Near-duplicate detection (e.g., MinHash + LSH) is needed in production alongside exact deduplication for documents with minor variations.
-- Quality scoring heuristics (length, vocabulary diversity, structure) are a practical starting point but production systems often use classifier-based filtering.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

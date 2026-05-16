@@ -1,48 +1,53 @@
-## What this demonstrates
+# Event-Driven Architecture - example-1 Explanation
 
-**Event-driven architecture (EDA)** means components communicate by emitting and reacting to **events** (facts that happened), rather than tightly coupled request/response chains.
+## Article context
+This example supports the article `frontend/scalability-architecture-patterns/event-driven-architecture`. The article is about In-depth guide to Event-Driven Architecture in frontend systems covering event sourcing, CQRS, event buses, DOM event system, and building reactive, loosely-coupled web applications at scale.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Event Sourcing vs Event Notification vs Event-Carried State Transfer; Trade-offs and Comparisons; Best Practices; Common Pitfalls; Real-World Use Cases; Security Considerations; Event Injection Attacks.
 
-In frontend systems design, EDA commonly appears as:
-- **Server → client** event streams (SSE/WebSocket) for realtime UI
-- **Client-side event buses** for decoupling feature modules
-- **Event sourcing-ish projections** on the client (derive UI state from a stream)
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-This example focuses on a practical slice:
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-1) A Node.js service emits **domain events** and keeps a small in-memory history.
-2) The browser uses **SSE** to subscribe.
-3) The UI builds a **projection**: a read model derived from events.
-4) Events are **schema-validated** at the boundary (don’t trust the wire).
+## File-by-file walkthrough
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `server/package.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
+- `server/server.js`: Implements the main logic, including PORT, HISTORY_LIMIT, history, clients, writeSse.
+- `web/app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `web/app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `web/app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `web/lib/events.ts`: Implements the main logic, including domainEventEnvelopeSchemaV1, renderEventSummary.
+- `web/lib/sse.ts`: Implements the main logic, including sseDataSchema, openDomainEventStream, es, json, envelope.
+- `web/next-env.d.ts`: Implements the executable logic or UI behavior for the example.
+- `web/package.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
+- `web/postcss.config.mjs`: Provides supporting example content: const config = { plugins: { "@tailwindcss/postcss": {} } }; export default config;.
+- `web/tsconfig.json`: Provides structured configuration, sample data, schema, or expected output used by the example.
 
-## Key design points
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-### 1) Envelope + schema validation
-Events are wrapped in an envelope (`id`, `ts`, `type`, `v`, `data`). This gives:
-- **Idempotency hooks** (`id`)
-- **Ordering & debugging** (`ts`)
-- **Routing** (`type`)
-- **Evolution** (`v` + schema versioning)
+## Important implementation behavior
+- cache freshness, staleness, or invalidation
+- pagination or cursor handling
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
 
-The client validates the envelope with `zod` before applying it to state.
+## Edge cases and failure modes
+- Cached data can become stale and needs invalidation or freshness checks.
+- Large result sets need stable pagination and empty-page behavior.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-### 2) Projection instead of “push state”
-The server does not send “the full UI state”. It sends facts, and the client updates:
-- counters
-- last event
-- a small activity log
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-This models how large systems build **read models** for different consumers.
-
-### 3) Reconnect + replay window
-SSE supports automatic reconnect. The server additionally keeps a short history and can replay events after a reconnect using `Last-Event-ID`.
-
-In production, you’d likely:
-- persist to a log (Kafka / Kinesis / DB outbox)
-- use **consumer offsets**
-- implement **backpressure** and bounded history per client
-
-## Trade-offs
-- SSE is simpler than WebSockets for many “broadcast” cases, but it’s one-way.
-- Client projections are fast and flexible, but require careful idempotency and versioning discipline.
-- In-memory event history is not durable; it’s just a teaching scaffold.
-
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -1,83 +1,32 @@
-# Example 1: Prompt Template Engine with Version Tracking
+# Prompt Engineering & Prompt Design Patterns - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/prompting`. The article is about Comprehensive guide to prompt engineering covering system prompts, few-shot prompting, chain-of-thought reasoning, structured output generation, prompt templating, versioning, and production prompt management.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Advanced Prompting Techniques; Self-Consistency Sampling; Tree-of-Thought (ToT) Reasoning.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None beyond the Python standard library. This example uses only built-in modules (`dataclasses`, `typing`, `datetime`, `hashlib`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
----
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-## What This Demonstrates
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-This example implements a **production-grade prompt template registry** that supports versioning, parameterized rendering, and A/B testing between prompt variants. It shows how to treat prompts as first-class artifacts — with fingerprints, version history, and active-version management — rather than hardcoded strings scattered through a codebase.
+## Important implementation behavior
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- empty, missing, or null-state handling
 
----
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-## Code Walkthrough
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Key Classes
-
-#### `PromptTemplate` (dataclass)
-
-Represents a single versioned prompt template.
-
-| Field | Type | Purpose |
-|---|---|---|
-| `name` | `str` | Logical identifier for the prompt (e.g. `"code_review"`) |
-| `version` | `str` | Semantic version string (e.g. `"1.0"`, `"2.0"`) |
-| `template` | `str` | The actual prompt text with `{placeholder}` parameters |
-| `description` | `str` | Human-readable description of this version |
-| `parameters` | `list[str]` | List of required parameter names that must be supplied at render time |
-| `created_at` | `str` | ISO-format timestamp, auto-generated on instantiation |
-| `metadata` | `Dict[str, Any]` | Arbitrary key-value data for extensibility |
-
-**Important methods:**
-
-- **`render(**kwargs) -> str`** — Uses Python's `str.format()` to substitute keyword arguments into the template. Validates that all declared `parameters` are present; raises `ValueError` listing any missing ones.
-- **`fingerprint` (property)** — Computes a 12-character SHA-256 hash of `name:version:template`. This provides a content-addressable identifier useful for detecting when a template has changed (e.g. for cache invalidation or audit logs).
-
-#### `PromptRegistry`
-
-Central registry that manages the lifecycle of prompt templates.
-
-| Internal Attribute | Type | Purpose |
-|---|---|---|
-| `_templates` | `Dict[str, Dict[str, PromptTemplate]]` | Nested dict: `template_name -> version -> PromptTemplate`. Allows multiple versions of the same named template to coexist. |
-| `_active` | `Dict[str, str]` | Maps each template name to its currently active version string. |
-| `_ab_tests` | `Dict[str, Dict[str, float]]` | Stores A/B test configurations: template name -> `{version: normalized_weight}`. |
-
-**Important methods:**
-
-- **`register(template, activate=True)`** — Adds a template version to the registry. If `activate` is `True` (default), this version becomes the active one for its name.
-- **`get(name, version=None)`** — Retrieves a specific version, or the active version if `version` is `None`. Raises `KeyError` if the template or version does not exist.
-- **`set_ab_test(name, weights)`** — Configures A/B testing by normalizing the provided weights so they sum to 1.0. (The actual sampling logic is not implemented in this demo, but the data structure is prepared.)
-- **`render_active(name, **kwargs) -> tuple[str, str]`** — Convenience method that renders the active version and returns both the rendered prompt string and the version used.
-
-### Execution Flow (`main()`)
-
-1. **Create registry** — `registry = PromptRegistry()`
-2. **Register v1.0** — A basic code review prompt with parameters `language` and `code_diff`. `activate=True` by default, so v1.0 becomes active.
-3. **Register v2.0** — An enhanced version with a structured review framework (Security, Performance, Quality), an additional `related_context` parameter, and a specified JSON output schema. Because `activate=True` (default), v2.0 **replaces** v1.0 as the active version.
-4. **Render active version** — Calls `registry.render_active("code_review", ...)` with three parameters. Since v2.0 is active, it renders the enhanced template.
-5. **Print results** — Displays the rendered prompt, the active version number, and the total number of registered versions.
-
-### Key Variables in `main()`
-
-| Variable | Value |
-|---|---|
-| `language` | `"Python"` |
-| `code_diff` | A diff showing a vulnerable change from ORM query to raw SQL (SQL injection) |
-| `related_context` | `"Project uses SQLAlchemy. All queries should use the ORM, not raw SQL."` |
-
----
-
-## Key Takeaways
-
-- **Prompts are versioned artifacts**, not inline strings. Each version has a fingerprint, timestamp, and explicit parameter contract, enabling audit trails and safe rollbacks.
-- **The registry pattern** decouples prompt definition from prompt usage. Callers reference prompts by name and let the registry resolve which version is active, making it trivial to swap prompts without changing calling code.
-- **A/B testing infrastructure** is built in via weight-normalized version distributions, allowing data-driven prompt iteration in production systems.
-- **Parameter validation at render time** prevents silent failures — missing parameters raise an explicit error listing exactly what is absent.
-- **v2.0 demonstrates prompt engineering evolution**: it adds a structured review framework (Security → Performance → Quality), extra context injection, and a strict JSON output schema, illustrating how prompts mature over iterations.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

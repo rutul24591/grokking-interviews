@@ -1,50 +1,30 @@
-# LLM-as-a-Judge Evaluation System
+# AI Testing and Evaluation — Quality Assurance for LLM Systems - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/ai-testing-evaluation`. The article is about Comprehensive guide to AI testing and evaluation covering output testing patterns, evaluation frameworks (RAGAS, DeepEval), golden datasets, regression testing for AI, A/B testing models, and quality gates.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you test an AI system when the output is non-deterministic?; Q2: What is RAGAS and how does it evaluate RAG systems?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `List`, `Dict`, `Any`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements the LLM-as-a-judge pattern, where a separate evaluator LLM scores the primary model's outputs across multiple quality dimensions (correctness, completeness, clarity, helpfulness). It also demonstrates calibration against human judgments to detect and quantify evaluator bias.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`EvaluationCriteria`** (dataclass): Defines a scoring dimension with `name`, `description`, `weight`, and a `prompt_template` for the judge prompt.
-- **`JudgeResult`** (dataclass): Holds per-criteria scores, the weighted aggregate score, judge confidence, and reasoning text.
-- **`LLMJudge`**: The core judge class. Defines four criteria with weights summing to 1.0: correctness (0.35), completeness (0.25), clarity (0.20), helpfulness (0.20).
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow
-
-1. **`main()`** creates an `LLMJudge` instance and three test cases spanning factual, analytical, and comparison queries.
-2. For each test case, `evaluate()` calls `simulate_judge_score()` for all four criteria.
-3. **`simulate_judge_score()`** models how an LLM judge would score:
-   - A base score of 7.0/10 is used as a starting point.
-   - Correctness gets a bonus for answers containing specific numbers/facts.
-   - Completeness gets a bonus proportional to answer length (demonstrating a known LLM judge bias toward verbosity).
-   - Clarity gets a bonus for answers with sentence boundaries (". ").
-   - Helpfulness gets a length bonus similar to completeness.
-   - Final score is normalized to 0-1 range.
-4. The weighted score is computed as the dot product of criteria scores and their weights.
-5. **`calibrate_against_human()`** compares judge averages against human averages per criteria to quantify bias (overestimation or underestimation).
-6. The calibration report shows which criteria the judge overestimates or underestimates and by how much.
-
-### Important Variables
-
-- `CRITERIA`: Class-level list of four `EvaluationCriteria` objects with weights summing to 1.0.
-- `self.human_calibration`: Stores human scores for bias analysis.
-- `base_score = 7.0`: The simulated judge's starting point before applying bonuses.
-
-## Key Takeaways
-
-- LLM-as-a-judge is cost-effective for automated evaluation but has systematic biases (e.g., favoring longer, more detailed answers).
-- Calibration against human judgments is essential to understand and correct for evaluator bias before trusting automated scores.
-- Weighted multi-criteria scoring provides more nuanced evaluation than a single aggregate score.
-- The correctness criterion should weigh most heavily (0.35 here) since factual accuracy is the primary quality dimension.
-- Production systems should use actual LLM API calls rather than simulated scoring, and maintain ongoing human-judge calibration datasets.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

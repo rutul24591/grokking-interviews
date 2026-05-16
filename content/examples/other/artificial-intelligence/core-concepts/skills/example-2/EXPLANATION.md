@@ -1,50 +1,28 @@
-# Example 2: Context-Aware Dynamic Skill Registration
+# Skills — LLM Capability Discovery and Composition - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/skills`. The article is about Comprehensive guide to skill systems for LLM agents covering skill registration, capability discovery, composition, routing, and skill-based agent architecture.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What is the difference between a skill and a tool in an AI agent system, and when should you use each?; Q2: How do you design a skill system that scales to hundreds of capabilities?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** `pydantic` (imported but not actively used in this simplified version). Install with `pip install pydantic`. No other external dependencies required.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example demonstrates how an AI agent system **dynamically registers and unregisters skills at runtime** based on the detected project context. When a user opens a Python project, Python-specific skills (pytest, mypy, black) are loaded; when they switch to a Node.js project, those are replaced with Node.js skills (Jest, Prettier, TSC). This pattern keeps the skill catalog small, relevant, and fast to search, avoiding the overhead of loading thousands of irrelevant skills.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`SkillRegistry`**: A simplified registry that stores skills as dictionaries with description, category, and callable function. Key methods:
-  - `register()` — adds a skill and logs the registration.
-  - `unregister()` — removes a skill and logs the removal.
-  - `get_catalog()` — returns all currently registered skills as a list of dictionaries.
-- **`ProjectContextDetector`**: A static utility class that determines project type by inspecting configuration files present in the project root. It maps file signatures to project types:
-  - `pyproject.toml` or `requirements.txt` → Python
-  - `package.json` → Node.js
-  - `Cargo.toml` → Rust
-  - `go.mod` → Go
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow (Step-by-Step)
-
-1. **Registry initialization**: A fresh `SkillRegistry` is created.
-2. **Register core skills**: Three filesystem skills (`read_file`, `write_file`, `search_files`) are registered — these are always available regardless of project type.
-3. **Print initial state**: Shows 3 core skills registered.
-4. **Open first project (web-app)**: The detector finds `package.json` and classifies it as `nodejs`. Four Node.js skills (`run_jest`, `format_prettier`, `check_tsc`, `build_npm`) are registered. Total skills: 7.
-5. **Open second project (ml-pipeline)**: The detector finds `pyproject.toml` and classifies it as `python`. Four Python skills (`run_pytest`, `format_black`, `check_mypy`, `build_wheel`) are registered. Total skills: 11.
-6. **Print registration log**: Shows the chronological history of all skill registrations, demonstrating the audit trail of dynamic skill lifecycle management.
-
-### Important Variables
-
-- `self._skills`: Dictionary mapping skill name to its registration data (description, category, function).
-- `self._registration_log`: List of strings recording every register/unregister event for observability and debugging.
-- `skill_configs` in `get_skills_for_project_type()`: A mapping from project type to list of skill configurations, defining which skills belong to which ecosystem.
-
-## Key Takeaways
-
-- **Context-driven loading**: Skills are loaded based on detected project context rather than all-at-once, reducing the catalog size and improving LLM decision-making by removing irrelevant options.
-- **Core vs. contextual skills**: Core skills (filesystem operations) are always registered, while domain-specific skills are loaded dynamically — this separation is critical for building efficient agent systems.
-- **Skill lifecycle management**: The registry supports both `register()` and `unregister()`, enabling skills to be added and removed as the user's context changes (e.g., switching between projects).
-- **Project type detection**: Simple file-signature detection (checking for `package.json`, `pyproject.toml`, etc.) is a lightweight and effective way to determine project context without heavy analysis.
-- **Registration audit trail**: The `_registration_log` provides visibility into when and why skills were registered, which is valuable for debugging agent behavior and understanding skill availability over time.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -1,49 +1,32 @@
-# Embedding-Based Document Clustering
+# Embeddings — Semantic Vector Representations - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/embeddings`. The article is about Comprehensive guide to embeddings covering embedding properties, dimensionality trade-offs, semantic similarity, clustering, classification, embedding model selection, and multimodal embeddings.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What makes a good embedding model and how do you evaluate one?; Q2: How do you choose the right embedding dimensionality?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`math`, `typing`, `hashlib`, `collections`, `random`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements k-means clustering on document embeddings to automatically group semantically similar documents. It evaluates different cluster counts (k=2 through k=6) to find the optimal number of clusters, then interprets the resulting cluster assignments to show how documents group by topic.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
+- observability and operational signals
 
-### Key Functions
+## Edge cases and failure modes
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`cosine_similarity(a, b)`**: Standard cosine similarity between two vectors.
-- **`generate_embedding(text, dim)`**: Simulates an 8-dimensional embedding from text using SHA-256 hashing, normalized to unit length.
-- **`kmeans_cluster(embeddings, k, max_iters)`**: Implements the k-means algorithm:
-  1. **Initialize**: Randomly selects k embeddings as initial centroids (seeded with `random.seed(42)` for reproducibility).
-  2. **Assign**: Each embedding is assigned to the cluster with the highest cosine similarity to its centroid.
-  3. **Update**: Centroids are recomputed as the mean of all assigned embeddings, then L2-normalized.
-  4. **Iterate**: Steps 2-3 repeat for `max_iters` (20) iterations.
-- **`evaluate_clusters(embeddings, assignments, centroids)`**: Computes the average intra-cluster similarity (how close each document is to its cluster's centroid). Higher values indicate tighter, more coherent clusters.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow
-
-1. **`main()`** defines 16 documents across 4 clear topic groups: Technology (4 docs), Finance (4 docs), Health (4 docs), and Sports (4 docs).
-2. Embeddings are generated for all documents (8 dimensions each).
-3. K-means is run for k=2 through k=6, with the average intra-cluster similarity score printed for each.
-4. The best k is selected as the one with the highest score.
-5. Final clustering with the optimal k shows which documents are grouped together.
-
-### Important Variables
-
-- `k` range (2-7): Number of clusters evaluated.
-- `max_iters = 20`: Maximum k-means iterations per run.
-- `random.seed(42)`: Ensures reproducible centroid initialization.
-- `dim = 8`: Simulated embedding dimension.
-
-## Key Takeaways
-
-- K-means clustering on embeddings automatically discovers topical groupings without requiring manual labels or predefined categories.
-- Evaluating multiple k values helps identify the natural number of clusters in the data -- the optimal k often matches the true number of topic groups.
-- Cosine similarity is the appropriate distance metric for normalized embeddings, as it measures directional alignment rather than absolute position.
-- In production, document clustering is used for content organization, topic discovery, anomaly detection, and dataset analysis.
-- Simple k-means has limitations: it assumes spherical clusters of equal size. Production systems may use DBSCAN, HDBSCAN, or hierarchical clustering for more complex cluster shapes.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

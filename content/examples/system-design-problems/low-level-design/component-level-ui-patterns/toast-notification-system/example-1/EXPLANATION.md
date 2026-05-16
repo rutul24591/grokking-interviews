@@ -1,164 +1,47 @@
-# Toast Notification System — Implementation Walkthrough
+# Design a Toast / Notification System - example-1 Explanation
 
-## Architecture Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/toast-notification-system`. The article is about Complete LLD solution for a production-grade toast notification system with queueing, stacking, dismissal, persistence, auto-dismiss, and accessibility.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Architecture.
 
-This implementation follows a **store + portal** pattern:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-```
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│   Toast API     │────▶│  Zustand Store   │────▶│ ToastContainer  │
-│  (singleton)    │     │  (state+timers)  │     │    (Portal)     │
-└─────────────────┘     └──────────────────┘     └────────┬────────┘
-                                                          │
-                                                    ┌─────┴─────┐
-                                                    │           │
-                                              ToastItem     ToastItem
-                                              ToastItem     ToastItem
-```
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-### Design Decisions
+## File-by-file walkthrough
+- `api/toast-api.ts`: Models an API boundary, request handling path, or backend contract.
+- `components/toast-container.tsx`: Implements the main logic, including positionClasses, ToastContainer, toasts, dismissToast, pauseTimer.
+- `components/toast-icon.tsx`: Implements the main logic, including icons, ToastIcon.
+- `components/toast-item.tsx`: Implements the main logic, including typeStyles, ariaRole, ToastItem, isPausedRef, timer.
+- `lib/toast-store.ts`: Models client or service state transitions and update behavior.
+- `lib/toast-types.ts`: Implements the main logic, including DEFAULT_DURATION, VISIBLE_LIMIT.
 
-1. **Zustand for state management** — Zero boilerplate, selector-based subscriptions prevent unnecessary re-renders. Each ToastItem only re-renders when its own toast changes.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-2. **Portal rendering** — Toasts render directly to `document.body`, escaping parent CSS constraints (overflow: hidden, z-index stacking contexts).
+## Important implementation behavior
+- request cancellation and cleanup
+- timeout and deadline handling
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
 
-3. **FIFO queue with visible limit** — Only N toasts render at once (default: 3). Excess toasts queue implicitly and become visible as earlier toasts dismiss.
+## Edge cases and failure modes
+- Requests can be cancelled, abandoned, or completed out of order.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
 
-4. **Timer management via Map** — Each toast's setTimeout ID is stored in a Map keyed by toast ID. This enables O(1) lookup for pause/resume/cleanup.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-## File Structure
-
-```
-example-1/
-├── lib/
-│   ├── toast-types.ts       # TypeScript interfaces, constants
-│   └── toast-store.ts       # Zustand store + singleton API
-├── components/
-│   ├── toast-container.tsx  # Portal wrapper, event listeners
-│   ├── toast-item.tsx       # Individual toast with animations + ARIA
-│   └── toast-icon.tsx       # Type-specific SVG icons
-├── api/
-│   └── toast-api.ts         # Public API facade
-└── EXPLANATION.md           # This file
-```
-
-## Key Implementation Details
-
-### Zustand Store (lib/toast-store.ts)
-
-The store is the single source of truth. Key aspects:
-
-- **addToast**: Creates toast with defaults, generates UUID, starts setTimeout. Returns the toast ID for manual dismissal.
-- **dismissToast**: Clears timer, removes toast from array, calls onDismiss callback.
-- **pauseTimer/resumeTimer**: Calculates remaining time dynamically. This is critical — if we stored the original duration instead of remaining time, toasts would disappear immediately after hover ends.
-- **dismissAll**: Clears all timers and empties the array. Called on unmount to prevent memory leaks.
-
-The exported `toast` singleton wraps store actions for convenient imperative API:
-```ts
-toast.success('Saved!');
-toast.error('Failed', { duration: 8000 });
-```
-
-### Toast Container (components/toast-container.tsx)
-
-The container orchestrates rendering and global event handling:
-
-1. **SSR safety**: Uses `useState(false)` + `useEffect(setMounted(true))` pattern. During SSR, returns null. On client mount, renders the portal.
-
-2. **Portal**: Renders to `document.body` via `createPortal()`. This ensures toasts are always on top regardless of where the container is placed in the component tree.
-
-3. **Global Escape key**: Listens for Escape key at window level to dismiss the most recent toast. This provides keyboard accessibility for users who can't reach the close button.
-
-4. **Pause/Resume events**: ToastItem components dispatch custom events (`toast:pause`, `toast:resume`) on hover. The container listens for these and calls the store's pauseTimer/resumeTimer.
-
-5. **Cleanup on unmount**: Calls `dismissAll()` in the effect cleanup function to prevent stale timers firing after the component unmounts.
-
-### Toast Item (components/toast-item.tsx)
-
-The most complex component. Key aspects:
-
-1. **Entrance/Exit animations**: Uses CSS transitions on `translateX` and `opacity`. These properties are GPU-composited (don't trigger layout), ensuring 60fps animations.
-
-2. **ARIA attributes**: 
-   - `role="status"` for info/success, `role="alert"` for error/warning
-   - `aria-live="polite"` for non-critical, `aria-live="assertive"` for critical
-   - `aria-atomic="true"` ensures the entire message is announced
-   - Close button has `aria-label="Dismiss notification"`
-
-3. **Keyboard support**: `tabIndex={0}` makes the toast focusable. Escape and Enter keys dismiss the toast. The close button is a native `<button>` element.
-
-4. **Hover pause**: `onMouseEnter` dispatches `toast:pause` event, `onMouseLeave` dispatches `toast:resume`. The store handles the actual timer manipulation.
-
-### Toast Icon (components/toast-icon.tsx)
-
-Simple inline SVG icons for each toast type. Uses stroke-based icons from Heroicons. Colors match the toast type:
-- Success: Green (#22c55e)
-- Error: Red (#ef4444)
-- Warning: Yellow (#f59e0b)
-- Info: Blue (#3b82f6)
-
-## Usage
-
-### 1. Add ToastContainer to your app root
-
-```tsx
-// app/layout.tsx
-import { ToastContainer } from '@/components/toast-container';
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        {children}
-        <ToastContainer />
-      </body>
-    </html>
-  );
-}
-```
-
-### 2. Trigger toasts from anywhere
-
-```tsx
-import { toast } from '@/api/toast-api';
-
-function MyComponent() {
-  const handleSubmit = async () => {
-    try {
-      await saveData();
-      toast.success('Data saved successfully');
-    } catch (err) {
-      toast.error('Failed to save data', {
-        action: { label: 'Retry', onClick: handleSubmit },
-      });
-    }
-  };
-}
-```
-
-## Edge Cases Handled
-
-| Scenario | Handling |
-|----------|----------|
-| Rapid-fire (20 toasts in 1s) | Only 3 render, rest queue without performance impact |
-| Route transition during toast | Container persists across routes, toasts remain visible |
-| Hover just before auto-dismiss | Remaining time calculated dynamically, toast doesn't disappear immediately |
-| Server-side rendering | Container returns null during SSR, mounts on client |
-| Component unmount | All timers cleared via dismissAll() in cleanup |
-| Duplicate toasts | No deduplication by default (can be added via group field) |
-| Extremely long message | Text wraps via flex layout, container has max-width |
-
-## Performance Characteristics
-
-- **addToast**: O(1) — array push
-- **dismissToast**: O(n) — array filter (n is small, typically < 10)
-- **getVisibleToasts**: O(k) — slice first k items (k = 3)
-- **Timer operations**: O(1) — Map lookup
-- **Animation**: GPU-composited (transform + opacity only)
-
-## Testing Strategy
-
-1. **Unit tests**: Test store actions (add, dismiss, pause, resume) with mocked setTimeout
-2. **Integration tests**: Render container, call toast.success(), assert DOM updates
-3. **Accessibility tests**: Run axe-core on rendered toasts, verify aria-live regions
-4. **Edge case tests**: Rapid-fire 50 toasts, verify no memory leaks, all timers cleaned up
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

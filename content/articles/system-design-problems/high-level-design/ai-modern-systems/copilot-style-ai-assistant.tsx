@@ -15,7 +15,7 @@ export const metadata: ArticleMetadata = {
   slug: "copilot-style-ai-assistant",
   wordCount: 5200,
   readingTime: 31,
-  lastUpdated: "2026-05-10",
+  lastUpdated: "2026-05-16",
   tags: ["hld", "ai", "copilot", "llm", "intent", "rbac", "tool-calling", "streaming"],
   relatedTopics: ["ai-chatbot-frontend", "rag-based-ui-system"],
 };
@@ -23,97 +23,409 @@ export const metadata: ArticleMetadata = {
 export default function CopilotStyleAiAssistantArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A copilot-style AI assistant is not a generic chatbot—it is an AI that lives inside a product and understands the product's state. When a user on a CRM platform asks "Summarize this deal," the copilot must know which deal the user is looking at, which fields are populated, what the user's role allows them to see, and whether the user can take write actions (adding a note, scheduling a follow-up). The copilot is context-aware, permission-scoped, and capable of taking actions—not just answering questions. This is the fundamental design difference: a generic chatbot has no product context; a copilot is wired into the product's data model, navigation state, and permission system.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The design challenge has three parts. Context assembly: how do you serialize the product's current state into an LLM prompt without bloating the context window or leaking data the user cannot see? Intent classification: how do you determine whether a query requires a read-only answer (safe to stream immediately) versus a write action (requires an approval gate before execution)? Execution with guardrails: how do you execute product API calls on behalf of the user while maintaining audit trails, preventing privilege escalation, and requiring explicit confirmation for destructive actions?</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The copilot is embedded as a side panel in an existing SaaS product (CRM, project management, or similar). The product has an existing RBAC system with roles and scoped action lists. The LLM is accessed via a server-side API (not from the browser). The copilot panel knows the current page route, entity type, entity ID, and the user's permission set. Tool calls (product API operations) are executed server-side. The copilot streams responses via SSE. Actions that modify or delete data require explicit user confirmation before execution.</p>
-      </section>
+      <p>
+        A copilot-style AI assistant differs from a generic chatbot in one fundamental
+        way: it understands the product's state. When a user on a CRM platform asks
+        "summarize this deal," the copilot must know which deal the user is looking at,
+        which fields are populated, what the user's role allows them to see, and whether
+        write actions (adding a note, scheduling a task) are permitted. A generic chatbot
+        has no product context — the user must describe the situation. A copilot is
+        context-aware, permission-scoped, and capable of taking actions, not just answering
+        questions. The design challenge has three parts: context assembly (serializing
+        the product state into a prompt without bloating the context window or leaking
+        unauthorized data), intent classification (distinguishing safe read queries from
+        write actions that require an approval gate), and execution with guardrails
+        (calling product APIs on behalf of the user while maintaining an audit trail
+        and preventing privilege escalation).
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Context-aware queries:</strong> The copilot understands the current page, selected entity, and visible data. Queries like "summarize this" or "what's the status?" resolve against the current product context without the user specifying what "this" refers to.</li>
-          <li><strong>Natural language and slash commands:</strong> Users can ask free-form questions or use slash commands (/summarize, /draft, /analyze) for common operations. Slash commands provide structured inputs with autocomplete.</li>
-          <li><strong>Intent classification:</strong> The backend classifies every query as read (answer-only), write (modifies data), navigate (changes the product view), or explain (describes how something works). Classification determines whether the response is streamed immediately or gated behind an approval step.</li>
-          <li><strong>Streaming answers:</strong> Read and explain queries receive a streaming response with no user confirmation step. The answer appears token-by-token in the copilot panel.</li>
-          <li><strong>Approval gate for write actions:</strong> Write queries (create record, update field, send email, assign task) show a confirmation card ("Apply: Set deal stage to Negotiation?") before executing. The user can apply, edit, or dismiss the proposed action.</li>
-          <li><strong>Audit log:</strong> Every action the copilot takes on behalf of a user is logged with the actor's userId, the AI-generated action description, and before/after state of any modified record.</li>
-          <li><strong>Proactive hints:</strong> When the product context changes (user navigates to a deal with overdue tasks), the copilot surface proactively suggests relevant actions ("3 tasks are overdue—want me to draft a follow-up?").</li>
-        </ul>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/copilot-style-ai-assistant-architecture.svg"
+        alt="Copilot architecture showing product context assembly, intent classification, permission guard layer, streaming answer path, approval gate for write actions, tool execution engine, and audit log"
+        caption="Copilot architecture: product context → intent classification → permission guard → streaming answer or approval gate → tool execution → audit log"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Time to first token:</strong> For read queries, the first streaming token must appear within 800ms of the user submitting the query.</li>
-          <li><strong>Context assembly:</strong> Serializing the product context into a prompt must complete within 50ms (sync, in-memory operation—no additional API calls during context assembly).</li>
-          <li><strong>Permission enforcement:</strong> The backend must enforce RBAC at the permission guard layer, not rely on the LLM to self-restrict. The LLM must never be able to trigger an action the user's role does not permit, regardless of prompt content.</li>
-          <li><strong>Zero privilege escalation:</strong> Prompt injection attacks (malicious content in page data that attempts to override instructions) must not allow the LLM to perform actions beyond the user's scope. All tool call parameters are validated against the user's permission set server-side before execution.</li>
-        </ul>
-      </section>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        The scope of a copilot varies enormously. Define these upfront:
+      </p>
+      <p>
+        <strong>Read-only or capable of actions?</strong> A read-only copilot (answers
+        questions, summarizes, explains) is significantly simpler than an action-capable
+        copilot (creates records, updates fields, sends messages). Action capability
+        requires an approval gate, audit logging, and a rollback mechanism — the complexity
+        doubles.
+      </p>
+      <p>
+        <strong>How much product context?</strong> A copilot that knows only the current
+        page entity (one deal, one ticket) assembles a small, focused prompt. A copilot
+        with awareness of the user's entire workspace, recent activity, and cross-entity
+        relationships can answer more complex questions but requires careful context
+        selection to avoid overwhelming the LLM's context window.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Permission enforcement must happen server-side, not in the LLM. The LLM cannot
+        be trusted to self-restrict based on role information in its context — a
+        well-crafted prompt can instruct the LLM to ignore permissions. Every tool the
+        copilot can call must be authorized against the user's RBAC roles before execution,
+        regardless of what the LLM requested. The permission guard is a server-side check
+        between the LLM's tool call request and the actual API execution, not a line in
+        the system prompt.
+      </HighlightBlock>
 
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The copilot has three logical layers. The product UI context layer (client-side): the copilot panel subscribes to the product's frontend state and maintains a live snapshot of the current page context—route, entity type, entity ID, visible data, user permissions, and recent activity. This context is sent with every query. The copilot panel UI layer (client-side): a side panel that renders the slash command palette, the natural language input, streaming answers, suggested action cards with apply/dismiss buttons, and proactive hints triggered by context changes. The backend intelligence layer (server-side): receives the user's query and product context, assembles a structured prompt, classifies the user's intent, checks permissions, routes the query to the LLM for streaming or to a tool call pipeline for action execution, and writes the audit log.</HighlightBlock>
-      </section>
+      <h2>Product Context Assembly</h2>
+      <p>
+        When the user opens the copilot panel or submits a query, the product context
+        is assembled into a structured block included in the LLM prompt. Context assembly
+        must be synchronous and fast (under 50ms) — it runs in-process from data already
+        in the frontend state, not from additional API calls.
+      </p>
+      <p>
+        Context is hierarchical. Primary context (always included): the current page
+        entity — the deal, ticket, or project the user is viewing — with its key fields
+        (name, status, owner, key dates, recent activity). This is typically 200–400 tokens.
+        Secondary context (included if relevant to query type): related entities (linked
+        contacts, parent project, associated tasks), user preferences (preferred
+        communication style, timezone), and the user's permission set (which actions
+        they can take). Tertiary context (included on demand or for complex queries):
+        historical context (conversation history with this contact, previous deal notes),
+        aggregated metrics, or cross-entity relationships.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Context is not the full database record. The raw record may contain fields the
+        user cannot see (based on their RBAC roles), sensitive fields that should not
+        enter the LLM's context (payment card numbers, SSNs), and fields that are
+        irrelevant noise (internal metadata, audit trail fields). The context assembler
+        applies a field allowlist specific to the entity type and role, selecting only
+        the fields relevant to the user's permission level. Unauthorized fields never
+        enter the prompt — even if the LLM could hypothetically extract them from the
+        context, they're simply not there.
+      </HighlightBlock>
+      <p>
+        Context serialization format: JSON-formatted structured context (not prose)
+        is easier for the LLM to parse and less prone to misinterpretation. The context
+        block uses clearly labeled sections: CURRENT_ENTITY, USER_CONTEXT, RECENT_ACTIVITY,
+        AVAILABLE_ACTIONS (which tools the user's role permits). The AVAILABLE_ACTIONS
+        section is derived from the permission guard — only listing actions the user
+        can actually take prevents the LLM from proposing unauthorized actions and then
+        being surprised when the permission guard rejects them.
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/copilot-style-ai-assistant-architecture.svg"
-          alt="Copilot architecture showing three columns: Product UI Context (current page state, selected/visible data, user permissions, recent activity, product schema, user profile), Copilot Panel UI (slash command palette, natural language input, streaming answer, suggested actions, approval gate, proactive hints), and Backend Intelligence (context assembler, intent classifier, permission guard, LLM+tool router, action executor, audit log). Context arrow flows left-to-right; query arrow goes to backend, stream arrow returns."
-          caption="Copilot architecture: product UI context feeds the copilot panel, which sends queries to backend intelligence (context assembler → intent classifier → permission guard → LLM router → action executor → audit log)"
-        />
-      </section>
+      <h2>Intent Classification</h2>
+      <p>
+        Every query is classified before the main LLM response is generated. Intent
+        classification determines whether the response is streamed immediately (read
+        queries) or gated behind an approval step (write queries).
+      </p>
+      <p>
+        Intent categories: Read (answer-only — summarize this, explain the status,
+        what are the next steps?), Write (modifies product data — update the deal stage,
+        add a note, assign a task, schedule a follow-up), Navigate (changes the product
+        view — go to the associated contact, open the deal timeline), and Explain
+        (product feature questions — how do I configure notifications?). Write intents
+        require the approval gate. Navigate intents trigger product navigation directly
+        (no LLM generation needed). Explain intents may be answered from a product
+        documentation RAG index rather than the LLM's parametric knowledge.
+      </p>
+      <p>
+        Classification is performed by a fast, cheap model (GPT-3.5-turbo-level) in
+        a parallel call rather than within the main LLM call. The main LLM call begins
+        immediately; the classifier result determines UI mode when it returns
+        (typically 150–300ms later). For most read queries, the classifier confirms
+        safe streaming and the generation is already halfway complete. For write queries,
+        the UI shows a loading state while the main LLM generates the proposed action —
+        then displays the approval card before executing.
+      </p>
 
-      <section>
-        <h2>Detailed Design</h2>
+      <h2>Streaming Answers for Read Queries</h2>
+      <p>
+        Read queries stream directly to the copilot panel using the same SSE+rAF batching
+        pattern as a general chatbot. The key difference: the context is product-aware,
+        so responses like "This deal has been stuck in the proposal stage for 23 days,
+        longer than your team's median of 12 days. The last activity was a call note on
+        May 5th with no follow-up scheduled" are generated from the assembled product
+        context without the user specifying any of those details.
+      </p>
+      <p>
+        Inline actions within read responses: the LLM can propose actions as clickable
+        inline elements even within a read response. "I see there's no follow-up scheduled
+        — [Schedule a follow-up task]." The bracketed element is rendered as an action
+        button that triggers the approval gate for the write action. This pattern allows
+        the LLM to suggest next steps without requiring the user to explicitly request
+        them, while still going through the approval gate before any data modification.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Context Assembly</h3>
-        <HighlightBlock as="p" tier="important">The context assembler converts the product's frontend state into a structured prompt section. The context contains: page identity (route template, entity type, entity ID), the current entity's key fields (the copilot must know the deal name, stage, owner, and amount—but not every field on the entity, to avoid bloating the context), the user's role and permission set (expressed as a list of allowed action verbs: "can: create-note, update-deal-stage, send-email; cannot: delete-deal, access-billing"), the user's recent activity (last 10 navigation events and actions, so the copilot can understand what the user was doing before asking), and the product's entity schema (the names and types of fields the product uses, so the LLM can generate field references correctly).</HighlightBlock>
-        <p>Context budget management: the context window is not infinite. The context assembler applies a token budget: entity fields get 800 tokens, permissions get 200 tokens, recent activity gets 300 tokens, product schema gets 400 tokens. If the entity has more fields than fit the budget, the assembler prioritizes fields that are currently visible on screen (fields above the fold in the product UI) over hidden fields. The user's query gets 400 tokens, and the remainder of the context window is reserved for the LLM's response.</p>
-        <HighlightBlock as="p" tier="important">Schema injection: the product schema (entity types, field names, allowed values for enum fields) is injected into the system prompt (not the user turn) to keep it separate from the user's natural language input. This prevents prompt injection attacks from using schema knowledge to escalate privileges. The schema is fetched from a static configuration file at startup and cached; it does not change per request.</HighlightBlock>
+      <h2>Approval Gate for Write Actions</h2>
+      <p>
+        When a write intent is detected, the LLM generates a structured action proposal
+        rather than a prose response. The proposal contains: the action type (update_field,
+        create_task, send_email), the target entity (dealId, contactId), the specific
+        change (field name, new value), and a human-readable description ("Set deal stage
+        from 'Proposal' to 'Negotiation'").
+      </p>
+      <p>
+        The approval card renders in the copilot panel: the proposed action description,
+        an "Apply" button, an "Edit" button (opens an editable form with the proposed
+        values pre-filled), and a "Dismiss" button. Clicking Apply triggers the actual
+        API call. Clicking Edit shows a form where the user can modify the proposed
+        values before applying. Dismiss discards the action without modification.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Destructive actions (delete record, send email to external party, publish content)
+        require additional confirmation beyond the standard approval card. The approval
+        card for a destructive action includes a bold warning ("This will permanently
+        delete the deal and cannot be undone"), requires typing the entity name to
+        confirm (not just clicking Apply), and shows the full list of dependent records
+        that will be affected. This follows the same design pattern as "dangerous zone"
+        UI in settings pages — making accidental destruction require deliberate effort.
+      </HighlightBlock>
+      <p>
+        Batch approval: when the LLM proposes multiple related actions (schedule follow-up,
+        update stage, add note), they are presented as a single batch approval card with
+        individual checkboxes. The user can approve all, approve a subset, or dismiss
+        all. This reduces the friction for multi-step actions while keeping each action
+        explicitly visible and controllable.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Intent Classification</h3>
-        <p>Intent classification happens server-side before the query reaches the LLM for answer generation. A fast, small classifier model (or a simple LLM call with a classification-only prompt) determines the query's intent category. The four categories are: Read (the user wants information from existing data—no side effects), Write (the user wants to create, update, or delete data—requires permission check and approval gate), Navigate (the user wants to change what they're looking at—the copilot triggers a product navigation event), and Explain (the user wants to understand how something works—no product data involved, safe to answer from general knowledge).</p>
-        <p>Classification latency: the classifier call adds approximately 100ms to the end-to-end latency. This is acceptable because the alternative—routing all queries through the full LLM and determining intent from the LLM's first output tokens—is slower and less reliable. A dedicated classifier is faster, cheaper, and produces structured output. The classifier also extracts the action parameters for write intents: for a query like "move this deal to Closed Won," the classifier extracts &#123;entity: deal, entityId: &lt;from context&gt;, field: stage, value: "Closed Won"&#125; as structured parameters to pass to the tool router.</p>
+      <h2>Tool Execution Engine</h2>
+      <p>
+        After the user approves an action, the tool execution engine calls the product's
+        API on behalf of the user. This is not a direct LLM tool call (where the LLM
+        generates tool call syntax) — the LLM generates the structured action proposal,
+        the user approves it, and a separate tool execution layer makes the API call
+        using the user's authenticated session and scope.
+      </p>
+      <p>
+        The tool execution layer has three responsibilities: (1) re-verify permissions
+        at execution time (the user's permissions may have changed between proposal
+        generation and approval), (2) execute the API call with retry and error handling,
+        and (3) record the action in the audit log.
+      </p>
+      <p>
+        Error handling at execution: if the API call fails (network error, concurrent
+        modification conflict, validation error), show an error card in the copilot
+        panel with the failure reason and options to retry or dismiss. Don't silently
+        absorb errors — the user must know their action didn't complete.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Permission Guard</h3>
-        <HighlightBlock as="p" tier="important">The permission guard is the most security-critical component. It validates that the classified intent and extracted action parameters are within the user's permission scope before passing anything to the LLM or tool router. For read intents: the guard checks that the fields referenced in the query are visible to the user's role (some roles cannot see financial data, contract terms, or other users' private notes). For write intents: the guard checks that the action verb and target entity are in the user's allowed action list. The check is a simple set membership test: is "update-deal-stage" in the user's allowed actions? If not, the request is rejected immediately with a "You don't have permission to perform this action" response—the LLM never sees the request.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Anti-prompt-injection: the permission guard checks action parameters structurally (is the requested action in the allowed list?) not semantically (does the LLM think this is allowed?). This means an attacker cannot use a malicious prompt in the page data to convince the LLM to bypass the guard—the guard is a deterministic code path that the LLM output cannot influence. If the LLM generates a tool call that is not in the user's allowed action list, the tool router rejects the call and returns an error to the LLM without executing it.</HighlightBlock>
+      <h2>Audit Logging</h2>
+      <p>
+        Every action the copilot takes is recorded in an immutable audit log: actorUserId,
+        sessionId, timestamp, entityType, entityId, actionType, aiGeneratedDescription
+        (what the LLM proposed), userApproval (apply/edit/dismiss), beforeState (snapshot
+        of the record before modification), afterState (snapshot after), and executionResult
+        (success/failure and error details if failed).
+      </p>
+      <p>
+        The audit log is accessible to admins in the product's activity history with
+        AI-initiated actions visually distinguished from user-initiated ones ("AI suggested,
+        user confirmed"). This distinction is important for compliance (who is responsible
+        for the action — the user who approved it, not the AI system) and for debugging
+        (tracing back an unexpected record change to the specific copilot interaction
+        that caused it).
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        The actorUserId must always be the human user, not a service account. If the copilot
+        executes API calls using its own service credentials, the audit trail shows "AI
+        System" as the actor, which is legally ambiguous in regulated industries and operationally
+        problematic (you cannot tell which user instructed the AI to take the action). Execute
+        all copilot actions using the user's own authenticated session — the AI is a
+        tool the user wields, not an autonomous actor with its own identity.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">LLM + Tool Router</h3>
-        <HighlightBlock as="p" tier="important">For read and explain intents, the LLM receives the assembled context + user query and streams the response directly back to the copilot panel via SSE. The panel renders the streaming text with a blinking cursor. For write intents (after permission check passes), the LLM is given the context, user query, and a tool definition for the classified action. The LLM generates a tool_call event (or a structured JSON block) specifying the exact action parameters. The tool router intercepts this, converts it to a human-readable confirmation card (showing the exact proposed change), and sends it to the copilot panel as a pending action. The LLM waits.</HighlightBlock>
-        <p>When the user clicks "Apply," the tool router executes the product API call with the user's auth token (not a service account). The action is executed as the user, so the product's existing permission enforcement at the API layer applies as a second layer of defense. The LLM then receives the tool result and streams its commentary ("Done—I've updated the deal stage to Closed Won."). When the user clicks "Dismiss," the tool router sends a cancellation signal to the LLM, which generates a brief acknowledgment ("Got it, no changes made.") and ends the turn.</p>
+      <h2>Proactive Suggestions</h2>
+      <p>
+        A fully reactive copilot (answers questions only when asked) is useful. A proactive
+        copilot that surfaces relevant suggestions when the user navigates to a new context
+        is significantly more valuable. When the user opens a deal with overdue tasks and
+        no scheduled follow-up, the copilot proactively shows: "3 tasks on this deal are
+        overdue. Want me to draft a follow-up email to the contact?"
+      </p>
+      <p>
+        Proactive suggestions are triggered by product navigation events. When the user
+        lands on a new entity, a lightweight background call assembles the entity context
+        and asks the LLM to identify the top 1–2 most relevant proactive suggestions given
+        the entity state and the user's role. The suggestions appear as dismissible chips
+        in the copilot panel header ("Draft a follow-up", "Summarize activity"), not as
+        full-panel content (which would compete with the user's attention on the main product).
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Proactive Hints</h3>
-        <p>Proactive hints are triggered by product context changes, not user queries. The copilot panel subscribes to the product's navigation events (using the same context subscription as the query flow). When the context changes significantly (user navigates to a new entity, a key field changes value, a time-sensitive condition is detected), the copilot evaluates a hint ruleset: a list of condition → hint mappings that are evaluated locally (no LLM call) against the new context.</p>
-        <HighlightBlock as="p" tier="important">Example hint rules: if deal.closeDate is within 7 days and deal.stage is not "Closed," suggest "This deal closes soon—want me to draft a follow-up?" If task.dueDate is in the past and task.status is "Open," suggest "This task is overdue." The hints are generated by a rule engine (not an LLM) to keep latency near zero and to avoid consuming LLM quota on every navigation event. If the user accepts a hint, it becomes a pre-filled query in the copilot panel and proceeds through the normal query flow (context → intent → permission → LLM). Hints that the user dismisses are suppressed for 24 hours for the same condition on the same entity.</HighlightBlock>
+      <h2>Interview Q&A</h2>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Audit Logging</h3>
-        <p>Every copilot action that produces a side effect (any write intent that the user confirmed) is written to the audit log before the action is executed. The audit record contains: actorId (the user's ID), actorRole, copilotVersion (the version of the copilot backend), intentClassification, actionDescription (human-readable: "Updated deal 'Acme Corp' stage from 'Proposal' to 'Closed Won'"), entityType, entityId, beforeState (snapshot of relevant fields before the change), afterState (snapshot after), timestamp, and a clientSessionId linking the audit record to the copilot session. The audit log is append-only (no updates or deletes). Write operations to the audit log are transactional with the product API call—if the product API call fails, the audit record is marked as "failed" but retained.</p>
-        <p>Audit log UI: a separate "Copilot Activity" tab in the product's admin dashboard shows the audit log filtered to the current user's or organization's copilot actions. Each record shows the human-readable action description, the actor, and the timestamp, with an "Undo" button for reversible actions (only available within a configurable window, e.g., 15 minutes, and only for actions with a stored beforeState).</p>
-      </section>
+      <h3>Q: How do you prevent the LLM from hallucinating product data that doesn't exist in the context?</h3>
+      <p>
+        The system prompt explicitly instructs the LLM that it may only reference data
+        provided in the CURRENT_ENTITY and RECENT_ACTIVITY context blocks — it must not
+        invent field values, contact names, or historical events not present in the context.
+        Post-generation validation: for factual claims in the response (specific dates,
+        numbers, names), the system checks whether those values appear in the assembled
+        context. Mismatches flag a potential hallucination and add a disclaimer to the
+        response. For high-stakes actions (the LLM proposes to update a field to a value
+        that is not the current value and not a value the user mentioned), the approval
+        card shows a warning: "The AI suggested this value but it was not in the current
+        record data — please verify before applying."
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/copilot-style-ai-assistant-workflow.svg"
-          alt="Sequence diagram showing 5 lifelines (Copilot Panel, Context Assembler, Intent Classifier, Permission Guard, LLM+Tools Router). Steps: user query + page state → context assembler builds prompt ctx → classifier labels intent read/write/nav → permission guard checks RBAC (blocked → error response; allowed → LLM router). LLM router streams tokens for read intent; sends tool_call event for write intent (approval gate). User confirms → action executor + audit log. Right panel shows intent types, latency targets (TTFT <800ms, context build <50ms, classify <100ms), and audit fields."
-          caption="Request lifecycle: context assembly (50ms) → intent classification (100ms) → permission guard → stream for reads / approval gate for writes → action executor + audit log"
-        />
-      </section>
+      <h3>Q: How do you handle copilot queries that require data not in the immediate product context (cross-entity queries)?</h3>
+      <p>
+        Cross-entity queries ("show me all deals from this contact" or "what's the team's
+        close rate this quarter?") require data that isn't in the current entity context.
+        These queries trigger a read tool call — the LLM requests specific data by type
+        and filter parameters, the backend queries the product database (applying the user's
+        RBAC filter), and the results are injected into the LLM's context before it
+        generates the response. This is similar to RAG retrieval but against the product
+        database rather than a document corpus. The tool call results are included in the
+        audit log with the query parameters and the access scope used.
+      </p>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Context freshness versus latency: the context sent with each query is assembled from the frontend state at the moment the user submits the query. This means the context is always fresh but assembling it adds a client-side serialization step. An alternative—caching the assembled context on the server and invalidating it on navigation events—reduces per-request serialization but introduces staleness risk (the cached context is stale if the entity was modified by another user between the last navigation and the copilot query). For a copilot that reads mutable CRM data, freshness is more important than the marginal latency saving: always assemble from the current frontend state.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">LLM classification versus rule-based classification: using an LLM for intent classification is flexible (it can handle nuanced queries) but slow and expensive. A rule-based classifier (pattern matching on verb keywords: "create," "update," "delete" → write; "what," "show," "summarize" → read) is fast and cheap but brittle for complex queries. The pragmatic approach: start with a rule-based classifier for common patterns and add an LLM fallback for queries the rules cannot classify confidently. Over time, logs of unclassified queries train a small fine-tuned classifier that replaces both the rules and the LLM fallback.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Single-turn versus multi-turn copilot: a single-turn copilot (each query is independent) is simpler to build but cannot handle multi-step tasks ("first draft an email, then schedule a follow-up meeting"). A multi-turn copilot (with conversation memory) can handle complex workflows but requires session management, per-session context accumulation, and more complex approval gate flows (the user approves a sequence of steps, not individual actions). The first version should be single-turn; multi-turn can be added once the single-turn flow is stable and users express demand for it.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Slash commands versus free-form NL: slash commands (/summarize, /draft /email, /analyze) provide a structured entry point that bypasses intent classification (the intent is known from the command) and reduces LLM ambiguity. Free-form NL is more flexible but harder to classify reliably. The best design offers both: slash commands for common operations with high confidence, and free-form NL with classification for everything else. Slash commands also serve as a discoverability mechanism—users who don't know what the copilot can do can browse the command palette to learn.</HighlightBlock>
-      </section>
+      <h3>Q: How would you implement slash commands alongside free-form natural language?</h3>
+      <p>
+        Slash commands (/summarize, /draft-email, /update-stage) provide structured inputs
+        with autocomplete for common operations. They appear in the copilot input field
+        when the user types "/", showing a picker with available commands based on the
+        current entity type and user permissions. Selecting a command may open a form
+        with specific fields (for /update-stage: a dropdown of valid stage values) rather
+        than free text — making the intent unambiguous without relying on NLP parsing.
+        The command is then processed through the same intent classification and approval
+        gate as a natural language equivalent. The UX benefit: slash commands surface
+        available capabilities and reduce the user's need to know what to ask.
+      </p>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A copilot-style AI assistant is distinguished from a generic chatbot by product context awareness, intent-based routing, and permission-enforced action execution. The context assembler serializes the product's current UI state (entity, fields, permissions, recent activity) into a structured prompt within 50ms. An intent classifier (fast, dedicated model) categorizes the query as read/write/navigate/explain in under 100ms, determining whether the response is streamed immediately or requires an approval gate. The permission guard (deterministic RBAC check, not LLM-based) blocks any action outside the user's scope before the LLM is called—preventing prompt injection escalation. Read intents stream tokens via SSE directly to the panel (TTFT under 800ms). Write intents generate a confirmation card; on user approval, the action executor calls the product API with the user's auth token (respecting existing API-layer permissions) and writes a transactional audit log. Proactive hints are triggered by context changes using a local rule engine (no LLM), shown in the panel sidebar, and suppressed for 24 hours on dismissal. The defining architectural principle: the LLM is an answer-generator and parameter-extractor, not a permission decision-maker. All security decisions are code-path decisions made before and after the LLM call, not inside it.</HighlightBlock>
-      </section>
+      <h2>Disambiguation and Clarifying Questions</h2>
+      <p>
+        Many copilot queries are ambiguous in ways that have significant implications
+        for the response. "Update the owner" could mean the deal owner, the account owner,
+        or the contact owner — three different fields on three different records. A copilot
+        that guesses and updates the wrong owner creates a data integrity problem that
+        requires manual correction. A copilot that asks a single focused clarifying question
+        before proceeding prevents the error with minimal friction.
+      </p>
+      <p>
+        Disambiguation strategy: when the intent classifier detects an ambiguous write
+        intent, the copilot should not generate a full action proposal. Instead, it
+        generates a clarifying question that resolves the ambiguity with the fewest
+        possible interactions. Good clarifying questions offer concrete options rather
+        than open-ended questions: "Which owner did you mean — the deal owner (currently
+        Sarah Chen) or the account owner (currently Marcus Webb)?" rather than "What did
+        you mean by owner?" Options pre-populated with the current values require minimal
+        cognitive effort from the user and prevent misunderstanding.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        One clarifying question per ambiguous intent is the design constraint. Copilots
+        that ask multiple follow-up questions before taking action feel more like a form
+        than an assistant. If the first clarifying question doesn't fully resolve the
+        ambiguity, it should narrow the possibilities enough that the copilot can make
+        a reasonable assumption for the remaining uncertainty and surface that assumption
+        explicitly in the approval card: "I've assumed you mean the deal stage, not the
+        opportunity stage — click Edit to change this if that's not right."
+      </HighlightBlock>
+      <p>
+        Proactive disambiguation in context: some ambiguities can be resolved without
+        asking the user by inspecting the product context. If the user says "email them"
+        and there is only one contact associated with the current deal, no clarification
+        is needed — the copilot infers "them" refers to the only associated contact.
+        If there are three contacts, clarification is required. Context-driven resolution
+        reduces unnecessary questions and makes the copilot feel perceptive rather than
+        mechanical. Implement this as a pre-step in the intent classification: extract
+        ambiguous references from the query, attempt to resolve them from the assembled
+        product context, and proceed directly to action generation if all references
+        resolve unambiguously.
+      </p>
+
+      <h2>Copilot Discoverability and Onboarding</h2>
+      <p>
+        The hardest product problem for copilot-style assistants is discoverability.
+        Users who don't know what the copilot can do won't try it. Users who try it
+        with an unsupported query and receive a generic "I can't do that" response
+        often don't try again. Onboarding must convey the copilot's specific capabilities
+        in the context where those capabilities are useful, not in a generic documentation
+        page the user reads once and forgets.
+      </p>
+      <p>
+        Contextual capability surfacing: when the user first opens the copilot panel on
+        a specific entity type (a deal record for the first time), show a short capability
+        card specific to that entity: "On deal records, I can summarize activity, draft
+        follow-up emails, update stage and owner, and remind you about overdue tasks.
+        Try asking me to summarize this deal." This pattern exposes capabilities exactly
+        when they are relevant, not in a generic getting-started guide. Persist a
+        first-use flag per entity type so the capability card shows once, not on every
+        visit.
+      </p>
+      <p>
+        Sample prompts: the empty state of the copilot input (before the user has typed
+        anything) shows 3–4 suggested queries specific to the current entity and user
+        role. These suggestions update based on the entity's state — a deal with overdue
+        tasks shows "What tasks are overdue on this deal?" as a suggestion; a deal with
+        no recent activity shows "Draft a re-engagement email for this deal." Sample
+        prompts are the most effective onboarding mechanism because they demonstrate
+        exact phrasing that works, reducing the user's anxiety about "saying the right
+        thing."
+      </p>
+
+      <h2>Privacy and Data Minimization</h2>
+      <p>
+        A copilot that assembles rich product context to generate helpful responses
+        is also, by definition, sending that context to an LLM API. The context may
+        contain personal data (customer names, email addresses, deal amounts, medical
+        records in healthcare contexts), confidential business information (unreleased
+        product plans, financial projections, competitive analysis), and legally sensitive
+        data (communications with external parties, contractual terms). Each LLM API
+        call is a data transfer to a third-party provider, subject to the provider's
+        data processing terms and potentially to regional data protection regulations.
+      </p>
+      <p>
+        Data minimization at context assembly: the field allowlist described in the product
+        context assembly section is the primary privacy control. But beyond field selection,
+        implement value-level minimization: replace exact values with categories where
+        the full value is unnecessary for the query. A deal amount does not need to be
+        "$4,250,000" in the context — it can be "over $4M" for most queries. An email
+        address does not need to appear in the context when the query is "summarize this
+        deal." Implement a sensitivity classifier that detects high-sensitivity field
+        types (email, phone, SSN, financial amounts above a threshold) and applies value
+        masking by default, with an explicit user action required to include the exact
+        value.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Zero-data-retention agreements with LLM providers are the gold standard for
+        copilots operating in regulated industries (healthcare, finance, legal). Without
+        a zero-retention agreement, the provider may use API inputs for model training.
+        For healthcare copilots, any PHI (Protected Health Information) in the context
+        creates HIPAA liability if the provider's data processing terms don't provide
+        the required BAA (Business Associate Agreement). Vet the provider's data processing
+        terms before building a copilot that handles regulated data, and document the
+        compliance posture. Build the context assembly to exclude regulated data categories
+        by default, with an explicit opt-in (and accompanying legal review) to include
+        them for use cases where they are necessary.
+      </HighlightBlock>
+
+      <h3>Q: How do you handle a user who asks the copilot questions outside the product domain ("write me a poem")?</h3>
+      <p>
+        Out-of-domain queries should be detected and handled gracefully — not silently
+        answered with the product context polluting the response, and not rejected with
+        a cold "I can't help with that." The intent classifier includes an "out-of-domain"
+        category that fires when the query has no clear connection to the product's entity
+        types or available actions. The copilot responds: "I'm focused on helping you
+        with your deals, contacts, and tasks in [product]. For general questions, you
+        might try a general-purpose AI assistant." This response is brief, non-preachy,
+        and redirects rather than refusing. Log out-of-domain queries (without content,
+        just the intent category and frequency) to understand whether there are unmet
+        needs that should be addressed by adding capability, not by repeating the
+        out-of-domain response.
+      </p>
+
+      <h3>Q: How would you implement response quality feedback specific to copilot actions?</h3>
+      <p>
+        Copilot feedback has a unique dimension not present in general chatbot feedback:
+        the outcome of the action. A user who approved an action and then immediately
+        reverted it (undid the change, deleted the created record, corrected the submitted
+        email) provided implicit negative feedback stronger than a thumbs down. Track
+        action reversal rate as a primary quality metric: if 20% of AI-suggested deal
+        stage updates are manually changed back within 5 minutes, the stage prediction
+        model is poorly calibrated. Explicit feedback (thumbs up/down per copilot response)
+        captures general quality; action reversal rate captures specific outcome quality
+        for write actions. Combine both signals in the quality dashboard, segmented by
+        action type and entity type, to identify which specific capabilities need improvement.
+      </p>
     </ArticleLayout>
   );
 }

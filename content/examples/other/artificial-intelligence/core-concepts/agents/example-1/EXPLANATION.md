@@ -1,61 +1,36 @@
-# Example 1: ReAct Agent Loop Implementation
+# AI Agents — Autonomous LLM-Powered Systems - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/agents`. The article is about Comprehensive guide to AI agents covering agent loops, ReAct paradigm, tool use and function calling, memory systems, planning strategies, and action execution for building autonomous LLM-powered systems.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What is the ReAct paradigm and why does it work better than reasoning-only or acting-only approaches?; Q2: How do you design effective tools for an LLM agent?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None beyond the Python 3 standard library. The script uses only built-in modules (`typing`, `dataclasses`, `json`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements the **ReAct (Reasoning + Acting)** agent loop — a foundational pattern in modern AI agent design where an LLM interleaves internal reasoning ("thought") with external tool calls ("action") until a goal is satisfied. It showcases the **Thought-Action-Observation cycle**, a **tool registry** for external function invocation, and **safety guards** (iteration limits, token budgets, loop detection) that prevent runaway execution in production systems.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- concurrency, conflict, or transaction behavior
+- observability and operational signals
 
-### Key Data Structures
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Concurrent updates can race and must protect shared invariants.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`Tool` (dataclass)** — Represents a callable tool with four fields: `name` (string identifier), `description` (natural-language explanation the LLM uses to understand purpose), `parameters` (JSON Schema dict for input validation), and `fn` (the actual Python callable).
-- **`AgentStep` (dataclass)** — Captures a single iteration of the agent loop, storing `iteration` number, `thought` (reasoning text), `action`/`action_input` (tool name and arguments), `observation` (tool output), and `is_done` (boolean flag).
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Core Class: `ReactAgent`
-
-| Member | Purpose |
-|---|---|
-| `max_iterations` (int) | Upper bound on the agent loop — prevents infinite execution. |
-| `max_tokens` (int) | Token budget for cost control. |
-| `tools` (Dict[str, Tool]) | Registry mapping tool names to `Tool` objects. |
-| `history` (List[AgentStep]) | Full execution trace for debugging and observability. |
-| `total_tokens_used` (int) | Running token counter. |
-
-### Execution Flow (step-by-step)
-
-1. **`main()`** creates a `ReactAgent` with `max_iterations=10` and `max_tokens=50000`.
-2. Three tools are registered via `register_tool()`:
-   - `lookup_account` — returns user account status.
-   - `check_tickets` — returns open support tickets.
-   - `process_refund` — processes a refund for a given ticket.
-3. **`agent.run(goal)`** is called with the goal `"Resolve the user's billing issue"`.
-4. **Iteration 1** — `_simulate_llm_reasoning()` returns a thought ("find account status") + action `lookup_account({"user_id": "user-123"})`. The tool executes, returning `{"user_id": "user-123", "status": "active", "has_issues": True}`. Token count is updated, and an `AgentStep` is appended to `history`.
-5. **Iteration 2** — Reasoning yields "check support tickets" → action `check_tickets({"user_id": "user-123"})` returns one open billing ticket.
-6. **Iteration 3** — Reasoning yields "process the refund" → action `process_refund({"ticket_id": "TKT-456", "amount": 29.99})` returns processed status.
-7. **Iteration 4** — `_simulate_llm_reasoning()` returns `action_name=None`, signaling task completion. The final thought ("refund has been processed") is returned as the result.
-8. **Safety checks** run at the top of each loop iteration:
-   - **Token budget**: If `total_tokens_used > max_tokens`, the loop aborts with an error.
-   - **Loop detection**: If the last 3 actions are identical, the agent is assumed stuck and execution stops.
-9. After `run()` returns, `main()` prints the final result, token usage, and a condensed execution trace via `get_trace()`.
-
-### Important Design Notes
-
-- `_simulate_llm_reasoning()` is a **stub** that returns hard-coded responses based on history length. In production, this would call an actual LLM API (e.g., OpenAI, Anthropic) with a prompt containing the goal, tool descriptions, and conversation history.
-- `_estimate_tokens()` uses a rough word-count approximation. Production systems use the actual tokenizer for the target model.
-- The `history` list provides full **observability** — every thought, action, and observation is recorded and can be exported for debugging or auditing.
-
-## Key Takeaways
-
-- The **ReAct pattern** (Thought → Action → Observation → repeat) is the core loop underlying most production AI agents, enabling them to solve multi-step tasks by chaining tool calls.
-- **Safety guards are essential** — without iteration limits, token budgets, and loop detection, an agent can enter infinite loops or incur unbounded costs.
-- The **tool registry** decouples tool definitions from execution logic, making it straightforward to add, remove, or swap tools without modifying the agent loop itself.
-- **Observability through structured history** (the `AgentStep` list) is critical for debugging agent behavior — you can replay, inspect, or export the full Thought-Action-Observation trace.
-- In production, `_simulate_llm_reasoning` would be replaced by actual LLM calls with a carefully crafted system prompt that includes tool schemas and the current goal.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -9,6 +9,7 @@
     "generate-examples-manifest:other": "node scripts/generate-examples-manifest-other.js",
     "generate-examples-manifest:requirements": "node scripts/generate-examples-manifest-requirements.js",
     "generate-examples-manifest:problems": "node scripts/generate-examples-manifest-problems.js",
+    "update-example-explanations": "node scripts/update-example-explanations.js",
     "orchestrator": "node --import tsx ./scripts/orchestrator.ts",
     "orchestrator:plan": "node --import tsx ./scripts/orchestrator.ts plan",
     "orchestrator:status": "node --import tsx ./scripts/orchestrator.ts status",

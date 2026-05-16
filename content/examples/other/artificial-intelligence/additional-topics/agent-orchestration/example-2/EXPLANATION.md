@@ -1,59 +1,30 @@
-# Router Pattern -- Classification-Based Agent Selection
+# Agent Orchestration — Multi-Agent Coordination Patterns - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/agent-orchestration`. The article is about Comprehensive guide to agent orchestration covering supervisor patterns, routing strategies, crew patterns, hierarchical planning, task decomposition, and production multi-agent architectures.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you decompose a complex goal into sub-tasks for multi-agent execution?; Q2: How do you handle partial failures in a multi-agent orchestration?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`typing`, `re`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements the router pattern for multi-agent systems, where incoming queries are classified by intent using a rule-based classifier and routed to the appropriate specialist agent. It includes confidence-based routing decisions (low-confidence queries escalate to a human agent) and tracks routing statistics for operational monitoring.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- error handling and fallback behavior
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`IntentClassifier`**: A static rule-based classifier that matches query text against predefined keyword patterns for five intent categories: billing, technical, account, feature, and general.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-- **`AgentRouter`**: The core router that maps classified intents to specialist agents. Maintains an `AGENT_MAP` linking each intent to an agent name and description, and tracks all routing decisions in a log.
-
-### Intent Classification
-
-`IntentClassifier.INTENT_PATTERNS` maps each intent to a list of keyword patterns:
-- **billing**: bill, invoice, payment, refund, charge, subscription, pricing
-- **technical**: bug, error, crash, not working, broken, issue, fix
-- **account**: password, login, account, profile, settings, security
-- **feature**: feature, request, suggestion, improvement, enhancement
-- **general**: help, info, information, how to, what is
-
-Classification works by counting pattern matches per intent, normalizing by pattern count, and selecting the highest-scoring intent. Scores below 0.15 result in "unknown" intent.
-
-### Key Methods
-
-1. **`IntentClassifier.classify(query)`**: Returns `(intent, confidence)` tuple. Confidence is scaled by a factor of 3 for readability (e.g., 3/7 matches = 0.43 * 3 = 1.0 capped).
-2. **`AgentRouter.route(query)`**: Classifies the query, checks confidence against the threshold (0.5), and routes to the appropriate agent. Low-confidence queries are escalated to `HumanAgent`.
-3. **`AgentRouter.get_stats()`**: Returns routing statistics including total queries, auto-routed count, human escalation count, and auto-routing rate.
-
-### Execution Flow
-
-1. **`main()`** creates a router with a confidence threshold of 0.5.
-2. Six test queries are routed, covering billing ("charged twice"), technical ("app crashes"), account ("reset password"), feature ("dark mode"), general ("business hours"), and an unrelated query ("cat likes keyboard" -> human escalation).
-3. Each routing decision shows the classified intent, confidence score, target agent, and reasoning.
-4. Final statistics show the overall auto-routing rate versus human escalation rate.
-
-### Important Variables
-
-- `confidence_threshold = 0.5`: Queries below this confidence are escalated to human agents.
-- `AGENT_MAP`: The routing table mapping intents to agent names and descriptions.
-- `self.router_log`: Append-only log of all routing decisions for analysis.
-
-## Key Takeaways
-
-- The router pattern is a simple but effective way to distribute queries across specialist agents without requiring a single agent to handle all query types.
-- Confidence-based routing with human escalation ensures that uncertain queries are handled safely rather than misrouted to the wrong specialist.
-- Rule-based intent classification is transparent and debuggable but requires manual maintenance of keyword patterns. Production systems often use ML-based classifiers for better accuracy.
-- Routing statistics (auto-rate, escalation rate) are key operational metrics for monitoring the effectiveness of the classification system.
-- The router pattern is foundational in production AI systems: it enables modular agent design where each specialist can be independently developed, tested, and improved.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

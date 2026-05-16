@@ -11,7 +11,8 @@ type HighlightBlockProps = {
   as?: "div" | "p" | "li" | "tr" | "td" | "th" | "blockquote";
   children: ReactNode;
   className?: string;
-  tier: HighlightTier;
+  tier?: HighlightTier;
+  type?: HighlightTier | "tip";
 };
 
 export function HighlightBlock({
@@ -19,13 +20,15 @@ export function HighlightBlock({
   children,
   className,
   tier,
+  type,
 }: HighlightBlockProps) {
   const { highlightsOn } = useHighlights();
   const Tag = as;
+  const resolvedTier = tier ?? (type === "tip" ? "important" : type) ?? "important";
 
   return (
     <Tag
-      className={classNames(className, highlightsOn && `highlight-${tier}`)}
+      className={classNames(className, highlightsOn && `highlight-${resolvedTier}`)}
     >
       {children}
     </Tag>

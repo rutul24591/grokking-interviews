@@ -1,45 +1,33 @@
-# Model Version Manager with Traffic Routing
+# AI Model Deployment — Serving Patterns and Production Operations - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/ai-model-deployment`. The article is about Comprehensive guide to AI model deployment covering model serving patterns (batch, real-time, edge), model versioning, canary deployments for AI, model rollback, blue-green for models, and production serving infrastructure.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you deploy a new model version with zero downtime?; Q2: What is continuous batching and why is it important for LLM serving?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `typing`, `datetime`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a model version management system that tracks model versions with metadata, routes traffic between active and canary versions, supports instant rollback to the previous version, and maintains a full deployment audit trail for production AI systems.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Real-time flows need reconnect, ordering, and duplicate-message handling.
 
-- **`ModelVersion`** (dataclass): Represents a deployed model version with `id`, `model_name`, `prompt_version`, `adapter_hash`, `deployed_at`, `quality_score`, `latency_ms`, and `status` (active/canary/previous/rolled_back).
-- **`ModelVersionManager`**: The core manager class. Maintains a registry of versions, tracks the active and previous version pointers, and logs all deployment events.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow
-
-1. **`main()`** creates a `ModelVersionManager` and registers three model versions (v1: GPT-4, v2: Claude 3.5, v3: Claude 3.5 with updated prompts).
-2. v1 is set as the initial active version.
-3. **`deploy_canary("v2", 5.0)`**: Deploys v2 as a canary receiving 5% of traffic. Returns the traffic split configuration.
-4. **`promote_canary("v2")`**: Promotes v2 to active. The previous active version (v1) is marked as "previous" and stored for potential rollback.
-5. **`deploy_canary("v3", 5.0)`**: Deploys v3 as a new canary alongside the now-active v2.
-6. **`rollback()`**: Reverts to the previous version. Swaps the active and previous pointers and updates statuses accordingly.
-7. **`get_deployment_history()`**: Returns the full chronological log of all deployment events (register, canary_deploy, promote_canary, rollback).
-
-### Important Variables
-
-- `self.active_version`: Points to the version currently receiving production traffic.
-- `self.previous_version`: Points to the version that was active before the last promotion (enables instant rollback).
-- `self.deployment_log`: Append-only log of all deployment events for audit trail.
-- `traffic_pct`: Percentage of production traffic routed to the canary version.
-
-## Key Takeaways
-
-- Canary deployments allow gradual rollout with minimal blast radius -- if a new version has issues, only 5% of traffic is affected.
-- Instant rollback requires maintaining a pointer to the previous active version, enabling recovery in seconds rather than redeploying.
-- The adapter hash and prompt version fields track the full configuration needed to reproduce any deployed version.
-- An append-only deployment log provides an audit trail for compliance and debugging production incidents.
-- Production systems typically automate canary promotion based on quality metrics (e.g., if canary quality exceeds active for N consecutive evaluations).
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -1,13 +1,36 @@
-# Data Table — Full Implementation (Model + State)
+# Design a Data Table - example-1 Explanation
 
-Example 1 is a production-style **data table subsystem** focused on interview-grade concerns:
+## Article context
+This example supports the article `low-level-design/data-heavy-ui-components/data-table`. The article is about LLD for a production-grade Data Table: sorting, filtering, pagination, column resizing, virtualization, sticky headers, and accessible keyboard navigation in React/Next.js.. The most relevant article sections for this example are: 🎯 Problem Context and Scope Definition; Problem Statement; User Context; Assumptions; Non-Goals; Functional Requirements; Core (Must-have); Secondary (Nice-to-have); Out of Scope; Non-Functional Requirements.
 
-- Sorting (multi-column) and stable tie-breaking
-- Filtering (column + global search) with debounced application
-- Pagination (offset and cursor support; UI model for both)
-- Column resizing and persistence
-- Virtualization/windowing hooks (for 10k–1M rows) without coupling to a renderer
-- Selection model (single/multi, shift-range) and “select all” semantics
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-This example is intentionally built as **pure state + algorithms** so it can be reused in React, React Native, or server-side rendering.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `column-state.ts`: Models client or service state transitions and update behavior.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `selection.ts`: Implements the main logic, including toggle, next, selectRange, anchor, a.
+- `table-model.ts`: Defines the domain entities and typed structures used across the example.
+- `virtualization.ts`: Implements the main logic, including computeWindow, first, visible, start, end.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- pagination or cursor handling
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

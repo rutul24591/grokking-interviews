@@ -1,78 +1,45 @@
-# Image Gallery Lightbox — Example 2: Edge Cases & Advanced Scenarios
+# Design an Image Gallery / Lightbox - example-2 Explanation
 
-## Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/image-gallery-lightbox`. The article is about Complete LLD solution for a production-grade image gallery with lightbox, zoom, swipe, lazy loading, thumbnail strip, keyboard navigation, and accessibility.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; Component Tree; State Management.
 
-These examples address two complex challenges in image gallery implementations: graceful image load failure handling and touch gesture disambiguation in lightbox mode.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
----
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## 1. Image Load Fallback (`image-load-fallback.ts`)
+## File-by-file walkthrough
+- `gesture-conflict-resolution.ts`: Implements the main logic, including getTouchDistance, dx, dy, useLightboxGestureures, touchStateRef.
+- `image-fallback-chain.ts`: Implements the main logic, including useImageFallback, img.
+- `image-load-fallback.ts`: Implements the main logic, including useImageLoad, retryTimerRef, imageRef, retry, nextAttempt.
+- `touch-gesture-conflicts.ts`: Implements the main logic, including getDistance, dx, dy, getMidpoint, getMovementDirection.
 
-### The Problem
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-Images can fail to load for many reasons: network errors, 404s, CDN replication delays, corrupted data, or malformed URLs. Showing a broken image icon is poor UX.
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- timeout and deadline handling
+- cache freshness, staleness, or invalidation
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
 
-### The Solution: State Machine with Auto-Retry
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Cached data can become stale and needs invalidation or freshness checks.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
 
-```
-loading → loaded (success)
-loading → error → retrying → loaded (retry succeeded)
-                    → error → retrying → ... → fallback (max retries)
-fallback → retrying (manual retry)
-```
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-**Key features:**
-
-**Fallback URL generation:** A callback generates alternate URLs for retries — e.g., switching from `/high-res/image.jpg` to `/low-res-1/image.jpg`. This is useful when the high-res version hasn't replicated to all CDN edges yet.
-
-**Exponential delay:** Each retry waits longer (1s, 2s, 4s...), giving the CDN time to replicate.
-
-**Placeholder → Image → Fallback layers:** Three rendering layers ensure there's always something visible:
-1. Placeholder (gray skeleton) while loading
-2. Actual image when loaded
-3. Fallback (icon + message) after all retries fail
-
-### Interview Talking Points
-
-- **Why not just use `<img onerror>`?** The `onerror` event alone doesn't handle retries, URL switching, or loading states. A hook encapsulates the full lifecycle.
-- **CDN replication delay:** When images are uploaded, they propagate to edge servers over 1-30 seconds. A retry with 1-2 second delay often succeeds on the next attempt.
-- **Cleanup on unmount:** Pending retry timers are cleared to prevent state updates on unmounted components.
-- **Src change detection:** When the `src` prop changes (e.g., navigating to next image), state resets automatically.
-
----
-
-## 2. Touch Gesture Conflicts (`touch-gesture-conflicts.ts`)
-
-### The Problem
-
-A lightbox has multiple competing touch gestures on the same surface:
-- Single-finger swipe → next/prev image
-- Pinch → zoom in/out
-- Two-finger pan → pan around zoomed image
-- Tap → toggle chrome
-- Double-tap → zoom to fit
-
-These conflict because they share the same touch surface.
-
-### The Solution: Gesture State Machine with Lock-In
-
-**Detection pipeline:**
-
-1. **onTouchStart:** Record initial positions, enter "detecting" state
-2. **onTouchMove:** Analyze movement patterns:
-   - 1 pointer + movement > 50px → lock as "swipe"
-   - 2 pointers + distance changing > 10px → lock as "pinch-zoom"
-   - 2 pointers + distance stable + movement > 10px → lock as "two-finger-pan"
-3. **Once locked:** Ignore competing gestures until touch ends
-4. **onTouchEnd:** Fire callback, reset to "none"
-
-**Key insight:** The lock-in mechanism prevents a swipe from morphing into a pan mid-gesture. Once the system commits to "swipe," all subsequent movement is treated as swipe data.
-
-**Two-finger pan detection:** When two pointers are present, we track both the distance between them (for pinch) AND the midpoint movement (for pan). If distance is stable but midpoint moves, it's a pan.
-
-### Interview Talking Points
-
-- **Why `event.preventDefault()` in onTouchMove?** Prevents the browser's native scroll from interfering with our gesture handling.
-- **Double-tap detection:** Track the time between consecutive taps. If < 300ms, it's a double-tap. The first tap still fires its callback.
-- **Zoom level awareness:** When `zoomLevel > 1`, single-finger swipes should be disabled (user is panning a zoomed image, not navigating). The hook should check zoom level before firing swipe callbacks.
-- **Passive event listeners:** For performance, some browsers require `{ passive: false }` to allow `preventDefault()`. React's synthetic events handle this, but native listeners need explicit configuration.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

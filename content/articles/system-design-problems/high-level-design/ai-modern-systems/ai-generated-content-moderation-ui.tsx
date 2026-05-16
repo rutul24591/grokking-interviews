@@ -9,13 +9,13 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-ai-generated-content-moderation-ui",
   title: "Design an AI-Generated Content Moderation UI",
   description:
-    "Architecture for a content moderation system: fast classifier + LLM scorer pipeline, policy-based routing, human review queue with SLA, appeal system, feedback-driven classifier retraining, and drift detection.",
+    "Architecture for a content moderation system: fast classifier plus LLM scorer pipeline, policy-based routing, human review queue with SLA, appeal system, feedback-driven classifier retraining, and drift detection.",
   category: "high-level-design",
   subcategory: "ai-modern-systems",
   slug: "ai-generated-content-moderation-ui",
   wordCount: 5100,
-  readingTime: 31,
-  lastUpdated: "2026-05-10",
+  readingTime: 30,
+  lastUpdated: "2026-05-16",
   tags: ["hld", "content-moderation", "llm", "classifier", "trust-safety", "review-queue", "appeals"],
   relatedTopics: ["ai-model-comparison-testing-interface", "ai-prompt-management-ui"],
 };
@@ -23,92 +23,402 @@ export const metadata: ArticleMetadata = {
 export default function AiGeneratedContentModerationUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Content moderation is a high-stakes, high-throughput problem: a social platform may publish millions of pieces of content per day, each of which could potentially contain harmful material. No team of human moderators can review this volume at the required speed. AI classifiers handle the volume but are imperfect—false positives (incorrectly flagging benign content) harm users and create a hostile experience; false negatives (missing actual violations) allow harmful content to remain visible. The moderation UI is the operational interface between the AI system and human moderators: it presents the AI's decisions for human review, accepts human corrections that improve the model over time, and provides policy operators with the controls to adjust thresholds and policies without requiring code changes.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The architecture must solve three distinct problems. First, the detection pipeline: getting content from submission to a routing decision (auto-block, queue for review, or auto-pass) in real time (under 200ms for text, under 2 seconds for images) using a two-stage approach (fast binary classifier + slower LLM scorer for borderline cases). Second, the human review workflow: presenting cases to moderators efficiently, with AI score context and action buttons, tracking SLA compliance, and capturing decisions as training signals. Third, the appeal system and feedback loop: allowing users to contest decisions, routing appeals for human review, and feeding human corrections back into the classifier training pipeline.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The system moderates text content (user-generated posts and comments). The fast classifier is a fine-tuned BERT-based model (inference time under 50ms). The LLM scorer is a larger model that provides category-level confidence scores and a short justification (inference time 200–500ms). Human reviewers are trust-and-safety team members working in a web-based tool. The review queue has an SLA of 10 minutes (cases older than 10 minutes are escalated). Classifier retraining happens in batches (triggered at 500 new labeled samples). Shadow deployment validates a new classifier version against the current one before promotion.</p>
-      </section>
+      <p>
+        Content moderation is a high-stakes, high-throughput problem. A large social
+        platform publishes millions of pieces of content per day, each of which could
+        contain harmful material. No human team can review this volume at interactive
+        speed — AI classifiers handle the throughput. But classifiers are imperfect:
+        false positives (flagging benign content) harm users and create a hostile
+        experience; false negatives (missing violations) allow harmful content to remain
+        visible. The moderation UI is the operational interface between the AI system and
+        human moderators: it presents AI decisions for human review, captures corrections
+        that improve the model, gives policy operators controls to adjust thresholds without
+        code changes, and tracks SLA compliance across the review queue.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Real-time detection:</strong> Every submitted piece of content passes through the detection pipeline before being published. The pipeline applies the fast classifier and, for borderline scores, the LLM scorer, and routes to auto-block, review queue, or auto-pass based on configured thresholds.</li>
-          <li><strong>Review queue:</strong> The moderation UI shows a prioritized queue of flagged content. Cases are categorized by AI confidence (high, medium) and content category (hate speech, harassment, spam, adult content, PII). Queue filters allow moderators to focus on their specialty or the oldest cases approaching SLA.</li>
-          <li><strong>Case review panel:</strong> Each case shows the content (with highlighted offending spans if available), the AI score breakdown by category, the AI's justification, and action buttons (Remove, Edit, Approve, Escalate, Add to Training Set).</li>
-          <li><strong>SLA tracking:</strong> The queue shows the age of the oldest unreviewed case with a color-coded SLA indicator (green = within SLA, orange = approaching, red = overdue). A dashboard shows SLA compliance rate for the current shift.</li>
-          <li><strong>Appeal system:</strong> Users whose content was removed can submit an appeal with a selected reason and optional freetext. Appeals are triaged: borderline cases are re-scored by the LLM scorer; clear cases are auto-resolved; complex cases are routed to senior reviewers. The user is notified of the decision with a reason.</li>
-          <li><strong>Training feedback loop:</strong> Human review decisions (approved/removed + reason) are logged as labeled training samples. When the batch size reaches the threshold, a new classifier version is trained and shadow-deployed. If the shadow evaluation shows no regression, the new version is promoted to production.</li>
-          <li><strong>Policy controls:</strong> Policy operators can adjust threshold configurations (auto-block cutoff, review range) per content category without a code deployment. Allowlists and blocklists bypass the classifier for known-safe or known-harmful patterns. An emergency kill switch forces all content into the review queue immediately.</li>
-        </ul>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-generated-content-moderation-ui-architecture.svg"
+        alt="Content moderation architecture showing detection pipeline (fast binary classifier, LLM scorer for borderline cases, policy-based routing), human review queue UI with SLA tracking, reviewer dashboard with AI score context, appeal system, and feedback-to-training loop"
+        caption="Moderation architecture: two-stage detection (fast classifier + LLM scorer), policy routing, human review queue, appeal system, and classifier retraining feedback loop"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Detection latency:</strong> Fast classifier decision in under 50ms. LLM scorer decision in under 500ms for borderline cases. Total pipeline latency (before content is visible to other users) under 600ms for text.</li>
-          <li><strong>Throughput:</strong> The detection pipeline must handle peak load without queuing: at 10K content submissions per minute, the classifier must process 10K items/min (approximately 167/second).</li>
-          <li><strong>Review SLA:</strong> 95% of queued cases reviewed within 10 minutes.</li>
-        </ul>
-      </section>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Content moderation requirements vary significantly by platform type and content type:
+      </p>
+      <p>
+        <strong>Synchronous or asynchronous?</strong> Synchronous moderation (block content
+        before it's published) prevents harm but adds latency to every publish action.
+        Asynchronous moderation (publish immediately, review and remove if violating)
+        accepts that some violating content is briefly visible. The choice depends on
+        the harm level: child safety content demands synchronous blocking; spam and low-level
+        policy violations can be handled asynchronously.
+      </p>
+      <p>
+        <strong>What content modalities?</strong> Text-only moderation is the baseline.
+        Image and video moderation require different models (computer vision classifiers)
+        and have different latency characteristics (video transcription adds 10–30 seconds).
+        Multimodal content (text + image, where context is needed across modalities to
+        detect harm) is the hardest to classify accurately.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Define the precision/recall policy upfront. Higher recall (catch more violations)
+        means more false positives (more benign content removed or queued for review).
+        Higher precision (fewer false positives) means more false negatives (more violating
+        content slips through). This policy is a product and legal decision, not a
+        technical one — the technical system should implement whatever threshold the
+        policy specifies, with UI controls that allow policy operators to adjust thresholds
+        without engineering changes.
+      </HighlightBlock>
 
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The detection pipeline runs synchronously in the content submission path. When a user submits content, the submission API calls the fast classifier before writing the content to the database. If the fast classifier returns a confidence below the auto-block threshold and above the auto-pass threshold (the "borderline" band), the LLM scorer is called to provide a category breakdown. The policy engine applies the thresholds to produce a routing decision. Auto-blocked content is not stored in the public content table. Review-queued content is stored as "pending" (visible only to the author, not other users) and written to the moderation queue. Auto-passed content is written directly to the public content table.</HighlightBlock>
-      </section>
+      <h2>Two-Stage Detection Pipeline</h2>
+      <p>
+        Content moderation at scale requires a two-stage pipeline that balances speed
+        and accuracy. Running an LLM scorer on every submission is too slow and expensive
+        (200–500ms per item at LLM latency, $0.01–0.10 per item at LLM pricing). Running
+        only a fast binary classifier misses subtle violations that require contextual
+        understanding.
+      </p>
+      <p>
+        <strong>Stage 1: Fast binary classifier.</strong> A fine-tuned small model
+        (BERT-base or DistilBERT) or a traditional ML classifier (gradient boosting on
+        TF-IDF features) classifies each submission as clearly safe, clearly violating,
+        or borderline within 20–50ms. Clearly safe content is auto-passed. Clearly
+        violating content is auto-blocked (for synchronous moderation) or flagged and
+        hidden pending review (for asynchronous). Borderline content (within a configurable
+        confidence band around the decision boundary) proceeds to Stage 2.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        The borderline band is the key tuning parameter. A narrow band (only very-close-to-boundary
+        items go to Stage 2) means Stage 2 processes fewer items but many borderline cases
+        are decided by the less accurate Stage 1 classifier. A wide band means Stage 2
+        processes more items with higher accuracy but at higher cost and latency. For most
+        platforms, routing 10–20% of submissions to Stage 2 (those with classifier confidence
+        between 0.3 and 0.7) is a practical balance. Tune the band based on observed
+        disagreement rates between Stage 1 decisions and human reviewer decisions.
+      </HighlightBlock>
+      <p>
+        <strong>Stage 2: LLM scorer.</strong> An LLM prompt presents the content with
+        a detailed policy description and asks the LLM to: (1) classify the content
+        by violation category (hate speech, harassment, spam, misinformation, CSAM),
+        (2) assign a confidence score per category, and (3) provide a one-sentence
+        justification that the human reviewer sees in the review UI. The LLM scorer
+        runs only for borderline items, keeping the cost and latency impact bounded.
+        The output routes: high confidence violation → human review queue (with AI score
+        and justification context); high confidence safe → auto-pass; still uncertain
+        → human review queue (with uncertainty flag).
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-generated-content-moderation-ui-architecture.svg"
-          alt="Content moderation UI architecture showing detection pipeline (content input → fast classifier under 50ms binary pass/flag → LLM scorer category + confidence → policy engine rule-based thresholds → routing auto-block/queue/pass → review queue), moderation UI panels: review queue with case counts by confidence level (high 2 auto-blocked red, review 14 orange, passed 1204 green), queue filters by category and SLA tracking showing oldest unreviewed and SLA target; case review panel showing flagged content with highlighted text, AI score breakdown by category with harassment 0.87 high, action buttons remove/edit/approve plus escalate/add to training; policy config and metrics panel with threshold configuration and detection categories and moderation metrics precision 91% recall 84%."
-          caption="Detection pipeline (fast classifier <50ms → LLM scorer → policy engine → route) + review queue with SLA tracking + case review panel with AI scores and action buttons"
-        />
-      </section>
+      <h2>Policy-Based Routing</h2>
+      <p>
+        Routing decisions should be driven by configurable policy rules, not hardcoded
+        thresholds. The policy engine takes the classifier output (category, confidence)
+        and applies a rule table: given category X at confidence above threshold Y,
+        take action Z. Actions: auto-block (synchronous, before publish), shadow-block
+        (hide content without notifying user — used for spam where hiding engagement
+        reduces spammer incentives), queue-for-review (human review within SLA), auto-pass.
+      </p>
+      <p>
+        The policy table is editable by trust and safety operators through a web interface —
+        no code deployment required. Changes take effect immediately (the policy engine
+        loads the table at request time, or on a short TTL cache). Operators can adjust
+        thresholds, add new categories, or override routing for specific content types
+        (e.g., "apply stricter thresholds on content from new accounts under 7 days old").
+      </p>
+      <p>
+        Velocity signals augment classifier confidence: a user who has posted 50 pieces
+        of content in the last hour (an unusual rate) has each piece routed to the review
+        queue regardless of classifier confidence. A user with a history of appeals that
+        were sustained in their favor has their borderline content auto-passed. These
+        signals are part of the routing policy, not the classifier — they're account-level
+        context that the per-item classifier cannot see.
+      </p>
 
-      <section>
-        <h2>Detailed Design</h2>
+      <h2>Human Review Queue</h2>
+      <p>
+        The review queue is the operational dashboard for trust and safety teams. Each
+        item in the queue shows: the content (with context — the thread it appears in,
+        the user's posting history), the AI score (category, confidence, LLM justification),
+        the queue age (time since submission), and action buttons (remove, approve, escalate,
+        add to training set).
+      </p>
+      <p>
+        Queue prioritization: not all items in the queue have equal urgency. Items with
+        high classifier confidence for severe categories (CSAM, credible threats of violence)
+        are shown first regardless of queue age. Items approaching their SLA deadline
+        are surfaced prominently. A reviewer's current capacity (how many items they've
+        reviewed in the last hour) affects how many items they're shown simultaneously,
+        preventing reviewer fatigue from degrading decision quality.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        SLA tracking: each item has a target review time (the SLA). As items age past
+        their SLA, they turn amber then red in the queue UI. A real-time dashboard shows
+        the current queue length, the percentage within SLA, the average review time,
+        and reviewer capacity utilization. When the queue is at risk of SLA breach (queue
+        length is growing faster than it's being processed), an alert fires to the trust
+        and safety operations lead, who can call in additional reviewers or temporarily
+        lower auto-pass thresholds to reduce queue inflow.
+      </HighlightBlock>
+      <p>
+        Reviewer quality tracking: inter-rater agreement (when two reviewers see the same
+        item, do they agree?) is a quality signal for reviewer calibration. Items are
+        occasionally shown to two reviewers for calibration purposes — without the
+        reviewers knowing it's a calibration item. Disagreements are surfaced in team
+        calibration sessions and used to clarify ambiguous policy edge cases. Individual
+        reviewer accuracy is tracked against a gold set (items with known correct decisions)
+        to identify reviewers who may need retraining.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Detection Pipeline Design</h3>
-        <HighlightBlock as="p" tier="important">The fast classifier is a fine-tuned BERT-based binary classifier (harmful vs. not harmful) that runs in under 50ms on a GPU instance. It outputs a single probability score between 0 and 1. This classifier handles the volume: at 167 submissions per second with 50ms inference, a single GPU can process approximately 20 requests in parallel. The auto-block and auto-pass thresholds define three zones: auto-block (score above 0.90), borderline/review (score between 0.50 and 0.90), and auto-pass (score below 0.50). Approximately 15–20% of submissions fall in the borderline zone and proceed to the LLM scorer; the rest are routed immediately from the fast classifier decision alone.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The LLM scorer receives the borderline content and returns: a confidence score per category (hate speech, harassment, spam, adult, PII) each between 0 and 1, and a two-sentence justification explaining which specific phrases triggered the scores. The category scores replace the binary fast classifier score for borderline content, enabling category-specific threshold enforcement (the adult content threshold may be higher for an age-verified platform than the harassment threshold). The justification is shown to the human reviewer in the case review panel to accelerate decision-making.</HighlightBlock>
-        <p>The policy engine translates scores into routing decisions using configurable thresholds. Per-category thresholds: a harassment score above 0.90 is auto-blocked even if hate speech score is 0.10. The maximum score across all categories determines the overall routing. Blocklist patterns (known slurs, spam domains) are checked first and bypass the classifier entirely—they are always auto-blocked regardless of the classifier output.</p>
+      <h2>Appeal System</h2>
+      <p>
+        Users whose content is removed (or accounts actioned) must have a path to contest
+        the decision. The appeal system receives the user's appeal, routes it to a human
+        reviewer (not the same reviewer who made the original decision), and communicates
+        the outcome.
+      </p>
+      <p>
+        The appeal review UI shows: the original content, the original reviewer's decision
+        and note, the user's appeal statement, and the AI score context. The reviewer
+        can sustain the original decision (violation stands), overturn it (content is
+        restored), or escalate to a policy expert for ambiguous edge cases.
+      </p>
+      <p>
+        Appeals routing is separate from the regular moderation queue — appeals have
+        different SLAs (typically 72 hours for users vs 10 minutes for new content),
+        different reviewer assignments (senior reviewers handle appeals), and different
+        feedback signals (sustained appeals indicate correct decisions; overturned appeals
+        are false positives that should inform classifier retraining).
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Review Queue and Case Prioritization</h3>
-        <HighlightBlock as="p" tier="important">The review queue is ordered by priority, not by submission time. Priority is computed as a weighted combination of AI confidence (higher confidence cases are less uncertain and can be processed faster), content reach (content with more potential viewers is prioritized—a comment on a trending post is higher priority than a comment on a low-traffic post), and age (cases approaching the SLA deadline receive a priority boost). This ensures that high-reach, time-sensitive cases are reviewed before low-reach old cases.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Queue partitioning: moderators are assigned to specialized queues based on their training (hate speech reviewers, spam reviewers). This reduces cognitive load (a moderator doesn't switch between evaluating graphic content and spam in the same session) and improves consistency (specialized reviewers develop more calibrated judgment for their category). Queue sizes and SLA compliance are monitored in real time; if a queue falls behind its SLA, the system alerts the team lead to redistribute moderators.</HighlightBlock>
-        <p>The case review panel shows: the content in its full context (for a comment, the original post it replies to is shown above). The AI's offending span highlights (specific sentences or phrases with confidence above 0.7 are underlined with a category label). The score breakdown by category with the LLM justification. Action buttons: Remove (content is deleted and the author is notified with the reason), Edit (for content that is fixable—the moderator sees a text editor with the offending phrase pre-selected), Approve (content is published, case is closed), Escalate (sends to a senior reviewer with the option to add context notes), and Add to Training Set (marks the case for the training pipeline, recording the moderator's decision as the ground truth label).</p>
+      <h2>Feedback Loop and Classifier Retraining</h2>
+      <p>
+        Human reviewer decisions are the primary training signal for improving the classifier.
+        Each review action — remove (violation confirmed), approve (false positive) —
+        creates a labeled example: (content, label). The feedback pipeline aggregates
+        these labels, applies quality filters (exclude labels from reviewers with below-average
+        calibration accuracy), and batches them for classifier retraining.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        The retraining pipeline must handle class imbalance carefully. Violating content
+        represents a small fraction of all content, and reviewer-labeled examples skew
+        toward borderline items (which are the ones that reach the queue). A classifier
+        trained only on these examples will overfit to borderline cases and perform poorly
+        on clearly-violating content it was never trained on. Maintain a training dataset
+        that includes: confirmed violations from the review queue, auto-passed content
+        (negative examples, sampled periodically to prevent class drift), historical
+        training data, and synthetic examples for rare violation categories. Rebalance
+        the dataset before each training run.
+      </HighlightBlock>
+      <p>
+        Shadow deployment for new classifiers: before deploying a new classifier version
+        to production, run it in shadow mode — all content passes through both the current
+        and new classifiers, but only the current classifier's decision is used for routing.
+        Compare the two classifiers' outputs across the live traffic distribution. If
+        the new classifier increases false positives by more than a configurable threshold
+        (or decreases recall on confirmed violations), it doesn't promote to production.
+        This validation catches regressions before they affect users.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Appeal System</h3>
-        <p>Users whose content was removed see a removal notification with a reason category and a link to submit an appeal. The appeal form lets the user select a reason ("I believe this was removed in error," "My content was misclassified," "Context was missing") and add freetext context (limited to 500 characters). The appeal is then automatically triaged: the content is re-scored by the LLM scorer with an augmented prompt that includes the user's appeal context. If the re-score returns a confidence below 0.50 in all categories, the appeal is auto-resolved in the user's favor (the content is restored) and the moderator's original decision is logged as a false positive for training. If the re-score returns confidence above 0.80, the appeal is auto-resolved against the user (the removal is upheld) with a notification. Cases where the re-score returns a score between 0.50 and 0.80 are routed to a senior reviewer for manual resolution.</p>
-        <HighlightBlock as="p" tier="important">Appeal SLA is 48 hours (longer than the initial review SLA because appeals are lower volume and less time-sensitive than pre-publish moderation). Users receive an email notification when their appeal is resolved, including the decision (upheld or overturned), the reason, and—for overturned decisions—an apology and a link to the restored content. Appeal decisions are logged separately from initial review decisions, allowing the system to compute the appeal overturn rate as a quality metric for the classifier and for initial reviewer calibration.</HighlightBlock>
+      <h2>Drift Detection and Monitoring</h2>
+      <p>
+        Content distribution shifts over time as bad actors adapt their tactics. A classifier
+        trained on last year's spam patterns may miss this year's spam (which has evolved
+        to evade detection). Drift detection monitors for this.
+      </p>
+      <p>
+        Statistical drift: track the distribution of classifier confidence scores over
+        time. A shift in the distribution (more items clustered near the decision boundary)
+        indicates the classifier is becoming less certain — a sign of content distribution
+        drift. Alert when the rolling 7-day confidence distribution diverges significantly
+        from the baseline.
+      </p>
+      <p>
+        Human review rate: if the human review queue is growing despite no change in
+        platform traffic, the classifier is routing more items to human review — either
+        because content distribution has shifted or because the classifier's performance
+        has degraded. Track the human review rate as a primary operational metric.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Feedback Loop and Classifier Retraining</h3>
-        <HighlightBlock as="p" tier="important">Every human decision (approve or remove, with reason category) is written to the training sample store with the content, the AI's score, and the human label. When the training sample store accumulates 500 new labeled samples since the last training run, a retraining job is triggered. The retraining job: fine-tunes the fast classifier on the accumulated samples (mixed with the existing training set to prevent catastrophic forgetting), evaluates the new classifier version on a held-out evaluation set (precision, recall, false positive rate per category), and deploys it to a shadow environment.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Shadow deployment: the new classifier version runs in parallel with the current production version on 10% of incoming content (randomly sampled). Its decisions are logged but not acted upon. After 24 hours (or after the sample reaches a configured minimum), the shadow metrics are compared to the production metrics on the same content. If precision and recall have not regressed (no decrease of more than 2%), and the false positive rate has not increased (no increase of more than 1%), the new version is promoted. If regression is detected, the retraining job is logged as failed, an alert is sent to the ML team, and the new version is discarded. This closed-loop system means the classifier continuously improves as moderators make decisions.</HighlightBlock>
+      <h2>Interview Q&A</h2>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Drift Detection and Policy Controls</h3>
-        <p>Model drift is detected by monitoring the following signals over rolling 7-day windows: false positive rate (computed from appeal overturn rate—if appeals overturn more than 15% of removed content, the classifier is miscalibrated), category distribution shift (if the fraction of hate speech flags doubles week-over-week, either new content patterns are emerging or the model is drifting), and moderator agreement rate (if moderators approve more than 30% of AI-flagged cases in a category, the threshold for that category may be too low). Each drift signal triggers an alert to the ML team and a policy review recommendation.</p>
-        <HighlightBlock as="p" tier="important">Policy controls allow threshold adjustments without code deployment: the thresholds are stored in a configuration service, loaded at startup, and cached with a 60-second TTL. Updating a threshold in the UI takes effect within 60 seconds across all detection pipeline instances. The emergency kill switch—forcing all content into the review queue—is a single threshold change (set all auto-pass thresholds to 0) that takes effect within 60 seconds. Time-boxed stricter policies can be configured with start and end times, automatically reverting when the period ends. This allows policy operators to respond to coordinated campaigns or breaking events without involving engineers.</HighlightBlock>
-      </section>
+      <h3>Q: How do you handle content moderation in a language the classifier wasn't trained on?</h3>
+      <p>
+        Two approaches: (1) Machine translation followed by classification — translate
+        the content to English (or whatever language the classifier is trained on) before
+        classification. This works for most languages but degrades for low-resource
+        languages where translation quality is poor. (2) Multilingual classifier — a
+        model like mBERT or XLM-R trained on 100+ languages directly without translation.
+        Multilingual models have slightly lower accuracy per language than monolingual
+        models but eliminate the translation quality dependency. For content in languages
+        with high harm risk, route all borderline content to human reviewers who speak
+        the language rather than relying on the classifier alone.
+      </p>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-generated-content-moderation-ui-feedback-loop.svg"
-          alt="Moderation feedback loop sequence diagram with 4 lifelines (Moderator UI, Decision Logger, Training Pipeline, Classifier v-n-plus-1). Steps: moderator removes/approves with reason → logger records labeled sample → training pipeline accumulates to 500 sample batch trigger → retrain and evaluate → shadow deploy comparing new vs current → regression detected blocks with alert → no regression promotes to production. Appeal system flowchart: user submits appeal → auto triage re-scores with higher accuracy model → auto-resolve if score flips clear or senior review if borderline, then decision and notification. Drift detection signals (false positive rate, overturn rate above 15%, category distribution shift) and policy override panel (configurable thresholds, allowlist/blocklist, emergency kill switch, time-boxed policies). SLA and volume metrics table."
-          caption="Feedback loop (human decisions → training samples → batch retrain → shadow deploy → promote) + appeal system + drift detection signals + policy override controls"
-        />
-      </section>
+      <h3>Q: How do you prevent reviewer bias from accumulating in the training data?</h3>
+      <p>
+        Reviewer decisions that are used as training labels have selection bias: they
+        come from the subset of items that reached the review queue, not the full content
+        distribution. They also carry individual reviewer biases (reviewer A may be stricter
+        about certain violation types than reviewer B). Mitigate this with: inter-rater
+        agreement sampling (items reviewed by multiple reviewers; only labels with consensus
+        are used for training), calibration reviews (gold set items with known correct
+        labels, used to weight each reviewer's labels by their accuracy), and periodic
+        sampling of auto-passed content for manual review (to provide negative examples
+        from the full distribution, not just the borderline subset). Track per-reviewer
+        false positive and false negative rates and down-weight labels from low-accuracy
+        reviewers in the training data.
+      </p>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Synchronous versus asynchronous detection: running detection synchronously in the content submission path (before the content is stored) prevents harmful content from ever becoming visible to other users—but adds latency to every submission. The fast classifier (50ms) is acceptable latency for a comment post. An LLM scorer call (200–500ms) on every submission would be prohibitive. The two-stage approach (fast classifier for routing, LLM scorer only for borderlines) maintains acceptable latency for 80–85% of submissions while providing high-quality decisions for the 15–20% that need them. The trade-off: a false negative from the fast classifier (harmful content scored below the borderline threshold) bypasses the LLM scorer and is auto-passed. This is acceptable if the fast classifier is calibrated with a conservative threshold—erring toward false positives (borderline) over false negatives (pass) for the fast classifier stage.</HighlightBlock>
-        <p>Moderator wellbeing: reviewing harmful content at high volume is psychologically damaging. The UI design should mitigate this: blurring or desaturating graphic content until the moderator explicitly reveals it (reducing unintended exposure), imposing mandatory break periods tracked by the system, providing access to support resources from within the moderation UI, and limiting exposure to the most severe categories to specialized, supported roles. These are not optional features—they are compliance and retention requirements for any serious trust-and-safety operation.</p>
-        <HighlightBlock as="p" tier="important">Training data quality versus quantity: human review decisions are not uniformly high quality. A fatigued or poorly calibrated moderator makes worse decisions than a fresh, well-trained one. Feeding all human decisions into the training pipeline without quality filtering trains the classifier on noisy labels. Mitigations: track per-moderator agreement rate (how often a moderator's decision matches the senior reviewer's decision on the same case); weight training samples by moderator reliability score; route ambiguous cases to senior reviewers and use only senior decisions for training. The training pipeline should also apply active learning (prioritize cases where the current classifier and the human disagree, as these are most informative) rather than uniform random sampling from the review queue.</HighlightBlock>
-      </section>
+      <h3>Q: How do you handle real-time content that requires cross-post context (coordinated inauthentic behavior)?</h3>
+      <p>
+        Individual posts may be policy-compliant but collectively represent coordinated
+        inauthentic behavior (a network of accounts amplifying specific content). Per-post
+        classification cannot detect this. Graph-level analysis at a slightly longer
+        time horizon (minutes) identifies coordination signals: unusual amplification
+        patterns, accounts posting identical content, synchronized account creation
+        followed by coordinated activity. These graph signals are computed by a separate
+        anomaly detection system that flags groups of accounts or posts for human review
+        without per-post classification. The moderation UI includes a "coordinated behavior"
+        review mode that shows the suspected network's posts together, making the pattern
+        visible to reviewers who can then take group action (remove all posts, suspend all
+        accounts in the network) rather than reviewing each post individually.
+      </p>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A content moderation system combines a two-stage detection pipeline (fast binary classifier under 50ms → LLM scorer for borderline cases, routing to auto-block/review-queue/auto-pass) with a human review queue (prioritized by confidence × reach × age, with SLA tracking and category-specialized moderator assignment), an appeal system (re-score with LLM using user-provided context, auto-resolve clear cases, route borderline to senior reviewers, 48-hour SLA), and a feedback loop (human decisions logged as labeled samples → 500-sample batch trigger → fine-tune classifier → shadow deploy → regression check → promote). Policy controls (configurable thresholds, allowlists, blocklists, emergency kill switch) operate via a configuration service with 60-second TTL, allowing changes without code deployment. Drift detection monitors appeal overturn rate (above 15% triggers alert), category distribution shifts, and moderator agreement rate. The defining design tension is precision versus recall: high recall (catching more violations) increases false positives and moderator workload; high precision (fewer false positives) increases false negatives and platform harm. Thresholds must be tuned per category based on the severity of false negatives versus the cost of false positives—and must be revisited as the content distribution evolves.</HighlightBlock>
-      </section>
+      <h2>Trauma-Informed Reviewer UX</h2>
+      <p>
+        Human content moderators review disturbing material daily — graphic violence,
+        sexual abuse imagery, self-harm content. Clinical research on content moderation
+        teams documents elevated rates of PTSD, anxiety, and vicarious traumatization.
+        The reviewer UX has a direct impact on these outcomes and therefore on team
+        health, accuracy, and retention. A trauma-informed design approach applies
+        specific UI interventions that reduce unnecessary exposure without compromising
+        review accuracy.
+      </p>
+      <p>
+        Graduated exposure controls: for graphic image and video content, the reviewer
+        UI should not display the content at full resolution and full brightness immediately.
+        The default is a low-saturation, blurred thumbnail. The reviewer decides whether
+        to view at full quality for judgment. For audio content (audio posts with hate
+        speech or harassment), text transcription is shown by default; the audio is
+        playable but not auto-playing. For video, text-based frame annotations or the
+        LLM score justification may allow the reviewer to make a determination without
+        watching the full video. Always-visible exposure is appropriate for mild categories
+        (spam, misinformation) but not for CSAM, graphic violence, or self-harm content.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Mandatory session limits and psychological safety features are not optional amenities.
+        Reviewers who process disturbing content without enforced breaks suffer accelerating
+        desensitization, which both harms the reviewer and degrades their decision accuracy
+        over longer sessions. Implement hard session limits: after 90 minutes of active
+        review, the queue interface is replaced with a mandatory break screen. After a
+        configurable number of CSAM review sessions per week, block further assignments
+        and route to the reviewer's wellness manager. Psychological first aid resources
+        (access to confidential counseling, peer support contacts) should be accessible
+        from within the review interface with one click, not buried in HR documentation.
+      </HighlightBlock>
+      <p>
+        Review category specialization reduces unnecessary trauma exposure. Not every
+        reviewer needs to see every content category. A reviewer who specializes in
+        spam and misinformation should not be assigned CSAM or graphic violence reviews.
+        Category specialization also improves accuracy — reviewers develop expertise
+        in their assigned categories and make more consistent decisions than generalists
+        who rarely encounter a given category. Maintain separate specialist queues with
+        dedicated routing and track per-category reviewer accuracy separately.
+      </p>
+
+      <h2>Policy Transparency and User Communication</h2>
+      <p>
+        Users whose content is removed or accounts actioned frequently don't understand
+        why. A removal notice that says "Your post was removed for violating our Community
+        Guidelines" without specifying which guideline or what about the content violated
+        it leaves the user unable to avoid the same issue in the future — and frustrated
+        enough to appeal even when the removal was correct. Well-designed user communication
+        reduces appeal volume and improves user understanding of platform policies.
+      </p>
+      <p>
+        The reviewer interface for removal decisions requires selecting: the specific policy
+        category (hate speech, harassment, spam, misinformation), the sub-category (targeted
+        harassment vs coordinated harassment; medical misinformation vs election misinformation),
+        and optionally a short excerpted reason (quoting the specific phrase that triggered
+        the violation, with care not to re-display graphic content back to the user in
+        the removal notice). These selections are passed to a templated notification
+        generator that produces a user-facing removal notice using the platform's policy
+        language rather than internal enforcement terminology.
+      </p>
+      <p>
+        Recidivism tracking: the reviewer's decision dashboard shows whether the content
+        creator has prior violations, how many, and of what category. Repeat violations
+        in the same category suggest the user doesn't understand the policy, the policy
+        is ambiguous, or the user is deliberately violating it. Reviewers can annotate
+        a removal as "first offense" (treat as educational, send detailed policy explanation),
+        "repeat offense" (escalate enforcement from content removal to account action),
+        or "escalation needed" (pattern suggests adversarial or coordinated behavior,
+        route to trust and safety leadership).
+      </p>
+
+      <h2>Cross-Language Moderation Challenges</h2>
+      <p>
+        Content moderation at global scale requires enforcing the same policy across
+        dozens of languages, dialects, and cultural contexts. A phrase that is neutral
+        in one language may be a slur in another dialect of the same language. Dog
+        whistles (coded language that signals meaning to an in-group while appearing
+        innocuous to classifiers trained on standard text) evolve quickly and require
+        native speaker expertise to detect. No classifier trained on mainstream text
+        corpora captures dog whistles reliably.
+      </p>
+      <p>
+        Language-specific policy interpretation: the platform's content policy must be
+        interpreted in the cultural context of each language community. A ban on "derogatory
+        terms for ethnic groups" requires knowing which terms are derogatory in each
+        language — a list maintained by native-speaker policy reviewers, not derived
+        from translation. The policy team for each major language market defines a
+        lexicon of high-risk terms, slurs, and known dog whistles that are added to
+        the classifier's feature set and to the keyword blocklist reviewed synchronously.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Human review queues should be routed by language to native-speaker reviewers.
+        Machine translation before review introduces two failure modes: translation errors
+        that change the meaning of borderline content (causing incorrect allow or block
+        decisions), and loss of prosody, register, and cultural context that is essential
+        for judging harassment severity. For languages with insufficient reviewer capacity,
+        partner with specialist trust and safety contractors who have native-speaker
+        expertise in those languages rather than relying on translation. Track per-language
+        review accuracy and SLA separately — low-resource language queues frequently have
+        longer review times and lower accuracy that are masked by aggregate metrics.
+      </HighlightBlock>
+
+      <h3>Q: How do you handle moderation of audio and video content at scale without watching every video?</h3>
+      <p>
+        Audio and video moderation relies on preprocessing pipelines that extract multiple
+        signals without requiring a human to watch the full content. For audio: speech-to-text
+        transcription (Whisper or provider APIs) runs asynchronously on upload, producing
+        a text transcript that can be classified by the text moderation pipeline. For video:
+        frame extraction (sampling 1 frame per second for a 30-second video produces 30
+        frames) runs each frame through a fast image classifier. Audio track transcription
+        runs in parallel. The classification pipeline scores based on transcript, frame-level
+        signals, and metadata (video title, description, tags). Human reviewers see the
+        transcript, flagged frames (not the full video), and audio playback controls rather
+        than a required full-video watch. Only when the transcript or frame flags are
+        insufficient for a decision does the reviewer watch the full video segment.
+      </p>
+
+      <h3>Q: How do you set precision and recall thresholds for different violation categories?</h3>
+      <p>
+        Precision and recall trade-offs are fundamentally different for different violation
+        categories based on the relative harms. CSAM requires maximum recall (near-zero
+        false negatives acceptable even at the cost of many false positives requiring
+        human review) — missing a single instance is an unacceptable harm. Spam requires
+        high precision (false positives degrade the user experience for legitimate posters
+        and erode trust in the moderation system) because the harm from missed spam is
+        low. Hate speech operates in between: high recall for targeted slurs and threats,
+        moderate precision for ambiguous content requiring cultural context. These thresholds
+        are set by trust and safety policy leadership in collaboration with legal and
+        establish the acceptable false-positive rate per category that the moderation
+        team's review capacity must be able to handle. The technical system implements
+        whatever threshold policy specifies; the UI exposes threshold controls to policy
+        operators so they can adjust without engineering changes when regulatory requirements
+        or platform standards change.
+      </p>
     </ArticleLayout>
   );
 }

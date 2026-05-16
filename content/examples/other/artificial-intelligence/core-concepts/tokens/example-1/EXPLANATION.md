@@ -1,55 +1,32 @@
-## How to Run
+# Tokens — Tokenization in Large Language Models - example-1 Explanation
 
-```bash
-python demo.py
-```
+## Article context
+This example supports the article `other/artificial-intelligence/tokens`. The article is about Deep dive into tokenization algorithms (BPE, WordPiece, SentencePiece), token economics, cost implications, multilingual tokenization, and how token design affects LLM performance and production systems.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: Why do LLMs use subword tokenization instead of word-level or character-level tokenization?; Q2: How does vocabulary size affect model performance and cost?.
 
-No external dependencies required — uses only Python standard library (`collections.Counter`, `collections.defaultdict`, `typing`).
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## What This Demonstrates
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-This example implements a **Byte-Pair Encoding (BPE) tokenizer from scratch**, demonstrating the core algorithm used by GPT, GPT-2, GPT-3, RoBERTa, and many other LLMs. It shows how a tokenizer starts with character-level tokens, identifies the most frequent adjacent character pairs in a training corpus, and iteratively merges them into subword units — building a vocabulary that balances between character-level (no OOV problem) and word-level (efficiency).
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-## Code Walkthrough
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-### Key Class: `BPETokenizer`
+## Important implementation behavior
+- authentication or authorization boundaries
+- error handling and fallback behavior
 
-**`__init__(vocab_size)`** — Initializes the tokenizer with a target vocabulary size. Stores:
-- `vocab` (Dict[str, int]): Maps token strings to integer IDs. Starts as character-level, grows with each merge.
-- `merges` (List[Tuple[str, str]]): Ordered list of merge rules learned during training. Applied in order during encoding.
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Security-sensitive paths need least-privilege checks and safe failure behavior.
+- High load can expose latency, memory, cache, or backpressure issues.
 
-**`_get_stats(corpus_tokens)`** — Counts the frequency of every adjacent symbol pair across the entire corpus. Returns a `Counter` where keys are `(symbol_a, symbol_b)` tuples and values are occurrence counts. This is the heart of BPE — the most frequent pair is the next merge candidate.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-**`_merge_pair(pair, tokens)`** — Scans through a token list and merges all occurrences of the given pair. For example, if `pair = ("q", "u")` and `tokens = ["q", "u", "i", "c", "k"]`, it produces `["qu", "i", "c", "k"]`. Uses a linear scan with index `i` that skips 2 positions after a merge to avoid re-processing merged tokens.
-
-**`train(corpus)`** — The training algorithm in three phases:
-1. **Character initialization**: Splits each word into characters, appends `</w>` (end-of-word marker), and builds the initial character-level vocabulary
-2. **Vocabulary bootstrapping**: Collects all unique characters from the tokenized corpus into `self.vocab` with sequential integer IDs
-3. **Iterative merging**: For each step up to `vocab_size - initial_vocab_size`, finds the most frequent pair via `_get_stats()`, adds the merged symbol to the vocabulary, records the merge rule, and applies the merge across the entire corpus. This gradually builds subword units like "the", "qu", "ing", "tion" from frequent character combinations
-
-**`encode(text)`** — Encodes text to token IDs using the trained merge rules:
-1. Converts text to lowercase character list with `</w>` marker
-2. Applies each learned merge rule sequentially — if the merge says combine "q" + "u" into "qu", it scans the token list and performs that merge
-3. Converts final tokens to IDs via vocabulary lookup, with fallback to `ord(t)` for unknown characters (character-level safety net)
-
-**`get_token_count(text)`** — Convenience method that returns the number of tokens for a given text string.
-
-### Execution Flow
-
-```
-main() → BPETokenizer(vocab_size=50)
-       → train(corpus) → character split → build initial vocab → 38 merge iterations
-       → encode("the quick fox") → character tokens → apply merges → token IDs
-       → print vocabulary, merge rules, and tokenization results
-```
-
-The training corpus of 5 sentences produces approximately 38 merges, creating subword units like "the", "qu", "ick", "dog", "fox" from frequently co-occurring character pairs.
-
-## Key Takeaways
-
-- **BPE starts at character level**: Every character (including spaces via `</w>`) is initially a token, so there is zero risk of unknown tokens during encoding
-- **Merges are frequency-driven**: The most common adjacent pairs get merged first, so common words like "the" become single tokens while rare words stay split into subword units
-- **Merge order matters**: Merges are applied sequentially during encoding — earlier merges take priority over later ones, creating a deterministic tokenization
-- **Vocabulary size is a trade-off**: Larger vocabularies produce shorter sequences (fewer tokens per text) but increase model embedding size and softmax computation cost
-- **Character fallback prevents OOV**: Unknown tokens during encoding fall back to `ord(char)`, ensuring the tokenizer never fails on unseen input
-- **`</w>` marks word boundaries**: This end-of-word marker lets the tokenizer distinguish between "ing" inside "sing" vs "ing" as a suffix on verbs
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

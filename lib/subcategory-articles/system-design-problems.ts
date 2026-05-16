@@ -29,22 +29,22 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "ai-chatbot-frontend",
       "title": "Design a Frontend for an AI Chatbot (Streaming, History, Multimodal)",
-      "description": "Architecture for an AI chatbot UI: token streaming with ReadableStream, optimistic rendering, conversation history, context window management, multimodal input, and tool call visualization."
+      "description": "Architecture for an AI chatbot UI: token streaming with ReadableStream, optimistic rendering, conversation history, context window management, multimodal input, tool call visualization, and error recovery."
     },
     {
       "slug": "ai-generated-content-moderation-ui",
       "title": "Design an AI-Generated Content Moderation UI",
-      "description": "Architecture for a content moderation system: fast classifier + LLM scorer pipeline, policy-based routing, human review queue with SLA, appeal system, feedback-driven classifier retraining, and drift detection."
+      "description": "Architecture for a content moderation system: fast classifier plus LLM scorer pipeline, policy-based routing, human review queue with SLA, appeal system, feedback-driven classifier retraining, and drift detection."
     },
     {
       "slug": "ai-model-comparison-testing-interface",
       "title": "Design an AI Model Comparison & Testing Interface",
-      "description": "Architecture for a model evaluation UI: parallel test execution, multi-dimensional scoring (LLM-as-judge + deterministic), side-by-side comparison, blind human preference voting with Elo, cost-quality Pareto analysis, and regression detection."
+      "description": "Architecture for a model evaluation UI: parallel test execution, multi-dimensional scoring (LLM-as-judge plus deterministic), side-by-side comparison, blind preference voting with Elo, cost-quality Pareto analysis, and regression detection."
     },
     {
       "slug": "ai-powered-search-interface",
       "title": "Design an AI-Powered Search Interface",
-      "description": "Architecture for an AI search UI: hybrid retrieval (BM25 + ANN vector), query understanding, re-ranking, AI answer box with citations, conversational refinement, personalization signals, and zero-result handling."
+      "description": "Architecture for an AI search UI: hybrid retrieval (BM25 plus ANN vector), query understanding, re-ranking, AI answer box with citations, conversational refinement, personalization signals, and zero-result handling."
     },
     {
       "slug": "ai-prompt-management-ui",
@@ -59,12 +59,12 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "multi-agent-workflow-ui",
       "title": "Design a Multi-Agent Workflow UI",
-      "description": "Architecture for a multi-agent workflow UI: agent graph builder, orchestrator/sub-agent pattern, live run monitoring with SSE, human-in-the-loop gates, parallel agent waterfall view, and run observability."
+      "description": "Architecture for a multi-agent workflow UI: agent graph builder, orchestrator/sub-agent pattern, live run monitoring with SSE, human-in-the-loop gates, parallel agent visualization, and run observability."
     },
     {
       "slug": "rag-based-ui-system",
       "title": "Design a RAG-Based UI System",
-      "description": "Architecture for a retrieval-augmented generation UI: ingestion pipeline, vector retrieval strategies, re-ranking, citation rendering, confidence indicators, and hallucination guards."
+      "description": "Architecture for a retrieval-augmented generation UI: ingestion pipeline, chunking strategy, vector retrieval, re-ranking, context assembly, citation rendering, hallucination detection, and tenant isolation."
     }
   ],
   "system-design-problems/high-level-design/core-product-systems": [
@@ -562,6 +562,11 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
   ],
   "system-design-problems/high-level-design/performance-scale-edge-cases": [
     {
+      "slug": "core-web-vitals-production-optimization",
+      "title": "Core Web Vitals: LCP, INP, CLS — Production Optimization",
+      "description": "Production-grade approach to measuring, diagnosing, and fixing Largest Contentful Paint, Interaction to Next Paint, and Cumulative Layout Shift — including RUM instrumentation, lab/field data correlation, and CI enforcement."
+    },
+    {
       "slug": "frontend-1m-concurrent-users",
       "title": "Design Frontend for 1M+ Concurrent Users",
       "description": "Architecture for a frontend system serving 1 million+ concurrent users: global CDN with edge caching, static asset immutable caching, SSR request coalescing, WebSocket connection fan-out via pub/sub, connection pooling, API gateway rate limiting, stale-while-revalidate cache headers, database read replica routing, client-side delta updates, and graceful load shedding."
@@ -830,32 +835,32 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "ai-assisted-search-qa-ui",
       "title": "AI-Assisted Search & Q&A UI",
-      "description": "Semantic search powered by embeddings with retrieval-augmented generation (RAG) for question answering from documents."
+      "description": "Semantic search powered by embeddings with retrieval-augmented generation (RAG) for question answering from documents — chunking strategy, ANN retrieval, re-ranking, grounding, and citation rendering."
     },
     {
       "slug": "ai-feedback-loop-ui",
       "title": "AI Feedback Loop UI",
-      "description": "Collecting user feedback on AI outputs for continuous model improvement, RLHF labeling, and quality monitoring."
+      "description": "Collecting user feedback on AI outputs for RLHF, continuous quality monitoring, and model improvement — progressive disclosure, implicit signals, training pipeline, and spam prevention."
     },
     {
       "slug": "ai-ui-generator",
       "title": "AI UI Generator System",
-      "description": "LLM-powered UI generation from natural language descriptions with component selection, layout reasoning, and design consistency."
+      "description": "LLM-powered UI generation from natural language — JSON component tree output strategy, validation pipeline, sandboxed rendering, iterative refinement, and security model for safe code execution."
     },
     {
       "slug": "prompt-history-versioning-ui",
-      "title": "Prompt History & Versioning UI",
-      "description": "Managing prompt iterations, versions, and branching conversations with comparison and rollback capabilities."
+      "title": "Design a Prompt History and Versioning UI",
+      "description": "A staff-level deep dive into prompt versioning systems: schema design, diff algorithms, template variables, branching models, comparison mode, collaboration, tagging, rollback, import/export, and performance at scale."
     },
     {
       "slug": "streaming-chat-ui",
-      "title": "Streaming Chat UI System",
-      "description": "Building chat interfaces that display streaming token responses from LLMs in real-time with incremental rendering and user interaction."
+      "title": "Design a Streaming Chat UI",
+      "description": "A staff-level deep dive into building streaming LLM chat interfaces: ReadableStream pipelines, token batching, scroll anchoring, incremental markdown, abort architecture, concurrent stream management, and accessibility."
     },
     {
       "slug": "token-streaming-buffer",
-      "title": "Token Streaming Buffer System",
-      "description": "Managing token streaming from LLMs with buffering, batching, backpressure, and efficient rendering of streaming responses."
+      "title": "Design a Token Streaming Buffer",
+      "description": "A staff-level deep dive into the token streaming buffer system for LLM responses: ReadableStream internals, TextDecoder, SSE parsing, OpenAI and Anthropic formats, backpressure, Web Workers, TransformStream pipelines, and testing strategies."
     }
   ],
   "system-design-problems/low-level-design/architecture-system-level-lld": [
@@ -870,14 +875,29 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
       "description": "Production-grade component library with design tokens, theming, semantic versioning, visual regression testing, and governance at scale."
     },
     {
+      "slug": "design-token-system-architecture",
+      "title": "Design Token System Architecture",
+      "description": "Production-grade design token architecture covering the three-tier token hierarchy, CSS custom property injection, SSR-safe theme switching without FOUC, multi-brand and white-label token overrides, Style Dictionary toolchain, and governance workflows."
+    },
+    {
       "slug": "frontend-performance-architecture",
       "title": "Frontend Performance Architecture",
       "description": "Production-grade frontend performance covering Core Web Vitals (LCP, INP, CLS), bundle optimization and code splitting, image and font loading strategies, runtime performance patterns, and measurement with RUM and Lighthouse CI."
     },
     {
+      "slug": "frontend-testing-architecture",
+      "title": "Frontend Testing Architecture",
+      "description": "Production-grade frontend testing strategy: unit tests with Vitest, component testing with Testing Library, visual regression with Playwright, E2E with Cypress, contract testing, performance budgets in CI, and test coverage governance."
+    },
+    {
       "slug": "micro-frontend-architecture",
       "title": "Micro-Frontend Architecture",
       "description": "Production-grade micro-frontend design covering Module Federation, composition strategies, cross-app communication, dependency management, CSS isolation, performance trade-offs, and when not to use micro-frontends."
+    },
+    {
+      "slug": "monorepo-tooling-architecture",
+      "title": "Monorepo Tooling Architecture",
+      "description": "Production-grade monorepo design covering pnpm workspace structure, Turborepo task orchestration and remote caching, Nx project graph and module boundaries, Changesets versioning, affected-only CI, dependency management, and when to split to polyrepo."
     }
   ],
   "system-design-problems/low-level-design/auth-user-systems": [
@@ -1070,12 +1090,12 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "accordion-collapsible",
       "title": "Design an Accordion / Collapsible Section",
-      "description": "Accordion system with exclusive vs independent expand, animated height transitions, accessibility, and nested accordions."
+      "description": "Accordion system with exclusive vs independent expand, animated height transitions, accessibility, nested accordions, and URL hash sync."
     },
     {
       "slug": "audio-video-player",
       "title": "Design an Audio/Video Player",
-      "description": "Audio/video player with custom controls, keyboard shortcuts, captions, streaming support, and accessibility."
+      "description": "Audio/video player with HLS adaptive streaming, seek preview, buffer management, caption rendering, accessibility keyboard map, and Picture-in-Picture."
     },
     {
       "slug": "avatar-component",
@@ -1095,27 +1115,27 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "carousel-slider",
       "title": "Design a Carousel / Slider",
-      "description": "Carousel with touch support, autoplay, accessibility, lazy-loaded slides, and infinite loop."
+      "description": "Carousel with touch support, velocity-based swiping, FLIP animation, autoplay, accessibility, lazy-loaded slides, and infinite loop."
     },
     {
       "slug": "chat-messaging-ui",
       "title": "Design a Chat / Messaging UI",
-      "description": "Production-grade chat UI with message grouping, read receipts, typing indicators, infinite scroll upward, media previews, and accessibility."
+      "description": "Chat UI with message virtualization, scroll anchor preservation, optimistic sending, typing indicators, read receipts, media previews, and accessibility."
     },
     {
       "slug": "code-editor-component",
       "title": "Design a Code Editor Component",
-      "description": "Production-grade code editor with syntax highlighting, line numbers, bracket matching, minimap, and when to embed Monaco vs build custom."
+      "description": "Code editor with extension system, syntax tokenization, LSP integration, theme tokens, diff view, and the build-vs-embed Monaco decision."
     },
     {
       "slug": "color-picker",
       "title": "Design a Color Picker Component",
-      "description": "Color picker with alpha support, saved palettes, accessible contrast preview, and keyboard navigation."
+      "description": "Color picker with color space conversions, WCAG contrast engine, alpha support, saved palettes, Eyedropper API, and keyboard navigation."
     },
     {
       "slug": "command-palette",
       "title": "Design a Command Palette / Spotlight Search",
-      "description": "Production-grade command palette with keyboard-driven navigation, fuzzy matching, plugin architecture, and accessibility."
+      "description": "Command palette with fuzzy search ranking, plugin architecture, async data sources, keyboard navigation, recency weighting, and accessibility."
     },
     {
       "slug": "comment-thread",
@@ -1135,7 +1155,7 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "dashboard-builder",
       "title": "Design a Dashboard Builder",
-      "description": "Dashboard builder where users can add/remove/resize/rearrange widgets, grid layout, persistence, lazy widget loading, and accessibility."
+      "description": "Dashboard builder with widget registry, grid placement algorithm, resize constraints, responsive breakpoints, lazy widget loading, and persistence."
     },
     {
       "slug": "data-table",
@@ -1185,7 +1205,7 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "kanban-board",
       "title": "Design a Kanban Board",
-      "description": "Production-grade Kanban board with drag across columns, swimlanes, real-time multi-user updates, optimistic reordering, and accessibility."
+      "description": "Kanban board with fractional indexing for order, cross-column drag, optimistic reordering with conflict resolution, real-time multi-user updates, swimlanes, and accessibility."
     },
     {
       "slug": "loading-skeleton",
@@ -1195,7 +1215,7 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "map-based-ui",
       "title": "Design a Map-based UI",
-      "description": "Map-based UI with markers, clustering, geofencing, viewport search, and Mapbox/Google Maps integration."
+      "description": "Map-based UI with tile rendering, marker clustering, viewport-driven data fetching, geofencing, custom overlays, and performance at scale."
     },
     {
       "slug": "modal-component",
@@ -1210,7 +1230,7 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "notification-center-inbox",
       "title": "Design a Notification Center / Inbox",
-      "description": "Notification center with read/unread states, grouping, mark-all-read, real-time badge count, filtering, and accessibility."
+      "description": "Notification center with notification store, toast queue, inbox view with real-time delivery, badge count management, grouping, and expiry TTL."
     },
     {
       "slug": "pagination-component",
@@ -1225,7 +1245,7 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "pdf-viewer",
       "title": "Design a PDF Viewer Component",
-      "description": "PDF viewer with page navigation, zoom, annotations, text search within PDF, and accessibility."
+      "description": "Production-grade PDF viewer covering PDF.js rendering pipeline, virtualized page rendering with IntersectionObserver, text layer for accessibility and search, annotation SVG overlay, password-protected document handling, and progressive loading strategy."
     },
     {
       "slug": "rating-stars-component",
@@ -1255,12 +1275,12 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "spreadsheet-like-grid",
       "title": "Design a Spreadsheet-like Grid",
-      "description": "Spreadsheet grid with cell editing, formulas, copy-paste, undo, column/row resize, and virtualization."
+      "description": "Spreadsheet grid with cell model, formula engine, multi-cell selection and range operations, conditional formatting, and undo/redo stack."
     },
     {
       "slug": "stepper-progress-tracker",
       "title": "Design a Stepper / Progress Tracker",
-      "description": "Stepper/progress tracker for async multi-page flows with step validation, skip logic, progress persistence, and accessibility."
+      "description": "Stepper and progress tracker for multi-step async flows with async validation gates, backward navigation rules, unsaved guard, URL sync, and accessibility."
     },
     {
       "slug": "theme-theming-system",
@@ -1290,7 +1310,7 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "wysiwyg-email-builder",
       "title": "Design a WYSIWYG Email Template Builder",
-      "description": "Email template builder with drag blocks, variable insertion, responsive preview, and HTML output."
+      "description": "Email builder with block schema, template store, MJML/table-based rendering, variable insertion, Outlook fallbacks, and multi-client preview."
     }
   ],
   "system-design-problems/low-level-design/data-heavy-ui-components": [

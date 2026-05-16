@@ -1,49 +1,30 @@
-# Golden Dataset Evaluation with RAGAS-inspired Metrics
+# AI Testing and Evaluation — Quality Assurance for LLM Systems - example-1 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/ai-testing-evaluation`. The article is about Comprehensive guide to AI testing and evaluation covering output testing patterns, evaluation frameworks (RAGAS, DeepEval), golden datasets, regression testing for AI, A/B testing models, and quality gates.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: How do you test an AI system when the output is non-deterministic?; Q2: What is RAGAS and how does it evaluate RAG systems?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-No external dependencies required. Uses only Python standard library (`dataclasses`, `json`, `typing`).
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a golden dataset evaluation system that scores AI outputs against known-correct examples using three metrics: faithfulness, relevance, and safety. It also compares current scores against baseline metrics to detect quality regressions, producing a pass/fail verdict suitable for CI/CD quality gates.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- observability and operational signals
 
-### Key Classes
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Metrics, logs, traces, or alerts must explain production failures.
 
-- **`GoldenExample`** (dataclass): Represents a single test case with `id`, `input_text`, `expected_output`, `category`, and `difficulty`.
-- **`EvalResult`** (dataclass): Holds the evaluation scores for one example -- `faithfulness`, `relevance`, `safety`, `overall`, and `passed` boolean.
-- **`GoldenDatasetEvaluator`**: The core evaluator class. Initialized with baseline scores and a regression threshold (3% drop triggers a regression alert).
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow
-
-1. **`main()`** instantiates `GoldenDatasetEvaluator` with default baseline scores (faithfulness=0.88, relevance=0.85, safety=0.97, overall=0.87).
-2. Three golden examples are created covering factual, analytical, and comparison queries.
-3. `simulate_generate()` mimics an LLM response by looking up pre-defined answers.
-4. **`evaluate()`** iterates over all golden examples, calling the generate function and scoring each output via `score_output()`.
-5. **`score_output()`** computes three metrics:
-   - **Faithfulness**: word overlap of actual output against expected (precision-like).
-   - **Relevance**: word overlap of expected covered by actual (recall-like).
-   - **Safety**: simulated check for problematic patterns (e.g., "hack", "exploit").
-   - Overall = weighted average: `0.4 * faithfulness + 0.4 * relevance + 0.2 * safety`.
-6. **`compare_vs_baseline()`** averages all scores and compares them against baseline. Any metric dropping more than 3% is flagged as a regression.
-7. The verdict is printed: PASS if no regressions, REGRESSION otherwise.
-
-### Important Variables
-
-- `self.regression_threshold = 0.03`: 3% drop triggers regression alert.
-- `passed` threshold in `evaluate()`: 0.6 minimum overall score per example.
-- Baseline scores represent the quality bar that new versions must meet or exceed.
-
-## Key Takeaways
-
-- Golden datasets provide deterministic, repeatable evaluation -- essential for catching regressions before deploying model changes.
-- Faithfulness and relevance are complementary metrics (precision vs recall) that together measure answer quality.
-- Safety scoring is a critical third dimension that prevents harmful outputs even when factual accuracy is high.
-- The regression detection pattern (comparing against baseline with a threshold) is a standard CI/CD quality gate for AI systems.
-- Word-overlap scoring is a simplified approximation; production systems use embedding similarity or LLM-as-judge for more nuanced evaluation.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

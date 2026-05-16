@@ -1,13 +1,33 @@
-# Audio/Video Player — Full Implementation (State Machine)
+# Design an Audio / Video Player - example-1 Explanation
 
-Example 1 models a production A/V player:
+## Article context
+This example supports the article `low-level-design/file-media-content-systems/audio-video-player`. The article is about LLD for a custom media player: HLS/DASH streaming, custom controls, captions, picture-in-picture, keyboard shortcuts, accessibility.. The most relevant article sections for this example are: 🎯 Problem Context and Scope Definition; Problem Statement; User Context; Assumptions; Non-Goals; Functional Requirements; Core (Must-have); Secondary (Nice-to-have); Out of Scope; Non-Functional Requirements.
 
-- Playback state machine (idle → loading → playing/paused → ended/error)
-- Buffering and stall detection hooks
-- Tracks: captions/subtitles and audio tracks model
-- Keyboard shortcut mapping model
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Interview focus:
-- Adaptive streaming (HLS/DASH) strategy and DRM integration points
-- Handling autoplay policies and user gesture requirements
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `player-state.ts`: Models client or service state transitions and update behavior.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+- `shortcuts.ts`: Implements the main logic, including defaultShortcuts.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- error handling and fallback behavior
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+- Real-time flows need reconnect, ordering, and duplicate-message handling.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

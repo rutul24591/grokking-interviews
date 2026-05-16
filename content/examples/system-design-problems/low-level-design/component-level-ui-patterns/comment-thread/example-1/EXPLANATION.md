@@ -1,245 +1,52 @@
-# Comment Thread System — Implementation Walkthrough
+# Design a Comment Thread System - example-1 Explanation
 
-## Architecture Overview
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/comment-thread`. The article is about Complete LLD solution for a production-grade comment thread system with nested replies, lazy-loading, optimistic UI, rich text, real-time WebSocket updates, and accessibility.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; Edge Cases; High-Level Approach; System Design; Module Architecture; State Management; Component Interaction Flow.
 
-This implementation follows a **flat store + derived tree + recursive rendering** pattern:
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        CommentThread (root)                         │
-│  ┌───────────────────┐  ┌──────────────────┐  ┌──────────────────┐ │
-│  │  useCommentThread  │  │ useCommentActions│  │ CommentStore     │ │
-│  │  (fetch, paginate, │  │ (optimistic CRUD │  │ (flat list,      │ │
-│  │   WebSocket)       │  │  with rollback)  │  │  collapse state) │ │
-│  └────────┬──────────┘  └────────┬─────────┘  └────────┬─────────┘ │
-│           │                      │                      │           │
-│           ▼                      ▼                      ▼           │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                    comment-tree-utils.ts                      │  │
-│  │              (flat → tree derivation, depth calc)             │  │
-│  └────────────────────────────┬──────────────────────────────────┘  │
-│                               │                                     │
-│                    ┌──────────┴──────────┐                         │
-│                    ▼                     ▼                         │
-│            CommentNode           CommentNode (recursive)           │
-│            (depth 0)            (depth 1, 2, 3, 4, 5)              │
-└─────────────────────────────────────────────────────────────────────┘
-```
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-### Design Decisions
+## File-by-file walkthrough
+- `components/comment-actions.tsx`: Implements the main logic, including CommentActions.
+- `components/comment-form.tsx`: Implements the main logic, including MAX_CHARS, CommentForm, charCount, isValid, handleSubmit.
+- `components/comment-node.tsx`: Implements the main logic, including CommentNode, comments, collapsedThreads, toggleCollapse, currentUserId.
+- `components/comment-thread.tsx`: Implements the main logic, including CommentThread, comments, rootIds, hasMore, isLoading.
+- `components/load-more.tsx`: Implements the main logic, including LoadMore, hasMore, isLoading, handleClick.
+- `hooks/use-comment-actions.ts`: Implements the main logic, including useCommentActions, store, snapshotComment, updateComment, rollbackMutation.
+- `hooks/use-comment-thread.ts`: Implements the main logic, including useCommentThread, wsRef, reconnectTimeoutRef, reconnectAttempts, setComments.
+- `lib/comment-store.ts`: Models client or service state transitions and update behavior.
+- `lib/comment-tree-utils.ts`: Implements the main logic, including buildTree, result, rootId, root, buildSubtree.
+- `lib/comment-types.ts`: Implements the main logic, including MAX_DEPTH.
+- `services/comment-api.ts`: Models an API boundary, request handling path, or backend contract.
 
-1. **Flat store with parent references** — Comments are stored as a `Record<string, CommentNode>` keyed by ID. Each comment has a `parentId` and `childrenIds` array. This makes inserts, updates, and deletes O(1) — you only touch the affected record and its direct parent. The tree structure is derived on-demand via `buildTree()`.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-2. **Optimistic UI with rollback** — Every mutation (post, edit, delete, like) first snapshots the current state, applies the optimistic change, fires the API call, and on failure restores the snapshot. This ensures the UI is always consistent even under network failure.
+## Important implementation behavior
+- request cancellation and cleanup
+- retry, backoff, or jitter behavior
+- timeout and deadline handling
+- pagination or cursor handling
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- asynchronous or event-driven flow
 
-3. **Recursive component rendering** — `CommentNode` renders itself and recursively renders its children. Indentation is handled via CSS (`ml-6 border-l-2`), creating the visual thread line.
+## Edge cases and failure modes
+- Requests can be cancelled, abandoned, or completed out of order.
+- Retries must avoid retry storms and should only repeat safe operations.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Large result sets need stable pagination and empty-page behavior.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Asynchronous work can arrive late, out of order, or more than once.
 
-4. **Lazy loading with collapse/expand** — Child comments are not fetched until the user expands a collapsed thread. This drastically reduces initial data transfer and render cost.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-## File Structure
-
-```
-example-1/
-├── lib/
-│   ├── comment-types.ts       # TypeScript interfaces, constants
-│   ├── comment-store.ts       # Zustand store with optimistic updates
-│   └── comment-tree-utils.ts  # Flat-to-tree conversion, depth calc
-├── services/
-│   └── comment-api.ts         # API layer (fetch wrappers)
-├── hooks/
-│   ├── use-comment-thread.ts  # Thread orchestration (fetch, WS, pagination)
-│   └── use-comment-actions.ts # Optimistic action dispatch with rollback
-├── components/
-│   ├── comment-thread.tsx     # Root thread renderer
-│   ├── comment-node.tsx       # Recursive comment with replies
-│   ├── comment-form.tsx       # Inline reply/edit form
-│   ├── comment-actions.tsx    # Like, reply, edit, delete buttons
-│   └── load-more.tsx          # Pagination button
-└── EXPLANATION.md             # This file
-```
-
-## Key Implementation Details
-
-### Comment Types (lib/comment-types.ts)
-
-Defines the core data model:
-
-- **`CommentNode`**: The comment entity with `id`, `parentId`, `author`, `content` (sanitized HTML), `likeCount`, `hasLiked`, timestamps, `isEdited`, `isOptimistic`, `isDeleted`, `childrenIds`, and `depth`.
-- **`CommentAction`**: Discriminated union covering all mutations (POST, EDIT, DELETE, LIKE, ROLLBACK) with their payloads.
-- **`ThreadState`**: The flat store shape with comments record, rootIds, collapsedThreads set, pagination metadata, rollback snapshots, pending requests map, and buffered comments for WebSocket updates targeting unloaded parents.
-- **`MAX_DEPTH = 5`**: Maximum nesting depth. Replies beyond this are flattened.
-
-### Zustand Store (lib/comment-store.ts)
-
-The store is the single source of truth. Key aspects:
-
-- **`setComments`**: Replaces the entire comment set (used on initial fetch). Builds rootIds from comments with `parentId === null`.
-- **`appendComments`**: Appends paginated comments to the existing set (used on "Load More").
-- **`addChildComments`**: Adds lazy-loaded children to the store. If the parent is not loaded, children are buffered in `bufferedComments`.
-- **`applyOptimisticInsert`**: Creates an optimistic comment with `id: "optimistic-{uuid}"`, inserts it into the store, and adds it to the parent's childrenIds (or rootIds if it's a root comment).
-- **`confirmOptimisticInsert`**: Replaces the optimistic comment with the server-returned comment, updating all references (rootIds, parent's childrenIds).
-- **`rollbackMutation`**: Restores the snapshot for a given commentId and clears the snapshot.
-- **`snapshotComment`**: Saves the current state of a comment before mutation.
-- **`toggleCollapse`**: Toggles a comment ID in the `collapsedThreads` Set.
-- **`mergeWebSocketUpdate`**: Handles real-time updates. Supports NEW_REPLY, NEW_ROOT, COMMENT_EDITED, and COMMENT_DELETED message types. For deletions, re-roots children to the grandparent. For replies to unloaded parents, buffers the comment.
-
-The store uses immutable updates (creating new objects) so that Zustand selectors can detect changes via referential equality.
-
-### Tree Utilities (lib/comment-tree-utils.ts)
-
-Pure, side-effect-free functions:
-
-- **`buildTree`**: Converts the flat list to a nested structure. Enforces MAX_DEPTH — nodes beyond the limit are attached as `_flattenedChildren` for "see more replies" rendering.
-- **`calculateDepths`**: Computes depth for each node by walking up the parent chain. Includes cycle detection.
-- **`getVisibleNodeIds`**: Returns the ordered list of comment IDs that should be rendered, skipping collapsed threads and nodes beyond MAX_DEPTH.
-- **`flattenSubtree`**: BFS traversal that flattens a subtree into a flat list (used for "see more replies").
-
-### API Service (services/comment-api.ts)
-
-Thin wrapper around `fetch` with:
-
-- **`fetchThread(cursor, limit)`**: Paginated root comments. Returns `{ comments, nextCursor, hasMore }`.
-- **`fetchChildren(parentId)`**: Lazy-loaded children for a specific parent.
-- **`postComment({ parentId, content })`**: Creates a new comment.
-- **`editComment({ commentId, content })`**: Updates an existing comment.
-- **`deleteComment(commentId)`**: Soft-deletes a comment.
-- **`likeComment(commentId)`**: Toggles like. Returns updated count and state.
-
-All functions use a shared `request<T>` helper that normalizes errors into `{ message, status, retryable }` shape.
-
-### useCommentThread Hook (hooks/use-comment-thread.ts)
-
-Orchestrates data fetching and WebSocket:
-
-1. **Initial fetch**: Calls `fetchThread(null, pageSize)` on mount. Aborts on unmount.
-2. **Pagination**: `loadMore()` calls `fetchThread(cursor, pageSize)` with the current cursor and appends results.
-3. **Lazy loading**: `loadChildren(parentId)` calls `fetchChildren(parentId)` and dispatches to the store.
-4. **WebSocket**: Connects to `wsUrl` on mount. Parses incoming `WebSocketMessage` and dispatches to `mergeWebSocketUpdate`. Handles disconnect with exponential backoff (1s, 2s, 4s, ..., max 30s). Cleans up on unmount.
-
-### useCommentActions Hook (hooks/use-comment-actions.ts)
-
-Wraps the optimistic-update-with-rollback pattern:
-
-Each action follows the same flow:
-1. **Snapshot**: `snapshotComment(commentId, comment)` saves the pre-mutation state.
-2. **Optimistic update**: `updateComment` applies the change immediately.
-3. **API call**: The actual network request fires.
-4. **On success**: Update with server-returned values.
-5. **On failure**: `rollbackMutation` restores the snapshot. `onError` callback fires with retry function.
-
-For **handlePost**, the flow is:
-1. Generate `optimisticId = "optimistic-{uuid}"`.
-2. `applyOptimisticInsert` adds the optimistic comment to the store.
-3. API call fires.
-4. On success: `confirmOptimisticInsert` replaces the optimistic entry with the server comment.
-5. On failure: Remove the optimistic comment from the store.
-
-### Comment Thread Component (components/comment-thread.tsx)
-
-Root renderer that:
-- Subscribes to `comments`, `rootIds`, `hasMore`, `isLoading` from the store.
-- Uses `useMemo` to derive the tree via `buildTree` (only re-runs when comments or rootIds change).
-- Renders each root comment as a `CommentNode`.
-- Renders the `LoadMore` button if `hasMore` is true.
-- Uses `role="feed"` and `aria-busy` for accessibility.
-
-### Comment Node Component (components/comment-node.tsx)
-
-Recursive component rendering a single comment:
-- Displays author info (avatar, username, formatted timestamp, edited indicator).
-- Renders content via `dangerouslySetInnerHTML` (content is pre-sanitized).
-- Shows "Posting..." indicator for optimistic comments.
-- Action buttons (like, reply, edit, delete) wired to `CommentActions`.
-- Collapse/expand toggle button if children exist.
-- Conditionally renders children based on collapsed state.
-- Handles flattened children (beyond MAX_DEPTH) with "see more replies" link.
-- Inline `CommentForm` for reply and edit modes.
-
-### Comment Form Component (components/comment-form.tsx)
-
-Inline form with:
-- Textarea with character count (max 5000).
-- Validation: non-empty, within limit.
-- Ctrl/Cmd+Enter to submit, Escape to cancel.
-- Error messages displayed below the textarea.
-- `aria-invalid` and `aria-describedby` for accessibility.
-
-### Comment Actions Component (components/comment-actions.tsx)
-
-Action button row:
-- Like button with count and filled/unfilled state.
-- Reply button (hidden if depth >= 5).
-- Edit button (owner only).
-- Delete button (owner only, red color).
-- All buttons have descriptive `aria-label` attributes.
-
-### Load More Component (components/load-more.tsx)
-
-Pagination button:
-- Subscribes to `hasMore` and `isLoading` from the store.
-- Shows loading spinner during fetch.
-- Hidden when no more comments available.
-
-## Usage
-
-### 1. Wire up the thread in your page
-
-```tsx
-'use client';
-
-import { CommentThread } from '@/components/comment-thread';
-import { useCommentThread } from '@/hooks/use-comment-thread';
-import { useCommentActions } from '@/hooks/use-comment-actions';
-
-export default function ThreadPage({ threadId }: { threadId: string }) {
-  const { isLoading, error, loadMore, loadChildren } = useCommentThread({
-    threadId,
-    wsUrl: `wss://api.example.com/comments/${threadId}/ws`,
-  });
-
-  const { handleLike, handleEdit, handleDelete, handlePost } = useCommentActions({
-    currentUserId: 'user-123',
-    onError: (message, retryable, retry) => {
-      // Show toast notification
-      console.error(message, retryable, retry);
-    },
-  });
-
-  if (error) return <div>Error: {error}</div>;
-
-  return <CommentThread />;
-}
-```
-
-### 2. Wire actions into CommentNode
-
-In the actual implementation, `CommentNode` receives action callbacks from the parent via props or context. The example shows simplified handlers — in production, wire `handleLike`, `handleEdit`, etc. through the component tree.
-
-## Edge Cases Handled
-
-| Scenario | Handling |
-|----------|----------|
-| Navigate away during post | AbortController cancels in-flight request; optimistic comments cleaned on unmount |
-| WebSocket reply for unloaded parent | Comment buffered in `bufferedComments`; flushed when parent is loaded |
-| Concurrent edits | Last-write-wins via server timestamp; UI updates with server version |
-| Deleted parent with visible children | Children re-rooted to grandparent or become root comments |
-| Rapid like clicks | Each like is a separate API call; debouncing can be added at the API layer |
-| XSS in comment content | Content sanitized server-side; client renders via dangerouslySetInnerHTML with pre-sanitized HTML |
-| Reply beyond max depth | Flattened and shown via "see more replies" link |
-
-## Performance Characteristics
-
-- **addComment (flat store)**: O(1) — record insert
-- **buildTree (derive)**: O(n) — single pass, memoized via useMemo
-- **editComment**: O(1) — record update
-- **deleteComment**: O(k) — re-root k children (k typically < 20)
-- **likeComment**: O(1) — increment counter
-- **getVisibleNodes**: O(n) — walk + filter collapsed
-- **WebSocket merge**: O(1) — record insert
-
-## Testing Strategy
-
-1. **Unit tests**: Test store actions (applyOptimisticInsert, confirmOptimisticInsert, rollbackMutation) with mocked state. Test tree utilities with known inputs/outputs.
-2. **Integration tests**: Render CommentThread, mock fetch, assert optimistic comment appears, then is confirmed or rolled back. Test WebSocket message handling.
-3. **Accessibility tests**: Run axe-core on rendered thread, verify aria-live regions, role attributes, keyboard navigation.
-4. **Edge case tests**: Navigate away during post, rapid like clicks, XSS content, WebSocket disconnect/reconnect.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

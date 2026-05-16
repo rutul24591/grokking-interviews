@@ -1,12 +1,53 @@
-This is a runnable “A11y Audit Console” demo that models how accessibility automation is done in production:
+# Accessibility Automation - example-1 Explanation
 
-- A **catalog of UI variants** (some intentionally broken) represents real regressions.
-- A server-side audit endpoint runs **axe** against the rendered HTML using **jsdom**, producing a structured report.
-- A baseline (“known issues”) can be captured, then later runs can enforce a **no-regression budget**.
-- A Node **agent** simulates a CI job: audits all variants and exits non-zero if the budget is exceeded.
+## Article context
+This example supports the article `non-functional-requirements/advanced-bonus/accessibility-automation`. The article is about Comprehensive guide to accessibility automation, covering automated testing tools, CI/CD integration, WCAG compliance, and accessibility governance for staff/principal engineer interviews.. The most relevant article sections for this example are: Definition and Context; Key Insight: Automation Is Necessary But Not Sufficient; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-world use cases; Common Interview Questions with Detailed Answers.
 
-Key production ideas:
-1) **Automation, not one-off fixes**: treat accessibility as a measurable, testable contract.
-2) **Budgets and baselines**: allow existing debt, but prevent it from growing (common in large legacy UIs).
-3) **Actionable output**: report includes rule IDs and failure details that can be wired to SARIF/PR annotations.
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
+
+## File-by-file walkthrough
+- `app/api/audit/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/api/baseline/route.ts`: Models an API boundary, request handling path, or backend contract.
+- `app/globals.css`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/layout.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `app/page.tsx`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `lib/audit.ts`: Implements the main logic, including AuditRequestSchema, normalizeImpact, runA11yAudit, require, dom.
+- `lib/store.ts`: Models client or service state transitions and update behavior.
+- `lib/variants.ts`: Implements the main logic, including VARIANTS, getVariant.
+- `next-env.d.ts`: Implements the executable logic or UI behavior for the example.
+- `next.config.ts`: Implements the main logic, including nextConfig.
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `postcss.config.mjs`: Provides supporting example content: const config = { plugins: { "@tailwindcss/postcss": {}, }, }; export default config;.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- pagination or cursor handling
+- authentication or authorization boundaries
+- input validation and schema safety
+- error handling and fallback behavior
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Large result sets need stable pagination and empty-page behavior.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Malformed, partial, or schema-incompatible input must be rejected clearly.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

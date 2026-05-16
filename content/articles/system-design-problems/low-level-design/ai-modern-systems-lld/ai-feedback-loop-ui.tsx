@@ -3,208 +3,504 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-ai-feedback-loop",
   title: "AI Feedback Loop UI",
   description:
-    "Collecting user feedback on AI outputs for continuous model improvement, RLHF labeling, and quality monitoring.",
+    "Collecting user feedback on AI outputs for RLHF, continuous quality monitoring, and model improvement — progressive disclosure, implicit signals, training pipeline, and spam prevention.",
   category: "low-level-design",
   subcategory: "ai-modern-systems",
   slug: "ai-feedback-loop-ui",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "ai", "feedback", "rlhf", "quality", "improvement"],
+  wordCount: 5100,
+  readingTime: 30,
+  lastUpdated: "2026-05-16",
+  tags: ["lld", "ai", "feedback", "rlhf", "quality", "improvement", "implicit-signals"],
   relatedTopics: ["streaming-chat-ui", "ai-assisted-search-qa-ui"],
 };
 
 export default function AIFeedbackLoopArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">
-          A deployed AI assistant generates thousands of responses per day. Some are excellent; some are wrong, unhelpful, or inappropriate. Without a feedback mechanism, the product team has no systematic way to identify which responses were bad, what categories of failures are occurring, or whether the model's quality is improving or degrading across deployments. The engineering team is flying blind.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          User feedback is the highest-signal data source available for AI quality assessment. Unlike automated metrics (BLEU score, perplexity), user feedback directly measures whether the AI helped the user accomplish their goal. But feedback collection is inherently in tension with user experience: every modal, every required rating, every feedback form adds friction that reduces engagement. The challenge is designing a feedback system that maximizes signal quality and volume while minimizing disruption to the primary task.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          The feedback data serves multiple downstream uses. For immediate quality monitoring, dashboards track feedback rates by query category and response characteristics, alerting the team to regressions. For RLHF (Reinforcement Learning from Human Feedback), curated preference pairs (human judges comparing two responses and selecting the better one) provide training signal for reward models. For RAG systems, low-rated responses with citations indicate retrieval failures. For prompt engineering, negative feedback clusters around specific query patterns that the current prompt handles poorly.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Explicit assumptions:</strong> Users are willing to provide lightweight feedback (a single click) and occasionally more detailed feedback for strong reactions (very good or very bad). Feedback is attributed to specific responses (not just general ratings). The feedback pipeline handles both synchronous (blocking on submission) and asynchronous (fire-and-forget) paths without degrading the user experience. Privacy controls allow users to opt out.
-        </HighlightBlock>
-      </section>
+      <p>
+        A deployed AI assistant generates thousands of responses per day. Without
+        a feedback mechanism, the product team has no systematic way to know which
+        responses were bad, what categories of failure are occurring, or whether
+        quality is improving or degrading across deployments. User feedback is the
+        highest-signal data source available for AI quality assessment — superior
+        to automated metrics because it directly measures whether the AI helped the
+        user accomplish their goal. The engineering challenge is capturing that signal
+        at scale without degrading the primary user experience: every modal, every
+        required rating, every feedback form adds friction that reduces engagement.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Micro-feedback:</strong> Thumbs up/down (or a single star/flag) available on every response. Submits with one click. No confirmation dialog.
-          </li>
-          <li>
-            <strong>Structured feedback:</strong> After a negative rating, offer a categorized reason selection (Inaccurate, Incomplete, Off-topic, Harmful, Other) with optional free-text explanation.
-          </li>
-          <li>
-            <strong>Correction submission:</strong> User can provide a better version of the response, which becomes a high-quality training example.
-          </li>
-          <li>
-            <strong>Preference comparison:</strong> For A/B experiments, show two responses side-by-side and ask "which was more helpful?" This is the primary RLHF preference pair collection mechanism.
-          </li>
-          <li>
-            <strong>Feedback revision:</strong> User can change a submitted rating within a short window (e.g., 5 minutes) before it becomes immutable.
-          </li>
-          <li>
-            <strong>Aggregation dashboard:</strong> Internal analytics showing feedback rates, category distribution, quality trends over time, and response-level feedback browsing.
-          </li>
-          <li>
-            <strong>Feedback acknowledgment:</strong> Periodically show users that their feedback has influenced improvements ("Your feedback helped us improve accuracy for this type of question").
-          </li>
-        </ul>
+      <ArticleImage
+        src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui.svg"
+        alt="AI feedback loop showing collection UI with thumbs up/down and correction form, feedback to training pipeline, feedback schema, analytics dashboard, and implicit vs explicit signals"
+        caption="AI feedback loop: collection UI, implicit signal capture, training pipeline stages, and analytics monitoring"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Friction minimization:</strong> The primary feedback action (thumbs up/down) must complete with one click and no page navigation. The submission must feel instantaneous to the user (optimistic UI update with fire-and-forget network request).
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Scale:</strong> Handle 10 million feedback submissions per day without degrading response latency. Feedback submission is an async write path, entirely decoupled from the AI inference path.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Privacy:</strong> No PII in feedback records unless the user explicitly provides it in the correction text. Anonymize userId to a hashed identifier in the feedback store. Provide opt-out that stops all feedback collection, not just explicit submissions.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Reliability:</strong> Feedback submissions must not be lost due to network errors. Use a write-ahead local queue (IndexedDB) with retry so that feedback submitted in offline or poor-network conditions is delivered when connectivity returns.
-          </HighlightBlock>
-        </ul>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Feedback systems vary enormously in scope. A simple thumbs up/down collecting
+        preference signals for A/B experimentation is fundamentally different from a full
+        RLHF data collection pipeline feeding weekly fine-tuning runs.
+      </p>
+      <p>
+        <strong>What is the feedback used for?</strong> Quality monitoring (is the AI
+        getting better or worse across deployments?) requires aggregate metrics over time.
+        RLHF preference data (training a reward model) requires (prompt, responseA, responseB,
+        preferred) pairs. Failure case identification (what query categories are failing?)
+        requires category-labeled negative feedback. Fine-tuning examples require
+        (prompt, ideal response) pairs from corrections. Each downstream use case has
+        different data collection requirements.
+      </p>
+      <p>
+        <strong>Volume vs signal quality trade-off.</strong> One-click thumbs produce
+        massive volume with low specificity. Multi-question surveys produce detailed
+        signal from almost no one. The design challenge is finding the tier of the
+        progressive disclosure ladder that maximizes useful signal for the specific
+        downstream use case.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Define the privacy model before collecting any data. Every piece of feedback
+        stored about a user's AI interactions is a privacy exposure. The user's question,
+        the AI's response, their rating, and their correction create a detailed profile
+        of their knowledge gaps and thought patterns. Anonymize at collection time —
+        use a session-scoped hash rather than a userId. Strip PII from correction text
+        before storage. Provide genuine opt-out (not just from explicit feedback, but
+        from implicit signal collection) with no degradation of the AI service.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">Feedback submitted on a streaming-in-progress response — must be attributed to the partial response and flagged as "early" feedback, not confused with feedback on the completed response.</HighlightBlock>
-          <li>Spam feedback (same user thumbs-downing every response, or bot-generated feedback) — detect and filter anomalous feedback patterns before including in training data.</li>
-          <li>Correction that is itself incorrect (user provides wrong information as a "better answer") — corrections go through a human review queue before being used as training examples, not ingested automatically.</li>
-          <li>Contradictory feedback signals (thumbs up but says "inaccurate" in structured feedback) — store both signals faithfully; surface the contradiction in the review UI for human adjudication.</li>
-        </ul>
-      </section>
+      <h2>The Progressive Disclosure Feedback Ladder</h2>
+      <p>
+        The key insight in feedback UI design: feedback volume drops exponentially
+        with each additional step of friction. The design should match the collection
+        mechanism to the signal needed, not maximize the amount of information extracted
+        from each user.
+      </p>
+      <p>
+        <strong>Level 1 (always visible): thumbs up / thumbs down.</strong> Two icon
+        buttons that appear on hover on desktop, always visible on mobile. Submits
+        instantly with no confirmation. Updates optimistically (the button fills to show
+        selection). This level captures 5–15% of users for responses they feel strongly
+        about — those with strong positive or negative reactions. It provides the primary
+        quality signal for monitoring and A/B experimentation.
+      </p>
+      <p>
+        <strong>Level 2 (on negative rating): category chips.</strong> When the user
+        clicks thumbs down, the response card expands inline to show a grid of single-tap
+        reason chips: "Not accurate," "Incomplete," "Too long," "Off-topic," "Harmful or
+        unsafe." Selecting any chip submits the detailed feedback. No text required. This
+        level captures 30–50% of users who gave a negative rating — those who feel
+        strongly enough to indicate why. Category distribution drives failure analysis.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Never require text entry before submitting category feedback. The moment you
+        add a required text field, the overwhelming majority of users abandon the form
+        rather than filling it out. Make text optional, clearly labeled as such. Data
+        shows that optional free text after a chip selection gets 5–10% completion —
+        a meaningful volume of corrections given the total feedback scale. Required text
+        would get near-zero completions.
+      </HighlightBlock>
+      <p>
+        <strong>Level 3 (optional): correction submission.</strong> After selecting a
+        chip, an optional text area allows the user to provide a better response. This
+        is the highest-value training data — it provides not just "this response was bad"
+        but "here is what good looks like." But corrections require human review before
+        they enter training data. Users provide incorrect corrections, corrections that
+        address only one dimension of a multi-part answer, and corrections with their own
+        errors. An automated ingestion pipeline for user corrections is dangerous.
+      </p>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The feedback UI lives as a small control cluster on each assistant response: thumbs up (👍), thumbs down (👎), and a copy button. Clicking thumbs down expands an inline form with category chips (single-tap reason selection) and an optional text area for a correction.</HighlightBlock>
-<HighlightBlock as="p" tier="important">All feedback is submitted asynchronously via a fire-and-forget API call. The UI updates optimistically on click (button changes to filled/selected state) without waiting for the server.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          On the backend, the feedback write path is a separate lightweight service from the inference path. Feedback records flow through a Kafka/SQS queue into a data warehouse (BigQuery, Redshift) for analytics, into a human review queue for high-priority items (corrections, harmful content flags), and into the RLHF pipeline on a weekly/monthly batch cycle.
-        </HighlightBlock>
-      </section>
+      <h2>Feedback Record Schema</h2>
+      <p>
+        The feedback record captures what happened, not who provided it. The schema:
+        feedbackId (UUID), sessionId (anonymized session hash, not userId), conversationId,
+        messageId (the specific assistant message being rated), rating ("thumbsUp" or
+        "thumbsDown" or null for implicit-only events), categories (array of selected
+        reason strings), correction (optional string, PII-scrubbed before storage),
+        modelVersion (which model generated the response), promptVersion (which system
+        prompt was active at generation time), createdAt, and queryContext (the user's
+        question, stripped of PII, for debugging).
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Storing modelVersion and promptVersion alongside every feedback record is
+        non-negotiable for systematic improvement. Without version attribution, you
+        cannot answer the questions that make feedback actionable: "did feedback quality
+        improve after deploying prompt v4?" or "is the new model getting better ratings
+        than the previous model?" Unattributed feedback is directionally useful but
+        cannot drive precise optimization decisions. Instrument version attribution
+        before the first feedback record is collected.
+      </HighlightBlock>
 
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui.svg"
-          alt="AI feedback loop showing collection UI with thumbs up/down and correction form, 8-step feedback to training pipeline, feedback schema, analytics dashboard, and implicit vs explicit signals"
-          caption="AI feedback loop showing collection UI with thumbs up/down and correction form, 8-step feedback to training pipeline, feedback schema, analytics dashboard, and implicit vs explicit signals"
-        />
+      <h2>Optimistic UI and Fire-and-Forget Submission</h2>
+      <p>
+        The feedback UI must feel instantaneous. The primary action — clicking thumbs
+        up or down — should update the UI immediately without waiting for the network
+        round-trip. Optimistic update pattern: on click, update the local feedback store
+        (Zustand or React state keyed by messageId) to reflect the selected state, then
+        submit the feedback record asynchronously via a fire-and-forget fetch call.
+      </p>
+      <p>
+        The network submission is not awaited. If it fails (transient error, user went
+        offline), write the feedback record to an IndexedDB queue. A service worker or
+        a next-page-load handler retries the queue when connectivity returns. This pattern
+        achieves near-zero loss rate even on mobile connections with intermittent
+        coverage. The alternative — showing an error and asking the user to retry — gets
+        a near-zero retry rate in practice; users don't care enough about feedback submission
+        to retry it manually.
+      </p>
+      <p>
+        Feedback revision window: allow rating changes within a short window (5 minutes)
+        before the record becomes immutable. After submission, the rating state persists
+        in the local feedback store so that the selected state is visible if the user
+        scrolls away and returns. After the revision window closes, the controls are
+        disabled with a tooltip ("Your feedback has been recorded").
+      </p>
 
-        <h2>Detailed Design</h2>
+      <h2>Implicit Feedback Signals</h2>
+      <p>
+        Explicit feedback (thumbs up/down) has high signal quality but low coverage —
+        85–95% of users never rate responses, even helpful ones. Implicit behavioral
+        signals augment explicit ratings by inferring quality from user actions after
+        receiving a response.
+      </p>
+      <p>
+        The most predictive implicit signals: copy event (the user copied the response
+        text — strong positive signal, they found it useful enough to use directly);
+        rephrase event (within 30 seconds of receiving a response, the user rephrases
+        the same question — strong negative signal, the response missed the mark);
+        followup question event (the user asks a follow-up that implies the answer was
+        incomplete); session abandonment event (the user closes the session within 10
+        seconds of receiving a response without any interaction — indicates either their
+        need was met or the answer was completely wrong). Tracking conversation length
+        (more turns after a response indicates it led somewhere productive) and the
+        presence of a "Copy to clipboard" action provide additional signals.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Implicit signals have selection bias: they're available for all users, not
+        just those who explicitly rate. But they're noisier — a user might copy a response
+        to share it as an example of a bad AI answer, or abandon a session because they
+        found the answer elsewhere. Weight explicit ratings more heavily in model training
+        data selection; use implicit signals for aggregate quality monitoring where
+        noise averages out across large populations.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Feedback Record Schema</h3>
-        <HighlightBlock as="p" tier="important">
-          Each feedback record captures: feedbackId (UUID), sessionId (anonymized, not userId), conversationId, messageId (the specific assistant message being rated), rating ('thumbsUp' | 'thumbsDown' | null for implicit-only feedback), categories (array of category strings from the reason selection: ['Inaccurate', 'Incomplete']), correction (optional string — the user's provided better answer), model (which model version generated the response), promptVersion (which system prompt was active), createdAt (timestamp), and context (the user's original question, stripped of PII, for debugging).
-        </HighlightBlock>
-        <p>
-          Storing the promptVersion and model alongside feedback is critical for analytics. Without this attribution, you cannot answer "did feedback quality improve after deploying prompt v4?" or "is GPT-4 getting better ratings than the previous model?" Version attribution transforms feedback from a raw signal into an experiment result.
-        </p>
+      <h2>RLHF Preference Data Collection</h2>
+      <p>
+        RLHF (Reinforcement Learning from Human Feedback) requires preference pairs:
+        given a prompt, which of these two responses is better? These pairs train a
+        reward model that scores response quality, providing the optimization signal
+        for policy model training.
+      </p>
+      <p>
+        A/B comparison collection: show two responses to the same prompt side by side
+        and ask "which was more helpful?" This requires deliberately generating two
+        responses per query (doubling inference cost) and presenting a comparison UI.
+        The UX: a horizontal split view with two response panels, a "Prefer A" / "Prefer B"
+        / "Both good" / "Both bad" control at the bottom. This approach produces
+        clean preference labels but is expensive and intrusive — it should be reserved
+        for targeted collection on high-priority query categories, not shown for every
+        interaction.
+      </p>
+      <p>
+        Inferred comparison from ratings: when response A gets a thumbs up and response B
+        to a similar prompt gets a thumbs down, infer the preference pair (A, B, prefer A).
+        This is lower quality than explicit comparison (the prompts may not be identical,
+        the users may have different standards) but produces broad coverage at zero
+        incremental collection cost. Use inferred pairs for reward model pre-training;
+        use explicit comparison pairs for fine-tuning and evaluation.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Corrections are the most valuable RLHF data but the most dangerous to ingest
+        automatically. Every correction must go through a human review queue before
+        entering training data. Reviewers check: (1) Is the correction actually better
+        than the original response? (2) Is it accurate? (3) Does it address the user's
+        actual question? (4) Is it free of PII? A correction that fails any of these
+        checks is rejected. Building a correction review tool — with side-by-side
+        comparison, accept/reject controls, and edit capability — is a prerequisite
+        for using corrections in training.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimistic UI and Fire-and-Forget Submission</h3>
-        <p>
-          The feedback UI updates immediately on click (optimistic state update) and submits the feedback record asynchronously. The fetch call to the feedback endpoint is not awaited — it runs in the background. If the network request fails (transient error, user went offline), the feedback is written to an IndexedDB queue. A service worker or next-page-load handler retries the queue. This pattern ensures near-zero loss rate for feedback submissions even on unreliable connections.
-        </p>
-        <p>
-          The optimistic update is persisted to a feedback store (React state or Zustand) keyed by messageId, so the selected state (filled thumbs icon) persists if the user scrolls away and returns. If the revision window is still open, the controls allow changing the rating; after the revision window closes, the rating is locked (controls become disabled with a tooltip explaining they're finalized).
-        </p>
+      <h2>Feedback Analytics Dashboard</h2>
+      <p>
+        The dashboard serves product, ML, and operations teams with different needs.
+        A unified view with filter and drill-down capabilities serves all three better
+        than separate siloed dashboards.
+      </p>
+      <p>
+        Primary quality metric: thumbs-up rate over time (7-day rolling average).
+        This is the single number that summarizes AI quality from the user's perspective.
+        Segment by query category (factual questions, creative tasks, code assistance),
+        by model version, and by prompt version to isolate changes to their impact area.
+        A drop in thumbs-up rate following a deployment is the signal that something
+        regressed.
+      </p>
+      <p>
+        Failure mode distribution: category chip breakdown of negative feedback (what
+        percentage of thumbs-down responses are "Not accurate" vs "Too long" vs "Harmful?").
+        This distribution guides the next improvement: if "Not accurate" dominates, focus
+        on retrieval (for RAG) or grounding improvements. If "Too long" dominates, adjust
+        the length instruction in the system prompt.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Implement automated alerting on the thumbs-up rate. A 5 percentage point drop
+        in the rolling 24-hour rate compared to the 7-day baseline should trigger an
+        immediate alert to the on-call ML engineer. Quality regressions from bad deployments
+        can affect millions of users per day — detecting them within hours rather than
+        days is a critical operational capability. The alert threshold should be calibrated
+        against the natural variance in the metric (compute standard deviation and alert
+        at 2–3 sigma below baseline).
+      </HighlightBlock>
+      <p>
+        Correction review queue metrics: how many corrections are pending review, what
+        fraction are accepted vs rejected, and what the acceptance rate is by query
+        category. High rejection rates on a specific category indicate users are
+        systematically providing incorrect corrections for that topic — possibly because
+        they themselves misunderstand the correct answer. This is a signal to invest
+        in authoritative documentation or to exclude that category from correction-based
+        training.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Progressive Feedback UI Design</h3>
-        <p>
-          The feedback UX follows a progressive disclosure pattern. Level 1 (always visible): small thumbs icons that appear on hover (desktop) or are always visible (mobile). Level 2 (on thumbs down): inline expansion of a category chip grid — single-tap chips like "Not accurate," "Too long," "Offensive." Submitting any chip completes the detailed feedback without requiring a text entry. Level 3 (optional, on "Other" or explicit "Provide correction"): a text area for free-form explanation and/or a better answer. Level 3 is optional, clearly labeled as such, and has a character limit to prevent abuse.
-        </p>
-        <p>
-          This progressive structure is critical for feedback volume. Data shows that 5–15% of users will provide a thumbs rating on responses they feel strongly about. Of those, 30–50% will select a category chip when prompted immediately after the rating. Only 5–10% will write free text. Designing the form to require free text before submitting destroys volume. The category chips balance specificity (structured, analyzable data) with low friction (single tap).
-        </p>
+      <h2>Feedback-to-Training Pipeline</h2>
+      <p>
+        The path from feedback collection to model improvement has multiple stages,
+        each with its own latency and quality characteristics.
+      </p>
+      <p>
+        Stage 1 (real-time): feedback records flow into the collection API and are
+        written to a durable queue (Kafka or SQS). The write path is isolated from
+        the inference path — feedback submission never delays response delivery.
+      </p>
+      <p>
+        Stage 2 (near real-time, minutes): queue consumers aggregate feedback records
+        into the analytics warehouse (BigQuery, Redshift) for dashboard consumption.
+        Anomaly detection runs on the incoming stream to surface quality regressions.
+      </p>
+      <p>
+        Stage 3 (daily): correction records route to the human review queue.
+        Reviewers process the queue during business hours using the review tool.
+        Accepted corrections are tagged for inclusion in the next training dataset.
+      </p>
+      <p>
+        Stage 4 (weekly/monthly): the training team assembles a curated dataset from
+        accepted corrections, high-quality preference pairs (from A/B comparisons and
+        high-confidence inferred pairs), and filtered negative examples. The reward model
+        is retrained or fine-tuned against this dataset. The updated model is evaluated
+        against a held-out test set before deployment.
+      </p>
+      <p>
+        Stage 5 (deployment): the updated model deploys to a canary fraction of traffic.
+        Feedback rates on the canary are compared against the control. Statistically
+        significant improvement triggers a full rollout; regression triggers rollback.
+        The feedback loop is closed: model improvement is directly measured by the same
+        feedback system that drove it.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Implicit Feedback Signals</h3>
-        <p>
-          Explicit feedback (thumbs up/down) has high signal quality but low volume. Most users never rate responses, even helpful ones. Implicit feedback signals augment explicit ratings by inferring quality from behavioral data: Did the user copy the response text? (Strong positive signal — they found it useful enough to use directly.) Did they immediately rephrase their question? (Negative signal — the response missed the mark.) Did they ask a follow-up that indicates the answer was incomplete? Did they abandon the conversation after receiving the response?
-        </p>
-        <p>
-          Implicit signals are logged as structured events: copy_event (with character count), rephrase_event (within N seconds of receiving response), followup_question_event (semantic similarity to original question), session_abandonment_event. These events are attributed to the preceding response and aggregated with explicit feedback to produce a composite quality score. Implicit signals enable quality measurement even for the 85–95% of users who never click thumbs.
-        </p>
+      <h2>Spam and Adversarial Feedback Prevention</h2>
+      <p>
+        Feedback is a high-value signal that can be poisoned. A user who systematically
+        down-rates every response artificially depresses quality metrics. A coordinated
+        group that up-rates specific responses can inject those examples into training data.
+      </p>
+      <p>
+        Rate limiting: a single session can submit a maximum of N feedback records per
+        hour. Burst activity above this threshold triggers a review hold on that session's
+        feedback — it enters the pipeline but is flagged, not immediately trusted.
+      </p>
+      <p>
+        Statistical anomaly detection: users who rate 90%+ of responses positively or
+        negatively are outliers relative to the population distribution. Automatic flagging
+        and weight reduction prevents extreme raters from dominating aggregate metrics.
+        This is not a ban — legitimate users with consistent strong opinions should not
+        be permanently excluded — but their feedback is down-weighted in model training
+        while remaining in monitoring analytics.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Inter-rater agreement validation: if 80% of users who rated a specific response
+        gave it thumbs up, but one session gave it thumbs down, the majority signal is
+        more reliable. For model training data selection, use consensus from multiple
+        independent ratings when available, rather than trusting any single rating.
+        Disputed responses (high variance in ratings) should be routed to human review
+        rather than automatically included as positive or negative examples.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">RLHF Preference Data Collection</h3>
-        <p>
-          RLHF requires preference pairs: (prompt, responseA, responseB, preferred). These pairs train a reward model that scores response quality, which in turn provides a training signal for the policy model (the LLM) via reinforcement learning. The preference pairs are the highest-value training data but the hardest to collect at scale.
-        </p>
-        <p>
-          Two collection strategies: A/B comparison UI (show both responses, ask which is better — requires deliberately generating two responses, doubling inference cost, but produces clean preference labels); and inferred comparison from ratings (when response A gets thumbs up and response B to a similar prompt gets thumbs down, infer A &gt; B — lower quality signal but zero incremental collection cost). Production systems use both: explicit comparison collection for high-priority query categories, inferred comparison for broad coverage.
-        </p>
-        <p>
-          Corrections (where users provide a better response) are the most valuable RLHF data: they provide not just "this response was bad" but "here is what good looks like." However, corrections require human review before ingestion — users can provide incorrect corrections, corrections written in poor quality (typos, incomplete sentences), or corrections that address a different aspect of the question than the original response. A human review queue with labelers confirms whether each correction is actually better before it enters training data.
-        </p>
+      <h2>Interview Q&A</h2>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Analytics Dashboard</h3>
-        <HighlightBlock as="p" tier="important">
-          The feedback analytics dashboard serves multiple roles: quality monitoring (is the AI getting better or worse?), failure pattern identification (which query categories are getting the most thumbs down?), and experiment evaluation (did prompt v5 improve feedback rates?).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          Key metrics displayed: overall thumbs-up rate over time (primary quality signal), thumbs-up rate segmented by query category/intent, category distribution of negative feedback (which reason categories are most common?), correction submission rate (how often users want to provide a better answer — indicates systematic failure patterns), model comparison metrics (new model vs previous model feedback rates), and feedback volume (absolute number of ratings per day — confirms the feedback collection UI is surfacing to enough users).
-        </HighlightBlock>
-        <p>
-          Anomaly detection on feedback rates: a significant drop in thumbs-up rate following a deployment is a strong signal of a regression. Automated alerting (Slack/email) when the rolling 24h thumbs-up rate drops more than 5 percentage points provides a safety net that catches regressions before they affect a large user population.
-        </p>
+      <h3>Q: How do you attribute feedback to the right model version when a deployment is in progress?</h3>
+      <p>
+        Each AI response is generated with a specific model version and prompt version
+        identified at the time of generation. These identifiers are embedded in the
+        response metadata and passed back to the client as opaque tokens in the response
+        payload (not visible to users). When the user rates a response, the client sends
+        these tokens back as part of the feedback record. The feedback collection API
+        records them verbatim — it never infers version from the current deployment state,
+        because that state may have changed between generation and feedback. This ensures
+        feedback is always attributed to the version that actually produced the response,
+        even if a new version deployed in the interim.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Feedback to Training Pipeline</h3>
-        <p>
-          The path from user feedback to model improvement has multiple stages: (1) Feedback collection (real-time, via the API). (2) Anonymization and PII scrubbing (strip any user identifiers and PII from correction text before storage). (3) Aggregation into analytics warehouse (daily batches for dashboards). (4) Human review queue routing (corrections above a quality threshold, flagged harmful content). (5) Curated dataset assembly (selecting high-quality preference pairs from labeled reviews). (6) Reward model training or fine-tuning (weekly/monthly cycle depending on data volume). (7) Evaluation against held-out test set. (8) A/B deployment with feedback monitoring to confirm improvement.
-        </p>
-        <p>
-          The cycle time from user feedback to model improvement is typically weeks to months. Communicating this to users ("Your feedback makes our AI better — it takes a few weeks to show up") manages expectations and maintains user trust in the feedback mechanism.
-        </p>
+      <h3>Q: How do you handle feedback on responses that are still streaming?</h3>
+      <p>
+        Feedback submitted on a streaming-in-progress response should be attributed to
+        the partial response and flagged as "early" feedback. This is important because
+        early feedback often reflects impatience ("this is taking too long") rather than
+        quality judgment of the final response. The feedback record includes a streamingState
+        field: "complete", "in_progress", or "cancelled". Analytics dashboards filter out
+        "in_progress" feedback from quality metrics (it's latency feedback, not content
+        quality feedback) but retain it for streaming performance monitoring. RLHF training
+        data selection also excludes early feedback — preference pairs must compare
+        completed responses.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Spam and Abuse Prevention</h3>
-        <HighlightBlock as="p" tier="important">
-          Feedback is a valuable signal that can be poisoned by spam or adversarial manipulation. A user who systematically down-rates all responses could artificially depress quality metrics. A coordinated group who up-rates a specific response to influence its promotion to training data could inject bad examples.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Defenses: rate limiting (max N ratings per user per hour); behavioral anomaly detection (users who rate 100% of responses are statistical outliers — flag their feedback for weight reduction); inter-rater agreement validation (if 80% of users rate a response positively but one user rates it negatively, the positive consensus is more reliable); and holding labeled data from untrusted raters outside the training corpus until a human reviewer validates.
-        </HighlightBlock>
-      </section>
+      <h3>Q: How would you design the feedback system to support multiple AI products from one platform?</h3>
+      <p>
+        A shared feedback platform with product-level namespacing. The feedback record
+        includes a productId and a productConfigId (the specific AI configuration within
+        that product — different feature areas may have different models or prompts).
+        Analytics dashboards support product-level filtering. The human review queue
+        supports assignment rules so corrections for product A route to the team that
+        owns product A. The RLHF training data is product-specific — a correction for
+        a customer support bot should not inform training for a code assistant. The shared
+        platform reuses infrastructure (collection API, queue, warehouse, review tool)
+        while maintaining logical separation of data and human review workflows per product.
+      </p>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
+      <h2>Feedback Attribution Across Sessions</h2>
+      <p>
+        A user who receives a response at 2pm, uses the information, and rates the response
+        at 5pm presents an attribution challenge. The response was generated with model
+        version 3.2 and prompt version 7. By 5pm, a canary deployment has shifted 20%
+        of traffic to model version 3.3 and prompt version 8. Which version does the
+        delayed feedback belong to? The naive approach — attribute feedback to the currently
+        active version — is incorrect and will corrupt version comparison metrics.
+      </p>
+      <p>
+        The solution is response-time attribution embedded in the response payload. When
+        the AI generates a response, it produces an opaque attribution token — a signed
+        JWT containing the modelVersion, promptVersion, experimentId, and a timestamp —
+        and includes this token in the response metadata. The token is stored client-side
+        alongside the message (in the conversation store or as a data attribute on the
+        DOM element). When the user submits feedback at any later time, the attribution
+        token is included in the feedback record. The feedback collection API decodes
+        the token and records the version identifiers from generation time, not from
+        request time.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Attribution token signing prevents tampering. An unsigned token that a malicious
+        user modifies to point to a different model version would corrupt training data.
+        Sign the token with a server-side secret (HMAC-SHA256 is sufficient). The feedback
+        collection API verifies the signature before accepting the attribution data.
+        The token expiry should be generous (30 days) to accommodate users who return
+        to rate responses from prior sessions — a 5-minute expiry would miss most delayed
+        feedback.
+      </HighlightBlock>
+      <p>
+        Cross-session feedback capture: some users rate responses days after receiving
+        them (after applying the advice and determining whether it was correct). The
+        client-side conversation store (IndexedDB) retains message records including
+        attribution tokens for 90 days. The feedback UI shows the rating controls
+        on any message visible in the conversation history, not only on the most recent
+        response. Cross-session ratings are lower volume but higher quality — they
+        represent considered judgments based on real-world application of the AI's
+        advice, not immediate impressions.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Volume vs Signal Quality</h3>
-        <HighlightBlock as="p" tier="crucial">
-          High-friction feedback forms (multi-question surveys after every response) produce high-quality, detailed feedback but almost no one completes them. One-click thumbs produce massive volume but limited specificity. The category chips pattern is the effective middle ground: 3x the specificity of pure thumbs with only a modest friction increase. Optimize for this middle tier — it's where the best signal-to-friction ratio lies.
-        </HighlightBlock>
+      <h2>Aggregate Quality Dashboards for ML Teams</h2>
+      <p>
+        The product team's quality dashboard (thumbs-up rate, failure mode distribution)
+        is oriented toward detecting and alerting on regressions. ML teams have different
+        information needs: they need to understand the distribution of training data quality,
+        the composition of the correction corpus, the coverage of different query categories
+        in the feedback dataset, and the signal-to-noise ratio of different feedback sources.
+      </p>
+      <p>
+        Training data coverage dashboard: a heatmap showing feedback volume by query
+        category (intent type) and rating. Dense cells (many feedback records) indicate
+        well-covered categories where the model will receive strong training signal.
+        Sparse cells indicate categories where the training dataset is thin — the model
+        may overfit to the few available examples or receive insufficient correction signal.
+        The ML team uses this dashboard to prioritize targeted data collection: run a
+        focused evaluation campaign that deliberately generates and rates responses in
+        the sparse categories.
+      </p>
+      <p>
+        Correction quality distribution: corrections from users are not uniformly useful.
+        Some corrections improve on the original response significantly (high delta quality);
+        others are marginal edits with no meaningful improvement; some are incorrect. The
+        ML dashboard shows the distribution of correction quality (scored by the review
+        team on a 1–5 scale during the review process) and tracks trends over time.
+        Declining average correction quality (users are submitting lower-quality corrections
+        recently) may indicate the AI's baseline has improved to the point where users
+        can no longer meaningfully improve on it — or that the reviewer team needs
+        recalibration.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Feedback dataset versioning is a non-negotiable requirement for reproducible ML
+        experiments. When the ML team trains a new model version, they must be able to
+        specify exactly which feedback records were included in training — and reproduce
+        the same training dataset in the future. Implement the feedback warehouse as
+        an append-only log where records are never updated or deleted, only marked with
+        a status (active, deprecated, flagged). Training dataset snapshots capture the
+        set of record IDs and their statuses at a specific point in time. Any model
+        retrained from that snapshot produces the same results as the original training
+        run.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Explicit vs Implicit Feedback</h3>
-        <HighlightBlock as="p" tier="important">
-          Explicit feedback is the gold standard but has selection bias: users with strong reactions (very positive or very negative) are over-represented relative to average interactions. Implicit feedback (copy rate, rephrase rate) covers the silent majority but has lower signal quality and higher noise. Production feedback systems should use both, weighting explicit feedback more heavily in training data selection while using implicit signals for aggregate quality monitoring.
-        </HighlightBlock>
+      <h2>Feedback Data Export for Training</h2>
+      <p>
+        The final stage of the feedback pipeline converts collected and reviewed feedback
+        into training data formats consumable by fine-tuning pipelines. Different training
+        objectives require different export formats, and the export tool must handle
+        the transformation cleanly without losing provenance information.
+      </p>
+      <p>
+        RLHF preference pair export: format is (prompt, chosen_response, rejected_response)
+        where chosen and rejected responses correspond to the same prompt — one preferred
+        by the user, one not. The export tool pairs thumbs-up and thumbs-down records
+        for the same (or semantically similar) prompts, or uses explicit A/B comparison
+        votes. Each pair includes metadata: source session ID (anonymized), confidence
+        score (based on the clarity of the preference signal), and the query category.
+        Export format: Anthropic's Constitutional AI preference format or OpenAI's RLHF
+        JSON format, configurable based on the training infrastructure.
+      </p>
+      <p>
+        SFT (Supervised Fine-Tuning) examples: format is (prompt, ideal_response). Source:
+        accepted corrections from the correction review pipeline. The export includes
+        the original prompt (with PII stripped), the corrected response (after the reviewer's
+        edits), and a quality score (from the reviewer's 1–5 rating). Low-quality corrections
+        (score below 3) are excluded from the SFT export by default but available with
+        an override flag for researchers who want to study the full correction distribution.
+      </p>
+      <p>
+        Export access controls: training data exports contain sensitive information (user
+        queries, even after PII stripping) and must be access-controlled. Only ML engineers
+        with explicit data access approval can trigger exports. Each export is logged with
+        the requestor's identity, the export parameters (date range, category filter,
+        quality threshold), and the output file's hash. The export log is auditable for
+        compliance reviews. Exports are automatically deleted from the export staging
+        area after 7 days — training pipelines should ingest them promptly and not rely
+        on the staging area for long-term storage.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Privacy vs Improvement</h3>
-        <HighlightBlock as="p" tier="important">
-          Every piece of feedback stored about a user's AI interactions is a privacy exposure. Storing the user's original question, the AI's response, the rating, and a correction creates a detailed profile of the user's knowledge gaps and thought patterns. Minimize retention to what's actually needed for improvement: for training data, the (question, response, rating) tuple is necessary; the userId is not. Anonymize aggressively and provide genuine opt-out (not just opt-out from explicit feedback, but opt-out from implicit signal collection too) with no service degradation.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Spam detection prevents feedback poisoning. For staff-level engineers, the critical insights are: design feedback collection primarily around the category chips tier (the best</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">signal/friction tradeoff); build the training pipeline with human review as a mandatory gate on corrections (automated ingestion of corrections is dangerous); implement per-model-version and per-prompt-version attribution from day one (unattributed feedback is nearly useless for systematic improvement); and respect user privacy by storing the minimum necessary data with genuine opt-out.</HighlightBlock>
-      </section>
+      <h3>Q: How do you handle the case where users provide feedback that directly contradicts the AI's factually correct response?</h3>
+      <p>
+        User corrections are not ground truth. A user who provides a correction to a
+        technically correct AI response — perhaps because they misunderstood the response,
+        or because they hold an incorrect belief — will submit a correction that would
+        degrade the model if trained on uncritically. The review pipeline's human reviewers
+        are the primary guard against this: they evaluate whether the correction is
+        actually better than the original response. For factual domains (medical, legal,
+        scientific), reviewers should have subject matter expertise or access to authoritative
+        references. Flag corrections that contradict established facts (identified by a
+        fact-checking LLM judge that evaluates the correction against a trusted reference
+        corpus) for expert review rather than general reviewer review. Track the percentage
+        of "user-incorrect" corrections by query category — high rates indicate users
+        are systematically misinformed about a topic, which is itself a signal for improving
+        the AI's explanatory approach.
+      </p>
     </ArticleLayout>
   );
 }

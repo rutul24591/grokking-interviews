@@ -1,23 +1,46 @@
-# Carousel / Slider — Implementation
+# Design a Carousel / Slider - example-1 Explanation
 
-## Key Decisions
-1. **CSS transform translateX** — GPU-composited slide transitions, no layout thrashing
-2. **Pointer Events swipe** — Unified mouse/touch, delta computation with threshold
-3. **Autoplay with visibility awareness** — setInterval, pauses on hover/focus/document hidden
-4. **CSS scroll-snap fallback** — Native scroll-snap for reduced-motion preference
+## Article context
+This example supports the article `low-level-design/component-level-ui-patterns/carousel-slider`. The article is about Carousel with touch support, velocity-based swiping, FLIP animation, autoplay, accessibility, lazy-loaded slides, and infinite loop.. The most relevant article sections for this example are: Clarifying the Requirements; The Slide State Model; Touch and Pointer Event Handling; FLIP Animation for Slide Transitions; Virtualization for Large Slide Sets; Autoplay and Pause Logic; Accessibility: ARIA and Keyboard Model; Keyboard Navigation Within the Carousel; Responsive Design and Slide Counts; Interview Q&A.
 
-## File Structure
-- `lib/carousel-types.ts` — CarouselState, Slide types
-- `lib/carousel-store.ts` — Zustand store with currentIndex, autoplay state
-- `lib/swipe-detector.ts` — Pointer-based swipe with threshold
-- `hooks/use-carousel.ts` — Main hook with autoplay, swipe, keyboard
-- `hooks/use-autoplay.ts` — Autoplay manager with pause/resume
-- `components/carousel.tsx` — Root carousel with track, controls
-- `components/carousel-slide.tsx` — Individual slide with lazy loading
-- `components/carousel-controls.tsx` — Arrows, dots, autoplay toggle
-- `EXPLANATION.md`
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## Testing
-- Unit: swipe detector (threshold), autoplay (pause/resume/visibility)
-- Integration: swipe → slide changes, autoplay fires, keyboard nav
-- Accessibility: reduced motion, keyboard arrows, screen reader slide announcements
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
+
+## File-by-file walkthrough
+- `components/carousel-dots.tsx`: Implements the main logic, including CarouselDots, containerRef, handleKeyDown, isActive.
+- `components/carousel.tsx`: Implements the main logic, including Carousel, timerRef, containerRef, goTo, next.
+- `hooks/use-carousel-autoplay.ts`: Implements the main logic, including useCarouselAutoplay, timerRef, rafRef, lastTickRef, isPlayingRef.
+- `hooks/use-swipe.ts`: Implements the main logic, including useSwipe, startPosRef, lastPosRef, isSwipingRef, directionLockedRef.
+- `lib/carousel-types.ts`: Implements the executable logic or UI behavior for the example.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- request cancellation and cleanup
+- timeout and deadline handling
+- authentication or authorization boundaries
+- asynchronous or event-driven flow
+- concurrency, conflict, or transaction behavior
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+- empty, missing, or null-state handling
+
+## Edge cases and failure modes
+- Requests can be cancelled, abandoned, or completed out of order.
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Concurrent updates can race and must protect shared invariants.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- Empty, missing, or null data should produce intentional UI or service states.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

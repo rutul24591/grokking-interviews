@@ -9,468 +9,331 @@ export const metadata: ArticleMetadata = {
   id: "article-lld-kanban-board",
   title: "Design a Kanban Board",
   description:
-    "Production-grade Kanban board with drag across columns, swimlanes, real-time multi-user updates, optimistic reordering, and accessibility.",
+    "Kanban board with fractional indexing for order, cross-column drag, optimistic reordering with conflict resolution, real-time multi-user updates, swimlanes, and accessibility.",
   category: "low-level-design",
   subcategory: "component-level-ui-patterns",
   slug: "kanban-board",
-  wordCount: 3200,
-  readingTime: 20,
-  lastUpdated: "2026-04-03",
-  tags: ["lld", "kanban", "drag-drop", "real-time", "optimistic-ui", "swimlanes", "accessibility"],
+  wordCount: 5300,
+  readingTime: 32,
+  lastUpdated: "2026-05-16",
+  tags: ["lld", "kanban", "drag-drop", "fractional-indexing", "CRDT", "real-time", "optimistic-UI"],
   relatedTopics: ["drag-drop-list", "chat-messaging-ui", "dashboard-builder"],
 };
 
 export default function KanbanBoardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          We need to design a Kanban board — a visual project management tool with columns
-          representing workflow stages (e.g., Backlog, In Progress, Done) and cards
-          representing tasks. Users drag cards between columns to update their status.
-          The system must support swimlanes for horizontal categorization, real-time
-          multi-user collaboration with optimistic updates, and full keyboard accessibility.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Assumptions:</strong>
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">Columns are fixed or configurable (3-7 columns typical).</HighlightBlock>
-          <li>Cards contain title, assignee, labels, due date, and description.</li>
-          <li>Multiple users can edit the board simultaneously via WebSocket.</li>
-          <li>Cards can be dragged between columns and reordered within a column.</li>
-          <li>Swimlanes provide horizontal grouping (e.g., by team, priority, epic).</li>
-          <li>The component is used in a React 19+ SPA.</li>
-        </ul>
-      </section>
+      <p>
+        A Kanban board is the LLD problem where the most interesting challenges are not
+        the visible UI but the data model underneath it. The drag-and-drop visual is
+        achievable with any drag library. What separates a staff-level design from a
+        tutorial is the answer to: how do you represent card order in the database when
+        cards can be reordered to any position between any two other cards? How do you
+        handle two users dragging the same card simultaneously? How do you implement
+        optimistic reordering without the card visually snapping back when the server
+        responds? These questions reveal whether a candidate understands the full
+        problem, not just the drag animation.
+      </p>
 
-      <section>
-        <h2>Requirements</h2>
+      <ArticleImage
+        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/kanban-board-architecture.svg"
+        alt="Kanban board architecture diagram"
+        caption="Kanban board architecture: fractional indexing, drag state, conflict resolution, real-time sync and swimlanes"
+      />
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Drag Between Columns:</strong> Cards can be dragged from one column to another, updating their status.</HighlightBlock>
-          <li><strong>Reorder Within Column:</strong> Cards can be reordered within a column via drag.</li>
-          <li><strong>Swimlanes:</strong> Horizontal grouping with collapsible sections.</li>
-          <li><strong>Real-Time Updates:</strong> WebSocket pushes card moves from other users, merged optimistically.</li>
-          <li><strong>Optimistic Reordering:</strong> UI updates instantly on drag, rolls back on API failure.</li>
-          <li><strong>Card Creation:</strong> Add new card at bottom of any column via &quot;+ Add card&quot; button.</li>
-          <li><strong>Card Editing:</strong> Inline editing of card title, labels, assignee.</li>
-          <li><strong>Column Management:</strong> Add, rename, reorder, and delete columns.</li>
-          <li><strong>Filtering:</strong> Filter cards by assignee, label, or text search.</li>
-        </ul>
+      <h2>Clarifying the Requirements</h2>
+      <p>
+        Scope questions that change the architecture significantly:
+      </p>
+      <p>
+        <strong>Single user or collaborative?</strong> A personal task board (Trello
+        personal plan) needs only optimistic UI and server confirmation. A team board
+        (Jira, Linear) requires real-time multi-user sync with conflict resolution.
+      </p>
+      <p>
+        <strong>Swimlanes?</strong> Swimlanes are horizontal groupings across all columns
+        (typically by assignee, priority, or epic). They add a second dimension to the
+        board — cards now have both a column and a swimlane. This changes the data model
+        from a flat list per column to a grid of lists.
+      </p>
+      <p>
+        <strong>Card count per column?</strong> Boards with 5–20 cards per column need
+        no virtualization. Boards where a "Done" column accumulates thousands of cards
+        (a common real-world case) need virtual scrolling within columns. This is
+        relatively rare in practice but worth mentioning as a scalability consideration.
+      </p>
+      <p>
+        <strong>Column limits?</strong> WIP (Work In Progress) limits cap the number of
+        cards allowed in a column. Exceeding the limit should visually warn the user
+        and optionally block drag-drops into the column. This is a feature requirement
+        that affects the drop validation logic.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Performance:</strong> Drag operations at 60fps using CSS transforms. Board with 200+ cards renders smoothly.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Full keyboard navigation between cards and columns. Screen reader announces card moves.</HighlightBlock>
-          <li><strong>Real-Time Latency:</strong> WebSocket updates applied within 200ms of broadcast.</li>
-          <li><strong>Type Safety:</strong> Full TypeScript for card, column, and board types.</li>
-        </ul>
+      <h2>The Card Order Problem and Fractional Indexing</h2>
+      <p>
+        Storing card order in a database is harder than it looks. Naive approaches fail:
+      </p>
+      <p>
+        <strong>Integer rank field.</strong> Each card has a rank integer. Moving a card
+        to position 2 between cards with rank 1 and rank 3 requires ranks 1 and 3 to
+        have room for a value between them. After multiple insertions, ranks become
+        adjacent (1, 2, 3) and insertion requires renumbering all cards in the column —
+        O(n) database writes on each reorder.
+      </p>
+      <p>
+        <strong>Gap strategy.</strong> Assign ranks in multiples of 1000 (1000, 2000,
+        3000). Moving to position 2 assigns rank 1500. After many insertions, ranks
+        fragment and eventually two adjacent ranks have no integer between them. The
+        system must detect this and rebalance — still O(n) writes, just less frequently.
+      </p>
+      <p>
+        <strong>Fractional indexing.</strong> Store rank as a string rather than an
+        integer, using a key space that supports arbitrary midpoint insertion. A card
+        between ranks "a" and "b" gets rank "am" (the midpoint in lexicographic space,
+        using a defined alphabet). This approach, used by Figma, Linear, and Replit,
+        supports unlimited insertions between any two positions without renumbering any
+        other cards. The rank string remains compact (logarithmic growth per operation)
+        and compares correctly as a string using standard string comparison.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Fractional indexing is the state-of-the-art solution for ordered list persistence
+        in collaborative tools. The library "fractional-indexing" (available on npm,
+        originally from Figma's blog) implements the algorithm. Each card has a rank
+        field (string). Moving a card between two others computes the midpoint string
+        between their ranks using the library. Sorting cards by their rank strings
+        produces the correct visual order. No other cards are modified on reorder — a
+        single UPDATE to the moved card's rank field.
+      </HighlightBlock>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>Two users move the same card simultaneously — last-write-wins with conflict detection.</li>
-          <li>WebSocket disconnects during drag — optimistic update must rollback on reconnect failure.</li>
-          <li>Column deleted while a card is being dragged into it — drop must be rejected gracefully.</li>
-          <li>Board has 500+ cards — virtualization needed for column rendering.</li>
-        </ul>
-      </section>
+      <h2>The Drag and Drop State Machine</h2>
+      <p>
+        Drag-and-drop on a Kanban board involves multiple possible states: no drag
+        in progress, dragging a card within the same column, dragging a card to a
+        different column, dragging a column to reorder columns, and drag over a valid
+        drop zone vs. an invalid one (e.g., a column at WIP capacity).
+      </p>
+      <p>
+        The drag state holds: the dragging item (card ID and source column ID), the
+        current drag coordinates (mouse/touch position), the computed drop target
+        (target column ID and target position — before which card the dragged card
+        would be inserted), and the preview state (the layout the board would have
+        if the drag were committed now).
+      </p>
+      <p>
+        The preview state is the board's layout with the dragged card removed from its
+        source column and inserted at the target position. Rendering the preview shows
+        a placeholder (a ghost/skeleton) where the card would land, and the dragged
+        card follows the cursor. This is a computed view of the board state, not a
+        mutation of it — the real state only updates on drop.
+      </p>
+      <p>
+        Finding the drop target position: as the cursor moves over a column, compare
+        the cursor's y position with the midpoints between card centers. If the cursor
+        is above the midpoint between card A and card B, the insertion position is
+        before card B. If the cursor is below the last card's midpoint, the position
+        is after the last card. This is a linear scan over visible card positions,
+        O(n) in cards per column but fast in practice since columns have few cards.
+      </p>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">
-          The core idea is a <strong>board state store</strong> (Zustand) holding columns
-          and cards as normalized data. A <strong>drag-and-drop system</strong> using
-          Pointer Events handles card movement between columns and within-column
-          reordering. <strong>WebSocket integration</strong> broadcasts moves to other
-          users and merges incoming moves with optimistic local state. The board renders
-          columns as flex items with cards as draggable elements.
-        </HighlightBlock>
-        <p>
-          <strong>Alternative approaches:</strong>
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Third-party library (@hello-pangea/dnd, dnd-kit):</strong> Battle-tested but heavy bundle size and limited real-time merge logic.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>HTML5 Drag and Drop API:</strong> Works for mouse but not touch devices. Pointer Events provide unified support.</HighlightBlock>
-        </ul>
-        <HighlightBlock as="p" tier="crucial">
-          <strong>Why custom implementation is optimal:</strong> Full control over drag
-          mechanics, real-time merge conflict resolution, and accessibility. The
-          normalized store makes optimistic updates and rollback trivial.
-        </HighlightBlock>
-      </section>
+      <h2>Optimistic Reordering</h2>
+      <p>
+        On drop, commit the move optimistically: immediately update the local state
+        with the new column assignment and position, then send the move event to the
+        server (a PATCH request with the card ID, new column ID, and new rank string).
+        The UI is responsive — the card is in its new position with no delay.
+      </p>
+      <p>
+        If the server request fails: revert the local state to the pre-move state and
+        show an error notification. The card snaps back to its original position. This
+        is jarring but necessary for correctness. Improve the UX by retrying failed
+        moves once (with exponential backoff) before reverting.
+      </p>
+      <p>
+        If a conflicting move from another user is received while the optimistic move
+        is in flight: apply a "last write wins" merge policy for single-card moves
+        (the server's confirmed rank takes precedence). The local card position updates
+        to match the server-confirmed position after the optimistic move is acknowledged.
+      </p>
 
-      <section>
-        <h2>System Design</h2>
+      <h2>Real-Time Multi-User Sync</h2>
+      <p>
+        In a collaborative board, changes made by other users appear in real-time via
+        WebSocket. The server broadcasts card events: card_moved (with card ID, new
+        column ID, and new rank), card_created, card_updated (title, description),
+        card_deleted, and column_reordered.
+      </p>
+      <p>
+        Receiving a card_moved event: update the card's column assignment and rank in
+        the local store. Re-sort the column's card list by rank. If the moved card is
+        the one currently being dragged by the local user, there is a conflict. The
+        resolution depends on the product's choice: "our move wins" (ignore the remote
+        update while dragging, apply it after the local drag completes) or "remote wins"
+        (cancel the local drag and show the card in its server-assigned position, with
+        a notification "Card was moved by Alice"). Most products choose "our move wins"
+        for better local UX.
+      </p>
+      <p>
+        Presence indicators: show which users are currently viewing the board (their
+        avatars in the board header). Optionally show where each user is focusing
+        (which card they have open, or if they are dragging a card — render a ghost
+        card following their cursor position, broadcast via WebSocket). This is the
+        multiplayer cursor feature seen in Figma and Linear.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
-        <p>The system consists of eight modules:</p>
+      <h2>Column Reordering</h2>
+      <p>
+        Columns themselves are ordered and can be dragged to reorder. Column order uses
+        the same fractional indexing approach as card order — each column has a rank
+        string. Dragging a column to a new position computes the midpoint rank between
+        the surrounding columns and patches the column's rank.
+      </p>
+      <p>
+        Column reordering drag conflicts with card dragging: if the user is dragging
+        a card and accidentally triggers the column's drag handle, the column drag
+        should be disabled while a card drag is in progress. Implement this by checking
+        the drag state before initiating a new drag.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">1. Types &amp; Interfaces (<code>kanban-types.ts</code>)</h4>
-          <p>Defines <code>Card</code>, <code>Column</code>, <code>Swimlane</code>, <code>Board</code>, <code>DragState</code> (source column, card id, drop target), and <code>BoardAction</code> (add, move, reorder, delete).</p>
-        </div>
+      <h2>Swimlanes</h2>
+      <p>
+        Swimlanes add a second grouping dimension. Each card belongs to both a column
+        (the workflow stage: To Do, In Progress, Done) and a swimlane (e.g., the
+        assignee or the epic). The board renders as a grid: rows are swimlanes, columns
+        are stages. Each cell in the grid contains the cards matching that column and
+        swimlane.
+      </p>
+      <p>
+        The data model: cards have two foreign keys — column_id and swimlane_id. Each
+        card also has a rank within its (column, swimlane) pair — because card order
+        can differ per swimlane. Dragging a card within the same swimlane changes only
+        its rank. Dragging across swimlanes changes swimlane_id and recomputes the rank
+        within the target (column, swimlane) pair.
+      </p>
+      <p>
+        Swimlane rows can be collapsed (hiding all their cards) with a toggle. The
+        collapsed state is stored in local UI state (not persisted, since it is a
+        personal view preference in most tools). Collapsing a swimlane that has cards
+        assigned to it does not remove the cards — they are still accessible by
+        expanding the swimlane.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">2. Board Store (<code>board-store.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Zustand store with normalized data: <code>cards: Map&lt;id, Card&gt;</code>, <code>columns: Column[]</code> with card ID arrays, <code>swimlanes: Swimlane[]</code>. Actions: moveCard, reorderCard, addCard, deleteCard, applyRemoteUpdate, rollback.</HighlightBlock>
-        </div>
+      <h2>Keyboard Accessibility</h2>
+      <p>
+        Drag and drop is completely inaccessible via keyboard in its native form. The
+        accessible alternative is a keyboard-driven card move mode. When the user
+        focuses a card and presses Space, the card enters "move mode" (a visual
+        indicator highlights it). In move mode, Left/Right arrow keys move the card
+        to the previous/next column. Up/Down arrow keys move the card one position up
+        or down within its current column. Enter confirms the move (dispatching the
+        optimistic update); Escape cancels (returns the card to its original position).
+      </p>
+      <p>
+        Screen reader users additionally benefit from a card's contextual information
+        being announced: "Card: Fix login bug. Column: In Progress. Position: 2 of 5."
+        The column assignment and position are announced as part of the card's
+        accessible name or description.
+      </p>
+      <p>
+        The drag handles (if rendered) have role="button" and aria-label "Drag to
+        reorder [card title]." They indicate in their description that Space or Enter
+        activates keyboard move mode.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">3. Drag System (<code>kanban-drag.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Pointer event-based drag: pointerdown on card captures pointer, pointermove on document computes position, pointerup triggers drop resolution. Drop target computed by hit-testing against column and card bounding boxes.</HighlightBlock>
-        </div>
+      <h2>WIP Limits</h2>
+      <p>
+        WIP limits are column-level constraints on the maximum number of cards in a
+        column. When a column is at or over its limit, visual warnings appear (the
+        column header turns red, a count like "5/3" shows the over-limit state).
+        Dragging a card into an over-limit column shows a visual warning on the drop
+        zone (red highlight instead of the normal blue) and optionally blocks the drop
+        (the drag does not complete; the card returns to its source position).
+      </p>
+      <p>
+        Implementing the block: in the drop validation logic, check if the target
+        column is at WIP capacity before allowing the drop. If at capacity, show a
+        tooltip on the drop zone ("Column is at WIP limit") and do not update the drag
+        state's drop target to this column — the placeholder does not appear in
+        over-limit columns. The user can still proceed if the product allows "warn only"
+        rather than "block" behavior.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">4. WebSocket Manager (<code>websocket-manager.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">Manages WebSocket connection, sends board actions on local moves, receives remote actions from other users. Handles reconnect with exponential backoff, message buffering during offline.</HighlightBlock>
-        </div>
+      <h2>Interview Q&A</h2>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">5. Conflict Resolver (<code>conflict-resolver.ts</code>)</h4>
-          <p>Handles concurrent edits: when two users move the same card, uses vector clock or timestamp-based last-write-wins. Detects conflicts by comparing card version numbers. On conflict, applies remote state and notifies user.</p>
-        </div>
+      <h3>Q: Why is fractional indexing better than a linked list (storing prev/next card IDs) for card order?</h3>
+      <p>
+        A linked list (each card has a next_id pointer) supports O(1) reordering —
+        update two pointers. But reading the cards in order requires a traversal from
+        the head: O(n) queries or a recursive CTE in SQL. Sorting by a rank string is
+        a simple ORDER BY on an indexed column — O(log n) with a B-tree index. For
+        rendering a column (which is always a full-order operation), ORDER BY rank
+        is dramatically faster than traversing a linked list. Additionally, a linked
+        list can have corrupted state (two cards pointing to the same next, or a cycle)
+        from concurrent updates; a rank field can only be invalid (two cards with the
+        same rank from a race condition), which is easier to detect and resolve.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">6. Optimistic Update Manager (<code>optimistic-manager.ts</code>)</h4>
-          <HighlightBlock as="p" tier="important">On drag drop, immediately applies the move to the store, generates a pending action ID, sends to server. On server confirmation, marks as committed. On failure, rolls back to pre-move state using snapshot.</HighlightBlock>
-        </div>
+      <h3>Q: How do you handle two users moving the same card to different columns simultaneously?</h3>
+      <p>
+        This is a concurrent update conflict. Both users' moves are optimistically
+        applied locally. Both send PATCH requests to the server. The server processes
+        them sequentially (database serialization). The first request sets the card's
+        column to column A; the second request (arriving milliseconds later) sets it
+        to column B. The server broadcasts both confirmed events to all clients.
+        Client 1 (who moved to column A) receives the server confirmation for column A
+        and then the broadcast for column B — the card moves to column B (last write
+        wins, from the server's perspective). Client 2 receives the confirmation for
+        column B — consistent with their local state. The result is that column B wins,
+        and Client 1 sees the card move back to column B after a brief appearance in
+        column A. This is acceptable behavior for a "last write wins" policy. A
+        stricter policy would require a lock (optimistic locking: the PATCH request
+        includes a version ID, and the server rejects stale updates), but this is
+        rarely implemented in practice for Kanban boards.
+      </p>
 
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">7. Keyboard Navigation (<code>kanban-keyboard.ts</code>)</h4>
-          <HighlightBlock as="p" tier="crucial">Arrow keys move focus between cards and columns. Enter opens card detail. Space picks up a card for keyboard drag. Escape cancels drag. Tab navigates between columns.</HighlightBlock>
-        </div>
+      <h3>Q: How does the drop target calculation work for cross-column drags?</h3>
+      <p>
+        During a cross-column drag, the cursor's x position determines which column
+        is the target (whichever column's horizontal bounds contain the cursor). The
+        cursor's y position within the target column determines the insertion position.
+        This requires knowing each column's bounding rect (cached on drag start, since
+        the layout does not change during drag) and each card's center y position within
+        the target column (recomputed as the cursor enters the column and as the placeholder
+        shifts other cards). The placeholder's insertion into the target column causes
+        other cards to animate downward to make room — using CSS transform transitions
+        on each card, driven by the preview state comparison.
+      </p>
 
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/kanban-board-architecture.svg"
-          alt="Kanban board architecture showing optimistic updates, WebSocket sync, and drag-drop management"
-          caption="Component Interaction Flow"
-        />
+      <h3>Q: How do you make the drag animation smooth on mobile devices?</h3>
+      <p>
+        On mobile, there are two main issues: touch events require preventDefault() to
+        suppress native scrolling during a horizontal drag, and iOS momentum scrolling
+        can conflict with the drag. Use the Pointer Events API instead of touch events —
+        it provides a unified interface and setPointerCapture ensures continuous tracking
+        even if the pointer leaves the element. For iOS, add touch-action: none to
+        draggable card elements to suppress browser-handled touch behaviors. The drag
+        ghost follows the pointer using CSS transform: translate on a cloned element
+        appended to the body (positioned above everything else with a high z-index),
+        which avoids the performance cost of animating a complex card element. Apply
+        will-change: transform to the ghost and all animated cards for GPU compositing.
+      </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Component Interaction Flow</h3>
-        <ol className="space-y-2 list-decimal list-inside">
-          <li>Board loads: store fetches columns and cards via API, hydrates normalized state.</li>
-          <li>User drags card from &quot;In Progress&quot; to &quot;Done&quot;.</li>
-          <li>Drag system computes drop target (Done column, index 2).</li>
-          <li>Optimistic manager snapshots current state, applies move, sends to WebSocket.</li>
-          <li>Store updates: card removed from In Progress, inserted into Done at index 2.</li>
-          <li>Server confirms move, marks pending action as committed.</li>
-          <li>Other users receive the move via WebSocket, apply to their stores.</li>
-        </ol>
-      </section>
-
-      <section>
-        <h2>Data Flow / Execution Flow</h2>
-        <HighlightBlock as="p" tier="important">
-          The data flow is: user drag → drop target resolution → optimistic apply →
-          WebSocket send → server confirmation → commit or rollback. Remote moves from
-          other users flow: WebSocket receive → conflict check → store update → UI re-render.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Handling in Flow</h3>
-        <ul className="space-y-3">
-          <HighlightBlock as="li" tier="important"><strong>Concurrent moves:</strong> When two users move the same card, the server resolves using last-write-wins based on vector clocks. The losing client receives the winning state and applies it, showing a brief &quot;Card was moved by another user&quot; notification.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>WebSocket disconnect during drag:</strong> The optimistic update remains in the UI. On reconnect, the pending action is replayed. If the server rejects (e.g., column was deleted), the client rolls back.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Large boards (500+ cards):</strong> Columns with many cards use virtualized rendering — only visible cards in the viewport are rendered. The drag placeholder maintains the correct height.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation</h2>
-        <HighlightBlock as="p" tier="important">
-          The full production implementation is available in the <strong>Example tab</strong>.
-          Below is a high-level overview of each module.
-        </HighlightBlock>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h3 className="mb-3 text-lg font-semibold">📦 Switch to the Example Tab</h3>
-          <HighlightBlock as="p" tier="important">
-            Complete production-ready implementation includes: normalized Zustand store
-            with optimistic updates, Pointer Events drag system, WebSocket manager with
-            reconnect logic, conflict resolver with vector clocks, keyboard navigation,
-            swimlane rendering, and card detail modal.
-          </HighlightBlock>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module 1: Types &amp; Interfaces</h3>
-        <HighlightBlock as="p" tier="important">
-          <code>Card</code> with id, title, columnId, swimlaneId, position, assignee,
-          labels, dueDate, version. <code>Column</code> with id, title, cardIds array,
-          order. <code>Swimlane</code> with id, title, collapsed state. <code>DragState</code>
-          with source column, card id, current position, drop target.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Module 2: Board Store</h3>
-        <HighlightBlock as="p" tier="important">
-          Normalized Zustand store: cards Map for O(1) card lookup, columns array with
-          ordered cardIds. Actions manipulate the normalized data — moveCard removes card
-          ID from source column, inserts into target column at position, increments card
-          version. Snapshot captures full state before optimistic move for rollback.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Modules 3-7: Drag, WebSocket, Conflict, Optimistic, Keyboard</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Pointer drag uses document-level listeners for cross-column movement. WebSocket
-          manager buffers messages during disconnect and replays on reconnect. Conflict
-          resolver compares vector clocks to detect concurrent edits. Optimistic manager
-          snapshots state, applies move, tracks pending actions by ID. Keyboard navigation
-          uses roving tabindex pattern across cards and columns.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Performance &amp; Scalability</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
-        <div className="my-4 overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-theme">
-                <th className="p-2 text-left">Operation</th>
-                <th className="p-2 text-left">Time</th>
-                <th className="p-2 text-left">Space</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-theme">
-              <tr>
-                <td className="p-2">moveCard</td>
-                <td className="p-2">O(n) — column array splice</td>
-                <td className="p-2">O(1) — Map update</td>
-              </tr>
-              <tr>
-                <td className="p-2">Drop target resolution</td>
-                <td className="p-2">O(c × k) — c columns, k cards per column</td>
-                <td className="p-2">O(1)</td>
-              </tr>
-              <tr>
-                <td className="p-2">Conflict detection</td>
-                <td className="p-2">O(1) — version comparison</td>
-                <td className="p-2">O(1)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Bottlenecks</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Column re-rendering on every move:</strong> Moving a card triggers re-renders of both source and target columns. Mitigation: Zustand selectors subscribe each column component only to its own cardIds, so only the affected columns re-render.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Hit-testing against all cards during drag:</strong> Computing drop target by checking every card bounding box is O(n). Mitigation: check column bounding boxes first (O(c)), then only cards within the target column.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>WebSocket message flooding:</strong> Rapid moves generate many messages. Mitigation: debounce local actions at 100ms before sending, coalesce multiple moves of the same card into a single message.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Optimization Strategies</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Virtualized columns:</strong> For columns with 50+ cards, render only visible cards using a custom virtualizer (similar to the Infinite Scroll article&apos;s approach).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>CSS transforms during drag:</strong> Use <code>transform: translate()</code> for the dragged card ghost instead of updating DOM position. GPU-composited, no layout thrashing.</HighlightBlock>
-          <li><strong>Web Worker for conflict resolution:</strong> Offload vector clock comparison to a Web Worker for boards with 10+ concurrent users.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Security Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Card titles and descriptions from user input are sanitized before rendering.
-          WebSocket messages are validated against a schema (Zod or similar) before
-          applying to the store to prevent malformed remote state updates.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Accessibility (MANDATORY)</h3>
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h4 className="mb-3 font-semibold">Keyboard Navigation</h4>
-          <ul className="space-y-2">
-            <li>Tab moves focus between columns. ArrowLeft/Right moves between columns.</li>
-            <li>ArrowUp/Down moves focus between cards within a column.</li>
-            <HighlightBlock as="li" tier="important">Space picks up the focused card for keyboard drag. Arrow keys move it, Enter drops, Escape cancels.</HighlightBlock>
-            <li>Enter on a card opens the detail modal. Escape closes the modal.</li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
-          <h4 className="mb-3 font-semibold">ARIA Roles and Semantics</h4>
-          <ul className="space-y-2">
-            <li>The board has <code>role=&quot;application&quot;</code> with <code>aria-label=&quot;Kanban board&quot;</code>.</li>
-            <li>Each column has <code>role=&quot;list&quot;</code> with <code>aria-label</code> showing the column name and card count.</li>
-            <li>Each card has <code>role=&quot;listitem&quot;</code> with <code>aria-grabbed</code> during drag.</li>
-            <HighlightBlock as="li" tier="important">An <code>aria-live=&quot;assertive&quot;</code> region announces card moves: &quot;Task moved from In Progress to Done&quot;.</HighlightBlock>
-          </ul>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Abuse Prevention</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>WebSocket authentication:</strong> Each WebSocket message includes a JWT. The server verifies the user has permission to modify the board and the specific card.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Rate limiting:</strong> Server-side rate limit on board actions (max 10 moves per second per user) to prevent abuse.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial"><strong>Board store:</strong> Test moveCard updates both source and target columns, preserves card order, increments version. Test rollback restores pre-move state exactly.</HighlightBlock>
-          <li><strong>Conflict resolver:</strong> Test concurrent moves detected via version mismatch, last-write-wins applied correctly, losing client notified.</li>
-          <li><strong>WebSocket manager:</strong> Test message send/receive, reconnect with exponential backoff, offline buffering and replay.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li><strong>Drag between columns:</strong> Simulate drag via pointer events, verify card moves in store, verify WebSocket message sent, verify server confirmation commits the move.</li>
-          <HighlightBlock as="li" tier="important"><strong>Real-time sync:</strong> Open two board instances, move card in one, verify it appears in the other within 200ms.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Keyboard drag:</strong> Focus card, press Space to pick up, ArrowRight to move to next column, Enter to drop. Verify store state updated.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Case Testing</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">WebSocket disconnect during drag: verify optimistic update rolls back on reconnect failure.</HighlightBlock>
-          <li>Concurrent moves of same card: verify conflict detection and resolution.</li>
-          <HighlightBlock as="li" tier="important">500-card board: verify virtualized columns render correctly, drag target resolution is accurate.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Interview-Focused Insights</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
-        <ul className="space-y-3">
-          <li><strong>No optimistic updates:</strong> Waiting for server confirmation before updating the UI makes the board feel sluggish. Staff-level candidates should propose optimistic updates with rollback.</li>
-          <li><strong>Denormalized store:</strong> Storing cards inside column objects makes cross-column moves complex (search, remove, insert). Normalized Map-based store simplifies moves to O(1) card update + O(n) column splice.</li>
-          <HighlightBlock as="li" tier="important"><strong>Not handling disconnect:</strong> If the WebSocket drops during a drag, the card&apos;s state is inconsistent. Candidates must discuss offline buffering and reconnect reconciliation.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Ignoring keyboard accessibility:</strong> A drag-only board is completely inaccessible. Keyboard drag (Space to pick up, Arrows to move, Enter to drop) is essential.</HighlightBlock>
-          <li><strong>No conflict resolution:</strong> With multiple users, concurrent edits are inevitable. Without conflict detection, the board state diverges.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Important Trade-offs Interviewers Expect</h3>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">Optimistic vs Pessimistic Updates</h4>
-          <HighlightBlock as="p" tier="crucial">
-            Optimistic updates give instant feedback but risk inconsistency if the server
-            rejects the move. Pessimistic updates (wait for server) are consistent but
-            slow. For a Kanban board, optimistic is preferred because card moves are
-            rarely rejected (unlike, say, a payment). Rollback on failure is acceptable
-            UX — show a toast &quot;Move failed, card returned to previous column&quot;.
-          </HighlightBlock>
-        </div>
-
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h4 className="mb-3 font-semibold">Pointer Events vs HTML5 Drag and Drop</h4>
-          <HighlightBlock as="p" tier="important">
-            HTML5 DnD has native drag image support but does not work on touch devices.
-            Pointer Events work on mouse, touch, and pen. The trade-off: Pointer Events
-            require manual drag image creation and hit-testing. For a Kanban board,
-            Pointer Events are the right choice because touch support is mandatory.
-          </HighlightBlock>
-        </div>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Possible Follow-up Questions</h3>
-
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement undo/redo for board actions?</p>
-            <p className="mt-2 text-sm">
-              A: Maintain a command history stack. Each action (move, add, delete) records
-              an inverse action. Undo pops the last command and executes its inverse. Redo
-              re-executes the original command. Limit the stack to 50 entries to bound
-              memory. For multi-user undo, only undo local actions — remote actions from
-              other users remain applied.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you handle card dependencies (blocked by, blocks)?</p>
-            <p className="mt-2 text-sm">
-              A: Add <code>dependencies: string[]</code> to the Card type. When rendering,
-              draw dependency lines between cards (SVG overlay on the board). When moving
-              a card to &quot;Done&quot;, check if any dependencies are unresolved and
-              show a warning. Dependencies are stored as card ID references and resolved
-              at render time.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement WYSIWYG inline card editing?</p>
-            <HighlightBlock as="p" tier="important" className="mt-2 text-sm">
-              A: Double-clicking a card title switches to an inline input field. On blur
-              or Enter, the updated title is sent to the store and broadcast via WebSocket.
-              Use a contentEditable div or a controlled input. Debounce the update at
-              500ms to avoid sending every keystroke.
-            </HighlightBlock>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you support offline mode (PWA)?</p>
-            <p className="mt-2 text-sm">
-              A: Store the full board state in IndexedDB. On disconnect, queue all local
-              actions in IndexedDB. On reconnect, replay the queue in order. If a
-              conflict is detected during replay, apply the server state and notify the
-              user. Use a Service Worker to intercept API calls and respond with cached
-              data when offline.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent layout thrashing during drag?</p>
-            <p className="mt-2 text-sm">
-              A: During drag, the ghost card uses <code>position: fixed</code> with
-              <code>transform: translate()</code> — GPU-composited, no layout. The
-              placeholder in the source column uses a fixed-height div matching the
-              original card. Drop target resolution uses pre-cached bounding boxes
-              (updated via ResizeObserver) instead of <code>getBoundingClientRect()</code>
-              during the drag frame.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you implement board-level permissions (viewer, editor, admin)?</p>
-            <p className="mt-2 text-sm">
-              A: Add a <code>role</code> field to the user-board relationship. The store
-              checks the role before allowing mutations: viewers can only read, editors
-              can move/add/delete cards, admins can modify columns and board settings.
-              The UI disables drag and edit controls for viewers. The server also enforces
-              permissions on every WebSocket action.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.atlassian.com/agile/kanban" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Atlassian — Kanban Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://dndkit.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              dnd-kit — Modern Drag and Drop for React
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN — Pointer Events API
-            </a>
-          </li>
-          <li>
-            <a href="https://martin.kleppmann.com/2016/01/26/crdts-the-hard-parts.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Martin Kleppmann — CRDTs and Conflict Resolution
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/grid/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              WAI-ARIA Grid Pattern — Keyboard Navigation
-            </a>
-          </li>
-          <li>
-            <a href="https://zustand-demo.pmnd.rs/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Zustand — Normalized State Management
-            </a>
-          </li>
-        </ul>
-      </section>
+      <h3>Q: How would you implement undo/redo for card moves?</h3>
+      <p>
+        Each card move is a command: MoveCardCommand with fromColumn, toColumn,
+        fromRank, and toRank fields. Undo is a move back to fromColumn with fromRank.
+        The undo stack holds the last N commands (typically 20–50). The complication
+        with real-time collaborative editing: another user's moves arrive between the
+        local user's move and their undo. If User A moved card 1 to column B, and then
+        User B moved card 2 out of column B, User A's undo would move card 1 back to
+        column B — but that's fine, since card 2 is already out. However, if User B
+        moved card 1 (the same card) again, undoing User A's original move should
+        arguably be a no-op (the card's current position no longer reflects A's move).
+        Most collaborative tools handle this by scoping undo to "my actions only" and
+        using the current state as the baseline — undoing A's move sends a new move
+        command for the card's current position back to fromColumn, even if fromColumn
+        was changed by B. This is deterministic and simple, though it may not always
+        produce the "intended" undo behavior.
+      </p>
     </ArticleLayout>
   );
 }

@@ -1,14 +1,38 @@
-## Why backpressure matters
+# Event-Driven Architecture - example-2 Explanation
 
-In real frontends, some events fire at very high frequency (scroll, input, realtime updates). A naïve “emit → call all handlers” bus can:
-- block the main thread
-- amplify work (every handler runs for every event)
-- create unbounded queues when handlers are slow
+## Article context
+This example supports the article `frontend/scalability-architecture-patterns/event-driven-architecture`. The article is about In-depth guide to Event-Driven Architecture in frontend systems covering event sourcing, CQRS, event buses, DOM event system, and building reactive, loosely-coupled web applications at scale.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Event Sourcing vs Event Notification vs Event-Carried State Transfer; Trade-offs and Comparisons; Best Practices; Common Pitfalls; Real-World Use Cases; Security Considerations; Event Injection Attacks.
 
-This example implements:
-- a bounded queue
-- a concurrency limit
-- drop policy when overloaded (trade-off: lossy but responsive)
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-The goal is to model the **production trade-off**: correctness vs responsiveness.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
+## File-by-file walkthrough
+- `demo.js`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
+- `event-bus.js`: Implements the main logic, including createAsyncEventBus, queue, handlers, running, dropped.
+- `package.json`: Declares the runnable package metadata and dependencies for the example.
+- `README.md`: Documents how to run, inspect, or reason about the example.
+
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+
+## Important implementation behavior
+- timeout and deadline handling
+- asynchronous or event-driven flow
+- offline, reconnect, resume, or sync behavior
+- observability and operational signals
+
+## Edge cases and failure modes
+- Slow dependencies need explicit timeouts and caller-visible failure semantics.
+- Asynchronous work can arrive late, out of order, or more than once.
+- Reconnect and resume flows need conflict handling and progress recovery.
+- Metrics, logs, traces, or alerts must explain production failures.
+- High load can expose latency, memory, cache, or backpressure issues.
+
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

@@ -1,60 +1,37 @@
-# Example 2: Conversation History Summarization
+# Context Window — Architecture and Management - example-2 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/context-window`. The article is about Comprehensive guide to context windows covering KV caching, sliding window attention, context compression, RoPE, long-context retrieval, and production context management strategies.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: What is the "lost in the middle" phenomenon and how does it affect your system design?; Q2: How does KV caching work and why is it the bottleneck for long-context serving?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-**Dependencies:** None. Pure Python with only built-in functions (`dataclasses`, `typing`). No external packages required.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a **conversation history summarization system** that progressively compresses old conversation turns to stay within the context window budget while preserving key facts. As a conversation grows, older turns are summarized into compact factual statements, and only the most recent turns are kept in full detail. This pattern is essential for long-running chat applications and coding assistants where conversations can exceed the model's context window but the model still needs access to earlier context.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- retry, backoff, or jitter behavior
+- pagination or cursor handling
+- authentication or authorization boundaries
+- error handling and fallback behavior
+- observability and operational signals
 
-### Key Classes and Data Structures
+## Edge cases and failure modes
+- Retries must avoid retry storms and should only repeat safe operations.
+- Large result sets need stable pagination and empty-page behavior.
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Metrics, logs, traces, or alerts must explain production failures.
+- High load can expose latency, memory, cache, or backpressure issues.
 
-- **`ConversationTurn`** (dataclass): Represents a single turn in the conversation with:
-  - `role` — either "user" or "assistant".
-  - `content` — the text of the turn.
-  - `token_count` — computed as `word_count * 1.3` in `__post_init__`.
-- **`summarize_turns()`**: A simulated summarization function that extracts key facts from a series of conversation turns. It scans each turn's content for keywords (oauth, pkce, token, refresh, code, error, bug) and produces a compact summary like "Discussed OAuth 2.0 implementation; Covered PKCE extension for public clients; Provided code examples." In production, this would be an actual LLM call to generate a natural-language summary.
-- **`ConversationManager`**: Manages conversation history with progressive summarization:
-  - `__init__()` — takes `max_history_tokens` (the budget for recent conversation history) and `recent_turns_kept` (the minimum number of recent turns to always keep in full).
-  - `add_turn()` — adds a new turn and triggers compression if needed.
-  - `_compress_if_needed()` — the core compression algorithm:
-    1. Calculates total tokens across all turns.
-    2. If over budget and more than `recent_turns_kept` turns exist, identifies old turns (all except the most recent N).
-    3. Summarizes old turns using `summarize_turns()`.
-    4. If a previous summary exists, combines them ("Earlier: ... More recently: ...").
-    5. Replaces old turns with the summary, keeping only recent turns in full.
-  - `get_context()` — returns the full context string: summary (if any) followed by recent turns.
-  - `get_stats()` — returns token statistics including recent turns count, recent tokens, summary tokens, total tokens, budget, and utilization percentage.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-### Execution Flow (Step-by-Step)
-
-1. **Initialize manager**: Created with a 500-token history budget and keeping the 2 most recent turns in full. The small budget forces early compression to demonstrate the mechanism.
-2. **Add conversation pairs**: Ten user-assistant pairs about OAuth/PKCE implementation are added one at a time:
-   - **Turns 1-2**: OAuth basics — under budget, no compression.
-   - **Turns 3-4**: PKCE vs implicit grant — still under budget.
-   - **Turns 5-6**: Code example — exceeds budget, triggers first compression. Turns 1-4 are summarized into "Previous discussion: Discussed OAuth 2.0 implementation; Covered PKCE extension for public clients; Provided code examples."
-   - **Turns 7-8**: Token refresh — may trigger further compression, combining earlier summary with new summary.
-   - **Turns 9-10**: Error handling — final state with accumulated summary and only the 2 most recent turns in full.
-3. **Print progress**: After each turn, shows the turn content (truncated), current token stats, and summary (if active).
-4. **Print final stats**: Shows the final state — number of recent turns, token counts for recent content and summary, total tokens, budget, and utilization percentage.
-
-### Important Variables
-
-- `max_history_tokens = 500`: The token budget for recent conversation history. Once exceeded, old turns are summarized.
-- `recent_turns_kept = 2`: The minimum number of recent turns to always keep in full detail. These are never summarized, ensuring the model has full context for the most recent interaction.
-- `self.summary`: Accumulates summaries of compressed turns. When new compression happens, the old summary is preserved and combined with the new one using "Earlier: ... More recently: ..." format.
-
-## Key Takeaways
-
-- **Progressive compression**: As conversations grow, older content is gradually compressed into summaries rather than being abruptly dropped. This preserves historical context in a token-efficient form.
-- **Recent turns stay in full**: Keeping the most recent N turns uncompressed ensures the model has complete context for immediate follow-up questions while older context is distilled to key facts.
-- **Summary accumulation**: The "Earlier: ... More recently: ..." pattern chains multiple compression events together, preserving a running history of the entire conversation even as it grows arbitrarily long.
-- **Keyword-based vs. LLM summarization**: This example uses simple keyword extraction for demonstration. Production systems call the LLM itself to generate natural-language summaries, which are more accurate but more expensive (requiring an extra API call per compression event).
-- **Token budget enforcement**: The compression trigger (`total_tokens > max_history_tokens`) ensures the conversation never exceeds the allocated budget, preventing context window overflow that would cause API errors or force truncation of important content.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.

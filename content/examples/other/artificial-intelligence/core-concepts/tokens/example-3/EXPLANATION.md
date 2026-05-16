@@ -1,68 +1,32 @@
-# Example 3: Token Count Validator — Context Window Management
+# Tokens — Tokenization in Large Language Models - example-3 Explanation
 
-## How to Run
+## Article context
+This example supports the article `other/artificial-intelligence/tokens`. The article is about Deep dive into tokenization algorithms (BPE, WordPiece, SentencePiece), token economics, cost implications, multilingual tokenization, and how token design affects LLM performance and production systems.. The most relevant article sections for this example are: Definition and Context; Core Concepts; Architecture and Flow; Trade-offs and Comparison; Best Practices; Common Pitfalls; Real-World Use Cases; Common Interview Questions with Detailed Answers; Q1: Why do LLMs use subword tokenization instead of word-level or character-level tokenization?; Q2: How does vocabulary size affect model performance and cost?.
 
-```bash
-python demo.py
-```
+## What this example demonstrates
+This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-Requires the `tiktoken` library. If not installed, run: `pip install tiktoken`.
+## How it supports the article
+The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
 
-## What This Demonstrates
+## File-by-file walkthrough
+- `demo.py`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
 
-This example implements a `TokenBudget` class that manages token allocation for LLM requests by accurately counting tokens across all prompt components (system prompt, context, few-shot examples, and user input) before sending a request. It enforces context window limits by automatically truncating oversized context sections and provides a detailed token budget report showing utilization percentages, enabling production-safe prompt construction that avoids exceeding model limits.
+## Execution and data flow
+Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
 
-## Code Walkthrough
+## Important implementation behavior
+- authentication or authorization boundaries
+- error handling and fallback behavior
 
-### Class: `TokenBudget`
+## Edge cases and failure modes
+- Unauthorized or expired sessions must fail safely without leaking protected data.
+- Fallback paths should preserve user trust and avoid hiding persistent failures.
+- Security-sensitive paths need least-privilege checks and safe failure behavior.
+- High load can expose latency, memory, cache, or backpressure issues.
 
-The core class that encapsulates all token budgeting logic.
+## How to use this example
+Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
 
-#### Constructor: `__init__(self, context_window: int, model: str = "gpt-4o")`
-
-Initializes the budget manager with:
-- `context_window`: The maximum token limit for the model (default 128,000 for GPT-4o).
-- `model`: The target model name, used to select the correct tokenizer.
-- `self.enc`: The tokenizer obtained via `tiktoken.encoding_for_model("gpt-4o")`, which returns the exact tokenizer used by GPT-4o.
-
-#### Method: `count_tokens(self, text: str) -> int`
-
-A utility method that encodes the input text using the model's tokenizer and returns the token count. This is the atomic operation used throughout the budgeting logic.
-
-#### Method: `build_prompt(...)`
-
-The primary method that constructs a prompt while enforcing token budgets. Parameters:
-
-| Parameter | Type | Purpose |
-|---|---|---|
-| `system_prompt` | `str` | The system-level instruction |
-| `context` | `str` | Retrieved context/document content (e.g., RAG results) |
-| `user_input` | `str` | The user's query or instruction |
-| `max_output_tokens` | `int` | Reserved tokens for the model's response (default 1,000) |
-| `few_shot_examples` | `list[str] \| None` | Optional list of few-shot example strings |
-
-**Execution flow:**
-
-1. **Calculate available budget** — Subtracts `max_output_tokens` from `context_window` to determine how many tokens are available for the input prompt.
-2. **Count fixed components** — Tokenizes `system_prompt` and `user_input` individually.
-3. **Count few-shot examples** — If provided, iterates over each example and accumulates their token counts.
-4. **Calculate remaining context budget** — Subtracts fixed tokens and example tokens from available tokens. If the result is negative, raises a `ValueError` because the fixed components alone exceed the input budget.
-5. **Truncate context if needed** — Counts the context tokens. If they exceed the remaining budget, the method encodes the context, slices the token list to fit the budget (`context_encoded[:context_tokens_available]`), and decodes it back to text. This ensures the context fits within the allocated space.
-6. **Assemble final prompt** — Wraps each component in XML-like tags (`<system>`, `<examples>`, `<context>`, `<user>`) and joins them with double newlines.
-7. **Return result** — Returns a dictionary containing the final prompt string and a `token_breakdown` dict with per-component token counts, total input tokens, total (input + output), context window size, and utilization percentage.
-
-### Function: `main()`
-
-Demonstrates usage by:
-1. Creating a `TokenBudget` with a 128,000 token context window (GPT-4o).
-2. Defining a system prompt for legal document analysis, a simulated long context (repeated string × 500), a user input asking about termination clauses, and two few-shot examples.
-3. Calling `build_prompt()` with `max_output_tokens=2000`.
-4. Printing the token breakdown report, or catching and printing any `ValueError` if the budget is exceeded.
-
-## Key Takeaways
-
-- **Always count tokens before sending requests**: Guessing token counts leads to unexpected `400 Bad Request` errors from the API when prompts exceed context windows. Use the model's exact tokenizer for accurate counts.
-- **Budget partitioning is critical**: Reserve tokens explicitly for output (`max_output_tokens`) first, then allocate the remainder among system prompt, context, few-shot examples, and user input. This prevents the model from having insufficient space to generate a response.
-- **Truncation should be application-controlled**: When context exceeds the budget, the application should truncate intelligently (e.g., dropping least-relevant document sections) rather than letting the API fail or silently dropping content. This example uses a simple token-level truncation; production systems should use semantic chunking.
-- **Utilization monitoring matters**: The `utilization` percentage in the breakdown helps you understand how much of the context window each request consumes, enabling capacity planning and cost optimization across your application's request patterns.
-- **Few-shot examples have a hidden cost**: Each example consumes tokens from the same limited budget. While they improve output quality, they reduce the space available for context — a trade-off that must be measured and tuned per use case.
+## Interview value
+This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.
