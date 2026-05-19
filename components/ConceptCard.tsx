@@ -9,6 +9,7 @@ type ConceptCardProps = {
   slug: string;
   description?: string;
   href: string;
+  eyebrow?: string;
 };
 
 /**
@@ -19,9 +20,9 @@ type ConceptCardProps = {
  */
 export function ConceptCard({
   title,
-  slug,
   description,
   href,
+  eyebrow,
 }: ConceptCardProps) {
   return (
     <motion.div
@@ -36,6 +37,12 @@ export function ConceptCard({
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
         )}
       >
+        {eyebrow && (
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-accent">
+            {eyebrow}
+          </p>
+        )}
+
         {/* Icon/Indicator */}
         <div className="mb-4 flex items-center">
           <div className="flex-1">
