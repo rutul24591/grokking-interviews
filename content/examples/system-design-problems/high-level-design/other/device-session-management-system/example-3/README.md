@@ -1,1 +1,5 @@
-# Design a device/session management system — Example 3
+# Device Session Management System - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

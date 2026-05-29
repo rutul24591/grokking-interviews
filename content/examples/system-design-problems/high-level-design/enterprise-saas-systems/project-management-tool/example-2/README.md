@@ -1,1 +1,5 @@
-# Design a project management tool (Jira/Asana) — Example 2
+# Project Management Tool - Example 2
+
+Concrete enterprise SaaS production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

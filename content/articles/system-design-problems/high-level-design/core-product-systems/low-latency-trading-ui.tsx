@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   category: "high-level-design",
   subcategory: "core-product-systems",
   slug: "low-latency-trading-ui",
-  wordCount: 5600,
-  readingTime: 34,
-  lastUpdated: "2026-05-10",
+  wordCount: 6200,
+  readingTime: 37,
+  lastUpdated: "2026-05-20",
   tags: ["hld", "trading", "low-latency", "websocket", "order-book", "web-worker"],
   relatedTopics: ["real-time-dashboard-frontend", "race-condition-handling"],
 };
@@ -24,94 +24,368 @@ export default function LowLatencyTradingUIArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A trading UI is a real-time system where latency is measured in milliseconds and errors have direct financial consequences. A trader executing an order at the wrong price because the UI displayed stale data, or a system that accepted a duplicate order because the submit button was not correctly disabled, represents both financial loss and regulatory exposure. The design must simultaneously optimize for the absolute minimum display latency (price updates must be visible on screen within 100ms of the market event), absolute correctness of order execution (no duplicates, no execution at stale prices), and resilience under extreme conditions (market volatility spikes create order-of-magnitude increases in message frequency that must not degrade the UI).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The distinction from a general real-time dashboard is the interaction path: in a dashboard, the user observes data passively. In a trading UI, the user makes decisions based on the data and executes transactions. The latency of the decision loop (market event → display → user decision → order submission → execution confirmation) must be minimized, and every element of the UI that could introduce incorrect decisions (stale prices, incorrect quantities, missing risk warnings) is a critical defect.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The trading platform handles equities and derivatives. Market data arrives at 10–1000 updates per second per instrument during normal conditions, potentially higher during volatility events. Orders are submitted to an exchange via a backend order management system (OMS). The UI is a browser-based application (WebSockets for market data, HTTP for order submission). Regulatory requirements mandate that all orders display the current bid/ask price at the time of submission and that the user confirms if the market has moved since the price was displayed.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="crucial">
+          A low-latency trading UI is a real-time decision surface where stale data, duplicate submission, out-of-order
+          market events, or delayed risk feedback can directly create financial loss and regulatory exposure. Unlike a
+          passive dashboard, the interface is part of the execution loop: market data appears, the trader decides, the
+          UI captures intent, risk checks run, an order is submitted, and fills update positions. Performance matters,
+          but correctness and explicit degraded states matter more.
+        </HighlightBlock>
+        <p>
+          The target browser UI is suitable for retail trading, internal trading operations, and non-microsecond
+          institutional workflows. It is not the right execution path for high-frequency trading, where native
+          colocated systems and specialized networks dominate. A strong design should be honest about that boundary.
+          The browser can still deliver sub-100ms display updates for active instruments, but it must isolate market
+          data processing from user input, guard against stale prices, and avoid making the trader believe an order was
+          accepted before the order management system confirms it.
+        </p>
+        <p>
+          Assume equities and derivatives, with WebSocket market data, a backend order management system, top-of-book
+          and depth-of-book displays, order entry, fills, positions, and client-side pre-trade validation. Normal
+          market data may be 10 to 1000 updates per second per active instrument, with higher bursts during volatility.
+          The UI target is market data visible within roughly 100ms of browser receipt and end-to-end exchange event
+          to screen under roughly 200ms where infrastructure permits.
+        </p>
+        <p>
+          In interviews, define the user safety contract early. The UI should disable order submission when market
+          data is stale, show clear connection quality, capture the displayed price or quote sequence used for an
+          order, deduplicate retries with a client-generated nonce, and reconcile order status from authoritative OMS
+          events. The system is successful when traders can act quickly while seeing exactly when the platform has
+          degraded.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Order book display:</strong> Real-time bid/ask ladder showing the top 10–20 price levels with quantity at each level, updating at full market frequency.</li>
-          <li><strong>Price ticker:</strong> Last trade price with directional arrow (up/down from previous trade). Color flash on price change (green for uptick, red for downtick).</li>
-          <li><strong>Order entry form:</strong> Instrument selection, quantity, order type (market, limit, stop), limit price input. One-click order submission with confirmation.</li>
-          <li><strong>Price staleness detection:</strong> If the displayed price is more than 2 seconds old, show a staleness indicator and disable order submission.</li>
-          <li><strong>Order status tracking:</strong> Real-time updates on submitted orders: pending → partially filled → filled → rejected. Positions panel updating as fills are received.</li>
-          <li><strong>Risk controls:</strong> Pre-trade risk check before order submission: quantity limits, position limits, price deviation from current market (reject if limit price deviates more than 5% from current bid/ask).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Display latency:</strong> Market data received by the browser must be visible on screen within 100ms. End-to-end from exchange event to screen update target is under 200ms.</li>
-          <li><strong>Throughput under volatility:</strong> The UI must remain responsive at 1000 order book updates per second without dropping frames or introducing input latency.</li>
-          <li><strong>Order submission reliability:</strong> Zero duplicate orders. Order submission must be idempotent with server-side deduplication.</li>
-          <li><strong>Correctness:</strong> Displayed prices must reflect the most recent received market data. Stale or out-of-order data must not be displayed as current.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Separate Data Plane, Render Plane, and Execution Plane</h3>
+        <p>
+          Market data is the high-frequency data plane. Rendering is the frame-budgeted visual plane. Order submission
+          is the transactional execution plane. These should not share one overloaded path. A burst in market data
+          processing must not block typing in the order ticket. A slow order submission must not pause market data
+          updates. A render throttling decision must not drop sequence information needed to detect an invalid order
+          book.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Sequence Numbers and Snapshot Recovery</h3>
+        <p>
+          Every market data stream should carry monotonically increasing sequence numbers per instrument or channel.
+          The client must detect gaps, duplicates, and out-of-order events. A gap means the local book can no longer be
+          trusted; the worker should request a fresh snapshot and replay buffered deltas after the snapshot if the
+          protocol supports it. Without sequence tracking, the UI can show a plausible but wrong book, which is worse
+          than showing an obvious disconnected state.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Frame-Rate Rendering Versus Message-Rate Processing</h3>
+        <p>
+          A browser cannot usefully render 1000 book updates per second because the display refreshes at 60Hz or
+          120Hz. The system should process every market event needed for correctness, but render snapshots at the
+          display cadence. Intermediate states can be coalesced for the visual layer while still updating the internal
+          order book state and sequence counters. This is the central performance principle for a trading UI.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Order Intent Must Be Idempotent and Auditable</h3>
+        <p>
+          A trader click should produce one order intent with a stable client nonce, captured instrument, side,
+          quantity, order type, displayed bid/ask or quote sequence, timestamp, and risk-check result. Network retries
+          should reuse the same nonce. The OMS should deduplicate by trader and nonce, returning the existing order if
+          the first response was lost. This protects against double-clicks and retry-after-timeout duplicate orders.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The trading UI architecture separates the market data processing path from the UI rendering path. Market data arrives at high frequency via WebSocket and is processed off the main thread in a Web Worker. The Web Worker maintains the current order book state and produces rendered snapshots for the UI at the display rate (targeting 60fps or a configurable update rate). The main thread consumes these snapshots and updates the DOM, never doing expensive computation. The order entry path is entirely separate from the market data path: order submission goes directly to the OMS via a dedicated HTTP endpoint (not through the market data WebSocket).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">This architecture ensures that a burst of 1000 order book updates per second cannot cause input latency on the order entry form, because the heavy processing (order book state management, snapshot generation) runs in the Web Worker, and the main thread only receives pre-computed render payloads. The main thread's work is bounded to DOM updates, which is fast and deterministic.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/low-latency-trading-ui-architecture.svg"
-          alt="Low-latency trading UI architecture showing WebSocket market data stream → Web Worker order book state manager → SharedArrayBuffer render snapshot → main thread DOM renderer. Separate order submission path to OMS via HTTP. Price staleness detector, pre-trade risk check, order deduplication, and fill update pipeline shown."
-          caption="Trading UI architecture: Web Worker handles high-frequency market data, main thread handles rendering and input, order submission via dedicated HTTP path"
+          alt="Low-latency trading UI architecture with WebSocket market data, Web Worker book processor, main-thread renderer, staleness detector, risk checks, OMS order submission, and fills"
+          caption="Architecture: market data processing runs off the main thread, rendering consumes frame-rate snapshots, and order execution uses a separate idempotent path."
         />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Binary WebSocket Protocol</h3>
-        <HighlightBlock as="p" tier="important">JSON is convenient but expensive for high-frequency market data. Parsing a JSON object for every order book update at 1000Hz introduces measurable CPU cost on the receiving end. Binary WebSocket messages (ArrayBuffer payloads) eliminate the string parsing cost: a 64-byte binary message encoding 8 price levels can be decoded in a single DataView pass with essentially zero garbage collection overhead. The protocol is defined by a fixed schema: message type (1 byte), instrument ID (4 bytes), sequence number (8 bytes), update type (full snapshot vs incremental), and then N price-level entries, each being price (8 bytes float64) and quantity (8 bytes float64).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The sequence number is critical for correctness. Order book updates must be applied in sequence; an out-of-order update (sequence number gap) indicates a missed message. The Web Worker tracks the expected sequence number per instrument; if a gap is detected, it sends a snapshot request back to the server (via the same WebSocket, or a separate HTTP endpoint), receiving a full order book snapshot that resets the state to a known-good baseline. Without sequence tracking, missed messages would result in an incorrect order book that could cause trades at wrong prices.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Web Worker Order Book State Management</h3>
-        <p>The Web Worker maintains the order book as two sorted structures: the bid side (sorted descending by price) and the ask side (sorted ascending by price). Incremental updates modify specific price levels: an insert or update for a price level that has new quantity, or a delete for a price level that has been exhausted. These operations are O(log N) in a sorted array or balanced BST representation. At 1000 updates per second and N=20 displayed levels, the Web Worker spends approximately 0.1ms per update in order book maintenance, well within the budget.</p>
-        <HighlightBlock as="p" tier="important">Every 16ms (aligned to the display refresh rate via a message from the main thread, or via the Worker's own setInterval), the Web Worker produces a render snapshot: a simple JavaScript object containing the current top-N bid and ask levels. This snapshot is posted to the main thread via postMessage. The main thread receives the snapshot and updates the DOM. The key efficiency is that the main thread never processes the raw 1000Hz message stream; it only sees pre-computed 60Hz snapshots. During periods of high volatility (1000Hz updates), the Worker processes all updates but the main thread still only renders 60 times per second, throwing away intermediate states that are overwritten before the next render.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">For the absolute minimum latency path (used by institutional traders who need every microsecond), SharedArrayBuffer can replace postMessage for snapshot delivery. The Worker writes the current snapshot directly into a shared memory buffer; the main thread reads from the same buffer on each animation frame without the serialization and deserialization overhead of postMessage. SharedArrayBuffer requires Cross-Origin Isolation headers (COOP + COEP) but eliminates the postMessage copy cost, reducing per-frame overhead by approximately 0.1–0.5ms.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Order Book Rendering</h3>
-        <p>The order book DOM update strategy is critical for performance. Naively, each 60fps render update reconciles the entire bid/ask ladder DOM—destructive and expensive. The optimized approach maintains a reference to the DOM cells for each displayed price level and updates only the changed cells in-place. At each render, the Worker snapshot is compared to the previous snapshot: unchanged levels skip DOM updates. Only levels where price or quantity changed receive innerHTML updates (or text content updates, which are cheaper than innerHTML for simple numeric values).</p>
-        <p>For the price change flash effect (green flash on uptick, red flash on downtick), a CSS class is added (price-up or price-down) and removed after the animation duration via a setTimeout. To avoid style recalculation cost, CSS animations are used rather than JavaScript-driven style changes. The animation is defined entirely in CSS (a keyframe that starts with the flash color and transitions to the base color over 300ms); adding the class triggers the animation without any JavaScript style access during the animation frame.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Price Staleness Detection</h3>
-        <HighlightBlock as="p" tier="important">A key correctness requirement: if the WebSocket connection drops or market data stops flowing, the trader must not see stale prices displayed as current and submit orders against them. The UI maintains a "last update" timestamp per instrument, updated every time a market data message is received. A staleness checker runs every 100ms (a setInterval on the main thread): if now - lastUpdateTimestamp &gt; 2000ms for the currently displayed instrument, the price display is overlaid with a "PRICE STALE – DATA DELAYED" warning and the order submit button is disabled. When market data resumes (a new message is received), the stale indicator is cleared immediately and the submit button is re-enabled.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">WebSocket disconnection is detected via the WebSocket onclose and onerror events, triggering immediate reconnection attempts and an immediate stale indicator display (rather than waiting for the 2-second staleness timeout). The reconnection uses exponential backoff (100ms, 200ms, 400ms, max 2000ms) with a maximum of 10 attempts before showing a "Connection failed – please refresh" error. During the reconnection window, the stale indicator is shown and order submission is disabled, protecting the trader from acting on prices that may be seconds or minutes old.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Order Submission and Deduplication</h3>
-        <p>Order submission captures the current best bid or ask price at the exact moment the user clicks "Submit." This price is included in the order request payload and on the server. If the current market price at order receipt deviates from the submitted price by more than the configured slippage tolerance (e.g., 0.1% for equities), the OMS rejects the order with a price deviation error, and the UI shows an error like "Market moved. Order rejected. Current price updated in the ticket." The user can resubmit with the current price. This protection prevents traders from accidentally executing at significantly different prices than they intended when the market moves rapidly between clicking Submit and the OMS receiving the order.</p>
-        <p>Idempotency against duplicate orders uses a client-generated order nonce: a UUID generated on the first submit click, stored in the order request. The submit button is disabled immediately on click. If the submission fails with a network error (timeout, 503), the retry uses the same nonce. The OMS deduplicates by (traderId, nonce) pairs: if the nonce has been seen before (the first submission succeeded but the response was lost), the OMS returns the existing order rather than creating a new one. This is the critical safeguard against the "double-click" or "retry after network error" scenarios that result in duplicate orders in naive implementations.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pre-Trade Risk Controls</h3>
-        <p>Client-side pre-trade risk checks catch obvious errors before the order reaches the OMS, reducing latency for valid orders and protecting traders from fat-finger errors. The client validates: quantity is within configured limits (e.g., max 100,000 shares per order); limit price (for limit orders) does not deviate more than 5% from the current mid-price; the order does not increase the position beyond the configured position limit; and the order value does not exceed the configured notional limit. These validations run synchronously on submit click and show inline error messages if any check fails, without a network round trip.</p>
-        <p>Client-side risk checks are a first line of defense, not a security control—they can be bypassed by a compromised browser or a malicious client. The OMS performs server-side risk checks (position limits, notional limits, regulatory limits) as the authoritative gate. Client-side checks exist purely to reduce round trips for common error cases and to give the trader instant feedback on obviously invalid orders.</p>
-      </section>
-
-      <section>
+        <p>
+          The browser opens a market data connection for active instruments and sends raw messages to a Web Worker.
+          The worker decodes binary payloads, verifies sequence numbers, applies full snapshots or incremental deltas,
+          maintains bid and ask structures, and emits render snapshots at a bounded cadence. The main thread renders
+          only the latest snapshot, keeping DOM work predictable and preserving input responsiveness for the order
+          ticket.
+        </p>
+        <p>
+          Binary messages reduce parse overhead and allocation pressure compared with JSON. A fixed schema can include
+          message type, instrument ID, sequence number, timestamp, update type, and price-level updates. The worker
+          decodes using ArrayBuffer and DataView-like APIs, avoiding thousands of short-lived objects during volatility
+          bursts. JSON may be acceptable for low-frequency retail instruments, but the design should name where JSON
+          parsing becomes a bottleneck.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/low-latency-trading-ui-workflow.svg"
-          alt="Trading UI workflow showing market data path (exchange event → WebSocket → Web Worker sequence check → order book update → 60fps snapshot → DOM render) and order execution path (submit click → capture current price → pre-trade risk check → OMS HTTP request with nonce → execution confirmation → position update). Price staleness detection and reconnection flow shown."
-          caption="Trading UI data flows: high-frequency market data through Web Worker to 60fps DOM rendering, and order execution with price capture, risk checks, and idempotent submission"
+          alt="Trading UI workflow showing market data decode, sequence check, order book update, render snapshot, order click, risk check, idempotent OMS submission, and fill update"
+          caption="Workflow: market data and order submission are coordinated by quote sequence, staleness state, risk checks, and idempotency keys."
         />
+        <p>
+          The order book state should be optimized for the displayed depth and update pattern. For top 10 to 20 levels,
+          sorted arrays with targeted updates are often simpler and fast enough. For deeper ladders or high churn,
+          balanced structures or price-indexed maps can reduce update cost. The worker emits compact render payloads:
+          top bid/ask levels, last trade, spread, market status, staleness state, and the latest quote sequence.
+        </p>
+        <p>
+          The order path captures the current displayed market context at submit time. The client runs immediate
+          validations for quantity, notional value, price bounds, position limit hints, and stale-data state. It then
+          sends a request to the OMS with a client nonce and captured quote context. The OMS remains authoritative for
+          risk checks and market validation. If market price moved beyond tolerance or the quote sequence is too old,
+          the order is rejected or requires explicit reconfirmation.
+        </p>
+        <p>
+          Fills and order state updates should come from an authoritative order event stream, not from optimistic UI
+          assumptions. The UI can show "submitting" immediately, but it should not show "accepted" until the OMS
+          confirms. Order state transitions such as pending, accepted, partially filled, filled, canceled, and rejected
+          should be monotonic and deduplicated by order ID plus event sequence.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Web Workers versus main thread processing: Web Workers add architectural complexity (message passing, no direct DOM access), but the performance isolation they provide is essential for high-frequency market data processing. Without a Web Worker, a burst of 1000 messages per second would occupy the main thread with JSON parsing and order book state management, causing visible input lag on the order entry form—exactly the condition where a trader is most likely to be actively interacting (high volatility periods produce both high message frequency and high trader activity simultaneously). The complexity is justified.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Browser-based versus native application: professional trading desks typically use native desktop applications (Bloomberg Terminal, proprietary OMS GUIs) rather than browser-based UIs for their lowest-latency paths. Browser-based trading UIs have inherent latency floors from the JavaScript runtime, the browser's rendering pipeline, and the operating system's network stack that native applications avoid. For retail trading platforms and non-latency-critical institutional workflows, the browser is adequate. For high-frequency trading where microseconds matter, native applications are required and the browser UI serves as a monitoring and reporting interface, not the execution path.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Optimistic order status versus confirmed status: some trading UIs show an "order submitted" confirmation immediately on click, before the OMS has processed the order. This feels responsive but is potentially misleading—the order may be rejected by the OMS's risk checks. The more correct approach is to show "submitting..." immediately on click, then show the confirmed status (accepted/rejected) when the OMS responds. The OMS response time should be under 100ms for a well-architected system. Showing a false "accepted" state for orders that will be rejected by the OMS creates confusion and potential trading errors.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/core-product-systems/low-latency-trading-ui-degraded.svg"
+          alt="Trading UI degraded modes showing stale market data, sequence gap recovery, websocket disconnect, read-only mode, and order submission disabled"
+          caption="Degraded modes: the UI should make stale data, sequence gaps, disconnects, and read-only operation explicit instead of silently pretending all prices are current."
+        />
+        <p>
+          Web Workers add message-passing complexity and cannot access the DOM directly, but they isolate high-frequency
+          market data work from input and rendering. That isolation is most valuable during volatility, when update
+          rates and trader activity both increase. Main-thread processing may pass in demos but fails exactly when the
+          product is most needed. For a trading UI, the extra architecture is justified.
+        </p>
+        <p>
+          SharedArrayBuffer can reduce snapshot handoff overhead, but it requires cross-origin isolation headers and
+          careful synchronization. The engineering cost may not be worth it for retail products where network and OMS
+          latency dominate. It becomes more attractive for dense institutional screens with many instruments and high
+          update rates. The pragmatic path is postMessage snapshots first, then measure whether shared memory is needed.
+        </p>
+        <p>
+          Rendering every event gives the illusion of maximum freshness but wastes work and can increase input latency.
+          Coalescing visual updates to animation frames preserves the latest visible state while keeping the main
+          thread within frame budget. The worker still processes every event for correctness. This distinction lets the
+          system drop visual intermediates without dropping market-data semantics.
+        </p>
+        <p>
+          Browser-based trading offers reach, easier deployment, and lower installation burden. Native trading apps can
+          achieve lower latency, tighter OS integration, and richer multi-monitor workflows. For high-frequency trading,
+          a browser is not an execution platform. For retail, operations, monitoring, and many institutional workflows,
+          a browser can be acceptable if it explicitly handles stale data, idempotent orders, and degraded modes.
+        </p>
+        <p>
+          Client-side risk checks improve feedback latency but are not security controls. They reduce avoidable server
+          round trips and catch fat-finger input early, but compromised clients can bypass them. The OMS must repeat
+          all authoritative checks. The UI should frame client checks as user assistance and server checks as final
+          enforcement.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Principal-level decision frame</h3>
+        <p>
+          The key decision is which latency budget the browser is responsible for. The UI can optimize event decoding,
+          render scheduling, stale-state detection, and click-to-request time, but it cannot make exchange matching or
+          OMS risk checks faster. A principal answer should allocate latency budgets across exchange gateway, market
+          data fanout, browser processing, order submission, OMS acknowledgement, and UI reconciliation. Without this
+          boundary, teams often over-optimize paint time while ignoring larger server-side delays.
+        </p>
+        <p>
+          Reliability policy must be more conservative than normal realtime dashboards. If market data is stale,
+          sequence recovery is in progress, or the OMS is unreachable, the UI should explicitly disable or gate order
+          entry rather than letting traders act on untrusted context. This is a business risk decision, not just a UI
+          state. The article now frames degraded modes as part of the trading contract: observe, submit, cancel, or
+          read-only should be separate states with separate operator alerts.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A low-latency trading UI achieves sub-100ms display latency through three architectural decisions: binary WebSocket messages (eliminating JSON parse cost), Web Worker order book state management (protecting the main thread from high-frequency processing), and requestAnimationFrame-based rendering (producing 60fps DOM updates regardless of message frequency). Price staleness detection (2-second threshold + WebSocket disconnect detection) prevents trading against stale data. Order submission is idempotent via client-generated nonces and OMS deduplication, preventing duplicate orders on network retry. Pre-trade risk checks run client-side for immediate feedback and server-side for authoritative enforcement. The Web Worker's SharedArrayBuffer path (with COOP/COEP isolation) provides the minimum-latency variant for institutional use cases. The defining constraint of the system is that correctness always takes priority over performance: a slightly slower system that prevents double-orders and stale-price executions is always preferable to a faster system that occasionally executes incorrectly.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Keep all market data streams sequence-aware. Track expected sequence per instrument, detect gaps, request
+          snapshots, and mark the book unavailable or degraded while recovering. Show stale or recovering state in the
+          UI and disable order submission when the current quote context cannot be trusted.
+        </p>
+        <p>
+          Design the order ticket as a transactional component. Disable repeated submission for the same intent,
+          generate the nonce before the first network request, reuse it across retries, and keep the captured quote
+          context visible in the order review. If a retry returns an existing order, the UI should reconcile to that
+          order rather than creating a second local row.
+        </p>
+        <p>
+          Measure latency at multiple boundaries. Track exchange-to-gateway, gateway-to-browser, browser-receive to
+          worker-decode, worker-decode to snapshot, snapshot-to-paint, click-to-request, request-to-OMS-ack, and
+          OMS-ack-to-UI. A single "latency" metric hides whether problems come from network, parsing, rendering,
+          garbage collection, risk checks, or the OMS.
+        </p>
+        <p>
+          Keep visual updates cheap. Use textContent for simple numeric cells, avoid layout reads in hot paths, reuse
+          row elements where possible, batch DOM updates into requestAnimationFrame, and use CSS animations for flashes
+          instead of JavaScript-driven style loops. Heavy charts should be canvas or WebGL-backed when DOM updates
+          become expensive.
+        </p>
+        <p>
+          Build explicit degraded modes. Read-only mode, stale-prices mode, sequence-recovery mode, market-closed
+          mode, OMS-unavailable mode, and risk-service-unavailable mode should have different UI states. A trader
+          should understand whether they can observe, submit, cancel, or only wait.
+        </p>
+        <p>
+          Add release safety for market-data and order-ticket changes. New parsers, schema changes, pricing displays,
+          and risk warnings should run in shadow or read-only mode before enabling order submission. Trading UIs need
+          kill switches for instruments, markets, order types, and whole workflows because a bad client release can
+          create financial and regulatory exposure quickly.
+        </p>
+        <p>
+          Low-latency trading UIs need a strict distinction between market data, order intent, order acknowledgement, and execution reports. A quote update can be faster than order state, and an optimistic button state must not imply that an order reached the venue. Principal-level designs should show authoritative order status from the trading backend and preserve sequence numbers so users can reason about stale or out-of-order events.
+        </p>
+        <p>
+          Risk controls belong in the interaction path. Fat-finger checks, buying-power validation, price collars, market-hour rules, throttles, and kill switches may reject an order even when the UI is fast. The frontend should make these rules visible enough to prevent confusion while never trusting client-side validation as the final risk boundary.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most serious pitfall is displaying stale prices as normal. A quiet WebSocket can look stable while data
+          is actually frozen. The UI must track last market update time and connection health, then disable order
+          submission or require reconfirmation when data is stale.
+        </p>
+        <p>
+          Another pitfall is treating WebSocket delivery as perfectly ordered and reliable. Network retries, server
+          failover, and reconnects can produce gaps or duplicates. Without sequence checks and snapshot recovery, the
+          local book can drift from the real market while still looking plausible.
+        </p>
+        <p>
+          Teams sometimes optimistically mark orders as accepted before the OMS responds. That creates dangerous
+          mismatches when risk rejects the order, the market moved, or the OMS is unavailable. Use "submitting" or
+          "pending acknowledgement" until the authoritative system confirms.
+        </p>
+        <p>
+          JSON-based prototypes can hide future CPU and garbage-collection costs. A few instruments in development may
+          work well, but a volatile open with many subscriptions can create allocation spikes and main-thread pauses.
+          Protocol and parsing choices should be based on measured worst-case update rates, not happy-path demos.
+        </p>
+        <p>
+          Finally, risk controls can be accidentally split across inconsistent client and server rules. If the UI says
+          an order is valid but the OMS rejects it for a rule the UI never showed, traders lose trust. The client can
+          be advisory, but its rules, labels, and limits should be generated from the same policy source where possible.
+        </p>
+        <p>
+          Teams often optimize render latency while ignoring correctness under burst load. Market open, news events, and volatility spikes produce message bursts, partial fills, venue rejects, and rapidly changing order books. The UI should coalesce visual updates where safe, preserve critical order events exactly, and expose feed lag so traders do not act on stale market data.
+        </p>
+        <p>
+          Another pitfall is mixing simulated and live behavior. Paper trading, delayed quotes, sandbox accounts, and real-money trading need unmistakable environment boundaries. A principal-ready design prevents accidental live orders and records audit evidence for user actions, confirmations, and backend decisions.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Retail brokerages use browser and mobile trading UIs for quotes, watchlists, charts, order tickets, fills,
+          and portfolio state. They prioritize clear degraded states, regulatory disclosures, idempotent order
+          submission, and correctness over microsecond latency.
+        </p>
+        <p>
+          Institutional operations teams use web trading dashboards for monitoring orders, positions, exceptions, and
+          risk. These users may not need the lowest execution latency, but they need accurate status streams, strong
+          filtering, audit trails, and reliable cancellation or amend workflows.
+        </p>
+        <p>
+          Crypto exchanges use similar patterns for order books, tickers, trades, and order entry. Market volatility
+          and retail traffic spikes make worker-based processing, sequence recovery, and rate-limited order submission
+          especially relevant.
+        </p>
+        <p>
+          Internal market-data tools use low-latency UI techniques for pricing, risk, and alerting dashboards. Even
+          when users are not submitting orders, sequence-aware streams and degraded modes prevent analysts from making
+          decisions on silently stale data.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you keep the UI responsive during market volatility?
+        </h3>
+        <p>
+          I would process market data off the main thread in a Web Worker. The worker decodes messages, validates
+          sequence numbers, updates the book, and emits compact render snapshots at the display cadence. The main
+          thread renders only the latest snapshot and remains available for order entry. This allows the system to
+          process every event needed for correctness while coalescing visual updates to 60Hz or 120Hz.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you detect and recover from missed market data messages?
+        </h3>
+        <p>
+          Each instrument stream should carry sequence numbers. The worker tracks the expected next sequence. On a
+          duplicate it ignores the event. On a gap it marks the book invalid, asks the server for a fresh snapshot, and
+          either replays buffered deltas after that snapshot or resumes from the snapshot sequence. The UI should show
+          a recovering or stale state and disable order submission until the quote context is trustworthy again.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you prevent duplicate orders?
+        </h3>
+        <p>
+          Generate a client order nonce for the user's first submit intent, disable duplicate clicks for that intent,
+          and send the nonce with the order request. If the request times out, retry with the same nonce. The OMS
+          deduplicates by trader and nonce and returns the existing order if it already processed the request. The UI
+          reconciles to the authoritative order ID and status stream.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          When should the UI disable order submission?
+        </h3>
+        <p>
+          It should disable or require reconfirmation when market data is stale, sequence recovery is in progress, the
+          market is closed, the instrument is halted, OMS connectivity is unavailable, risk checks cannot run, or the
+          order ticket is internally invalid. The key is to distinguish these states so the trader knows whether the
+          issue is data freshness, execution availability, or input validation.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          Why not render every market data update immediately?
+        </h3>
+        <p>
+          The display cannot show 1000 distinct frames per second, and trying to render every event would consume the
+          main thread and increase input latency. The worker should process every update for correctness, but the
+          renderer should publish the latest coalesced snapshot on animation frames. This preserves visible freshness
+          while keeping the UI responsive.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you measure whether the UI meets the latency target?
+        </h3>
+        <p>
+          I would timestamp at receive, worker decode, book apply, snapshot emit, main-thread receive, render commit,
+          and paint where browser APIs allow. For orders, I would track click-to-request, request-to-OMS-ack, and
+          OMS-ack-to-render. I would look at p95 and p99 during volatile market replay, not just averages in quiet
+          markets, because latency spikes during volatility are the real risk.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">
+              MDN: Web Workers API
+            </a>
+            , off-main-thread processing for browser applications.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">
+              MDN: WebSocket API
+            </a>
+            , browser realtime transport basics.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer" target="_blank" rel="noreferrer">
+              MDN: SharedArrayBuffer
+            </a>
+            , shared memory requirements and browser isolation constraints.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance_API" target="_blank" rel="noreferrer">
+              MDN: Performance API
+            </a>
+            , browser latency measurement primitives.
+          </li>
+          <li>
+            <a href="https://www.fixtrading.org/standards/" target="_blank" rel="noreferrer">
+              FIX Trading Community standards
+            </a>
+            , trading protocol context for order and market data systems.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

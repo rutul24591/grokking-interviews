@@ -1,1 +1,5 @@
-# Design a graceful degradation system — Example 2
+# Graceful Degradation System - Example 2
+
+Concrete performance production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

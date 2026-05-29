@@ -7,92 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-user-profile-follower-system",
-  title: "Design a User Profile & Follower System",
-  description:
-    "Architecture for a user profile and follower system: profile page rendering strategy (SSR with edge caching), follow/unfollow with optimistic UI and fan-out, follower/following paginated lists, mutual follow detection, profile stats caching (follower count, post count), private account follow request flow, block and mute relationship management, suggested users based on graph proximity, and follower count consistency under high-concurrency celebrity accounts.",
+  title: "Design a User Profile and Follower System",
+  description: "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery.",
   category: "high-level-design",
   subcategory: "social-engagement",
   slug: "user-profile-follower-system",
-  wordCount: 5000,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "social", "profile", "follow", "graph", "fan-out", "optimistic-ui", "celebrity"],
-  relatedTopics: ["instagram-twitter-frontend", "infinite-scrolling-feed"],
+  wordCount: 3400,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "social", "feed", "graph", "moderation", "ranking"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a User Profile and Follower System is a social-scale product system where the visible UI is only the last projection of graph state, ranking policy, media delivery, privacy rules, abuse controls, and user intent. A principal-ready design starts by separating durable social facts from derived surfaces.",
+  "Durable facts include posts, follows, blocks, reports, shares, reactions, preferences, and moderation decisions. Derived surfaces include feeds, counters, notification groups, recommendations, summaries, search snippets, and ranking features. Derived surfaces can lag or be rebuilt; privacy and safety decisions must propagate quickly.",
+  "The goal is to design a user profile and follower system so users see relevant, fresh, and safe social content without exposing private actors, losing user actions, or amplifying abuse. The design must address graph scale, hot users, projection lag, mobile constraints, ranking changes, and trust-and-safety intervention.",
+  "Social systems are adversarial. Engagement can be gamed, reports can be brigaded, spam can spread faster than review queues, and summaries can leak data that the main page hides. These are core architecture concerns, not policy details after launch.",
+  "A staff/principal answer should name ownership boundaries: product owns ranking and user controls, integrity owns abuse detection, platform owns graph and fanout primitives, media owns asset safety and delivery, and operations owns incidents, takedowns, and review tooling."
+];
+const concepts = [
+  "The first concept is graph-aware visibility. Every surface should call the same visibility policy for follow state, block state, private accounts, age restrictions, takedown state, regional policy, and viewer permissions. Inconsistency across feed, profile, notification, search, and share preview is a common privacy failure.",
+  "The second concept is projection architecture. profile record, follow edge, and privacy policy are optimized for different read patterns. The design should not force every UI to join raw social tables at request time.",
+  "The third concept is hybrid fanout. Fanout-on-write makes ordinary feed reads fast but struggles with hot accounts. Fanout-on-read is flexible for ranking but expensive for every viewer. Mature systems combine precomputed home timelines, hot-author handling, cache windows, and online ranking.",
+  "The fourth concept is stable pagination and dedupe. Feeds and notification lists should use opaque cursors tied to a ranking window or event sequence. Offset pagination fails when new content arrives, content is removed, or ranking changes mid-scroll.",
+  "The fifth concept is integrity-aware ranking. Ranking should not blindly optimize clicks or shares. It should incorporate spam scores, report velocity, account reputation, block feedback, freshness, diversity, and policy constraints.",
+  "The sixth concept is observability. Track fanout backlog, projection lag, ranking experiment health, duplicate rate, scroll restoration failures, moderation queue age, privacy invalidation delay, counter drift, and abuse escalation."
+];
+const architecture = [
+  "The architecture has five cooperating planes: profile record, follow edge, privacy policy, counter projection, block graph. The write plane records durable social facts and emits events. Projection workers build feed, profile, notification, counter, search, and analytics views. The read API serves surface-optimized projections. Integrity and moderation systems can remove or demote content quickly. The frontend renders stable cursors, pending actions, and recovery states.",
+  "Writes should be idempotent and policy-checked. Follow, like, share, report, mute, block, and post actions need actor authorization, target visibility, rate limit, abuse score, and durable event emission. If the client retries, the backend should converge on one logical action.",
+  "Projection workers should record source event sequence and policy version. This makes it possible to detect stale views and run fast invalidation when a block, takedown, private-account change, or legal removal occurs.",
+  "Read APIs should be purpose-built. A home feed API needs ranked windows and dedupe. A profile API needs ownership, pinned content, privacy, counters, and media summaries. A notification API needs grouping and read state. A moderation UI needs evidence, queue priority, audit, and reviewer-safe presentation.",
+  "The frontend should treat social actions as pending until acknowledged, but can use optimistic presentation for reversible low-risk actions. High-risk actions such as report submission, block changes, privacy changes, and account restriction need explicit confirmation and auditability.",
+  "Operationally, social systems need kill switches and throttles for sharing, recommendations, notification fanout, media autoplay, comment creation, and report intake. Viral failures happen faster than normal deployments can respond."
+];
+const tradeoffs = [
+  "Strong consistency for every counter and feed item is too expensive. Likes, follower counts, view counts, and notification grouping can be eventually consistent. Blocks, takedowns, private account visibility, and safety removals require fast invalidation and much stronger enforcement.",
+  "Personalized ranking improves engagement but reduces explainability and can amplify harmful content. Chronological ranking is simpler and predictable but often less relevant. A principal design supports ranking guardrails, user controls, experiment holdouts, and integrity scoring.",
+  "Fanout-on-write gives fast feed reads for ordinary accounts but creates write amplification for celebrities and viral posts. Fanout-on-read avoids massive writes but can increase read latency and backend load. Hybrid fanout is usually the defensible answer.",
+  "Grouping notifications reduces fatigue but can hide important context or leak private actor information. Group summaries must be recomputed or redacted after privacy changes, blocks, deleted accounts, and moderation actions.",
+  "Aggressive virality and sharing increase growth but also increase spam, fraud, harassment, and policy risk. Rate limits, reputation, link scanning, attribution validation, and circuit breakers are product architecture.",
+  "Moderation before distribution reduces harm but increases latency and false positives. Moderation after distribution improves speed but can allow rapid amplification. Risk-based gating by account reputation, media type, virality, and policy class is more nuanced."
+];
+const practices = [
+  "Centralize visibility policy and use it for every derived surface: feed, profile, search, notification, recommendation, share preview, email, push, and moderation queue.",
+  "Use opaque cursors and dedupe sets for feeds. Cursor state should include enough ranking-window context to avoid duplicates, gaps, and scroll jumps after refresh or new content insertion.",
+  "Track projection lag and invalidation latency as product SLOs. Privacy or safety invalidation should have a different urgency class from ordinary feed freshness.",
+  "Use idempotency keys for social actions and report submissions. Duplicate taps, mobile retries, and offline replay should not create duplicate follows, reports, shares, or notifications.",
+  "Build integrity and moderation tooling into the design. Reviewers need evidence, policy taxonomy, actor history, virality context, appeal state, and audit logs.",
+  "Plan for hot objects. Celebrity posts, viral shares, live events, controversial content, and spam waves need cache isolation, rate limits, backpressure, and sometimes manual controls.",
+  "Segment observability by surface, region, app version, ranking experiment, account class, and integrity bucket. Averages hide social failures because abuse and virality are highly skewed."
+];
+const pitfalls = [
+  "hot account is a scale failure that appears suddenly. The design should define hot-key handling, fanout backpressure, cache windows, and degraded behavior before traffic arrives.",
+  "counter drift is usually caused by inconsistent policy enforcement across derived surfaces. Fixing the main UI is not enough if notifications, search, emails, or previews still expose restricted information.",
+  "blocked exposure undermines user trust because social products feel personal. Users notice missing posts, duplicate cards, incorrect counters, and unexplained ranking shifts quickly.",
+  "follow spam requires abuse-aware product design. Rate limits and classifiers help, but the system also needs support tooling, appeals, audit trails, and emergency controls.",
+  "Another pitfall is treating moderation as a back-office queue only. At scale, moderation changes feed eligibility, ranking, notification delivery, profile visibility, and search indexing.",
+  "Teams also underinvest in support reconstruction. When a user asks why they saw or did not see content, the system should expose ranking inputs, policy decisions, projection freshness, and moderation state at a safe level."
+];
+const useCases = [
+  "creator profile requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "private account requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "enterprise member directory requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "During a viral event, the system may need to reduce fanout, demote suspicious shares, disable some notification types, or route content to review without taking the whole social surface offline.",
+  "During a privacy incident, the fastest path is not a UI patch. The system needs invalidation across projections, deletion from caches, search removal, notification redaction, and auditability.",
+  "During an experiment rollout, teams should compare engagement lift against integrity metrics, report rate, block rate, hide rate, diversity, and long-term retention rather than only clicks."
+];
+const questions = [
+  {
+    "question": "How would you design a user profile and follower system end to end?",
+    "answer": "I would separate durable social facts from derived projections. Writes go through policy, rate limits, idempotency, and event emission. Projection workers build feed, profile, notification, counter, search, and moderation views with source sequence and policy version. Read APIs serve surface-specific projections, and the frontend renders stable cursors, pending states, privacy-safe summaries, and recovery states. Integrity, moderation, observability, and kill switches are part of the core design."
+  },
+  {
+    "question": "Why this architecture over direct reads from source tables?",
+    "answer": "Direct reads are simpler but fail at social scale because every surface needs different ranking, grouping, dedupe, privacy, and freshness behavior. Projection APIs let each surface optimize reads while still enforcing shared visibility and invalidation policy. The cost is projection lag and operational complexity, which must be measured and reconciled."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are hot account, counter drift, blocked exposure, follow spam, plus hot users, viral content, counter drift, notification storms, moderation backlog, and cache stampedes. Prevention requires hybrid fanout, ranked windows, idempotent actions, integrity scoring, projection-lag monitoring, and emergency throttles."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Most engagement surfaces are eventually consistent: feeds, counters, ranking order, grouped notifications, and analytics. Privacy, blocks, takedowns, account restrictions, and safety removals need fast invalidation and strong enforcement. The design should explicitly classify each state instead of claiming one consistency model for the whole product."
+  },
+  {
+    "question": "How do you handle abuse, privacy, rollback, cost, and observability?",
+    "answer": "Abuse is handled through rate limits, reputation, classifiers, graph anomaly detection, link scanning, and review workflows. Privacy is enforced through shared visibility policy and projection invalidation. Rollback uses ranking flags, fanout throttles, notification kill switches, and moderation overrides. Cost is controlled through hybrid fanout, caching, batch projections, and approximate counters. Observability tracks fanout backlog, projection lag, duplicate rate, report velocity, and invalidation latency."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would explain which parts need strong enforcement and which can be eventual. I would defend hybrid fanout because it balances read latency and write amplification. I would defend projection APIs because social surfaces need ranking and privacy semantics that raw tables cannot provide efficiently. I would also acknowledge the cost: projection lag, more operations, and the need for reconciliation tooling."
+  }
+];
+const references = [
+  {
+    "label": "Meta Engineering: TAO social graph storage",
+    "href": "https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/"
+  },
+  {
+    "label": "Twitter/X Engineering archive",
+    "href": "https://blog.x.com/engineering/en_us"
+  },
+  {
+    "label": "W3C ActivityPub recommendation",
+    "href": "https://www.w3.org/TR/activitypub/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST online safety and platform governance resources",
+    "href": "https://www.nist.gov/"
+  }
+];
 
 export default function UserProfileFollowerSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A user profile and follower system is the social graph layer of a social platform. Every user has a profile (avatar, bio, post grid) and a set of directed relationships: User A follows User B (B does not necessarily follow A back). The profile page is one of the most visited pages on a social platform — celebrity profiles receive millions of page views per day. Unlike the feed (which is personalized per viewer), the profile page contains mostly public, non-personalized content (the user's posts, their bio, their follower count) and can be aggressively cached. The one exception: the viewer's own relationship state with the profile owner (Do I follow them? Have I sent a follow request? Did they follow me back?) must be fetched per-viewer and cannot be cached globally.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The follow action creates a cascade of work: it must update the social graph (A follows B), notify B that A followed them, update A's following count, update B's follower count, and potentially update A's feed to include B's posts. This fan-out is manageable for most users (B has 500 followers, so 500 feed caches need updating) but catastrophic for celebrity accounts (B has 10 million followers — updating 10 million feed caches on every new follow is impractical). The system must use different fan-out strategies for celebrity versus normal accounts.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Profile page rendering, follow/unfollow flow, follower count consistency, private account follow request flow, and suggested users. Not in scope: feed fan-out from follows (covered in feed design), or direct messaging.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/user-profile-follower-system.svg" alt="Design a User Profile and Follower System architecture" caption="Architecture view: graph writes, projections, ranking, privacy, integrity, and surface-specific reads." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/user-profile-follower-system-flow.svg" alt="Design a User Profile and Follower System flow" caption="Flow view: user action, fanout or projection, ranking, notification, moderation, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/user-profile-follower-system-operations.svg" alt="Design a User Profile and Follower System operations" caption="Operations view: fanout backlog, projection lag, privacy invalidation, abuse signals, and moderation controls." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Profile page:</strong> Avatar, display name, username, bio, post count, follower count, following count, post grid (thumbnail view). For the viewer: follow/unfollow button showing current relationship state. For private accounts: follow request button if not yet following.</li>
-          <li><strong>Follow/Unfollow:</strong> One-tap follow. Optimistic UI: button state changes immediately. For public accounts: follow is immediate. For private accounts: follow creates a pending request; the button shows "Requested" until approved.</li>
-          <li><strong>Followers/Following lists:</strong> Paginated list of followers and following, each showing avatar, username, and a follow button for the viewer. Mutual follow indicator ("Follows you"). Sorted by recency.</li>
-          <li><strong>Mutual follows:</strong> When viewing another user's followers list, indicate which followers also follow the viewer ("You both follow X"). Suggested mutual connections surfaced on profile page.</li>
-          <li><strong>Block and mute:</strong> Block prevents the blocked user from viewing the blocker's profile or content. Mute hides the muted user's content from the muter's feed without the muted user knowing. Both are soft-deletable relationship records.</li>
-          <li><strong>Suggested users:</strong> "People you may know" module on profile page and dedicated discovery page. Based on second-degree follow graph (followers of people you follow).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Profile page load:</strong> Celebrity profile (10M+ followers) loads within 1 second. Follower count displayed even if precise count is slightly stale (eventual consistency acceptable for counts).</li>
-          <li><strong>Follow latency:</strong> Follow button state change visible within 200ms (optimistic). Server confirmation within 2 seconds.</li>
-          <li><strong>Count accuracy:</strong> Follower/following counts may be eventually consistent (lag by up to 60 seconds during high-concurrency bursts) but must not show negative counts or counts that diverge by more than 1% over time.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The Profile Service serves the profile page via SSR at the edge (profile data is public, can be edge-cached with a short TTL). The viewer's relationship state is fetched client-side after hydration (cannot be cached globally). The Follow Service handles follow/unfollow operations and writes to the social graph database (a dedicated graph store or a PostgreSQL table with (follower_id, followee_id, status, created_at)). Follower/following counts are maintained in Redis counters (INCR/DECR on follow/unfollow events) with periodic reconciliation against the database. The Fan-out Service reads follow events from Kafka and updates affected users' feed caches; celebrity accounts use a pull-based feed model (fan-out on read) rather than fan-out on write.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/social-engagement/user-profile-follower-system.svg"
-          alt="User profile and follower system architecture showing profile page rendering (SSR edge cache: GET /profile/{username} → Profile Service → Redis profile:{userId} TTL 5min; public data: avatar bio postCount followerCount followingCount; edge cache s-maxage=300; viewer relationship: GET /api/me/relationship/{userId} client-side after hydration → not cached), follow action flow (tap Follow → optimistic UI button=Following; POST /api/follow {targetUserId}; Follow Service: INSERT social_graph (followerId targetId status=ACTIVE); INCR followers:{targetId}; INCR following:{followerId}; if target.isPrivate: status=PENDING button=Requested; Kafka follow.created event), fan-out strategy (regular user &lt;10K followers: push fan-out → update feed cache for each follower; celebrity &gt;10K followers: pull fan-out → no feed cache update; at feed load time: merge followed celebrity posts from latest posts cache; hybrid: pre-compute for active followers of celebrity), follower count caching (Redis INCR followers:{userId} on follow; DECR on unfollow; counter:{userId} reconciliation job hourly; displays rounded for celebrities: 10.2M; eventual consistency OK lag &lt;60s), private account flow (status=PENDING; notification to target: 'X wants to follow you'; target: PATCH /api/follow-request/{id} accept/reject; accept: status=ACTIVE fan-out; reject: DELETE record; requester: button stays Requested until decision), social graph queries (followers list: SELECT follower_id WHERE followee_id=X ORDER BY created_at DESC LIMIT 20; mutual follow: EXISTS WHERE follower_id=viewer AND followee_id=follower; suggested users: 2nd-degree graph: followers of people viewer follows; exclude already-followed; rank by mutual count), block/mute (block: INSERT blocks (blockerId targetId); affects: profile visibility feed content search; mute: INSERT mutes (muterId targetId); affects: feed only; target unaware; both soft-deletable)."
-          caption="Profile SSR edge-cached (public data TTL=5min, viewer relationship client-side), follow optimistic UI → social_graph INSERT → Redis INCR counters → Kafka fan-out, celebrity pull-based feed (no write fan-out for &gt;10K followers), private account pending-request flow, mutual follow detection, and block/mute relationship records"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Profile Page Rendering and Cache Strategy</h3>
-        <HighlightBlock as="p" tier="important">The profile page (/{"{username}"}) is SSR-rendered at the edge with a 5-minute CDN cache for public data. The rendered HTML includes the user&apos;s avatar, bio, post count, follower count (from Redis counter), and the post grid thumbnails. The CDN cache is keyed by username with Cache-Control: s-maxage=300, stale-while-revalidate=60, content is fresh for 5 minutes and served stale during revalidation for up to another minute. This means the profile page of a celebrity with 50K requests per second is served entirely from CDN with near-zero origin load. The one viewer-specific piece, the follow button state, is excluded from the SSR output. Instead, the follow button renders as &quot;Follow&quot; (the default state) in the SSR shell, and on hydration a GET /api/me/relationship/{"{targetUserId}"} call fetches the viewer&apos;s actual relationship status: NONE, FOLLOWING, PENDING (follow request sent), BLOCKED. The button state updates after this call resolves (&lt;100ms from cache in Redis relationships:{"{viewerId}"}:{"{targetId}"}).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Follow Action with Optimistic UI</h3>
-        <HighlightBlock as="p" tier="important">The follow button is the most frequently interacted UI element on a profile page. Its state must be instantly responsive. Optimistic UI: when the user taps "Follow," the button immediately transitions to "Following" state (filled, darker color) without waiting for the server. The POST /api/follow request runs in the background. If the server confirms success, the optimistic state is validated — no change needed. If the server returns an error (e.g., the user was already blocked by the target), the button reverts to "Follow" and a toast message explains why. The optimistic state also immediately updates the viewer's following count in the local store (+1), since this change is certain to be correct if the server confirms.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Server-side follow processing: the Follow Service receives the POST, writes to the social_graph table, increments the Redis counters (INCR followers:{"{targetId}"}, INCR following:{"{followerId}"}), and publishes a follow.created event to Kafka. The Kafka event triggers: a notification to the followed user (system: &quot;A followed you&quot;), and feed cache warming if the followee is not a celebrity (fan-out on write). For celebrity accounts (defined as follower count &gt; 10,000, configurable threshold), no fan-out is performed on write. Instead, the follower&apos;s feed is assembled at read time by merging the celebrity&apos;s most recent posts from a separate celebrity_recent_posts:{"{userId}"} cache.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Follower Count Consistency</h3>
-        <HighlightBlock as="p" tier="important">Follower counts are maintained as Redis counters rather than COUNT(*) SQL queries, which would be prohibitively slow for accounts with millions of followers. INCR and DECR operations on followers:{"{userId}"} are atomic and return the new count in O(1). The displayed count is read directly from Redis on each profile page SSR. However, Redis counters can drift from the true database count due to: process crashes between the DB write and the Redis increment (the follow is in the DB but the counter wasn&apos;t incremented), or Redis eviction. A reconciliation job runs hourly: SELECT COUNT(*) FROM social_graph WHERE followee_id=userId AND status=ACTIVE for a sample of accounts and sets the Redis counter to the correct value. For celebrity accounts, the count display uses floor rounding to the nearest 100K to mask the delta between exact count and cached count (&quot;10.2M followers&quot; rather than &quot;10,247,832 followers&quot;). This is standard practice on all major social platforms and removes pressure to keep counts to-the-second accurate.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Private Account Follow Request Flow</h3>
-        <HighlightBlock as="p" tier="important">For private accounts, the follow action creates a pending follow request rather than an immediate follow. The social_graph row is inserted with status=PENDING. The follow button shows &quot;Requested&quot; until the account owner makes a decision. A notification is sent to the account owner: &quot;X wants to follow you&quot; with Accept and Decline actions. If the owner accepts (PATCH /api/follow-requests/{"{id}"}/accept), the status is updated to ACTIVE, the counters are incremented, and the fan-out proceeds as normal. If the owner declines (PATCH /api/follow-requests/{"{id}"}/decline), the record is deleted and the requester&apos;s button reverts to &quot;Follow&quot; (the requester is not notified of the decline, preserving privacy). Pending follow requests are listed in a dedicated &quot;Follow Requests&quot; inbox in the account settings, showing avatar, username, and mutual follows for each requester. The requester can also cancel their pending request by tapping &quot;Requested&quot; again (which fires DELETE /api/follow-requests/{"{id}"}).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Suggested Users (Second-Degree Graph)</h3>
-        <HighlightBlock as="p" tier="important">The &quot;Suggested Users&quot; module shows users the viewer might want to follow, ranked by mutual connection count. The query: find all users followed by any of the viewer&apos;s followees (second-degree follows), exclude users already followed by the viewer, and rank by the count of shared followees. This is a graph traversal query: SELECT followee_id, COUNT(*) as mutual_count FROM social_graph WHERE follower_id IN (SELECT followee_id FROM social_graph WHERE follower_id = viewerId) AND followee_id NOT IN (SELECT followee_id FROM social_graph WHERE follower_id = viewerId) GROUP BY followee_id ORDER BY mutual_count DESC LIMIT 10. This query is expensive for users with large follow graphs and is never run in real-time on the profile page load. Instead, it is precomputed by a batch job (runs every 4 hours per user) and cached in Redis suggested_users:{"{userId}"} with a 4-hour TTL. The profile page reads from this cache. On follow and unfollow, the cache is invalidated for both the follower and the followed (their suggestion lists may change).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Fan-out on write versus fan-out on read for celebrity accounts: fan-out on write (updating all followers' feed caches when a celebrity posts) requires updating 10 million cache entries per post — at 1ms per update, that's 10,000 seconds of sequential work. Fan-out on write is only feasible for regular accounts with manageable follower counts. Fan-out on read (each follower's feed query merges the celebrity's recent posts at read time) adds a small overhead to every feed query but avoids the write amplification. The hybrid approach (fan-out on write for regular accounts, fan-out on read for celebrities) is used by Twitter's architecture (documented in their engineering blog) and is the standard approach for social platforms at scale.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Soft delete versus hard delete for block/mute: hard-deleting block/mute records means a user who unblocks someone has to start fresh — there's no history of the block. Soft delete (status=ACTIVE/DELETED, deleted_at timestamp) allows auditing of block/mute history for trust-and-safety purposes. If a user reports harassment, knowing that the harasser was previously blocked provides context. The storage overhead of soft-deleted records is minimal (block/mute volumes are low relative to follow volumes).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A user profile and follower system balances public CDN-cached profile rendering with per-viewer relationship state fetched client-side. Profile SSR is edge-cached (s-maxage=300) for public content; the follow button hydrates from a dedicated relationship API call. Follow actions use optimistic UI (instant button state) with server-side fan-out via Kafka — push fan-out for regular accounts (&lt;10K followers), pull fan-out (feed merges at read time) for celebrities to avoid write amplification at 10M+ follower scale. Follower counts are Redis INCR/DECR counters with hourly reconciliation jobs; celebrity counts display with floor rounding to mask minor drift. Private account follow requests use a PENDING → ACTIVE workflow with owner-approval inbox. Suggested users are precomputed every 4 hours (second-degree graph query) and cached in Redis. Block/mute records are soft-deleted for trust-and-safety auditability. The key design insight: the social graph at celebrity scale requires fundamentally different data flow patterns than at regular-user scale — the celebrity/regular threshold determines fan-out strategy, counter display precision, and CDN cache TTL for public profile content.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

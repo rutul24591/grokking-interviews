@@ -7,94 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-unified-notification-platform",
-  title: "Design a Unified Notification Platform (Push + Email + SMS + In-app)",
-  description:
-    "Architecture for a multi-channel notification platform: event ingestion via Kafka with deduplication, per-user preference and opt-out enforcement, Handlebars template rendering per channel, fan-out to dedicated channel workers (FCM/APNs push, Amazon SES email, Twilio SMS, in-app SSE), exponential backoff retry with fallback chain, provider webhook tracking for open/click analytics, Redis unread badge counter, and real-time delivery status dashboard.",
+  title: "Design a Unified Notification Platform",
+  description: "Principal-level notification delivery platform design covering preferences, consent, priority, channel routing, idempotency, provider failures, privacy, receipts, and observability.",
   category: "high-level-design",
   subcategory: "notification-delivery-platform",
   slug: "unified-notification-platform",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "notifications", "push", "email", "sms", "in-app", "kafka", "fcm", "ses", "twilio"],
-  relatedTopics: ["notification-preferences-system", "priority-notification-delivery-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "notifications", "delivery", "preferences", "privacy", "reliability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Unified Notification Platform is a delivery and trust system. A principal-ready design treats a unified notification platform as a policy-controlled communication platform, not as a queue that sends push, email, SMS, or in-app messages.",
+  "The system must decide whether to notify, when to notify, which channel to use, how much content to reveal, how to respect preferences and consent, how to avoid duplicate or noisy delivery, and how to prove what happened when a user complains.",
+  "Notifications sit between product urgency and user attention. A good platform protects critical messages without letting every product team label its event critical. The architecture needs priority, preference, quiet-hour, rate-limit, and abuse controls.",
+  "The authoritative state includes event identity, recipient, topic, consent, preference version, policy decision, channel attempt, provider response, receipt, and user-visible notification state. Dashboards and analytics are derived from this delivery ledger.",
+  "A staff/principal answer should cover fanout at scale, provider failures, idempotency, retries, digesting, channel fallback, privacy-safe payloads, user controls, operational kill switches, and observability."
+];
+const concepts = [
+  "The first concept is event classification. event intake, preference service, and policy engine determine whether an event is transactional, security-critical, workflow-critical, marketing, social, digestible, suppressible, or illegal to send without consent.",
+  "The second concept is preference and consent resolution. Channel availability, user opt-in, quiet hours, topic preferences, tenant policy, regional law, and product priority should be resolved before a delivery attempt is created.",
+  "The third concept is idempotent delivery. Every logical notification needs a stable notification ID so retries, duplicate events, provider callbacks, and multi-worker races do not spam the user.",
+  "The fourth concept is channel strategy. Push, email, SMS, in-app, webhook, and digest channels have different latency, reliability, cost, privacy, and regulatory properties. Fallback should be policy-driven, not automatic for every failure.",
+  "The fifth concept is attention budgeting. Rate limits, batching, digests, cooldowns, relevance scoring, and priority tiers protect users from fatigue and protect providers from traffic bursts.",
+  "The sixth concept is observability. Track intake rate, policy suppression, preference suppression, queue lag, provider attempts, delivery success, receipt lag, duplicate suppression, complaint rate, unsubscribe rate, and critical missed alerts."
+];
+const architecture = [
+  "The architecture contains event intake, preference service, policy engine, channel router, delivery ledger. Product systems emit notification intents. The platform resolves recipient, consent, preferences, priority, templates, and channel policy. Delivery workers send through providers. A delivery ledger records attempts, receipts, suppressions, and user interactions.",
+  "Event intake should validate schema, source authorization, recipient scope, dedupe key, priority claim, and template variables. Product teams should not be allowed to send arbitrary payloads directly to providers.",
+  "Preference resolution should be deterministic and versioned. A notification record should explain which preference version, consent state, topic taxonomy, quiet-hour policy, and tenant rule produced the decision.",
+  "Delivery workers should use idempotency, retry budgets, provider-specific backoff, and dead-letter queues. A provider timeout should not automatically create another user-visible notification unless the policy allows retry or fallback.",
+  "Payload rendering should be privacy-aware. Lock-screen push, email subject lines, SMS content, and in-app notifications may need different redaction. Sensitive messages can say an action is needed without revealing private details.",
+  "Operations need controls for pausing a topic, disabling a provider, draining a queue, replaying failed transactional messages, suppressing a noisy product event, revoking a bad template, and auditing why a notification was or was not sent."
+];
+const tradeoffs = [
+  "Centralized notification platforms improve consistency, compliance, and provider management, but they add dependency and governance overhead. Product-owned sending is faster initially but creates duplicate logic, inconsistent preferences, and provider sprawl.",
+  "Immediate delivery is correct for security and transactional alerts, but noisy for low-priority engagement events. Digesting improves attention quality but can delay useful information. The priority taxonomy should drive this decision.",
+  "Channel fallback improves reachability but can violate user expectations or consent. If push fails, SMS fallback may be inappropriate because SMS is more intrusive, expensive, and often more regulated.",
+  "Rich payloads improve engagement but increase privacy risk. Minimal payloads are safer but may reduce clarity. Sensitive topics should prefer redacted payloads and authenticated deep links.",
+  "Aggressive retries improve delivery probability but can create duplicate messages, provider throttling, and user annoyance. Retries need budgets, dedupe, and provider-specific backoff.",
+  "Exact delivery analytics are difficult because providers expose different receipt semantics. A principal design distinguishes sent, accepted by provider, delivered, displayed, opened, clicked, suppressed, and failed."
+];
+const practices = [
+  "Create a durable delivery ledger with event ID, recipient, topic, priority, preference version, policy decision, channel attempt, provider response, receipt, and interaction state.",
+  "Use stable idempotency keys per logical notification. Retries, callback replays, and queue redelivery should update the same delivery record.",
+  "Make preferences and consent a shared service used by every channel: push, email, SMS, in-app, webhook, and digest.",
+  "Use a topic taxonomy with ownership. Every topic should have owner, priority range, allowed channels, default behavior, template rules, and suppression policy.",
+  "Separate transactional, security-critical, workflow-critical, and marketing notifications. They have different consent, retry, fallback, and quiet-hour semantics.",
+  "Build provider abstraction without erasing provider differences. Store provider-specific response codes and map them into platform-level states for operators.",
+  "Instrument user harm signals: unsubscribe, mute, complaint, block, app notification disablement, duplicate reports, and missed-critical-event reports."
+];
+const pitfalls = [
+  "duplicate delivery usually comes from missing idempotency or treating each provider attempt as a new logical notification. Users experience this as spam, not resilience.",
+  "provider outage should trigger provider failover or queueing only when policy allows it. Fallback without consent or urgency classification can be worse than delay.",
+  "privacy leak often happens through payloads, previews, subject lines, or logs. Notification content should be treated as a privacy surface.",
+  "notification storm is a system failure and a product failure. Rate limits, digests, cooldowns, topic ownership, and emergency suppressions are required.",
+  "Another pitfall is using one global unsubscribe for every message type. Users need control, but some security or transactional notifications may be legally or product-critical.",
+  "Teams also forget that provider accepted does not mean user saw it. Observability should not overstate delivery guarantees."
+];
+const useCases = [
+  "transactional alerts requires event classification, preference resolution, channel policy, idempotent delivery, receipts, and user-visible recovery.",
+  "product engagement notifications requires event classification, preference resolution, channel policy, idempotent delivery, receipts, and user-visible recovery.",
+  "enterprise workflow notifications requires event classification, preference resolution, channel policy, idempotent delivery, receipts, and user-visible recovery.",
+  "During a provider outage, the platform should pause or reroute only eligible channels, preserve delivery records, avoid duplicate sends, and show provider-specific incident state.",
+  "During a notification storm, operators should suppress the noisy topic, enforce rate limits, drain or drop low-priority queues, and preserve critical transactional delivery.",
+  "During a privacy incident, teams should identify affected templates, payloads, channels, logs, and provider attempts so users and regulators can be notified accurately."
+];
+const questions = [
+  {
+    "question": "How would you design a unified notification platform end to end?",
+    "answer": "I would accept notification intents from product systems, validate schema and source authorization, resolve recipient, consent, preferences, quiet hours, priority, template, and channel policy, then create durable delivery records. Workers send through provider adapters with idempotency and retry budgets. Receipts and user interactions update the delivery ledger. Operators get controls for suppressing topics, disabling providers, replaying safe failures, and auditing decisions."
+  },
+  {
+    "question": "Why this architecture over every product team sending its own push or email?",
+    "answer": "Product-owned sending leads to inconsistent preferences, duplicate notifications, provider sprawl, privacy mistakes, and no central audit. A platform adds governance and latency, but it gives consistent policy, shared provider management, dedupe, receipts, and operational controls."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are duplicate delivery, provider outage, privacy leak, notification storm, plus queue backlogs, provider throttling, template mistakes, unsubscribe spikes, preference cache drift, and receipt ambiguity. Prevention requires idempotency, priority queues, provider backoff, topic ownership, preference versioning, rate limits, and emergency suppression."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Consent, unsubscribe, channel blocks, and critical security policy need strong enforcement or fast invalidation. Delivery attempts and receipts are eventually consistent because providers respond asynchronously. Analytics and engagement metrics are derived. The delivery ledger should be authoritative for what the platform attempted and why."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through retry budgets, dead-letter queues, provider failover where allowed, and replay for safe transactional messages. Rollback uses topic suppression, template revocation, provider disablement, and preference cache invalidation. Abuse is controlled with rate limits and priority governance. Privacy uses redacted payloads and log minimization. Cost is controlled by digesting, channel policy, and provider routing. Observability tracks queue lag, provider errors, suppression, duplicates, receipts, complaints, and unsubscribe rates."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would classify messages by urgency, consent, reversibility, and privacy. I would defend immediate retry for critical transactional messages, but digest or suppress low-priority engagement. I would not automatically fail over to more intrusive channels without user consent. I would also distinguish provider accepted from user seen."
+  }
+];
+const references = [
+  {
+    "label": "Firebase Cloud Messaging documentation",
+    "href": "https://firebase.google.com/docs/cloud-messaging"
+  },
+  {
+    "label": "Apple Push Notification service",
+    "href": "https://developer.apple.com/documentation/usernotifications"
+  },
+  {
+    "label": "Twilio Messaging documentation",
+    "href": "https://www.twilio.com/docs/messaging"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST Privacy Framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  }
+];
 
 export default function UnifiedNotificationPlatformArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A unified notification platform must reliably deliver messages across four channels — push (FCM/APNs), email (SMTP/SES), SMS (Twilio/SNS), and in-app (SSE/WebSocket) — while respecting per-user preferences, quiet hours, and frequency caps. The platform is a shared service used by many product teams (order service, social graph, billing, security). Each team publishes an event; the notification platform handles the rendering, routing, delivery, and tracking. The key design challenges are: (1) fan-out (one event may generate millions of notifications for popular users); (2) channel reliability (push tokens expire, email bounces, SMS fails); (3) preference enforcement (a user who opted out of marketing push should never receive one); and (4) deduplication (retry of the same event must not cause duplicate notifications).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The platform is not a transactional messaging system (that would be a chat or P2P messaging system). It is an outbound notification system: the platform sends from the product to the user, not user-to-user. The distinction matters for delivery guarantees — a notification that is never received is a degraded experience, but it is not a data integrity problem. This simplifies reliability requirements (at-least-once delivery is acceptable; exactly-once is not worth the complexity cost for most notification types, with the exception of security alerts like OTPs).</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Multi-channel delivery pipeline, template rendering, preference enforcement, deduplication, delivery tracking, and in-app badge. Not in scope: rich inbox UI design (separate article), chat/P2P messaging, email campaign management (Mailchimp-equivalent — a much larger system), or push campaign scheduling (batch blasts to millions).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/unified-notification-platform.svg" alt="Design a Unified Notification Platform architecture" caption="Architecture view: intake, preferences, policy, channel routing, delivery ledger, and provider adapters." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/unified-notification-platform-flow.svg" alt="Design a Unified Notification Platform flow" caption="Flow view: event classification, preference resolution, channel attempt, receipt, digesting, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/unified-notification-platform-operations.svg" alt="Design a Unified Notification Platform operations" caption="Operations view: queue lag, provider outage, duplicate suppression, privacy, storm control, and user harm signals." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Event ingestion and routing:</strong> Product services publish notification events to a Kafka topic (notif.events) with a standard schema: userId, eventType (order_shipped, fraud_alert, comment_reply), payload (event-specific data), priority (critical/high/normal/bulk), and an idempotency key. The notification platform consumes from this topic and for each event: (1) looks up the user's channel preferences and opt-out status; (2) selects which channels to send on (based on priority and user preferences); (3) renders the notification content for each selected channel using a template; (4) publishes one message per channel to channel-specific Kafka topics (notif.push, notif.email, notif.sms, notif.inapp). The idempotency key is checked in Redis (24-hour TTL) to prevent duplicate sends if the upstream service retries the same event.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Template rendering:</strong> Notification content is defined by templates, not by the calling service. Each template is associated with an event type and a channel, and contains a Handlebars template string with variable substitution. Example: order_shipped + email template includes the order number, item name, tracking URL, and estimated delivery date from the event payload. Templates are stored in a database (versioned), and the active template version is cached in memory (refreshed every 60 seconds). Template rendering happens in the notification service (not in the channel workers) so the same rendered content can be delivered to multiple channels without re-rendering. For personalization, template variables include the user's first name, locale (for localized templates), and currency preference.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Channel workers:</strong> Each channel has a dedicated worker pool consuming from its Kafka topic. Push worker: looks up the user's FCM/APNs device tokens (stored in a device_tokens table, one row per user+device+platform), sends to FCM Data API or APNs HTTP/2, handles token expiry (410 → delete token, 404 → delete token), and handles rate limits with exponential backoff. Email worker: uses Amazon SES SendEmail API, handles bounces and complaints via SNS webhook (hard bounce → mark address invalid, complaint → unsubscribe), and throttles to SES sending rate limits. SMS worker: uses Twilio Messages API, handles undeliverable responses (21211 invalid number → mark invalid), and implements carrier-specific retry logic. In-app worker: writes to the in_app_notifications table and increments the Redis unread badge counter (INCR badge:&#123;userId&#125;); for active sessions, broadcasts via SSE connection.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Fallback chain:</strong> If the preferred channel fails after retries, the platform falls back to the next channel. Fallback order is configurable per priority: critical notifications (fraud alert, OTP) always try push first, then SMS, then email — because SMS is almost always reachable even if push tokens are stale. Normal notifications fall back from push to in-app (no SMS fallback, as SMS costs money and users don't expect non-critical notifications via SMS). The fallback decision is made by the channel worker after exhausting retries, by publishing a fallback event to the notification routing topic with the failed channel marked.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Delivery tracking and analytics:</strong> Every delivery attempt is written to a delivery_events table: &#123;notif_id, channel, status (sent/delivered/failed/bounced/opened/clicked), provider_message_id, timestamp&#125;. Provider webhooks (FCM delivery receipts, SES open tracking pixels, Twilio delivery callbacks) are ingested to update delivery status. The delivery analytics dashboard shows: send rate, delivery rate, open rate, and click-through rate per channel per template. Alerting: if the 5-minute rolling delivery rate for critical notifications drops below 95%, page the on-call engineer. In-app read tracking: when the user opens the notification bell, a PATCH /notifications/&#123;id&#125;/read request marks it read and decrements the Redis badge counter (DECR badge:&#123;userId&#125;).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Scale:</strong> The platform must handle 100K notification events per second at peak (e.g., a flash sale triggers order confirmations for many users simultaneously). Fan-out: each event generates 1–4 channel messages. Kafka provides backpressure — channel workers consume at their own rate. Push worker throughput: FCM supports 600K messages per second per project; the bottleneck is the internal channel worker fan-out, not the provider. SMS throughput is lower (Twilio long codes: 1 message/second per number; use short codes for 100 messages/second, or alphanumeric sender IDs). Email SES: up to 1M messages/day on the default quota, scalable via quota increase.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Reliability:</strong> At-least-once delivery (Kafka consumer commit happens after successful processing). For critical notifications, exactly-once semantics are achieved via the idempotency key: if the same event is processed twice (due to a Kafka consumer retry), the Redis dedup key prevents the second delivery. For normal notifications, at-least-once is acceptable — a duplicate social notification is a minor nuisance, not a problem. Dead-letter queues (DLQs) capture messages that fail after 3 retries; DLQ messages trigger an alert and are reviewed manually for root cause analysis.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Latency:</strong> Critical notifications (OTP, fraud alert): &lt;5 seconds from event publish to push delivery. Normal notifications: &lt;60 seconds. Bulk (newsletters, digests): &lt;4 hours. In-app: &lt;1 second for active sessions (SSE push directly to the open connection).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Observability:</strong> Metrics per channel per priority: Kafka consumer lag, send latency (p50/p99), delivery rate, failure rate, retry rate. Distributed tracing: each notification event carries a trace ID from the upstream service, propagated through all Kafka messages and provider calls for end-to-end request tracing. Structured logging: every send attempt logged with notif_id, user_id, channel, provider_message_id, latency, and outcome.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <p>The platform has three layers: the ingestion layer (HTTP API + Kafka), the processing layer (notification service + channel workers), and the delivery layer (provider integrations). Ingestion: product services call POST /api/notify or publish directly to Kafka. The notification service (stateless, horizontally scalable) handles preference lookups, template rendering, and fan-out to channel-specific Kafka topics. Channel workers are separate services per channel — the push worker, email worker, SMS worker, and in-app worker — each with independent scaling and fault isolation.</p>
-        <HighlightBlock as="p" tier="crucial">Data stores: PostgreSQL for templates, user preferences (canonical source), delivery events, and in-app notifications. Redis for preference cache (HSET per user), device token cache, unread badge counters (INCR/DECR), dedup keys, and frequency cap counters. S3 for email template assets (images, CSS). The provider integrations are thin wrappers over FCM/APNs HTTP APIs, Amazon SES, and Twilio — each wrapped with retry logic, rate limiting, and credential rotation.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/unified-notification-platform.svg"
-          alt="Unified notification platform: Event Source → Notification Service (preference check, dedup, template render) → fan-out to 4 Kafka topics → Channel Workers (push FCM/APNs, email SES, SMS Twilio, in-app SSE) → Delivery Providers → Delivery Log; in-app badge via Redis INCR/DECR; provider open/click webhooks → analytics."
-          caption="Event ingestion with 24hr dedup key, preference + opt-out gate, Handlebars template render, 4-channel Kafka fan-out, fallback chain (push → in-app → email), Redis badge counter, provider webhook delivery analytics"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Push Notification Architecture (FCM + APNs)</h3>
-        <HighlightBlock as="p" tier="crucial">Push delivery requires managing device tokens, which are volatile (tokens change when the app is reinstalled, when the user gets a new device, or when the push provider rotates tokens). Device token management: each app session sends the token to POST /api/devices (user ID from session JWT, token, platform: android/ios, app version). Tokens are stored in a device_tokens table with a last_seen_at timestamp. Stale tokens (last_seen_at &gt; 90 days) are proactively purged. On delivery: a 404 (not registered) or 410 (token deregistered) response from FCM/APNs means the token is permanently invalid — the worker immediately deletes it from the database (lazy token cleanup). A 429 (rate limited) means back off and retry with exponential delay.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Multi-device delivery: a user may have multiple registered devices (phone + tablet + web push). The notification is sent to all devices concurrently. If any device delivers successfully, the notification is considered delivered. For in-app deduplication (the user should not see the same notification twice if they open it on one device and it's still unread on another), the unread state is stored server-side (PostgreSQL), not per-device. When the user marks it read on one device, the SSE channel broadcasts a read event to all active sessions for that user.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Web push (browsers): uses the Web Push Protocol (VAPID keys, encrypted payload over HTTP). Web push tokens are stored similarly to mobile tokens. The browser's push service (Google/Mozilla/Apple) relays the encrypted payload to the browser's service worker. The service worker displays the notification via the Notifications API. For web push, the payload is limited to 4KB — long notifications must include a deep link and a short message, with the full content fetched by the service worker on click.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Email Delivery and Bounce Handling</h3>
-        <HighlightBlock as="p" tier="important">Email delivery at scale requires careful reputation management. Domain reputation affects deliverability — if too many emails are marked as spam, the sending domain's reputation degrades and future emails land in spam folders. Key practices: (1) SPF, DKIM, and DMARC records configured for the sending domain; (2) dedicated sending IPs for transactional (OTP, receipts) and marketing (newsletters) — transactional email is sent from a high-reputation IP not shared with marketing sends; (3) bounce and complaint processing: Amazon SES delivers bounce/complaint notifications via SNS → SQS → the email worker processes them: hard bounces (permanent: invalid address) → mark email invalid, add to suppression list; soft bounces (temporary: mailbox full) → retry up to 3 times over 24 hours; spam complaints → add to suppression list immediately (ISPs report complaints back to SES; ignoring them leads to IP block).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Email rendering: HTML emails are rendered from templates with inlined CSS (email clients do not support external stylesheets), responsive tables for layout, and fallback text for plain-text email clients. A/B testing template variants: the template system supports variant weights — 50% of users get template A, 50% get template B — tracked by the delivery event metadata to compare open rates and click rates between variants. The winning variant is automatically selected after 10,000 samples (configurable).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">In-App Notification Inbox</h3>
-        <HighlightBlock as="p" tier="important">The in-app notification inbox stores notifications server-side in a notifications table: &#123;id, user_id, type, title, body, action_url, read_at, created_at, expires_at&#125;. The notifications are loaded on page load (GET /api/notifications?cursor=&amp;limit=20, cursor-based pagination with ULID IDs) and streamed in real-time via SSE for active sessions. The unread badge count in the header is served from the Redis INCR counter (HGET badge:&#123;userId&#125;), which is extremely fast (O(1)) and never requires a COUNT(*) SQL query. The counter can drift from the actual unread count due to race conditions (multiple devices marking notifications read simultaneously). A reconciliation job runs every hour to reset the Redis counter to the true SQL count for users with activity in the last 24 hours, correcting any drift.</HighlightBlock>
-        <p>Notification grouping: social notifications of the same type are grouped in the inbox (e.g., "Alice, Bob, and 12 others liked your post" instead of 14 separate notifications). Grouping is computed at query time — when fetching the inbox, the API groups notifications by type + reference_id within a 24-hour window. The group shows the most recent 2 actors and a count for the rest. This reduces notification fatigue without suppressing information.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Deduplication and Idempotency</h3>
-        <HighlightBlock as="p" tier="important">Deduplication prevents duplicate notifications when the upstream service retries an event (e.g., a network error causes the order service to publish the same order_shipped event twice). The idempotency key is a combination of the event type and a business identifier — for order_shipped, the idempotency key is "order_shipped:&#123;orderId&#125;". The notification service stores this key in Redis with a 24-hour TTL. On receiving an event: SETNX dedup:&#123;key&#125; "1" EX 86400 — if SETNX returns 0 (key already exists), the event is a duplicate and is discarded. If it returns 1 (key set), processing proceeds. This provides at-most-once delivery for each unique business event, which combined with Kafka's at-least-once delivery gives effectively-once notification delivery for properly keyed events. For channels where duplicates are catastrophic (SMS has a per-message cost; OTP duplicates confuse users), the dedup key TTL is extended to 5 minutes to cover all retry windows.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <p>Fan-out at send time vs. fan-out at read time: for high-follower users (a celebrity with 1 million followers), sending a notification to all followers on an event is expensive — 1 million push messages per post. One approach is to only notify the most engaged followers (those who have interacted with the celebrity's content in the last 30 days) and let others discover new posts on their next app open. This reduces fan-out from 1 million to ~100K for the most active follower segment, at the cost of some followers not receiving a notification. The cutoff threshold is a product decision, not a technical one — but the platform must support configurable per-user fan-out limits per event type.</p>
-        <HighlightBlock as="p" tier="important">Push vs. in-app: in-app notifications (delivered via SSE to active sessions) are free and fast for users who are actively using the app. Push notifications are more expensive (provider API calls, token management complexity) and have delivery limitations (tokens expire, users block notifications). A common optimization: if the user has an active SSE connection when the notification is generated, skip the push notification and deliver only in-app. The platform detects active sessions via a presence key in Redis (SET presence:&#123;userId&#125; "1" EX 30, refreshed every 20 seconds by the client). If the presence key exists, the push is skipped. This is a significant cost savings for products with high DAU/MAU ratios.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cost management: SMS is the most expensive channel (~$0.0075/message in the US). Restricting SMS to critical notifications only (OTP, fraud alerts, account security) and ensuring marketing/social notifications never use SMS is both a cost control and a user experience decision. Email is cheap (~$0.0001/message via SES), so it is used as the catch-all channel for users without a registered push token. Push is the most scalable and cost-effective channel for mobile users (~$0.001/1,000 messages via FCM free tier, essentially free at scale).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A unified notification platform requires: (1) Kafka event ingestion with 24hr idempotency dedup key (SETNX in Redis); (2) per-user preference lookup via Redis hash (HGET prefs:&#123;userId&#125; &#123;channel&#125;_&#123;category&#125;), quiet hour enforcement (defer to delayed queue), and opt-out check before processing; (3) Handlebars template rendering per channel with variant A/B support; (4) fan-out to 4 channel-specific Kafka topics (notif.push, notif.email, notif.sms, notif.inapp); (5) dedicated channel workers: push (FCM/APNs, stale token cleanup on 404/410), email (SES with DKIM/SPF, hard bounce → suppression list, complaint → unsubscribe), SMS (Twilio, critical only), in-app (PostgreSQL + Redis badge INCR); (6) fallback chain (push fail → in-app → email for normal; push + SMS parallel for critical); (7) Redis INCR/DECR unread badge counter (hourly reconciliation to prevent drift); (8) provider webhook ingestion (FCM delivery receipts, SES open tracking, Twilio callbacks) → delivery analytics; (9) active session optimization (skip push if SSE presence key set); (10) delivery SLA monitoring: critical &lt;5s (page at 95% breach), normal &lt;60s, bulk &lt;4hr.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

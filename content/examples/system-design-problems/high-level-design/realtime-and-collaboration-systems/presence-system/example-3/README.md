@@ -1,1 +1,5 @@
-# Design a presence system (online/offline, typing indicators) — Example 3
+# Presence System - Example 3
+
+Concrete real-time collaboration edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

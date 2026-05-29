@@ -1,1 +1,5 @@
-# Design a cursor-sharing system (Figma-like) — Example 2
+# Cursor Sharing System - Example 2
+
+Concrete real-time collaboration production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

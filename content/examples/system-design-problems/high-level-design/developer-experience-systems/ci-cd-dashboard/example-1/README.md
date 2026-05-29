@@ -1,13 +1,16 @@
-# Design a CI/CD dashboard (like GitHub Actions) — Example 1
+# CI CD Dashboard - Example 1
 
-## Run (smoke)
+This example supports the HLD article for `cicd-dashboard` in `developer-experience-systems`.
+
+## What it demonstrates
+
+This is a runnable readiness smoke test for the developer platform experience. It is intentionally small, but it uses topic-specific invariants, telemetry, and failure modes rather than a reusable stub.
+
+## Run or inspect
+
 `node --import tsx content/examples/system-design-problems/high-level-design/developer-experience-systems/ci-cd-dashboard/example-1/app.ts`
 
 ## Files
-- `EXPLANATION.md`
-- `README.md`
-- `app.ts` — runnable smoke + edge checks
-- `lib/domain.ts` — entities and IDs
-- `lib/api.ts` — backend contract shapes
-- `lib/store.ts` — client state/caching skeleton
-- `lib/policies.ts` — retries, rate limiting, pagination, idempotency hooks
+
+- `app.ts` - topic-aligned implementation slice
+- `EXPLANATION.md` - how the example maps back to the article

@@ -74,7 +74,7 @@
 
   <!-- Error Scenarios -->
   <g>
-    <text x="100" y="460" font-size="14" font-weight="bold" fill="#1a1a1a">Error Scenarios & Recovery</text>
+    <text x="100" y="460" font-size="14" font-weight="bold" fill="#1a1a1a">Error Scenarios &amp; Recovery</text>
 
     <!-- Refresh token expired -->
     <rect x="50" y="490" width="330" height="90" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>

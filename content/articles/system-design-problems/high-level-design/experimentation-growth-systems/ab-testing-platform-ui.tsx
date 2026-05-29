@@ -5,90 +5,356 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
-export const metadata: ArticleMetadata = {
-  id: "article-hld-ab-testing-platform-ui",
-  title: "Design an A/B Testing Platform UI",
-  description:
-    "Architecture for an A/B testing platform UI: experiment creation with hypothesis and metric selection, deterministic user bucketing via hashed user ID, assignment service with consistent allocation, real-time result dashboard with statistical significance calculation, sample ratio mismatch detection, guardrail metric alerting, segment analysis (by country, device, cohort), experiment lifecycle management (draft, running, paused, concluded), and mutual exclusion groups to prevent experiment interference.",
-  category: "high-level-design",
-  subcategory: "experimentation-growth-systems",
-  slug: "ab-testing-platform-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "ab-testing", "experimentation", "statistical-significance", "bucketing", "feature-flags", "guardrail-metrics", "sample-ratio-mismatch"],
-  relatedTopics: ["feature-rollout-experimentation-system", "user-funnel-analytics-dashboard"],
-};
+export const metadata: ArticleMetadata = { id: "article-hld-ab-testing-platform-ui", title: "Design an A/B Testing Platform UI", description: "Principal-level design for A/B testing platform UI covering trustworthy assignment, exposure logging, metrics, guardrails, privacy, rollout safety, and decision governance.", category: "high-level-design", subcategory: "experimentation-growth-systems", slug: "ab-testing-platform-ui", wordCount: 5600, readingTime: 32, lastUpdated: "2026-05-25", tags: ["hld", "experimentation", "growth", "analytics"], relatedTopics: ["ab-testing-platform-ui", "feature-rollout-experimentation-system", "user-funnel-analytics-dashboard"] };
 
 export default function AbTestingPlatformUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An A/B testing platform lets product teams run controlled experiments to measure the causal impact of a change. Rather than asking "did metrics go up after we shipped this feature?", an A/B test asks "did metrics go up because of this feature, controlling for everything else?" The platform handles the full lifecycle: designing experiments (hypothesis, variants, metrics), running them (bucketing users into control and treatment groups), analyzing results (statistical significance, confidence intervals), and deciding outcomes (ship, roll back, or extend the test).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The two hardest problems: (1) consistent bucketing — a user assigned to the treatment group must see the treatment on every page load, every device, even after clearing cookies. Bucketing based on user ID (not session or cookie) with a deterministic hash function solves this. (2) Statistical validity — product teams will misinterpret results without guardrails. Peeking at results before statistical power is reached, ignoring sample ratio mismatches, and not accounting for novelty effects all lead to false conclusions. The platform UI must surface these issues prominently, not bury them in a statistics documentation page.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Experiment creation UI, bucketing logic, results dashboard with statistical significance, sample ratio mismatch detection, guardrail metric alerting, and experiment lifecycle management. Not in scope: the data pipeline that computes experiment metrics, Bayesian vs. frequentist debate, or multi-armed bandit allocation.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A A/B testing platform UI is used by product managers, data scientists, engineers, growth teams, executives, and experiment reviewers to learn from product changes without confusing correlation with causation or launching risky changes to all users.
+        </HighlightBlock>
+        <p>
+          Principal-level design for experimentation is not just charts or toggles. It must cover assignment integrity, exposure logging, metric definitions, guardrails, ramp control, privacy, auditability, and operational rollback.
+        </p>
+        <p>
+          The scope includes authoring, validation, runtime evaluation, event collection, metric computation, analysis, decision review, cleanup, and safety controls for historical interpretation.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Experiment creation:</strong> The creation form captures: experiment name and hypothesis (free text), variants (control + 1–4 treatments with traffic allocation percentages that must sum to 100%), primary metric (the one metric the experiment is designed to move — e.g., checkout conversion rate), secondary metrics (monitored but not decision criteria), guardrail metrics (metrics that must not degrade — e.g., page load time, error rate), target audience filter (all users, or a segment: country = US, platform = mobile, user cohort = registered &gt; 30 days), and minimum detectable effect (MDE) — the smallest improvement worth detecting, used to calculate the required sample size and estimated run duration.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>User bucketing:</strong> Assignment is deterministic: bucket = hash(userId + experimentId) % 100. A user assigned to treatment sees treatment on every visit across devices (as long as they are logged in). The hash is computed client-side (in the feature flag SDK) so assignment is instantaneous with no server round trip. The salt (experimentId) ensures that two experiments running simultaneously assign users independently — a user in treatment for experiment A is not necessarily in treatment for experiment B. Traffic allocation: if treatment gets 50%, users with hash value 0–49 are in treatment; 50–99 are in control. Non-participating users (outside the target segment filter) are excluded before hashing.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Results dashboard:</strong> The results page shows per-variant: sample size, conversion rate (or mean value for continuous metrics), absolute lift (treatment − control), relative lift ((treatment − control) / control × 100%), p-value, and 95% confidence interval on the lift. Color coding: green if the confidence interval is entirely above zero (statistically significant positive), red if entirely below zero (statistically significant negative), grey if the confidence interval spans zero (not yet significant). A "Days to significance" estimate is shown using the current effect size and sample size trajectory. The dashboard polls GET /api/experiments/&#123;id&#125;/results every 60 seconds for in-progress experiments.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Guardrail metric alerting:</strong> Guardrail metrics are monitored throughout the experiment. If a guardrail metric degrades by more than a configured threshold (e.g., page load time increases by &gt;5% at p &lt; 0.05), an alert banner appears on the results dashboard: "⚠ Guardrail metric 'p95 load time' has degraded significantly in treatment. Consider pausing the experiment." The experiment owner receives an email notification. Automated pausing (stopping the experiment if a guardrail alert fires) is opt-in — most teams prefer manual review before pausing to avoid false positives shutting down valid experiments.</HighlightBlock>
+        <h2>Core Concepts</h2>
+        <p>
+          The core entities are experiments, variants, audiences, assignments, exposures, primary metrics, guardrail metrics, eligibility rules, analysis jobs, and decisions. Each needs stable identifiers, lifecycle state, owner, version, and audit metadata because experimentation output becomes evidence for product decisions.
+        </p>
+        <p>
+          Assignment and exposure are different concepts. Assignment decides which experience a subject should receive; exposure records that the subject actually reached the changed surface. Most UI experiment analysis should use exposure, not assignment alone.
+        </p>
+        <p>
+          Metrics need governance. Primary metrics, guardrail metrics, diagnostic metrics, and business metrics should have definitions, owners, freshness, and known caveats. Otherwise precise-looking charts can drive bad decisions.
+        </p>
+        <p>
+          Eligibility and targeting rules should be deterministic and versioned. Users change country, plan, device, tenant, consent, and identity during experiments. Historical analysis must know which rule version evaluated them.
+        </p>
+        <p>
+          Statistical validity is a product requirement. The UI should warn about sample ratio mismatch, low power, peeking, novelty effects, multiple comparisons, and guardrail breaches before executives see a winner label.
+        </p>
+        <p>
+          Privacy matters because growth systems collect behavior. Event payloads should follow a tracking plan, minimize personal data, respect consent, support deletion requests, and suppress small sensitive cohorts.
+        </p>
+        <p>
+          Decision governance is first-class. Hypothesis, owner, risk level, pre-declared metrics, reviewer, rollout decision, and cleanup status should be captured so teams cannot rewrite the rationale after seeing results.
+        </p>
+        <p>
+          Interaction management matters. Multiple changes can target the same audience, page, ranking system, lifecycle step, or pricing surface. Layers, namespaces, mutual exclusion groups, or warnings prevent overlapping tests from invalidating each other.
+        </p>
+        <p>
+          Decision records should be immutable. A product decision may influence roadmap, revenue, customer communication, or compliance commitments. The system should preserve who approved it, which metrics were considered, which guardrails were healthy, which segments were excluded, and which analysis version was viewed at the time.
+        </p>
+        <p>
+          Data quality should be shown next to the experiment result. Missing exposure events, late-arriving conversions, bot traffic, duplicated users, or sample ratio mismatch should make the result visibly suspect. A dashboard that hides data quality creates false confidence.
+        </p>
+        <p>
+          The platform should model experiment interference. Users can be part of multiple tests, flags, lifecycle campaigns, or pricing treatments. Layering, namespaces, and mutual exclusion rules make interaction effects explicit instead of discovering contamination after launch.
+        </p>
+        <p>
+          Metric ownership matters. Every important metric needs an owner, definition, freshness expectation, and allowed use. Exploratory metrics can help diagnose behavior, but launch decisions should depend on certified metrics or explicitly accepted caveats.
+        </p>
+
+        <p>
+          Power analysis and minimum detectable effect should be part of experiment planning. Teams need to understand whether the audience is large enough to detect a meaningful change within a reasonable duration. Without this, the platform encourages inconclusive tests that still consume engineering and product attention.
+        </p>
+        <p>
+          Attribution windows should be explicit. A signup click, paid conversion, retained user, support contact, and refund can occur on different timelines. The dashboard should explain which window each metric uses and whether late conversions are still expected to arrive.
+        </p>
+        <p>
+          Identity scope should be chosen intentionally. Some decisions belong at anonymous device level, some at user level, some at account or tenant level. Mixing scopes can double-count users or split behavior across identities in ways that bias results.
+        </p>
+        <p>
+          Guardrails should include product and operational signals. Conversion lift is not enough if latency, error rate, accessibility, unsubscribe rate, abuse reports, or support tickets regress. Principal-level systems make these trade-offs visible before rollout.
+        </p>
+
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A strong architecture has an authoring UI, configuration service, runtime evaluation path, exposure stream, event ingestion pipeline, metric computation layer, analysis engine, and decision review surface.
+        </p>
+        <p>
+          Configuration writes should be strongly validated and versioned. Runtime evaluation must be fast and highly available. Exposure logging can be asynchronous but should be durable enough to support analysis.
+        </p>
+        <p>
+          The runtime path should not depend on the analysis system. Users should not lose a feature because the analytics warehouse is delayed. SDKs or edge services should evaluate signed config and emit exposures independently.
+        </p>
+        <p>
+          The ingestion pipeline validates event taxonomy, timestamps, identity, experiment id, variant id, and consent state. Invalid events should be quarantined with owner-visible diagnostics instead of silently corrupting results.
+        </p>
+        <p>
+          The analysis layer computes metrics by experiment, variant, segment, time window, and cohort. It should show data freshness, excluded traffic, bot filtering, late events, and confidence intervals or credible intervals.
+        </p>
+        <p>
+          The decision review surface connects results to guardrails, owner notes, rollout plan, and audit trail. Teams should know whether a result is ready to ship, needs more data, should stop for harm, or is inconclusive.
+        </p>
+        <p>
+          The platform should support backfills and reanalysis. Event bugs, identity fixes, metric-definition changes, or bot filtering updates can change historical results, so reanalysis versions must be labeled.
+        </p>
+        <p>
+          Operational health includes config propagation, SDK adoption, exposure lag, metric job lag, analysis failures, guardrail alert delivery, and stale experiment cleanup.
+        </p>
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/experimentation-growth-systems/ab-testing-platform-ui.svg" alt="Design an A/B Testing Platform UI architecture" caption="Architecture view: authoring, assignment, exposure, metrics, analysis, and decision review." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/experimentation-growth-systems/ab-testing-platform-ui-flow.svg" alt="Design an A/B Testing Platform UI flow" caption="Flow from draft setup through exposure logging, metric computation, and rollout decision." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/experimentation-growth-systems/ab-testing-platform-ui-risk-controls.svg" alt="Design an A/B Testing Platform UI risk controls" caption="Risk controls for validity checks, guardrails, privacy, rollback, and cleanup." />
+        <p>
+          The analysis pipeline should carry lineage from raw variant exposure through sessionization, identity resolution, metric aggregation, and final analysis. If a number changes, analysts need to know whether the change came from late events, identity merges, metric definition changes, or a new filtering rule.
+        </p>
+        <p>
+          The runtime configuration path should be observable independently from analytics. Config publish latency, SDK cache age, evaluation errors, and stale client versions can all affect user experience before analysis notices. These signals belong in the operational dashboard for the platform.
+        </p>
+        <p>
+          The system should support safe reanalysis. When instrumentation bugs are fixed or identity rules change, the platform can recompute results under a new analysis version while preserving the original decision snapshot. This keeps historical accountability and analytical improvement compatible.
+        </p>
+        <p>
+          Support tooling should expose user-level assignment and exposure history with privacy controls. If a customer asks why they saw a specific treatment, support should answer from governed product state rather than asking data engineers to inspect raw events.
+        </p>
+
+        <p>
+          The analysis engine should separate data preparation from statistical interpretation. Preparation handles eligibility, exposure joins, identity resolution, bot filtering, attribution windows, and metric aggregation. Interpretation applies the statistical method and decision policy. This separation makes it easier to debug whether a surprising result came from data quality or genuine user behavior.
+        </p>
+        <p>
+          Ramp decisions should be stateful. Moving from one percent to five percent, then to fifty percent, should record guardrail status, owner approval, time window, exposed population, and rollback readiness. This produces a launch history that can be audited after an incident.
+        </p>
+        <p>
+          The platform should support dry-run validation. Before exposing users, teams should preview target population size, rule conflicts, metric availability, expected duration, and overlapping experiments. Dry-runs catch many invalid setups without affecting users.
+        </p>
+        <p>
+          Cleanup should be part of the workflow, not a separate reminder. After decision, the platform can create tasks to remove old variants, delete stale flags, update docs, archive dashboards, and stop unnecessary metric jobs. This prevents experimentation debt from becoming runtime complexity.
+        </p>
+
+      </section>
+
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Growth systems trade learning speed against statistical and product risk. Making launch too easy creates invalid or harmful tests; making it too rigid slows iteration and encourages bypasses.
+        </p>
+        <p>
+          Client-side evaluation is fast and resilient but can expose configuration and create old-client skew. Server-side or edge evaluation centralizes policy and secrets but adds latency and dependency risk.
+        </p>
+        <p>
+          Frequent metric refresh helps guardrails and ramps but increases compute cost and encourages peeking. Slower batch analysis is cheaper and more stable but can miss harmful regressions.
+        </p>
+        <p>
+          Strict review protects users and metric integrity but can bottleneck low-risk learning. Risk-based approval keeps copy tests fast while requiring review for pricing, payments, permissions, ranking, or regulated data.
+        </p>
+        <p>
+          Segmentation improves diagnosis but increases false discovery risk and privacy exposure. Pre-declared segments should be distinguished from exploratory cuts.
+        </p>
+        <p>
+          Automatic rollout after a positive result is risky. A result can be statistically positive while support load, latency, accessibility, or long-term retention guardrails are negative.
+        </p>
+        <p>
+          Historical reproducibility competes with current correctness. Preserve decision-time snapshots and separately mark later reanalysis when identity or metric logic changes.
+        </p>
+        <p>
+          Metric certification trades flexibility against trust. Exploratory metrics are useful, but executive decisions need certified definitions, freshness labels, and change history.
+        </p>
+        <p>
+          There is a trade-off between self-serve speed and centralized review. Self-serve experimentation scales learning, but high-risk surfaces such as pricing, auth, payments, compliance, safety, and accessibility need stronger approval. Risk-tiered governance keeps the platform usable without making it reckless.
+        </p>
+        <p>
+          There is a trade-off between detailed segmentation and decision reliability. Segments reveal heterogeneous effects, but every extra slice increases false discovery risk and privacy exposure. The UI should label exploratory analysis and discourage cherry-picking a winning subgroup.
+        </p>
+        <p>
+          There is a trade-off between config flexibility and long-term maintainability. Rich targeting rules and nested conditions support complex rollouts, but they create hidden product logic. Expiry dates, cleanup tasks, ownership, and rule simplification are part of reliability.
+        </p>
+        <p>
+          There is a trade-off between near-real-time guardrails and stable final decisions. Guardrails need fast detection to stop harm, while final analysis should allow for late events, attribution windows, and pre-defined decision criteria.
+        </p>
+
+        <p>
+          Frequentist and Bayesian analysis each have product trade-offs. Frequentist methods are familiar and align with many company standards, but users often misuse p-values. Bayesian methods can be easier to explain as probability of improvement, but require prior and modeling choices. The UI should reflect the chosen method consistently instead of mixing terminology.
+        </p>
+        <p>
+          Strict mutual exclusion protects validity but reduces experimentation throughput. Allowing overlap increases learning speed but requires interaction analysis and careful interpretation. The right choice depends on surface criticality, expected interaction strength, and organizational tolerance for ambiguity.
+        </p>
+        <p>
+          Short-term metrics are fast but can be misleading. Long-term retention, trust, support load, and revenue quality may move later. Principal-ready systems pair fast guardrails with delayed outcome review so teams do not ship changes that win day one and lose month one.
+        </p>
+        <p>
+          Raw event access helps expert analysts debug, but it raises privacy and governance risk. Aggregate dashboards should be the default, while raw export requires approval, data minimization, and audit.
+        </p>
+
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Treat exposure logging as a critical data contract with experiment id, variant id, rule version, subject id, timestamp, surface, consent state, and join context.
+        </p>
+        <p>
+          Build setup validation into the UI: audience size, allocation, power, duration, mutual exclusions, metrics, guardrails, owner, and rollback plan.
+        </p>
+        <p>
+          Make guardrails visible during ramp. Error rate, latency, revenue, support contacts, accessibility regressions, unsubscribe rate, and policy violations can outweigh the primary metric.
+        </p>
+        <p>
+          Separate experiment configuration from decision records. Completed decisions should be immutable audit artifacts that cannot be changed by editing old config.
+        </p>
+        <p>
+          Use holdouts and baselines where appropriate to understand cumulative impact beyond one-off experiments.
+        </p>
+        <p>
+          Monitor the experimentation platform itself: config latency, evaluation errors, exposure drop rate, event validation failures, metric lag, guardrail alert latency, and stale experiments.
+        </p>
+        <p>
+          Create an experiment registry by surface, owner, audience, risk level, metric, and interaction. This prevents overlapping tests from invalidating each other silently.
+        </p>
+        <p>
+          Design privacy controls into analysis and export. Sensitive segments should be access-controlled, small cohorts suppressed, and raw event exports strongly approved.
+        </p>
+        <p>
+          Create cleanup automation for stale flags, completed variants, tracking events, dashboards, and dead code. Experimentation debt becomes reliability debt if it is ignored.
+        </p>
+        <p>
+          Define pre-launch, in-flight, and post-decision checklists. Pre-launch validates setup and risk. In-flight monitors guardrails and data quality. Post-decision records outcome, rollout action, cleanup work, and any follow-up analysis.
+        </p>
+        <p>
+          Make invalid states impossible where practical. Do not allow an experiment to start without an owner, hypothesis, audience, allocation, primary metric, guardrails, duration expectation, and rollback path for risky changes.
+        </p>
+        <p>
+          Use audit events for configuration and decision changes. Creating, editing, pausing, ramping, completing, archiving, and rolling back should all produce durable evidence. This matters when experiment output is challenged later.
+        </p>
+        <p>
+          Create platform health metrics that executives do not see but operators rely on: exposure completeness, assignment determinism, metric freshness, analysis job failure rate, SDK version coverage, and stale configuration count.
+        </p>
+
+        <p>
+          Create decision templates. A decision should state whether the experiment ships, stops, repeats, or remains inconclusive; which evidence drove the decision; which guardrails were acceptable; and what cleanup or follow-up is required.
+        </p>
+        <p>
+          Make ownership visible at every stage. Draft owner, engineering owner, metric owner, reviewer, and rollout owner can be different people. The UI should make those roles explicit so stuck or risky experiments do not become orphaned.
+        </p>
+        <p>
+          Track platform trust metrics. Measure how many experiments are invalidated, how often sample ratio mismatch occurs, how many completed experiments lack decisions, and how many stale flags remain after cleanup windows expire.
+        </p>
+        <p>
+          Treat consent and data residency as runtime inputs. If a user opts out or a tenant changes policy, evaluation, exposure logging, and analysis eligibility should respond consistently rather than only filtering dashboards later.
+        </p>
+
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The common failure is showing a winner label without proving assignment integrity, exposure quality, guardrail health, and statistical assumptions.
+        </p>
+        <p>
+          Changing targeting, metrics, or allocation mid-experiment without preserving versions makes results hard to interpret.
+        </p>
+        <p>
+          Overlapping experiments on the same surface, ranking system, or lifecycle step can contaminate each other.
+        </p>
+        <p>
+          Missing or delayed data should be displayed as a validity issue, not hidden behind normal-looking charts.
+        </p>
+        <p>
+          Peeking and repeated slicing can create false winners. Workflow should make premature decisions and exploratory segments visibly risky.
+        </p>
+        <p>
+          Growth systems can create ethical and compliance issues involving pricing, urgency, consent, accessibility, or sensitive demographics.
+        </p>
+        <p>
+          Stale experiments and flags create product debt. Completed experiments should be decisioned, archived, cleaned up, and removed from runtime paths.
+        </p>
+        <p>
+          Optimizing for experiment count instead of learning quality creates noise. Track decision quality, invalidation rate, cleanup completion, and shipped impact.
+        </p>
+        <p>
+          Support evidence is often forgotten. If a customer asks why they saw a different experience, support needs assignment, exposure, rule version, consent state, and experiment status.
+        </p>
+        <p>
+          A subtle pitfall is treating privacy as only a consent banner. Experiment analysis can expose sensitive cohorts through tiny segment sizes, query exports, or high-cardinality attributes. Cohort suppression and access control are required.
+        </p>
+        <p>
+          Another pitfall is failing to clean up code and configuration after a decision. Old variants, flags, metrics, and dashboards increase cognitive load and can unexpectedly affect future launches.
+        </p>
+        <p>
+          Teams also confuse operational rollout with scientific experiment. A rollout can be safe and useful without statistical inference, while an experiment requires assignment integrity, exposure logging, and decision discipline.
+        </p>
+
+        <p>
+          A common organizational pitfall is treating inconclusive experiments as failures. Inconclusive results can still be useful if they invalidate assumptions, reveal instrumentation gaps, or show that an effect is smaller than the cost of shipping.
+        </p>
+        <p>
+          Another pitfall is failing to communicate uncertainty to executives. A dashboard should avoid simplistic green and red labels when data is underpowered, guardrails are mixed, or important delayed metrics are unavailable.
+        </p>
+        <p>
+          Teams also forget customer experience continuity. Users may switch devices, clear cookies, join a tenant, or move between anonymous and authenticated states. Assignment and exposure semantics must handle those transitions explicitly.
+        </p>
+
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Homepage, onboarding, pricing, checkout, recommendation, and lifecycle experiments need trustworthy exposure logging, clear metrics, and guardrails so teams can distinguish real improvement from noise.
+        </p>
+        <p>
+          High-risk experiments require approval because trust, revenue, safety, or legal interpretation may be affected. The platform should preserve approval and decision evidence.
+        </p>
+        <p>
+          Segmentation and cohorting help diagnose impact, but the UI should make sample size, attribution, and event quality visible to avoid false conclusions.
+        </p>
+        <p>
+          Rollout and experimentation are operational infrastructure. A bad rollout or invalid result can affect many users, so rollback, ownership, and metric trust are part of the design.
+        </p>
+        <p>
+          In interviews, tie Sample ratio mismatch to instrumentation, runtime configuration, statistical validity, privacy, user trust, and operational rollback in one coherent system.
+        </p>
+        <p>
+          At principal level, this sub-category is useful because it combines product thinking with distributed systems. The candidate must reason about runtime configuration, event pipelines, analytical correctness, privacy, rollout safety, and organizational decision-making.
+        </p>
+        <p>
+          Strong answers also discuss what happens after the chart. Shipping, pausing, rolling back, documenting, cleaning up, and communicating the decision are all part of the system.
+        </p>
+
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design this system at scale?</h3>
+        <p>
+          I would separate authoring, runtime evaluation, exposure logging, metric computation, and decision review. Configuration is versioned and validated before publish. Runtime evaluation is low latency and highly available. Exposure and metric events flow through governed ingestion. Analysis shows statistical confidence, guardrails, freshness, and validity warnings. Decisions and rollouts are audited.
+        </p>
+        <h3>What is the difference between assignment and exposure?</h3>
+        <p>
+          Assignment is the decision that a subject belongs to a variant. Exposure is evidence that the subject reached the changed experience. For most UI experiments, analysis should use exposure because assigned users may never visit the surface.
+        </p>
+        <h3>How do you prevent invalid conclusions?</h3>
+        <p>
+          Validate setup before launch, require primary and guardrail metrics, detect sample ratio mismatch, show power and duration guidance, warn on peeking, distinguish pre-declared from exploratory segments, preserve configuration versions, and show data freshness.
+        </p>
+        <h3>How should rollouts be made safe?</h3>
+        <p>
+          Use staged ramping, guardrail monitoring, owner approval for risky changes, kill switches, and rollback plans. Runtime config should propagate predictably, SDK versions should be monitored, and guardrail breaches should pause or roll back according to policy.
+        </p>
+        <h3>What should be monitored operationally?</h3>
+        <p>
+          Monitor config publish latency, SDK evaluation errors, exposure drop rate, event validation failures, metric job lag, guardrail alert latency, sample ratio mismatch, overlapping experiments, and stale experiments. For experimentation, platform health is as important as outcome metrics.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li>Microsoft ExP platform papers.</li>
+          <li>Optimizely experimentation concepts.</li>
+          <li>Google controlled experiments papers.</li>
+          <li>Statsig experimentation docs.</li>
+          <li>Trustworthy Online Controlled Experiments.</li>
         </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Sample ratio mismatch (SRM) detection:</strong> An SRM occurs when the actual ratio of users in each variant differs significantly from the configured allocation (e.g., configured 50/50 but observed 48/52). SRM invalidates the experiment — the groups are not comparable. The dashboard detects SRM using a chi-squared test on the observed vs. expected user counts. If the SRM p-value is &lt; 0.01, a red warning banner appears: "Sample Ratio Mismatch detected. The observed allocation (48%/52%) differs significantly from the configured allocation (50%/50%). Experiment results are unreliable until this is resolved." Common SRM causes: bot traffic, caching layers that bypass bucketing, or bugs in the assignment SDK.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Mutual exclusion:</strong> Two experiments that modify the same UI element can interfere with each other if the same user is enrolled in both. Mutual exclusion groups (MEGs) prevent this: experiments in the same MEG are guaranteed to enroll disjoint user sets. Implementation: MEG assignment is a top-level hash. Users with hash 0–49 are eligible for experiments in MEG-A; users 50–99 are eligible for MEG-B. Within MEG-A, individual experiments further sub-divide the 0–49 range. The experiment creation UI shows a warning if the new experiment's target overlaps with a running experiment that doesn't share a MEG.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Segment analysis:</strong> Beyond the overall result, the dashboard shows breakdowns by segment: by country (top 5 by traffic), by platform (desktop/mobile/tablet), and by user cohort (new vs. returning, free vs. paid). Each segment shows its own lift, confidence interval, and significance. Heterogeneous treatment effects (the treatment works well for mobile users but hurts desktop users) are surfaced automatically if any segment's result diverges significantly from the overall result. The segment analysis is a secondary tab — the primary tab shows the overall result to avoid cherry-picking a favorable segment.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The A/B testing platform has two runtime paths: the assignment path (fast, happens on every user request) and the analysis path (slower, runs on aggregated data). The assignment path: the feature flag SDK (loaded client-side) computes the user's bucket deterministically from userId + experimentId. It fetches the experiment configuration once (cached in localStorage, refreshed every 10 minutes) and returns the variant synchronously — no network round trip on the critical path. The assignment is logged as an event (user X was assigned to variant Y of experiment Z at time T) — this event stream feeds the analysis pipeline.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The analysis path runs asynchronously: a data pipeline (Spark/Flink) joins the assignment events with the metric events (conversions, page loads, errors) and computes per-variant metric values. These computed values are written to the experiment results store, which the dashboard reads via GET /api/experiments/&#123;id&#125;/results. The dashboard does not compute statistics itself — the statistics are pre-computed by the pipeline and the dashboard renders them. This keeps the dashboard fast and avoids inconsistent statistical methods across the team.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/experimentation-growth-systems/ab-testing-platform-ui.svg"
-          alt="A/B testing platform UI: user bucketing via hash(userId+experimentId)%100 for deterministic assignment; experiment creation with hypothesis, variants, traffic allocation, primary/guardrail metrics, MDE and sample size estimate; results dashboard showing per-variant conversion rate, absolute and relative lift, p-value, 95% CI color-coded green/grey/red, days-to-significance; SRM detection via chi-squared test with red banner when p<0.01; guardrail metric alerting on degradation >threshold; segment analysis by country/platform/cohort as secondary tab; mutual exclusion groups for experiment isolation."
-          caption="Deterministic hash bucketing (userId+experimentId, no network on critical path), results dashboard (lift, p-value, 95% CI color-coded), SRM detection (chi-squared p&lt;0.01 red banner), guardrail metric alerting, segment analysis (country/platform/cohort), mutual exclusion groups"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Deterministic Bucketing and SDK Design</h3>
-        <HighlightBlock as="p" tier="important">The feature flag SDK is a small JavaScript module (ideally &lt;5KB) that loads synchronously in the page &lt;head&gt; — before any feature-gated code runs. It fetches the experiment configuration on initialization: GET /api/experiments/active returns an array of active experiment configs &#123;id, variants, allocation, targetFilter&#125;. This response is cached in localStorage with a 10-minute TTL. On each call to getVariant(experimentId), the SDK: (1) checks if the user passes the targetFilter (if not, returns 'control' without bucketing); (2) computes hash(userId + experimentId) using FNV-1a (fast, low collision rate, deterministic across environments); (3) maps the hash value to a variant based on the allocation ranges; (4) logs the assignment event to the analytics pipeline.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The logging is async and non-blocking — it fires a beacon (navigator.sendBeacon) so it does not delay page rendering or block on network failure. The assignment event schema: &#123;experimentId, variantId, userId, sessionId, timestamp, userAgent, country&#125;. The sessionId allows detecting SRM caused by bots (sessions with thousands of assignments from the same IP). The assignment log is the source of truth for "who was in what variant" — the pipeline joins this log with the metric events to compute results.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Statistical Significance in the UI</h3>
-        <HighlightBlock as="p" tier="important">The results dashboard shows the frequentist two-sample z-test for proportions (for conversion metrics) and Welch's t-test (for continuous metrics like revenue or load time). The UI displays: the point estimate of the lift, the 95% confidence interval (CI) as a horizontal bar with a center dot and error bars, and the p-value. The CI visualization is more informative than a single p-value: a wide CI spanning zero means "not enough data yet"; a narrow CI entirely above zero means "confident positive effect"; a narrow CI spanning zero means "confident null effect (the true effect, if any, is too small to matter)." These are meaningfully different situations that the same p &gt; 0.05 label would obscure.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Sequential testing: the platform uses a corrected significance threshold when results are checked multiple times (α = 0.05 / number of peeks, or an always-valid p-value via the mSPRT method). A "peeking penalty" indicator shows how much the significance threshold has been adjusted from the planned α based on how many times the experimenter has viewed the results. This discourages premature conclusion while still allowing teams to monitor their experiments.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Experiment Lifecycle State Machine</h3>
-        <HighlightBlock as="p" tier="crucial">Experiments move through states: Draft (being configured, not active) → Running (users being bucketed and metrics being collected) → Paused (bucketing stopped, existing assignments preserved) → Concluded (decided: shipped, rolled back, or abandoned). Transitions: Draft → Running requires owner sign-off on the configuration and at least one secondary reviewer (prevents launching misconfigured experiments). Running → Paused can be triggered manually or automatically by a guardrail alert. Paused → Running resumes bucketing. Running → Concluded requires recording the decision (ship/rollback/abandon) and the rationale. Concluded experiments are archived but their data is retained for at least 1 year (for audit and learning from past experiments).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Experiment Creation: Sample Size Calculator</h3>
-        <HighlightBlock as="p" tier="crucial">The creation form includes an inline sample size calculator. Inputs: baseline conversion rate (auto-populated from the last 7 days of the primary metric for the target segment), minimum detectable effect (MDE — the smallest lift worth detecting, e.g., 5% relative improvement), statistical power (default 80% — probability of detecting a true effect of size MDE), and significance level α (default 5%). Output: required sample size per variant and estimated days to reach that sample size (based on current daily traffic in the target segment). If the estimated duration exceeds 4 weeks, a warning is shown: experiments running longer than 4 weeks risk novelty effects, seasonality, and user behavior drift invalidating the results. The recommendation: increase the MDE (accept detecting only larger effects) or increase traffic allocation to reach the sample size faster.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Frequentist vs. Bayesian: frequentist testing (p-values, confidence intervals) is the industry standard for A/B testing because it gives definitive "reject/don't reject the null" answers that executives understand. Bayesian testing (probability of being best, expected loss) is more intuitive for sequential monitoring (the posterior updates continuously, no multiple testing problem) but requires choosing priors and interpreting probability-of-superiority metrics that are less familiar. Most large-scale platforms (Optimizely, Statsig, Eppo) default to frequentist with sequential corrections for peeking — this is the pragmatic choice for a team without a dedicated statistician.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Client-side vs. server-side bucketing: client-side bucketing (in the JS SDK) is fast (no network round trip) but can be bypassed by users disabling JavaScript, bots, or server-side rendering that doesn't run the SDK. Server-side bucketing (the API returns the variant with every page request) is more reliable but adds latency. The hybrid approach: use server-side bucketing for critical experiments (pricing, checkout) where client-side bypass would be a problem; use client-side bucketing for low-stakes UI experiments where the latency is not acceptable.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">An A/B testing platform UI requires: (1) deterministic bucketing (hash(userId+experimentId)%100, FNV-1a, cached config 10min TTL, async sendBeacon assignment log); (2) experiment creation with MDE-based sample size calculator and estimated run duration; (3) results dashboard (per-variant lift + 95% CI bar visualization + p-value color-coded, polls every 60s); (4) SRM detection (chi-squared test on observed vs. expected allocation, p &lt; 0.01 red banner); (5) guardrail metric alerting (threshold degradation → banner + email, opt-in auto-pause); (6) segment analysis (country/platform/cohort breakdowns as secondary tab, heterogeneous effect auto-highlight); (7) mutual exclusion groups (top-level hash partitions disjoint user pools for interfering experiments); and (8) experiment lifecycle state machine (Draft→Running with sign-off, Running→Paused on guardrail, Running→Concluded with decision + rationale). The core principle: the platform must make statistical validity the default, not an advanced option — SRM detection, sequential testing corrections, and guardrail alerting should be on by default so teams cannot accidentally ship decisions based on invalid experiments.</HighlightBlock>
       </section>
     </ArticleLayout>
   );

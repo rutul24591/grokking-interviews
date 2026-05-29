@@ -1,60 +1,90 @@
-/**
- * Carousel — Staff-Level Accessibility Deep-Dive.
- *
- * Staff differentiator: Full ARIA carousel pattern with aria-roledescription,
- * keyboard navigation with roving tabindex, autoplay pause/resume with
- * user preference detection, and screen reader slide announcements.
- */
+export type carouselSliderRuntimeState = {
+  topic: "carousel-slider";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-import { useRef, useEffect, useCallback, useState } from 'react';
+export type carouselSliderRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-/**
- * Hook that manages ARIA-compliant carousel keyboard navigation.
- * Implements the WAI-ARIA carousel pattern with roving tabindex.
- */
-export function useAriaCarousel(
-  slideCount: number,
-  currentIndex: number,
-  onSlideChange: (index: number) => void,
-) {
-  const [focusedSlide, setFocusedSlide] = useState(0);
-
-  const onKeyDown = useCallback((e: React.KeyboardEvent) => {
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault();
-        onSlideChange((currentIndex - 1 + slideCount) % slideCount);
-        break;
-      case 'ArrowRight':
-        e.preventDefault();
-        onSlideChange((currentIndex + 1) % slideCount);
-        break;
-      case 'Home':
-        e.preventDefault();
-        onSlideChange(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        onSlideChange(slideCount - 1);
-        break;
-    }
-  }, [currentIndex, slideCount, onSlideChange]);
-
-  return { onKeyDown, focusedSlide };
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Manages screen reader announcements for carousel slide changes.
- */
-export function useCarouselAnnouncements(currentSlide: number, totalSlides: number, slideLabels: string[]) {
-  const liveRegionRef = useRef<HTMLElement | null>(null);
+export function planCarouselSliderRecovery(
+  state: carouselSliderRuntimeState,
+  nowMs: number,
+): carouselSliderRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: carouselSliderRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  useEffect(() => {
-    if (!liveRegionRef.current) return;
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-    const label = slideLabels[currentSlide] || `Slide ${currentSlide + 1}`;
-    liveRegionRef.current.textContent = `${label}, slide ${currentSlide + 1} of ${totalSlides}`;
-  }, [currentSlide, totalSlides, slideLabels]);
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
 
-  return { liveRegionRef };
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runCarouselSliderEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planCarouselSliderRecovery(
+    {
+      topic: "carousel-slider",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planCarouselSliderRecovery(
+    {
+      topic: "carousel-slider",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Carousel Slider",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

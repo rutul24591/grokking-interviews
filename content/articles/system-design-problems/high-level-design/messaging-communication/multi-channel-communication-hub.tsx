@@ -8,89 +8,140 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-multi-channel-communication-hub",
   title: "Design a Multi-Channel Communication Hub",
-  description:
-    "Architecture for a multi-channel communication hub like Intercom or Zendesk: unified inbox aggregating messages from email, live chat, WhatsApp, SMS, and social media; channel adapter pattern for normalizing heterogeneous message formats; agent assignment and round-robin routing; conversation state machine (open, pending, resolved, snoozed); real-time agent presence with typing relay; collision detection when multiple agents view the same conversation; SLA timer tracking per conversation; and canned response search with keyboard shortcuts.",
+  description: "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability.",
   category: "high-level-design",
   subcategory: "messaging-communication",
   slug: "multi-channel-communication-hub",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "omnichannel", "unified-inbox", "intercom", "zendesk", "channel-adapter", "agent-assignment", "sla", "collision-detection"],
-  relatedTopics: ["notification-inbox-system", "whatsapp-slack-frontend"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "messaging", "realtime", "notifications", "privacy", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Multi-Channel Communication Hub is a communication system where correctness is user-visible: people notice missing messages, wrong unread counts, late notifications, broken drafts, and privacy leaks immediately. A principal-ready design treats a multi-channel communication hub as a distributed event and state synchronization problem, not simply a list of messages.",
+  "The design must define message identity, ordering, delivery acknowledgement, read state, presence, offline behavior, notification policy, abuse controls, and recovery after reconnect. Different surfaces can be eventually consistent, but user intent and privacy-sensitive state need stronger guarantees.",
+  "Communication systems also sit at the boundary between realtime UX and durable history. The UI should feel live, but messages, edits, deletes, receipts, and moderation decisions must survive refresh, device changes, network loss, and replay.",
+  "A staff/principal answer should name what is authoritative: message append log, conversation membership, consent or preference policy, delivery receipt, read state, and moderation state. Derived views such as inbox rows, snippets, unread counts, search results, and push notifications can lag if they are observable and repairable.",
+  "The system must be abuse-aware. Spam, phishing, harassment, notification bombing, large-room fanout, and provider outages are expected operating conditions, not rare edge cases."
+];
+const concepts = [
+  "The first concept is message identity and ordering. Every message or communication event needs a stable ID, conversation or recipient scope, sender, timestamp, sequence or logical clock, edit/delete state, and idempotency key.",
+  "The second concept is delivery semantics. Sent, accepted, delivered, read, failed, suppressed, and moderated are different states. Collapsing them into delivered creates incorrect UI and support confusion.",
+  "The third concept is multi-device synchronization. channel router, template service, and delivery receipt must converge after offline use, app restart, token refresh, and reconnect.",
+  "The fourth concept is privacy and membership. Conversation membership, blocks, consent, retention, legal hold, and channel policy must be enforced across message history, notifications, search, exports, and previews.",
+  "The fifth concept is fanout and backpressure. Large rooms, high-volume channels, notification storms, and provider retries can overload clients and backend queues unless traffic is shaped by priority and recipient state.",
+  "The sixth concept is observability. Track send success, delivery lag, unread drift, websocket reconnects, push receipt latency, provider failures, moderation actions, search indexing lag, and duplicate suppression."
+];
+const architecture = [
+  "The architecture has channel router, template service, consent policy, delivery receipt, handoff timeline. The write path accepts user intent and appends durable events. The realtime path streams events to online clients. Projection workers build inboxes, unread counts, snippets, search documents, notifications, and analytics. Policy services enforce membership, consent, mute state, and moderation.",
+  "Clients should maintain a local event cache and pending operation queue. This allows instant local rendering for pending sends while preserving authoritative reconciliation when the server accepts, rejects, edits, redacts, or reorders events.",
+  "Ordering should be scoped. A global total order is unnecessary and expensive. Conversations or channels need stable ordering semantics, and cross-channel inbox projections can use per-conversation latest-event time plus tie-breakers.",
+  "Read state and delivery receipts should be modeled separately. Read state is often per-user per-conversation and may be eventually consistent across devices. Delivery receipt may depend on device connectivity, provider acknowledgement, or policy suppression.",
+  "The frontend should show truthful states: sending, sent, delivered, read, failed retryable, failed permanent, hidden by policy, deleted, edited, or blocked. These states reduce support issues and prevent dangerous duplicate user actions.",
+  "Operations need controls to disable a provider, mute a noisy event type, replay a projection, rebuild search, quarantine spam, revoke a compromised sender, and inspect a message timeline with privacy-safe audit trails."
+];
+const tradeoffs = [
+  "WebSockets or persistent connections give low-latency delivery but require connection management, backpressure, auth refresh, and fallback to polling. Polling is simpler but increases latency and cost at scale.",
+  "Server-authoritative ordering prevents inconsistent history but can make local sends appear to move after acknowledgement. Local optimistic ordering feels responsive but needs reconciliation and visible pending states.",
+  "Push notifications improve re-engagement but can leak private content on locked screens, violate user preferences, or amplify spam. Notification payloads should be minimized and policy-checked.",
+  "Storing full local history improves offline UX but creates privacy, storage, and deletion challenges. A principal design caches only what is needed, encrypts where appropriate, and clears data on logout or device distrust.",
+  "End-to-end encryption protects content privacy but limits server-side search, moderation, and support visibility. Systems must decide where encryption applies and how metadata, abuse reports, and recovery work.",
+  "Strongly consistent unread counts are expensive and often unnecessary. Users tolerate slight unread drift if it converges quickly, but message loss, privacy leaks, and duplicate sends are not acceptable."
+];
+const practices = [
+  "Use idempotency for send, edit, delete, mark-read, and notification creation. Retries from mobile devices and provider callbacks should converge on one logical event.",
+  "Model conversation membership and consent as policy inputs for every surface: message fetch, push, email, search, preview, export, and support view.",
+  "Keep pending local state visibly distinct from accepted server state. Users should know when a message or notification action is not yet durable.",
+  "Use backpressure for realtime streams. Drop or coalesce low-value typing, presence, and read events before dropping durable messages.",
+  "Build projection repair paths. Inbox rows, unread counts, search indexes, and digest summaries should be rebuildable from the authoritative event log.",
+  "Create abuse controls for spam senders, phishing links, notification floods, and toxic threads. Moderation state should propagate to clients and notifications quickly.",
+  "Instrument device cohorts separately. Messaging bugs often appear only on reconnect, app backgrounding, low battery, stale tokens, or older clients."
+];
+const pitfalls = [
+  "wrong channel is usually caused by unclear ordering or reconciliation semantics. The design needs scoped sequence, idempotency, and client reconciliation.",
+  "consent violation undermines user trust because communication UIs become task lists. Unread/read state should be observable, repairable, and separated from delivery.",
+  "provider outage happens when privacy policy is enforced in the main view but not in notifications, previews, search, or exports.",
+  "duplicate delivery should be expected for large rooms, provider retries, or viral notifications. Backpressure and throttling must be first-class.",
+  "Another pitfall is treating push, email, websocket, and inbox as independent products. Users perceive them as one communication system, so policy and state must converge.",
+  "Teams also forget retention and legal hold. Delete for user, delete for everyone, archive, export, and legal retention require explicit semantics."
+];
+const useCases = [
+  "support hub requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "marketing communication center requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "transactional alert hub requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "During provider outage, the hub should fail over channels where allowed, queue retryable messages, suppress duplicates, and show delivery uncertainty clearly.",
+  "During abuse spike, the system should throttle senders, reduce notification fanout, scan links, quarantine suspicious threads, and preserve review evidence.",
+  "During reconnect, the client should fetch missed events from a cursor, reconcile local pending operations, update read state, and avoid replaying already accepted actions."
+];
+const questions = [
+  {
+    "question": "How would you design a multi-channel communication hub end to end?",
+    "answer": "I would design an authoritative event log for durable communication events, realtime gateways for online delivery, projection workers for inboxes and unread counts, policy services for membership and consent, and client local state for pending operations and offline recovery. The frontend shows truthful delivery states while the backend owns ordering, idempotency, and enforcement."
+  },
+  {
+    "question": "Why this architecture over direct client-to-client messaging or a simple notifications table?",
+    "answer": "Direct client-to-client messaging cannot provide durable history, moderation, multi-device sync, search, retention, or support reconstruction. A simple notifications table cannot represent delivery, read state, retries, provider acknowledgements, and policy suppression. The event-log plus projection model adds complexity but makes the system repairable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are wrong channel, consent violation, provider outage, duplicate delivery, plus reconnect storms, websocket fanout, unread drift, provider rate limits, spam waves, and projection lag. Prevention requires scoped ordering, backpressure, idempotency, projection repair, provider abstraction, and abuse controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Message append, membership, deletion/redaction, and consent policy need strong server control. Inbox rows, unread counts, search indexes, push delivery receipts, and presence can be eventually consistent if they converge and expose uncertainty. Read state usually accepts eventual consistency across devices."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with reconnect cursors, retry queues, provider failover, local pending state, and projection rebuilds. Rollback uses feature flags, provider disablement, and event replay. Abuse is controlled through rate limits, link scanning, reputation, and moderation. Privacy requires minimizing notification payloads and enforcing membership everywhere. Cost is controlled by coalescing presence/read events, batching, and sampling telemetry. Observability tracks send lag, delivery lag, reconnects, unread drift, provider errors, and moderation actions."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate durable message truth from derived communication surfaces. I would defend eventual unread counts but not eventual privacy enforcement. I would defend websocket complexity for realtime UX while keeping polling fallback. I would also acknowledge that E2EE, search, moderation, and support visibility create real trade-offs that must be product-specific."
+  }
+];
+const references = [
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Slack engineering blog",
+    "href": "https://slack.engineering/"
+  },
+  {
+    "label": "RFC 5322 Internet Message Format",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5322"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  }
+];
 
 export default function MultiChannelCommunicationHubArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A multi-channel communication hub (omnichannel inbox) aggregates customer conversations from multiple channels — email, live chat widget, WhatsApp Business API, SMS, Twitter DMs, Facebook Messenger — into a single unified interface for support agents. Intercom, Zendesk, Freshdesk, and Crisp all implement this pattern. The core challenge is heterogeneity: each channel has a different message format, different attachment capabilities, different character limits, and different delivery semantics. A WhatsApp message has a template requirement for outbound messages. An email has a subject line and HTML body. A live chat message is ephemeral (the user might close the tab). An SMS has a 160-character limit. The hub must abstract these differences while preserving channel-specific capabilities.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The agent experience challenge: multiple support agents may simultaneously view the same conversation. Without coordination, two agents can send duplicate replies, causing a confusing customer experience. Agent assignment, collision detection (showing when another agent is currently typing in a conversation), and conversation locking are required for a functional multi-agent inbox.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Unified inbox architecture, channel adapter pattern, conversation state machine, agent assignment and collision detection, SLA tracking, and canned response system. Not in scope: channel-specific API integrations (WhatsApp Business API, Twilio SMS), AI auto-reply, or analytics dashboards.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/multi-channel-communication-hub.svg" alt="Design a Multi-Channel Communication Hub architecture" caption="Architecture view: durable event log, realtime gateway, projections, policy, and client sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/multi-channel-communication-hub-flow.svg" alt="Design a Multi-Channel Communication Hub flow" caption="Flow view: send, acknowledge, deliver, read, moderate, notify, and recover." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/multi-channel-communication-hub-operations.svg" alt="Design a Multi-Channel Communication Hub operations" caption="Operations view: fanout, reconnect, provider health, abuse controls, privacy, and projection repair." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Unified inbox:</strong> All conversations from all channels appear in a single inbox sorted by last activity. Each conversation shows the channel icon (email, chat, WhatsApp), the customer name and avatar, the last message snippet, and the current agent assignment. Conversations can be filtered by channel, status (open/pending/resolved/snoozed), assigned agent, and SLA breach status.</li>
-          <HighlightBlock as="li" tier="important"><strong>Channel adapters:</strong> Each incoming channel (email, chat, WhatsApp, SMS) has an adapter that normalizes the channel-specific payload into a canonical Conversation and Message format: &#123;id, channelType, externalId, customerId, messages: [&#123;id, direction, body, attachments, timestamp, metadata&#125;], status, assigneeId, slaDeadline&#125;. Outbound messages are de-normalized back to the channel format by the adapter before delivery.</HighlightBlock>
-          <li><strong>Conversation state machine:</strong> Each conversation has a state: Open (new or waiting for agent reply), Pending (agent replied, waiting for customer response), Resolved (closed by agent), Snoozed (suppressed until a time or a customer reply). State transitions are triggered by: new customer message (Pending → Open), agent reply (any → Pending), agent closes (any → Resolved), new message to resolved conversation (Resolved → Open), SLA breach (any → SLA Breached overlay). State is stored server-side and synced to all agents viewing the conversation via WebSocket.</li>
-          <li><strong>Agent assignment and routing:</strong> Conversations are assigned to agents via round-robin (balanced load) or manual assignment. The assignment is shown in the conversation header. Multiple agents can view a conversation, but only the assigned agent's reply is recorded as the agent reply. Other agents can add internal notes (not visible to the customer) or reassign.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Collision detection:</strong> When Agent A opens a conversation that Agent B is currently viewing or composing in, a real-time collision indicator appears: "Agent B is currently typing a reply." This prevents duplicate replies. The assigned agent's composer is active; non-assigned agents see the composer as read-only with the collision banner. If Agent A clicks "Take over," the assignment transfers to Agent A.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>SLA tracking:</strong> Each conversation has an SLA deadline (e.g., first response within 2 hours). A countdown timer appears in the conversation list and detail view. Conversations approaching (within 30 minutes) or past the SLA deadline are highlighted red. SLA is paused when the conversation is in Pending state (waiting for customer reply). Breach events trigger escalation notifications to team leads.</HighlightBlock>
-          <li><strong>Canned responses:</strong> Agents can access a library of templated responses (canned responses) via a keyboard shortcut (/shortcut in the compose box or Ctrl+K search). Canned responses support template variables (&#123;&#123;customer.name&#125;&#125;, &#123;&#123;agent.name&#125;&#125;, &#123;&#123;ticket.id&#125;&#125;) that are substituted on insertion. Search within canned responses is client-side (all responses are fetched on login and indexed locally with Fuse.js fuzzy search — typically under 500 entries).</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture has four layers. The Channel Layer: each external channel (email, WhatsApp, SMS, chat widget) sends events to the hub via webhooks or polling. A channel adapter per source normalizes events into the canonical Conversation and Message schemas. The Routing Layer: the conversation router assigns new conversations to agents (round-robin, skill-based, or manual), updates the conversation state machine, and emits events to the agent WebSocket connections. The Agent Layer: the React frontend receives conversations and messages via WebSocket, renders the unified inbox, and sends agent replies through the router (which de-normalizes and delivers to the correct channel). The SLA Layer: a background process (cron job every minute) checks conversation SLA deadlines, emits breach events for overdue conversations, and pauses SLA timers for Pending conversations.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/messaging-communication/multi-channel-communication-hub.svg"
-          alt="Multi-channel communication hub: channel adapters (email webhook → normalize to &#123;channelType:email, body, attachments&#125;; WhatsApp webhook → &#123;channelType:whatsapp, body, mediaUrl&#125;; SMS → &#123;body, from, to&#125;; live chat WS → &#123;sessionId, body&#125;; all → canonical Message schema), conversation state machine (Open: new/unassigned; Pending: agent replied, waiting customer; Resolved: closed; Snoozed: until time or reply; transitions: customer msg→Open; agent reply→Pending; agent close→Resolved; customer msg to Resolved→Open; SLA breach→highlight), agent assignment (round-robin pool → assigneeId; assigned agent: active composer; viewing agents: read-only + collision banner 'Agent B is typing'; Take over → reassign; internal notes: not sent to customer; WS event: AGENT_VIEWING, AGENT_TYPING), SLA tracking (deadline per conversation; countdown timer in list + detail; within 30min: amber; breached: red; paused in Pending state; breach → escalation notif to team lead), canned responses (Ctrl+K search; Fuse.js local fuzzy; &#123;&#123;customer.name&#125;&#125; substitution on insert; channel-specific: WhatsApp only allows approved templates for outbound)."
-          caption="Channel adapter normalization (email/WhatsApp/SMS/chat → canonical schema), conversation state machine (Open/Pending/Resolved/Snoozed), round-robin assignment with collision detection (active composer vs read-only + banner), SLA countdown (amber 30min, red breach, paused Pending), canned responses (Ctrl+K Fuse.js local fuzzy search, template variable substitution)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Channel Adapter Pattern</h3>
-        <HighlightBlock as="p" tier="important">Each channel has a dedicated adapter class that implements a common interface: &#123;receive(rawPayload) → Message, send(message) → ChannelDeliveryResult, getCustomerProfile(channelId) → Customer&#125;. The receive() method maps channel-specific fields to the canonical Message schema. For email: the raw MIME payload is parsed (subject, from, to, html body, attachments), and mapped to &#123;channelType: "email", direction: "inbound", body: stripHtml(htmlBody), richBody: htmlBody, attachments: [], subject, externalId: messageId&#125;. For WhatsApp: the webhook payload (from Twilio or Meta's Cloud API) maps to &#123;channelType: "whatsapp", direction: "inbound", body: text, attachments: [&#123;type: "image", url: mediaUrl&#125;]&#125;. For live chat: the WebSocket frame maps to &#123;channelType: "chat", direction: "inbound", body: text, sessionId&#125;.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The send() method performs the reverse transformation. For WhatsApp outbound, regulatory requirements apply: the message must use a pre-approved template if the customer has not messaged in the last 24 hours (WhatsApp's "24-hour window" rule). The WhatsApp adapter checks the last_customer_message_at timestamp and either sends a free-form message (within the window) or a template message (outside the window). This channel-specific business logic is encapsulated in the adapter, invisible to the conversation view.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Collision Detection and Typing Relay</h3>
-        <HighlightBlock as="p" tier="important">Collision detection requires real-time coordination between agents. When Agent A opens a conversation, the client sends a VIEWING_START event via WebSocket: &#123;type: "VIEWING_START", conversationId: "conv-123", agentId: "agent-A"&#125;. The server adds Agent A to the conversation's viewer set (stored in Redis: SADD conv:conv-123:viewers agent-A with a 30-second TTL, refreshed every 15 seconds). All agents currently viewing the same conversation receive a VIEWERS_UPDATED event with the current viewer set. The composer shows a banner for each viewer who is not the assigned agent: "Agent B is also viewing."</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Typing relay: when the assigned agent types in the compose box, a TYPING event is sent via WebSocket every 1 second (not on every keystroke — debounced). The server broadcasts the TYPING event to all other agents viewing the conversation, showing a "Agent A is typing..." indicator. For the customer-facing side (live chat), the TYPING event is also relayed to the customer's chat widget (via the chat WebSocket), showing the familiar "... agent is typing" indicator in the customer's window.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">SLA Timer Implementation</h3>
-        <HighlightBlock as="p" tier="important">SLA timers are calculated server-side and displayed client-side. The SLA deadline is stored as an absolute UTC timestamp on the conversation record: slaDeadline: "2026-05-12T14:30:00Z". The client displays the remaining time by calculating (slaDeadline - Date.now()) and updating the display every minute via setInterval. Color coding: green if &gt;60 minutes remain, amber if 30–60 minutes remain, red if &lt;30 minutes or breached. The SLA timer is paused (the deadline does not advance) while the conversation is in Pending state — a separate field tracks the cumulative SLA time used (slaTimeUsedMs), updated by the server when the conversation transitions from Pending back to Open.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">SLA breach handling: a server-side cron job (every minute) queries conversations where slaDeadline &lt; NOW() AND status != "resolved". For breached conversations, it: (1) emits a SLA_BREACHED WebSocket event to all agents viewing the conversation; (2) sends an escalation notification to the team lead (via email and notification inbox); (3) applies a "SLA Breached" badge to the conversation in the inbox list. The conversation is not automatically closed or reassigned — breach requires agent action, not automatic resolution.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Unified Inbox Filtering and Search</h3>
-        <HighlightBlock as="p" tier="important">The inbox filter state (channel, status, assignee, SLA breach, tag) is stored in URL query parameters (?channel=email&amp;status=open&amp;assignee=me) — making the filter state shareable and bookmarkable. Each filter change triggers a new server query: GET /api/conversations?channel=email&amp;status=open&amp;assigneeId=current_user&amp;limit=30&amp;cursor=last_id. The response is paginated with keyset cursors (by lastActivityAt DESC). The conversation list is rendered with virtual scrolling (TanStack Virtual, ~15 visible rows, each row 80px fixed height).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Full-text search across conversation bodies queries Elasticsearch (GET /api/conversations/search?q=refund&amp;channel=email&amp;status=open). Results are highlighted (Elasticsearch's highlight feature returns fragments with &lt;em&gt; tags). Search results are a flat list (no grouping), sorted by relevance score. The search field is in the inbox header with a 300ms debounce — fast enough to feel instant but not spamming the server on every keystroke.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Unified data model vs. channel-native features: normalizing all channels into a canonical schema loses channel-specific capabilities. WhatsApp supports interactive buttons and list messages; email supports arbitrary HTML; SMS supports only plain text. The canonical schema must be rich enough to represent the superset of all channel capabilities, or the adapter must preserve channel-native metadata in an opaque &#123;channelMetadata: &#123;...&#125;&#125; field that is rendered by channel-specific UI components. The risk of premature normalization: building a schema around today's channels makes it hard to add new channels with different capabilities (video messages, interactive forms).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Agent assignment fairness: round-robin assignment (the simplest strategy) does not account for conversation complexity (a refund dispute takes longer than a password reset question) or agent skill (routing technical questions to technical support, billing questions to billing). Skill-based routing requires tagging conversations with categories (via keyword matching or AI classification) and maintaining agent skill profiles. This is significantly more complex than round-robin but reduces resolution time for specialized queries. The simplest viable system starts with round-robin and adds skill-based routing incrementally as the team grows beyond 10 agents.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A multi-channel communication hub is built on: (1) channel adapters (receive() normalizes to canonical Message schema; send() de-normalizes to channel-specific format; WhatsApp 24h window check in adapter); (2) conversation state machine (Open/Pending/Resolved/Snoozed, server-side with WebSocket sync on transitions, SLA pause in Pending); (3) agent assignment + collision detection (round-robin, VIEWING_START WS event → Redis viewer set with 30s TTL, VIEWERS_UPDATED broadcast, assigned agent active composer, viewers read-only + banner, typing relay via WS debounced 1s); (4) SLA tracking (absolute UTC deadline, client countdown setInterval, server cron breach detection, escalation notification, amber/red thresholds); and (5) canned responses (Ctrl+K, local Fuse.js fuzzy, template variable substitution, channel restrictions enforced on send). The core complexity is the channel adapter layer — every new channel adds a new adapter but does not change the core conversation model or agent UI.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

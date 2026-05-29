@@ -1,81 +1,89 @@
-/**
- * Breadcrumb Dynamic ID Resolution — Converts numeric/UUID segments to labels.
- *
- * Interview edge case: URL is /products/12345/reviews. The "12345" segment is a
- * numeric ID, not a readable label. The breadcrumb must resolve this to a product
- * name (e.g., "Wireless Headphones"). For performance, cache resolved labels.
- */
+export type breadcrumbComponentSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-interface ResolvedLabel {
-  label: string;
-  timestamp: number;
+export type breadcrumbComponentEvent = {
+  id: string;
+  topic: "breadcrumb-component";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: breadcrumbComponentSignal;
+};
+
+export type breadcrumbComponentDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateBreadcrumbComponentEvent(event: breadcrumbComponentEvent): breadcrumbComponentDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: breadcrumbComponentDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Breadcrumb Component",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Manages label resolution for URL segments that are IDs.
- * Uses a cache with TTL to avoid repeated API calls.
- */
-export class BreadcrumbIdResolver {
-  private cache: Map<string, ResolvedLabel> = new Map();
-  private cacheTTL: number;
-  private resolverFn: (id: string, segment: string) => Promise<string>;
+export function runBreadcrumbComponentContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateBreadcrumbComponentEvent({
+    id: "breadcrumb-component-evt-1",
+    topic: "breadcrumb-component",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  constructor(
-    cacheTTL: number = 300000, // 5 minutes
-    resolverFn: (id: string, segment: string) => Promise<string>,
-  ) {
-    this.cacheTTL = cacheTTL;
-    this.resolverFn = resolverFn;
-  }
+  const guarded = evaluateBreadcrumbComponentEvent({
+    id: "breadcrumb-component-evt-late",
+    topic: "breadcrumb-component",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-  /**
-   * Checks if a segment looks like an ID (numeric or UUID).
-   */
-  isIdSegment(segment: string): boolean {
-    // Numeric ID
-    if (/^\d+$/.test(segment)) return true;
-    // UUID
-    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(segment)) return true;
-    return false;
-  }
-
-  /**
-   * Resolves an ID segment to a label. Uses cache if available.
-   */
-  async resolve(segment: string, parentPath: string): Promise<string> {
-    const cacheKey = `${parentPath}/${segment}`;
-    const cached = this.cache.get(cacheKey);
-
-    if (cached && Date.now() - cached.timestamp < this.cacheTTL) {
-      return cached.label;
-    }
-
-    try {
-      const label = await this.resolverFn(segment, parentPath);
-      this.cache.set(cacheKey, { label, timestamp: Date.now() });
-      return label;
-    } catch {
-      // Fallback to the raw segment
-      return segment;
-    }
-  }
-
-  /**
-   * Clears expired cache entries.
-   */
-  pruneCache(): void {
-    const now = Date.now();
-    for (const [key, entry] of this.cache) {
-      if (now - entry.timestamp >= this.cacheTTL) {
-        this.cache.delete(key);
-      }
-    }
-  }
-
-  /**
-   * Clears the entire cache.
-   */
-  clearCache(): void {
-    this.cache.clear();
-  }
+  return { accepted, guarded };
 }

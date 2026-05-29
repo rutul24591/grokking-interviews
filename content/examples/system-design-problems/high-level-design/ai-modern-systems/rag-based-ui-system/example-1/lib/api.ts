@@ -1,4 +1,16 @@
-export type ApiResult<T> = { ok: true; data: T } | { ok: false; error: { code: string; message: string } };
+const { buildGroundedAnswer } = require('./policies');
 
-// Contract shapes go here (request/response). Keep them versioned for evolvability.
-export type RequestMeta = { requestId: string; idempotencyKey?: string };
+function answerRagQuery({ query, user, chunks, traceStore }) {
+  const result = buildGroundedAnswer(query, user, chunks);
+  traceStore.record({
+    query,
+    tenantId: user.tenantId,
+    mode: result.mode,
+    confidence: result.confidence,
+    sourceIds: result.sources.map((source) => source.chunkId),
+    telemetry: result.telemetry,
+  });
+  return result;
+}
+
+module.exports = { answerRagQuery };

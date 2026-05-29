@@ -1,62 +1,90 @@
-/**
- * Breadcrumb — Staff-Level SEO and Structured Data Integration.
- *
- * Staff differentiator: JSON-LD BreadcrumbList generation for search engines,
- * dynamic ID resolution with caching, and truncated breadcrumb expansion
- * with keyboard-accessible dropdown.
- */
+export type breadcrumbComponentRuntimeState = {
+  topic: "breadcrumb-component";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-import { useMemo } from 'react';
+export type breadcrumbComponentRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-interface BreadcrumbItem {
-  label: string;
-  href: string;
-  isCurrent?: boolean;
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Generates JSON-LD structured data for breadcrumbs.
- * Search engines use this to display breadcrumb navigation in search results.
- */
-export function generateBreadcrumbJSONLD(
-  items: BreadcrumbItem[],
-  baseUrl: string = 'https://example.com',
-): string {
-  const itemListElement = items.map((item, index) => ({
-    '@type': 'ListItem',
-    position: index + 1,
-    name: item.label,
-    item: item.isCurrent ? undefined : `${baseUrl}${item.href}`,
-  }));
+export function planBreadcrumbComponentRecovery(
+  state: breadcrumbComponentRuntimeState,
+  nowMs: number,
+): breadcrumbComponentRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: breadcrumbComponentRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  return JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement,
-  });
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
+
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
 }
 
-/**
- * Hook that manages truncated breadcrumb with expandable dropdown.
- * Shows: Home > ... > Parent > Current (with dropdown to see full path)
- */
-export function useTruncatedBreadcrumb(
-  items: BreadcrumbItem[],
-  maxVisible: number = 4,
-) {
-  const [isExpanded, setIsExpanded] = useState(false);
+export function runBreadcrumbComponentEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planBreadcrumbComponentRecovery(
+    {
+      topic: "breadcrumb-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
 
-  const visibleItems = useMemo(() => {
-    if (items.length <= maxVisible) return items;
+  const failure = planBreadcrumbComponentRecovery(
+    {
+      topic: "breadcrumb-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
 
-    // Always show first and last items, use ellipsis for middle
-    const first = items[0];
-    const last = items[items.length - 1];
-    const middleStart = Math.max(1, items.length - maxVisible + 2);
-    const middle = items.slice(middleStart, -1);
-
-    return [first, { label: '...', href: '', isTruncated: true }, ...middle, last];
-  }, [items, maxVisible]);
-
-  return { visibleItems, isExpanded, setIsExpanded, fullItems: items };
+  return {
+    topic: "Breadcrumb Component",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

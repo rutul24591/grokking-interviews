@@ -54,7 +54,7 @@ export function TopBar() {
               name="q"
               type="search"
               maxLength={120}
-              placeholder="Search articles..."
+              placeholder="Search articles"
               className="h-10 w-full rounded-xl border border-theme bg-panel py-2 pl-10 pr-3 text-sm text-heading shadow-soft-theme transition placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>

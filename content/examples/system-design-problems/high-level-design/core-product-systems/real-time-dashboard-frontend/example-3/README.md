@@ -1,1 +1,5 @@
-# Design a real-time dashboard frontend — Example 3
+# Real Time Dashboard Frontend - Example 3
+
+Concrete core product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

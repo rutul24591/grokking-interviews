@@ -1,1 +1,5 @@
-# Design a rich text editor (Google Docs / Notion style) — Example 3
+# Rich Text Editor - Example 3
+
+Concrete media content edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

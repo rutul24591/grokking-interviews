@@ -7,114 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-real-time-collaborative-whiteboard",
-  title: "Design a Real-Time Collaborative Whiteboard (Miro/Figma Style)",
-  description:
-    "Architecture for a multiplayer infinite canvas: CRDT-based conflict resolution, operational transform, WebSocket delivery, viewport culling, and performance at scale.",
+  title: "Design a Real-time Collaborative Whiteboard",
+  description: "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability.",
   category: "high-level-design",
   subcategory: "realtime-collaboration-systems",
   slug: "real-time-collaborative-whiteboard",
-  wordCount: 5600,
-  readingTime: 34,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "whiteboard", "collaborative", "CRDT", "OT", "canvas", "WebSocket"],
-  relatedTopics: ["collaborative-editor", "cursor-sharing-system"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "realtime", "collaboration", "crdt", "websocket", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Real-time Collaborative Whiteboard is a realtime distributed product system where multiple clients observe, edit, or coordinate around shared state with low perceived latency. A principal-ready design treats a real-time collaborative whiteboard as shared-state replication with product semantics, not just a websocket channel.",
+  "The design must define what is durable, what is ephemeral, what can be approximate, what must be ordered, and what can be dropped. Durable edits, messages, lobby state, or meeting joins have different guarantees from cursors, typing indicators, heartbeats, viewport hints, and transient QoE signals.",
+  "The visible frontend is responsible for responsiveness and local recovery, but the backend must own sequencing, authorization, fanout, replay, abuse controls, and observability. If every client invents its own truth, collaboration becomes inconsistent the moment users reconnect or edit concurrently.",
+  "Realtime systems fail in user-visible ways: duplicated operations, lost updates, stale presence, delayed media, bad conflict resolution, and confusing pending states. The architecture should make these states explicit rather than hiding them behind generic loading spinners.",
+  "A staff/principal answer should compare CRDT, OT, server-authoritative sequencing, locks, and eventual reconciliation. The right model depends on the data type, collaboration intensity, offline needs, auditability, and conflict cost."
+];
+const concepts = [
+  "The first concept is state classification. canvas object graph, operation stream, and asset store should be classified as durable, derived, or ephemeral. Durable state needs replay and audit; ephemeral state needs freshness and expiry; derived state should be rebuildable.",
+  "The second concept is ordering scope. Global total order is usually unnecessary and expensive. A document, room, board, lobby, or meeting can have its own sequence, while presence and cursor updates can use last-writer-wins with expiry.",
+  "The third concept is conflict resolution. Text and structured document edits may use OT or CRDT. Object graphs may use operation transforms and snapshots. Lobbies may use server-authoritative state machines. Video conferencing uses signaling plus media adaptation rather than shared document merge.",
+  "The fourth concept is local responsiveness. Clients should render local intent immediately where safe, mark it pending, then reconcile with server acknowledgement, transformed operations, or conflict decisions.",
+  "The fifth concept is fanout and backpressure. Realtime systems can overload gateways and clients with low-value updates. Cursor, presence, typing, viewport, and QoE events should be sampled, coalesced, or dropped before durable edits are affected.",
+  "The sixth concept is observability. Track operation ack latency, reconnect rate, missed-event replay, conflict rate, fanout pressure, stale presence, media QoE, dropped transient updates, and client/server version skew."
+];
+const architecture = [
+  "The architecture contains canvas object graph, operation stream, asset store, viewport sync, snapshot service. Clients keep local state and pending operations. Gateways authenticate connections and route room traffic. Sequencers or collaboration services assign order or merge operations. Snapshot stores compact history. Projections serve read-optimized views and replay.",
+  "Every durable operation should include actor, target scope, client operation ID, base version or vector, schema version, authorization context, and idempotency key. This lets the system dedupe retries and explain why an operation was accepted, transformed, rejected, or replayed.",
+  "Ephemeral events should have TTLs and rate limits. Presence, cursor, typing, viewport, and media quality hints should expire naturally because a missed disconnect or network loss should not leave a permanent artifact.",
+  "Snapshots are essential at scale. Replaying an entire document, board, lobby, or room history from the beginning becomes too expensive. The system should periodically compact into snapshots while preserving enough operation history for audit, undo, and conflict repair.",
+  "Authorization must be enforced on connect, read, write, replay, export, search, and notification surfaces. Collaboration state often leaks through presence, cursors, thumbnails, comments, and invitations even when the main document appears protected.",
+  "Operations need controls for disabling a noisy ephemeral channel, rolling back a bad client version, replaying a room from snapshot, draining a gateway, isolating a hot room, and investigating missing or duplicated operations."
+];
+const tradeoffs = [
+  "CRDTs support offline and peer-like convergence, but they can increase metadata size, make intent hard to express, and complicate authorization or undo. OT can preserve editing intent for text but is harder to generalize across arbitrary object graphs. Server-authoritative sequencing is simpler to reason about but weakens offline editing.",
+  "WebSockets give low-latency bidirectional updates but require connection lifecycle, auth refresh, backpressure, and regional routing. Polling is simpler and robust but produces higher latency and more repeated work.",
+  "Optimistic local updates improve responsiveness but can create visible rollbacks. For reversible, low-risk edits this is acceptable. For payments, permission changes, lobby readiness, or destructive actions, server confirmation should drive final UI.",
+  "Strong consistency across all collaborators is expensive and often unnecessary. Durable document operations need convergence and replay. Presence, cursors, and typing can be approximate. Moderation, permission revocation, and room removal need fast enforcement.",
+  "Coalescing transient events protects scale and battery but lowers fidelity. Sending every cursor pixel movement is wasteful; sending no cursor updates makes collaboration feel dead. Principal designs set per-event budgets.",
+  "Regional routing improves latency but can split rooms or complicate sequencing. Room affinity, regional leaders, or global sequencers should be chosen based on collaboration intensity and correctness needs."
+];
+const practices = [
+  "Design an explicit operation schema. Include actor, room/document ID, client op ID, base version, timestamp, schema version, and idempotency key.",
+  "Keep durable and ephemeral channels separate. Durable edits need replay and acknowledgement; ephemeral presence and cursors need expiry, rate limits, and drop tolerance.",
+  "Use snapshots and compaction. Bound replay cost while preserving audit history and enough operation log for recovery.",
+  "Expose pending, synced, conflict, offline, reconnecting, and read-only states in the UI. Collaboration systems should not pretend every user sees the same state instantly.",
+  "Enforce permissions on every surface: connection, read, write, replay, cursor/presence, comments, export, thumbnails, notifications, and support tools.",
+  "Build abuse controls. Shared spaces need spam throttles, moderation, participant removal, report flows, and emergency room-level controls.",
+  "Instrument from both client and server. Server ack latency alone does not reveal blocked main thread, dropped media frames, websocket reconnect loops, or client memory pressure."
+];
+const pitfalls = [
+  "object drift usually means the system lacks clear operation identity, sequencing, or replay semantics. The fix is not more retries; it is a defined operation model.",
+  "large canvas lag is often caused by treating ephemeral state as durable truth. Presence, cursor, and QoE hints need expiry and freshness rules.",
+  "asset permission leak shows that conflict policy must be product-specific. A game lobby, text editor, whiteboard, and video call do not share one merge strategy.",
+  "undo conflict appears during reconnect and offline replay. The client should not blindly resend operations without idempotency and base-version context.",
+  "Another pitfall is ignoring old clients. Realtime protocols need version negotiation and compatibility windows because users can keep stale browser tabs or mobile apps open for days.",
+  "Teams also underestimate support needs. Operators should be able to inspect room membership, operation history, gateway region, client versions, replay gaps, and permission decisions without reading raw private content unnecessarily."
+];
+const useCases = [
+  "design brainstorming needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "classroom whiteboard needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "incident response board needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "During a gateway outage, clients should reconnect with cursors, fetch missed durable events, discard expired ephemeral state, and avoid replaying already accepted operations.",
+  "During a bad client rollout, operators should disable the affected feature, reject incompatible operation versions, and keep older rooms recoverable from snapshots.",
+  "During abuse or spam, the system should throttle noisy actors, suppress low-value events, preserve evidence, and allow room owners or moderators to intervene safely."
+];
+const questions = [
+  {
+    "question": "How would you design a real-time collaborative whiteboard end to end?",
+    "answer": "I would classify state into durable operations, derived projections, and ephemeral realtime signals. Clients maintain local pending state and connect to authenticated gateways. Durable operations flow through a sequencer or merge service, are persisted in an operation log, compacted into snapshots, and replayed to reconnecting clients. Ephemeral channels use TTL and rate limits. Authorization, observability, rollback, and abuse controls are built into the protocol."
+  },
+  {
+    "question": "Why this architecture over just broadcasting websocket messages?",
+    "answer": "Broadcasting websocket messages is enough for a demo but not for recovery, replay, multi-device sync, authorization, conflict resolution, or support debugging. The operation-log plus snapshot model adds complexity, but it makes missed events recoverable and lets clients converge after reconnect or offline use."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are object drift, large canvas lag, asset permission leak, undo conflict, plus hot rooms, reconnect storms, gateway overload, operation-log growth, stale clients, permission drift, and noisy ephemeral events. Prevention requires room affinity, backpressure, snapshots, protocol versioning, idempotency, replay cursors, and event priority tiers."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Durable shared edits need convergence and replayable ordering within a room or document. Presence, cursor, typing, and QoE events are ephemeral and eventually consistent with expiry. Permission revocation, moderation, room deletion, and destructive actions need fast server enforcement. The answer should classify state instead of claiming one model for everything."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failure handling uses reconnect cursors, missed-event replay, snapshots, idempotency, and visible pending/offline states. Rollback uses protocol flags, client-version blocking, snapshot restore, and feature disablement. Abuse controls throttle noisy users and allow moderation. Privacy requires enforcing access on presence, cursors, exports, and notifications. Cost is controlled through coalescing ephemeral events and compacting logs. Observability tracks ack latency, reconnects, conflicts, fanout, and client QoE."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend separating durable operations from ephemeral signals because they need different guarantees. I would choose CRDT, OT, or server sequencing based on data shape and offline requirements. I would accept approximate presence but not approximate authorization. I would also explain why snapshots and replay are worth the operational complexity."
+  }
+];
+const references = [
+  {
+    "label": "Automerge documentation",
+    "href": "https://automerge.org/"
+  },
+  {
+    "label": "Yjs documentation",
+    "href": "https://docs.yjs.dev/"
+  },
+  {
+    "label": "WebRTC specification",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function RealTimeCollaborativeWhiteboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A collaborative whiteboard is an infinite canvas where multiple users can simultaneously create, move, resize, and delete shapes, sticky notes, images, and freehand drawings. The defining technical challenges are: concurrent edit conflict resolution (two users moving the same shape simultaneously must not produce inconsistent results), low-latency local feedback (the user must see their own edits immediately, before the server acknowledges them), scalable presence (a whiteboard with 50 simultaneous participants must show all 50 cursors without overwhelming the rendering pipeline), and performance on a potentially infinite canvas with hundreds of objects (only objects within the viewport should be rendered).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The distinction from a collaborative text editor (Google Docs) is the spatial nature of the data: shapes have position, size, and z-order (stacking layer). Moving a shape is not analogous to inserting text—there is no sequence index to track. Two users moving the same shape to different positions creates a conflict that must be resolved. The conflict resolution strategy (last-write-wins, or a more sophisticated CRDT that preserves intent) determines whether the collaborative experience is trustworthy.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> Canvas objects are discrete entities (shapes, sticky notes, images, connectors) with unique IDs, not a continuous spatial grid. Each object has: id, type, position (x, y), size (width, height), z-index, content, style, ownerId, createdAt, updatedAt. Object operations are: create, move, resize, restyle, delete. Concurrent moves of the same object resolve by last-write-wins (the most recent server timestamp wins). The canvas is infinite; the viewport is a bounded window over the canvas. Maximum 100 concurrent participants per board.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/real-time-collaborative-whiteboard-architecture.svg" alt="Design a Real-time Collaborative Whiteboard architecture" caption="Architecture view: clients, gateways, operation log, merge/sequencing, snapshots, authorization, and replay." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/real-time-collaborative-whiteboard-workflow.svg" alt="Design a Real-time Collaborative Whiteboard flow" caption="Flow view: local intent, acknowledgement, fanout, replay, conflict handling, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/real-time-collaborative-whiteboard-performance.svg" alt="Design a Real-time Collaborative Whiteboard operations" caption="Operations view: fanout pressure, conflict rate, reconnects, stale clients, abuse controls, and rollback." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Multi-user editing:</strong> Multiple users can create, move, resize, and delete objects simultaneously. All participants see each other's changes in real-time.</li>
-          <li><strong>Optimistic local editing:</strong> The user sees their own edits immediately, without waiting for server confirmation. Server-confirmed state reconciles with local state on receipt.</li>
-          <li><strong>Cursor presence:</strong> Each participant's cursor position is broadcast and displayed on other participants' canvases as a named, colored cursor.</li>
-          <li><strong>Undo/Redo:</strong> Each user has their own undo/redo history. Undoing an operation reverses the user's own action, even if other users have since modified the affected object.</li>
-          <li><strong>Selection and locking:</strong> When a user selects an object for editing, other users see the object as "selected by [Name]" and cannot move it simultaneously (soft lock).</li>
-          <li><strong>Persistence:</strong> The board state is persisted server-side. Rejoining the board restores the complete current state. History of all operations is preserved for audit and time-travel.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Edit latency:</strong> Local edits visible immediately (0ms local, optimistic). Remote edits visible within 100ms of the source user's action.</li>
-          <li><strong>Canvas performance:</strong> 60fps rendering with up to 10,000 objects on the canvas, of which at most ~100 are in any given viewport.</li>
-          <li><strong>Scale:</strong> Up to 100 concurrent participants per board. Up to 1 million boards per deployment.</li>
-          <li><strong>Consistency:</strong> After all participants disconnect and reconnect, all clients must converge to the same board state.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <p>The whiteboard system uses an operation-based architecture: rather than sending full object state on every change, clients send operations (move object X to position (100, 200), resize object Y to width 300). The server applies operations to the authoritative board state, broadcasts to other connected clients, and appends to an operation log for persistence and history. This operation-based approach is more bandwidth-efficient than state-based sync (sending the entire board state on every change) and enables undo/redo (by recording and replaying operations in reverse).</p>
-        <HighlightBlock as="p" tier="crucial">Each board is assigned to a Board Session Server—a stateful WebSocket server that maintains the in-memory board state and the list of connected participants. The Board Session Server is the hub for all real-time operations on a board: it receives operations from clients, applies them to the in-memory state, broadcasts to all other connected clients, and persists operations to the database asynchronously. A single server per board avoids the distributed coordination problem of multi-server ordering, at the cost of requiring board migration when a server goes down (handled by reassigning the board to another server with state reload from the database).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/real-time-collaborative-whiteboard-architecture.svg"
-          alt="Collaborative whiteboard architecture showing client (optimistic local state, operation queue, viewport culling renderer), Board Session Server (in-memory board state, operation sequencer, WebSocket broadcast to all participants), operation log persistence (PostgreSQL append-only operations table), cursor presence channel (separate lightweight WebSocket), and board migration on server failure."
-          caption="Whiteboard architecture: Board Session Server per board, operation-based sync, optimistic local state, and separate cursor presence channel"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Operation Model and Conflict Resolution</h3>
-        <p>Every user action produces a typed operation: CreateObject, MoveObject, ResizeObject, RestyleObject, DeleteObject, SetContent. Each operation carries a clientId (the client that generated it), a sequenceNumber (monotonically increasing per client), a timestamp, and the operation's payload (for MoveObject: objectId, fromPosition, toPosition). Operations are sent to the Board Session Server via WebSocket. The server assigns a globalSequenceNumber (monotonically increasing across all operations on the board) and broadcasts the operation with the global sequence number to all clients.</p>
-        <HighlightBlock as="p" tier="important">Conflict resolution for concurrent moves: if two clients simultaneously send MoveObject for the same objectId (both clients moved the shape before either received the other's move), the server resolves by last-write-wins using the globalSequenceNumber—the operation with the higher global sequence number wins. The client whose operation lost receives the server's canonical state and must reconcile: if the client already applied its own move optimistically, it reverses the optimistic move and applies the server's outcome. This reconciliation is the core of operational transform for spatial objects.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Operational transform (OT) would allow both moves to be intelligently merged (both users' intent is preserved by composing the transforms). For spatial objects, OT is less natural than for text (there is no composition of two moves to the same object that preserves both intents—the object can only be in one position). Last-write-wins is the pragmatic choice for spatial operations and is what Miro and Figma use. CRDTs (Conflict-free Replicated Data Types) apply more naturally to the object set (creating and deleting objects can use add-wins CRDT semantics, ensuring that concurrent create and delete of the same object always resolves to the create surviving, if desired).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimistic Local State and Reconciliation</h3>
-        <p>The client maintains two state representations: the confirmed state (the last board state acknowledged by the server, built by applying all operations up to the latest received globalSequenceNumber) and the optimistic state (the confirmed state plus any locally-generated operations not yet confirmed by the server). The canvas renders the optimistic state, giving the user instant visual feedback for their own edits.</p>
-        <HighlightBlock as="p" tier="important">When the server broadcasts a new operation (either the client's own operation confirmed, or another client's operation), the client reconciles. If the received operation is the client's own (matched by clientId + clientSequenceNumber), it moves from optimistic to confirmed. If it is another client's operation, the client applies it to the confirmed state and recomputes the optimistic state by re-applying the client's pending (unconfirmed) operations on top. This recomputation is necessary because another client's operation may conflict with a pending local operation, and the conflict must be resolved using the server's ordering.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Viewport Culling and Canvas Rendering</h3>
-        <p>The canvas can contain 10,000+ objects, but the user's viewport shows only a bounded rectangle. Rendering all 10,000 objects on every frame—most of which are not visible—is wasteful. Viewport culling filters the object list to only those whose bounding boxes intersect the current viewport before each render. At a typical viewport size (1920×1080) and typical object density, only 50–200 objects are in the viewport at any zoom level.</p>
-        <HighlightBlock as="p" tier="important">Culling is implemented using a spatial index: an R-tree or a quadtree partitions the canvas space and supports efficient range queries (which objects intersect this viewport rectangle?). The spatial index is updated whenever an object is moved, resized, created, or deleted. Query cost is O(log N + k) where k is the number of results, making it efficient even for large object counts. The spatial index lives in client memory (not on the server); the server's canonical state is a flat map from objectId to object data.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Rendering uses HTML canvas (not SVG): at 10,000 objects, SVG DOM nodes would be prohibitively expensive for style recalculation and layout. The canvas renderer issues draw calls for each visible object in z-index order. For complex objects (rich text sticky notes, embedded images), the canvas uses OffscreenCanvas to pre-render the object once and then blit (copy) the pre-rendered image to the main canvas on each frame, avoiding redundant re-rendering of unchanged complex objects. This caching strategy reduces per-frame rendering cost dramatically for static objects.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cursor Presence Architecture</h3>
-        <p>Cursor position is the highest-frequency real-time event in the system: 60 cursor position updates per second per participant × 100 participants = 6,000 events per second per board. These events must not be routed through the operation log (they do not need to be persisted or ordered globally). A separate lightweight cursor channel handles this: cursor positions are broadcast via the same WebSocket connection but on a dedicated message type that the Board Session Server routes directly to all other participants without persistence or sequencing. The server acts as a pub/sub relay for cursor events.</p>
-        <p>Cursor positions are transmitted in canvas coordinates (not screen pixels), so each participant's client transforms the received canvas coordinate to their own screen coordinate for rendering. This correctly handles participants at different zoom levels and viewport positions: a cursor at canvas position (500, 300) renders at different screen positions for each participant depending on their current pan and zoom. The transformation is: screenX = (canvasX - viewportX) × zoomLevel.</p>
-        <p>Cursor events are throttled client-side to 30Hz (every 33ms) using requestAnimationFrame, even if the mouse is moving at 60fps. Receiving clients interpolate cursor positions between received events (linear interpolation over the 33ms interval) for smooth visual display. At 100 participants × 30Hz × (objectId, x, y) payload, cursor traffic is approximately 100 × 30 × 12 bytes = 36KB/s per client receiving all cursors—manageable on modern connections.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Undo/Redo in a Collaborative Context</h3>
-        <p>Undo in a single-user context is trivial (pop the last operation, apply its inverse). In a collaborative context, undo is more complex: user A creates an object, user B moves it, user A undoes their create—the object should be deleted, even though user B has since moved it. The correct behavior is to undo user A's operation regardless of what user B has done since. This requires selective undo: undoing a specific operation in the operation log, not necessarily the most recent operation.</p>
-        <p>The implementation: each client maintains its own operation history (the sequence of operations the client has sent). Undo applies the inverse of the latest client operation (DeleteObject for a CreateObject, the original position for a MoveObject). The inverse operation is sent to the server as a new operation (not a special "undo" message), ensuring it goes through the same ordering and broadcast as any other operation. This approach works correctly even when the operation to be undone is not the most recent global operation—the inverse is applied to the current state, not to the state at the time of the original operation. For moves and resizes, the "inverse" is the operation's fromPosition/fromSize (the position before the move). For creates, the inverse is DeleteObject. For deletes, the inverse is CreateObject with the deleted object's stored data.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Board State Bootstrap and Persistence</h3>
-        <HighlightBlock as="p" tier="important">When a client joins a board, it must receive the complete current board state before it can participate in real-time editing. The Board Session Server sends the full board state as a snapshot (all objects and their current values) plus the current globalSequenceNumber. Subsequent WebSocket messages (new operations) include globalSequenceNumbers greater than the snapshot's sequence number. The client applies the snapshot, then applies any buffered operations received during the snapshot fetch (operations received while waiting for the snapshot but with sequence numbers above the snapshot's).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Board state persistence uses an operation log pattern: every operation is appended to a database table (boardId, globalSequenceNumber, operationData, timestamp). The current board state can be reconstructed by replaying all operations from the beginning. For performance, a periodic snapshot (a full board state serialized to S3 at every 1000 operations) allows the board to be reconstructed from the nearest snapshot plus the subsequent operations, rather than replaying the entire history. Board loading: load the latest snapshot, then replay operations since the snapshot's sequence number. This bootstrap is the same process used when a Board Session Server crashes and a replacement server must reload a board's state.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/real-time-collaborative-whiteboard-workflow.svg"
-          alt="Whiteboard operation flow showing optimistic local apply → WebSocket send to Board Session Server → server sequence assignment → broadcast to all participants → client reconciliation (confirmed state update, optimistic re-apply). Conflict resolution for concurrent MoveObject shown. Cursor presence separate channel. Board state bootstrap on join."
-          caption="Whiteboard operation flow: optimistic local apply, server sequencing, broadcast, and client reconciliation with conflict resolution"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Stateful server per board versus stateless distributed approach: assigning each board to a single stateful server simplifies ordering (no distributed consensus needed for global sequence numbers) and avoids the latency of cross-server coordination for real-time operations. The trade-off is that a server failure requires board migration—loading the board state from the database on a replacement server, which takes 1–5 seconds during which the board is unavailable. For a system serving millions of boards, the server failure rate and the impact of brief unavailability per board must be weighed against the complexity of a distributed approach (using a distributed log like Kafka for operation ordering, which would eliminate the single-server bottleneck at the cost of higher per-operation latency).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Last-write-wins versus CRDT for object sets: using last-write-wins for concurrent moves is simple and predictable. The user whose move "lost" sees their object snap back to the server position, which is slightly jarring but clearly communicates that a conflict occurred. A CRDT approach for object creation and deletion (add-wins CRDT) is more complex but prevents the "concurrent create and delete" anomaly where one client creates an object and another immediately deletes it, and the outcome depends on which operation reaches the server first. For most whiteboard use cases, last-write-wins is acceptable; teams building legal/contractual boards may need stronger consistency guarantees.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Canvas rendering library choice: building a canvas renderer from scratch provides maximum control over culling, caching, and render order, but requires significant engineering investment. Libraries like Konva.js (React wrapper for canvas), Fabric.js, and Pixi.js provide built-in rendering, event handling, and some object management. The trade-off is that library abstractions may not expose the fine-grained control needed for optimal performance (OffscreenCanvas caching, custom culling strategies). Figma's and Miro's renderers are custom-built for exactly this reason: the performance requirements of a production whiteboard exceed what general-purpose canvas libraries can provide without extensive modification.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A real-time collaborative whiteboard uses a per-board stateful Board Session Server to sequence and broadcast operations (CreateObject, MoveObject, ResizeObject, DeleteObject), eliminating distributed coordination complexity. Clients apply operations optimistically (immediate local feedback) and reconcile with the server's canonical ordering on receipt of broadcasts. Conflict resolution for concurrent spatial edits uses last-write-wins by global sequence number. Cursor presence is handled on a separate lightweight channel (throttled to 30Hz, transmitted in canvas coordinates). Canvas rendering uses an R-tree spatial index for viewport culling and OffscreenCanvas caching for complex objects, maintaining 60fps with 10,000+ canvas objects. Undo sends inverse operations as new operations (preserving collaborative ordering). Board state persistence uses an operation log with periodic snapshots (every 1000 operations) for fast bootstrap. The fundamental architectural choice—stateful server per board versus distributed ordering—trades operational simplicity against single-server failure impact, with the stateful approach being correct for most production scales.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

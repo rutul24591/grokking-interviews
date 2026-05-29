@@ -1,1 +1,5 @@
-# Design frontend for low-end devices (India scale) — Example 3
+# Frontend FOR LOW END Devices - Example 3
+
+Concrete performance edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

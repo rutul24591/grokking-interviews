@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
   <!-- Title -->
   <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
-    Optimistic Update Lifecycle & State Machine
+    Optimistic Update Lifecycle &amp; State Machine
   </text>
 
   <!-- State Machine -->

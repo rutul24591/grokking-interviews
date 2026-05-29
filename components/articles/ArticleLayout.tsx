@@ -27,6 +27,130 @@ type ArticleLayoutProps = {
   children: ReactNode;
 };
 
+const LOW_LEVEL_EXAMPLE_SUBCATEGORY_ALIASES: Record<string, string[]> = {
+  "ai-modern-systems": ["ai-modern-systems-lld"],
+  "offline-advanced-ux": ["offline-advanced-ux-systems"],
+  "state-management-data-architecture": ["architecture-system-level-lld"],
+};
+
+const HIGH_LEVEL_EXAMPLE_SUBCATEGORY_ALIASES: Record<string, string[]> = {
+  "security-auth-privacy-systems": ["security-auth-and-privacy-systems"],
+  "media-rich-content-systems": ["media-and-rich-content-systems"],
+  "cross-platform-mobile-systems": ["cross-platform-and-mobile-systems"],
+  "knowledge-content-systems": ["knowledge-and-content-systems"],
+  "emerging-future-systems": ["emerging-and-future-systems"],
+  "ecommerce-marketplace": ["e-commerce-and-marketplace"],
+  "social-engagement": ["social-and-engagement"],
+  "messaging-communication": ["messaging-and-communication"],
+  "platform-sdk-infra-systems": ["platform-sdk-infra-systems"],
+  "realtime-collaboration-systems": ["realtime-and-collaboration-systems"],
+  "file-storage-cloud-drive-systems": ["file-storage-cloud-drive-systems"],
+  "maps-location-intelligence": ["maps-and-location-intelligence"],
+  "data-heavy-systems": ["data-heavy-systems"],
+  "data-import-export-systems": ["data-import-export-systems"],
+  "notification-delivery-platform": ["notification-delivery-platform"],
+  "payments-fintech-systems": ["payments-and-fintech-systems"],
+  "feature-configuration-admin-systems": ["feature-configuration-admin-systems"],
+};
+
+const EXAMPLE_MATCH_STOP_WORDS = new Set([
+  "a",
+  "an",
+  "and",
+  "api",
+  "app",
+  "based",
+  "design",
+  "for",
+  "frontend",
+  "like",
+  "style",
+  "system",
+  "the",
+  "ui",
+  "ux",
+  "with",
+]);
+
+function tokenizeExampleKeyPart(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .split(" ")
+    .filter((token) => token.length > 1 && !EXAMPLE_MATCH_STOP_WORDS.has(token));
+}
+
+function getTokenOverlapScore(targetTokens: Set<string>, candidateTokens: Set<string>) {
+  if (!targetTokens.size || !candidateTokens.size) return 0;
+
+  let overlap = 0;
+  for (const token of targetTokens) {
+    if (candidateTokens.has(token)) overlap += 1;
+  }
+
+  return overlap / Math.max(targetTokens.size, candidateTokens.size);
+}
+
+function getExampleSubcategoryCandidates(metadata: ArticleMetadata) {
+  const aliases =
+    metadata.category === "high-level-design"
+      ? HIGH_LEVEL_EXAMPLE_SUBCATEGORY_ALIASES[metadata.subcategory]
+      : metadata.category === "low-level-design"
+        ? LOW_LEVEL_EXAMPLE_SUBCATEGORY_ALIASES[metadata.subcategory]
+        : undefined;
+
+  return [metadata.subcategory, ...(aliases ?? [])];
+}
+
+function resolveArticleExamples(
+  manifest: Record<string, unknown>,
+  manifestKey: string,
+  metadata: ArticleMetadata,
+) {
+  const exactMatch = manifest[manifestKey];
+  if (exactMatch) return exactMatch;
+
+  const subcategoryCandidates = getExampleSubcategoryCandidates(metadata);
+  for (const subcategory of subcategoryCandidates) {
+    const candidateKey = `${metadata.category}/${subcategory}/${metadata.slug}`;
+    const candidate = manifest[candidateKey];
+    if (candidate) return candidate;
+  }
+
+  if (
+    metadata.category !== "high-level-design" &&
+    metadata.category !== "low-level-design"
+  ) {
+    return undefined;
+  }
+
+  const slugTokens = new Set(tokenizeExampleKeyPart(metadata.slug));
+  const titleTokens = new Set(tokenizeExampleKeyPart(metadata.title));
+  if (!slugTokens.size && !titleTokens.size) return undefined;
+
+  let bestMatch: { score: number; data: unknown } | undefined;
+  for (const subcategory of subcategoryCandidates) {
+    const keyPrefix = `${metadata.category}/${subcategory}/`;
+    const keys = Object.keys(manifest).filter((key) => key.startsWith(keyPrefix));
+
+    for (const key of keys) {
+      const slug = key.slice(keyPrefix.length);
+      const candidateTokens = new Set(tokenizeExampleKeyPart(slug));
+      if (!candidateTokens.size) continue;
+
+      const score = Math.max(
+        getTokenOverlapScore(slugTokens, candidateTokens),
+        getTokenOverlapScore(titleTokens, candidateTokens),
+      );
+      if (score >= 0.5 && (!bestMatch || score > bestMatch.score)) {
+        bestMatch = { score, data: manifest[key] };
+      }
+    }
+  }
+
+  return bestMatch?.data;
+}
+
 export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
   const [examples, setExamples] = useState<ExampleGroup[]>([]);
   const formattedDate = useMemo(
@@ -128,59 +252,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
           string,
           unknown
         >;
-        let rawData = manifest[manifestKey];
-
-        if (!rawData && metadata.category === "low-level-design") {
-          const subcategoryAliases: Record<string, string[]> = {
-            "ai-modern-systems": ["ai-modern-systems-lld"],
-            "offline-advanced-ux": ["offline-advanced-ux-systems"],
-            "state-management-data-architecture": ["architecture-system-level-lld"],
-          };
-
-          const candidates = subcategoryAliases[metadata.subcategory] ?? [];
-          for (const alias of candidates) {
-            const candidateKey = `${metadata.category}/${alias}/${metadata.slug}`;
-            const candidate = manifest[candidateKey];
-            if (candidate) {
-              rawData = candidate;
-              break;
-            }
-          }
-        }
-
-        if (!rawData && metadata.category === "high-level-design") {
-          const subcategoryAliases: Record<string, string[]> = {
-            "security-auth-privacy-systems": ["security-auth-and-privacy-systems"],
-            "media-rich-content-systems": ["media-and-rich-content-systems"],
-            "cross-platform-mobile-systems": ["cross-platform-and-mobile-systems"],
-            "knowledge-content-systems": ["knowledge-and-content-systems"],
-            "emerging-future-systems": ["emerging-and-future-systems"],
-            "ecommerce-marketplace": ["e-commerce-and-marketplace"],
-            "social-engagement": ["social-and-engagement"],
-            "messaging-communication": ["messaging-and-communication"],
-            "platform-sdk-infra-systems": ["platform-sdk-infra-systems"],
-            "realtime-collaboration-systems": ["realtime-and-collaboration-systems"],
-            "file-storage-cloud-drive-systems": ["file-storage-cloud-drive-systems"],
-            "maps-location-intelligence": ["maps-and-location-intelligence"],
-            "data-heavy-systems": ["data-heavy-systems"],
-            "data-import-export-systems": ["data-import-export-systems"],
-            "notification-delivery-platform": ["notification-delivery-platform"],
-            "payments-fintech-systems": ["payments-and-fintech-systems"],
-            "feature-configuration-admin-systems": [
-              "feature-configuration-admin-systems",
-            ],
-          };
-
-          const candidates = subcategoryAliases[metadata.subcategory] ?? [];
-          for (const alias of candidates) {
-            const candidateKey = `${metadata.category}/${alias}/${metadata.slug}`;
-            const candidate = manifest[candidateKey];
-            if (candidate) {
-              rawData = candidate;
-              break;
-            }
-          }
-        }
+        const rawData = resolveArticleExamples(manifest, manifestKey, metadata);
 
         // Normalize the data to match ExampleGroup type
         const articleExamples: ExampleGroup[] = Array.isArray(rawData)
@@ -209,7 +281,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
     }
 
     loadExamplesForArticle();
-  }, [metadata.category, metadata.subcategory, metadata.slug]);
+  }, [metadata]);
 
   const resolvedActiveExampleId = useMemo(() => {
     if (!examples.length) return "";

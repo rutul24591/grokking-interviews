@@ -7,91 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-order-tracking-returns-system",
-  title: "Design an Order Tracking & Returns System",
-  description:
-    "Architecture for an order tracking and returns system: real-time shipment tracking with carrier webhook ingestion, order status state machine, push notification pipeline for status changes, returns initiation and label generation, return status tracking, refund workflow with idempotent payment credits, exception handling for lost/damaged shipments, and multi-carrier normalization.",
+  title: "Design an Order Tracking and Returns System",
+  description: "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery.",
   category: "high-level-design",
   subcategory: "ecommerce-marketplace",
   slug: "order-tracking-returns-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "ecommerce", "order-tracking", "returns", "refunds", "shipping", "webhooks", "notifications"],
-  relatedTopics: ["cart-checkout-concurrency", "inventory-aware-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "ecommerce", "marketplace", "checkout", "inventory", "payments"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design an Order Tracking and Returns System is a commerce correctness system wrapped in a shopping experience. A principal-ready design treats an order tracking and returns system as a coordinated set of catalog, pricing, inventory, payment, order, fulfillment, fraud, and support workflows rather than a collection of product cards.",
+  "The hardest part is that the user-facing promise is assembled from many independently changing facts: product availability, seller status, delivery promise, promotion eligibility, payment authorization, tax, shipping, subscription entitlement, and return/refund policy.",
+  "The design must define which state is authoritative and which state is a projection. Catalog pages, recommendations, facet counts, delivery estimates, and tracking views can lag. Payment, order creation, inventory reservation, subscription entitlement, and refund/return decisions require stronger server-side consistency and auditability.",
+  "Marketplaces are adversarial. Sellers can manipulate listings, buyers can abuse returns, bots can attack flash sales, promotion rules can be exploited, and recommendation systems can amplify low-quality inventory. Abuse controls are part of the architecture.",
+  "A staff/principal answer should explain how the system handles scale events, provider failures, stale inventory, duplicate checkout attempts, fraud/risk review, customer support reconstruction, and rollback after bad pricing, promotion, or recommendation changes."
+];
+const concepts = [
+  "The first concept is promise integrity. shipment tracker, returns workflow, and refund processor produce the promise shown to the customer, but final purchase or refund decisions must revalidate authoritative state.",
+  "The second concept is idempotent commerce intent. Add-to-cart, quote, reserve, pay, place order, cancel, return, refund, and subscription change should converge under retries, double-clicks, browser refresh, provider callbacks, and mobile reconnect.",
+  "The third concept is inventory and price freshness. Read surfaces can use cached or eventually consistent data, but checkout and refunds need fresh validation with explicit handling when the promise changes.",
+  "The fourth concept is lifecycle state. Cart, quote, hold, payment intent, order, shipment, return, refund, subscription, and entitlement each need explicit states, expiry, transition history, and support visibility.",
+  "The fifth concept is risk and policy. Fraud scoring, seller trust, return abuse, promotion eligibility, payment risk, regulatory constraints, and marketplace policy should influence flows without making the UI opaque.",
+  "The sixth concept is observability. Track conversion, quote mismatch, inventory hold failure, payment pending duration, refund latency, recommendation quality, pricing rollback, carrier lag, and support contact rate."
+];
+const architecture = [
+  "The architecture contains shipment tracker, returns workflow, refund processor, carrier integration, support timeline. Read APIs serve fast browse and discovery views. Transaction APIs own authoritative quote, reservation, payment, order, entitlement, and refund transitions. Event streams drive search, recommendations, notifications, analytics, and support timelines.",
+  "Every transaction should start from a durable intent: cart snapshot, pricing quote, inventory hold, payment intent, subscription change request, or return authorization. The UI renders that intent and its current state rather than inventing completion locally.",
+  "The system should use versioned source facts. Catalog version, price quote version, promotion version, inventory hold ID, payment provider ID, tax/shipping quote, return policy version, and entitlement version allow support and reconciliation to explain outcomes.",
+  "Browse surfaces can degrade gracefully. If recommendations fail, show popular or editorial products. If facets lag, show primary results. If delivery estimate is stale, mark it as estimate and revalidate before checkout.",
+  "Transactional surfaces should fail safely. Checkout should not double-charge. Dynamic pricing should not show one price and capture another without explanation. Subscription changes should not grant or remove entitlement without durable billing state.",
+  "Operations need controls for promotion rollback, pricing kill switch, recommendation demotion, inventory hold release, payment provider failover, refund retry, return fraud review, and customer-visible incident messaging."
+];
+const tradeoffs = [
+  "Caching catalog and listing data improves latency and cost, but stale data can mislead users. The defensible design caches browse state while revalidating price, stock, eligibility, and delivery at transaction boundaries.",
+  "Early inventory holds reduce customer disappointment but can reduce inventory utilization and enable hoarding. Late holds improve utilization but increase checkout failure. TTL-based holds at review/payment are usually the compromise.",
+  "Personalized recommendations improve conversion but can conflict with business constraints such as inventory health, fairness, ads, seller quality, and safety. Ranking needs guardrails beyond click-through rate.",
+  "Dynamic pricing can improve marketplace efficiency but can reduce trust if explanations, quote TTLs, and audit trails are weak. Users should understand whether a price is locked, estimated, personalized, or expired.",
+  "Synchronous payment/order completion gives simple UX but breaks when payment providers and banks are asynchronous. Pending states and webhook-driven completion are more reliable, with a more complex UI.",
+  "Strict fraud controls reduce loss but create false positives and conversion loss. Risk-based step-up, review queues, and appeal/support flows are better than a single hard threshold."
+];
+const practices = [
+  "Represent commerce workflows as state machines: quote, reserve, authorize, confirm, fulfill, return, refund, renew, cancel, dispute, and reconcile.",
+  "Use deterministic idempotency keys for cart mutations, payment attempts, order finalization, subscription changes, refund requests, and return authorizations.",
+  "Keep payment and sensitive data out of product JavaScript where possible. Use hosted fields, tokenization, webhook verification, and redacted logs.",
+  "Expose truthful UI states: estimate, locked quote, pending payment, inventory hold expired, under review, refund processing, return approved, carrier delayed, or entitlement pending.",
+  "Build support reconstruction views. Operators need cart snapshot, quote, hold, payment, order, shipment, return, refund, entitlement, provider callback, and customer notification history.",
+  "Design rollback and kill switches for prices, promotions, recommendations, inventory reservations, payment providers, subscription entitlement rules, and return workflows.",
+  "Instrument by seller, item, category, payment rail, region, delivery method, promotion, risk bucket, and app version. Commerce incidents are rarely evenly distributed."
+];
+const pitfalls = [
+  "carrier lag is a product trust failure. It should be handled through authoritative validation, explicit state, and support-visible history instead of silent UI correction.",
+  "return fraud often appears when browse projections are used as transaction truth. The system should treat cached results as hints, not final commitments.",
+  "refund mismatch requires user-facing recovery. The UI should explain what changed and offer safe next actions rather than forcing a generic retry.",
+  "lost package needs operational tooling. Manual database repair is not an acceptable support workflow for money, inventory, entitlement, or returns.",
+  "Another pitfall is optimizing only conversion. Commerce designs also need fraud loss, refund rate, return abuse, support contacts, seller fairness, accessibility, and long-term trust metrics.",
+  "Teams also forget regional and regulatory differences. Tax, payment methods, return windows, data retention, invoice rules, and consumer protection obligations vary by market."
+];
+const useCases = [
+  "order status page requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "return initiation flow requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "merchant support console requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "During a flash sale, the system should throttle bots, use inventory holds, show truthful scarcity, protect checkout idempotency, and degrade nonessential widgets.",
+  "During a bad price or promotion rollout, operators should stop the rule, identify affected quotes and orders, decide honor/cancel policy, notify customers, and preserve audit evidence.",
+  "During a provider outage, the UI should show pending or alternate payment options where safe, avoid duplicate captures, and reconcile late callbacks."
+];
+const questions = [
+  {
+    "question": "How would you design an order tracking and returns system end to end?",
+    "answer": "I would separate fast browse projections from authoritative transaction workflows. Browse uses catalog, search, recommendations, and cached availability. Transaction boundaries create durable intents for quote, inventory hold, payment, order, entitlement, return, or refund. The backend owns validation, idempotency, risk, ledger/order state, and support history. The UI renders truthful states and safe recovery actions."
+  },
+  {
+    "question": "Why this architecture over directly using catalog/search data for checkout or returns?",
+    "answer": "Catalog and search projections are optimized for discovery, not correctness. They can be stale or policy-filtered differently. Checkout, subscription, and returns require fresh authoritative validation and durable transition history. The trade-off is more backend complexity, but it prevents oversell, double charge, bad entitlement, and refund disputes."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are carrier lag, return fraud, refund mismatch, lost package, plus flash-sale bot traffic, hot SKUs, provider outages, promotion bugs, fraud rings, recommendation drift, and support overload. Prevention requires cache strategy, authoritative revalidation, idempotency, holds, risk controls, staged rollout, and operational kill switches."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Browse, search, recommendations, facet counts, tracking projections, and analytics can be eventually consistent with freshness indicators. Price capture, inventory hold, payment, order creation, subscription entitlement, refund approval, and return authorization need strong server-owned state and audit. The answer should classify each commerce state explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with pending states, idempotent retries, provider callbacks, reconciliation, and support timelines. Rollback uses price/promotion kill switches, recommendation demotion, entitlement correction, refund/reversal, or compensating transactions. Abuse controls include bot defense, risk scoring, rate limits, and return fraud review. Privacy requires redacted payment and customer data. Cost is controlled through caching, async projections, and telemetry sampling. Observability tracks conversion, mismatch, pending, refund, risk, and support metrics."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend eventual consistency for browse because it improves latency and cost, but not for money, entitlement, inventory reservation, or refund decisions. I would defend TTL holds because they balance utilization and correctness. I would defend pending payment states because external rails are asynchronous and duplicate charges are worse than waiting."
+  }
+];
+const references = [
+  {
+    "label": "Stripe PaymentIntents documentation",
+    "href": "https://docs.stripe.com/payments/payment-intents"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Elasticsearch guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "PCI Security Standards Council",
+    "href": "https://www.pcisecuritystandards.org/"
+  },
+  {
+    "label": "Shopify engineering blog",
+    "href": "https://shopify.engineering/"
+  },
+  {
+    "label": "AWS architecture blog",
+    "href": "https://aws.amazon.com/blogs/architecture/"
+  }
+];
 
 export default function OrderTrackingReturnsSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Order tracking and returns is the post-purchase experience layer: after a customer places an order, they want to know where it is, when it will arrive, and what to do if something goes wrong. The tracking component is primarily a data aggregation challenge — each carrier (FedEx, UPS, DHL, USPS) has a different API format, tracking event vocabulary, and webhook integration style. The returns component is a workflow orchestration challenge — a return involves discrete steps (request, approval, label generation, shipment, receipt, inspection, refund) that must be tracked and the customer must be kept informed at each step.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The post-purchase period is when customer trust is most at risk. "Where is my order?" is the most common customer support inquiry for e-commerce platforms, and a poor tracking experience (stale status, confusing carrier jargon, missing ETA) drives significant support ticket volume. A well-designed tracking UI reduces "WISMO" (Where Is My Order?) support contacts by 40–60% by giving customers accurate, timely, and actionable information proactively. The return experience similarly determines whether a customer shops again — a painful return process is one of the top reasons for customer churn.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Order status state machine, carrier webhook ingestion and normalization, tracking timeline UI, returns initiation, label generation, return tracking, refund workflow. Not in scope: warehouse management, carrier selection/rate shopping, or fraud detection on returns.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/order-tracking-returns-system.svg" alt="Design an Order Tracking and Returns System architecture" caption="Architecture view: browse projections, transaction state, risk controls, support history, and operational boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/order-tracking-returns-system-flow.svg" alt="Design an Order Tracking and Returns System flow" caption="Flow view: user intent, validation, hold or quote, payment/order/refund state, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/order-tracking-returns-system-operations.svg" alt="Design an Order Tracking and Returns System operations" caption="Operations view: stale data, provider failure, fraud, rollback, reconciliation, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Order status timeline:</strong> Visual timeline showing order states: Order Placed → Payment Confirmed → Processing → Shipped → Out for Delivery → Delivered. Each state includes timestamp and relevant details (carrier name, tracking number, estimated delivery window).</li>
-          <li><strong>Real-time tracking:</strong> Map view or carrier tracking link for "Out for Delivery" orders showing current package location and stops remaining. Push notification on status change (Shipped, Out for Delivery, Delivered, Exception).</li>
-          <li><strong>Multi-carrier normalization:</strong> Carrier-specific tracking events (FedEx "On FedEx vehicle for delivery", UPS "Out for Delivery", USPS "Out for Delivery Today") are normalized to a canonical event vocabulary. Carrier tracking numbers link to the carrier's own tracking page as a fallback.</li>
-          <li><strong>Returns initiation:</strong> Eligible orders (delivered within return window, not final sale) show a "Return or Replace" button. User selects item(s), return reason, and preference (refund / exchange / store credit). Platform generates a return shipping label (prepaid, via carrier API) and emails it to the customer.</li>
-          <li><strong>Refund workflow:</strong> When return is received and inspected at the warehouse, refund is initiated via payment provider. Refund status (Processing, Refunded) is tracked and displayed. Partial refunds for partially returned orders.</li>
-          <li><strong>Exceptions:</strong> Lost or significantly delayed shipments trigger an exception state. After a configurable threshold (e.g., no carrier scan for 5 business days past EDD), the customer is proactively notified and a resolution flow is offered (reship or refund).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Tracking update latency:</strong> Carrier tracking events must appear in the customer's tracking timeline within 5 minutes of the carrier scanning the package.</li>
-          <li><strong>Notification delivery:</strong> Push/email notifications for status changes (Shipped, Delivered) must reach the customer within 2 minutes of the status change being detected.</li>
-          <li><strong>Refund idempotency:</strong> Refund API calls must be idempotent — retrying a failed refund must not double-refund.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system has three subsystems. The Carrier Integration Layer normalizes tracking events from multiple carriers (via webhooks where available, polling for carriers without webhook support) into a canonical TrackingEvent schema and publishes to Kafka. The Order Status Service consumes tracking events from Kafka, advances the order state machine, and publishes OrderStatusChanged events. The Notification Service consumes OrderStatusChanged events and delivers push notifications and emails to customers. The Returns Service handles the returns workflow: creating return requests, generating labels via carrier API, tracking return shipments, and orchestrating refunds via the Payment Service. All customer-facing status is served from a Redis cache updated by the Order Status Service, enabling sub-10ms reads for the tracking page.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/order-tracking-returns-system.svg"
-          alt="Order tracking and returns system architecture showing carrier integration layer (FedEx webhook → carrier adapter normalize events; UPS webhook → adapter; USPS polling every 5min → adapter; canonical TrackingEvent: trackingNumber eventType timestamp location description → Kafka tracking-events topic), order status state machine (ORDER_PLACED → PAYMENT_CONFIRMED → PROCESSING → SHIPPED → IN_TRANSIT → OUT_FOR_DELIVERY → DELIVERED or EXCEPTION; each transition: update orders DB + update Redis cache orders:{orderId} TTL 7d + publish OrderStatusChanged Kafka; exception: no scan 5 business days past EDD → EXCEPTION state → customer notification + resolution flow), tracking timeline UI (GET /api/orders/{id}/tracking → Redis O(1) read; visual stepper component each state timestamp detail; carrier map embed for out-for-delivery; estimated delivery window from carrier EDD; status polling every 5min on active orders; SSE push on status change), notification pipeline (Kafka consumer OrderStatusChanged → notification router: shipped → email+push; out_for_delivery → push; delivered → email+push; exception → email+push+SMS; notification worker: sendgrid email Expo push Twilio SMS; dedup: check notification_sent table to prevent duplicate notifications), returns workflow (POST /api/returns {orderId items returnReason preference}; eligibility check: delivered within return_window not final_sale; label generation: POST carrier API prepaid label → PDF S3 presigned URL emailed; return tracking: carrier scan events update return_shipments table; warehouse receipt → manual or automated inspection → POST /api/returns/{id}/received → refund trigger), refund workflow (POST /api/refunds {returnId amount}; idempotency key: returnId+attempt; Stripe refund API; webhook payment_intent.refunded → update refund status; partial refund for partial returns; refund timeline shown in order detail: Refund Initiated → Processing 3-5 business days → Refunded; exception handling: damaged item policy check → full or partial refund decision), lost shipment exception (cron job: query orders where last_scan_at < now - threshold AND status != DELIVERED; batch mark EXCEPTION; publish OrderException events; customer email proactive: your order seems delayed; resolution CTA: reship or refund; reship: create new order same items warehouse fulfillment; refund: initiate payment credit)."
-          caption="Carrier webhook ingestion → event normalization → Kafka, order status state machine (ORDER_PLACED → DELIVERED / EXCEPTION), tracking timeline UI (Redis cache, SSE push on status change), notification pipeline (email/push/SMS per event type), returns workflow (eligibility check → label generation → tracking → warehouse receipt → refund), idempotent refund with Stripe webhook, and lost shipment exception cron"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Carrier Integration and Event Normalization</h3>
-        <HighlightBlock as="p" tier="important">Each carrier has a unique event vocabulary and delivery mechanism. FedEx provides webhooks (HTTP POST to a configured endpoint) for tracking events. UPS offers webhooks via Quantum View Notify. USPS does not provide webhooks; the USPS Tracking API must be polled. The Carrier Integration Layer abstracts these differences via per-carrier adapters. Each adapter: (1) receives carrier-native events (via webhook handler or polling scheduler), (2) maps carrier-specific event codes to the canonical vocabulary: {"{ 'PD' → 'out_for_delivery', 'DL' → 'delivered', 'OC' → 'in_transit', ... }"}, (3) extracts structured location data (city, state, country), and (4) publishes a normalized TrackingEvent to Kafka. The canonical event types are: shipment_created, picked_up, in_transit, arrival_at_hub, departure_from_hub, out_for_delivery, delivery_attempted, delivered, exception. This normalization means the rest of the system deals only with canonical events — adding a new carrier requires only a new adapter, not changes to the Order Status Service or Notification Service.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Order Status State Machine</h3>
-        <HighlightBlock as="p" tier="important">The order state machine is implemented as an explicit transition table (not ad-hoc if or else logic) to prevent invalid state transitions. Valid transitions: ORDER_PLACED → PAYMENT_CONFIRMED (on payment success webhook), PAYMENT_CONFIRMED → PROCESSING (on warehouse receiving order), PROCESSING → SHIPPED (on shipment_created tracking event), SHIPPED → IN_TRANSIT (on picked_up or departure_from_hub event), IN_TRANSIT → OUT_FOR_DELIVERY (on out_for_delivery event), OUT_FOR_DELIVERY → DELIVERED (on delivered event), any state → EXCEPTION (on exception event or lost shipment detection). Invalid transitions (e.g., DELIVERED → SHIPPED) are rejected. Each valid transition writes to the order_state_history table (append-only, never updated) for auditability and to the orders table (current status). A Redis cache (HSET orders:{"{orderId}"} status currentStatus estimatedDelivery trackingUrl) is updated synchronously with each transition, serving the tracking page with &lt;10ms reads.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Returns Eligibility and Label Generation</h3>
-        <HighlightBlock as="p" tier="important">Return eligibility is evaluated at request time via a rule engine: order status must be DELIVERED; order age must be within the return window (configurable per category: electronics 15 days, apparel 30 days, final sale 0 days); item must not have a previous return in terminal state (REFUNDED, EXCHANGE_SHIPPED) for the same order_item. When a user initiates a return, the Returns Service calls the carrier's label generation API (FedEx Create Shipment, UPS Label API) to create a prepaid return label. The API call creates a return shipment in the carrier's system with a pre-assigned tracking number. The label PDF is stored in S3 with a presigned URL valid for 7 days. The presigned URL is emailed to the customer and displayed on the returns page. When the customer drops off the package (carrier scan), the return tracking number begins receiving tracking events, processed by the same Carrier Integration Layer as outbound shipments — the normalization is identical.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Refund Workflow and Idempotency</h3>
-        <HighlightBlock as="p" tier="important">Refunds are triggered when the warehouse marks the return as received and inspected (POST /api/returns/{"{id}"}/received with condition assessment: good, damaged, not_as_described). The Returns Service evaluates the refund policy based on condition (full refund for good condition, partial for damaged but functional, dispute for items not matching description). The refund amount is computed (full order amount, or partial if only some items returned). The Refund Service calls the payment provider&apos;s refund API with an idempotency key: return_id + attempt_number. If the API call times out and the refund is retried, the same idempotency key returns the cached result from the first attempt, the customer is not double-refunded. The payment provider fires a refund.created webhook when the refund is processed; the Refund Service updates the refund status to PROCESSED and notifies the customer via email.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Lost Shipment Exception Handling</h3>
-        <HighlightBlock as="p" tier="important">A cron job runs every 4 hours and queries for shipments in IN_TRANSIT state with last_scan_at older than (estimated_delivery_date + 5 business days). These shipments are flagged as LOST_IN_TRANSIT. The customer receives a proactive notification: "Your order was expected by [date] but we haven't received delivery confirmation. We're looking into this." The notification includes a resolution CTA: "Request a replacement" or "Request a refund." This proactive approach (reaching out before the customer contacts support) dramatically reduces support ticket volume and improves customer satisfaction scores. If the customer selects replacement, a new order is created from the original order's items via the warehouse fulfillment system, and the new order's tracking replaces the lost shipment's tracking in the UI. The original shipment status is set to EXCEPTION and remains visible in order history for audit purposes.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Webhook versus polling for carrier tracking: webhooks provide near-real-time tracking updates (package scanned → webhook fires → customer sees update within minutes) but require each carrier to support webhooks and require the platform to maintain publicly accessible webhook endpoints with carrier-specific authentication. Not all carriers support webhooks; some support only polling. A polling-based fallback runs every 5 minutes for carriers without webhook support, accepting higher latency in exchange for universal coverage. For the most important tracking events (out_for_delivery, delivered), the 5-minute polling lag is generally acceptable — customers do not expect to-the-second delivery notifications. A hybrid architecture (webhooks where available, polling as fallback) provides the best balance of timeliness and coverage.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Return window enforcement: the return eligibility rule engine evaluates rules server-side at return initiation time. Client-side enforcement (hiding the "Return" button after the return window closes) is UX convenience only — not security. A malicious user could call the returns API directly after the window closes. Server-side validation with the current timestamp (not a cached or pre-computed eligibility flag) is required for correctness. The UI refreshes eligibility on page load to ensure the displayed state matches server state, but the authoritative check is always server-side.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An order tracking and returns system normalizes multi-carrier tracking events (per-carrier adapters mapping to canonical vocabulary → Kafka) and drives an order state machine (append-only state history, Redis cache for sub-10ms reads). The tracking timeline UI is served from Redis with SSE push for status changes (&lt;5-minute update latency from carrier scan). Notifications are event-driven (Kafka consumer → notification router → email/push/SMS per event type, deduplication table prevents duplicates). Returns initiation evaluates eligibility server-side (status + window + prior returns), generates prepaid labels via carrier API (PDF to S3 presigned URL emailed), and tracks return shipments through the same normalization pipeline. Refunds are idempotent (returnId + attempt idempotency key to payment provider) triggered on warehouse receipt inspection, confirmed via payment webhook. Lost shipments are proactively detected by a 4-hour cron (last_scan_at + 5 business days past EDD) with customer-facing resolution flow (reship or refund). The defining design goal: eliminate WISMO ("Where Is My Order?") support tickets by surfacing timely, accurate, and actionable tracking information proactively — before customers need to ask.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

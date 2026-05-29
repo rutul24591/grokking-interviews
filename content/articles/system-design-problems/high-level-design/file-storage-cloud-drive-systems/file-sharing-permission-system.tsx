@@ -7,91 +7,269 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-file-sharing-permission-system",
-  title: "Design a File Sharing & Permission System (like Google Drive ACL)",
-  description:
-    "Architecture for a file sharing and permission system: per-resource ACL rows (resourceId, principalId, role) with role hierarchy owner > editor > commenter > viewer, folder permission inheritance propagated to children with explicit child overrides, 128-bit random share link tokens with scope/expiry/password and view-count limits, ancestor-walk access check with Redis 60s cache per (userId, fileId), revoke with immediate Redis invalidation, immutable append-only access audit log, and DLP scanning for sensitive data in shared links.",
+  title: "Design a File Sharing & Permission System",
+  description: "Principal-level design for file sharing and permissions covering ACLs, inheritance, link security, group expansion, revocation, audit, DLP, cache invalidation, and enterprise governance.",
   category: "high-level-design",
   subcategory: "file-storage-cloud-drive-systems",
   slug: "file-sharing-permission-system",
-  wordCount: 4800,
-  readingTime: 28,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "acl", "permissions", "rbac", "file-sharing", "google-drive", "share-links", "audit-log"],
-  relatedTopics: ["cloud-storage-ui", "file-version-history-restore"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-25",
+  tags: ["hld","acl","permissions","sharing","security","audit"],
+  relatedTopics: ["cloud-storage-ui","file-version-history-restore"],
 };
 
 export default function FileSharingPermissionSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A file sharing and permission system controls who can do what to which files and folders. The core requirement is that a resource (file or folder) can be shared with specific users at specific roles (viewer, commenter, editor, owner), or shared with anyone via a link. The system must answer the access check question — "can user X perform action Y on resource Z?" — with low latency on every single API call, since the check gates every read, write, download, and share operation.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The key challenges are: (1) permission inheritance — a file inside a shared folder inherits the folder's permissions, which means the access check must traverse the folder tree upward to collect all applicable ACL entries; (2) permission override — a child file can have a more restrictive or more permissive ACL that overrides the inherited parent ACL; (3) link sharing — a token-based URL grants access without requiring the recipient to have an account or be in the ACL table; (4) auditability — every access attempt (successful or denied) must be recorded immutably for compliance, security investigations, and anomaly detection.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Direct user shares, folder inheritance, share link generation, access check evaluation, revoke, and audit logging. Not in scope: the file storage system itself (separate article), version history (separate article), or collaborative editing.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A file sharing and permission system is a core storage product surface used by file owners, collaborators, enterprise admins, external guests, identity teams, security analysts, compliance reviewers, support teams, and API clients to decide who can view, comment, edit, share, download, or administer each file and folder with low latency while supporting inheritance, revocation, link sharing, audit, and enterprise policy. At principal level this is not a static folder table with an object-store bucket. The design must explain durability, metadata consistency, access control, user-visible recovery, background processing, abuse handling, cost, and incident behavior.
+        </HighlightBlock>
+        <p>
+          The product sits between UX, storage infrastructure, identity, security, compliance, and distributed systems. File systems look simple to users because the interface hides object storage, indexing, virus scanning, previews, synchronization, and policy enforcement. A strong interview answer makes those hidden systems explicit without losing sight of user workflows.
+        </p>
+        <p>
+          The core entities are resources, principals, users, groups, domains, roles, permissions, inherited grants, explicit denies, share links, invitations, access decisions, audit events, DLP findings, and policy constraints. These should be modeled as separate concepts because each has a different consistency, latency, and retention requirement. For example, object bytes need high durability, metadata needs transactional correctness, search can lag slightly, and audit records need immutability.
+        </p>
+        <p>
+          The hardest requirements are usually non-functional. Users expect uploads to resume after a network drop, folder listings to feel immediate, downloads to be fast globally, permissions to revoke quickly, search to be fresh enough, and restore operations to be understandable. Enterprises additionally expect admin policy, legal holds, data residency, audit export, and support tooling.
+        </p>
+        <p>
+          Scope should be explicit in an interview. This article focuses on high-level design for the storage product system, not collaborative document editing internals. Real-time co-editing, conflict-free document models, and office-suite rendering can integrate with the platform, but they are separate systems with their own design depth.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Direct share (ACL row per principal):</strong> Sharing a file or folder creates a row in the acl table: (resourceId, principalId, role, grantedBy, grantedAt). Principals are: user IDs, group IDs (Google Group, Active Directory group), or the special principal "anyone" (public). Role values: owner, editor, commenter, viewer — ordered by privilege level. An owner can share with any role up to and including editor (owners cannot grant owner to others — ownership transfer is a separate operation requiring explicit consent). UPSERT semantics: sharing with an already-shared user replaces the existing role (e.g., upgrading a viewer to an editor). The share API sends an invitation email with a direct link to the resource; the recipient does not need to accept — access is granted immediately.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Folder permission inheritance:</strong> When a folder is shared, all its descendants inherit the folder's ACL entry unless a descendant has an explicit override. Inheritance is lazy — no rows are written for descendants at share time. Instead, the access check walks the ancestor chain upward from the resource to the root folder, collecting all ACL entries. The effective role for a user on a resource is the most permissive role found in the ancestor chain, unless the resource itself has an explicit ACL entry that overrides (the child-level entry takes precedence over inherited entries). Example: folder /A is shared with user Bob as viewer; file /A/doc.pdf has an explicit ACL granting Bob editor access — Bob is an editor on the file (child overrides parent). Example 2: folder /A is shared with Alice as editor; /A/confidential/ has an explicit ACL that does not include Alice — Alice cannot access files in /confidential/ (child restricts inherited access).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Share link generation:</strong> Any user with at least editor access can generate a share link for a resource they have access to. A share link is a URL containing a 128-bit cryptographically random token (generated via crypto.getRandomValues or /dev/urandom — not UUID v4, which has only 122 bits of randomness and a predictable structure). The token is stored in the share_links table: (token, resourceId, createdBy, role, scope, expiresAt, password, maxViews, currentViews). Scope options: "anyone" (anyone with the link), "org" (only authenticated users in the organization). Role on the link: the maximum role the link grants — a link cannot grant more than the creator's own role on the resource. Optional: password protection (link requires entering a password before access is granted — the password is hashed with bcrypt and compared on each access). Optional: expiry (expiresAt timestamp — the link is invalid after this time). Optional: view limit (maxViews — the link is invalidated after N views, tracked via an atomic increment).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Access check evaluation:</strong> Every API request that touches a resource triggers an access check. The check determines the effective role for the requesting principal on the requested resource. Algorithm: (1) Check Redis cache: GET acl:&#123;userId&#125;:&#123;resourceId&#125; — if a cached role exists and is not expired (60s TTL), return it immediately. (2) On cache miss: fetch the resource's explicit ACL row for the user (if any). (3) If no explicit ACL: walk the ancestor chain (using the materialised path stored in the files table) from the resource's parent up to the root, collecting all ACL rows for the user and all groups the user belongs to. (4) Evaluate link tokens: if the request includes a share link token, validate it (not expired, not over maxViews, password matches if required, scope matches). (5) Combine all collected roles and return the most permissive one. (6) Write the result to Redis with 60s TTL. If no role is found anywhere in the chain, return 403 Forbidden.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Revoke access:</strong> Revoking a direct share deletes the ACL row: DELETE FROM acl WHERE resourceId = ? AND principalId = ?. Revoking a share link sets the link's status to 'revoked' (or deletes the row). Both operations immediately invalidate the Redis cache entry: DEL acl:&#123;userId&#125;:&#123;resourceId&#125;. For group shares (e.g., revoking a Google Group's access), all group members' cache entries must be invalidated — this is done by incrementing a group ACL version counter in Redis; the cache key includes the version counter, so stale entries are automatically bypassed. For folder shares, revoking at the folder level removes inherited access for all descendants — no descendant rows need to be deleted because inheritance is lazy.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Immutable audit log:</strong> Every access attempt — successful or denied — is written to an append-only audit log: (eventId, userId, resourceId, action, effectiveRole, outcome, ip, userAgent, timestamp, shareToken). The audit log is write-only from the application's perspective (application credentials cannot UPDATE or DELETE from the audit log table). The audit table is partitioned by month and stored in a separate database with stricter access controls. Audit records are also streamed to an immutable data store (e.g., AWS S3 in Object Lock WORM mode) for long-term retention and tamper-evidence. Audit data is used for: security investigations ("who accessed this file?"), compliance reports, anomaly detection (unusual access patterns — many downloads from a new IP triggers an alert), and per-user access history shown in the sharing UI.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>DLP scanning for share links:</strong> When a share link is created for a file that is accessible to "anyone" (public), a Data Loss Prevention (DLP) worker is triggered asynchronously. The DLP worker downloads the file content from S3, runs it through pattern matchers (credit card numbers, SSNs, API keys, private keys, PII — name + address + DOB combinations) and ML classifiers (trained on sensitive document types). If sensitive data is detected: the share link is automatically disabled, the file owner and workspace admin are notified, and the incident is logged. This prevents accidental exposure of sensitive documents via public links. For files below 1MB, DLP runs synchronously at link creation time; for larger files, the link is created in a 'pending' state and activated only after DLP clears it (typically within 30 seconds for files up to 100MB).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Performance and scale:</strong> The access check (the hot path) must complete in under 5ms at the 99th percentile. With Redis caching (60s TTL), the vast majority of checks hit the cache. Cache hit rate target: 95%+ (most files are accessed repeatedly within a short window). For cache misses (cold start, after revoke, after role change), the ancestor walk is bounded by the folder tree depth (typically 5–10 levels in a well-organized drive). With a B-tree index on the materialised path column and a composite index on (resourceId, principalId) in the acl table, the database query for a 10-level ancestor walk completes in under 2ms. For group membership lookups (checking all groups a user belongs to), group membership is cached separately in Redis with a longer TTL (5 minutes) since group changes are infrequent.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Shared drives and domain-wide access:</strong> A shared drive is a container owned by an organization (not an individual user). All files in a shared drive inherit drive-level membership: a drive member with "content manager" role can create, edit, and delete any file in the drive. Drive membership is stored separately (drive_members table) and checked before the per-file ACL walk. For domain-wide sharing (e.g., all users at example.com can view), the ACL row stores the domain as the principal rather than individual user IDs. The access check includes a domain membership check: if the user's email domain matches the ACL principal domain, the role is granted. This avoids having to enumerate all users in a domain in the ACL table.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is separation of blob data from metadata. Object storage is optimized for large immutable bytes and high durability. Metadata stores are optimized for listing, lookup, ownership, parent relationships, policy, and transactions. Coupling them too tightly makes uploads slow and makes metadata repairs dangerous.
+        </p>
+        <p>
+          The second concept is idempotent state transitions. Uploads, shares, restores, deletes, and permission changes are frequently retried by browsers, mobile clients, desktop agents, and background jobs. Each operation should have an idempotency key, a visible state machine, and a recovery path after partial failure.
+        </p>
+        <p>
+          The third concept is effective state. Users care whether a file is visible, downloadable, shared, restorable, infected, over quota, searchable, or synced. Internally those states may come from different services. The UI and APIs need an effective-state model that can explain what is happening without exposing every subsystem detail.
+        </p>
+        <p>
+          The fourth concept is immutable history where possible. Blob objects, version records, access audit events, and restore evidence should be append-oriented. Mutable current pointers can provide fast reads, while immutable history provides recovery and investigation. This pattern is common across storage, permissions, and version history.
+        </p>
+        <p>
+          The fifth concept is asynchronous work with explicit user state. Virus scanning, thumbnail generation, full-text indexing, DLP checks, retention evaluation, and integrity verification should not block every foreground request. However, the system must show pending, quarantined, failed, and retryable states so users and support teams are not confused.
+        </p>
+        <p>
+          The sixth concept is cursor-based synchronization. Desktop and mobile clients need ordered deltas rather than full-folder polling. A sync cursor should represent a stable sequence of metadata changes. Clients should be able to resume, detect gaps, and fall back to snapshot reconciliation when their cursor is too old.
+        </p>
+        <p>
+          The seventh concept is policy composition. Storage products combine user intent with enterprise policy, security findings, legal holds, quota, retention, external sharing rules, and regional requirements. The architecture should avoid scattering policy checks across many handlers in inconsistent ways.
+        </p>
+        <p>
+          The eighth concept is cost as an architectural constraint. Storage tiering, deduplication, thumbnail formats, delta chains, search indexing, audit retention, CDN egress, and garbage collection all affect unit economics. Principal-level answers discuss cost without compromising safety or durability.
+        </p>
+        <p>
+          The ninth concept is explainability. Users and admins need to understand why a file is missing, why access is denied, why a restore created a new version, why a link stopped working, or why a file is quarantined. Explainability reduces support load and makes security controls usable.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The permission system has three planes: the write plane (share API — creates ACL rows, generates link tokens, sends notifications), the read plane (access check — evaluates effective role on every resource request, Redis-cached, ancestor-walk on miss), and the audit plane (append-only log of all access events, streamed to immutable storage). All planes are stateless horizontally scalable services; state lives in PostgreSQL (ACL rows, share links, audit log), Redis (access check cache, group membership cache), and S3 (immutable audit archive).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The access check is deliberately synchronous and inline (not a separate microservice call) because it is on the critical path of every file operation. The check code runs as a library function within the file API service, using a shared Redis connection pool. The database query (ancestor walk) is only executed on cache misses, which occur at 5% of requests — the remaining 95% return in under 1ms from Redis.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A practical architecture contains sharing UI, permission API, ACL store, folder ancestry index, identity and group service, policy engine, link-token service, decision cache, audit log, DLP scanner, and admin review dashboard. The client-facing product should remain responsive while expensive file operations move through durable background pipelines. The control plane owns metadata and policy, while the data plane moves bytes through object storage and CDN wherever possible.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/file-storage-cloud-drive-systems/file-sharing-permission-system.svg"
-          alt="File sharing permission system: owner shares file or folder creating ACL row per principal; share API generates 128-bit random link token stored in share_links table; access check walks ancestor chain collecting ACL rows, evaluates effective role, caches in Redis 60s TTL; revoke deletes ACL row and invalidates Redis; all access events written to append-only audit log and streamed to S3 WORM storage."
-          caption="Direct share: UPSERT acl(resourceId, principalId, role); folder inheritance: lazy ancestor-walk up materialised path; link token: 128-bit random with scope/expiry/password/maxViews; access check: Redis 60s cache → ancestor walk on miss; revoke: DEL acl row + Redis invalidation; audit: append-only, S3 WORM"
+          alt="Design a File Sharing &amp; Permission System high-level architecture"
+          caption="Permission decisions combine ACL rows, folder inheritance, group membership, share-link scope, enterprise policy, and audit logging."
         />
+        <p>
+          The owner selects a resource and principal, policy evaluates whether sharing is allowed, the system writes an immutable grant event and current ACL row, invalidates decision caches, sends invitations, and records audit evidence.
+        </p>
+        <p>
+          Every file operation asks the permission service or local guard for an access decision built from direct grants, inherited grants, group membership, link token scope, enterprise policy, and resource state.
+        </p>
+        <p>
+          The API layer should use stateful records for long operations. Upload sessions, permission grants, restore jobs, scan tasks, indexing tasks, and garbage-collection candidates should be queryable. This helps clients resume and gives operators a way to repair stuck work without hand-editing databases.
+        </p>
+        <p>
+          The metadata store should own transactional invariants. Parent pointers, current versions, quota ledger updates, ACL writes, and delete markers need careful consistency. Object-store operations are durable but not the right place to express product invariants such as folder hierarchy, effective permissions, or retention policy.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/file-storage-cloud-drive-systems/file-sharing-permission-system-flow.svg"
+          alt="Design a File Sharing &amp; Permission System flow and recovery"
+          caption="Revocation must update grants, invalidate caches, close share links, refresh group decisions, and make effective access explainable."
+        />
+        <p>
+          Background workers should consume durable events and be safe to retry. A worker that creates thumbnails, indexes content, scans for malware, computes deltas, or deletes old objects should tolerate duplicate messages and should write progress checkpoints. Poison messages need quarantine rather than infinite retry loops.
+        </p>
+        <p>
+          Security boundaries should be explicit. Browser and mobile clients should not receive permanent object-store credentials. Download and upload URLs should be short-lived and scoped. Sensitive operations such as external sharing, admin export, legal hold removal, and purge should require stronger authorization and immutable audit.
+        </p>
+        <p>
+          The system should expose repair and reconciliation jobs. Metadata can commit while a worker fails, object deletion can fail after metadata deletion, and search indexing can lag behind. Reconciliation compares metadata, object manifests, audit events, and derived indexes to identify missing objects, orphaned objects, and stale derived state.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/file-storage-cloud-drive-systems/file-sharing-permission-system-operations.svg"
+          alt="Design a File Sharing &amp; Permission System operational controls"
+          caption="Security controls include token entropy, DLP scanning, anomaly detection, external sharing policy, and immutable access audit."
+        />
+        <p>
+          Multi-region design should separate read optimization from write correctness. Object storage and CDN can serve globally, but metadata writes often need region affinity or a strongly governed primary region. Enterprise products may need data residency, so tenant placement and cross-region replication policy should be part of the model.
+        </p>
+        <p>
+          Observability should include user-facing and operator-facing signals: upload completion rate, average resume count, object-store error rate, metadata transaction latency, search indexing lag, sync cursor lag, permission decision cache hit rate, virus-scan backlog, quota ledger mismatches, restore success rate, and GC backlog.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">ACL Data Model</h3>
-        <HighlightBlock as="p" tier="important">The acl table schema: resourceId (UUID, references files.id), principalType (ENUM: user, group, domain, anyone), principalId (UUID or domain string, null for 'anyone'), role (ENUM: owner, editor, commenter, viewer), grantedBy (userId), grantedAt (timestamptz), inheritedFrom (resourceId or null — null means explicitly set, non-null means it was written as an explicit override to an inherited permission). Primary key: (resourceId, principalType, principalId). Index: (principalId, role) for "list all resources shared with user X" queries.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Role ordering for privilege evaluation: owner (4) &gt; editor (3) &gt; commenter (2) &gt; viewer (1). When multiple ACL entries apply to a user (direct share + group share + inherited), the highest role wins. When the user has a direct ACL entry on the resource (principalType = 'user', principalId = userId), that entry takes precedence over group and inherited entries — it can be either more or less permissive. This allows "everyone in the team folder has editor access, but this specific file is view-only even for editors" by setting an explicit viewer ACL on the file for the team group.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Ancestor Walk Implementation</h3>
-        <HighlightBlock as="p" tier="important">The materialised path stored in the files table (e.g., "/rootId/AId/BId/") makes ancestor walks efficient. To find all ancestors of a file at path "/root/A/B/doc", extract the path segments: [root, A, B]. Then query: SELECT resourceId, principalType, principalId, role FROM acl WHERE resourceId IN (root, A, B, doc) AND (principalId = userId OR principalId IN (userGroups) OR principalType = 'anyone' OR principalType = 'domain'). This is a single database query (IN clause), not N serial queries. The result set is processed in-memory to determine the effective role, prioritizing child-level entries over ancestor entries.</HighlightBlock>
-        <p>Group membership pre-fetching: before the ancestor walk, the system fetches the user's group memberships from Redis (cached 5 minutes) or from the identity provider (Google Directory API, LDAP). A user typically belongs to 5–20 groups. These group IDs are included in the IN clause of the ACL query. Group membership cache invalidation: when an admin changes a user's group membership, a webhook from the identity provider triggers a cache delete: DEL groups:&#123;userId&#125;. The next access check for that user re-fetches membership from the directory.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Share Link Security Model</h3>
-        <HighlightBlock as="p" tier="important">Link token generation: crypto.randomBytes(16).toString('base64url') produces a 128-bit token with 256 possible characters per position (base64url). Brute-force infeasibility: at 10,000 guesses/second (rate-limited by the API), guessing a valid token takes 3.4 × 10^32 years on average. Rate limiting on the link endpoint: the token validation endpoint is rate-limited to 100 requests per IP per minute; tokens that fail validation 5 consecutive times from the same IP trigger a temporary block and an alert.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">View count enforcement: maxViews is enforced with an atomic Redis increment: INCR sharelinks:&#123;token&#125;:views. If the returned count exceeds maxViews, the request is rejected and the link is marked as exhausted. The Redis counter is initialized from the DB value on first access (to handle pod restarts). The counter is eventually consistent with the share_links.currentViews column (a background job syncs the Redis count to the DB every minute). Slight over-serving is acceptable (a user may get one extra view if the Redis count and DB diverge briefly); the hard cutoff is enforced in Redis which is the authoritative source for in-flight requests.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Audit Log Architecture</h3>
-        <HighlightBlock as="p" tier="crucial">Audit events are written synchronously to the audit_log PostgreSQL table before the API response is returned (to ensure no event is dropped). The audit table uses a separate write-only database user (INSERT-only, no UPDATE/DELETE privileges). Partition: PARTITION BY RANGE (timestamp) with monthly partitions, auto-created by a scheduled job. Each partition is also exported nightly to S3 in Parquet format for long-term storage and Athena querying. S3 objects are stored with Object Lock in COMPLIANCE mode (not GOVERNANCE mode — compliance mode prevents deletion even by the root account) to meet regulatory retention requirements (7 years for financial data). Anomaly detection: a streaming job (Flink or Lambda triggered by DynamoDB Streams on the audit table) watches for: a single user downloading more than 100 files in 10 minutes, access from a new country, share link access volume spike (indicating a link was posted publicly). Anomalies trigger Slack/PagerDuty alerts and can automatically revoke the share link.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The central trade-off is fast access decisions versus immediate revocation and exact inheritance semantics. A principal-ready answer should show which paths need strong correctness, which paths can be asynchronous, and how users are protected when derived state lags behind source-of-truth metadata.
+        </HighlightBlock>
+        <p>
+          Direct-to-object-store transfer versus server-mediated upload is a major decision. Direct transfer reduces application bandwidth cost and improves scalability, but it requires presigned URLs, upload sessions, client retry logic, and cleanup for abandoned parts. Server-mediated upload is easier to reason about but becomes an expensive bottleneck for large files.
+        </p>
+        <p>
+          Synchronous processing versus asynchronous processing affects perceived correctness. Synchronous virus scanning, indexing, and preview generation can give immediate confidence but slows the foreground path. Asynchronous processing keeps the product fast but requires clear pending states and policy on whether unscanned files can be shared or downloaded.
+        </p>
+        <p>
+          Strong metadata consistency versus global availability is another trade-off. Users dislike stale folder listings and broken restore pointers, so key metadata transitions should be transactional. At the same time, global users need fast browsing. Read replicas, cache invalidation, and sync deltas can improve reads while keeping writes governed.
+        </p>
+        <p>
+          Deduplication and delta storage reduce cost but increase privacy and integrity concerns. Cross-user deduplication can leak whether another user has uploaded the same file if exposed incorrectly. Delta chains save space but create restore dependency. The design should decide where savings are worth the risk.
+        </p>
+        <p>
+          Caching improves folder listing, thumbnails, permission decisions, and signed URL generation, but stale cache can expose deleted, revoked, or quarantined content. Cache keys should include version, permission, scan state, and tenant where needed. High-risk revocation should trigger active invalidation rather than waiting for TTL.
+        </p>
+        <p>
+          Soft delete versus hard delete is a product and compliance decision. Soft delete helps users recover mistakes and protects against ransomware, but it conflicts with right-to-delete expectations and storage cost. The design should support trash windows, enterprise retention, legal holds, and verified purge workflows.
+        </p>
+        <p>
+          Folder tree modeling has trade-offs. Adjacency lists are simple for direct children. Materialized paths or closure tables help subtree queries and moves but add update cost. Large enterprise drives with deep folder trees need explicit constraints and background repair for path or ancestry indexes.
+        </p>
+        <p>
+          Search freshness versus write latency should be called out. Search indexes are derived data and can lag by seconds, but recent files should still appear in the current folder through metadata reads. The UI can merge source-of-truth recent items with asynchronous search results to avoid confusing users.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Lazy inheritance vs. materialised ACL rows: the lazy ancestor-walk approach (no rows written for inherited permissions) keeps the ACL table small and makes sharing a folder an O(1) operation regardless of how many files are in it. The alternative — writing an ACL row for every descendant when a folder is shared — would make sharing a folder with 100,000 files take 100,000 INSERTs (slow) and bloat the ACL table. The downside of lazy inheritance is that the access check must do a database read on cache miss (the ancestor walk). With a 95%+ cache hit rate, this is acceptable. Revoking a folder share under the lazy model is also O(1) — no descendant rows to delete. The tricky case is "check all files shared with user X" — this query must scan all ACL rows where principalId = userId, and does not automatically include files inherited from folder shares. For the sharing UI ("show me all files that have access to alice@example.com"), the system must: (1) find all ACL rows for Alice directly, (2) find all folders shared with Alice (recursively, checking what's inside them). This is an expensive query that is run on-demand (not on the access check hot path) and can be paginated.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Redis cache TTL tuning: a 60s TTL means that after revoking access, a user may continue to have cached access for up to 60 seconds. For most use cases this is acceptable. For high-security scenarios (revoking a disgruntled employee's access), the revoke operation actively deletes the Redis cache key (not just waiting for TTL expiry), so revocation takes effect within milliseconds. The 60s TTL primarily protects against stale "granted" entries — the risk of a user retaining access for 60 seconds after revoke is low in practice, and the active DEL on revoke handles the urgent cases.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Make source-of-truth ownership clear. Metadata, objects, search documents, thumbnails, audit records, and client caches should each have an owner and reconciliation strategy. Without ownership, repair work during incidents becomes guesswork.
+        </p>
+        <p>
+          Use state machines for operations that cross systems. Uploading, scanning, sharing, restoring, deleting, and garbage collecting should have explicit states, retry policy, timeout behavior, and operator visibility.
+        </p>
+        <p>
+          Design for resumability. Mobile networks, browser tabs, desktop agents, and large enterprise folders all fail mid-operation. Resumable upload, cursor-based sync, idempotent share writes, and restartable restore jobs materially improve user trust.
+        </p>
+        <p>
+          Guard security-sensitive actions with policy and audit. External sharing, public link creation, download of sensitive files, permanent delete, legal hold removal, ownership transfer, and admin export should produce durable evidence and support alerting.
+        </p>
+        <p>
+          Keep derived data disposable. Search indexes, thumbnails, previews, and denormalized counters should be rebuildable from source metadata and objects. This makes incidents recoverable without treating every derived store as a permanent source of truth.
+        </p>
+        <p>
+          Expose effective state in the UI and API. A file that is uploaded but unscanned should not look identical to a clean file. A permission inherited from a team folder should be explainable. A restored file should show which version it came from.
+        </p>
+        <p>
+          Separate user deletion from physical purge. Trash, retention, legal hold, object lock, backup, and right-to-delete all interact. A robust design uses clear markers and background purge workflows instead of deleting bytes in the foreground request.
+        </p>
+        <p>
+          Plan for abuse. Public links, bulk downloads, malware uploads, credential stuffing, exfiltration through sync clients, and storage quota abuse should have rate limits, anomaly detection, and emergency controls.
+        </p>
+        <p>
+          Use checksums and integrity verification. Object ETags are not always enough for multipart or encrypted objects. Store content hashes, verify after upload, verify after restore, and run background integrity checks for high-value files.
+        </p>
+        <p>
+          Design support tools deliberately. Support teams need safe ways to inspect metadata, explain access, view restore history, see scan state, and trigger repair jobs. They should not need direct database access to help users.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A file sharing and permission system requires: (1) ACL table with rows per (resourceId, principalId, role) — UPSERT for updates, DELETE for revoke; (2) role hierarchy owner &gt; editor &gt; commenter &gt; viewer — most permissive role wins when multiple entries apply; (3) lazy folder inheritance — no rows written for descendants, ancestor walk collects inherited permissions at check time; (4) child ACL overrides parent (explicit child entry takes precedence); (5) share link tokens — 128-bit crypto-random, stored with scope/expiry/password/maxViews, rate-limited brute-force protection; (6) access check: Redis cache (60s TTL) → ancestor walk IN query on miss → group membership lookup → evaluate effective role; (7) revoke: DELETE acl row + DEL Redis key (immediate effect); (8) immutable audit log (INSERT-only DB user, S3 WORM Object Lock) for every access event; (9) DLP scanning for public share links — synchronous for files &lt;1MB, async with 'pending' link state for larger files; (10) anomaly detection (streaming job on audit events) for mass download, geo anomaly, and viral link spread.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is treating a file sharing and permission system as a simple UI over object storage. That misses stale allow cache after revoke, group membership drift, broken inheritance after folder move, public link oversharing, guest account confusion, DLP bypass, audit gaps, permission explosion, and ambiguous effective access. The production system is mostly about safely coordinating metadata, policy, derived data, and recovery.
+        </p>
+        <p>
+          Another pitfall is assuming object storage transactions and metadata transactions happen atomically together. They do not. The design needs sagas, reconciliation, and cleanup for partially completed work.
+        </p>
+        <p>
+          Teams often forget stale derived state. A file can be renamed but search still shows the old name. A revoked file can still have a cached thumbnail. A restored version can be missing from a sync client. Derived state must be invalidated or repaired.
+        </p>
+        <p>
+          Permission and retention semantics are frequently under-specified. Enterprise admins will ask who had access at a point in time, why a file was retained, whether a public link was used, and whether a purge actually completed. The model must preserve evidence.
+        </p>
+        <p>
+          Large-folder performance is another common miss. Designs that work for a folder with one hundred files can collapse with one million files, deeply nested trees, or a desktop client reconciling months of offline changes.
+        </p>
+        <p>
+          Overusing synchronous operations can make the product feel reliable in small tests but fail at scale. The better pattern is fast foreground commitment plus clear background state, retry, and repair mechanisms.
+        </p>
+        <p>
+          Ignoring client diversity creates reliability gaps. Web, mobile, desktop sync, API clients, and offline clients have different retry, cache, and conflict behavior. The server contract should account for all of them.
+        </p>
+        <p>
+          Finally, many designs lack an incident story. A principal answer should explain what happens when object storage is degraded, metadata replication lags, search is down, a malware scanner backlog grows, or a bad permission change must be mass-reverted.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Real-world use cases for a file sharing and permission system include team folder collaboration, external client sharing, public read-only links, domain-restricted documents, legal hold review, administrator access review, mass revoke after employee departure, and DLP quarantine for sensitive exports. Each case has a different balance of latency, durability, policy, and user explanation requirements.
+        </p>
+        <p>
+          Consumer products optimize for frictionless upload, preview, search, and sharing. Enterprise products add admin controls, retention, DLP, audit exports, group-based access, device policy, and regional placement. The same architecture should support both through policy and tenant configuration.
+        </p>
+        <p>
+          A media-heavy team drive stresses upload throughput, preview generation, CDN egress, and storage tiering. A legal workspace stresses immutable audit, retention holds, point-in-time access evidence, and controlled export. A developer workspace stresses sync correctness and version restore.
+        </p>
+        <p>
+          Ransomware recovery is a strong interview scenario. The system must preserve historical versions, detect unusual mass rewrite patterns, let admins restore a folder or tenant to a previous point, and avoid garbage collecting the very versions needed for recovery.
+        </p>
+        <p>
+          Data residency and regulated customers change the design. Metadata, objects, audit logs, and derived indexes may need to stay in a region. Cross-region disaster recovery must be compatible with contractual and legal constraints.
+        </p>
+        <p>
+          At principal level, the answer should connect storage UX to platform concerns: object durability, metadata invariants, identity, policy, cost controls, background processing, support tools, and incident recovery. That is the difference between a feature design and a production system design.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>1. How would you design the high-level architecture for a file sharing and permission system?</h3>
+        <p>
+          I would separate clients, control-plane metadata, blob transfer, background processing, and derived read models. Clients interact with APIs for metadata and operation state, but large bytes move directly to object storage or CDN through scoped signed URLs. Metadata services own folder, version, permission, quota, and lifecycle invariants. Background workers process scans, previews, indexing, retention, and cleanup from durable events. Observability and audit are first-class because storage systems need repair and evidence. This structure keeps foreground UX fast while preserving correctness where it matters.
+        </p>
+        <h3>2. Which data should be strongly consistent and which data can be eventually consistent?</h3>
+        <p>
+          Metadata transitions that affect correctness should be strongly controlled: current version pointers, parent-child relationships, permission grants and revokes, quota ledger changes, delete markers, and retention or legal-hold state. Derived data can usually be eventually consistent: search indexes, thumbnails, preview caches, denormalized counters, and analytics. The UI should avoid confusing users by merging source-of-truth recent metadata with derived results and by showing pending states for scans or indexing. The key interview point is choosing consistency by user and security impact, not applying one consistency model everywhere.
+        </p>
+        <h3>3. How do you handle partial failures across object storage, metadata, and workers?</h3>
+        <p>
+          Use state machines, idempotency, durable events, and reconciliation. An upload may successfully write object parts but fail before metadata commit; cleanup should find abandoned parts. Metadata may commit but thumbnail or search workers may fail; derived state should retry and be rebuildable. A delete may mark metadata first and physically purge later; pending-delete records allow retry. Operators need dashboards for stuck sessions, failed workers, orphaned objects, and stale indexes. This is more realistic than claiming one distributed transaction spans every storage subsystem.
+        </p>
+        <h3>4. How would you design security and compliance for this system?</h3>
+        <p>
+          Use least-privilege service identities, short-lived signed URLs, scoped tokens, strong authorization on every metadata operation, immutable audit for sensitive actions, policy checks for external sharing or deletion, malware and DLP scanning, anomaly detection for bulk access, and admin-visible effective access. Compliance requires retention policy, legal hold, audit export, and verified purge workflows. The design should also minimize data exposure in logs and caches, because file names, paths, thumbnails, and access events can all be sensitive.
+        </p>
+        <h3>5. What trade-offs would you emphasize in a staff or principal interview?</h3>
+        <p>
+          I would emphasize fast access decisions versus immediate revocation and exact inheritance semantics, direct object upload versus server-mediated upload, synchronous safety checks versus asynchronous processing, strong metadata consistency versus global read latency, cache performance versus revocation freshness, dedup or delta efficiency versus privacy and integrity, and soft delete versus verified purge. For each trade-off I would state the default choice and the reason, then describe when enterprise, compliance, or scale requirements would change that choice.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html" target="_blank" rel="noreferrer">AWS S3 documentation - Multipart upload overview</a></li>
+          <li><a href="https://cloud.google.com/storage/docs" target="_blank" rel="noreferrer">Google Cloud Storage documentation</a></li>
+          <li><a href="https://developers.google.com/drive/api/guides/about-files" target="_blank" rel="noreferrer">Google Drive API documentation - Files and folders</a></li>
+          <li><a href="https://developers.google.com/drive/api/guides/manage-sharing" target="_blank" rel="noreferrer">Google Drive API documentation - Manage sharing</a></li>
+          <li><a href="https://dropbox.tech/infrastructure/rewriting-the-heart-of-our-sync-engine" target="_blank" rel="noreferrer">Dropbox Engineering - Rewriting the heart of our sync engine</a></li>
+          <li><a href="https://sre.google/sre-book/data-integrity/" target="_blank" rel="noreferrer">Google SRE Book - Data Integrity</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

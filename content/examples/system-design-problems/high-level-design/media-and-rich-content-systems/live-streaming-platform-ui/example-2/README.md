@@ -1,1 +1,5 @@
-# Design a live streaming platform UI — Example 2
+# Live Streaming Platform UI - Example 2
+
+Concrete media content production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

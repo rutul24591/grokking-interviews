@@ -7,107 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-frontend-sdk-for-third-party-developers",
-  title: "Design a Frontend SDK for Third-Party Developers",
-  description:
-    "Architecture for a developer-facing frontend SDK: API design, versioning, iframe isolation, authentication delegation, bundle strategy, and developer experience.",
+  title: "Design a Frontend SDK for Third-party Developers",
+  description: "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance.",
   category: "high-level-design",
   subcategory: "platform-sdk-infra-systems",
   slug: "frontend-sdk-for-third-party-developers",
-  wordCount: 5300,
-  readingTime: 32,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "sdk", "third-party", "iframe", "versioning", "developer-experience"],
-  relatedTopics: ["embeddable-analytics-sdk", "plugin-extension-marketplace-ui"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "platform", "sdk", "infrastructure", "governance", "observability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Frontend SDK for Third-party Developers is a platform system, which means the product is not only the UI that users see but also the contract other teams, tenants, developers, plugins, SDKs, or automation depend on. A principal-ready design treats a frontend SDK for third-party developers as a versioned control plane with operational guarantees.",
+  "The design must define ownership boundaries, compatibility rules, tenant isolation, permission enforcement, rollout mechanics, observability, rollback, and support operations. Platform systems fail differently from normal product screens because a bad release can break many downstream teams or external customers at once.",
+  "The visible dashboard or SDK should be backed by durable state: configuration versions, release channels, manifests, audit logs, policy decisions, dependency graph, tenant scopes, and operational history. Derived views such as impact analysis, metrics, install status, and rollout health can lag if they are observable and repairable.",
+  "A staff/principal answer should make the platform contract explicit. Who can publish? Who can install? What is backward compatible? What happens when a plugin, SDK, flag, deployment, token, or tenant job misbehaves? How do teams roll back without corrupting customer state?",
+  "The design should also include governance. Platform features need approvals, blast-radius limits, staged rollout, auditability, and usage visibility because they frequently grant power to other teams or external developers."
+];
+const concepts = [
+  "The first concept is contract-first design. SDK runtime, version registry, and embed boundary should expose stable schemas, versioned APIs, documented lifecycle states, and compatibility guarantees. Hidden contracts are what make platform migrations painful.",
+  "The second concept is isolation. Tenants, projects, plugins, SDK integrations, build jobs, and admin actions should be scoped so a mistake or malicious actor cannot affect unrelated users. Isolation applies to data, permissions, compute, rollout, and telemetry.",
+  "The third concept is versioning and rollout. Platform artifacts should support draft, approved, staged, active, deprecated, and rolled-back states. The UI should show which version is used where and who owns it.",
+  "The fourth concept is operational feedback. A platform UI should not only let users change state; it should show health, lag, adoption, errors, blast radius, and rollback readiness before and after the change.",
+  "The fifth concept is permission and audit. Admin actions, SDK configuration, plugin install, feature rollout, tenant bulk jobs, and deployment changes should be authorized, recorded, reviewable, and reversible where possible.",
+  "The sixth concept is developer experience. Good platform systems reduce cognitive load with safe defaults, schema validation, preview environments, dry runs, examples, error explanations, and migration guidance."
+];
+const architecture = [
+  "The architecture contains SDK runtime, version registry, embed boundary, telemetry pipeline, compatibility harness. The control plane stores configuration, versions, ownership, approvals, and audit. The execution plane applies changes through SDKs, plugins, build systems, rollout engines, or tenant jobs. The observability plane measures impact and supports rollback.",
+  "Every change should have an identity: actor, target scope, version, policy decision, approval state, rollout percentage, dependency impact, and correlation ID. Without this metadata, support and incident response cannot reconstruct what happened.",
+  "The frontend should render lifecycle state explicitly: draft, validating, approved, staged, active, partially rolled out, blocked, deprecated, failed, or rolled back. Platform users need to understand whether a change is safe to proceed, not just whether a form submitted.",
+  "The system should support dry-run or preview. Before applying a flag, plugin install, tenant bulk job, deployment, SDK config, or component release, users should see affected projects, tenants, permissions, compatibility warnings, and estimated blast radius.",
+  "Rollback should be designed as a product path. Some state can be reverted directly; some requires compensating changes; some must be disabled at runtime while data cleanup happens asynchronously. The UI should make these differences visible.",
+  "Platform observability should connect user-visible changes to downstream symptoms: SDK errors, plugin crashes, build failures, tenant job failures, RUM regressions, permission denials, adoption metrics, and support tickets."
+];
+const tradeoffs = [
+  "Centralized platforms improve consistency, governance, and reuse, but they can become bottlenecks if every team waits for the platform team. Extensibility and self-service reduce bottlenecks but increase policy and compatibility risk.",
+  "Strict compatibility protects consumers but slows innovation. Fast-moving APIs or components let teams ship quickly but create migration debt. Mature platforms define support windows, deprecation workflows, and compatibility tests.",
+  "Runtime configuration gives fast rollback and experimentation, but it creates distributed state that can drift across SDK caches, edge nodes, tenants, and clients. Build-time configuration is simpler but slower to change during incidents.",
+  "Plugin and extension ecosystems increase platform value but introduce supply-chain, permission, performance, and trust risks. Sandboxing, manifest review, version pinning, and kill switches are not optional.",
+  "High-cardinality observability improves debugging but can become expensive and privacy-sensitive. Principal designs sample intelligently, aggregate by stable dimensions, and restrict raw event access.",
+  "Self-service bulk operations improve admin productivity but can create large blast radius. Dry runs, approvals, quotas, staged execution, pause/resume, and audit logs are the trade-off that makes self-service safe."
+];
+const practices = [
+  "Represent platform artifacts with explicit lifecycle state, owner, version, scope, dependencies, approval, rollout status, and audit history.",
+  "Build validation into authoring. Catch schema errors, permission violations, dependency breaks, accessibility regressions, privacy issues, and compatibility problems before publish or install.",
+  "Use staged rollout and blast-radius limits. Platform changes should support canary, tenant allowlists, percentage rollout, automatic stop on guardrail failures, and one-click disable where safe.",
+  "Keep execution idempotent. Deployments, plugin installs, SDK config updates, tenant bulk jobs, and flag changes should converge after retries rather than duplicate work.",
+  "Enforce least privilege. Extensions, support tools, admin dashboards, SDK keys, and workflow runners should receive narrow scoped permissions with audit trails.",
+  "Expose operational truth in the UI. Users should see queue state, rollout health, adoption, errors, stale clients, incompatible versions, and rollback options.",
+  "Design support tooling. Operators need to inspect which version, plugin, flag, token, deployment, or tenant job affected a customer without querying raw databases."
+];
+const pitfalls = [
+  "breaking change usually means the platform lacks compatibility gates, staged rollout, or blast-radius controls. Platform failures multiply because many teams depend on one surface.",
+  "host page conflict often comes from treating permissions or integration boundaries as documentation instead of enforceable runtime policy.",
+  "privacy leak is a state-distribution problem. SDK caches, build artifacts, edge nodes, tenants, and clients may observe different versions unless the design tracks propagation and freshness.",
+  "silent integration failure requires rollback and audit. Platform users should know whether they can disable, revert, compensate, or escalate the issue.",
+  "Another pitfall is measuring adoption without measuring harm. A platform can be widely used and still create latency, privacy, accessibility, compatibility, or support problems.",
+  "Teams also forget deprecation. Old SDKs, plugins, components, flags, and deployment settings remain in production long after the happy-path migration guide is written."
+];
+const useCases = [
+  "payments widget SDK requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "analytics browser SDK requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "support chat embed requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "During a bad rollout, the system should identify affected tenants or projects, stop further rollout, disable the runtime path if possible, and preserve audit evidence.",
+  "During a compatibility break, owners should see consumers, version usage, failing checks, migration status, and deprecation deadlines.",
+  "During an abuse or supply-chain incident, the platform should revoke permissions, disable extensions or keys, notify affected owners, and support forensic review."
+];
+const questions = [
+  {
+    "question": "How would you design a frontend SDK for third-party developers end to end?",
+    "answer": "I would model it as a platform control plane plus execution plane. The control plane stores versions, ownership, permissions, approvals, rollout state, and audit history. The execution plane applies changes through SDKs, plugins, workflows, deployments, tenant jobs, or runtime config. The UI supports validation, preview, staged rollout, health monitoring, and rollback. Observability connects platform changes to downstream customer impact."
+  },
+  {
+    "question": "Why this architecture over a simple admin dashboard or SDK config page?",
+    "answer": "A simple dashboard can mutate state but cannot safely manage platform contracts, compatibility, blast radius, tenant isolation, approvals, or rollback. Platform systems need lifecycle and governance because one change can affect many downstream consumers. The additional control-plane complexity is justified by operational risk."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are breaking change, host page conflict, privacy leak, silent integration failure, plus stale clients, incompatible versions, high-cardinality telemetry, queue backlogs, cross-tenant leakage, support overload, and uncontrolled blast radius. Prevention requires versioning, validation, staged rollout, idempotent execution, scoped permissions, and observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative configuration, permissions, ownership, approvals, and audit entries need strong server-controlled consistency. Runtime propagation to SDKs, edge nodes, build systems, dashboards, and tenants is often eventually consistent, but it must expose version and freshness. Rollback should target both control-plane state and distributed runtime state."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with dry runs, staged rollout, automatic guardrails, pause/resume, and rollback controls. Abuse is handled through least privilege, sandboxing, review, and key/plugin revocation. Privacy requires scoped telemetry and data minimization. Cost is controlled through sampling, quotas, batch execution, and cardinality limits. Observability tracks rollout health, adoption, error rates, stale versions, queue lag, and customer impact."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would argue that platform surfaces are leverage points, so governance is not bureaucracy; it is blast-radius control. I would defend self-service only when paired with validation, approvals for high-risk changes, staged rollout, and rollback. I would also distinguish authoritative control-plane consistency from eventually consistent runtime propagation."
+  }
+];
+const references = [
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "W3C Web Components",
+    "href": "https://www.w3.org/TR/components-intro/"
+  },
+  {
+    "label": "OWASP Third Party JavaScript Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Third_Party_Javascript_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  },
+  {
+    "label": "Cloudflare Workers platform docs",
+    "href": "https://developers.cloudflare.com/workers/"
+  }
+];
 
 export default function FrontendSdkForThirdPartyDevelopersArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A frontend SDK for third-party developers allows external developers to embed your platform's functionality into their own applications. Examples: Stripe's Elements (embed payment forms), Mapbox GL JS (embed interactive maps), Intercom's Messenger (embed support chat), Figma's Plugin API (extend the Figma UI). These SDKs face a unique design challenge: they must be powerful enough for sophisticated developers to build meaningful integrations, but they must not expose the platform's internals in ways that create security vulnerabilities, break when the platform changes, or enable developers to misuse resources.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The fundamental tension is between capability and isolation. More capability means more surface area for security bugs; more isolation means more friction in the developer experience. The SDK design must choose where on this spectrum to sit based on the use case: a payments SDK must be maximally isolated (the host page must not be able to read card numbers), while a map SDK needs rich bidirectional interactivity (host page controls the map state, map fires events back to the host page). These different requirements lead to different architectural choices.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The SDK embeds interactive platform UI components into third-party web pages. Authentication is delegated: the platform authenticates the SDK using a publishable API key (for client-side use, scoped to read/low-risk operations) or a session token (obtained by the developer's server using a secret API key, then passed to the SDK). The SDK communicates with the platform's backend API on behalf of the authenticated session. The SDK is distributed as both an npm package (for build-tool integration) and a CDN-hosted script (for direct script-tag loading).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-sdk-for-third-party-developers-architecture.svg" alt="Design a Frontend SDK for Third-party Developers architecture" caption="Architecture view: control plane, execution plane, permissions, versioning, and observability boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-sdk-for-third-party-developers-embed-boundaries.svg" alt="Design a Frontend SDK for Third-party Developers flow" caption="Flow view: authoring, validation, rollout, execution, health checks, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-sdk-for-third-party-developers-versioning.svg" alt="Design a Frontend SDK for Third-party Developers operations" caption="Operations view: blast radius, stale versions, abuse controls, cost, privacy, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Component embedding:</strong> Developers can embed platform UI components (forms, widgets, viewers) into their pages with a few lines of code. Components render correctly in any host page environment.</li>
-          <li><strong>Bidirectional communication:</strong> The SDK fires events to the host page (e.g., paymentSucceeded, userLoggedIn) and accepts configuration and commands from the host page (e.g., setTheme, prefillField).</li>
-          <li><strong>Authentication delegation:</strong> The developer passes an API key or session token to the SDK on initialization. The SDK handles authentication with the platform's backend transparently.</li>
-          <li><strong>Versioning and stability:</strong> The SDK follows semantic versioning. Breaking changes require a major version bump. Developers can pin to a specific major version and receive non-breaking updates automatically.</li>
-          <li><strong>Customization:</strong> Developers can customize the appearance of embedded components (colors, fonts, border radius) via a theming API, without access to the platform's internal CSS.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Security:</strong> Sensitive data (credentials, payment card numbers) must never be accessible to the host page's JavaScript. The SDK must enforce origin validation on all postMessage communications.</li>
-          <li><strong>Performance:</strong> SDK initialization must complete in under 500ms on a fast connection. The SDK must not cause layout shifts or block the host page's rendering.</li>
-          <li><strong>Compatibility:</strong> The SDK must work in all modern browsers (Chrome, Firefox, Safari, Edge). It must not conflict with common frameworks (React, Vue, Angular) or global variables in the host page.</li>
-          <li><strong>Developer experience:</strong> The SDK must have TypeScript type definitions, clear error messages, and comprehensive documentation. Developer errors (wrong API usage) must be surfaced clearly in development mode.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <p>The SDK architecture has two sides: the host-side SDK (the JavaScript code that runs in the third-party developer's page) and the platform-side embed (the content that actually runs the platform's functionality). For security-sensitive use cases, the platform-side embed runs inside a sandboxed iframe hosted on the platform's domain; the host-side SDK communicates with it via postMessage. For non-security-sensitive use cases (maps, rich text viewers), the SDK renders directly into the host page's DOM, avoiding the performance overhead and cross-origin communication complexity of iframes.</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-sdk-for-third-party-developers-architecture.svg"
-          alt="Frontend SDK architecture showing host-side SDK (npm/CDN bundle, public API, postMessage bridge, DOM mounting point), platform-side iframe embed (sandboxed origin, full platform UI, API calls to platform backend, postMessage listener with origin validation), authentication flow (publishable key or server-side session token), versioning (major.minor.patch, CDN-hosted per major version, npm for exact pinning), and theming API (CSS custom properties passed as configuration, applied inside iframe)."
-          caption="SDK architecture: host-side public API + postMessage bridge ↔ platform-side sandboxed iframe + platform backend API, with authentication delegation and theming"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Iframe Isolation and postMessage Protocol</h3>
-        <HighlightBlock as="p" tier="important">For security-sensitive components (payment forms, authentication flows, credential displays), the platform renders the sensitive UI inside an iframe with src on the platform's own domain. The iframe is sandboxed (sandbox="allow-scripts allow-forms allow-same-origin") to prevent the embedded page from navigating the top-level frame, opening popups, or accessing the host page's DOM. The platform's sensitive UI (card number field, password field) runs inside this iframe, making it inaccessible to the host page's JavaScript regardless of what scripts the host page runs. This is the security model Stripe Elements uses: the card number input is an iframe; Stripe's server receives the card number directly; the host page only receives a token.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The postMessage protocol between the host SDK and the iframe defines the full API surface. Each message has a type (a string enum), a payload, and a correlationId (UUID for matching responses to requests). The iframe validates every incoming message's origin against the known host origins (registered by the developer in the platform's dashboard). This origin validation prevents malicious third-party pages from injecting commands into the iframe. The iframe rejects messages from unknown origins and logs a security warning. Message types: INITIALIZE (send configuration and auth token), SET_THEME (send theme configuration), RESIZE (iframe notifies host of its content height for auto-resizing), EVENT (iframe fires a domain event like PAYMENT_SUCCEEDED to the host), COMMAND (host sends a command like SUBMIT_FORM to the iframe).</HighlightBlock>
-        <p>Auto-resizing: the iframe has a fixed height initially, but its content height changes as the user interacts (validation errors appear, additional fields are shown). The iframe sends RESIZE messages with its scrollHeight to the host SDK, which sets the iframe's height style accordingly. This avoids scrollbars inside the iframe and makes the embedded component feel like a native part of the host page. ResizeObserver inside the iframe monitors content size changes and triggers RESIZE messages on every change.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Authentication Delegation</h3>
-        <HighlightBlock as="p" tier="important">The SDK uses two authentication models depending on the operation. Publishable key authentication: for low-risk, read-only operations (rendering a product catalog, showing a map), the developer passes their publishable API key directly to the SDK (sdk.init(publishableKey)). The publishable key is safe to expose in client-side code because it is scoped to read-only operations on public data. The key is sent with every API request as a header; the platform's backend validates it and scopes the response to the key's permissions.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Session token authentication: for operations that involve user-specific data or write operations (processing a payment, updating user settings), the developer's server obtains a short-lived session token by calling the platform's API with the developer's secret key (which never touches the browser). The server passes this session token to the browser (e.g., as a data attribute on the SDK mount point or via a JavaScript variable), and the SDK initializes with it. The session token has a 15-minute TTL and is scoped to a single user session. This model ensures the secret key never appears in client-side code, and the session token has limited blast radius if intercepted. Token refresh: the SDK automatically refreshes the session token before expiry by calling a developer-provided refresh callback function (sdk.init(sessionToken, &#123; onTokenExpiring: async function() &#123; return fetchNewToken(); &#125; &#125;)).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">SDK Versioning Strategy</h3>
-        <p>The SDK follows semantic versioning (major.minor.patch). The CDN distribution provides version-pinned URLs at three granularities: exact version (v2.3.1), minor-pinned (v2.3), and major-pinned (v2). Developers who load the SDK from the major-pinned URL automatically receive patch and minor updates (which are guaranteed non-breaking). Developers who need precise control pin to an exact version. Major version URLs (v2, v3) coexist indefinitely on the CDN; a developer on v2 never involuntarily upgrades to v3.</p>
-        <HighlightBlock as="p" tier="important">The platform maintains the previous major version for at least 18 months after a new major version is released (the deprecation window). During this window, the old major version receives security fixes but no new features. Developers are notified via email and in-SDK deprecation warnings (logged to the console in development mode) that the version is deprecated. The deprecation warning includes a migration guide link and the timeline for end-of-life. After the deprecation window, the old major version's CDN URL returns a 410 Gone response (not a 404—the distinction signals intentional removal rather than a broken link).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Breaking change governance: any change to the SDK's public API surface (method signatures, event names, postMessage protocol) requires a major version bump, regardless of how small the change appears. The API surface is explicitly documented as a contract. An internal changelog tracks every change with a categorization (breaking, feature, fix); this changelog drives the semantic version decision and the migration guide content. The "expand-contract" pattern is used to add new API surface before removing old: a new method is added in a minor version; the old method is deprecated; the old method is removed in the next major version. This gives developers a migration window without forcing an immediate major version upgrade.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Theming and Customization API</h3>
-        <p>Developers can customize the appearance of embedded components without access to the platform's internal CSS. The theming API accepts a flat configuration object (sdk.init(key, &#123; theme: &#123; colorPrimary: '#1a73e8', borderRadius: '8px', fontFamily: 'Inter' &#125; &#125;)). The host SDK validates the theme object against a schema (type checking, allowed values for enum properties like fontFamily) and transmits it to the iframe as part of the INITIALIZE message. Inside the iframe, the platform's CSS applies the theme values as CSS custom property overrides on the root element, which cascade to all component styles.</p>
-        <HighlightBlock as="p" tier="important">The theming API intentionally exposes only a curated set of design tokens (20–30 properties: colors, border radius, font family, spacing scale) rather than arbitrary CSS injection. Arbitrary CSS injection would be a security risk (it could be used to overlay the iframe with deceptive content—a clickjacking variant) and a maintenance burden (any platform CSS refactor could break developer-injected styles). The curated token set is stable across platform versions (tokens are never renamed without a major version bump) and provides enough customization for most integration use cases.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Bundle Strategy and Distribution</h3>
-        <p>The SDK is distributed in three forms. The npm package provides the full SDK source with TypeScript types, tree-shakeable named exports (import &#123; createPaymentForm &#125; from '@platform/sdk'), and a CommonJS build for older toolchains. The CDN-hosted bundle (UMD format) is a single self-contained file loaded via script tag, accessible on the window.PlatformSDK global. The CDN bundle is split into a core module (always loaded) and feature modules (loaded on demand via dynamic import from the CDN).</p>
-        <HighlightBlock as="p" tier="important">Build tooling: the SDK uses tsup (esbuild-based) for building all output formats from a single TypeScript source. The build generates: ESM for modern bundlers, CJS for legacy bundlers, a UMD bundle for CDN distribution, and a .d.ts TypeScript declaration file. The UMD bundle is minified and compressed (Brotli for CDN delivery). The CDN uses a long-lived cache (Cache-Control: max-age=31536000, immutable) on exact-version URLs (v2.3.1) and a short-lived cache (max-age=300) on major-pinned URLs (v2) to balance cache efficiency with update delivery speed.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-sdk-for-third-party-developers-versioning.svg"
-          alt="SDK versioning and embed boundaries showing CDN URL structure (v2/sdk.js = major-pinned, v2.3/sdk.js = minor-pinned, v2.3.1/sdk.js = exact), deprecation lifecycle (18-month support window, in-SDK console warnings with migration guide link, 410 Gone after EOL), iframe sandbox attributes (allow-scripts allow-forms allow-same-origin), postMessage origin validation (allowlist from developer dashboard), and theme token flow (host configuration object → INITIALIZE message → CSS custom properties inside iframe)."
-          caption="SDK versioning: CDN major/minor/exact URLs, 18-month deprecation window, iframe sandbox + postMessage origin validation, theme tokens as CSS custom properties"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Iframe versus direct DOM rendering: iframes provide strong security isolation (host page JavaScript cannot access iframe content) but add latency (iframe load time), complicate styling (iframe contents do not inherit host page CSS), and require postMessage for all communication (adding serialization overhead). Direct DOM rendering is faster and simpler but exposes the platform's internals to the host page and creates CSS namespace conflicts. The decision should be driven by security requirements: use iframes for any component that handles sensitive data (credentials, payments), and use direct DOM rendering for components where isolation is not a security requirement (maps, charts, content viewers).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Developer experience versus security: requiring developers to obtain session tokens from their own server (for write operations) adds implementation complexity compared to a simple publishable key. However, a publishable key that can perform write operations is a significant security risk (any user who inspects the network requests gets a credential that can perform writes). The server-side token fetch is the correct trade-off for write operations. Reducing friction: provide server-side SDK libraries (Node.js, Python, Ruby) that make the token fetch a one-liner, and provide a development mode that uses mock tokens (clearly labeled as unsafe for production) so developers can prototype without setting up their server.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">CSP (Content Security Policy) compatibility: host pages with strict CSP headers may block the SDK's iframe or its network requests. The platform must document its CSP requirements (frame-src, connect-src directives) and provide a CSP compatibility checker in the developer dashboard. The platform's iframe URL and API endpoint origins should be stable (not dynamically generated) so developers can add them to their CSP allowlists once and not update them frequently. Inline scripts (often blocked by CSP) must not be used; the SDK's initialization script should be loadable from the CDN URL that is already in the developer's CSP allowlist.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A frontend SDK for third-party developers provides embeddable platform UI components via a public API that hides implementation details behind a stable, versioned contract. Security-sensitive components use sandboxed iframes with a postMessage protocol (type, payload, correlationId) validated by origin allowlisting—the iframe isolation ensures host-page JavaScript cannot access sensitive data regardless of what scripts run on the host page. Authentication uses publishable keys for read operations and short-lived session tokens (obtained server-side) for write operations. Versioning uses CDN major-pinned URLs (v2/sdk.js) for automatic non-breaking updates, exact-pinned URLs for strict control, and an 18-month deprecation window for major versions with in-SDK console warnings. The theming API exposes a curated set of CSS custom property tokens (not arbitrary CSS injection) transmitted via INITIALIZE messages. The SDK is distributed as npm (ESM + CJS + TypeScript types) and CDN UMD bundle built with tsup. The fundamental design decision—iframe versus direct DOM—is driven by whether the component handles sensitive data that must be isolated from the host page's JavaScript context.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

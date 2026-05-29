@@ -7,120 +7,146 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-pdf-viewer-annotation-system",
-  title: "Design a PDF Viewer + Annotation System",
-  description:
-    "Architecture for a browser-based PDF viewer with collaborative annotation: PDF.js rendering pipeline, page virtualization with IntersectionObserver, SVG annotation overlay (highlight/comment/ink/shape/stamp), optimistic annotation mutations with WebSocket broadcast, coordinate transform between PDF user-space and screen-space, and text layer for copy/search.",
+  title: "Design a PDF Viewer Annotation System",
+  description: "Principal-level media-rich system design covering page tiling, text extraction, annotation anchoring, offline notes, permissions, redaction, and search.",
   category: "high-level-design",
   subcategory: "media-rich-content-systems",
   slug: "pdf-viewer-annotation-system",
-  wordCount: 5200,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "pdf", "pdf.js", "annotation", "canvas", "websocket", "collaboration", "virtualization"],
-  relatedTopics: ["rich-text-editor", "media-upload-processing-pipeline"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "media", "frontend", "performance", "reliability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a PDF Viewer Annotation System is a media-rich product system, not just a visual component. It must coordinate browser capabilities, large binary assets, local editing state, background jobs, CDN or storage behavior, permissions, abuse policy, and user-facing recovery. The main challenge is that media work is expensive: bytes are large, decoding is CPU-intensive, rendering can block interaction, and failures are often visible immediately.",
+  "The goal is to design a PDF viewer annotation system around page tiling, text extraction, annotation anchoring, offline notes, permissions, redaction, and search. A principal-ready answer should explain the client runtime, backend control plane, asynchronous processing, storage and CDN strategy, consistency model, failure handling, cost controls, and observability.",
+  "Media systems differ from ordinary CRUD systems because derived artifacts are first-class. Thumbnails, transcripts, waveforms, previews, tiles, manifests, captions, encodes, annotations, and exports are projections. They can lag or be regenerated, while original assets, permissions, and user edits need stronger durability.",
+  "The product should define which state must survive refresh, which can be recomputed, which is private, which can be cached publicly, and which requires moderation or entitlement checks. Without this classification, media systems leak private assets, lose drafts, overrun device memory, or create inconsistent playback and editing experiences.",
+  "A staff/principal answer should also cover operational ownership. Playback teams own QoE and buffer behavior; creation teams own draft recovery and export correctness; platform teams own storage, CDN, transcoding, and abuse controls; product teams decide when to degrade rich media to simpler experiences."
+];
+const concepts = [
+  "The first concept is asset lifecycle. Raw uploads, derived previews, published artifacts, and deleted or redacted versions have different durability, cacheability, and privacy rules. page tile cache and text layer should never be treated as one generic blob path.",
+  "The second concept is bounded client resources. Media-rich pages must manage memory, GPU, CPU, and network budgets. Large canvases, long documents, video buffers, waveforms, and image grids need virtualization, eviction, and adaptive quality.",
+  "The third concept is asynchronous processing. Many operations cannot complete during the request: transcoding, scanning, rendering, exporting, OCR, waveform generation, and moderation. The UI needs job state, retry, cancellation where safe, and clear user messaging.",
+  "The fourth concept is consistency. Original assets and permissions are authoritative. Derived media and previews can be eventually consistent, but must carry version identifiers so stale thumbnails, captions, annotations, or manifests do not appear as current truth.",
+  "The fifth concept is abuse and safety. Media can contain malware, copyrighted material, unsafe content, personal data, or policy-violating streams. Scanning, moderation, rate limits, reporting, and takedown propagation are part of the system design, not add-ons.",
+  "The sixth concept is observability. Track startup time, decode time, render frame drops, upload retry rate, processing queue age, export success, CDN hit ratio, moderation delay, permission-denied rate, and client memory pressure."
+];
+const architecture = [
+  "The recommended architecture has five surfaces: page tile cache, text layer, annotation CRDT, permission service, search index. The client owns responsive interaction and local recovery. The API layer owns permissions, idempotency, and job creation. The processing plane owns expensive asynchronous work. Storage and CDN own asset distribution. Observability ties user symptoms to asset version, job ID, route, release, and device cohort.",
+  "A user action should create durable intent before expensive processing begins. Uploads create sessions and chunk manifests. Edits update a draft log or document model. Playback records manifest and entitlement state. Exports create jobs with immutable input versions. This lets the system retry safely after browser refresh, worker failure, or regional outage.",
+  "Derived artifacts should be keyed by source version and transformation parameters. If a video is re-encoded, a PDF is redacted, or a design file changes, old previews must not be confused with new ones. CDN invalidation should be precise and, where possible, replaced by versioned URLs.",
+  "The client should render progressive states: placeholder, partial preview, processing, ready, failed, retryable, permission blocked, or policy blocked. These states are product semantics, not generic spinners. They tell users whether to wait, retry, change input, or contact support.",
+  "The system should separate interactive paths from batch-heavy paths. Playback controls, editing cursor, annotation placement, and draft typing need low latency. Transcoding, full export, OCR, deep scanning, and global indexing can run asynchronously with backpressure.",
+  "The diagrams show architecture, flow, and operations: the architecture view explains ownership boundaries, the flow view explains user intent through processing and delivery, and the operations view explains queue pressure, recovery, moderation, and QoE control loops."
+];
+const tradeoffs = [
+  "Client-heavy processing can feel instant and reduce server cost, but it is limited by device capability, browser support, battery, and memory. Server-heavy processing is more predictable and easier to moderate, but adds queue latency and infrastructure cost. Mature systems usually use a hybrid.",
+  "Eagerly generating every derivative gives fast later reads but wastes compute for assets that are never viewed. Lazy generation saves cost but can make first access slow. Principal designs choose by product criticality: thumbnails and safety scans are often eager; rare export formats can be lazy.",
+  "Public CDN caching is excellent for published media but dangerous for private, permissioned, or recently revoked assets. Permissioned media needs signed URLs, short TTLs, versioned keys, and takedown propagation. The cache key is a security boundary.",
+  "Optimistic editing improves flow, but edits need durable logs, conflict resolution, and recovery. For collaborative or offline editing, the design must choose OT, CRDT, server-authoritative locking, or merge-on-save based on the shape of the document and expected collaboration intensity.",
+  "High visual fidelity competes with performance. A player can drop quality to avoid rebuffering; an editor can lower preview resolution while keeping export fidelity; a PDF viewer can render visible pages first. The product should make these trade-offs intentionally.",
+  "Moderation before publication reduces user harm but slows creator workflows. Moderation after publication improves speed but can amplify abuse. Risk-based gating is usually better than one rule for every asset.",
+  "Observability itself has cost and privacy risk. Capture event class, performance timings, asset IDs, and job IDs, but avoid logging raw document content, private annotations, media URLs with secrets, or user-entered text."
+];
+const practices = [
+  "Model media as a lifecycle with immutable source versions, derived artifact versions, processing jobs, permission state, and deletion or redaction state. Make every derived object traceable to the source version that produced it.",
+  "Use resumable upload and idempotent job creation. Browser crashes, mobile backgrounding, network loss, and worker retries should converge on one upload or processing job rather than duplicate assets.",
+  "Keep interactive paths small. Use virtualization, bounded buffers, progressive decoding, idle work, worker threads where appropriate, and adaptive quality for constrained devices.",
+  "Design explicit states for processing and failure. Users should know whether an asset is uploading, scanning, processing, ready, blocked, expired, or failed permanently. Support should see the same state with job history.",
+  "Protect permissions at every derived surface: original file, thumbnail, transcript, annotation, search result, share preview, CDN URL, export, and notification. Derived media is often where privacy leaks happen.",
+  "Build operational dashboards around user symptoms: playback startup, rebuffer, export queue age, upload resume success, annotation conflict rate, frame drops, failed processing jobs, and moderation SLA.",
+  "Provide rollback controls for codecs, rendering engines, export workers, feature flags, and CDN publication. Media regressions can be severe because old clients and assets remain in circulation."
+];
+const pitfalls = [
+  "A common pitfall is treating media as static files. In production, media has permissions, versions, processing state, cache state, moderation state, and support history.",
+  "misaligned notes becomes visible quickly because media UX has little tolerance for pauses, jumps, or lost work. The design needs either prevention or honest recovery.",
+  "stale permissions is often caused by mixing interactive and batch work in one path. Expensive jobs should not block low-latency controls unless the product absolutely requires it.",
+  "redaction leaks needs explicit ownership and retry semantics. If a job can fail after the user leaves, there must be notification, retry, support visibility, or compensating state.",
+  "offline conflicts should be considered during design, not after launch. Media products are natural abuse targets because images, video, documents, and streams can carry harmful or sensitive content.",
+  "Another pitfall is missing cost governance. Transcoding, rendering, OCR, storage replication, CDN egress, and telemetry can dominate cost if the system eagerly processes every variant without demand signals."
+];
+const useCases = [
+  "Legal contract review exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Academic paper annotation exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Enterprise document approval exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "An interviewer may push on device constraints. A strong answer explains how the UI adapts quality, bounds memory, uses background work carefully, and preserves the primary task when CPU or GPU is constrained.",
+  "An interviewer may push on privacy. The answer should explain signed URLs, derived artifact permissions, local cache clearing, redaction propagation, and avoiding sensitive telemetry.",
+  "An interviewer may push on incidents. The answer should cover queue backlog, worker rollback, CDN purge or versioning, disabled formats, degraded preview, and support-visible job history."
+];
+const questions = [
+  {
+    "question": "How would you design a PDF viewer annotation system end to end?",
+    "answer": "I would model the media lifecycle first: source asset or document state, derived artifacts, permissions, processing jobs, client presentation, and operational telemetry. The client handles responsive interaction and local recovery, APIs enforce permission and idempotency, workers perform expensive processing, storage and CDN serve versioned artifacts, and observability links user symptoms back to asset version and job ID."
+  },
+  {
+    "question": "Why choose this architecture over a simpler upload-and-display design?",
+    "answer": "A simple upload-and-display design ignores derived artifacts, processing failures, permissions, moderation, cache invalidation, and device limits. It works for prototypes but fails when assets are large, private, collaborative, or safety-sensitive. The layered architecture adds complexity, but it isolates expensive work, makes retries safe, and gives operators control during incidents."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are misaligned notes, stale permissions, redaction leaks, offline conflicts. Scale also exposes CDN egress cost, processing queue backlog, hot assets, cache stampedes, memory pressure, long-tail device issues, and moderation delay. The prevention strategy is versioned artifacts, backpressure, adaptive quality, bounded client memory, queue observability, and remote rollback controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Original assets, permissions, and durable user edits need strong ownership and versioning. Derived media such as thumbnails, transcripts, previews, indexes, and exports can be eventually consistent, but must carry source version IDs and visible processing state. Collaborative editing may require CRDT, OT, or server-authoritative conflict resolution depending on the data model."
+  },
+  {
+    "question": "How do you handle failure, privacy, cost, and observability?",
+    "answer": "Failures are handled through resumable uploads, idempotent jobs, retryable processing, clear user states, and support-visible job history. Privacy requires permission checks on every derived surface, signed URLs, redaction propagation, and careful local storage. Cost is controlled through demand-aware derivative generation, cache hit targets, storage lifecycle policy, and telemetry sampling. Observability tracks QoE, queue age, job failures, cache behavior, and client resource pressure."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate interactive latency from batch processing, original truth from derived artifacts, and public assets from permissioned assets. Then I would explain which parts are optimized for immediacy, which are optimized for correctness, and which degrade during load or device pressure. That makes the trade-off defensible rather than generic."
+  }
+];
+const references = [
+  {
+    "label": "MDN: Media Source Extensions",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+  },
+  {
+    "label": "MDN: WebCodecs API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API"
+  },
+  {
+    "label": "W3C: Media Source Extensions",
+    "href": "https://www.w3.org/TR/media-source-2/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WebRTC specifications",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function PdfViewerAnnotationSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A browser-based PDF viewer must solve three distinct problems simultaneously. First, PDF rendering: a PDF file is a complex binary format with compressed object streams, font encoding, and a coordinate system that differs from CSS (PDF origin is bottom-left; CSS origin is top-left). Parsing and rendering this in the browser requires a full PDF decoder—PDF.js (Mozilla's open-source library) is the standard choice, rendering each page to an HTML5 Canvas element via a 2D context. Second, performance: PDFs can be hundreds of pages long. Rendering all pages at once would consume gigabytes of canvas memory. The viewer must virtualize page rendering—only rendering pages visible in the viewport (plus a small pre-render buffer)—and evict rendered pages from memory when they scroll far out of view. Third, collaboration: annotations (highlights, comments, ink strokes, shapes, stamps) must be persisted, shared with other viewers of the same document in real time, and survive page reload without the user re-annotating.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The annotation coordinate system is a non-obvious complexity: annotations are stored in PDF user-space coordinates (72 DPI units, y-axis pointing up from bottom-left of each page), but must be rendered in CSS screen-space coordinates (pixels, y-axis pointing down from top-left of the viewport). Every annotation position requires a transform when rendering and an inverse transform when creating—and both transforms must account for the current zoom level and the scroll offset of the viewer container.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> PDF.js handles the PDF parsing and canvas rendering. The annotation layer is an SVG element overlaid on each page canvas. Annotation storage is a REST API with WebSocket broadcast for real-time collaboration. Text extraction for copy/search uses PDF.js's built-in text content API. Export of annotated PDFs uses pdf-lib.js to flatten annotations into the PDF byte stream before download.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/pdf-viewer-annotation-system-architecture.svg" alt="Design a PDF Viewer Annotation System architecture" caption="Architecture view: media lifecycle, client runtime, processing plane, storage, CDN, and control boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/pdf-viewer-annotation-system-collab.svg" alt="Design a PDF Viewer Annotation System flow" caption="Flow view: user intent, rendering or processing progression, fallback, and recovery states." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/pdf-viewer-annotation-system-operations.svg" alt="Design a PDF Viewer Annotation System operations" caption="Operations view: queue pressure, permission enforcement, moderation, QoE, rollback, and support visibility." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>PDF rendering:</strong> Open PDFs from URL, Blob, or ArrayBuffer. Render at configurable zoom levels (50%–400%). Support multi-page navigation via scroll, thumbnail strip, and direct page number input.</li>
-          <li><strong>Annotation types:</strong> Highlight (selected text range), comment (pin with threaded replies), freehand ink (pointer pressure-sensitive SVG path), shapes (rectangle, circle, line, arrow), and stamp (image or typed-text overlay). Each annotation type has a configurable color.</li>
-          <li><strong>Collaborative annotation:</strong> Annotations created by any viewer are broadcast to all other viewers watching the same document in real time via WebSocket. Presence indicators show which pages other users are currently viewing.</li>
-          <li><strong>Text layer:</strong> An invisible text layer (transparent absolutely-positioned spans) is rendered over each page, enabling native browser text selection, copy, and Cmd/Ctrl+F search. Selected text becomes the anchor for highlight annotations.</li>
-          <li><strong>Comment threads:</strong> Each highlight or pin annotation can have a threaded comment conversation. Threads support replies, resolution (marking the discussion as addressed), and reopening.</li>
-          <li><strong>Export:</strong> Download the annotated PDF with annotations flattened into the PDF (rendered as PDF annotation objects, not separate SVGs) using pdf-lib.js.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>First page render:</strong> The first page must be visible within 1 second of the PDF URL being provided (loaded from CDN with HTTP range request for the first ~64 KB of the file to get the cross-reference table).</li>
-          <li><strong>Scroll performance:</strong> Page virtualization must keep scrolling at 60 fps on documents of 500+ pages. Canvas creation and destruction must happen off the main thread animation frame to avoid jank.</li>
-          <li><strong>Annotation latency:</strong> A newly created annotation must appear in the UI within 50ms of the user completing the gesture (optimistic update), independent of network round-trip time.</li>
-          <li><strong>Memory budget:</strong> The viewer must not hold more than 10 fully-rendered page canvases in memory simultaneously, regardless of document length.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The viewer has four layers stacked in the DOM. The scroll container is the outermost element: a div with overflow-y: scroll that contains one placeholder div per page, each with a fixed height matching the page's rendered height at the current zoom. This means the scrollbar correctly reflects the full document length without all pages being rendered. The canvas layer: each visible page has an HTML Canvas element rendered by PDF.js's page.render(context) API. The text layer: absolutely positioned transparent spans extracted from PDF.js's page.getTextContent() API, positioned to match the corresponding glyphs in the canvas. The annotation SVG layer: an SVG element absolutely positioned over each page canvas, containing annotation shapes as SVG elements (rect for highlight/shapes, path for ink, foreignObject for comment pins).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Annotation state is managed in the client-side store (Zustand). On load, all annotations for the document are fetched from the API and loaded into the store, keyed by page number. When the user creates an annotation, an optimistic entry with a temporary ID is added to the store immediately (visible at once), a POST request is sent to the API, and on success the temporary ID is replaced with the server-assigned ID. Incoming WebSocket events from other users append or update annotations in the store, triggering a re-render of the affected page's SVG layer.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/pdf-viewer-annotation-system-architecture.svg"
-          alt="PDF viewer architecture showing rendering pipeline (PDF source URL Blob ArrayBuffer → PDF.js engine parse xref decode streams → page renderer Canvas 2D OffscreenCanvas → page cache LRU rendered bitmaps → annotation layer SVG overlay hit testing → viewport display CSS transform scroll sync → CDN chunked fetch), page virtualization (IntersectionObserver observe each page sentinel div threshold 0.1 schedule render requestIdleCallback, render window ±2 pages visible full canvas ±1 pre-render background worker beyond ±2 destroy canvas keep placeholder div, LRU page cache max 10 rendered canvases evict on LRU miss), annotation types (highlight rect quads from text layer, comment anchor page coords thread, freehand ink SVG path pointer pressure, underline text range page coords, shape box rect circle arrow line, stamp signature image blob typed text, SVG overlay architecture one SVG per page positioned absolute over canvas annotation coords stored in PDF user-space transforms pdfCoord to screenCoord = pdfCoord x scale + scrollOffset + pageTop), annotation storage and sync (data model type highlight comment ink shape stamp, page number coords &#123;x y w h&#125; SVGPath, color string author userId createdAt ISO, thread Comment[] resolved boolean, optimistic update local insert render instantly POST /annotations on 200 replace tempId with serverId on error roll back show toast retry, realtime collab WebSocket broadcast annotation mutations to all doc viewers), text layer search export (invisible span elements positioned over canvas text extracted from PDF glyph stream via PDF.js coords PDF user-space to CSS px using viewport scale enables native browser Cmd Ctrl+F text search highlight selection create highlight annotation, full-text search index all page text at load via web worker match highlight wrap matched spans with mark element yellow bg thumbnail strip low-res canvas renders at 0.2x scale scroll-linked TOC parsed from PDF outline dict bookmarks jump to dest page annotation sidebar filter by type author page click-to-jump, export annotated PDF flatten annotations via PDF-lib.js download Blob URL anchor.click() revoke URL first page render &lt;1s loaded from CDN range request zoom re-render canvas at new scale x devicePixelRatio DPR-aware canvas.width = cssWidth x window.devicePixelRatio)."
-          caption="PDF rendering pipeline (PDF.js → Canvas → SVG annotation overlay), page virtualization (IntersectionObserver LRU cache), annotation types and storage (optimistic + WebSocket broadcast), and text layer for copy/search/export"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">PDF.js Rendering Pipeline</h3>
-        <HighlightBlock as="p" tier="important">PDF.js works in two phases. Parse phase: the library loads the PDF bytes, decodes the cross-reference table (the xref table maps object IDs to byte offsets in the file), and builds an in-memory object graph of the PDF's structure. For large files served from a CDN, PDF.js uses HTTP range requests to fetch only the portions of the file it needs (the xref table is typically at the end of the file; individual pages are distributed throughout). This means the first page can be rendered before the entire file is downloaded. Render phase: for each page, PDF.js builds a display list (a list of drawing operations: drawText, fillRect, drawImage) by interpreting the page's content stream, then executes the display list on a Canvas 2D context. The rendering is asynchronous and CPU-intensive; for large pages or complex PDFs, it can take 100–500ms per page.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">OffscreenCanvas for background rendering: to avoid blocking the main thread during page rendering (which would cause scroll jank), page rendering can be offloaded to a Web Worker using OffscreenCanvas. The worker renders the page to an OffscreenCanvas, transfers the ImageBitmap result to the main thread using transferToImageBitmap(), and the main thread draws it to the visible Canvas using drawImage(). This keeps the main thread free for scroll handling and annotation interaction.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Page Virtualization</h3>
-        <HighlightBlock as="p" tier="important">Page virtualization uses the IntersectionObserver API. Each page is represented by a sentinel div with a fixed height (computed as page.viewport.height at the current zoom scale). An IntersectionObserver with threshold 0.1 watches all sentinel divs. When a sentinel enters the viewport, the observer fires and schedules a page render via requestIdleCallback (to avoid blocking higher-priority tasks). When a sentinel fully leaves the viewport and the page is beyond the ±2 page render window, the canvas element is removed and the page's rendered bitmap is evicted from the LRU cache.</HighlightBlock>
-        <p>The render window is ±2 pages around the current viewport center: pages in the viewport are rendered at full resolution; pages ±1 away are pre-rendered in the background (so they appear instantly when the user scrolls to them); pages ±2 to ±5 are kept in the LRU cache if they were recently rendered; pages beyond ±5 have their canvases destroyed. The LRU cache holds a maximum of 10 rendered page bitmaps. When a new page is rendered and the cache is full, the least-recently-used entry is evicted by destroying its canvas and freeing the memory. The sentinel div retains its height so the scroll position remains stable—the page appears to be a white rectangle briefly until re-rendered when scrolled back into view.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Coordinate Transform</h3>
-        <p>PDF uses a coordinate system with the origin at the bottom-left of each page, y increasing upward, in 72 DPI units. CSS uses a coordinate system with the origin at the top-left of the viewport, y increasing downward, in device pixels scaled by zoom. Converting between these requires: screenX = pdfX × scale; screenY = (pageHeight - pdfY) × scale + pageTopOffset + scrollOffset. The inverse transform (screen → PDF, for converting mouse event positions to annotation coordinates): pdfX = (eventX - pageLeft) / scale; pdfY = pageHeight - (eventY - pageTop - scrollOffset) / scale.</p>
-        <p>These transforms must be recomputed whenever the zoom level changes or the user scrolls. Annotations are always stored in PDF user-space coordinates (so they are zoom-independent); the screen-space coordinates are computed on every render by applying the current transform. On zoom change, the entire SVG overlay is re-positioned by recomputing the transformed bounding boxes of all annotations on the newly-zoomed page.</p>
-        <HighlightBlock as="p" tier="important">DPR-aware canvas rendering: on Retina displays, the canvas must be rendered at the device pixel ratio (DPR) to appear crisp. The canvas's pixel dimensions are set to cssWidth × DPR and cssHeight × DPR, the canvas context is scaled by DPR using ctx.scale(dpr, dpr), and the PDF.js viewport is constructed at scale × DPR. The SVG annotation overlay and text spans use CSS dimensions (not canvas pixel dimensions), so no DPR adjustment is needed for them.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Annotation Layer Architecture</h3>
-        <p>Each rendered page has a corresponding SVG element absolutely positioned over the canvas, matching the canvas's CSS dimensions exactly. Annotations for that page are rendered as SVG elements within this SVG: highlights as overlapping rect elements (one rect per line of selected text, computed from the text layer's selection quad data); ink strokes as path elements (the pointer event sequence is recorded as M x0,y0 L x1,y1 ... and stored as the SVG path string); shapes as rect, ellipse, or line elements; comment pins as a foreignObject containing a small React component (the pin icon with the commenter's avatar color).</p>
-        <p>Hit testing: pointer events on the SVG overlay are handled by the SVG element itself—SVG elements receive pointer events naturally. A clicked annotation is identified by the event.target, which is the SVG element. The annotation ID is stored as a data-annotation-id attribute on the SVG element. This avoids manual hit testing (comparing click position against annotation bounding boxes), which would be O(n) per click.</p>
-        <p>Annotation creation by type: Highlight: the user selects text in the text layer (native browser text selection). On mouseup, the selection range is read via window.getSelection(), the text node positions are converted to page coordinates using the text layer span positions, and a highlight annotation is created from the union of the line bounding boxes. Ink: pointer events (pointerdown, pointermove, pointerup) are recorded on the SVG overlay in PDF coordinates. The path is built incrementally using SVG path commands and rendered as the user draws (previewed before saving). Shape: a drag gesture creates the bounding box; the shape type is determined by the active toolbar mode. Comment: a click anywhere on the page creates a pin at that coordinate; a comment editor popover opens immediately.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimistic Annotation Mutations</h3>
-        <HighlightBlock as="p" tier="important">Creating an annotation follows an optimistic pattern: (1) A temporary annotation object is added to the client store with a UUID-based temporary ID (e.g., "temp_" + Date.now()). (2) The annotation renders immediately in the SVG layer—the user sees their annotation with no perceptible delay. (3) A POST request is sent to POST /documents/:id/annotations with the annotation data and an idempotency key (clientId + timestamp). (4) On 200 OK, the server returns the persisted annotation with a server-assigned ID. The client replaces the temporary annotation with the server version (swapping the temp ID for the server ID). (5) On network error, the temporary annotation is removed from the store, and a toast notification offers a retry. Retries use exponential backoff and replay the same idempotency key to prevent duplicate annotations on repeated requests.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Delete and update operations use the same optimistic pattern: the local state is updated immediately, the API call is made, and errors trigger a rollback to the previous state. For update operations (e.g., moving an annotation, editing a comment), the optimistic state is the new version and the rollback state is the previous version.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-Time Collaboration</h3>
-        <HighlightBlock as="p" tier="important">All viewers of the same document are members of a WebSocket room identified by the document ID. The server maintains a mapping of document ID to connected WebSocket clients. When the API persists an annotation (from any viewer), it publishes the annotation event to all connected clients in the room via the WebSocket. Clients receive annotation:created, annotation:updated, or annotation:deleted events and apply them to the local store. The creating client also receives the broadcast (after the API confirms persistence), but it detects the duplicate by matching the server ID and ignores it (since the annotation is already in the store from the optimistic insert with the server ID).</HighlightBlock>
-        <p>Presence: each WebSocket connection includes the user's current page (updated on scroll to a new page). The server tracks which page each connected user is viewing and broadcasts presence:updated events to all room members. The viewer displays a colored avatar strip on the page thumbnail for pages where other users are currently located.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Text Layer and Search</h3>
-        <p>PDF.js's page.getTextContent() API returns a list of text items, each with a string value and a transform matrix (the 2D affine transform applied to render the text, encoding position, scale, and rotation). These transforms are converted to CSS positioning (translateX, translateY, scaleX, scaleY) and applied to absolutely-positioned span elements overlaid transparently on the canvas. The spans are invisible (color: transparent) but selectable by the user—native browser text selection works across the transparent spans, and the browser renders the selection highlight over the canvas, making it appear as if the text on the canvas is being selected.</p>
-        <p>Full-text search: on document load, a Web Worker indexes all pages by calling page.getTextContent() for each page and building an in-memory string array (one entry per page). Search uses the browser's native String.indexOf() for basic substring matching or a fuzzy match library for approximate search. Matched text positions are converted to highlight rects using the same text layer transform pipeline, and matched spans are wrapped with a mark element styled with a yellow background to indicate matches. The search result navigator (next/previous match) scrolls to the matching page and highlights the match.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Export Pipeline</h3>
-        <p>Exporting an annotated PDF uses pdf-lib.js to embed annotations into the PDF byte stream as native PDF annotation objects (PDFAnnotation in the PDF spec). For each annotation: highlights are added as PDF Highlight annotations (using the quad points API from pdf-lib); comments are added as PDF Note annotations with the text body; ink strokes are added as PDF Ink annotations (array of polyline points); shapes are added as PDF Square/Circle/Line annotations. pdf-lib builds a modified PDF byte stream with the annotations embedded. The result is a Blob, which is downloaded via a temporary anchor element (a.href = URL.createObjectURL(blob); a.click(); URL.revokeObjectURL(a.href)).</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/pdf-viewer-annotation-system-collab.svg"
-          alt="PDF annotation collaboration showing optimistic flow sequence (User Browser → Local State Zustand Redux → API Server REST WS → Collab WS broadcast): select text range → add tempAnnotation → render instantly SVG overlay visible → POST /annotations async → persist gen ID → 200 &#123;id ann_789&#125; → replace tempId → broadcast event annotation:created to all room viewers; on POST error remove tempAnnotation from local state toast Failed retry? exponential backoff retry with idempotency key clientId + timestamp. Coordinate transform system (PDF user space origin bottom-left 72 DPI units/inch y grows upward → transform formula sx = x x scale sy = pageH - y x scale + scrollOffset + pageTop → screen space origin top-left CSS px at current scale y grows downward); DPR-aware rendering canvas.width = cssWidth x devicePixelRatio canvas.height = cssHeight x dpr ctx.scale(dpr dpr) crisp text on Retina SVG overlay uses CSS width height at 1x scale. Comment thread model (root annotation id type page rect, comments array id author body at, resolved bool resolvedBy userId, mutations add_reply resolve reopen delete, WS event annotation:updated op payload); visual mockup Alice page 3 This section needs citation 2m ago highlight with reply thread Bob Agreed added ref just now. Toolbar modes Select Highlight Comment Ink Shape Stamp, keyboard shortcuts H=highlight C=comment I=ink Esc=select Ctrl+Z=undo Del=delete, zoom Ctrl+= Ctrl+- Ctrl+0 fit page arrows navigate find Ctrl+F sidebar Ctrl+B. Performance targets first page visible &lt;1.0s annotation render &lt;50ms optimistic search index build &lt;2s web worker scroll re-render &lt;16ms rIC scheduling."
-          caption="Annotation optimistic flow (local insert → API → server ID swap → WS broadcast), coordinate transform PDF user-space ↔ screen-space, DPR-aware canvas, comment thread model, toolbar modes, and performance targets"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">SVG annotation overlay versus Canvas annotation overlay: rendering annotations as SVG elements (the design chosen here) gives each annotation a DOM node, enabling native event handling, CSS hover styles, and browser accessibility. The trade-off is that for documents with thousands of annotations, a large SVG DOM becomes expensive to update. An alternative is rendering all annotations to a second Canvas layer, which scales to many more annotations but requires manual hit testing (checking click positions against annotation bounding boxes) and loses native browser event handling. For typical documents with fewer than 200 annotations per page, SVG is preferable for its simplicity and interactivity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">PDF.js worker thread versus main thread rendering: PDF.js can render pages in a Web Worker (using postMessage to transfer the PDF data and receive rendered ImageBitmap results), keeping the main thread free. The trade-off is communication overhead: for fast renders (simple pages), the overhead of transferring ImageBitmap between worker and main thread may exceed the time saved. For complex pages that take 200ms+ to render, off-thread rendering is essential. A practical approach is to start rendering on the main thread and switch to worker rendering if the first page takes more than 100ms (detected by measuring page.render() duration).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Annotation flattening on export versus server-side PDF generation: the client-side export approach (pdf-lib.js in the browser) avoids a server round-trip and allows instant download. The limitation is that client-side PDF generation cannot handle all PDF annotation types with full spec compliance—particularly complex features like form fields, digital signatures, and encrypted PDFs. For enterprise use cases requiring legally-valid signed annotations, the export must be handled server-side (sending annotation data to a server that uses a full PDF library like Apache PDFBox or iText to produce the annotated PDF).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A PDF viewer + annotation system has three core technical challenges: rendering a PDF format to canvas (PDF.js handles parsing and rendering, with OffscreenCanvas for off-thread rendering), page virtualization (IntersectionObserver triggers rendering for visible pages; LRU cache of 10 canvases evicts off-screen pages; placeholder divs maintain scroll height), and a coordinate transform between PDF user-space (bottom-left origin, 72 DPI, y-up) and screen-space (top-left origin, CSS pixels, y-down) at the current zoom and DPR. The annotation layer is an SVG element absolutely positioned over each page canvas; annotations are stored in PDF user-space coordinates and transformed to screen coordinates on render. Annotation creation is optimistic: the annotation appears immediately, the POST is sent asynchronously, and on success the temporary ID is replaced with the server ID. WebSocket broadcasts propagate annotations to all viewers of the document in real time. The text layer (transparent positioned spans from PDF.js's getTextContent API) enables native browser text selection and Cmd/Ctrl+F search. Export uses pdf-lib.js to flatten annotations into native PDF annotation objects. The defining architectural constraint is that annotation coordinates must always be stored in PDF user-space—not in screen pixels—so they remain correct after zoom changes and are portable to different rendering environments.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

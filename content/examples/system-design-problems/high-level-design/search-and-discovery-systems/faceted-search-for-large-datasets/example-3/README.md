@@ -1,1 +1,5 @@
-# Design faceted search for large datasets — Example 3
+# Faceted Search FOR Large Datasets - Example 3
+
+Concrete search discovery edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,71 +1,89 @@
-/**
- * Drag-Drop Folder Upload — Handles folder drag-and-drop with recursive file extraction.
- *
- * Interview edge case: When a user drags a folder onto the upload zone,
- * DataTransfer.files is a flat list. We need to reconstruct the folder hierarchy
- * using webkitRelativePath (available when folder is dropped with directory support).
- */
+export type fileUploadWidgetSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-export interface FileTree {
-  name: string;
-  type: 'file' | 'folder';
-  children?: FileTree[];
-  file?: File;
-  path: string;
+export type fileUploadWidgetEvent = {
+  id: string;
+  topic: "file-upload-widget";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: fileUploadWidgetSignal;
+};
+
+export type fileUploadWidgetDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateFileUploadWidgetEvent(event: fileUploadWidgetEvent): fileUploadWidgetDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: fileUploadWidgetDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:File Upload Widget",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Builds a file tree from a FileList, reconstructing folder hierarchy from webkitRelativePath.
- */
-export function buildFileTree(files: FileList | File[]): FileTree[] {
-  const root: FileTree[] = [];
-  const pathMap = new Map<string, FileTree>();
+export function runFileUploadWidgetContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateFileUploadWidgetEvent({
+    id: "file-upload-widget-evt-1",
+    topic: "file-upload-widget",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  for (const file of Array.from(files)) {
-    // For folder drops, webkitRelativePath contains the full path
-    const relativePath = (file as any).webkitRelativePath || file.name;
-    const parts = relativePath.split('/');
+  const guarded = evaluateFileUploadWidgetEvent({
+    id: "file-upload-widget-evt-late",
+    topic: "file-upload-widget",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-    let currentPath = '';
-    let currentLevel = root;
-
-    for (let i = 0; i < parts.length; i++) {
-      const part = parts[i];
-      currentPath = currentPath ? `${currentPath}/${part}` : part;
-
-      if (pathMap.has(currentPath)) {
-        currentLevel = pathMap.get(currentPath)!.children || [];
-        continue;
-      }
-
-      const isFile = i === parts.length - 1;
-      const node: FileTree = {
-        name: part,
-        type: isFile ? 'file' : 'folder',
-        path: currentPath,
-        ...(isFile ? { file } : { children: [] }),
-      };
-
-      pathMap.set(currentPath, node);
-      currentLevel.push(node);
-      currentLevel = node.children || [];
-    }
-  }
-
-  return root;
-}
-
-/**
- * Flattens a file tree back into a list of files for upload.
- */
-export function flattenFileTree(tree: FileTree[]): File[] {
-  const files: File[] = [];
-  function traverse(nodes: FileTree[]) {
-    for (const node of nodes) {
-      if (node.type === 'file' && node.file) files.push(node.file);
-      if (node.children) traverse(node.children);
-    }
-  }
-  traverse(tree);
-  return files;
+  return { accepted, guarded };
 }

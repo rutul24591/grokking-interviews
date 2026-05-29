@@ -1,134 +1,14 @@
-<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-  <rect width="900" height="600" fill="#f3f1f8"/>
-  <text x="450" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1822">Package Registry UI (npm-Style)</text>
-
-  <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
-    </marker>
-    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
-    </marker>
-    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
-    </marker>
-    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
-    </marker>
-  </defs>
-
-  <!-- Actors -->
-  <rect x="14" y="52" width="80" height="36" rx="7" fill="#6d5bd0"/>
-  <text x="54" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Developer</text>
-  <text x="54" y="82" text-anchor="middle" font-size="9" fill="#edeaf5">Browser</text>
-
-  <rect x="150" y="52" width="90" height="36" rx="7" fill="#2563eb"/>
-  <text x="195" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Search API</text>
-  <text x="195" y="82" text-anchor="middle" font-size="9" fill="#dbeafe">BM25 + rank</text>
-
-  <rect x="302" y="52" width="90" height="36" rx="7" fill="#2f9d74"/>
-  <text x="347" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Package API</text>
-  <text x="347" y="82" text-anchor="middle" font-size="9" fill="#d1fae5">metadata + CDN</text>
-
-  <rect x="458" y="52" width="90" height="36" rx="7" fill="#d97843"/>
-  <text x="503" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">OSV / CVE</text>
-  <text x="503" y="82" text-anchor="middle" font-size="9" fill="#fef3c7">advisory feed</text>
-
-  <rect x="614" y="52" width="90" height="36" rx="7" fill="#7c3aed"/>
-  <text x="659" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Bundle API</text>
-  <text x="659" y="82" text-anchor="middle" font-size="9" fill="#ede9fe">size analysis</text>
-
-  <rect x="786" y="52" width="90" height="36" rx="7" fill="#be123c"/>
-  <text x="831" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Owner API</text>
-  <text x="831" y="82" text-anchor="middle" font-size="9" fill="#fecdd3">deprecate/unpub</text>
-
-  <!-- Lifelines -->
-  <line x1="54" y1="88" x2="54" y2="566" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="195" y1="88" x2="195" y2="566" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="347" y1="88" x2="347" y2="566" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="503" y1="88" x2="503" y2="566" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="659" y1="88" x2="659" y2="566" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="831" y1="88" x2="831" y2="566" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
-
-  <!-- BAND A: Search + Typosquatting -->
-  <rect x="8" y="98" width="878" height="16" rx="3" fill="#2563eb" opacity="0.2"/>
-  <text x="450" y="110" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="bold">PATH A — SEARCH + TYPOSQUATTING (BM25 multi-factor rank; Levenshtein ≤2 top-1000 → warning)</text>
-
-  <line x1="54" y1="128" x2="185" y2="128" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="119" y="122" text-anchor="middle" font-size="9" fill="#374151">GET /search?q=lodash_ (debounced 200ms)</text>
-
-  <line x1="185" y1="142" x2="64" y2="142" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-g)"/>
-  <text x="119" y="136" text-anchor="middle" font-size="9" fill="#374151">results ranked: 0.4×BM25 + 0.3×downloads + 0.2×maintenance + 0.1×quality</text>
-
-  <rect x="20" y="150" width="500" height="22" rx="4" fill="#fef9c3" stroke="#d97843" stroke-width="1"/>
-  <text x="270" y="165" text-anchor="middle" font-size="8.5" fill="#92400e" font-weight="600">⚠ Typosquatting: Levenshtein("lodash_","lodash")=1 ≤ 2 AND downloads &lt;100/wk → warning banner shown</text>
-
-  <!-- BAND B: Package Detail SSR -->
-  <rect x="8" y="180" width="878" height="16" rx="3" fill="#2f9d74" opacity="0.2"/>
-  <text x="450" y="192" text-anchor="middle" font-size="9" fill="#065f46" font-weight="bold">PATH B — PACKAGE DETAIL (server-rendered per version; trust tiers; 52-wk sparkline; install cmd copy)</text>
-
-  <line x1="54" y1="210" x2="337" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="195" y="204" text-anchor="middle" font-size="9" fill="#374151">GET /package/react?version=18.2.0 (SSR: CDN cached 300s SWR 3600s)</text>
-
-  <line x1="337" y1="224" x2="64" y2="224" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
-  <text x="200" y="218" text-anchor="middle" font-size="9" fill="#374151">name + version selector (deprecated=strikethrough) + install cmd + downloads + trust badge</text>
-
-  <rect x="20" y="232" width="560" height="26" rx="4" fill="#f0fdf4" stroke="#2f9d74" stroke-width="1"/>
-  <text x="300" y="247" text-anchor="middle" font-size="8.5" fill="#065f46" font-weight="600">Trust Tiers: ✓ Verified Publisher (blue badge) | 🔏 SLSA Provenance (sigstore Rekor link) | none = signal</text>
-
-  <!-- BAND C: Dependency Tree + Vuln -->
-  <rect x="8" y="268" width="878" height="16" rx="3" fill="#d97843" opacity="0.2"/>
-  <text x="450" y="280" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">PATH C — DEPENDENCY TREE + OSV VULN OVERLAY (depth=1 lazy; click expand; cycle detection; flat list)</text>
-
-  <line x1="54" y1="298" x2="337" y2="298" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="195" y="292" text-anchor="middle" font-size="9" fill="#374151">GET /dependencies?depth=1 → direct deps tree nodes</text>
-
-  <line x1="54" y1="312" x2="493" y2="312" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-o)"/>
-  <text x="273" y="306" text-anchor="middle" font-size="9" fill="#374151">GET /advisories per dep → OSV CVE overlay: 🔴 critical / 🟠 high / 🟡 med badge per node</text>
-
-  <line x1="54" y1="328" x2="337" y2="328" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
-  <text x="195" y="340" text-anchor="middle" font-size="9" fill="#374151">click node → GET /deps/{name}?depth=1; visited Set for cycle → leaf "circular" label; flat=true de-dup</text>
-
-  <!-- BAND D: Bundle Size -->
-  <rect x="8" y="354" width="878" height="16" rx="3" fill="#7c3aed" opacity="0.15"/>
-  <text x="450" y="366" text-anchor="middle" font-size="9" fill="#5b21b6" font-weight="bold">PATH D — BUNDLE SIZE ANALYSIS (server-cached per version; minified+gzip+brotli; version delta compare)</text>
-
-  <line x1="54" y1="384" x2="649" y2="384" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="351" y="378" text-anchor="middle" font-size="9" fill="#374151">click Bundle tab → GET /bundle-size?pkg=react@18.2.0 (cached; server bundles in sandbox)</text>
-
-  <line x1="649" y1="398" x2="64" y2="398" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr-g)"/>
-  <text x="356" y="392" text-anchor="middle" font-size="9" fill="#374151">44KB min / 14KB gz / 12KB br → bar vs jQuery(87KB)/lodash(71KB) reference; compare v18 vs v17 delta</text>
-
-  <!-- BAND E: Owner Controls -->
-  <rect x="8" y="414" width="878" height="16" rx="3" fill="#be123c" opacity="0.15"/>
-  <text x="450" y="426" text-anchor="middle" font-size="9" fill="#9f1239" font-weight="bold">PATH E — OWNER CONTROLS (deprecate/unpublish &lt;72h; re-auth gate; downstream impact count)</text>
-
-  <line x1="54" y1="444" x2="821" y2="444" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-r)"/>
-  <text x="437" y="438" text-anchor="middle" font-size="9" fill="#374151">owner clicks Unpublish → re-auth → confirm modal: "847 packages depend on this version"</text>
-
-  <line x1="821" y1="458" x2="64" y2="458" stroke="#be123c" stroke-width="2" marker-end="url(#arr-g)"/>
-  <text x="437" y="452" text-anchor="middle" font-size="9" fill="#374151">DELETE /versions/{version} (≤72h self-service; &gt;72h → support ticket) | PATCH /deprecate + message</text>
-
-  <line x1="54" y1="476" x2="821" y2="476" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
-  <text x="437" y="488" text-anchor="middle" font-size="9" fill="#374151">add/remove maintainers (owner role); enforce 2FA for publish; advisory banner: critical CVE header</text>
-
-  <!-- Metrics footer -->
-  <rect x="8" y="502" width="878" height="50" rx="6" fill="#1a1822"/>
-  <text x="70" y="520" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Typosquat</text>
-  <text x="70" y="538" text-anchor="middle" font-size="12" fill="white" font-weight="700">Lev ≤2 / 1000</text>
-
-  <text x="215" y="520" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">CDN Cache</text>
-  <text x="215" y="538" text-anchor="middle" font-size="12" fill="white" font-weight="700">300s SWR 3600</text>
-
-  <text x="380" y="520" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Dep Tree</text>
-  <text x="380" y="538" text-anchor="middle" font-size="12" fill="white" font-weight="700">lazy depth=1</text>
-
-  <text x="540" y="520" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">OSV Cache</text>
-  <text x="540" y="538" text-anchor="middle" font-size="12" fill="white" font-weight="700">1hr + webhook</text>
-
-  <text x="700" y="520" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Unpublish</text>
-  <text x="700" y="538" text-anchor="middle" font-size="12" fill="white" font-weight="700">&lt;72h window</text>
-
-  <text x="855" y="520" text-anchor="middle" font-size="9" fill="#fecdd3" font-weight="600">SLSA</text>
-  <text x="855" y="538" text-anchor="middle" font-size="12" fill="white" font-weight="700">sigstore Rekor</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Package Registry Ui: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Package Registry Ui: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">runner</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">developer experience systems</text>
+  <path d="M480 286 C566.6630822650743 291.90403804067563, 637.5692404819533 306.83778132003164, 707 309" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="707" cy="309" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="707" y="314" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">policy</text><path d="M480 286 C510.09777261265884 317.9495491067209, 534.723222932107 398.763114494309, 570 425" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="570" cy="425" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="570" y="430" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">owner</text><path d="M480 286 C423.43469034758454 312.04551106604526, 377.1539824501537 377.92533317427734, 332 413" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="332" cy="413" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="332" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">rollback</text><path d="M480 286 C393.3369177349257 280.09596195932437, 322.4307595180467 265.16221867996836, 220 263" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="220" cy="263" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="220" y="268" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">logs</text><path d="M480 286 C449.9022273873411 254.0504508932791, 425.2767770678929 173.23688550569102, 401 147" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="401" cy="147" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="401" y="152" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">docs</text><path d="M480 286 C536.5653096524154 259.95448893395474, 582.8460175498462 194.07466682572263, 650 159" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="650" cy="159" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="650" y="164" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">package</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>

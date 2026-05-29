@@ -1,70 +1,90 @@
-/**
- * Comment Thread — Staff-Level Real-Time Collaboration.
- *
- * Staff differentiator: CRDT-based comment ordering for concurrent edits,
- * presence indicators for users viewing the same thread, and optimistic
- * comment posting with server reconciliation.
- */
+export type commentThreadRuntimeState = {
+  topic: "comment-thread";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-export interface CommentPresence {
-  userId: string;
-  userName: string;
-  cursorPosition: { commentId: string; charOffset: number } | null;
-  lastActive: number;
+export type commentThreadRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Manages real-time presence for users viewing the same comment thread.
- */
-export class CommentPresenceManager {
-  private presences: Map<string, CommentPresence> = new Map();
-  private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
-  private readonly TIMEOUT_MS = 10000; // 10s without heartbeat = offline
+export function planCommentThreadRecovery(
+  state: commentThreadRuntimeState,
+  nowMs: number,
+): commentThreadRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: commentThreadRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  /**
-   * Updates presence for a user.
-   */
-  updatePresence(userId: string, userName: string, cursorPosition: CommentPresence['cursorPosition']): void {
-    this.presences.set(userId, { userId, userName, cursorPosition, lastActive: Date.now() });
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Removes a user's presence.
-   */
-  removePresence(userId: string): void {
-    this.presences.delete(userId);
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Returns all active presences (users who sent a heartbeat within the timeout).
-   */
-  getActivePresences(): CommentPresence[] {
-    const now = Date.now();
-    return Array.from(this.presences.values()).filter((p) => now - p.lastActive < this.TIMEOUT_MS);
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  /**
-   * Starts the heartbeat interval for presence broadcasting.
-   */
-  startHeartbeat(broadcastFn: (presence: CommentPresence) => void, myUserId: string, myUserName: string): void {
-    this.heartbeatInterval = setInterval(() => {
-      const presence: CommentPresence = {
-        userId: myUserId,
-        userName: myUserName,
-        cursorPosition: null,
-        lastActive: Date.now(),
-      };
-      broadcastFn(presence);
-    }, 3000);
-  }
+export function runCommentThreadEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planCommentThreadRecovery(
+    {
+      topic: "comment-thread",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
 
-  /**
-   * Stops the heartbeat.
-   */
-  stopHeartbeat(): void {
-    if (this.heartbeatInterval) {
-      clearInterval(this.heartbeatInterval);
-      this.heartbeatInterval = null;
-    }
-  }
+  const failure = planCommentThreadRecovery(
+    {
+      topic: "comment-thread",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Comment Thread",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

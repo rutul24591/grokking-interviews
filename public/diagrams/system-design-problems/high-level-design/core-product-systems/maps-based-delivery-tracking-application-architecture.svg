@@ -1,53 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Maps-based delivery tracking application architecture">
-  <defs>
-    <style>
-      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
-      .muted { fill: #334155; }
-      .h { font-weight: 700; }
-      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
-      .chip { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
-      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
-      .arrow { fill: #64748b; }
-      @media (prefers-color-scheme: dark) {
-        .t { fill: #e5e7eb; }
-        .muted { fill: #cbd5e1; }
-        .box { fill: #0b1220; stroke: #334155; }
-        .chip { fill: #111827; stroke: #334155; }
-        .line { stroke: #94a3b8; }
-        .arrow { fill: #94a3b8; }
-      }
-    </style>
-  </defs>
-  <text class="t h" x="40" y="54" font-size="22">Delivery Tracking: Snapshot + Stream, Privacy-scoped Token</text>
-  <text class="t muted" x="40" y="78" font-size="13">Client smooths updates and shows freshness</text>
-
-  <rect class="box" x="40" y="120" width="300" height="340" rx="14"/>
-  <text class="t h" x="60" y="150" font-size="16">Client</text>
-  <rect class="chip" x="60" y="170" width="260" height="70" rx="10"/>
-  <text class="t" x="74" y="196" font-size="13">Map renderer</text>
-  <text class="t muted" x="74" y="216" font-size="12">Marker + route layers</text>
-  <rect class="chip" x="60" y="254" width="260" height="90" rx="10"/>
-  <text class="t" x="74" y="280" font-size="13">Tracking subscription</text>
-  <text class="t muted" x="74" y="300" font-size="12">Stream with polling fallback</text>
-  <text class="t muted" x="74" y="318" font-size="12">Smoothing + staleness detection</text>
-
-  <rect class="box" x="390" y="160" width="240" height="150" rx="14"/>
-  <text class="t h" x="410" y="190" font-size="15">Tracking Service</text>
-  <text class="t muted" x="410" y="214" font-size="12">Delivery snapshot + location deltas</text>
-  <text class="t muted" x="410" y="234" font-size="12">Access via expiring token</text>
-
-  <rect class="box" x="680" y="160" width="240" height="150" rx="14"/>
-  <text class="t h" x="700" y="190" font-size="15">Realtime Relay</text>
-  <text class="t muted" x="700" y="214" font-size="12">Batched updates to viewers</text>
-  <text class="t muted" x="700" y="234" font-size="12">Fallback to polling if down</text>
-
-  <rect class="box" x="680" y="330" width="240" height="130" rx="14"/>
-  <text class="t h" x="700" y="360" font-size="15">Map Tiles CDN</text>
-  <text class="t muted" x="700" y="384" font-size="12">Tile caching + throttling</text>
-
-  <path class="line" d="M340 240 L380 240" />
-  <polygon class="arrow" points="380,240 372,236 372,244"/>
-  <path class="line" d="M630 230 L670 230" />
-  <polygon class="arrow" points="670,230 662,226 662,234"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Maps Based Delivery Tracking Application Architecture: route overlay</title>
+  <desc id="desc">Route, locality, and accuracy overlay for core product systems.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Maps Based Delivery Tracking Application Architecture: route overlay</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Route, locality, and accuracy overlay for core product systems.</text>
+  <rect x="70" y="120" width="820" height="342" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M112 394 C198 286, 276 328, 354 248 S510 160, 614 242 S748 356, 846 220" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M118 178 C238 206, 330 138, 458 190 S668 226, 836 152" fill="none" stroke="#16a34a" stroke-width="3" stroke-dasharray="9 8"/>
+  <circle cx="152" cy="370" r="32" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7" opacity="0.95"/><text x="152" y="375" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">client</text><circle cx="310" cy="300" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7" opacity="0.95"/><text x="310" y="305" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">state</text><circle cx="468" cy="240" r="32" fill="#fef3c7" stroke="#d97706" stroke-width="1.7" opacity="0.95"/><text x="468" y="245" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">service</text><circle cx="626" cy="230" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7" opacity="0.95"/><text x="626" y="235" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text><circle cx="784" cy="258" r="32" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7" opacity="0.95"/><text x="784" y="263" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">risk</text>
+  <rect x="220" y="424" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="284" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">SLO</text><rect x="390" y="424" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">audit</text><rect x="560" y="424" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="624" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">recover</text>
 </svg>
-

@@ -1,70 +1,90 @@
-/**
- * Breadcrumb — Staff-Level Dynamic Breadcrumb Generation from Routes.
- *
- * Staff differentiator: Auto-generates breadcrumbs from route definitions,
- * handles dynamic route segments with API-based label resolution,
- * and supports multi-tenant breadcrumb customization.
- */
+export type breadcrumbComponentRuntimeState = {
+  topic: "breadcrumb-component";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-export interface RouteDefinition {
-  path: string;
-  label: string;
-  children?: RouteDefinition[];
-  isDynamic?: boolean;
-  resolver?: (segment: string) => Promise<string>;
+export type breadcrumbComponentRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Generates breadcrumbs from the current URL path and route definitions.
- */
-export async function generateBreadcrumbsFromRoutes(
-  currentPath: string,
-  routes: RouteDefinition[],
-  baseUrl: string = '',
-): Promise<Array<{ label: string; href: string; isCurrent: boolean }>> {
-  const segments = currentPath.split('/').filter(Boolean);
-  const breadcrumbs: Array<{ label: string; href: string; isCurrent: boolean }> = [];
+export function planBreadcrumbComponentRecovery(
+  state: breadcrumbComponentRuntimeState,
+  nowMs: number,
+): breadcrumbComponentRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: breadcrumbComponentRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  let currentRoute: RouteDefinition | undefined = { path: '', label: 'Home', children: routes };
-  let accumulatedPath = '';
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-  for (let i = 0; i < segments.length; i++) {
-    const segment = segments[i];
-    accumulatedPath += `/${segment}`;
-
-    // Find matching route
-    const matchingRoute = currentRoute?.children?.find(
-      (r) => r.path === segment || (r.isDynamic && r.resolver),
-    );
-
-    if (matchingRoute) {
-      let label = matchingRoute.label;
-
-      // Resolve dynamic segment label
-      if (matchingRoute.isDynamic && matchingRoute.resolver) {
-        try {
-          label = await matchingRoute.resolver(segment);
-        } catch {
-          label = segment; // Fallback to raw segment
-        }
-      }
-
-      breadcrumbs.push({
-        label,
-        href: `${baseUrl}${accumulatedPath}`,
-        isCurrent: i === segments.length - 1,
-      });
-
-      currentRoute = matchingRoute;
-    } else {
-      // No matching route — use segment as label
-      breadcrumbs.push({
-        label: segment,
-        href: `${baseUrl}${accumulatedPath}`,
-        isCurrent: i === segments.length - 1,
-      });
-    }
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  return breadcrumbs;
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runBreadcrumbComponentEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planBreadcrumbComponentRecovery(
+    {
+      topic: "breadcrumb-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planBreadcrumbComponentRecovery(
+    {
+      topic: "breadcrumb-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Breadcrumb Component",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

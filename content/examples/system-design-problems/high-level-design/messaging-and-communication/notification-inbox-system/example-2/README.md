@@ -1,1 +1,5 @@
-# Design a notification inbox system — Example 2
+# Notification Inbox System - Example 2
+
+Concrete messaging production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

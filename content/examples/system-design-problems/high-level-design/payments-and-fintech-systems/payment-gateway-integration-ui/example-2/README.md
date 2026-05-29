@@ -1,1 +1,5 @@
-# Design a payment gateway integration UI (like Stripe checkout) — Example 2
+# Payment Gateway Integration UI - Example 2
+
+Concrete payments production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

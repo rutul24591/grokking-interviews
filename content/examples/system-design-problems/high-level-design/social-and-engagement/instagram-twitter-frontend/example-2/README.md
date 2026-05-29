@@ -1,1 +1,5 @@
-# Design Instagram / Twitter frontend — Example 2
+# Instagram Twitter Frontend - Example 2
+
+Concrete social engagement production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

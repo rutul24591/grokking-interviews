@@ -97,12 +97,12 @@
     <text x="700" y="430" font-size="10" fill="#374151">entryCount: 256</text>
     <text x="700" y="446" font-size="10" fill="#374151">hitRate: 72%</text>
     <text x="700" y="462" font-size="10" fill="#374151">missRate: 28%</text>
-    <text x="700" y="480" font-size="9" fill="#6b7280">Monitor & trigger eviction</text>
+    <text x="700" y="480" font-size="9" fill="#6b7280">Monitor &amp; trigger eviction</text>
   </g>
 
   <!-- Cache Operations -->
   <g>
-    <text x="100" y="540" font-size="16" font-weight="bold" fill="#1a1a1a">Cache Operations & Scenarios</text>
+    <text x="100" y="540" font-size="16" font-weight="bold" fill="#1a1a1a">Cache Operations &amp; Scenarios</text>
 
     <!-- Set Operation -->
     <rect x="30" y="570" width="280" height="110" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="4"/>

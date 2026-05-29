@@ -7,113 +7,146 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-content-creation-studio",
-  title: "Design a Content Creation Studio (Image/Video Editing)",
-  description:
-    "Architecture for a browser-based content creation studio: Canvas 2D / WebGL rendering engine with dirty-flag compositor, non-destructive layer system with blend modes, Command-pattern undo/redo (50 steps), tool pipeline (brush/pen/select/text/crop), image adjustments as adjustment layers, video timeline editor with WebCodecs, client-side PNG/WebP export, and server-side FFmpeg video render with SSE progress.",
+  title: "Design a Content Creation Studio",
+  description: "Principal-level media-rich system design covering draft lifecycle, asset management, collaborative review, rendering, publishing, policy checks, and rollback.",
   category: "high-level-design",
   subcategory: "media-rich-content-systems",
   slug: "content-creation-studio",
-  wordCount: 5100,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "canvas", "webgl", "image-editing", "video-editing", "layers", "undo", "ffmpeg", "webcodecs"],
-  relatedTopics: ["canvas-webgl-design-tool", "media-upload-processing-pipeline"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "media", "frontend", "performance", "reliability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Content Creation Studio is a media-rich product system, not just a visual component. It must coordinate browser capabilities, large binary assets, local editing state, background jobs, CDN or storage behavior, permissions, abuse policy, and user-facing recovery. The main challenge is that media work is expensive: bytes are large, decoding is CPU-intensive, rendering can block interaction, and failures are often visible immediately.",
+  "The goal is to design a content creation studio around draft lifecycle, asset management, collaborative review, rendering, publishing, policy checks, and rollback. A principal-ready answer should explain the client runtime, backend control plane, asynchronous processing, storage and CDN strategy, consistency model, failure handling, cost controls, and observability.",
+  "Media systems differ from ordinary CRUD systems because derived artifacts are first-class. Thumbnails, transcripts, waveforms, previews, tiles, manifests, captions, encodes, annotations, and exports are projections. They can lag or be regenerated, while original assets, permissions, and user edits need stronger durability.",
+  "The product should define which state must survive refresh, which can be recomputed, which is private, which can be cached publicly, and which requires moderation or entitlement checks. Without this classification, media systems leak private assets, lose drafts, overrun device memory, or create inconsistent playback and editing experiences.",
+  "A staff/principal answer should also cover operational ownership. Playback teams own QoE and buffer behavior; creation teams own draft recovery and export correctness; platform teams own storage, CDN, transcoding, and abuse controls; product teams decide when to degrade rich media to simpler experiences."
+];
+const concepts = [
+  "The first concept is asset lifecycle. Raw uploads, derived previews, published artifacts, and deleted or redacted versions have different durability, cacheability, and privacy rules. draft graph and media library should never be treated as one generic blob path.",
+  "The second concept is bounded client resources. Media-rich pages must manage memory, GPU, CPU, and network budgets. Large canvases, long documents, video buffers, waveforms, and image grids need virtualization, eviction, and adaptive quality.",
+  "The third concept is asynchronous processing. Many operations cannot complete during the request: transcoding, scanning, rendering, exporting, OCR, waveform generation, and moderation. The UI needs job state, retry, cancellation where safe, and clear user messaging.",
+  "The fourth concept is consistency. Original assets and permissions are authoritative. Derived media and previews can be eventually consistent, but must carry version identifiers so stale thumbnails, captions, annotations, or manifests do not appear as current truth.",
+  "The fifth concept is abuse and safety. Media can contain malware, copyrighted material, unsafe content, personal data, or policy-violating streams. Scanning, moderation, rate limits, reporting, and takedown propagation are part of the system design, not add-ons.",
+  "The sixth concept is observability. Track startup time, decode time, render frame drops, upload retry rate, processing queue age, export success, CDN hit ratio, moderation delay, permission-denied rate, and client memory pressure."
+];
+const architecture = [
+  "The recommended architecture has five surfaces: draft graph, media library, review workflow, renderer, publish gate. The client owns responsive interaction and local recovery. The API layer owns permissions, idempotency, and job creation. The processing plane owns expensive asynchronous work. Storage and CDN own asset distribution. Observability ties user symptoms to asset version, job ID, route, release, and device cohort.",
+  "A user action should create durable intent before expensive processing begins. Uploads create sessions and chunk manifests. Edits update a draft log or document model. Playback records manifest and entitlement state. Exports create jobs with immutable input versions. This lets the system retry safely after browser refresh, worker failure, or regional outage.",
+  "Derived artifacts should be keyed by source version and transformation parameters. If a video is re-encoded, a PDF is redacted, or a design file changes, old previews must not be confused with new ones. CDN invalidation should be precise and, where possible, replaced by versioned URLs.",
+  "The client should render progressive states: placeholder, partial preview, processing, ready, failed, retryable, permission blocked, or policy blocked. These states are product semantics, not generic spinners. They tell users whether to wait, retry, change input, or contact support.",
+  "The system should separate interactive paths from batch-heavy paths. Playback controls, editing cursor, annotation placement, and draft typing need low latency. Transcoding, full export, OCR, deep scanning, and global indexing can run asynchronously with backpressure.",
+  "The diagrams show architecture, flow, and operations: the architecture view explains ownership boundaries, the flow view explains user intent through processing and delivery, and the operations view explains queue pressure, recovery, moderation, and QoE control loops."
+];
+const tradeoffs = [
+  "Client-heavy processing can feel instant and reduce server cost, but it is limited by device capability, browser support, battery, and memory. Server-heavy processing is more predictable and easier to moderate, but adds queue latency and infrastructure cost. Mature systems usually use a hybrid.",
+  "Eagerly generating every derivative gives fast later reads but wastes compute for assets that are never viewed. Lazy generation saves cost but can make first access slow. Principal designs choose by product criticality: thumbnails and safety scans are often eager; rare export formats can be lazy.",
+  "Public CDN caching is excellent for published media but dangerous for private, permissioned, or recently revoked assets. Permissioned media needs signed URLs, short TTLs, versioned keys, and takedown propagation. The cache key is a security boundary.",
+  "Optimistic editing improves flow, but edits need durable logs, conflict resolution, and recovery. For collaborative or offline editing, the design must choose OT, CRDT, server-authoritative locking, or merge-on-save based on the shape of the document and expected collaboration intensity.",
+  "High visual fidelity competes with performance. A player can drop quality to avoid rebuffering; an editor can lower preview resolution while keeping export fidelity; a PDF viewer can render visible pages first. The product should make these trade-offs intentionally.",
+  "Moderation before publication reduces user harm but slows creator workflows. Moderation after publication improves speed but can amplify abuse. Risk-based gating is usually better than one rule for every asset.",
+  "Observability itself has cost and privacy risk. Capture event class, performance timings, asset IDs, and job IDs, but avoid logging raw document content, private annotations, media URLs with secrets, or user-entered text."
+];
+const practices = [
+  "Model media as a lifecycle with immutable source versions, derived artifact versions, processing jobs, permission state, and deletion or redaction state. Make every derived object traceable to the source version that produced it.",
+  "Use resumable upload and idempotent job creation. Browser crashes, mobile backgrounding, network loss, and worker retries should converge on one upload or processing job rather than duplicate assets.",
+  "Keep interactive paths small. Use virtualization, bounded buffers, progressive decoding, idle work, worker threads where appropriate, and adaptive quality for constrained devices.",
+  "Design explicit states for processing and failure. Users should know whether an asset is uploading, scanning, processing, ready, blocked, expired, or failed permanently. Support should see the same state with job history.",
+  "Protect permissions at every derived surface: original file, thumbnail, transcript, annotation, search result, share preview, CDN URL, export, and notification. Derived media is often where privacy leaks happen.",
+  "Build operational dashboards around user symptoms: playback startup, rebuffer, export queue age, upload resume success, annotation conflict rate, frame drops, failed processing jobs, and moderation SLA.",
+  "Provide rollback controls for codecs, rendering engines, export workers, feature flags, and CDN publication. Media regressions can be severe because old clients and assets remain in circulation."
+];
+const pitfalls = [
+  "A common pitfall is treating media as static files. In production, media has permissions, versions, processing state, cache state, moderation state, and support history.",
+  "stale drafts becomes visible quickly because media UX has little tolerance for pauses, jumps, or lost work. The design needs either prevention or honest recovery.",
+  "asset loss is often caused by mixing interactive and batch work in one path. Expensive jobs should not block low-latency controls unless the product absolutely requires it.",
+  "policy block needs explicit ownership and retry semantics. If a job can fail after the user leaves, there must be notification, retry, support visibility, or compensating state.",
+  "bad render should be considered during design, not after launch. Media products are natural abuse targets because images, video, documents, and streams can carry harmful or sensitive content.",
+  "Another pitfall is missing cost governance. Transcoding, rendering, OCR, storage replication, CDN egress, and telemetry can dominate cost if the system eagerly processes every variant without demand signals."
+];
+const useCases = [
+  "Marketing campaign studio exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Creator publishing suite exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Enterprise knowledge authoring exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "An interviewer may push on device constraints. A strong answer explains how the UI adapts quality, bounds memory, uses background work carefully, and preserves the primary task when CPU or GPU is constrained.",
+  "An interviewer may push on privacy. The answer should explain signed URLs, derived artifact permissions, local cache clearing, redaction propagation, and avoiding sensitive telemetry.",
+  "An interviewer may push on incidents. The answer should cover queue backlog, worker rollback, CDN purge or versioning, disabled formats, degraded preview, and support-visible job history."
+];
+const questions = [
+  {
+    "question": "How would you design a content creation studio end to end?",
+    "answer": "I would model the media lifecycle first: source asset or document state, derived artifacts, permissions, processing jobs, client presentation, and operational telemetry. The client handles responsive interaction and local recovery, APIs enforce permission and idempotency, workers perform expensive processing, storage and CDN serve versioned artifacts, and observability links user symptoms back to asset version and job ID."
+  },
+  {
+    "question": "Why choose this architecture over a simpler upload-and-display design?",
+    "answer": "A simple upload-and-display design ignores derived artifacts, processing failures, permissions, moderation, cache invalidation, and device limits. It works for prototypes but fails when assets are large, private, collaborative, or safety-sensitive. The layered architecture adds complexity, but it isolates expensive work, makes retries safe, and gives operators control during incidents."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are stale drafts, asset loss, policy block, bad render. Scale also exposes CDN egress cost, processing queue backlog, hot assets, cache stampedes, memory pressure, long-tail device issues, and moderation delay. The prevention strategy is versioned artifacts, backpressure, adaptive quality, bounded client memory, queue observability, and remote rollback controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Original assets, permissions, and durable user edits need strong ownership and versioning. Derived media such as thumbnails, transcripts, previews, indexes, and exports can be eventually consistent, but must carry source version IDs and visible processing state. Collaborative editing may require CRDT, OT, or server-authoritative conflict resolution depending on the data model."
+  },
+  {
+    "question": "How do you handle failure, privacy, cost, and observability?",
+    "answer": "Failures are handled through resumable uploads, idempotent jobs, retryable processing, clear user states, and support-visible job history. Privacy requires permission checks on every derived surface, signed URLs, redaction propagation, and careful local storage. Cost is controlled through demand-aware derivative generation, cache hit targets, storage lifecycle policy, and telemetry sampling. Observability tracks QoE, queue age, job failures, cache behavior, and client resource pressure."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate interactive latency from batch processing, original truth from derived artifacts, and public assets from permissioned assets. Then I would explain which parts are optimized for immediacy, which are optimized for correctness, and which degrade during load or device pressure. That makes the trade-off defensible rather than generic."
+  }
+];
+const references = [
+  {
+    "label": "MDN: Media Source Extensions",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+  },
+  {
+    "label": "MDN: WebCodecs API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API"
+  },
+  {
+    "label": "W3C: Media Source Extensions",
+    "href": "https://www.w3.org/TR/media-source-2/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WebRTC specifications",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function ContentCreationStudioArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A browser-based content creation studio (think Canva, Adobe Express, or Figma's image editing mode) must provide near-native editing performance for raster and vector operations while running entirely in the browser. The core technical challenges are: a rendering engine that composites multiple layers with blend modes and opacity at 60 fps without redrawing the entire canvas on every change; a tool system where each tool (brush, pen, select, text, crop) has its own interaction model and produces reversible operations compatible with an undo stack; non-destructive adjustments (brightness, contrast, filters) that can be re-parameterized at any time without permanently altering the underlying pixel data; and an export pipeline that produces industry-standard output formats for both raster (PNG, JPEG, WebP) and video (MP4, WebM) outputs.</HighlightBlock>
-        <p>The layer model is the central architectural decision. Each layer is an independent Canvas element (for raster layers) or an SVG fragment (for vector/text layers). Compositing layers means rendering them in order onto a single output canvas, applying each layer's opacity and blend mode. The dirty-flag optimization tracks which layers have changed since the last frame and only re-renders those layers plus all layers above them (since a change to a lower layer affects the composite result for everything above it).</p>
-        <p><strong>Explicit assumptions:</strong> Raster operations (brush strokes, pixel adjustments) use Canvas 2D API for compatibility, with WebGL acceleration for filter kernels and compositing on supported browsers. Video editing is limited to trim, cut, and basic transition operations; complex effects are rendered server-side with FFmpeg. The project state (layers, adjustments, metadata) is serialized as JSON + per-layer base64 PNG, stored in IndexedDB for offline access and synced to the server on export.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/content-creation-studio-architecture.svg" alt="Design a Content Creation Studio architecture" caption="Architecture view: media lifecycle, client runtime, processing plane, storage, CDN, and control boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/content-creation-studio-export.svg" alt="Design a Content Creation Studio flow" caption="Flow view: user intent, rendering or processing progression, fallback, and recovery states." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/content-creation-studio-operations.svg" alt="Design a Content Creation Studio operations" caption="Operations view: queue pressure, permission enforcement, moderation, QoE, rollback, and support visibility." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Layer system:</strong> Unlimited layers with opacity (0–100%), blend modes (normal, multiply, screen, overlay, color-dodge, luminosity), visibility toggle, and lock. Layers can be grouped, merged, flattened, and reordered by drag.</li>
-          <li><strong>Tools:</strong> Selection (move and resize), Brush (pressure-sensitive opacity/size), Pen (Bezier curve path builder), Text (typeface, size, weight, alignment, wrap), Crop (free and ratio-locked), Eraser (pixel and layer), Clone Stamp (sample region), and Lasso/Magic Wand selection tools.</li>
-          <li><strong>Non-destructive adjustments:</strong> Brightness/Contrast, Saturation/Hue/Vibrance, Curves (per-channel RGB splines), Levels, Color Balance, Vignette, and Grain stored as adjustment layers that are re-applied every render.</li>
-          <li><strong>Video timeline:</strong> Import video clips, trim (drag clip edges), split (at playhead position), apply cross-dissolve and fade transitions, add an audio track, and preview at reduced quality in the browser.</li>
-          <li><strong>Undo/Redo:</strong> 50-step history implemented via the Command pattern. Each operation is an object with execute() and undo() methods. Undo restores the exact prior state (not a re-computation).</li>
-          <li><strong>Export:</strong> Image export (PNG, JPEG, WebP, at 1×/2×/3× or 300 DPI) in-browser. Video export (MP4, WebM, GIF) via server-side FFmpeg with SSE progress tracking.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Brush latency:</strong> Pointer events must result in visible pixel changes within 8ms to feel pressure-responsive.</li>
-          <li><strong>Frame rate:</strong> The canvas compositor must sustain 60 fps during tool interactions, layer reordering, and preview of non-destructive adjustments.</li>
-          <li><strong>Export speed:</strong> A 4K PNG export must complete within 1.5 seconds (Canvas toBlob API is asynchronous and can be performed without blocking the UI).</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The studio has three logical subsystems. The rendering engine: manages the scene graph (ordered list of layers with properties), runs a requestAnimationFrame loop, uses dirty flags to determine what needs re-rendering each frame, and composites layers onto the output canvas. The tool system: a state machine per tool that handles pointer events (pointerdown, pointermove, pointerup), builds operations from user gestures, executes those operations immediately on the canvas (for preview), and commits finalized operations to the history stack. The state/storage system: the Zustand store holds the current project state (layer list, tool, selection, adjustment params), IndexedDB stores auto-saved project snapshots, and the server stores version history for collaboration and recovery.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/content-creation-studio-architecture.svg"
-          alt="Content creation studio architecture showing canvas rendering engine (scene graph layers objects z-order → transform stack translate scale rotate → dirty-flag compositor only re-draw changed regions → rAF render loop requestAnimationFrame 60fps → Canvas 2D WebGL GPU-accelerated compositing → hit testing pointer-over object detection → event dispatch tool handlers keyboard), layer system (Layer 4 text overlay, Layer 3 adjustment Curves, Layer 2 image blend multiply, Layer 1 background; layer properties opacity 0-100% blend mode normal multiply screen overlay color-dodge luminosity locked visible clipping mask group; layer operations merge down flatten group duplicate reorder drag), tool pipeline (Select move resize, Brush pressure opacity, Pen Bezier anchor handles, Text typeface wrap, Crop ratio lock free, Eraser pixel layer, Clone Stamp src sample region, Lasso Wand selection modes; tool state machine idle pointerdown drawing pointermove drawing pointerup commit push to history stack commit rasterize stroke to active layer canvas Ctrl+Z pop history undo up to 50 steps), image adjustments and export (non-destructive adjustments brightness contrast saturation hue vibrance curves RGB channel splines levels black mid white point color balance shadows mids highlights vignette grain stored as adjustment layers re-applied each render non-destructive; filters pipeline blur sharpen noise emboss edge detect CSS filter fallback fast vs kernel convolution quality WebGL fragment shader GPU-accelerated kernels; export pipeline PNG JPEG quality slider WebP SVG vector layers PDF), video timeline editor (trim drag clip edges split click playhead S transition cross-dissolve fade WebCodecs for frame decode, audio waveform track, playhead), undo redo stack auto-save (history stack up to 50 commands Command pattern each command has execute plus undo, auto-save debounce 3s IndexedDB draft full canvas state as PNG per layer plus JSON metadata)."
-          caption="Canvas rendering engine (scene graph → dirty-flag compositor → rAF 60fps → WebGL), layer system (blend modes + adjustment layers), tool pipeline with state machine, image adjustments, video timeline, and Command-pattern undo"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Canvas Rendering Engine</h3>
-        <p>The rendering engine runs a requestAnimationFrame loop. Each frame: (1) check the dirty flags for each layer. (2) For each dirty layer, re-render that layer's canvas from its source data (raster pixels or SVG). (3) Composite all layers from bottom to top onto the output canvas, applying each layer's globalAlpha (opacity) and globalCompositeOperation (blend mode). (4) Clear dirty flags. (5) Schedule the next frame with requestAnimationFrame.</p>
-        <p>Dirty-flag optimization: only layers that have been modified since the last frame are re-rendered. A move operation on layer 3 marks only layer 3 dirty—but the compositor still re-reads all layers above layer 3 (since the composite result changes). For a typical project with 10 layers where only the top layer changes (active painting), only one layer is re-rendered, and the compositor reads 10 layers. This is much faster than re-rendering all 10 layers from source data.</p>
-        <HighlightBlock as="p" tier="important">WebGL compositing: for blend modes not supported by Canvas 2D's globalCompositeOperation (such as Luminosity, Color, and Color-Dodge in their exact Photoshop-spec behavior), a WebGL path is used. Each layer's canvas is uploaded as a WebGL texture, and a fragment shader implements the blend mode formula exactly. This is also used for filter kernels (blur, sharpen, convolution matrices) where GPU parallelism provides significant speedup over CPU-based pixel iteration.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Hit testing: when the user clicks on the canvas in Select mode, the engine must determine which layer's object was clicked. For raster layers, this is done by reading the pixel at the click coordinates on each layer's canvas from top to bottom and returning the first non-transparent pixel's layer (using ctx.getImageData at the click point). For vector/shape layers, geometric hit testing is used (checking if the point is inside a path or bounding box).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Destructive Adjustment Layers</h3>
-        <p>Adjustment layers do not modify the pixel data of lower layers—they are applied as post-processing steps during compositing. An adjustment layer is stored as a set of parameters (e.g., Curves: &#123;redSpline: [...], greenSpline: [...], blueSpline: [...]&#125;). During compositing, when the compositor encounters an adjustment layer, it applies the adjustment's pixel transformation to the composited result of all layers below it, then continues compositing layers above.</p>
-        <HighlightBlock as="p" tier="important">Curves implementation: the curve is defined by a set of control points on the [0,255] → [0,255] transfer function. At render time, the control points are interpolated (using cubic spline or monotone Hermite interpolation) to produce a 256-entry lookup table (LUT). The compositor applies the LUT to every pixel below the adjustment layer using a pixel-level loop (for small canvases) or a WebGL fragment shader lookup (for large canvases). Because the LUT is precomputed from the control points, the per-pixel cost is O(1) per channel—a single array lookup.</HighlightBlock>
-        <p>Non-destructive nature: the user can double-click the adjustment layer at any time and change the curve control points. The LUT is recomputed and the compositor re-applies the adjustment on the next frame. The original pixel data of lower layers is untouched throughout. This is in contrast to a destructive adjustment, which would permanently modify the pixel values of lower layers.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Tool System and Command Pattern</h3>
-        <p>Each tool is implemented as a state machine with three event handlers: onPointerDown (initialize the operation: record starting coordinates, create a preview layer), onPointerMove (update the preview in real time: draw to the preview layer without committing to history), and onPointerUp (commit the operation: merge the preview layer into the active layer, create a Command object, push it to the history stack).</p>
-        <p>The Command pattern for undo: each committed operation creates a Command object with two methods. execute() applies the change (used for redo—re-applying a previously undone command). undo() reverts the change. For a BrushCommand, execute() draws the stroke's recorded path to the layer canvas, and undo() restores the pixel region covered by the stroke from a saved ImageData snapshot (taken before the stroke was applied). For a MoveCommand, execute() repositions the object by (dx, dy), and undo() repositions it by (-dx, -dy). The history stack is a simple array; Ctrl+Z pops the current head and calls undo(); Ctrl+Shift+Z pushes the next command and calls execute(). The stack is capped at 50 entries; when full, the oldest entry is discarded.</p>
-        <p>Brush tool pressure: the Brush tool uses the Pointer Events API (PointerEvent.pressure, 0.0–1.0) to modulate brush size and opacity based on pen pressure (for stylus users). On devices without pressure support (mouse), pressure defaults to 0.5. The brush stroke is built as a series of circle-fills at each sampled pointer position, with radius and globalAlpha proportional to pressure. For smooth curves between sampled points, the positions are interpolated using Catmull-Rom splines before drawing.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Video Timeline Editor</h3>
-        <HighlightBlock as="p" tier="important">The video timeline displays clips on a horizontal scrollable timeline at a configurable scale (pixels per second). Each clip is represented as a colored bar with the clip's thumbnail frames extracted using a Web Worker (HTMLVideoElement.seeked events or WebCodecs VideoDecoder for frame-accurate decoding). Below the video track is the audio waveform track, decoded from the audio source using the Web Audio API's AudioContext.decodeAudioData and rendered as a waveform visualization.</HighlightBlock>
-        <p>Trim: the user drags the left or right edge of a clip bar to trim the clip's in/out points. The display updates in real time (the clip bar shrinks); the actual video frames are not re-encoded until export. In/out points are stored as metadata (startSec, endSec) in the clip object. Split: at the playhead position, a clip is split into two clips at the frame boundary nearest to the playhead. The split is a metadata operation—both new clips reference the same original video source, with adjusted in/out points.</p>
-        <HighlightBlock as="p" tier="important">Browser-side preview: the preview player uses HTMLVideoElement with the MediaSource Extensions API (MSE) to concatenate clips in real time during playback. Alternatively, for short sequences, WebCodecs (VideoDecoder + VideoEncoder) can be used to decode frames from each clip and composite them in a Canvas for frame-accurate preview without gaps between clips.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Export Pipeline</h3>
-        <HighlightBlock as="p" tier="important">Image export uses the Canvas API directly. For PNG and JPEG, canvas.toBlob(callback, type, quality) produces a Blob asynchronously. For WebP (not supported by Safari's toBlob), the canvas ImageData is encoded using the ImageEncoder API (where available) or a fallback WebAssembly encoder. The resulting Blob is downloaded via a temporary anchor element (URL.createObjectURL(blob)). For 2× or 3× resolution export, the canvas is resized (scaling the viewport) and re-rendered at the target resolution before calling toBlob—this is faster than CSS transform scaling because it produces true high-resolution pixels rather than upscaled pixels.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Video export requires server-side rendering because the browser cannot encode multi-clip H.264 video with custom transitions and audio mixing at production quality. The client sends a POST request with the project JSON (clip list with in/out points, transitions, audio tracks, canvas dimensions) to a render API endpoint. A server-side worker (running FFmpeg) renders each clip, applies transitions using FFmpeg's xfade filter, mixes audio, and produces the final MP4. Progress is reported to the client via SSE (Server-Sent Events): one event per frame rendered (render:frame &#123;frame: 240, total: 1800&#125;). The UI displays a progress bar. On completion, the server uploads the rendered video to S3 and the SSE stream sends a render:complete &#123;url: "..."&#125; event. An alternative for short clips (under 60 seconds) is to use the WebCodecs API (VideoEncoder + VideoFrame) directly in a browser Web Worker, avoiding the server round-trip entirely—but WebCodecs produces WebM/VP9 output rather than H.264, and codec support is limited to Chromium-based browsers.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Auto-Save and Project File Format</h3>
-        <HighlightBlock as="p" tier="important">The project is auto-saved every 3 seconds (debounced after the last change) to IndexedDB. The saved state includes the layer list (with each raster layer's canvas serialized as a PNG data URL), the adjustment layer parameters (stored as JSON), the canvas dimensions, and the undo history (commands that can be re-applied). This allows the user to close the browser and resume editing with full undo history intact. On load, the IndexedDB draft is compared to the server's last saved version by comparing revision timestamps; if the draft is newer, the user is offered the choice to restore it or discard it in favor of the server version.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/content-creation-studio-export.svg"
-          alt="Content creation studio export pipeline showing image export client-side in-browser (flatten layers composite canvas → canvas.toBlob type quality → encode WebP ImageEncoder API → download Blob createObjectURL; format presets PNG lossless JPEG quality 60-95 WebP quality alpha SVG vector layers only; resolution 1x screen 2x 3x print DPI 300 DPI PNG for print; color profile sRGB web Adobe RGB print embedded ICC profile), video export server-side render (POST /render project JSON → FFmpeg Worker per-frame render → H.264 VP9 mux audio+video → S3 CDN URL SSE progress; SSE progress events render:frame frame total percent bar in UI; WebCodecs browser-side VideoEncoder API for short clips under 60s avoids server; render job queued in Redis worker heartbeat 5s UI polls if SSE drops; output MP4 H.264 web GIF short loop WebM VP9 web ProRes pro export), command pattern undo redo history (history stack max 50 current BrushCommand layerId diff MoveCommand id dx dy FilterCommand type params LayerAddCommand layer; command interface execute void apply change undo void revert change description string; BrushCommand.undo restore prior pixel region ImageData), asset library keyboard shortcuts (drag asset from panel drop on canvas new layer at drop position paste from clipboard Ctrl+V image layer; stock photos Unsplash API search 100 free per hour own uploads indexed with thumbnail previews; Google Fonts loaded on demand CSS font-face local fonts Font Access API Chrome 103+; shortcuts V=select B=brush P=pen T=text C=crop E=erase Ctrl+Z=undo Ctrl+Shift+Z=redo Ctrl+G=group), project file .studio JSON (canvas width height dpi, layers array id type opacity blend visible data, data base64 PNG per raster layer SVG string per vector, adjustments array type params non-destructive, saved to IndexedDB draft synced to server on export), performance targets canvas render frame &lt;16ms brush stroke latency &lt;8ms pointer to pixel filter preview &lt;200ms CSS filter fast path PNG export 4K &lt;1.5s toBlob async undo operation &lt;50ms ImageData restore, collaboration realtime lock one user edits at time pessimistic lock 30s TTL live cursor WS presence 100ms comment pins async thread version history server snapshots 50 versions 30-day retention conflict last-write-wins."
-          caption="Export pipeline (client-side PNG/WebP toBlob, server-side FFmpeg video render with SSE progress), Command-pattern undo stack, asset library, project JSON format, collaboration with pessimistic lock, and performance targets"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Canvas 2D versus WebGL for the primary rendering surface: Canvas 2D is simpler to program (no shader language, no buffer management) and handles most standard blend modes natively. WebGL provides significant performance advantages for large canvases (4K+) and complex filters, but requires significant boilerplate and GLSL shader code. A practical approach is to use Canvas 2D as the default and WebGL as a progressive enhancement for filter operations and non-standard blend modes—falling back to a CPU-based implementation if WebGL is unavailable. Fabric.js and Konva.js are Canvas 2D abstraction libraries that handle much of the hit testing and object model; using them reduces boilerplate but adds a dependency and may limit custom rendering optimizations.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Client-side versus server-side video render: client-side WebCodecs rendering avoids the server cost and the round-trip latency, and can produce video instantly for short clips. The limitations are browser support (WebCodecs is Chrome-only as of 2024), output format restrictions (VP9/WebM, not H.264/MP4), and memory constraints (encoding a high-resolution video frame-by-frame in a browser tab can exhaust available memory). Server-side FFmpeg rendering is universally compatible, produces industry-standard H.264 output, and can handle complex effects (LUTs, color grading, audio normalization)—but requires infrastructure, introduces latency (1–5 minutes for a 60-second video), and incurs compute costs. The hybrid approach: use WebCodecs for instant draft previews (lower resolution, VP9) and server FFmpeg for final production export (H.264, full resolution).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Pessimistic locking for collaboration: image and video editing is fundamentally not amenable to OT/CRDT-based concurrent editing—two users painting on the same canvas at the same time would produce unpredictable merged pixel data. The practical solution is pessimistic locking: only one user can edit at a time. When a user opens a project, a 30-second lock is acquired (refreshed every 15 seconds while the editor is active). Other users see the project as read-only. Comment annotations (pinned to canvas regions) are always available without the lock, allowing asynchronous feedback without requiring the lock holder to release.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A content creation studio is built around a dirty-flag Canvas compositor running at 60 fps via requestAnimationFrame. Each layer is an independent canvas (raster) or SVG fragment (vector/text), composited in order with per-layer opacity and blend modes. Non-destructive adjustment layers store parameters (curves splines, brightness values) and apply pixel transformations via 256-entry LUTs (or WebGL shaders) during compositing without modifying source pixels. Tools follow a state machine (idle → drawing → commit) and produce Command objects pushed to a 50-step history stack; undo restores from saved ImageData snapshots, making it O(1) regardless of stroke complexity. Image export uses canvas.toBlob() in-browser (async, non-blocking); video export posts the project JSON to a server-side FFmpeg worker with SSE progress events reporting frame-by-frame completion. The project state is serialized as JSON + per-layer PNG and auto-saved to IndexedDB (debounced at 3 seconds) for offline recovery. Collaboration uses a pessimistic lock (one editor at a time, 30-second TTL) because concurrent canvas edits cannot be merged. The defining design constraint is that all destructive pixel operations must be committed through the Command pattern—no direct pixel manipulation that bypasses the history stack—because undo correctness depends on every change being reversible.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

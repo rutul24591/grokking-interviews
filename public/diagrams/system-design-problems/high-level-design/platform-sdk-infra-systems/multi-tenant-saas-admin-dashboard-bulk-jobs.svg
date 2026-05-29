@@ -1,56 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Bulk job workflow for admin dashboard showing submission, job processing, progress, and partial failures">
-  <title>Bulk Jobs Workflow</title>
-  <desc>Shows bulk action submission as a job, chunked processing, progress reporting, and partial failure remediation.</desc>
-  <style>
-    .bg { fill: #ffffff; }
-    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
-    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
-    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
-    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
-    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
-    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
-    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
-    .small { font-size: 14px; fill: #334155; }
-    .bold { font-weight: 700; }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #0b1220; }
-      .box { fill: #0f172a; stroke: #e5e7eb; }
-      .muted { fill: #0b1220; stroke: #64748b; }
-      .accent { fill: #06232a; stroke: #22d3ee; }
-      .warn { fill: #2a140a; stroke: #fb923c; }
-      .good { fill: #052018; stroke: #34d399; }
-      .arrow { stroke: #e5e7eb; }
-      .label { fill: #e5e7eb; }
-      .small { fill: #cbd5e1; }
-    }
-  </style>
-  <rect class="bg" x="0" y="0" width="1200" height="560" />
-
-  <rect class="box" x="60" y="80" width="360" height="150" />
-  <text class="label bold" x="90" y="125">Submit bulk action</text>
-  <text class="label small" x="90" y="155">idempotency key</text>
-  <text class="label small" x="90" y="180">dry-run preview (optional)</text>
-  <text class="label small" x="90" y="205">job created</text>
-
-  <rect class="accent" x="460" y="80" width="340" height="150" />
-  <text class="label bold" x="490" y="125">Job processing</text>
-  <text class="label small" x="490" y="155">chunked execution</text>
-  <text class="label small" x="490" y="180">retries per item</text>
-  <text class="label small" x="490" y="205">audit entries</text>
-
-  <rect class="good" x="840" y="80" width="300" height="150" />
-  <text class="label bold" x="870" y="125">Progress UI</text>
-  <text class="label small" x="870" y="155">percent complete</text>
-  <text class="label small" x="870" y="180">success/failure counts</text>
-  <text class="label small" x="870" y="205">download report</text>
-
-  <path class="arrow" d="M420 155 L460 155" />
-  <path class="arrow" d="M800 155 L840 155" />
-
-  <rect class="warn" x="60" y="300" width="1080" height="180" />
-  <text class="label bold" x="90" y="345">Partial failure handling</text>
-  <text class="label small" x="90" y="375">report which items failed and why</text>
-  <text class="label small" x="90" y="400">provide retry for failed subset</text>
-  <text class="label small" x="90" y="425">avoid reapplying successful items</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Multi Tenant Saas Admin Dashboard Bulk Jobs: pressure surface</title>
+  <desc id="desc">Non-linear platform sdk infra systems trade-off view.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Multi Tenant Saas Admin Dashboard Bulk Jobs: pressure surface</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Non-linear platform sdk infra systems trade-off view.</text>
+  <rect x="68" y="122" width="824" height="332" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M120 370 C220 246, 338 414, 456 278 S666 168, 840 246" fill="none" stroke="#2563eb" stroke-width="4"/><path d="M120 420 C264 384, 360 318, 508 382 S710 444, 840 326" fill="none" stroke="#16a34a" stroke-width="4"/><path d="M120 304 C248 198, 386 232, 516 206 S724 156, 840 178" fill="none" stroke="#d97706" stroke-width="3" stroke-dasharray="8 8"/>
+  <rect x="126" y="150" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="190" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">SDK</text><rect x="310" y="150" width="128" height="30" rx="15" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.4"/><text x="374" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">gateway</text><rect x="494" y="150" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="558" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">token</text><rect x="678" y="150" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="742" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">version</text>
+  <path d="M168 356 l25 -40 l25 40 l-25 40 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="193" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">tenant</text><path d="M342 356 l25 -40 l25 40 l-25 40 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="367" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">quota</text><path d="M516 356 l25 -40 l25 40 l-25 40 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="541" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">trace</text><path d="M690 356 l25 -40 l25 40 l-25 40 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="715" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">compat</text>
+  <text x="500" y="494" text-anchor="middle" fill="#be123c" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">optimized path, degraded path, and governance path are intentionally separate</text>
 </svg>
-

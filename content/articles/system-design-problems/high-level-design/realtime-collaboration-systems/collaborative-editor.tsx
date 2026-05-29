@@ -7,108 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-collaborative-editor",
-  title: "Design a Collaborative Editor (Google Docs / Notion Style)",
-  description:
-    "Architecture for a real-time collaborative text editor: OT versus CRDT, cursor synchronization, conflict-free merging, offline support, and performance at scale.",
+  title: "Design a Collaborative Editor",
+  description: "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability.",
   category: "high-level-design",
   subcategory: "realtime-collaboration-systems",
   slug: "collaborative-editor",
-  wordCount: 5600,
-  readingTime: 34,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "collaborative-editor", "OT", "CRDT", "real-time", "conflict-resolution"],
-  relatedTopics: ["real-time-collaborative-whiteboard", "offline-realtime-sync-reconciliation-system"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "realtime", "collaboration", "crdt", "websocket", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Collaborative Editor is a realtime distributed product system where multiple clients observe, edit, or coordinate around shared state with low perceived latency. A principal-ready design treats a collaborative editor as shared-state replication with product semantics, not just a websocket channel.",
+  "The design must define what is durable, what is ephemeral, what can be approximate, what must be ordered, and what can be dropped. Durable edits, messages, lobby state, or meeting joins have different guarantees from cursors, typing indicators, heartbeats, viewport hints, and transient QoE signals.",
+  "The visible frontend is responsible for responsiveness and local recovery, but the backend must own sequencing, authorization, fanout, replay, abuse controls, and observability. If every client invents its own truth, collaboration becomes inconsistent the moment users reconnect or edit concurrently.",
+  "Realtime systems fail in user-visible ways: duplicated operations, lost updates, stale presence, delayed media, bad conflict resolution, and confusing pending states. The architecture should make these states explicit rather than hiding them behind generic loading spinners.",
+  "A staff/principal answer should compare CRDT, OT, server-authoritative sequencing, locks, and eventual reconciliation. The right model depends on the data type, collaboration intensity, offline needs, auditability, and conflict cost."
+];
+const concepts = [
+  "The first concept is state classification. document model, operation log, and presence channel should be classified as durable, derived, or ephemeral. Durable state needs replay and audit; ephemeral state needs freshness and expiry; derived state should be rebuildable.",
+  "The second concept is ordering scope. Global total order is usually unnecessary and expensive. A document, room, board, lobby, or meeting can have its own sequence, while presence and cursor updates can use last-writer-wins with expiry.",
+  "The third concept is conflict resolution. Text and structured document edits may use OT or CRDT. Object graphs may use operation transforms and snapshots. Lobbies may use server-authoritative state machines. Video conferencing uses signaling plus media adaptation rather than shared document merge.",
+  "The fourth concept is local responsiveness. Clients should render local intent immediately where safe, mark it pending, then reconcile with server acknowledgement, transformed operations, or conflict decisions.",
+  "The fifth concept is fanout and backpressure. Realtime systems can overload gateways and clients with low-value updates. Cursor, presence, typing, viewport, and QoE events should be sampled, coalesced, or dropped before durable edits are affected.",
+  "The sixth concept is observability. Track operation ack latency, reconnect rate, missed-event replay, conflict rate, fanout pressure, stale presence, media QoE, dropped transient updates, and client/server version skew."
+];
+const architecture = [
+  "The architecture contains document model, operation log, presence channel, snapshot store, conflict resolver. Clients keep local state and pending operations. Gateways authenticate connections and route room traffic. Sequencers or collaboration services assign order or merge operations. Snapshot stores compact history. Projections serve read-optimized views and replay.",
+  "Every durable operation should include actor, target scope, client operation ID, base version or vector, schema version, authorization context, and idempotency key. This lets the system dedupe retries and explain why an operation was accepted, transformed, rejected, or replayed.",
+  "Ephemeral events should have TTLs and rate limits. Presence, cursor, typing, viewport, and media quality hints should expire naturally because a missed disconnect or network loss should not leave a permanent artifact.",
+  "Snapshots are essential at scale. Replaying an entire document, board, lobby, or room history from the beginning becomes too expensive. The system should periodically compact into snapshots while preserving enough operation history for audit, undo, and conflict repair.",
+  "Authorization must be enforced on connect, read, write, replay, export, search, and notification surfaces. Collaboration state often leaks through presence, cursors, thumbnails, comments, and invitations even when the main document appears protected.",
+  "Operations need controls for disabling a noisy ephemeral channel, rolling back a bad client version, replaying a room from snapshot, draining a gateway, isolating a hot room, and investigating missing or duplicated operations."
+];
+const tradeoffs = [
+  "CRDTs support offline and peer-like convergence, but they can increase metadata size, make intent hard to express, and complicate authorization or undo. OT can preserve editing intent for text but is harder to generalize across arbitrary object graphs. Server-authoritative sequencing is simpler to reason about but weakens offline editing.",
+  "WebSockets give low-latency bidirectional updates but require connection lifecycle, auth refresh, backpressure, and regional routing. Polling is simpler and robust but produces higher latency and more repeated work.",
+  "Optimistic local updates improve responsiveness but can create visible rollbacks. For reversible, low-risk edits this is acceptable. For payments, permission changes, lobby readiness, or destructive actions, server confirmation should drive final UI.",
+  "Strong consistency across all collaborators is expensive and often unnecessary. Durable document operations need convergence and replay. Presence, cursors, and typing can be approximate. Moderation, permission revocation, and room removal need fast enforcement.",
+  "Coalescing transient events protects scale and battery but lowers fidelity. Sending every cursor pixel movement is wasteful; sending no cursor updates makes collaboration feel dead. Principal designs set per-event budgets.",
+  "Regional routing improves latency but can split rooms or complicate sequencing. Room affinity, regional leaders, or global sequencers should be chosen based on collaboration intensity and correctness needs."
+];
+const practices = [
+  "Design an explicit operation schema. Include actor, room/document ID, client op ID, base version, timestamp, schema version, and idempotency key.",
+  "Keep durable and ephemeral channels separate. Durable edits need replay and acknowledgement; ephemeral presence and cursors need expiry, rate limits, and drop tolerance.",
+  "Use snapshots and compaction. Bound replay cost while preserving audit history and enough operation log for recovery.",
+  "Expose pending, synced, conflict, offline, reconnecting, and read-only states in the UI. Collaboration systems should not pretend every user sees the same state instantly.",
+  "Enforce permissions on every surface: connection, read, write, replay, cursor/presence, comments, export, thumbnails, notifications, and support tools.",
+  "Build abuse controls. Shared spaces need spam throttles, moderation, participant removal, report flows, and emergency room-level controls.",
+  "Instrument from both client and server. Server ack latency alone does not reveal blocked main thread, dropped media frames, websocket reconnect loops, or client memory pressure."
+];
+const pitfalls = [
+  "lost edits usually means the system lacks clear operation identity, sequencing, or replay semantics. The fix is not more retries; it is a defined operation model.",
+  "cursor jump is often caused by treating ephemeral state as durable truth. Presence, cursor, and QoE hints need expiry and freshness rules.",
+  "merge conflict shows that conflict policy must be product-specific. A game lobby, text editor, whiteboard, and video call do not share one merge strategy.",
+  "offline replay appears during reconnect and offline replay. The client should not blindly resend operations without idempotency and base-version context.",
+  "Another pitfall is ignoring old clients. Realtime protocols need version negotiation and compatibility windows because users can keep stale browser tabs or mobile apps open for days.",
+  "Teams also underestimate support needs. Operators should be able to inspect room membership, operation history, gateway region, client versions, replay gaps, and permission decisions without reading raw private content unnecessarily."
+];
+const useCases = [
+  "Google Docs-like editor needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "collaborative notes needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "shared product specification needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "During a gateway outage, clients should reconnect with cursors, fetch missed durable events, discard expired ephemeral state, and avoid replaying already accepted operations.",
+  "During a bad client rollout, operators should disable the affected feature, reject incompatible operation versions, and keep older rooms recoverable from snapshots.",
+  "During abuse or spam, the system should throttle noisy actors, suppress low-value events, preserve evidence, and allow room owners or moderators to intervene safely."
+];
+const questions = [
+  {
+    "question": "How would you design a collaborative editor end to end?",
+    "answer": "I would classify state into durable operations, derived projections, and ephemeral realtime signals. Clients maintain local pending state and connect to authenticated gateways. Durable operations flow through a sequencer or merge service, are persisted in an operation log, compacted into snapshots, and replayed to reconnecting clients. Ephemeral channels use TTL and rate limits. Authorization, observability, rollback, and abuse controls are built into the protocol."
+  },
+  {
+    "question": "Why this architecture over just broadcasting websocket messages?",
+    "answer": "Broadcasting websocket messages is enough for a demo but not for recovery, replay, multi-device sync, authorization, conflict resolution, or support debugging. The operation-log plus snapshot model adds complexity, but it makes missed events recoverable and lets clients converge after reconnect or offline use."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are lost edits, cursor jump, merge conflict, offline replay, plus hot rooms, reconnect storms, gateway overload, operation-log growth, stale clients, permission drift, and noisy ephemeral events. Prevention requires room affinity, backpressure, snapshots, protocol versioning, idempotency, replay cursors, and event priority tiers."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Durable shared edits need convergence and replayable ordering within a room or document. Presence, cursor, typing, and QoE events are ephemeral and eventually consistent with expiry. Permission revocation, moderation, room deletion, and destructive actions need fast server enforcement. The answer should classify state instead of claiming one model for everything."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failure handling uses reconnect cursors, missed-event replay, snapshots, idempotency, and visible pending/offline states. Rollback uses protocol flags, client-version blocking, snapshot restore, and feature disablement. Abuse controls throttle noisy users and allow moderation. Privacy requires enforcing access on presence, cursors, exports, and notifications. Cost is controlled through coalescing ephemeral events and compacting logs. Observability tracks ack latency, reconnects, conflicts, fanout, and client QoE."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend separating durable operations from ephemeral signals because they need different guarantees. I would choose CRDT, OT, or server sequencing based on data shape and offline requirements. I would accept approximate presence but not approximate authorization. I would also explain why snapshots and replay are worth the operational complexity."
+  }
+];
+const references = [
+  {
+    "label": "Automerge documentation",
+    "href": "https://automerge.org/"
+  },
+  {
+    "label": "Yjs documentation",
+    "href": "https://docs.yjs.dev/"
+  },
+  {
+    "label": "WebRTC specification",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function CollaborativeEditorArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <p>A collaborative text editor allows multiple users to edit the same document simultaneously, with all edits visible in real-time to all participants. The fundamental challenge is concurrent edit conflict resolution: if user A inserts "hello" at position 5 while user B simultaneously deletes the character at position 3, the position references in both operations become invalid when applied in sequence. Without a conflict resolution algorithm, the document state diverges across clients and becomes corrupted.</p>
-        <HighlightBlock as="p" tier="crucial">Two algorithms solve this problem in production: Operational Transform (OT) and Conflict-Free Replicated Data Types (CRDTs). Google Docs uses OT; Notion and many newer systems use CRDTs. Both approaches guarantee eventual consistency—all clients converge to the same document state when all operations have been applied—but they differ in complexity, performance characteristics, and offline support capabilities. Understanding both is essential for designing a production collaborative editor.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The document model is a rich text document (paragraphs, headings, lists, inline formatting—not a plain text file). The data structure is a sequence of blocks (paragraphs, headings), each containing a sequence of inline nodes (text spans with formatting). Collaborative editing operates at the block level (paragraph creation, deletion, reordering) and the inline level (character insertion, deletion, formatting). Maximum 20 simultaneous editors per document. Offline editing is supported (changes made offline sync when connectivity is restored).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/collaborative-editor-architecture.svg" alt="Design a Collaborative Editor architecture" caption="Architecture view: clients, gateways, operation log, merge/sequencing, snapshots, authorization, and replay." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/collaborative-editor-workflow.svg" alt="Design a Collaborative Editor flow" caption="Flow view: local intent, acknowledgement, fanout, replay, conflict handling, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/collaborative-editor-scaling.svg" alt="Design a Collaborative Editor operations" caption="Operations view: fanout pressure, conflict rate, reconnects, stale clients, abuse controls, and rollback." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Real-time co-editing:</strong> All editors see each other's changes within 200ms. Character insertions, deletions, and formatting changes propagate to all connected clients.</li>
-          <li><strong>Cursor and selection sharing:</strong> Each editor's text cursor and selection range is shown to other editors as a named, colored cursor/highlight.</li>
-          <li><strong>Offline editing:</strong> Editors can continue editing without network connectivity. Changes made offline sync and merge correctly when connectivity is restored, without data loss.</li>
-          <li><strong>Conflict-free merging:</strong> Concurrent edits from multiple clients merge without corruption or data loss. The merged result is intuitive and preserves all editors' intended changes.</li>
-          <li><strong>Version history:</strong> The full history of document changes is preserved. Users can view past versions and restore a previous state.</li>
-          <li><strong>Comments and suggestions:</strong> Inline comments anchored to text ranges. Suggested edits mode (tracked changes) for review workflows.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Convergence:</strong> All clients must converge to the same document state after all operations are applied, regardless of the order in which operations were received.</li>
-          <li><strong>Typing latency:</strong> Local character insertion must be visible immediately (0ms—the editor does not wait for server acknowledgment before displaying the typed character).</li>
-          <li><strong>Operation throughput:</strong> A 20-person editing session with all editors typing simultaneously must not degrade to more than 500ms end-to-end latency for any editor's changes.</li>
-          <li><strong>Document size:</strong> Support documents up to 500,000 words without performance degradation. CRDT metadata overhead must not grow unboundedly with document history.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The collaborative editor uses a CRDT-based approach (specifically, a variant of the Yjs CRDT library's Y.Doc model) for conflict-free merging. Each character or inline node in the document is represented as an item with a globally unique identifier (a Lamport timestamp: &#123;clientId, sequenceNumber&#125;). Insertions create new items with IDs; deletions mark items as deleted (tombstones) rather than removing them. The unique IDs and tombstone approach ensure that concurrent insertions at the same position and concurrent deletions are resolved deterministically without a central server.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The architecture: clients connect to a Document Server via WebSocket and exchange CRDT updates (binary-encoded Yjs updates). The Document Server broadcasts updates to all other connected clients and persists the cumulative CRDT state to the database. When a new client joins, the server sends the full current document state as a CRDT snapshot. Subsequent updates are applied incrementally. A server-side presence service separately handles cursor synchronization (cursor positions are not part of the CRDT document state; they are ephemeral and do not need to be persisted).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/collaborative-editor-architecture.svg"
-          alt="Collaborative editor architecture showing CRDT (Yjs Y.Doc) data model (items with Lamport timestamp IDs, tombstone deletions, block structure), client (local CRDT replica, ProseMirror editor binding, offline operation queue), Document Server (CRDT update relay, awareness protocol for cursors, persistence to PostgreSQL), and version history snapshot pipeline."
-          caption="Collaborative editor architecture: CRDT-based conflict-free merging, ProseMirror binding, Document Server relay, and cursor awareness protocol"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">CRDT Document Model</h3>
-        <HighlightBlock as="p" tier="important">The document is represented as a Y.Doc (Yjs document), which is an in-memory CRDT that supports arbitrary tree-structured data. The document structure is a Y.Array of blocks, where each block is a Y.Map containing: blockId, type (paragraph, heading1, bulletItem, etc.), and content (a Y.Text—a CRDT text type supporting concurrent character-level edits and inline formatting). Y.Text is the core of the collaborative editing experience: it uses a CRDT algorithm (based on LSEQ or FUGUE) that assigns each character a globally unique position identifier, allowing concurrent insertions at the same position to be resolved deterministically.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Concurrent insertion resolution: if user A inserts "A" at position 5 and user B simultaneously inserts "B" at position 5, the CRDT must deterministically choose which character appears first. Yjs uses the client ID as a tiebreaker: the insertion from the client with the higher client ID (numerically) appears first. This is deterministic and globally consistent—all clients apply the same resolution rule and converge to the same result. The outcome may not always be "intuitive" (the user with the lower client ID sees their character pushed right), but it is consistent and predictable.</HighlightBlock>
-        <p>Tombstone deletions: when a character is deleted, its CRDT item is marked as deleted (tombstone) rather than removed from the data structure. This is necessary because other clients may have already referenced the deleted character in their pending operations (e.g., an insertion immediately after the deleted character). If the character were removed, the reference would be invalid. Tombstones accumulate over the lifetime of a document; periodic compaction (garbage collecting tombstones that no client could still reference) is performed when all clients have acknowledged receiving the delete operations. Tombstone accumulation is a known limitation of operation-based CRDTs; very long documents with heavy editing history may accumulate significant tombstone overhead.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Editor Binding and Optimistic Local Updates</h3>
-        <p>The editor UI is built on ProseMirror (a rich text editor framework) or Slate.js. The CRDT document is bound to the editor via a synchronization layer: changes in the editor (user types a character) are translated into CRDT operations (Y.Text.insert at the cursor position), and CRDT updates received from other clients are translated into ProseMirror transactions (editor state changes). The binding ensures bidirectional synchronization without infinite loops (the synchronization layer uses a flag to suppress re-triggering when applying remote updates).</p>
-        <HighlightBlock as="p" tier="important">Local edits are applied optimistically: when the user types a character, the CRDT is updated immediately (showing the character in the editor), and the update is queued for WebSocket transmission. The local CRDT replica is the source of truth for the editor display. When the server broadcasts the update back (confirming receipt), the client de-duplicates it (ignores updates it has already applied, identified by the Lamport timestamp). This immediate local update is what gives the editor its native-text-editor feel—there is no perceptible latency between keypress and character display.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cursor and Awareness Synchronization</h3>
-        <HighlightBlock as="p" tier="important">Cursor positions are not part of the persistent CRDT document state—they are ephemeral presence data. Yjs provides an "awareness" protocol for this: a lightweight pub/sub system where each client publishes its current cursor position, selection, username, and color, and receives the same from all other clients in the document. The awareness state is not persisted; it is lost when all clients disconnect. Awareness updates are sent via the same WebSocket connection as CRDT updates but are handled differently: they are broadcast immediately without ordering guarantees (cursor positions are eventually consistent and losing an occasional update is acceptable).</HighlightBlock>
-        <p>Cursor positions in a collaborative editor are relative to the CRDT document structure (anchored to specific CRDT item IDs, not character offsets). A character offset (position 50) becomes invalid when other clients insert or delete characters before position 50. A CRDT-anchored cursor (positioned after item with ID &#123;clientId: 3, seq: 42&#125;) remains valid regardless of insertions or deletions elsewhere in the document. The editor binding translates between CRDT-anchored positions (used in the awareness protocol) and DOM text offsets (used by the ProseMirror cursor display).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Offline Support and Sync on Reconnect</h3>
-        <HighlightBlock as="p" tier="important">Offline editing is native to the CRDT model: the client's local Y.Doc replica continues to accept edits while offline. Each operation is assigned a Lamport timestamp using the client's local clock and client ID (no server dependency). The offline operations are queued locally (in IndexedDB) and applied to the local CRDT replica immediately. When the client reconnects, it sends all queued operations to the Document Server in a single CRDT update message. The server applies them to the authoritative state, which may already contain operations from other clients that occurred while this client was offline.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">CRDT merge on reconnect: the server's state and the client's state are both Yjs Y.Docs. Yjs's merge algorithm handles arbitrary concurrent operation sets: given two Y.Docs that diverged from a common ancestor and each have a set of applied operations, Yjs produces a merged Y.Doc that contains all operations from both, applied in a globally consistent order (using Lamport timestamps as tiebreakers). The server broadcasts the merged state to all connected clients, and the reconnecting client receives any operations it missed. The entire merge is deterministic and conflict-free—no human intervention is required regardless of how long the client was offline or how many other clients edited the document in the interim.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Document Persistence and Version History</h3>
-        <HighlightBlock as="p" tier="important">The authoritative document state is persisted as a binary Yjs snapshot to the database (PostgreSQL BYTEA column or S3, depending on document size). On every 100 CRDT updates (or on a 5-minute timer), the Document Server serializes the current Y.Doc state to binary and writes it to the database. New clients joining the document load the latest snapshot plus any updates since the snapshot. This snapshot-plus-updates approach avoids replaying the entire operation history on every join (which would be slow for documents with millions of historical operations).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Version history is implemented by storing snapshots at regular intervals (every 1000 operations or daily, whichever comes first). Each snapshot includes the Yjs binary state, a timestamp, and a description (auto-generated: "Edited by Alice, Bob (+3)"). Users can browse the version history timeline and restore any previous snapshot by loading the snapshot's binary state into a new Y.Doc and replacing the current document. Restoring creates a new version (append-only history; the restoration is recorded as a new snapshot with a "Restored from [date]" description), ensuring no history is lost.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/collaborative-editor-workflow.svg"
-          alt="Collaborative editor data flow showing user keypress → ProseMirror transaction → CRDT Y.Text.insert (Lamport timestamp assigned) → local apply (immediate display) → WebSocket send to Document Server → server broadcast to all clients → remote client apply (de-duplicate by timestamp) → ProseMirror remote transaction. Offline path: operations queued in IndexedDB → reconnect → batch send → CRDT merge."
-          caption="Editor data flow: optimistic local CRDT apply → WebSocket relay → remote apply with de-duplication, and offline queue with CRDT merge on reconnect"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">OT versus CRDT: Operational Transform (Google Docs) requires a central server to serialize all operations (assign a global ordering) and transform concurrent operations against each other. OT's correctness depends on the server's serialization; without the server, offline editing requires complex client-side state management to avoid divergence. CRDT (Yjs, Automerge) does not require central serialization: any two CRDT replicas can be merged without a server, making offline editing and peer-to-peer editing trivially correct. The trade-off: CRDTs have higher memory overhead (tombstones, metadata per item) and more complex implementation. For documents with millions of characters and decades of editing history, tombstone accumulation becomes a practical issue. Google Docs's OT approach avoids tombstone overhead but requires always-online or complex offline-OT implementations. For new systems, CRDTs are the preferred approach.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Block-level versus character-level CRDT: applying CRDT at the character level (each character has a unique ID) provides maximum granularity for conflict resolution (concurrent edits to the same sentence merge correctly) but generates large CRDT states for long documents (500,000 characters × metadata overhead). Block-level CRDT (each paragraph is an atomic unit; concurrent edits within the same paragraph use last-write-wins) is coarser but produces smaller CRDT state. The hybrid approach (Notion's model) uses block-level CRDT for block creation, deletion, and reordering, and character-level CRDT for inline text within blocks. This limits character-level CRDT scope to individual paragraphs (typically hundreds of characters, not thousands), keeping CRDT state manageable per block.</HighlightBlock>
-        <p>Tombstone garbage collection: Yjs implements garbage collection of tombstones when all clients have acknowledged receiving the delete operations. The garbage collection protocol is coordinated by the server: the server tracks the minimum state vector across all connected clients; tombstones older than the minimum state vector (meaning all clients have applied these deletions) are eligible for compaction. GC is performed periodically (not on every update) and requires all clients to temporarily pause applying new updates during the compaction computation. For very large documents, this pause can be perceptible; the alternative is to accept unbounded tombstone growth (acceptable for documents that are not heavily edited over many years).</p>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A collaborative editor is built on a CRDT (Yjs Y.Doc) that assigns each character a unique Lamport timestamp ID and uses tombstone deletions to support conflict-free concurrent edits without a central operation serializer. The editor UI (ProseMirror) is bound to the CRDT via a bidirectional synchronization layer; local edits apply optimistically to the CRDT immediately, providing native typing latency. Remote updates are applied via CRDT merge (deterministic, based on Lamport timestamps) without additional conflict resolution logic. Cursor positions use the awareness protocol (ephemeral, anchored to CRDT item IDs, not character offsets). Offline editing is native to the CRDT model: offline operations are queued in IndexedDB, and on reconnect a single CRDT merge incorporates all offline changes and all server changes without coordination. Document state is persisted as binary Yjs snapshots every 100 operations for fast bootstrap. Version history stores periodic snapshots with metadata. The fundamental architectural choice—CRDT over OT—provides correct offline editing and simpler peer-to-peer architecture at the cost of tombstone metadata overhead and more complex garbage collection.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

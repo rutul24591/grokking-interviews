@@ -7,94 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-notification-system-ui",
-  title: "Design a Notification System UI (Multi-Channel)",
-  description:
-    "Architecture for a multi-channel notification system UI: notification inbox with read/unread state, real-time badge count via SSE, push notification registration with Web Push API, email notification preference management, digest scheduling, deduplication and grouping (N likes from M users), notification routing by type and user preferences, delivery status tracking, and notification center with filter and search.",
+  title: "Design a Notification System UI",
+  description: "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery.",
   category: "high-level-design",
   subcategory: "social-engagement",
   slug: "notification-system-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "notifications", "push", "web-push", "email", "sse", "inbox", "multi-channel"],
-  relatedTopics: ["instagram-twitter-frontend", "infinite-scrolling-feed"],
+  wordCount: 3400,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "social", "feed", "graph", "moderation", "ranking"],
+  relatedTopics: [],
 };
 
-export default function NotificationSystemUIArticle() {
+const definition = [
+  "Design a Notification System UI is a social-scale product system where the visible UI is only the last projection of graph state, ranking policy, media delivery, privacy rules, abuse controls, and user intent. A principal-ready design starts by separating durable social facts from derived surfaces.",
+  "Durable facts include posts, follows, blocks, reports, shares, reactions, preferences, and moderation decisions. Derived surfaces include feeds, counters, notification groups, recommendations, summaries, search snippets, and ranking features. Derived surfaces can lag or be rebuilt; privacy and safety decisions must propagate quickly.",
+  "The goal is to design a social notification UI so users see relevant, fresh, and safe social content without exposing private actors, losing user actions, or amplifying abuse. The design must address graph scale, hot users, projection lag, mobile constraints, ranking changes, and trust-and-safety intervention.",
+  "Social systems are adversarial. Engagement can be gamed, reports can be brigaded, spam can spread faster than review queues, and summaries can leak data that the main page hides. These are core architecture concerns, not policy details after launch.",
+  "A staff/principal answer should name ownership boundaries: product owns ranking and user controls, integrity owns abuse detection, platform owns graph and fanout primitives, media owns asset safety and delivery, and operations owns incidents, takedowns, and review tooling."
+];
+const concepts = [
+  "The first concept is graph-aware visibility. Every surface should call the same visibility policy for follow state, block state, private accounts, age restrictions, takedown state, regional policy, and viewer permissions. Inconsistency across feed, profile, notification, search, and share preview is a common privacy failure.",
+  "The second concept is projection architecture. event stream, preference policy, and grouping engine are optimized for different read patterns. The design should not force every UI to join raw social tables at request time.",
+  "The third concept is hybrid fanout. Fanout-on-write makes ordinary feed reads fast but struggles with hot accounts. Fanout-on-read is flexible for ranking but expensive for every viewer. Mature systems combine precomputed home timelines, hot-author handling, cache windows, and online ranking.",
+  "The fourth concept is stable pagination and dedupe. Feeds and notification lists should use opaque cursors tied to a ranking window or event sequence. Offset pagination fails when new content arrives, content is removed, or ranking changes mid-scroll.",
+  "The fifth concept is integrity-aware ranking. Ranking should not blindly optimize clicks or shares. It should incorporate spam scores, report velocity, account reputation, block feedback, freshness, diversity, and policy constraints.",
+  "The sixth concept is observability. Track fanout backlog, projection lag, ranking experiment health, duplicate rate, scroll restoration failures, moderation queue age, privacy invalidation delay, counter drift, and abuse escalation."
+];
+const architecture = [
+  "The architecture has five cooperating planes: event stream, preference policy, grouping engine, read state, delivery receipt. The write plane records durable social facts and emits events. Projection workers build feed, profile, notification, counter, search, and analytics views. The read API serves surface-optimized projections. Integrity and moderation systems can remove or demote content quickly. The frontend renders stable cursors, pending actions, and recovery states.",
+  "Writes should be idempotent and policy-checked. Follow, like, share, report, mute, block, and post actions need actor authorization, target visibility, rate limit, abuse score, and durable event emission. If the client retries, the backend should converge on one logical action.",
+  "Projection workers should record source event sequence and policy version. This makes it possible to detect stale views and run fast invalidation when a block, takedown, private-account change, or legal removal occurs.",
+  "Read APIs should be purpose-built. A home feed API needs ranked windows and dedupe. A profile API needs ownership, pinned content, privacy, counters, and media summaries. A notification API needs grouping and read state. A moderation UI needs evidence, queue priority, audit, and reviewer-safe presentation.",
+  "The frontend should treat social actions as pending until acknowledged, but can use optimistic presentation for reversible low-risk actions. High-risk actions such as report submission, block changes, privacy changes, and account restriction need explicit confirmation and auditability.",
+  "Operationally, social systems need kill switches and throttles for sharing, recommendations, notification fanout, media autoplay, comment creation, and report intake. Viral failures happen faster than normal deployments can respond."
+];
+const tradeoffs = [
+  "Strong consistency for every counter and feed item is too expensive. Likes, follower counts, view counts, and notification grouping can be eventually consistent. Blocks, takedowns, private account visibility, and safety removals require fast invalidation and much stronger enforcement.",
+  "Personalized ranking improves engagement but reduces explainability and can amplify harmful content. Chronological ranking is simpler and predictable but often less relevant. A principal design supports ranking guardrails, user controls, experiment holdouts, and integrity scoring.",
+  "Fanout-on-write gives fast feed reads for ordinary accounts but creates write amplification for celebrities and viral posts. Fanout-on-read avoids massive writes but can increase read latency and backend load. Hybrid fanout is usually the defensible answer.",
+  "Grouping notifications reduces fatigue but can hide important context or leak private actor information. Group summaries must be recomputed or redacted after privacy changes, blocks, deleted accounts, and moderation actions.",
+  "Aggressive virality and sharing increase growth but also increase spam, fraud, harassment, and policy risk. Rate limits, reputation, link scanning, attribution validation, and circuit breakers are product architecture.",
+  "Moderation before distribution reduces harm but increases latency and false positives. Moderation after distribution improves speed but can allow rapid amplification. Risk-based gating by account reputation, media type, virality, and policy class is more nuanced."
+];
+const practices = [
+  "Centralize visibility policy and use it for every derived surface: feed, profile, search, notification, recommendation, share preview, email, push, and moderation queue.",
+  "Use opaque cursors and dedupe sets for feeds. Cursor state should include enough ranking-window context to avoid duplicates, gaps, and scroll jumps after refresh or new content insertion.",
+  "Track projection lag and invalidation latency as product SLOs. Privacy or safety invalidation should have a different urgency class from ordinary feed freshness.",
+  "Use idempotency keys for social actions and report submissions. Duplicate taps, mobile retries, and offline replay should not create duplicate follows, reports, shares, or notifications.",
+  "Build integrity and moderation tooling into the design. Reviewers need evidence, policy taxonomy, actor history, virality context, appeal state, and audit logs.",
+  "Plan for hot objects. Celebrity posts, viral shares, live events, controversial content, and spam waves need cache isolation, rate limits, backpressure, and sometimes manual controls.",
+  "Segment observability by surface, region, app version, ranking experiment, account class, and integrity bucket. Averages hide social failures because abuse and virality are highly skewed."
+];
+const pitfalls = [
+  "notification fatigue is a scale failure that appears suddenly. The design should define hot-key handling, fanout backpressure, cache windows, and degraded behavior before traffic arrives.",
+  "privacy summary leak is usually caused by inconsistent policy enforcement across derived surfaces. Fixing the main UI is not enough if notifications, search, emails, or previews still expose restricted information.",
+  "fanout spike undermines user trust because social products feel personal. Users notice missing posts, duplicate cards, incorrect counters, and unexplained ranking shifts quickly.",
+  "read-state drift requires abuse-aware product design. Rate limits and classifiers help, but the system also needs support tooling, appeals, audit trails, and emergency controls.",
+  "Another pitfall is treating moderation as a back-office queue only. At scale, moderation changes feed eligibility, ranking, notification delivery, profile visibility, and search indexing.",
+  "Teams also underinvest in support reconstruction. When a user asks why they saw or did not see content, the system should expose ranking inputs, policy decisions, projection freshness, and moderation state at a safe level."
+];
+const useCases = [
+  "social alerts requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "creator activity inbox requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "moderation alerts requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "During a viral event, the system may need to reduce fanout, demote suspicious shares, disable some notification types, or route content to review without taking the whole social surface offline.",
+  "During a privacy incident, the fastest path is not a UI patch. The system needs invalidation across projections, deletion from caches, search removal, notification redaction, and auditability.",
+  "During an experiment rollout, teams should compare engagement lift against integrity metrics, report rate, block rate, hide rate, diversity, and long-term retention rather than only clicks."
+];
+const questions = [
+  {
+    "question": "How would you design a social notification UI end to end?",
+    "answer": "I would separate durable social facts from derived projections. Writes go through policy, rate limits, idempotency, and event emission. Projection workers build feed, profile, notification, counter, search, and moderation views with source sequence and policy version. Read APIs serve surface-specific projections, and the frontend renders stable cursors, pending states, privacy-safe summaries, and recovery states. Integrity, moderation, observability, and kill switches are part of the core design."
+  },
+  {
+    "question": "Why this architecture over direct reads from source tables?",
+    "answer": "Direct reads are simpler but fail at social scale because every surface needs different ranking, grouping, dedupe, privacy, and freshness behavior. Projection APIs let each surface optimize reads while still enforcing shared visibility and invalidation policy. The cost is projection lag and operational complexity, which must be measured and reconciled."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are notification fatigue, privacy summary leak, fanout spike, read-state drift, plus hot users, viral content, counter drift, notification storms, moderation backlog, and cache stampedes. Prevention requires hybrid fanout, ranked windows, idempotent actions, integrity scoring, projection-lag monitoring, and emergency throttles."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Most engagement surfaces are eventually consistent: feeds, counters, ranking order, grouped notifications, and analytics. Privacy, blocks, takedowns, account restrictions, and safety removals need fast invalidation and strong enforcement. The design should explicitly classify each state instead of claiming one consistency model for the whole product."
+  },
+  {
+    "question": "How do you handle abuse, privacy, rollback, cost, and observability?",
+    "answer": "Abuse is handled through rate limits, reputation, classifiers, graph anomaly detection, link scanning, and review workflows. Privacy is enforced through shared visibility policy and projection invalidation. Rollback uses ranking flags, fanout throttles, notification kill switches, and moderation overrides. Cost is controlled through hybrid fanout, caching, batch projections, and approximate counters. Observability tracks fanout backlog, projection lag, duplicate rate, report velocity, and invalidation latency."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would explain which parts need strong enforcement and which can be eventual. I would defend hybrid fanout because it balances read latency and write amplification. I would defend projection APIs because social surfaces need ranking and privacy semantics that raw tables cannot provide efficiently. I would also acknowledge the cost: projection lag, more operations, and the need for reconciliation tooling."
+  }
+];
+const references = [
+  {
+    "label": "Meta Engineering: TAO social graph storage",
+    "href": "https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/"
+  },
+  {
+    "label": "Twitter/X Engineering archive",
+    "href": "https://blog.x.com/engineering/en_us"
+  },
+  {
+    "label": "W3C ActivityPub recommendation",
+    "href": "https://www.w3.org/TR/activitypub/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST online safety and platform governance resources",
+    "href": "https://www.nist.gov/"
+  }
+];
+
+export default function NotificationSystemUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A notification system serves as the primary mechanism for re-engaging users with a platform. It must balance urgency (delivering important notifications quickly) with noise reduction (not overwhelming users with irrelevant alerts that train them to ignore or disable notifications). The frontend challenge spans multiple surfaces: the in-app notification inbox (a panel listing past notifications with read/unread state), real-time badge counts (the red number on the bell icon), Web Push notifications (browser OS-level popups that work even when the tab is closed), and email digests (summaries of activity since last visit). All four surfaces must stay in sync: if a user reads a notification in the inbox, the badge count should decrement and the push notification (if delivered) should not show again.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Grouping and deduplication are critical for social platforms. If 500 users like the same post in an hour, showing 500 separate "X liked your post" notifications is unusable. The notification system must intelligently group: "Alice, Bob, and 498 others liked your post." The grouping logic must be temporal (group events within a time window), per-actor (the same user liking 5 of your posts may produce one notification, not five), and per-object (all interactions with the same post are grouped). This grouping happens server-side but must be represented faithfully in the UI.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Notification inbox UI, real-time badge updates, Web Push registration, notification preferences, and grouping display. Not in scope: the notification routing engine or the delivery infrastructure (email providers, push gateway).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/notification-system-ui.svg" alt="Design a Notification System UI architecture" caption="Architecture view: graph writes, projections, ranking, privacy, integrity, and surface-specific reads." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/notification-system-ui-flow.svg" alt="Design a Notification System UI flow" caption="Flow view: user action, fanout or projection, ranking, notification, moderation, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/notification-system-ui-operations.svg" alt="Design a Notification System UI operations" caption="Operations view: fanout backlog, projection lag, privacy invalidation, abuse signals, and moderation controls." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Notification inbox:</strong> Paginated list of notifications (newest first) with type (like, comment, follow, mention, system), grouped actors (Alice, Bob, and 498 others), relative timestamp, thumbnail (post image or actor avatar), and read/unread state. Mark all as read button. Click navigates to the relevant content.</li>
-          <li><strong>Real-time badge:</strong> Bell icon shows unread count. Count updates in real time when new notifications arrive (SSE push). Clicking the bell opens the inbox and marks visible notifications as read. Badge disappears when unread count reaches 0.</li>
-          <li><strong>Web Push:</strong> Prompt user to enable push notifications (deferred until user has been active for 30 seconds, not on first load). On approval, register service worker and send push subscription to the server. Push notifications for high-priority events (direct mentions, DMs, follows) even when the tab is closed.</li>
-          <li><strong>Preferences:</strong> Per-category toggles: social (likes, comments, follows), mentions, messages, product updates. Per-channel toggles: in-app, push, email. Email digest frequency: real-time, daily, weekly, never. Changes saved immediately with optimistic UI.</li>
-          <li><strong>Notification search and filter:</strong> Filter by type (unread only, by category). Full-text search over notification content (sender name, content snippet).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Badge freshness:</strong> Unread count updates within 5 seconds of a new notification being generated.</li>
-          <li><strong>Push delivery latency:</strong> Web Push for high-priority notifications (mentions, DMs) delivered within 10 seconds of the event.</li>
-          <li><strong>Read state consistency:</strong> Marking a notification as read in the inbox must reflect in the badge count and prevent Web Push re-delivery within 1 second.</li>
-          <li><strong>Inbox load time:</strong> First 20 notifications render within 500ms on subsequent visits (cached via stale-while-revalidate).</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The notification system has four layers. The Generation Layer produces NotificationEvent records when user actions occur (Kafka: like.created, comment.created, follow.created). The Aggregation Layer groups related events within a time window (5 minutes for social events, immediate for mentions) and writes aggregated Notification records to the notifications database. The Delivery Layer routes notifications to appropriate channels (in-app, push, email) based on user preferences and event priority; it also publishes badge update events to Redis Pub/Sub for SSE delivery. The Frontend Layer has three components: the SSE badge counter (subscribes to user-specific Redis channel for count updates), the notification inbox panel (cursor-paginated, cached with stale-while-revalidate), and the service worker (handles Web Push subscription registration and received push event rendering).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/social-engagement/notification-system-ui.svg"
-          alt="Multi-channel notification system UI architecture showing notification generation and aggregation (Kafka: like.created comment.created follow.created → aggregation worker: group by actor+object within 5min window → write notification record to DB → publish badge update Redis Pub/Sub notif:{userId}), SSE badge delivery (GET /api/notifications/stream → SSE connection per user → Redis Pub/Sub subscribe notif:{userId} → push {unreadCount} event to browser within 5s; badge renders red circle count), Web Push registration flow (defer prompt 30s after active use; requestNotificationPermission → navigator.serviceWorker.register → pushManager.subscribe {applicationServerKey:VAPID} → POST /api/push/subscribe {endpoint keys} → stored in push_subscriptions table), notification inbox panel (GET /api/notifications?cursor=null&limit=20 stale-while-revalidate 30s; grouped display: avatar stack + actor summary 'Alice Bob +498 others liked your post'; click → navigate to content + mark read; mark all read → PATCH /api/notifications/read-all → badge zeroed), notification preferences (per-category per-channel toggles; POST /api/preferences optimistic update; preference table: userId category channel enabled digest_frequency; server evaluates on delivery), Web Push delivery (Notification record → preference check → Web Push API: POST to push endpoint with VAPID auth; payload: title body icon badge url; service worker: self.addEventListener push → self.registration.showNotification; click → clients.openWindow to URL), read state sync (PATCH /api/notifications/{id}/read → DB update + PUBLISH notif:{userId} {unreadCount:N-1} → SSE push → badge decrements; prevents duplicate push for already-read notifications), notification grouping (same object same type within 5min → single notification; actors list capped at 3 named + count; 'Alice liked + 5 others' expands to full list; group updates as new actors join)."
-          caption="Notification generation → Kafka → aggregation (5min grouping window), SSE badge updates (&lt;5s), Web Push registration (VAPID + service worker), inbox panel (stale-while-revalidate, grouped actor display), preference toggles (per-category, per-channel), and read-state sync (PATCH → Redis Pub/Sub → badge decrement)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Notification Grouping and Actor Summary</h3>
-        <HighlightBlock as="p" tier="important">Social notifications are aggregated server-side using a sliding window approach. When a LikeCreated event arrives for post X by user Y at time T, the aggregation worker queries: is there an open notification for the same (owner, object_type=post, object_id=X, notification_type=like) within the last 5 minutes? If yes, it adds user Y to the actors list of that notification and updates the notification body. If no, it creates a new notification. The actors list is capped at storing the 3 most recent distinct actors (for display purposes) plus a total count. The UI renders this as: [avatar1][avatar2][avatar3] "Alice, Bob, and 498 others liked your photo." Clicking "498 others" expands a scrollable list of all actor names. For follow notifications (where the object is the user themselves, not a post), each follow from a distinct user typically creates a separate notification, since users want to know each individual who followed them. The grouping policy is configurable per notification type.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">SSE for Real-Time Badge Updates</h3>
-        <HighlightBlock as="p" tier="important">When the user is active in the app, a persistent SSE connection is maintained to GET /api/notifications/stream. The SSE server subscribes to the Redis Pub/Sub channel notif:{"{userId}"} for this connection. When a new notification is generated, the aggregation worker publishes to notif:{"{userId}"} with the updated unread count: PUBLISH notif:{"{userId}"} {"{ unreadCount: 7 }"}. The SSE server receives this and streams a data event to the browser: data: {"{ unreadCount: 7 }"}. The React component reading this stream updates the badge count in the Zustand store, which is reflected in the bell icon badge. The SSE connection uses the browser&apos;s native EventSource API with automatic reconnection. On reconnect, the client fetches the current unread count via GET /api/notifications/unread-count to catch any updates missed during the disconnection window.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Web Push Registration and VAPID Authentication</h3>
-        <HighlightBlock as="p" tier="important">Web Push requires VAPID (Voluntary Application Server Identification) for authentication. The flow: (1) The app generates a VAPID keypair (public/private). The public key is embedded in the frontend. (2) After the user has been active for 30 seconds (to avoid prompting immediately on page load, which has a high rejection rate), the app calls Notification.requestPermission(). (3) If the user grants permission, navigator.serviceWorker.register(&apos;/sw.js&apos;) registers the service worker. (4) registration.pushManager.subscribe({"{ userVisibleOnly: true, applicationServerKey: VAPID_PUBLIC_KEY }"}) creates a push subscription object containing the push endpoint URL and encryption keys. (5) The subscription is POSTed to /api/push/subscribe and stored in the push_subscriptions table (userId, endpoint, keys). (6) When a high-priority notification is generated for this user, the Delivery Service fetches the user&apos;s push subscriptions, constructs a Web Push payload (title, body, icon, badge, data.url), signs it with the VAPID private key, and POSTs it to the push endpoint.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          {"Service worker push handler: self.addEventListener('push', event => { const data = event.data.json(); event.waitUntil(self.registration.showNotification(data.title, { body: data.body, icon: data.icon, badge: data.badge, data: { url: data.url } })); }); The notification click handler navigates to the relevant URL: self.addEventListener('notificationclick', event => { event.notification.close(); event.waitUntil(clients.openWindow(event.notification.data.url)); });"}
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Notification Inbox with Stale-While-Revalidate</h3>
-        <HighlightBlock as="p" tier="important">The notification inbox is fetched with stale-while-revalidate caching: React Query&apos;s useQuery is configured with staleTime: 30_000 (30 seconds). On first open, the inbox fetches fresh data. On subsequent opens within 30 seconds, the cached data is shown immediately (no loading spinner) while a background revalidation runs. This makes the inbox feel instant on repeated opens. The inbox is cursor-paginated (same pattern as the feed): 20 notifications per page, a &quot;Load more&quot; button at the bottom. Each notification item shows: actor avatar stack, notification text, relative time (&quot;2 minutes ago&quot; using Intl.RelativeTimeFormat), and post thumbnail. Unread notifications have a blue left-border indicator. Clicking a notification: (1) navigates to the linked content URL, (2) fires PATCH /api/notifications/{"{id}"}/read in the background, (3) updates the local read state optimistically.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Notification Preferences and Digest Scheduling</h3>
-        <HighlightBlock as="p" tier="important">The preferences panel shows a grid of toggles: rows are notification categories (Likes, Comments, New Followers, Mentions, Messages, Product Updates), columns are channels (In-app, Push, Email). Each toggle is an independent boolean. When a toggle is changed, the UI updates optimistically and fires PATCH /api/preferences/{"{category}"}/{"{channel}"} {"{ enabled: bool }"}. The server updates the preference record and immediately applies it to future notifications, a user turning off &quot;Email for Likes&quot; will not receive the next like email. The email digest frequency selector (real-time, daily digest at 9am, weekly digest on Monday) controls the aggregation window for email delivery. &quot;Real-time&quot; sends an email immediately for each notification batch. &quot;Daily digest&quot; waits until the scheduled time and batches all unread notifications since the last digest into a single email.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">SSE versus WebSocket for badge updates: SSE is strictly server-to-client, which is exactly what badge updates need — the server pushes count changes, the client never needs to send data over the same connection. SSE's simplicity (plain HTTP, automatic browser reconnection, no upgrade handshake) makes it preferable to WebSocket for this use case. The only scenario where WebSocket would be necessary is if the client needed to send acknowledgments over the same connection — but read acknowledgments are sent as REST API calls, not over the notification stream.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Web Push prompt timing: showing the permission prompt immediately on page load results in 60–80% rejection rates (users haven't experienced value yet and dismiss reflexively). Deferring the prompt until after the user has performed an action (posted content, liked something, messaged someone) increases acceptance rates to 20–40%. The 30-second active-use delay described above is a conservative threshold; a more sophisticated approach triggers the prompt after the user's second or third session, when they have demonstrated they find the platform valuable. The app must respect the one-shot nature of the prompt — once rejected, it cannot be shown again without the user manually changing browser settings.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A multi-channel notification UI is built around four synchronized surfaces: SSE badge (Redis Pub/Sub → SSE → badge count update within 5s), notification inbox (stale-while-revalidate cursor-paginated, grouped actor display), Web Push (VAPID-authenticated, service worker, deferred permission prompt), and email preferences (per-category per-channel toggles, digest scheduling). Notification grouping server-side (same object + type within 5-minute window → single notification with actor list) prevents inbox flooding for viral content. Read state syncs via PATCH + Redis Pub/Sub publication → SSE counter decrement, ensuring badge and inbox stay consistent across tabs. The defining design tension: aggressive notification delivery drives re-engagement but destroys trust if overdone — per-category, per-channel preference controls with sane defaults (in-app: always on; push/email: off by default for non-critical types) maximize opt-in rates while respecting user attention.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

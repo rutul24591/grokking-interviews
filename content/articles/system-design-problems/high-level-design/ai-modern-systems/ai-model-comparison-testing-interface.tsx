@@ -41,7 +41,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         caption="Model comparison architecture: test library, parallel execution, multi-dimensional scoring, human preference Elo, cost-quality Pareto, and regression detection"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h2>Definition &amp; Context</h2>
       <p>
         Model evaluation use cases have different requirements:
       </p>
@@ -70,7 +70,11 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         a 2000-case suite of easy, similar examples.
       </HighlightBlock>
 
-      <h2>Test Case Library</h2>
+      <h2>Core Concepts</h2>
+      <p>The core concepts are test-case versioning, parallel model execution, deterministic replay, judge calibration, human preference collection, cost tracking, regression detection, and reproducible evaluation artifacts. These concepts define the production contract for AI model comparison interface: what the UI can promise, what the backend must enforce, and what operators need to observe when the feature behaves unexpectedly.</p>
+      <p>For principal-level interviews, frame this as a product system rather than a model demo. The answer should cover ownership, permissions, safety, rollback, quality measurement, degraded behavior, and cost control in addition to the visible interaction.</p>
+
+      <h2>Architecture &amp; Flow</h2>
       <p>
         The test case library is the foundational data structure. Each test case contains:
         a unique ID, a prompt (the user input), an optional reference answer (the gold
@@ -95,7 +99,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         encountered in production are added as regression tests.
       </p>
 
-      <h2>Parallel Execution Engine</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Parallel Execution Engine</h3>
       <p>
         When a comparison run is initiated (user selects models A and B, selects a
         test suite, configures generation parameters), the execution engine runs each
@@ -130,7 +134,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         than expected.
       </p>
 
-      <h2>Multi-Dimensional Scoring</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Multi-Dimensional Scoring</h3>
       <p>
         A single quality score misrepresents model performance. Different tasks care
         about different dimensions, and a model can excel on one while failing on another.
@@ -165,8 +169,13 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         scoring for well-defined tasks. Use LLM scoring for subjective dimensions;
         use deterministic metrics for objective dimensions.
       </HighlightBlock>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-model-comparison-testing-interface-metrics.svg"
+        alt="Evaluation metrics diagram showing scoring dimensions, radar comparison, quality versus cost scatter plot, test suite design, blind evaluation protocol, and response caching"
+        caption="Evaluation surface: dimension-specific scores, blind preference, test-suite anatomy, response caching, and cost-quality visualization"
+      />
 
-      <h2>Side-by-Side Comparison View</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Side-by-Side Comparison View</h3>
       <p>
         The primary evaluation view shows two models' responses to the same test case
         side-by-side. The comparison view includes: both responses (with syntax highlighting
@@ -187,7 +196,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         focus on the cases where the choice between models is most consequential.
       </p>
 
-      <h2>Blind Human Preference Voting and Elo Ratings</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Blind Human Preference Voting and Elo Ratings</h3>
       <p>
         LLM-as-judge scores are helpful but can miss what humans actually prefer. Blind
         preference voting (the reviewer sees both responses without knowing which model
@@ -212,7 +221,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         pair has been compared directly.
       </HighlightBlock>
 
-      <h2>Cost-Quality Pareto Analysis</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Cost-Quality Pareto Analysis</h3>
       <p>
         Model quality cannot be evaluated in isolation from cost. The cost-quality
         trade-off surface (a scatter plot where x-axis is cost per 1000 tokens and y-axis
@@ -236,7 +245,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         options.
       </p>
 
-      <h2>Regression Detection</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Regression Detection</h3>
       <p>
         When a new model version or prompt change is deployed, run the test suite against
         both the current and new configuration to detect regressions before production.
@@ -260,37 +269,13 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         testing (don't merge regressions) applied to AI quality. Without CI integration,
         evaluations are run when someone remembers, which is not a reliable process.
       </HighlightBlock>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-model-comparison-testing-interface-regression-gate.svg"
+        alt="Regression gate diagram showing change request, paired evaluation, statistical checks, promote or block decisions, regression signals, production guardrails, and reviewer evidence"
+        caption="Regression gate: paired evaluation plus statistical confidence, safety checks, cost and latency guardrails, and explainable merge decisions"
+      />
 
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you handle non-determinism (temperature greater than 0) when comparing models?</h3>
-      <p>
-        Non-zero temperature means the same model on the same prompt produces different
-        responses each run. A single-sample comparison may show model A beating model B
-        due to lucky sampling, not genuine quality difference. Solution: run each
-        (test case, model) pair N times (typically N=3–5) and average the scores across
-        runs. This increases cost N-fold but dramatically reduces variance in the comparison.
-        For final model selection decisions (high stakes), N=5 is justified. For iterative
-        prompt development (lower stakes, many comparisons), N=1 with a larger test suite
-        achieves similar statistical power more efficiently. Report confidence intervals
-        (not just mean scores) so evaluators understand the uncertainty in the comparison.
-      </p>
-
-      <h3>Q: How do you evaluate models on safety and refusal behavior?</h3>
-      <p>
-        Safety evaluation requires two complementary test sets: harmful prompts (requests
-        that the model should refuse) and edge-case prompts (benign requests that sound
-        superficially harmful but should be answered). The model is scored on: refusal
-        rate on harmful prompts (higher is better — fewer false negatives), over-refusal
-        rate on edge-case prompts (lower is better — fewer false positives), and quality
-        of refusal (does the refusal explain why without being preachy?). LLM-as-judge
-        is reliable for evaluating refusal appropriateness — ask the judge "was this
-        refusal appropriate for this request, and was it communicated well?" Safety
-        evaluation is a distinct category that should be run in every comparison, not
-        treated as optional.
-      </p>
-
-      <h2>Statistical Significance in Evaluation</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Statistical Significance in Evaluation</h3>
       <p>
         A model comparison that shows Model A scoring 73.2% and Model B scoring 71.8%
         on a 50-case test suite may be meaningless noise. Without statistical significance
@@ -331,7 +316,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         selection decisions.
       </p>
 
-      <h2>Test Suite Construction and Maintenance</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Test Suite Construction and Maintenance</h3>
       <p>
         A test suite is a living artifact that must evolve alongside the AI system. A
         test suite written at product launch will miss failure modes discovered in production
@@ -368,7 +353,7 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         to distinguish good models from exceptional ones.
       </HighlightBlock>
 
-      <h2>Benchmarking Against Public Leaderboards</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Benchmarking Against Public Leaderboards</h3>
       <p>
         Public benchmarks (MMLU, HumanEval, MATH, MT-Bench, HellaSwag) provide a
         reference point for comparing internally evaluated models against the broader
@@ -399,6 +384,72 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         in the aggregate score, based on the product's actual task distribution.
       </p>
 
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Evaluation Artifact Governance and Reproducibility</h3>
+      <p>
+        Principal-level evaluation platforms must make every model decision reproducible.
+        A comparison result should capture the test suite version, prompt version, model
+        identifier, model provider version if exposed, sampling parameters, judge prompt,
+        judge model, scoring rubric, cached response IDs, and reviewer cohort. Without
+        these artifacts, a team cannot explain why a model was promoted three months
+        later when quality regresses or a regulator asks how a safety-sensitive model
+        was approved.
+      </p>
+      <p>
+        Evaluation datasets often contain production-derived prompts, which means they
+        may contain personal data, customer secrets, or privileged business context even
+        after automated redaction. Treat private eval suites as sensitive datasets with
+        access control, retention policy, lineage, and review workflow. If a test case
+        is derived from a customer incident, the suite should store a sanitized prompt,
+        a link to the original incident under restricted access, and a reason why the
+        case belongs in the regression set. This discipline keeps the suite useful while
+        avoiding a hidden warehouse of ungoverned customer data.
+      </p>
+
+      <h2>Trade offs &amp; Comparison</h2>
+      <p>The core trade-off is capability versus control. Rich AI experiences improve user productivity, but they add uncertainty, cost, latency, data-access risk, and operational complexity. A principal-ready design explains which paths are authoritative, which paths are best-effort, and how the system degrades when retrieval, model execution, policy checks, or tool calls fail.</p>
+      <p>The design should also compare build-versus-buy boundaries. Provider APIs, vector stores, evaluation tools, moderation classifiers, and orchestration frameworks can accelerate delivery, but the product still owns permission enforcement, user trust, auditability, rollback, and quality measurement.</p>
+
+      <h2>Best practices</h2>
+      <p>Use explicit contracts between UI, orchestration, model, retrieval, policy, and tool layers. Persist durable state, keep correlation IDs across model and tool calls, separate user-visible confidence from internal scores, and make failed or degraded states visible. Treat prompts, policies, retrieval settings, and model versions as production configuration with owners and rollback.</p>
+      <p>Measure quality continuously with offline evaluation sets, production feedback, latency and cost telemetry, safety outcomes, and incident reviews. Principal-level systems do not rely on subjective demos to decide whether an AI feature is working.</p>
+
+      <h2>Common Pitfalls</h2>
+      <p>Common pitfalls include letting the model decide authorization, hiding uncertainty, storing sensitive context unnecessarily, treating provider streaming formats as frontend contracts, and shipping without replayable traces. Another frequent issue is optimizing for impressive answers while neglecting source evidence, policy enforcement, and operator visibility.</p>
+      <p>Teams also underestimate lifecycle problems: model behavior changes, documents are deleted, prompts drift, evaluation sets go stale, and users discover adversarial inputs. The architecture needs ongoing governance, not only launch-time safeguards.</p>
+
+      <h2>Real-world use cases</h2>
+      <p>These patterns apply to enterprise copilots, knowledge assistants, developer tools, moderation systems, model-evaluation platforms, support automation, document Q&A, search products, and workflow automation. In each case, the AI surface becomes a governance and reliability surface as soon as users depend on it for real decisions.</p>
+      <p>For staff and principal interviews, connect the design to rollout safety, tenant isolation, incident response, data access, cost controls, and measurable quality improvement. That is what separates a feature explanation from a system design answer.</p>
+
+      <h2>Common interview question with detailed answer</h2>
+
+      <h3>Q: How do you handle non-determinism (temperature greater than 0) when comparing models?</h3>
+      <p>
+        Non-zero temperature means the same model on the same prompt produces different
+        responses each run. A single-sample comparison may show model A beating model B
+        due to lucky sampling, not genuine quality difference. Solution: run each
+        (test case, model) pair N times (typically N=3–5) and average the scores across
+        runs. This increases cost N-fold but dramatically reduces variance in the comparison.
+        For final model selection decisions (high stakes), N=5 is justified. For iterative
+        prompt development (lower stakes, many comparisons), N=1 with a larger test suite
+        achieves similar statistical power more efficiently. Report confidence intervals
+        (not just mean scores) so evaluators understand the uncertainty in the comparison.
+      </p>
+
+      <h3>Q: How do you evaluate models on safety and refusal behavior?</h3>
+      <p>
+        Safety evaluation requires two complementary test sets: harmful prompts (requests
+        that the model should refuse) and edge-case prompts (benign requests that sound
+        superficially harmful but should be answered). The model is scored on: refusal
+        rate on harmful prompts (higher is better — fewer false negatives), over-refusal
+        rate on edge-case prompts (lower is better — fewer false positives), and quality
+        of refusal (does the refusal explain why without being preachy?). LLM-as-judge
+        is reliable for evaluating refusal appropriateness — ask the judge "was this
+        refusal appropriate for this request, and was it communicated well?" Safety
+        evaluation is a distinct category that should be run in every comparison, not
+        treated as optional.
+      </p>
+
       <h3>Q: How do you handle the case where the LLM-as-judge disagrees with human preference votes at high rates?</h3>
       <p>
         High disagreement between LLM judge and human preference votes (below 0.65 Spearman
@@ -427,6 +478,36 @@ export default function AiModelComparisonTestingInterfaceArticle() {
         or significant architectural changes. Response caching (reuse prior responses
         when model and prompt are unchanged) recovers 30–70% of generation costs for
         iterative comparisons.
+      </p>
+
+      <h2>References</h2>
+      <p>
+        <a href="https://arxiv.org/abs/2306.05685" target="_blank" rel="noreferrer">
+          Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena
+        </a>{" "}
+        introduces practical judge-model and pairwise preference evaluation patterns,
+        including known biases that matter for model-comparison tooling.
+      </p>
+      <p>
+        <a href="https://lmsys.org/blog/2023-05-03-arena/" target="_blank" rel="noreferrer">
+          Chatbot Arena
+        </a>{" "}
+        is a production-scale example of blind pairwise preference voting and Elo-style
+        ranking for conversational models.
+      </p>
+      <p>
+        <a href="https://arxiv.org/abs/2310.06770" target="_blank" rel="noreferrer">
+          SWE-bench
+        </a>{" "}
+        is a useful example of task-specific evaluation where execution correctness and
+        real issue resolution are more meaningful than generic language benchmarks.
+      </p>
+      <p>
+        <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noreferrer">
+          NIST AI Risk Management Framework
+        </a>{" "}
+        helps frame governance for model changes, evaluation evidence, risk measurement,
+        and documented deployment decisions.
       </p>
     </ArticleLayout>
   );

@@ -1,1 +1,5 @@
-# Design a frontend for a no-code / low-code builder — Example 3
+# Frontend FOR A NO Code LOW Code Builder - Example 3
+
+Concrete platform infrastructure edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

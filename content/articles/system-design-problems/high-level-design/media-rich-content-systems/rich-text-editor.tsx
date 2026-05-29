@@ -7,105 +7,146 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-rich-text-editor",
-  title: "Design a Rich Text Editor (Google Docs / Notion Style)",
-  description:
-    "Architecture for a collaborative rich text editor: immutable document model with ProseMirror, Operational Transform for concurrent edits, plugin system for slash commands and @mentions, auto-save with IndexedDB draft, and real-time presence with remote cursors.",
+  title: "Design a Rich Text Editor",
+  description: "Principal-level media-rich system design covering document schema, selection model, plugin sandboxing, collaborative edits, autosave, paste handling, and export.",
   category: "high-level-design",
   subcategory: "media-rich-content-systems",
   slug: "rich-text-editor",
-  wordCount: 5100,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "editor", "prosemirror", "ot", "crdt", "collab", "websocket", "mentions"],
-  relatedTopics: ["pdf-viewer-annotation-system", "content-creation-studio"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "media", "frontend", "performance", "reliability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Rich Text Editor is a media-rich product system, not just a visual component. It must coordinate browser capabilities, large binary assets, local editing state, background jobs, CDN or storage behavior, permissions, abuse policy, and user-facing recovery. The main challenge is that media work is expensive: bytes are large, decoding is CPU-intensive, rendering can block interaction, and failures are often visible immediately.",
+  "The goal is to design a rich text editor around document schema, selection model, plugin sandboxing, collaborative edits, autosave, paste handling, and export. A principal-ready answer should explain the client runtime, backend control plane, asynchronous processing, storage and CDN strategy, consistency model, failure handling, cost controls, and observability.",
+  "Media systems differ from ordinary CRUD systems because derived artifacts are first-class. Thumbnails, transcripts, waveforms, previews, tiles, manifests, captions, encodes, annotations, and exports are projections. They can lag or be regenerated, while original assets, permissions, and user edits need stronger durability.",
+  "The product should define which state must survive refresh, which can be recomputed, which is private, which can be cached publicly, and which requires moderation or entitlement checks. Without this classification, media systems leak private assets, lose drafts, overrun device memory, or create inconsistent playback and editing experiences.",
+  "A staff/principal answer should also cover operational ownership. Playback teams own QoE and buffer behavior; creation teams own draft recovery and export correctness; platform teams own storage, CDN, transcoding, and abuse controls; product teams decide when to degrade rich media to simpler experiences."
+];
+const concepts = [
+  "The first concept is asset lifecycle. Raw uploads, derived previews, published artifacts, and deleted or redacted versions have different durability, cacheability, and privacy rules. document tree and selection engine should never be treated as one generic blob path.",
+  "The second concept is bounded client resources. Media-rich pages must manage memory, GPU, CPU, and network budgets. Large canvases, long documents, video buffers, waveforms, and image grids need virtualization, eviction, and adaptive quality.",
+  "The third concept is asynchronous processing. Many operations cannot complete during the request: transcoding, scanning, rendering, exporting, OCR, waveform generation, and moderation. The UI needs job state, retry, cancellation where safe, and clear user messaging.",
+  "The fourth concept is consistency. Original assets and permissions are authoritative. Derived media and previews can be eventually consistent, but must carry version identifiers so stale thumbnails, captions, annotations, or manifests do not appear as current truth.",
+  "The fifth concept is abuse and safety. Media can contain malware, copyrighted material, unsafe content, personal data, or policy-violating streams. Scanning, moderation, rate limits, reporting, and takedown propagation are part of the system design, not add-ons.",
+  "The sixth concept is observability. Track startup time, decode time, render frame drops, upload retry rate, processing queue age, export success, CDN hit ratio, moderation delay, permission-denied rate, and client memory pressure."
+];
+const architecture = [
+  "The recommended architecture has five surfaces: document tree, selection engine, plugin runtime, autosave log, collab merge. The client owns responsive interaction and local recovery. The API layer owns permissions, idempotency, and job creation. The processing plane owns expensive asynchronous work. Storage and CDN own asset distribution. Observability ties user symptoms to asset version, job ID, route, release, and device cohort.",
+  "A user action should create durable intent before expensive processing begins. Uploads create sessions and chunk manifests. Edits update a draft log or document model. Playback records manifest and entitlement state. Exports create jobs with immutable input versions. This lets the system retry safely after browser refresh, worker failure, or regional outage.",
+  "Derived artifacts should be keyed by source version and transformation parameters. If a video is re-encoded, a PDF is redacted, or a design file changes, old previews must not be confused with new ones. CDN invalidation should be precise and, where possible, replaced by versioned URLs.",
+  "The client should render progressive states: placeholder, partial preview, processing, ready, failed, retryable, permission blocked, or policy blocked. These states are product semantics, not generic spinners. They tell users whether to wait, retry, change input, or contact support.",
+  "The system should separate interactive paths from batch-heavy paths. Playback controls, editing cursor, annotation placement, and draft typing need low latency. Transcoding, full export, OCR, deep scanning, and global indexing can run asynchronously with backpressure.",
+  "The diagrams show architecture, flow, and operations: the architecture view explains ownership boundaries, the flow view explains user intent through processing and delivery, and the operations view explains queue pressure, recovery, moderation, and QoE control loops."
+];
+const tradeoffs = [
+  "Client-heavy processing can feel instant and reduce server cost, but it is limited by device capability, browser support, battery, and memory. Server-heavy processing is more predictable and easier to moderate, but adds queue latency and infrastructure cost. Mature systems usually use a hybrid.",
+  "Eagerly generating every derivative gives fast later reads but wastes compute for assets that are never viewed. Lazy generation saves cost but can make first access slow. Principal designs choose by product criticality: thumbnails and safety scans are often eager; rare export formats can be lazy.",
+  "Public CDN caching is excellent for published media but dangerous for private, permissioned, or recently revoked assets. Permissioned media needs signed URLs, short TTLs, versioned keys, and takedown propagation. The cache key is a security boundary.",
+  "Optimistic editing improves flow, but edits need durable logs, conflict resolution, and recovery. For collaborative or offline editing, the design must choose OT, CRDT, server-authoritative locking, or merge-on-save based on the shape of the document and expected collaboration intensity.",
+  "High visual fidelity competes with performance. A player can drop quality to avoid rebuffering; an editor can lower preview resolution while keeping export fidelity; a PDF viewer can render visible pages first. The product should make these trade-offs intentionally.",
+  "Moderation before publication reduces user harm but slows creator workflows. Moderation after publication improves speed but can amplify abuse. Risk-based gating is usually better than one rule for every asset.",
+  "Observability itself has cost and privacy risk. Capture event class, performance timings, asset IDs, and job IDs, but avoid logging raw document content, private annotations, media URLs with secrets, or user-entered text."
+];
+const practices = [
+  "Model media as a lifecycle with immutable source versions, derived artifact versions, processing jobs, permission state, and deletion or redaction state. Make every derived object traceable to the source version that produced it.",
+  "Use resumable upload and idempotent job creation. Browser crashes, mobile backgrounding, network loss, and worker retries should converge on one upload or processing job rather than duplicate assets.",
+  "Keep interactive paths small. Use virtualization, bounded buffers, progressive decoding, idle work, worker threads where appropriate, and adaptive quality for constrained devices.",
+  "Design explicit states for processing and failure. Users should know whether an asset is uploading, scanning, processing, ready, blocked, expired, or failed permanently. Support should see the same state with job history.",
+  "Protect permissions at every derived surface: original file, thumbnail, transcript, annotation, search result, share preview, CDN URL, export, and notification. Derived media is often where privacy leaks happen.",
+  "Build operational dashboards around user symptoms: playback startup, rebuffer, export queue age, upload resume success, annotation conflict rate, frame drops, failed processing jobs, and moderation SLA.",
+  "Provide rollback controls for codecs, rendering engines, export workers, feature flags, and CDN publication. Media regressions can be severe because old clients and assets remain in circulation."
+];
+const pitfalls = [
+  "A common pitfall is treating media as static files. In production, media has permissions, versions, processing state, cache state, moderation state, and support history.",
+  "schema drift becomes visible quickly because media UX has little tolerance for pauses, jumps, or lost work. The design needs either prevention or honest recovery.",
+  "cursor jumps is often caused by mixing interactive and batch work in one path. Expensive jobs should not block low-latency controls unless the product absolutely requires it.",
+  "paste attacks needs explicit ownership and retry semantics. If a job can fail after the user leaves, there must be notification, retry, support visibility, or compensating state.",
+  "conflicting edits should be considered during design, not after launch. Media products are natural abuse targets because images, video, documents, and streams can carry harmful or sensitive content.",
+  "Another pitfall is missing cost governance. Transcoding, rendering, OCR, storage replication, CDN egress, and telemetry can dominate cost if the system eagerly processes every variant without demand signals."
+];
+const useCases = [
+  "Notion-like editor exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "CMS article authoring exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Collaborative product docs exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "An interviewer may push on device constraints. A strong answer explains how the UI adapts quality, bounds memory, uses background work carefully, and preserves the primary task when CPU or GPU is constrained.",
+  "An interviewer may push on privacy. The answer should explain signed URLs, derived artifact permissions, local cache clearing, redaction propagation, and avoiding sensitive telemetry.",
+  "An interviewer may push on incidents. The answer should cover queue backlog, worker rollback, CDN purge or versioning, disabled formats, degraded preview, and support-visible job history."
+];
+const questions = [
+  {
+    "question": "How would you design a rich text editor end to end?",
+    "answer": "I would model the media lifecycle first: source asset or document state, derived artifacts, permissions, processing jobs, client presentation, and operational telemetry. The client handles responsive interaction and local recovery, APIs enforce permission and idempotency, workers perform expensive processing, storage and CDN serve versioned artifacts, and observability links user symptoms back to asset version and job ID."
+  },
+  {
+    "question": "Why choose this architecture over a simpler upload-and-display design?",
+    "answer": "A simple upload-and-display design ignores derived artifacts, processing failures, permissions, moderation, cache invalidation, and device limits. It works for prototypes but fails when assets are large, private, collaborative, or safety-sensitive. The layered architecture adds complexity, but it isolates expensive work, makes retries safe, and gives operators control during incidents."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are schema drift, cursor jumps, paste attacks, conflicting edits. Scale also exposes CDN egress cost, processing queue backlog, hot assets, cache stampedes, memory pressure, long-tail device issues, and moderation delay. The prevention strategy is versioned artifacts, backpressure, adaptive quality, bounded client memory, queue observability, and remote rollback controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Original assets, permissions, and durable user edits need strong ownership and versioning. Derived media such as thumbnails, transcripts, previews, indexes, and exports can be eventually consistent, but must carry source version IDs and visible processing state. Collaborative editing may require CRDT, OT, or server-authoritative conflict resolution depending on the data model."
+  },
+  {
+    "question": "How do you handle failure, privacy, cost, and observability?",
+    "answer": "Failures are handled through resumable uploads, idempotent jobs, retryable processing, clear user states, and support-visible job history. Privacy requires permission checks on every derived surface, signed URLs, redaction propagation, and careful local storage. Cost is controlled through demand-aware derivative generation, cache hit targets, storage lifecycle policy, and telemetry sampling. Observability tracks QoE, queue age, job failures, cache behavior, and client resource pressure."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate interactive latency from batch processing, original truth from derived artifacts, and public assets from permissioned assets. Then I would explain which parts are optimized for immediacy, which are optimized for correctness, and which degrade during load or device pressure. That makes the trade-off defensible rather than generic."
+  }
+];
+const references = [
+  {
+    "label": "MDN: Media Source Extensions",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+  },
+  {
+    "label": "MDN: WebCodecs API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API"
+  },
+  {
+    "label": "W3C: Media Source Extensions",
+    "href": "https://www.w3.org/TR/media-source-2/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WebRTC specifications",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function RichTextEditorArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A collaborative rich text editor (Google Docs, Notion, Confluence) is one of the most technically demanding UI systems to build. The editor must handle text input with under 16ms latency (one animation frame) so the user's keystrokes never feel sluggish—this means no synchronous blocking operations between keypress and DOM update. It must support rich formatting (headings, lists, tables, code blocks, embeds) using a structured document model, not raw HTML, so the content is consistently structured and can be serialized to multiple output formats. Most critically, it must allow multiple users to edit the same document simultaneously without overwriting each other's changes—requiring a conflict resolution algorithm (Operational Transform or CRDT) that produces consistent convergence across all clients regardless of network conditions or operation ordering.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The document model is the foundational design decision. Storing content as a raw HTML string (contenteditable's native model) is simple but makes collaborative editing, structured queries, and export unreliable—HTML is a presentation format, not a semantic data model. A structured tree model (ProseMirror's approach: a schema-constrained JSON document with block nodes, inline nodes, and marks) enables reliable serialization, schema validation, and the transaction-based mutations that OT/CRDT requires. Every change to the document is expressed as an atomic, invertible transaction—this is what makes undo/redo and collaborative merging tractable.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The editor uses ProseMirror as the document model and rendering layer (it handles contenteditable, IME, and cross-browser text input). Collaboration uses Operational Transform (OT) on the server with client-side rebasing. Real-time sync uses WebSockets. Auto-save uses a debounced 2-second timer with IndexedDB as a local draft store. The server stores documents as a JSON snapshot + append-only operations log.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/rich-text-editor-architecture.svg" alt="Design a Rich Text Editor architecture" caption="Architecture view: media lifecycle, client runtime, processing plane, storage, CDN, and control boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/rich-text-editor-ot-collab.svg" alt="Design a Rich Text Editor flow" caption="Flow view: user intent, rendering or processing progression, fallback, and recovery states." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/rich-text-editor-operations.svg" alt="Design a Rich Text Editor operations" caption="Operations view: queue pressure, permission enforcement, moderation, QoE, rollback, and support visibility." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Rich formatting:</strong> Users can apply block-level formatting (headings h1–h6, paragraphs, ordered/unordered lists, code blocks, blockquotes, tables, callouts, dividers) and inline formatting (bold, italic, underline, strikethrough, code, links) via toolbar buttons, keyboard shortcuts, and Markdown-style input rules.</li>
-          <li><strong>Slash command menu:</strong> Typing "/" at the beginning of an empty block opens a searchable command palette for inserting block types (/h1, /table, /image, /code) and common content patterns.</li>
-          <li><strong>@ Mentions:</strong> Typing "@" opens a typeahead for mentioning users or documents. Mentions are inline nodes with a user ID, rendered as styled chips with the user's name.</li>
-          <li><strong>Media embeds:</strong> Images, files, and videos can be embedded via paste, drag-and-drop, or slash commands. Images are uploaded to S3 via a presigned URL and represented in the document as structured image nodes with CDN URLs.</li>
-          <li><strong>Real-time collaboration:</strong> Multiple users can edit simultaneously. Each user sees other users' cursors and selections in real time, colored by user identity. Changes are visible to all editors within 300ms P95.</li>
-          <li><strong>Version history:</strong> Users can view the document's edit history, see a diff between any two snapshots, and restore a previous version.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Input latency:</strong> Keystrokes must update the local DOM within 16ms (one animation frame) to feel instantaneous.</li>
-          <li><strong>Collaboration latency:</strong> Remote operations must be applied and visible to all clients within 300ms P95 (network round-trip + server transform + broadcast).</li>
-          <li><strong>Document load time:</strong> A document with 10,000 words must load and render within 1 second on a mid-range device.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The editor has three layers. The rendering layer (contenteditable surface): ProseMirror intercepts all browser input events (beforeinput, compositionstart/end, keydown) and converts them into transactions before updating the DOM. This bypasses the browser's default contenteditable behavior, giving the editor full control over what content is inserted and how it is represented in the document model. The state layer (document model + history + collab): the editor state is immutable—each transaction produces a new state. The history plugin tracks transactions for undo/redo. The collaboration plugin manages pending operations (sent but not yet acknowledged by the server) and incoming remote operations (to be applied and rebased). The sync layer (WebSocket + server OT engine): the server maintains the authoritative document state and transforms concurrent operations.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/rich-text-editor-architecture.svg"
-          alt="Rich text editor architecture showing document model (Document → Block Nodes p h1-h6 ul table → Inline Nodes text link mention emoji → Marks bold italic code link → Transactions immutable + rebasing → OT/CRDT conflict-free merge), editor UI components (toolbar slash commands, contenteditable surface DOM sync via decorations, selection and cursor AnchorNode FocusNode, media embeds image upload video file attach, @ mentions typeahead user/doc lookup, input handling intercept beforeinput events apply transactions update DOM), state and collaboration (editor state doc + selection + history, undo/redo stack transaction history Ctrl+Z/Y, OT/CRDT engine transform concurrent ops, presence awareness remote cursors + user colors, WebSocket collab protocol client sends op delta baseRev server broadcasts op delta rev client rebases), and storage and performance (auto-save debounce 2s IndexedDB draft background sync, document storage JSON ProseMirror version history ops log snapshot every 100 ops export HTML Markdown DOCX, performance virtual rendering decorations IME guard input latency 16ms target)."
-          caption="Editor architecture: immutable doc model → transaction-based mutations → OT collaboration (transform concurrent ops) → WebSocket broadcast → remote cursor presence → auto-save (IndexedDB → server)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Document Model and Transactions</h3>
-        <HighlightBlock as="p" tier="important">The document is an immutable tree of nodes. Every change creates a new document state—nothing is mutated in place. A transaction is a description of a change: insert text at position X, delete range [A, B], set marks on range [C, D], replace node at path [E]. Transactions are composable (multiple changes bundled into one), invertible (for undo), and serializable (for transmission to the server). The schema constrains what node types can contain what: a list item can only contain inline content; a table cell can only contain block content. Schema violations are rejected at the transaction level, preventing invalid document states from ever entering the editor.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Input rules: ProseMirror's inputrules plugin applies Markdown-like shortcuts as the user types. Typing "# " at the start of a paragraph converts it to a heading. Typing "- " creates a list item. Typing "```" creates a code block. These transformations happen at the transaction level—the typed characters are replaced by the appropriate node transformation before the DOM is updated. The user sees the result (the heading, the list item) without the intermediate characters appearing in the document.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Operational Transform for Collaboration</h3>
-        <HighlightBlock as="p" tier="important">When two users edit simultaneously, their operations are based on the same document revision but arrive at the server in an arbitrary order. Operational Transform resolves this: the server applies incoming operations in order, transforming later operations to account for earlier ones. For a text insertion conflict: Alice inserts "!" at position 11 in "Hello world" (rev 5). Bob simultaneously inserts "." at position 11. The server receives Alice's op first, applies it (doc becomes "Hello world!" rev 6). Bob's op arrives with base rev 5. The server transforms Bob's op: since Alice's insertion at position 11 shifted all positions after it by 1, Bob's insert-at-11 becomes insert-at-12. The server applies the transformed op (doc becomes "Hello world!." rev 7). Both operations are broadcast to all clients; each client applies the remote ops to converge to the same state.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Client-side rebasing: when the client sends an operation and later receives a remote operation (from another user) while waiting for the server to acknowledge its own, the client must rebase its pending operations over the received remote operations. This is the client-side complement of the server's transform: it ensures the pending (unacknowledged) operations still apply correctly to the updated document state. The rebase is transparent to the user—their local edits continue to appear immediately (optimistic update), and the rebase adjusts positions to account for concurrent remote edits.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Presence and Remote Cursors</h3>
-        <HighlightBlock as="p" tier="important">Presence information (cursor position and selection of each collaborator) is broadcast via the WebSocket connection every 100ms. The cursor position is expressed as a document position (an integer index into the flattened document, as used by ProseMirror's position system—not a DOM node reference). On receiving a remote cursor update, the client renders a colored cursor line and name label at the corresponding document position using ProseMirror decorations (non-document DOM changes that are applied on top of the rendered document without entering the document model). Decorations are efficiently updated independently of the document state, allowing cursor updates to render in a single paint without triggering a full re-render of the document.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Auto-save and Draft Management</h3>
-        <HighlightBlock as="p" tier="important">The editor saves the document automatically: a debounced 2-second timer fires after the user stops typing, triggering a save to the server. If the user closes the tab or navigates away, a beforeunload listener fires a synchronous save (using navigator.sendBeacon for the XHR, which survives tab close). The current document state is also written to IndexedDB on every meaningful change (every 30 seconds minimum, immediately on focus loss). On next page load, the IndexedDB draft is compared to the server's latest revision: if the draft is newer, the user is prompted ("You have unsaved changes—restore draft or discard?"). This protects against data loss from connectivity failures or browser crashes between the debounced save intervals.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Plugin System</h3>
-        <HighlightBlock as="p" tier="important">The editor's features are implemented as ProseMirror plugins. Each plugin is a self-contained unit that declares: a state (plugin-local state stored alongside the editor state), view update behavior (how the plugin responds to editor state changes), input rules (patterns that trigger transformations), keymap (keyboard shortcut handlers), and node views (custom React/DOM rendering for specific node types). Plugins are composable: the editor is assembled from a list of plugins at initialization. Adding a new feature means writing a new plugin without modifying existing code. The toolbar is implemented as a plugin that reads the current selection from the editor state and activates/deactivates formatting buttons based on the active marks and node type at the cursor.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Version History</h3>
-        <p>The server stores the document as two artifacts: a snapshot (the full document JSON at a specific revision) and an append-only operations log (each entry is the operation, the author, and the timestamp). The server takes a new snapshot every 100 operations to bound the time needed to reconstruct a document from the ops log. Loading a document at the latest revision uses the most recent snapshot + any subsequent operations. Loading a historical revision replays operations from the nearest snapshot up to the target revision. The version history UI renders a timeline of significant revisions (labeled by author and time), with a diff view showing additions (green) and deletions (red) between any two selected revisions. Restoring a revision creates a new operation that replaces the current document with the historical snapshot, preserving the intervening operations in the log.</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/rich-text-editor-ot-collab.svg"
-          alt="OT concurrent edit example with 3 lifelines (Alice client A, Server OT engine, Bob client B). Base doc: Hello world rev5. Alice inserts ! at 11 sending op_A insert 11 ! rev5. Bob concurrently inserts . at 11 sending op_B insert 11 . rev5. Server applies op_A → rev6 Hello world!. Server transforms op_B over op_A: ins position shifts to 12. Server applies op_B prime → rev7 Hello world!.. Broadcasts op_B prime to Alice and op_A to Bob. Converged: Hello world!. rev7. Remote cursor rendering note: cursor pos broadcast via presence channel WebSocket every 100ms. Right panel: Plugin architecture (each plugin defines keymap input rules node views commands, composable [BoldPlugin ItalicPlugin ...], state isolated via plugin key). Slash command menu (trigger / at empty block, commands /h1 /table /image /code /callout /divider, fuzzy search /tab matches /table). Image upload flow (paste/drag → presigned S3 URL, upload progress inline placeholder, on complete replace with img node + CDN URL). Export formats HTML Markdown DOCX PDF. Input latency targets keystroke to DOM 16ms op broadcast 100ms remote op applied 300ms P95."
-          caption="OT concurrent edit resolution (position shifting to converge), remote cursor presence, plugin architecture, slash command menu, image upload flow, and latency targets"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">OT versus CRDT for collaboration: Operational Transform requires a central server to apply and broadcast operations in a canonical order, which simplifies the convergence proof but creates a single point of coordination. CRDT (Conflict-free Replicated Data Types) like Y.js (used by many modern editors) allows peer-to-peer convergence without a central coordinator—clients can exchange operations directly and still converge. CRDTs are better for offline-first use cases (edits merge automatically when connectivity is restored) and peer-to-peer architectures. OT is simpler to reason about for server-coordinated collaborative editors with a central authority (the server is always the source of truth). For a typical Google Docs-style editor with a server backend, OT is the more proven approach; for an offline-first or p2p editor, Y.js/CRDT is the better choice.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">contenteditable complexity: the browser's native contenteditable behavior is a minefield of cross-browser inconsistencies, IME (Input Method Editor) issues on East Asian languages, and uncontrolled DOM mutations. ProseMirror addresses this by intercepting all input events before the browser processes them, applying the desired change as a transaction, and updating the DOM to reflect the new state—effectively implementing a custom input handling layer on top of contenteditable. This adds complexity (the editor must handle every edge case the browser would have handled) but gives complete control over the document model and prevents invalid states from entering the document.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Large document performance: for very long documents (500+ pages), rendering all content in a single DOM tree is prohibitively expensive. Virtual rendering (only rendering the visible portion of the document, analogous to virtual lists in a chat UI) is required. ProseMirror supports this via the viewDesc tree and can be extended to skip rendering of off-screen blocks. The practical trade-off: virtual rendering complicates features that depend on the full document DOM (spell-check, browser's built-in find-in-page). Google Docs uses a canvas-based rendering approach for its virtual rendering to bypass these limitations entirely, at the cost of losing native browser text selection behavior.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A collaborative rich text editor centers on an immutable document model (ProseMirror's schema-constrained node tree) where every change is a transaction—invertible, composable, and serializable. The editor intercepts all input events before the browser processes them, converts them to transactions, and updates the DOM to the new state, achieving under 16ms input latency. Collaboration uses OT: each client sends operations with a base revision to the server; the server applies them in order, transforming concurrent operations to adjust positions; broadcast operations are applied by all clients to converge to the same state. Remote cursors are rendered as decorations (non-document DOM overlays), updated every 100ms via the WebSocket presence channel. Auto-save debounces at 2 seconds, writes a local draft to IndexedDB on focus loss, and uses sendBeacon for tab-close saves. Version history stores a snapshot + append-only ops log, with snapshots every 100 ops. The plugin system assembles features (toolbar, slash commands, @mentions, image upload) as composable, state-isolated ProseMirror plugins. The defining design constraint: all document mutations must go through the transaction system—no direct DOM manipulation is ever allowed, because OT convergence depends on every change being expressed as a serializable operation.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

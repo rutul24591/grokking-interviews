@@ -7,89 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-resource-booking-system",
-  title: "Design a Resource Booking System (Rooms, Desks, Slots)",
-  description:
-    "Architecture for a resource booking system: interval overlap query to find available rooms and desks, SELECT FOR UPDATE atomic booking with unique constraint to prevent double-booking races, QR/NFC check-in with no-show auto-release at start+15min, Redis sorted set waitlist with 10-minute claim window, recurring maintenance block scheduling, capacity and amenity filtering, admin override and force-release, SSE real-time availability updates, and booking analytics for utilization reporting.",
+  title: "Design a Resource Booking System",
+  description: "Principal-level scheduling and calendar system design covering availability, recurrence, time zones, resource holds, conflict detection, reminders, external sync, privacy, and observability.",
   category: "high-level-design",
   subcategory: "scheduling-calendar-systems",
   slug: "resource-booking-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "booking", "rooms", "desks", "slots", "double-booking", "waitlist", "check-in", "utilization"],
-  relatedTopics: ["google-calendar-system", "meeting-scheduling-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "calendar", "scheduling", "availability", "recurrence", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Resource Booking System is a coordination system where correctness depends on time, people, resources, notifications, permissions, and external calendar state. A principal-ready design treats a resource booking system as a reservation and availability system, not just a date-picker UI.",
+  "The hard problems are ambiguous time zones, recurrence, conflict detection, temporary holds, invitation state, external synchronization, reminder delivery, privacy, and operational repair. Users lose trust quickly when a system double-books them or sends incorrect reminders.",
+  "The design should define authoritative state: event or reservation record, participant response, resource hold, recurrence rule, availability projection, notification state, and external sync cursor. Derived availability views and reminders can lag, but booking decisions need stronger protection.",
+  "Calendar systems also have social and organizational semantics. A meeting can be tentative, accepted, declined, private, delegated, recurring, moved, canceled, or externally owned. A resource can require approval, capacity constraints, check-in, or cleanup time.",
+  "A staff/principal answer should cover end-to-end creation, conflict checking, external sync, reminder delivery, cancellation, rollback, auditability, and how the system behaves when clocks, time zones, or provider integrations disagree."
+];
+const concepts = [
+  "The first concept is time normalization. Store canonical instants in UTC, preserve the user's intended local time zone, and use a real time zone database for daylight-saving transitions. Recurring events need local-time semantics, not only UTC arithmetic.",
+  "The second concept is reservation consistency. reservation ledger and conflict detector need atomic conflict checks for scarce resources or participant slots. Availability projections are useful, but final booking must revalidate authoritative state.",
+  "The third concept is recurrence expansion. Recurrence rules should be stored compactly and expanded over bounded windows. Expanding unbounded recurring meetings into physical rows creates storage and update problems.",
+  "The fourth concept is invitation workflow. Participants, resources, external guests, and approvers can each have independent state. The UI should not treat sent, delivered, accepted, tentative, declined, canceled, and failed as one status.",
+  "The fifth concept is external sync. External calendar APIs are eventually consistent and can fail, rate limit, reorder, or replay changes. Sync needs cursors, idempotency, conflict policy, and user-visible stale states.",
+  "The sixth concept is observability. Track booking conflict rate, hold expiry, reminder lag, sync error rate, recurrence expansion cost, timezone conversion errors, external provider latency, and user-visible stale availability."
+];
+const architecture = [
+  "The architecture contains resource catalog, reservation ledger, conflict detector, approval workflow, check-in service. The write path creates or updates authoritative event/reservation state. The availability path builds read-optimized projections. The reminder path schedules notifications. The sync path reconciles external providers. The operations path repairs conflicts and failed notifications.",
+  "Creation should begin with intent and validation: actor permission, participant/resource scope, requested time range, recurrence rule, buffer time, capacity, and policy constraints. Before committing, the system revalidates conflicts against authoritative records, not only cached availability.",
+  "Temporary holds protect scarce slots during multi-step booking. A hold needs owner, resource, time range, TTL, idempotency key, and release semantics. Holds should expire automatically and be visible enough that users understand why a slot disappeared.",
+  "Recurrence should store a rule, exceptions, cancellations, and moved instances. Query APIs can expand bounded windows for display. Edits should distinguish this instance, this and following, or all instances.",
+  "Reminders and notifications should be driven by durable schedules. If a worker fails, reminders should be replayable without duplicate sends. Notification preferences and quiet hours must be respected.",
+  "External sync should be asynchronous and conflict-aware. Provider events may arrive late or out of order. The system should store sync cursor, provider version, last successful sync, and conflict resolution decision."
+];
+const tradeoffs = [
+  "Strong conflict checks protect users from double booking but add write latency and reduce availability during datastore issues. Cached availability improves browse performance but cannot be the final source of truth for booking.",
+  "Pessimistic holds reduce conflicts but can make popular slots appear unavailable because users abandon flows. Optimistic booking improves utilization but creates more failed confirmations. TTL-based holds are usually the middle ground.",
+  "Pre-expanding recurrence makes reads fast but creates huge update and deletion problems. On-demand bounded expansion is more flexible but needs efficient query windows and caching.",
+  "External calendar sync improves adoption but adds rate limits, provider-specific semantics, privacy concerns, and eventual consistency. The UI should show sync uncertainty instead of pretending all providers are instantly consistent.",
+  "Detailed reminders reduce no-shows but can become noisy or leak private event details. Notification payloads should respect event privacy, participant visibility, and channel preferences.",
+  "Audit history helps support resolve disputes but stores sensitive calendar metadata. Retention, redaction, and access control are part of the design."
+];
+const practices = [
+  "Use a proven recurrence and timezone model. Do not implement daylight-saving rules by hand. Preserve local-time intent for recurring events.",
+  "Make final booking server-authoritative. Cached availability, client-side calendars, and external free/busy results are hints until revalidated.",
+  "Use idempotency for create, update, cancel, RSVP, hold, reminder, and sync operations. Calendars are retry-heavy because clients and providers reconnect frequently.",
+  "Separate event truth from projections: availability grids, notification schedules, search indexes, and external sync state should be rebuildable.",
+  "Design explicit lifecycle states: proposed, held, confirmed, tentative, declined, canceled, expired, failed sync, failed reminder, and requires approval.",
+  "Instrument provider-specific sync and reminder behavior. External API outages should not look like product bugs without context.",
+  "Build repair tools for conflicting bookings, stuck holds, failed reminders, bad recurrence edits, and provider sync divergence."
+];
+const pitfalls = [
+  "overbooking is the classic calendar failure. It happens when systems treat a local recurring meeting as fixed UTC or ignore daylight-saving transitions.",
+  "ghost reservations occurs when recurrence is expanded without bounds or when edits to one instance mutate the wrong set of future events.",
+  "approval bottleneck undermines trust because participants act on stale invite state. The UI should distinguish local state from externally synced state.",
+  "capacity drift shows that notifications are part of the product contract. Late, duplicate, or privacy-leaking reminders can be as damaging as a wrong booking.",
+  "Another pitfall is treating resource booking like ordinary CRUD. Scarce resources need conflict checks, holds, capacity rules, approvals, and operational repair.",
+  "Teams also forget privacy. Free/busy is not the same as full event detail, and private events should not leak through reminders, search, availability suggestions, or support tools."
+];
+const useCases = [
+  "conference room booking requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "equipment reservation requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "lab or facility scheduling requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "During external provider outage, the system should keep local bookings safe, mark external sync stale, retry with backoff, and avoid overwriting newer provider state blindly.",
+  "During a timezone rule change or daylight-saving bug, operators need to identify affected recurring events, replay expansion, notify impacted users, and preserve audit history.",
+  "During a high-demand booking window, the system should use holds, rate limits, queueing, and clear expiry messaging to avoid overselling scarce slots."
+];
+const questions = [
+  {
+    "question": "How would you design a resource booking system end to end?",
+    "answer": "I would model authoritative event or reservation state, recurrence rules, participant/resource status, temporary holds, notification schedules, and external sync cursors. The UI reads availability projections but final booking revalidates against authoritative records. Workers handle reminders and external sync with idempotency and replay. Operations need repair tools for conflicts, stuck holds, failed reminders, and provider divergence."
+  },
+  {
+    "question": "Why this architecture over a simple events table?",
+    "answer": "A simple events table cannot model recurrence exceptions, temporary holds, RSVP state, resource conflicts, external sync, reminders, privacy, and repair workflows. The layered model adds complexity, but it separates authoritative booking from projections and asynchronous side effects."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are overbooking, ghost reservations, approval bottleneck, capacity drift, plus hot resource contention, provider rate limits, sync loops, reminder fanout, stale availability caches, and support disputes. Prevention requires server-authoritative conflict checks, bounded recurrence expansion, idempotency, sync cursors, and operational repair."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative bookings, holds, resource conflicts, cancellations, and permission changes need strong server-side consistency. Availability grids, search, reminders, and external sync can be eventually consistent if they expose freshness and reconcile safely. Cached free/busy should never be the final booking decision."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "Failures are handled through hold expiry, idempotent retries, reminder replay, sync backoff, and repair tools. Rollback uses event version history and provider reconciliation. Privacy requires free/busy controls and redacted notifications. Cost is controlled through bounded recurrence expansion, cached availability windows, and batched reminders. Observability tracks conflicts, sync lag, reminder lag, stale availability, and provider errors."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend server-authoritative final booking because double booking is worse than slight latency. I would defend cached availability for browsing because it improves UX, but only as a hint. I would use TTL holds to balance utilization and conflict prevention. I would also explain why recurrence and time zones require established standards rather than ad hoc logic."
+  }
+];
+const references = [
+  {
+    "label": "RFC 5545 iCalendar specification",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5545"
+  },
+  {
+    "label": "Google Calendar API concepts",
+    "href": "https://developers.google.com/calendar/api/concepts"
+  },
+  {
+    "label": "Microsoft Graph calendar API",
+    "href": "https://learn.microsoft.com/en-us/graph/api/resources/calendar"
+  },
+  {
+    "label": "IANA time zone database",
+    "href": "https://www.iana.org/time-zones"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function ResourceBookingSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A resource booking system manages reservations for physical resources: conference rooms, hot desks, parking spots, sports courts, medical appointment slots, or any other finite-capacity resource. The core problem is preventing double-booking: two users must not be able to book the same resource for overlapping time periods. Unlike a meeting scheduling system (where availability is derived from a user's calendar), a resource booking system owns the availability data directly — a room is available unless it has been booked.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The system must handle: concurrent booking attempts (two users booking the same room simultaneously), no-shows (a room is booked but the occupant never arrives, wasting the slot for others), waitlists (if a resource is fully booked, users can queue for a slot that opens up), and admin management (blocking rooms for maintenance, overriding bookings for emergencies, viewing utilization reports). At enterprise scale, the system must support thousands of resources across multiple buildings and time zones, with a booking load that peaks at the start of the business day (everyone books their room for the day).</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Resource availability search, atomic booking with conflict prevention, check-in and no-show release, waitlist management, admin controls, and utilization analytics. Not in scope: video conferencing integration, visitor management systems, or IoT sensor integration (though the check-in design accommodates it).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/resource-booking-system.svg" alt="Design a Resource Booking System architecture" caption="Architecture view: authoritative event or reservation state, availability projections, reminders, and external sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/resource-booking-system-flow.svg" alt="Design a Resource Booking System flow" caption="Flow view: proposal, hold, conflict check, confirmation, reminder, cancellation, and external reconciliation." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/resource-booking-system-operations.svg" alt="Design a Resource Booking System operations" caption="Operations view: timezone issues, stuck holds, recurrence repair, sync lag, reminder lag, and privacy controls." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Resource data model:</strong> Each resource has: resourceId, name (e.g., "Boardroom A"), type (room/desk/equipment), building, floor, capacity (max occupants), amenities (projector, whiteboard, video_conferencing, standing_desk — stored as a tag array), operatingHours (when the resource is available each day — not every room is available 24/7), and maintenanceWindows (recurring blocks during which the resource is unavailable, stored as RRULE). A bookings table contains: bookingId, resourceId, userId, start (UTC), end (UTC), status (confirmed/checked_in/no_show/cancelled), confirmedAt, and checkedInAt. The primary conflict prevention index is on (resourceId, start, end) — a partial unique constraint ensures no two confirmed/checked-in bookings overlap for the same resource.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Availability search:</strong> The availability search query answers: "which rooms are available from 2pm to 3pm with capacity &gt;= 8 and a projector?" The SQL uses an interval overlap anti-join: SELECT r.* FROM resources r WHERE r.capacity &gt;= 8 AND 'projector' = ANY(r.amenities) AND NOT EXISTS (SELECT 1 FROM bookings b WHERE b.resourceId = r.resourceId AND b.status IN ('confirmed', 'checked_in') AND b.start &lt; '15:00' AND b.end &gt; '14:00'). The interval overlap condition (b.start &lt; req_end AND b.end &gt; req_start) correctly handles all overlap cases: contained, overlapping, and surrounding intervals. This query is indexed on (resourceId, start, end) and is fast for typical booking densities (a room has at most 8–16 bookings per day). Results include real-time occupancy counts served via SSE so the "available rooms" list updates as bookings are made without page refreshes.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Atomic booking with conflict prevention:</strong> The booking flow uses database-level locking to prevent double-booking races: BEGIN TRANSACTION; SELECT * FROM resources WHERE resourceId = X FOR UPDATE (acquires a row-level exclusive lock on the resource); re-check the overlap query inside the transaction (with the lock held, no concurrent booking can proceed for this resource); INSERT INTO bookings (resourceId, userId, start, end, status) VALUES (...); COMMIT. The SELECT FOR UPDATE ensures that two concurrent booking requests for the same resource are serialized — the second request waits until the first transaction commits or rolls back. After the first commits (successfully booking the slot), the second proceeds with the re-check and finds the overlap, returning a 409 Conflict. No two transactions can both succeed for the same resource and overlapping time slot.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Check-in and no-show release:</strong> Check-in is performed via QR code or NFC tap at the room's door panel. The door panel sends POST /bookings/&#123;id&#125;/checkin authenticated by the panel's device certificate. The booking status transitions to checked_in and the checkedInAt timestamp is recorded. A no-show cron job runs every minute and queries: bookings where status = 'confirmed' AND start &lt; now() - interval '15 minutes' AND checkedInAt IS NULL. These are no-show bookings — the occupant never arrived. The job updates their status to 'no_show' and triggers the waitlist release process (notifying the next person in the waitlist queue for that resource and time slot). The 15-minute grace window gives occupants time to arrive after the meeting starts without having their room given away.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Waitlist management:</strong> When a search returns no available rooms (all matching rooms are booked), users can join a waitlist for a specific resource + time slot. The waitlist is implemented as a Redis sorted set per (resourceId, slotISO): ZADD waitlist:&#123;resourceId&#125;:&#123;slotISO&#125; &#123;joinTimestamp&#125; &#123;userId&#125;. When a slot is freed (cancellation, no-show, or early release), the system calls ZPOPMIN to dequeue the user with the earliest join timestamp and sends them a notification (push + email) with a 10-minute claim window. If the user does not claim within 10 minutes, ZPOPMIN is called for the next user, and so on. Claim: the waitlisted user follows a link to a booking form pre-filled with the resource and slot — the booking proceeds normally through the SELECT FOR UPDATE flow (with a final conflict check in case another concurrent action freed and re-booked the slot in the 10-minute window).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Recurring maintenance blocks:</strong> Rooms are unavailable during scheduled maintenance (cleaning, IT setup, construction). Maintenance windows are stored as RRULE on the resource: "FREQ=DAILY;BYHOUR=8;BYMINUTE=0;DURATION=PT1H" (daily 8am–9am cleaning). The availability search treats maintenance windows as pseudo-bookings: they are expanded from the RRULE and included in the overlap check. A dedicated maintenance_blocks table (resourceId, start, end, reason) stores both recurring (derived from RRULE for the query window) and one-off maintenance events. Admins can create recurring maintenance via the RRULE interface or ad-hoc blocks via date/time pickers.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Admin controls:</strong> Admins can: force-release any booking (sends a cancellation notification to the original booker with an apology message, triggers waitlist), block a resource for a time range (creates a maintenance block that prevents new bookings and cancels existing confirmed bookings in the window), view the booking grid for any resource (all bookings across time, with user details), and export utilization reports. Admin actions are logged to an audit table with the admin's userId, action type, resourceId, and reason. The force-release and block operations are two-phase: the admin sees a preview of affected bookings before confirming, to prevent accidental mass-cancellations.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Utilization analytics:</strong> The utilization report answers: "how often is each room actually used vs. booked?" Booked utilization = total booked hours / total available hours per room per week. Actual utilization = total checked-in hours / total available hours (rooms with no-shows are booked but not actually used). A high booked-but-not-used rate indicates a no-show problem — the system can address this with stricter check-in enforcement or a waitlist-first policy. Utilization data is computed from the bookings table via a nightly aggregation job (ClickHouse or BigQuery for OLAP queries over billions of booking events). The results are cached in a utilization_summary table for fast dashboard queries.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Scale considerations:</strong> Peak load: at 9am Monday, every user in a 10,000-employee office tries to book a conference room for the day. This creates a booking spike of potentially thousands of concurrent requests. The SELECT FOR UPDATE approach serializes concurrent bookings for each individual resource — but different resources can be booked concurrently. The database load is bounded by the number of distinct resources being booked simultaneously (O(rooms) concurrent lock holders, not O(users)). Connection pooling (PgBouncer) is essential to handle thousands of clients with a bounded database connection pool. For extremely high contention on popular resources (a single large all-hands room booked by many people simultaneously), a Redis-based pre-screening lock (SETNX before the DB transaction) reduces the number of transactions that actually reach the database for the same resource simultaneously.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The resource booking system has three main services: the search service (handles availability queries, real-time SSE updates, and the resources catalog), the booking service (handles booking creation, modification, cancellation, and check-in), and the waitlist service (manages the Redis waitlist queues and claim notifications). These are backed by PostgreSQL (bookings, resources, maintenance blocks, audit log) and Redis (waitlist sorted sets, SSE connection registry, optional booking pre-screening locks).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Real-time availability updates: when a booking is created, modified, or cancelled, a Kafka event is published to a bookings_changed topic. A consumer reads this event and pushes an SSE update to all clients currently viewing the availability grid for the affected resource and date. The SSE update contains the minimal delta (which slot changed and to which status) so clients can update the UI without re-fetching the full availability list. This is important for the "available rooms" search results page — users see slots being claimed in real time as their colleagues book them.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/resource-booking-system.svg"
-          alt="Resource booking system: User searches with capacity and amenity filters using interval overlap query; POST booking triggers SELECT FOR UPDATE transaction — overlap re-check inside lock, INSERT booking, 409 on conflict; QR check-in at door panel; no-show cron at start+15min releases slot and triggers Redis ZPOPMIN waitlist notify with 10min claim window; admin force-release with audit log."
-          caption="Interval overlap query (start &lt; req_end AND end &gt; req_start); SELECT FOR UPDATE serializes concurrent bookings per resource; no-show release at start+15min; Redis ZPOPMIN waitlist with 10min claim window; SSE real-time availability updates via Kafka; admin force-release with audit log"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Interval Overlap Detection</h3>
-        <HighlightBlock as="p" tier="important">The interval overlap condition (A.start &lt; B.end AND A.end &gt; B.start) is the foundational correctness requirement. It handles all four overlap cases: (1) A contains B (A starts before B starts, ends after B ends); (2) B contains A; (3) A and B overlap at the start of B; (4) A and B overlap at the end of A. An additional edge case: back-to-back bookings. A room booked from 2pm–3pm and another booked from 3pm–4pm should NOT be considered overlapping. The strict inequalities (&lt; and &gt;, not &lt;= and &gt;=) handle this correctly: A.end = B.start (3pm = 3pm) satisfies A.end &gt; B.start as false (3pm is not greater than 3pm), so back-to-back bookings are allowed. This is the correct semantics for half-open intervals [start, end).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Database index for overlap queries: a standard B-tree index on (resourceId, start, end) allows the database to efficiently find bookings for a specific resource. But the overlap query requires finding all bookings where start &lt; req_end AND end &gt; req_start — a range predicate on both start and end. B-tree indexes can efficiently satisfy one range predicate but not two simultaneously. Solutions: (1) use the GiST index type with the tsrange (timestamp range) data type — PostgreSQL natively supports range types and GiST indexes over them, enabling efficient overlap queries with the &amp;&amp; (overlaps) operator; (2) partition the bookings table by date and accept that the index scan uses start as the primary predicate (bounded by req_end) and the end condition is a filter. For typical booking patterns (few bookings per resource per day), option 2 with a standard index is sufficient. At high scale (thousands of bookings per resource per day, such as parking spot management), the GiST tsrange approach is necessary.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Door Panel Integration</h3>
-        <HighlightBlock as="p" tier="important">Door panels (touchscreens at meeting room entrances) display the current and upcoming bookings for the room and allow users to check in or book ad-hoc. Panel authentication: each panel has a device certificate (x.509, provisioned during hardware setup) used for mutual TLS authentication with the booking API. The panel does not require a user account to display room status, but check-in and ad-hoc booking require the user to authenticate (via badge scan, QR code from their phone app, or entering their email). Panel display refresh: panels subscribe to the SSE endpoint for their resource and auto-update the display when a booking is created, checked in, or released — no polling needed. Battery backup: panels continue to display the last known status during network outages (stale data is shown with a "⚠ offline" indicator).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Ad-hoc booking from the panel: if no meeting is currently booked, the panel shows a "Book now" button. Tapping it allows booking for 15, 30, or 60 minutes (no longer, to prevent room squatting). Ad-hoc bookings go through the same SELECT FOR UPDATE flow as regular bookings. The panel immediately reflects the new booking (via SSE push). This allows users to claim a physically available room without going through the web or mobile app — a key workflow for impromptu meetings.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Booking Policy Engine</h3>
-        <HighlightBlock as="p" tier="important">Enterprise deployments require configurable booking policies: a room can only be booked by members of a specific team, a user cannot hold more than 3 simultaneous bookings, a room requires approval for groups larger than 20 (a manager must confirm the booking before it is confirmed), or bookings cannot be made more than 2 weeks in advance. The policy engine is evaluated during the booking request, before the SELECT FOR UPDATE transaction. Policies are stored as a configurable rule set per resource or building, evaluated against the booking context (userId, group membership, start time, duration, attendee count). If a policy violation is detected, the booking returns a 403 with a human-readable policy violation message ("You can only book this room for up to 2 hours") rather than a generic error. The approval workflow (for large-group bookings) puts the booking in a 'pending_approval' status and sends an approval request to the designated approver. The slot is soft-reserved during the approval window (other users see it as unavailable) and released if the approval is not granted within 24 hours.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Optimistic vs. pessimistic locking: SELECT FOR UPDATE (pessimistic locking) is the standard approach for booking systems because conflicts are frequent enough that the cost of a conflicting transaction (two users both compute that a slot is free, both try to insert, one fails with a duplicate constraint error, and must retry) is higher than the cost of waiting for the lock. Optimistic locking (check-and-insert without a lock, rely on the unique constraint to reject duplicates) works well for low-contention resources but degrades under high contention (a popular room at 9am) because many transactions will conflict and need to retry. For resources with high demand at specific times (peak booking windows), pessimistic locking serializes the requests and provides faster overall throughput by avoiding retry storms.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">No-show grace period: the 15-minute grace period is a policy decision that balances two competing concerns. Too short (5 minutes): legitimate occupants running late lose their room — frustrating and unfair. Too long (30 minutes): no-shows hold rooms unproductively for half an hour — wastes a finite resource. The optimal grace period depends on organizational culture and room utilization pressure. In high-pressure environments (offices with insufficient room capacity), a shorter grace period (10 minutes) with aggressive waitlist notification maximizes utilization. In relaxed environments, a longer grace period (20 minutes) reduces user frustration. The grace period should be configurable per resource type (a 1-hour room might warrant a 15-minute grace; a 30-minute slot should have a 5-minute grace to remain useful after release).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Eventual consistency in waitlist notifications: between the moment a slot is freed and the moment the waitlisted user claims it, the slot could theoretically be re-booked by another user who is not in the waitlist (e.g., an admin creating a maintenance block). The claim flow handles this by re-running the full availability check (SELECT FOR UPDATE) when the waitlisted user submits their claim. If the slot is no longer available, the user sees an error ("Sorry, this slot is no longer available — it was taken by a maintenance block") and is offered the next available slot for the same resource. This is correct behavior — the waitlist claim is a best-effort offer, not a guaranteed reservation.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A resource booking system requires: (1) resource model with capacity, amenities, operatingHours, and maintenanceWindows (RRULE); (2) availability search via interval overlap query using half-open interval semantics (start &lt; req_end AND end &gt; req_start), GiST tsrange index for high-density resources; (3) atomic booking via SELECT FOR UPDATE + overlap re-check inside transaction + INSERT + COMMIT, returning 409 on conflict (no silent overbooking); (4) check-in via QR/NFC door panel (device certificate mTLS auth); (5) no-show cron at start+15min — transitions status to no_show, releases slot, triggers waitlist; (6) Redis sorted set waitlist per (resourceId, slotISO) — ZADD on join, ZPOPMIN on slot release, 10-minute claim window with booking form link; (7) waitlist claim re-runs SELECT FOR UPDATE (slot may be gone); (8) recurring maintenance blocks via RRULE expanded into overlap query; (9) admin force-release with 2-phase preview and audit log; (10) SSE real-time availability updates via Kafka bookings_changed topic; (11) booking policy engine (team restrictions, advance booking limits, approval workflow for large groups); (12) utilization analytics: booked vs. checked-in hours, nightly aggregation to ClickHouse.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

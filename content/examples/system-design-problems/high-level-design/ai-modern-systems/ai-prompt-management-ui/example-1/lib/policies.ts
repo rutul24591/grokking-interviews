@@ -1,15 +1,34 @@
-function buildRequestKey(input) {
-  return JSON.stringify(input);
+function createPromptVersion({ promptId, content, variableSchema, authorId, parentVersionId = null, label }) {
+  return Object.freeze({
+    versionId: `${promptId}:v${parentVersionId ? Number(parentVersionId.split(':v')[1]) + 1 : 1}`,
+    promptId,
+    content,
+    variableSchema,
+    authorId,
+    parentVersionId,
+    label,
+    createdAt: '2026-05-20T00:00:00.000Z',
+  });
 }
 
-function jitterBackoffMs(attempt, baseMs, maxMs) {
-  const exp = Math.min(maxMs, baseMs * 2 ** Math.max(0, attempt - 1));
-  const jitter = Math.random() * exp * 0.2;
-  return Math.floor(exp + jitter);
+function rollbackToVersion({ promptId, targetVersion, authorId, reason }) {
+  return createPromptVersion({
+    promptId,
+    content: targetVersion.content,
+    variableSchema: targetVersion.variableSchema,
+    authorId,
+    parentVersionId: targetVersion.versionId,
+    label: `rollback: ${reason}`,
+  });
 }
 
-function applyRetryPolicy({ attempt, baseMs, maxMs }) {
-  return { delayMs: jitterBackoffMs(attempt, baseMs, maxMs) };
+function diffPromptText(previous, next) {
+  const previousWords = previous.split(/\s+/);
+  const nextWords = next.split(/\s+/);
+  return {
+    added: nextWords.filter((word) => !previousWords.includes(word)),
+    removed: previousWords.filter((word) => !nextWords.includes(word)),
+  };
 }
 
-module.exports = { buildRequestKey, applyRetryPolicy };
+module.exports = { createPromptVersion, diffPromptText, rollbackToVersion };

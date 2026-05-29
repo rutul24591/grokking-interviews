@@ -1,1 +1,5 @@
-# Design a fraud detection / risk alert UI — Example 3
+# Fraud Detection Risk Alert UI - Example 3
+
+Concrete payments edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -8,90 +8,144 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-search-ranking-experimentation-ui",
   title: "Design a Search Ranking Experimentation UI",
-  description:
-    "Architecture for a search ranking experimentation UI: A/B test configuration for ranking models, side-by-side SERP comparison of control vs. treatment, relevance judgement collection (query-document ratings from human evaluators), metrics dashboard (nDCG, MRR, click-through rate), interleaving experiments for implicit feedback, feature importance visualization, holdout group management, statistical significance computation, and rollout controls for ranking model changes.",
+  description: "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability.",
   category: "high-level-design",
   subcategory: "search-discovery-systems",
   slug: "search-ranking-experimentation-ui",
-  wordCount: 5000,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "search-ranking", "a-b-testing", "experimentation", "ndcg", "relevance-judgement", "interleaving"],
-  relatedTopics: ["semantic-search-ui", "search-analytics-dashboard"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "search", "ranking", "discovery", "indexing", "experimentation"],
+  relatedTopics: [],
 };
 
-export default function SearchRankingExperimentationUIArticle() {
+const definition = [
+  "Design a Search Ranking Experimentation UI is a discovery system where user intent, index freshness, ranking quality, result presentation, and feedback loops all shape whether users find the right thing. A principal-ready answer treats a search ranking experimentation UI as a full search product, not as a text box backed by an index.",
+  "The visible UI is only the final step in a larger pipeline: content ingestion, indexing, query understanding, retrieval, ranking, filtering, presentation, analytics, and continuous quality improvement. If any part drifts, users see irrelevant results, stale content, empty states, or unsafe recommendations.",
+  "Search and discovery systems are also adversarial. Sellers, creators, spammers, and internal teams may try to game ranking signals. The architecture should include spam controls, policy filters, quality metrics, and explainability for operators.",
+  "The design should define which state is authoritative. Indexed documents, ranking features, facet counts, suggestions, recommendations, and analytics are projections. Permissions, takedowns, privacy policy, inventory availability, and safety decisions need stronger enforcement.",
+  "A staff/principal answer should be able to defend latency, relevance, freshness, privacy, cost, and experimentation trade-offs under pressure. Search is not only about returning results quickly; it is about returning the right results safely and measurably."
+];
+const concepts = [
+  "The first concept is query understanding. The system should handle spelling, synonyms, entity detection, intent classification, natural language, filters, personalization, and query rewriting without hiding how much confidence it has.",
+  "The second concept is retrieval strategy. traffic splitter, metric pipeline, and guardrail dashboard may use lexical retrieval, vector retrieval, structured filters, popularity priors, freshness boosts, or hybrid retrieval depending on the product.",
+  "The third concept is ranking. Ranking combines relevance, quality, freshness, personalization, safety, diversity, availability, and business constraints. A principal design avoids optimizing only clicks because clicks can reward spam, clickbait, or shallow results.",
+  "The fourth concept is freshness and consistency. Search indexes, suggestions, facet counts, embeddings, analytics, and recommendations can lag. Takedowns, permissions, private data, inventory state, and safety blocks need fast invalidation or query-time enforcement.",
+  "The fifth concept is feedback. Explicit feedback, clicks, dwell time, reformulations, no-click sessions, hides, reports, purchases, completions, and abandonment all provide quality signals. These signals must be protected from fraud and bias.",
+  "The sixth concept is observability. Track query latency, suggestion latency, zero-result rate, reformulation rate, click position, long-click rate, facet usage, index lag, permission-filter drops, freshness distribution, and ranking experiment guardrails."
+];
+const architecture = [
+  "The architecture contains experiment registry, traffic splitter, metric pipeline, guardrail dashboard, rollback control. The ingestion path normalizes documents or items and builds indexes. The query path parses user intent, retrieves candidates, ranks them, applies policy and permissions, and renders results. The feedback path records behavior for analytics, quality review, and controlled ranking updates.",
+  "Indexing should be version-aware. A document, video, product, or answer should know which content version produced its search document, embedding, snippet, thumbnail, and facet values. This is essential for rollback, takedown propagation, and explaining stale results.",
+  "The query serving path should be layered. A fast suggestion path handles prefix and recent queries. A retrieval path returns candidate IDs. A ranking path scores candidates. A policy path enforces permissions, safety, consent, inventory, and regional restrictions. A rendering path builds snippets, highlights, facets, and empty-state guidance.",
+  "The frontend should preserve query state in URLs or route state where appropriate, but the backend should own interpretation. Filters, facets, sort order, pagination cursor, personalization mode, and experiment assignment should be explicit and reproducible for support and debugging.",
+  "Result presentation matters. The UI should show why results match when possible, make filters reversible, avoid hiding zero-result recovery options, and handle partial failures such as missing facets or delayed recommendations without losing the primary result list.",
+  "Operations need controls for index rebuild, ranking rollback, synonym rollback, suggestion blacklist, spam demotion, model rollback, experiment stop, cache purge, and privacy takedown verification."
+];
+const tradeoffs = [
+  "Lexical search is predictable and strong for exact terms, IDs, error codes, and names. Semantic search handles intent and paraphrase better, but can return surprising matches and is harder to explain. Hybrid retrieval is often the most defensible production choice.",
+  "Query-time permission filtering is safer but can be expensive and may reduce candidate quality after ranking. Index-time filtering is faster but risks stale permissions. Sensitive systems usually combine indexed permission fields with query-time enforcement for high-risk data.",
+  "Fresh indexes improve trust but cost more in ingestion, indexing throughput, and cache churn. Batch indexing is cheaper and simpler but creates visible lag. The right answer depends on whether users expect real-time discovery.",
+  "Personalization improves relevance but creates privacy and filter-bubble concerns. Anonymous or generic ranking is more explainable but can be less useful. A strong design supports user controls, privacy modes, and unbiased evaluation sets.",
+  "Facet counts and aggregations improve exploration but can be expensive over large datasets and misleading under approximate counts. The UI should distinguish exact, approximate, delayed, or unavailable aggregations when it matters.",
+  "Experimentation improves ranking quality but can harm users if guardrails are weak. Search experiments need relevance metrics, latency, zero-result rate, complaint/report rate, revenue or conversion, diversity, and fairness guardrails."
+];
+const practices = [
+  "Define relevance and quality metrics before choosing infrastructure. A fast search system with poor relevance is not successful; a relevant search system with unacceptable latency is also not successful.",
+  "Keep search documents and ranking features versioned. Store source ID, source version, index version, embedding version, policy version, and freshness timestamp where possible.",
+  "Use stable pagination cursors. Offset pagination becomes incorrect when ranking changes, new content arrives, or policy filters remove results between pages.",
+  "Protect sensitive queries and logs. Query text can contain names, secrets, health data, customer IDs, or legal terms. Redact, sample, aggregate, and restrict access to raw logs.",
+  "Build quality review tools. Search teams need query replay, side-by-side ranking comparison, bad-result labeling, zero-result review, synonym management, and rollback controls.",
+  "Handle empty and low-confidence states intentionally. Suggest spelling fixes, broader filters, related categories, popular results, saved searches, or escalation depending on product context.",
+  "Separate online serving from offline training and evaluation. Production ranking should be reproducible and rollback-safe even if model training or analytics pipelines are delayed."
+];
+const pitfalls = [
+  "metric gaming is usually caused by optimizing one path while ignoring the full discovery loop. Suggestions, results, facets, and recommendations must share policy and freshness assumptions.",
+  "sample pollution becomes a trust issue when ranking rewards behavior without integrity checks. Search systems need spam, abuse, and business-rule guardrails.",
+  "guardrail regression happens when indexes and derived projections are treated as secondary. Users experience stale search as product incorrectness, not infrastructure lag.",
+  "bad rollout is dangerous because search can expose private or unsafe content through snippets, suggestions, facets, caches, and analytics dashboards.",
+  "Another pitfall is measuring only click-through rate. Clicks can increase when results are ambiguous, sensational, or low quality. Use long-clicks, reformulation, task completion, reports, and satisfaction signals.",
+  "Teams also forget supportability. Operators should be able to answer why a result appeared, why it ranked where it did, what filters applied, and which experiment or model was active."
+];
+const useCases = [
+  "ranking A/B test console requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "offline-to-online relevance review requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "search quality release gate requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "During an indexing incident, the product should continue serving existing results, show freshness where appropriate, pause risky ranking changes, and provide index lag dashboards and rebuild controls.",
+  "During a spam or abuse incident, the system should demote suspicious documents, blacklist harmful suggestions, throttle abusive actors, and preserve review evidence.",
+  "During a ranking experiment regression, teams should stop the experiment, replay affected queries, compare side-by-side results, and roll back the ranking or feature version safely."
+];
+const questions = [
+  {
+    "question": "How would you design a search ranking experimentation UI end to end?",
+    "answer": "I would design ingestion, indexing, query understanding, retrieval, ranking, policy enforcement, result rendering, and feedback loops as separate but observable stages. The frontend owns query state and presentation, while the backend owns interpretation, candidate retrieval, ranking, and permission enforcement. Operations need index rebuilds, ranking rollback, query replay, spam controls, and quality dashboards."
+  },
+  {
+    "question": "Why this architecture over a simple indexed keyword search?",
+    "answer": "Keyword search alone is predictable but insufficient for intent, personalization, facets, semantic matching, ranking experiments, policy enforcement, and quality learning. The layered architecture adds complexity, but it lets the system tune relevance, freshness, safety, and latency independently."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are metric gaming, sample pollution, guardrail regression, bad rollout, plus cache stampedes, index lag, high-cardinality facets, hot queries, ranking drift, spam manipulation, privacy leaks in logs, and experiment regressions. Prevention requires versioned indexes, stable cursors, guardrail metrics, query sampling, cache strategy, and operational rollback."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Search indexes, suggestions, embeddings, facet counts, recommendations, and analytics can be eventually consistent if freshness is tracked. Permissions, takedowns, private data, safety filters, inventory availability, and paid access need strong query-time enforcement or fast invalidation. The design should classify each projection explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through stale-but-safe results, index rebuild, ranking rollback, degraded facets, and query replay. Abuse is controlled through spam scoring, suggestion blacklists, rate limits, and moderation. Privacy requires query log minimization and permission-safe snippets. Cost is controlled through caching, tiered indexes, approximate aggregations, and sampling. Observability tracks latency, freshness, zero-result rate, reformulation, guardrails, and quality labels."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate exact retrieval, semantic intent, ranking, policy, and presentation. I would defend hybrid retrieval because it handles both exact and fuzzy intent. I would defend eventual index consistency for normal discovery, but not for privacy or takedown enforcement. I would also explain how guardrails prevent ranking optimizations from harming trust."
+  }
+];
+const references = [
+  {
+    "label": "Elasticsearch relevance and query guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "Lucene scoring documentation",
+    "href": "https://lucene.apache.org/core/"
+  },
+  {
+    "label": "Google Search quality documentation",
+    "href": "https://developers.google.com/search/docs"
+  },
+  {
+    "label": "Nielsen Norman Group: search usability",
+    "href": "https://www.nngroup.com/topic/search/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST privacy framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  }
+];
+
+export default function SearchRankingExperimentationUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Search ranking experimentation is the process of safely testing changes to the ranking algorithm — new signals, different model weights, alternative retrieval strategies — before deploying them to all users. Unlike UI experiments (where a bad change is merely annoying), a bad ranking change can severely degrade user experience for millions of queries simultaneously. The experimentation UI serves two audiences: the search engineers who configure and analyze experiments (needing statistical dashboards, SERP comparisons, and metric visualization), and the human relevance evaluators who rate query-result pairs to provide training labels and experiment evaluation data (needing a clean rating interface with query context and result content).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The technical challenge is measuring ranking quality: clicks are an imperfect signal (users click on results they expect to be good, not necessarily results that are actually good). Human relevance judgments are expensive but accurate. The system must balance implicit signals (click-through rate, dwell time, return-to-SERP rate) with explicit signals (human ratings) to evaluate whether a new ranking model is genuinely better. The interleaving technique (mixing results from two ranking models in the same SERP and measuring which model's results get clicked more) is a powerful low-bias implicit feedback method that avoids position bias from traditional A/B tests.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Experiment configuration UI, side-by-side SERP comparison, relevance judgement collection interface, metrics dashboard, and interleaving results visualization. Not in scope: the ranking model training infrastructure, feature engineering pipeline, or statistical testing library implementation.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-ranking-experimentation-ui.svg" alt="Design a Search Ranking Experimentation UI architecture" caption="Architecture view: ingestion, query understanding, retrieval, ranking, policy, rendering, and feedback loops." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-ranking-experimentation-ui-flow.svg" alt="Design a Search Ranking Experimentation UI flow" caption="Flow view: query lifecycle, candidate retrieval, ranking, filtering, result presentation, and quality feedback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-ranking-experimentation-ui-operations.svg" alt="Design a Search Ranking Experimentation UI operations" caption="Operations view: index freshness, ranking rollback, spam controls, privacy-safe logs, and search quality observability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Experiment configuration:</strong> Engineers create experiments specifying: experiment name and description, control (current production ranking model), treatment (new ranking model or parameter set), traffic allocation (what % of queries go to the treatment), target query segment (All, High-traffic, Tail, specific query category), start/end date, and success metrics (primary metric: nDCG@10, secondary: CTR, dwell time). Experiment state: Draft, Running, Paused, Completed, Rolled Back.</HighlightBlock>
-          <li><strong>Side-by-side SERP:</strong> For any query, show the control SERP and the treatment SERP side by side. Each result card shows its position in the ranking and its document metadata. Differences are highlighted: results that appear in the treatment but not control are highlighted in green; results that dropped in rank are highlighted in red. A "Diff view" toggle shows only changed positions.</li>
-          <HighlightBlock as="li" tier="important"><strong>Relevance judgement:</strong> A dedicated interface for human evaluators: given a query and a result, rate the relevance on a 4-point scale (Perfect / Excellent / Good / Bad). Show the query, the result's title and full content (not just snippet), and any context about the query intent. Support keyboard shortcuts for fast rating. Track inter-annotator agreement for quality control.</HighlightBlock>
-          <li><strong>Metrics dashboard:</strong> Real-time experiment metrics: nDCG@10 (control vs. treatment), MRR, CTR at positions 1/3/10, dwell time distribution, Return-to-SERP rate. Statistical significance indicator (p-value and confidence interval). Metric trends over time (to detect novelty effects that inflate metrics initially).</li>
-          <li><strong>Rollout controls:</strong> Operators can increase/decrease traffic allocation in real time without stopping the experiment. Emergency "Kill switch" immediately routes all traffic back to control. Gradual rollout: 1% → 5% → 25% → 50% → 100% with configurable ramp schedule.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Metrics latency:</strong> Experiment metrics update within 5 minutes of click events (near-real-time pipeline). Statistical significance is recomputed hourly.</HighlightBlock>
-          <li><strong>SERP comparison load:</strong> Side-by-side SERP comparison loads within 2 seconds (fetches from both control and treatment ranking services in parallel).</li>
-          <li><strong>Evaluator throughput:</strong> Relevance rating interface should allow an experienced evaluator to rate 200+ query-result pairs per hour. Keyboard-first design with shortcuts for the 4-point scale.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The experimentation system has three components. The Experiment Service stores experiment configurations and manages traffic allocation (deterministic hashing of user ID + experiment ID to assign users consistently to control or treatment). The Ranking Services (control and treatment) run independently, each with their own model parameters. The Metrics Pipeline receives click events from the SERP (with experiment assignment metadata attached to each event), computes per-experiment metrics using a streaming aggregation pipeline, and writes to the Metrics Store (ClickHouse for efficient time-series aggregation). The relevance judgement interface is a separate React application that serves queries and results to human evaluators and stores ratings in the Judgement Store (PostgreSQL).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-ranking-experimentation-ui.svg"
-          alt="Search ranking experimentation UI architecture showing experiment configuration (form: name description; control model ID; treatment model {modelId params weights}; traffic allocation slider 0-100%; query segment selector; primary metric: nDCG@10 MRR CTR; date range; state: Draft→Running→Paused→Completed; POST /api/experiments {config} → Experiment Service), traffic assignment (user query → Experiment Service: SHA256(userId+experimentId) mod 100 &lt; allocation% → treatment; else → control; deterministic: same user always same bucket; SERP fetch: parallel GET control-ranker + treatment-ranker; attach {experimentId bucket} to click events), side-by-side SERP comparison (search tool: enter query → fetch both SERPs parallel; left: control SERP; right: treatment SERP; diff highlight: new in treatment=green; dropped=red; position changed=yellow arrow; diff toggle: show only changed positions; result card: rank position + title + URL + snippet + score; score inspector: expand → feature weights breakdown), relevance judgement interface (queue: queries from experiment + document candidates; card: query context + full document content; 4-point rating: Perfect Excellent Good Bad with keyboard 1-4; keyboard shortcuts: J=next K=previous Enter=submit; progress: rated/total queue; inter-annotator: show disagreement % with other evaluators; batch review: flag uncertain ratings for discussion), metrics dashboard (time-series charts: nDCG@10 control vs treatment overlaid; CTR by position 1 3 5 10; dwell time box plot; statistical significance: p-value &lt; 0.05 → green badge; confidence interval ±; novelty effect: metric trend chart shows if treatment advantage fades over time; per-query-segment breakdown: Head queries vs Tail; feature importance: SHAP values bar chart for treatment model), rollout controls (traffic slider: drag → POST /api/experiments/{id}/allocation {percent}; kill switch: POST /api/experiments/{id}/stop → redirect all traffic to control in &lt;30s; ramp schedule: configure 1%→5%→25%→100% with time intervals; auto-ramp: proceed if p&lt;0.05 and nDCG improvement &gt;0.5%; alert: if CTR drops &gt;5% → auto-pause + notify), interleaving (experiment.type=interleaved; both model results merged into single SERP alternating; click on position N → credit to which model placed result at N; TeamDraft interleaving algorithm; lower position bias than A/B; result: {control_clicks:142 treatment_clicks:198} → treatment preferred)."
-          caption="Experiment config (model IDs, traffic %, query segment, metric targets), deterministic user bucketing (SHA256 mod 100), parallel SERP fetch (control + treatment), diff-highlighted side-by-side comparison, 4-point relevance rating UI (keyboard shortcuts, inter-annotator agreement), nDCG/CTR/dwell-time metrics dashboard (p-value badge, novelty trend), real-time traffic slider + kill switch (&lt;30s), and TeamDraft interleaving for lower position bias"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Traffic Assignment and Deterministic Bucketing</h3>
-        <HighlightBlock as="p" tier="important">Traffic assignment must be consistent: the same user must always see the same ranking model variant in the same experiment, or the experiment results will be biased by users seeing different treatments across sessions. Deterministic bucketing: the bucket assignment is computed as SHA256(userId + experimentId) mod 100. If this value is less than the allocation percentage (e.g., less than 10 for a 10% experiment), the user is in the treatment; otherwise, they are in the control. SHA256 is deterministic and uniformly distributed, ensuring stable assignment across all sessions for the same user+experiment combination. Users not logged in are bucketed by a persistent anonymous ID (stored in a cookie).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Multiple experiments can run simultaneously, but engineers must manage experiment overlap. If two experiments both modify the ranking algorithm for overlapping query segments, they create confounding effects — the metrics of each experiment are influenced by the other. The Experiment Service detects conflicts at creation time: it checks if the new experiment overlaps with any running experiments (same query segment, both modifying the same ranking layer) and warns the engineer. Overlapping experiments can be allowed with a note that their metrics may be confounded, or the engineer can configure the experiments to target disjoint user segments (Experiment A: userId mod 2 = 0, Experiment B: userId mod 2 = 1).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Side-by-Side SERP Comparison</h3>
-        <HighlightBlock as="p" tier="important">The SERP comparison tool is used by engineers to manually inspect how a treatment ranking differs from control for specific queries. The tool shows two SERPs side by side: entering a query triggers parallel fetches to the control ranking service and the treatment ranking service (bypassing the traffic allocation, always fetching both). The results are rendered in two columns. The diff algorithm compares the document ID at each position: documents that appear in the treatment but not the control top-10 are highlighted with a green border; documents that appear in the control but dropped out of the treatment top-10 are shown with a red strikethrough. Documents that changed position have a yellow arrow showing the direction and magnitude of the position change (e.g., a result that moved from position 5 to position 2 shows "↑3").</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The "Score Inspector" expands any result card to show the ranking features that influenced its score: query-document relevance score, freshness signal, authority score, personalization boost, and any experiment-specific feature values. This helps engineers understand why the treatment ranked a document differently — did it get a higher relevance score, a freshness boost, or a lower authority signal? The score inspector pulls this data from the ranking service's debug endpoint (GET /rank-debug?query={`{q}`}&docId={`{id}`}&model={`{controlOrTreatment}`}), which returns the raw feature values and their contribution to the final score.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Relevance Judgement Interface</h3>
-        <HighlightBlock as="p" tier="important">The relevance judgement interface is designed for throughput: an experienced human evaluator should be able to rate 200+ query-result pairs per hour. The interface shows a single query-result pair at a time: the query text at the top (with inferred query intent: "Navigational / Informational / Transactional"), the result's full title, URL, and complete document text (not just the snippet). The 4-point rating scale (Perfect, Excellent, Good, Bad) is presented as large colored buttons at the bottom. Keyboard shortcuts (1=Bad, 2=Good, 3=Excellent, 4=Perfect, Enter=Submit and advance) allow rating without reaching for the mouse. The evaluator can flag uncertain ratings for discussion (clicking a "Discuss" flag opens a comment field) and can view previous ratings for the same query for context.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Inter-annotator agreement is tracked as Cohen's Kappa between evaluators who rated the same query-result pairs. Pairs with high disagreement (Kappa &lt;0.4) are sent to a third evaluator for tie-breaking. The agreement metric is shown to each evaluator as a quality feedback signal ("Your ratings agree with other evaluators 82% of the time"). Evaluator pools are managed to avoid systematic bias — different evaluators with different backgrounds are assigned to the same query set to capture diverse relevance perspectives.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Metrics Dashboard and Statistical Significance</h3>
-        <HighlightBlock as="p" tier="important">The primary metric is nDCG@10 (Normalized Discounted Cumulative Gain at position 10), which measures how well the top 10 results are ranked according to human relevance judgements. nDCG@10 requires knowing the ideal ranking (from relevance judgements) to compute the discount and normalization. The secondary metrics (CTR, dwell time, Return-to-SERP rate) are derived from click logs, which are available in near-real-time from the streaming pipeline.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Statistical significance is computed using a two-sided t-test comparing the per-query metric values between control and treatment groups. The dashboard shows: the p-value (colored green if &lt;0.05, red if &gt;0.05), the confidence interval for the treatment effect (e.g., "+0.8% nDCG, 95% CI [+0.3%, +1.3%]"), and the minimum detectable effect (MDE) — the smallest improvement that the experiment is statistically powered to detect given the current sample size. The novelty effect chart is a time-series of the treatment metric advantage day over day: if the advantage fades after the first few days (as users adjust to the new ranking), the improvement may not be durable. Experiments that show novelty effects are typically held longer before making a decision.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Interleaving versus traditional A/B testing: traditional A/B testing (Group A sees control, Group B sees treatment) has position bias — position 1 always gets more clicks regardless of quality. Interleaving (results from both models appear in the same SERP, alternating positions using the TeamDraft algorithm) eliminates position bias: since both models' results share the same positions, click differences reflect genuine quality differences rather than position advantages. Interleaving is more statistically efficient (requires fewer samples for the same significance level) but harder to implement (the ranking service must support real-time result interleaving) and harder to explain to stakeholders (you can't show "treatment users experienced X% more engagement" — you can only say "treatment results were clicked 8% more often than control results in interleaved positions").</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Human versus implicit relevance evaluation: human judgements (nDCG) are expensive (human labor) but accurate and unbiased. Implicit signals (CTR, dwell time) are cheap (derived from logs) but biased by position and user behavior patterns. The gold standard is to use human judgements for experiment evaluation (did the ranking change improve relevance?) and implicit signals for monitoring (is CTR holding up after rollout?). A common mistake is using CTR as the primary experiment metric — optimizing for CTR can produce clickbait rankings that get clicks but don't satisfy the user's actual information need.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A search ranking experimentation UI serves engineers (experiment configuration and analysis) and human evaluators (relevance judgement collection). Experiment traffic is assigned by deterministic bucketing (SHA256(userId+experimentId) mod 100) for consistent user experience across sessions. The side-by-side SERP comparison tool fetches both control and treatment results in parallel and highlights diffs (new green, dropped red, position-change yellow arrows) with a score inspector showing feature-level contributions. The relevance judgement interface is keyboard-optimized for 200+ ratings/hour (1–4 shortcuts, Enter to advance) with inter-annotator agreement monitoring. The metrics dashboard shows nDCG@10 (primary), CTR/dwell time/Return-to-SERP (secondary), t-test p-values, confidence intervals, and novelty effect time-series. Traffic controls support real-time allocation adjustment via a slider; a kill switch returns all traffic to control in &lt;30 seconds. TeamDraft interleaving is available as an alternative to A/B testing for lower position bias with fewer samples. The core design constraint: ranking experiments require conservative rollout controls (kill switch, gradual ramp, statistical significance gates) because a bad ranking change degrades the experience for all queries simultaneously, unlike a UI bug that affects only specific interactions.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

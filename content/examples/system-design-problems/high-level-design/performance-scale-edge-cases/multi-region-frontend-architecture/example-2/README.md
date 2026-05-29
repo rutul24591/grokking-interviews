@@ -1,1 +1,5 @@
-# Design a multi-region frontend architecture — Example 2
+# Multi Region Frontend Architecture - Example 2
+
+Concrete performance production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,1 +1,5 @@
-# Design AI-generated content moderation UI — Example 2
+# AI Generated Content Moderation UI - Example 2
+
+Concrete AI product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

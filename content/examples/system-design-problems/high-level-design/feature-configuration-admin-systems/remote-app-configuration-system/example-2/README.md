@@ -1,1 +1,5 @@
-# Design a remote app configuration system — Example 2
+# Remote App Configuration System - Example 2
+
+Concrete signed bundle compatibility example.
+
+Inspect `core.ts` to see app-version gates, schema compatibility, targeting simulation, signed bundle creation, and CDN publish metadata.

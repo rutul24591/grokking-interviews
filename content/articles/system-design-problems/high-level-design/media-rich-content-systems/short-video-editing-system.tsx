@@ -7,111 +7,146 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-short-video-editing-system",
-  title: "Design a Short-Video Editing System",
-  description:
-    "Architecture for a browser-based short-video editor: WebCodecs VideoDecoder/VideoEncoder for frame-accurate decode and in-browser H.264 export, timeline editor with clip trim/split/reorder, effects pipeline (WebGL LUT filters, Canvas text/sticker overlays), beat-sync cuts via Web Audio BPM detection, requestVideoFrameCallback preview loop, metadata-only undo stack, and multi-platform social export (TikTok, Instagram, YouTube Shorts).",
+  title: "Design a Short Video Editing System",
+  description: "Principal-level media-rich system design covering clip timeline state, effects preview, audio sync, export jobs, draft persistence, and device limits.",
   category: "high-level-design",
   subcategory: "media-rich-content-systems",
   slug: "short-video-editing-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "video-editing", "webcodecs", "timeline", "ffmpeg", "web-audio", "canvas", "bpm"],
-  relatedTopics: ["content-creation-studio", "canvas-webgl-design-tool"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "media", "frontend", "performance", "reliability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Short Video Editing System is a media-rich product system, not just a visual component. It must coordinate browser capabilities, large binary assets, local editing state, background jobs, CDN or storage behavior, permissions, abuse policy, and user-facing recovery. The main challenge is that media work is expensive: bytes are large, decoding is CPU-intensive, rendering can block interaction, and failures are often visible immediately.",
+  "The goal is to design a short video editing system around clip timeline state, effects preview, audio sync, export jobs, draft persistence, and device limits. A principal-ready answer should explain the client runtime, backend control plane, asynchronous processing, storage and CDN strategy, consistency model, failure handling, cost controls, and observability.",
+  "Media systems differ from ordinary CRUD systems because derived artifacts are first-class. Thumbnails, transcripts, waveforms, previews, tiles, manifests, captions, encodes, annotations, and exports are projections. They can lag or be regenerated, while original assets, permissions, and user edits need stronger durability.",
+  "The product should define which state must survive refresh, which can be recomputed, which is private, which can be cached publicly, and which requires moderation or entitlement checks. Without this classification, media systems leak private assets, lose drafts, overrun device memory, or create inconsistent playback and editing experiences.",
+  "A staff/principal answer should also cover operational ownership. Playback teams own QoE and buffer behavior; creation teams own draft recovery and export correctness; platform teams own storage, CDN, transcoding, and abuse controls; product teams decide when to degrade rich media to simpler experiences."
+];
+const concepts = [
+  "The first concept is asset lifecycle. Raw uploads, derived previews, published artifacts, and deleted or redacted versions have different durability, cacheability, and privacy rules. clip graph and effects engine should never be treated as one generic blob path.",
+  "The second concept is bounded client resources. Media-rich pages must manage memory, GPU, CPU, and network budgets. Large canvases, long documents, video buffers, waveforms, and image grids need virtualization, eviction, and adaptive quality.",
+  "The third concept is asynchronous processing. Many operations cannot complete during the request: transcoding, scanning, rendering, exporting, OCR, waveform generation, and moderation. The UI needs job state, retry, cancellation where safe, and clear user messaging.",
+  "The fourth concept is consistency. Original assets and permissions are authoritative. Derived media and previews can be eventually consistent, but must carry version identifiers so stale thumbnails, captions, annotations, or manifests do not appear as current truth.",
+  "The fifth concept is abuse and safety. Media can contain malware, copyrighted material, unsafe content, personal data, or policy-violating streams. Scanning, moderation, rate limits, reporting, and takedown propagation are part of the system design, not add-ons.",
+  "The sixth concept is observability. Track startup time, decode time, render frame drops, upload retry rate, processing queue age, export success, CDN hit ratio, moderation delay, permission-denied rate, and client memory pressure."
+];
+const architecture = [
+  "The recommended architecture has five surfaces: clip graph, effects engine, preview cache, export service, draft store. The client owns responsive interaction and local recovery. The API layer owns permissions, idempotency, and job creation. The processing plane owns expensive asynchronous work. Storage and CDN own asset distribution. Observability ties user symptoms to asset version, job ID, route, release, and device cohort.",
+  "A user action should create durable intent before expensive processing begins. Uploads create sessions and chunk manifests. Edits update a draft log or document model. Playback records manifest and entitlement state. Exports create jobs with immutable input versions. This lets the system retry safely after browser refresh, worker failure, or regional outage.",
+  "Derived artifacts should be keyed by source version and transformation parameters. If a video is re-encoded, a PDF is redacted, or a design file changes, old previews must not be confused with new ones. CDN invalidation should be precise and, where possible, replaced by versioned URLs.",
+  "The client should render progressive states: placeholder, partial preview, processing, ready, failed, retryable, permission blocked, or policy blocked. These states are product semantics, not generic spinners. They tell users whether to wait, retry, change input, or contact support.",
+  "The system should separate interactive paths from batch-heavy paths. Playback controls, editing cursor, annotation placement, and draft typing need low latency. Transcoding, full export, OCR, deep scanning, and global indexing can run asynchronously with backpressure.",
+  "The diagrams show architecture, flow, and operations: the architecture view explains ownership boundaries, the flow view explains user intent through processing and delivery, and the operations view explains queue pressure, recovery, moderation, and QoE control loops."
+];
+const tradeoffs = [
+  "Client-heavy processing can feel instant and reduce server cost, but it is limited by device capability, browser support, battery, and memory. Server-heavy processing is more predictable and easier to moderate, but adds queue latency and infrastructure cost. Mature systems usually use a hybrid.",
+  "Eagerly generating every derivative gives fast later reads but wastes compute for assets that are never viewed. Lazy generation saves cost but can make first access slow. Principal designs choose by product criticality: thumbnails and safety scans are often eager; rare export formats can be lazy.",
+  "Public CDN caching is excellent for published media but dangerous for private, permissioned, or recently revoked assets. Permissioned media needs signed URLs, short TTLs, versioned keys, and takedown propagation. The cache key is a security boundary.",
+  "Optimistic editing improves flow, but edits need durable logs, conflict resolution, and recovery. For collaborative or offline editing, the design must choose OT, CRDT, server-authoritative locking, or merge-on-save based on the shape of the document and expected collaboration intensity.",
+  "High visual fidelity competes with performance. A player can drop quality to avoid rebuffering; an editor can lower preview resolution while keeping export fidelity; a PDF viewer can render visible pages first. The product should make these trade-offs intentionally.",
+  "Moderation before publication reduces user harm but slows creator workflows. Moderation after publication improves speed but can amplify abuse. Risk-based gating is usually better than one rule for every asset.",
+  "Observability itself has cost and privacy risk. Capture event class, performance timings, asset IDs, and job IDs, but avoid logging raw document content, private annotations, media URLs with secrets, or user-entered text."
+];
+const practices = [
+  "Model media as a lifecycle with immutable source versions, derived artifact versions, processing jobs, permission state, and deletion or redaction state. Make every derived object traceable to the source version that produced it.",
+  "Use resumable upload and idempotent job creation. Browser crashes, mobile backgrounding, network loss, and worker retries should converge on one upload or processing job rather than duplicate assets.",
+  "Keep interactive paths small. Use virtualization, bounded buffers, progressive decoding, idle work, worker threads where appropriate, and adaptive quality for constrained devices.",
+  "Design explicit states for processing and failure. Users should know whether an asset is uploading, scanning, processing, ready, blocked, expired, or failed permanently. Support should see the same state with job history.",
+  "Protect permissions at every derived surface: original file, thumbnail, transcript, annotation, search result, share preview, CDN URL, export, and notification. Derived media is often where privacy leaks happen.",
+  "Build operational dashboards around user symptoms: playback startup, rebuffer, export queue age, upload resume success, annotation conflict rate, frame drops, failed processing jobs, and moderation SLA.",
+  "Provide rollback controls for codecs, rendering engines, export workers, feature flags, and CDN publication. Media regressions can be severe because old clients and assets remain in circulation."
+];
+const pitfalls = [
+  "A common pitfall is treating media as static files. In production, media has permissions, versions, processing state, cache state, moderation state, and support history.",
+  "audio drift becomes visible quickly because media UX has little tolerance for pauses, jumps, or lost work. The design needs either prevention or honest recovery.",
+  "effect lag is often caused by mixing interactive and batch work in one path. Expensive jobs should not block low-latency controls unless the product absolutely requires it.",
+  "export failure needs explicit ownership and retry semantics. If a job can fail after the user leaves, there must be notification, retry, support visibility, or compensating state.",
+  "battery drain should be considered during design, not after launch. Media products are natural abuse targets because images, video, documents, and streams can carry harmful or sensitive content.",
+  "Another pitfall is missing cost governance. Transcoding, rendering, OCR, storage replication, CDN egress, and telemetry can dominate cost if the system eagerly processes every variant without demand signals."
+];
+const useCases = [
+  "Mobile reel editor exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Template-based ad creator exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Social story composer exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "An interviewer may push on device constraints. A strong answer explains how the UI adapts quality, bounds memory, uses background work carefully, and preserves the primary task when CPU or GPU is constrained.",
+  "An interviewer may push on privacy. The answer should explain signed URLs, derived artifact permissions, local cache clearing, redaction propagation, and avoiding sensitive telemetry.",
+  "An interviewer may push on incidents. The answer should cover queue backlog, worker rollback, CDN purge or versioning, disabled formats, degraded preview, and support-visible job history."
+];
+const questions = [
+  {
+    "question": "How would you design a short video editing system end to end?",
+    "answer": "I would model the media lifecycle first: source asset or document state, derived artifacts, permissions, processing jobs, client presentation, and operational telemetry. The client handles responsive interaction and local recovery, APIs enforce permission and idempotency, workers perform expensive processing, storage and CDN serve versioned artifacts, and observability links user symptoms back to asset version and job ID."
+  },
+  {
+    "question": "Why choose this architecture over a simpler upload-and-display design?",
+    "answer": "A simple upload-and-display design ignores derived artifacts, processing failures, permissions, moderation, cache invalidation, and device limits. It works for prototypes but fails when assets are large, private, collaborative, or safety-sensitive. The layered architecture adds complexity, but it isolates expensive work, makes retries safe, and gives operators control during incidents."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are audio drift, effect lag, export failure, battery drain. Scale also exposes CDN egress cost, processing queue backlog, hot assets, cache stampedes, memory pressure, long-tail device issues, and moderation delay. The prevention strategy is versioned artifacts, backpressure, adaptive quality, bounded client memory, queue observability, and remote rollback controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Original assets, permissions, and durable user edits need strong ownership and versioning. Derived media such as thumbnails, transcripts, previews, indexes, and exports can be eventually consistent, but must carry source version IDs and visible processing state. Collaborative editing may require CRDT, OT, or server-authoritative conflict resolution depending on the data model."
+  },
+  {
+    "question": "How do you handle failure, privacy, cost, and observability?",
+    "answer": "Failures are handled through resumable uploads, idempotent jobs, retryable processing, clear user states, and support-visible job history. Privacy requires permission checks on every derived surface, signed URLs, redaction propagation, and careful local storage. Cost is controlled through demand-aware derivative generation, cache hit targets, storage lifecycle policy, and telemetry sampling. Observability tracks QoE, queue age, job failures, cache behavior, and client resource pressure."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate interactive latency from batch processing, original truth from derived artifacts, and public assets from permissioned assets. Then I would explain which parts are optimized for immediacy, which are optimized for correctness, and which degrade during load or device pressure. That makes the trade-off defensible rather than generic."
+  }
+];
+const references = [
+  {
+    "label": "MDN: Media Source Extensions",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+  },
+  {
+    "label": "MDN: WebCodecs API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API"
+  },
+  {
+    "label": "W3C: Media Source Extensions",
+    "href": "https://www.w3.org/TR/media-source-2/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WebRTC specifications",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function ShortVideoEditingSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A short-video editing system (TikTok's editor, Instagram Reels editor, CapCut web) must deliver video editing capabilities that feel instantaneous in a browser context—historically only possible in native applications. The three core technical problems are: frame-accurate video decode and encode in the browser without a server round-trip (the WebCodecs API, available in Chromium-based browsers since 2021, provides VideoDecoder and VideoEncoder for hardware-accelerated codec operations in JavaScript); a timeline editor that treats video clips as metadata (in/out points into a source video file) rather than pixel data—so trim, cut, and reorder operations are O(1) JSON mutations rather than expensive re-encoding; and a preview engine that can display the current edit state (multiple clips concatenated with transitions and effects applied) at 30 fps in the browser without exhausting memory.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The effects pipeline adds complexity: color grading, visual filters (Instagram-style looks), text overlays, sticker overlays, and audio ducking must be applied in real time during preview and then baked into the final encoded output. The rendering order is: decode source frame → apply WebGL color grade/filter → draw text/sticker overlays on Canvas 2D → encode modified frame with VideoEncoder.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The editor targets Chromium-based browsers (Chrome, Edge, Opera) for WebCodecs support. Firefox and Safari require a server-side FFmpeg fallback for encode/decode. Clips are stored as source video files (the original camera recording); the edit is represented as a JSON document describing how to composite the clips (not as re-encoded video until export). Export uses WebCodecs in-browser for clips under 60 seconds, and server-side FFmpeg for longer clips or multi-resolution social platform exports.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/short-video-editing-system-architecture.svg" alt="Design a Short Video Editing System architecture" caption="Architecture view: media lifecycle, client runtime, processing plane, storage, CDN, and control boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/short-video-editing-system-playback.svg" alt="Design a Short Video Editing System flow" caption="Flow view: user intent, rendering or processing progression, fallback, and recovery states." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/short-video-editing-system-operations.svg" alt="Design a Short Video Editing System operations" caption="Operations view: queue pressure, permission enforcement, moderation, QoE, rollback, and support visibility." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Clip import:</strong> Import video clips from the device camera (via MediaDevices.getUserMedia recording or File picker), gallery (local file upload), or URL (remote video).</li>
-          <li><strong>Timeline editing:</strong> A horizontal scrollable timeline with video, audio, and effects tracks. Operations: trim (drag clip edges to adjust in/out points), split (divide clip at playhead position), reorder (drag-drop clips), and delete.</li>
-          <li><strong>Transitions:</strong> Cross-dissolve, cut, fade-to-black, wipe, and zoom-punch transitions between adjacent clips. Rendered as WebGL shader blends between frames.</li>
-          <li><strong>Effects and filters:</strong> Instagram-style color LUT filters (Clarendon, Gingham, etc.), brightness/contrast/saturation adjustments, text overlays (with font/color/animation), sticker overlays (with position/scale/animation), and border/background options.</li>
-          <li><strong>Audio:</strong> Add background music (from library or upload), adjust volume, apply fade-in/fade-out, and mute original clip audio. Beat-sync cuts: automatically cut clips at detected beat positions in the music.</li>
-          <li><strong>Export:</strong> Export as MP4 (H.264) for platform upload. Multi-format export for TikTok (9:16), Instagram (4:5 or 9:16), and YouTube Shorts (9:16) simultaneously.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Preview latency:</strong> Scrubbing the timeline (dragging the playhead) must show the frame at the scrub position within 16ms (one rAF frame).</li>
-          <li><strong>Export speed:</strong> A 60-second 1080p edit must export (encode to H.264) within 30 seconds on a device with hardware video encoding support.</li>
-          <li><strong>Memory:</strong> The editor must not load full video into memory. Only decoded frames for the current preview window (±1 second around the playhead) are held in memory.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The editor has three distinct pipelines. The import pipeline: source video files are decoded frame-by-frame using WebCodecs VideoDecoder in a Web Worker. A thumbnail strip is generated (one low-resolution frame per 500ms of video) for display in the timeline. The full-resolution decoded frames are not stored—only the source file ArrayBuffer is kept, and frames are decoded on demand during preview and export. The preview pipeline: a requestVideoFrameCallback loop drives the preview, decoding frames from the currently active clip at the playhead position, applying effects via a WebGL/Canvas pipeline, and displaying the result in a Canvas element. The export pipeline: all clips are decoded in sequence, effects are applied frame-by-frame, and the modified frames are encoded with VideoEncoder to produce an H.264 MP4 output.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/short-video-editing-system-architecture.svg"
-          alt="Short-video editing system architecture showing video edit pipeline (media import camera gallery URL → WebCodecs decode VideoDecoder VideoFrames → clip store ArrayBuffer thumbnail strip → timeline engine clips cuts transitions → preview renderer Canvas rAF loop → WebCodecs encode VideoEncoder MP4 → upload and CDN S3 multipart transcode), timeline editor (video track clips A B C with playhead at 2.1s, audio track background music fade in out, effects track text overlay sticker filter; clip operations trim drag edge update inPoint outPoint metadata, split at playhead divide clip 2 at frame boundary, reorder drag-drop clip update timeline sequence; transitions cross-dissolve cut fade-to-black wipe zoom-punch rendered as WebGL shader blend between adjacent frames), effects filters and audio (visual effects pipeline input frame VideoFrame → Canvas drawImage → WebGL shader color grade vignette blur → Canvas 2D text overlay sticker border → ctx.getImageData → VideoEncoder.encode frame; filter library Clarendon Gingham Juno Lark Reyes Valencia via lookup table LUT texture WebGL texture2D sample per pixel O(1) cost; audio processing Web Audio API gain fade-in/out noise gate pitch shift BPM detection for beat-sync cuts), WebCodecs pipeline (decode import VideoDecoder output frame frameBuffer push, encode export VideoEncoder output chunk meta mp4Writer.write, codec avc1.42001f H.264 Baseline, Web Worker offload decode encode in Web Worker main thread free for UI), export decision tree (clip ≤60s no complex effects WebCodecs in-browser VP9 H.264 &lt;30s render, clip &gt;60s or server-quality H.264 POST project JSON FFmpeg worker SSE progress, multi-resolution export 9:16 TikTok 4:5 Instagram 16:9 YouTube server renders all 3 in parallel), performance targets (scrub preview requestVideoFrameCallback 16ms, thumbnail strip decode 1 frame per 500ms at 0.1x via VideoDecoder in worker, in-browser export WebCodecs H.264 30fps 60s clip &lt;25s render time Chrome hardware encoder)."
-          caption="Edit pipeline (WebCodecs decode → timeline engine → effects pipeline → WebCodecs encode), timeline editor with clip operations and transitions, WebGL LUT filters, Web Audio BPM beat-sync, and export decision tree"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">WebCodecs API for Frame Operations</h3>
-        <p>WebCodecs provides low-level access to the browser's video codec hardware. The VideoDecoder API takes encoded video chunks (H.264, VP9, AV1 NAL units) as input and outputs VideoFrame objects—hardware-decoded frames that can be drawn directly to a Canvas or OffscreenCanvas using ctx.drawImage(frame, 0, 0). VideoFrame is a transferable object, allowing it to be passed between the main thread and Web Workers without copying. The VideoEncoder API does the reverse: it accepts VideoFrame objects and outputs encoded chunks in the configured codec format.</p>
-        <HighlightBlock as="p" tier="important">Decode flow: the source video file's ArrayBuffer is parsed to extract encoded video chunks at specific byte offsets (using a JavaScript MP4 demuxer like mp4box.js). To seek to a specific timestamp, the demuxer locates the nearest keyframe (IDR frame) before the target time, feeds all encoded chunks from the keyframe to the target frame to VideoDecoder, and the decoder outputs all frames in sequence. The frame at the target timestamp is extracted and the rest are discarded. This "chase seek" is necessary because H.264 is a predictive codec—non-keyframes depend on prior frames, so you cannot decode a frame in isolation without decoding from the previous keyframe.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Web Worker offload: decode and encode operations are offloaded to a Web Worker to prevent blocking the main thread. The worker receives the source file ArrayBuffer (transferred, not copied—O(1) transfer), decodes frames on demand, and returns VideoFrame objects (transferred back to the main thread) for display. During export, the worker processes all frames sequentially and streams encoded chunks back to the main thread via postMessage.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Timeline Editor and Clip Operations</h3>
-        <HighlightBlock as="p" tier="important">The project state is a pure JSON document: a list of clips (each with a source URL, in-point and out-point in seconds, canvas position and dimensions, and an effects list), an audio track list, and an overlay list (text/stickers with start/end times). All editing operations are mutations to this JSON—no pixel data is involved until export time. This makes the entire editing experience extremely responsive: trimming a clip is a JSON property update (clip.outPoint -= 0.5); splitting is inserting a new clip object; reordering is array reordering.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Trim: the user drags the left or right edge of a clip in the timeline. The drag handler updates clip.inPoint or clip.outPoint in real time. The preview renderer observes the updated clip bounds and seeks the source video to the new boundary on the next rAF frame. The trim operation is committed to the undo stack only on pointer-up (not on every move event), preventing undo history from being polluted with intermediate drag positions.</HighlightBlock>
-        <p>Split: at the playhead's current position within a clip, the clip is divided into two: the first clip has its outPoint set to the playhead position, and a new clip object is inserted with inPoint at the playhead position and outPoint at the original clip's outPoint. Both clips reference the same source file. The split is O(1) (one JSON object created, one property updated).</p>
-        <p>Transitions: a transition is stored as a property of the clip boundary (clip.transitionOut: "dissolve", "wipe", etc.). During preview and export, when the timeline reaches a clip boundary with a transition, the renderer blends the last frames of the outgoing clip and the first frames of the incoming clip using a WebGL shader. For a cross-dissolve, the shader is: gl_FragColor = mix(texture2D(texOut, uv), texture2D(texIn, uv), progress) where progress goes from 0 to 1 over the transition duration (typically 0.3–0.5 seconds).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Effects Pipeline</h3>
-        <HighlightBlock as="p" tier="important">The effects pipeline processes each frame through three stages: WebGL color grade/filter → Canvas 2D overlay → VideoEncoder. The WebGL stage handles operations that benefit from GPU parallelism (per-pixel LUT lookup, saturation matrix, vignette gradient, blur convolution). The Canvas 2D stage handles operations that require the browser's text rendering or image compositing (text overlays with custom fonts, sticker images, borders).</HighlightBlock>
-        <p>LUT-based Instagram filters: each filter is defined by a 512×512 LUT (Look-Up Table) image—a mapping from input (R,G,B) color values to output (R,G,B) values. During WebGL processing, the input pixel's color is used to look up the corresponding output color in the LUT texture. This is O(1) per pixel regardless of the complexity of the color transformation, making it equally fast for Clarendon (high contrast, vibrant) and Gingham (warm, faded) filters. The LUT textures are small (512×512 at 3 bytes per pixel = 768 KB each) and are preloaded on editor initialization.</p>
-        <p>Text overlay animation: text overlays can have entry/exit animations (fade, slide-in, typewriter). These are implemented as CSS keyframe animations on a div that is absolutely positioned over the canvas preview. For the exported video, the text is rendered frame-by-frame to the Canvas 2D context using the computed animation position at each frame's timestamp.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Beat-Sync Audio and BPM Detection</h3>
-        <p>Beat-sync cuts automatically align clip boundaries to the beat positions in the background music. Implementation: (1) The background audio is decoded using AudioContext.decodeAudioData(audioBlob), producing an AudioBuffer (raw PCM samples). (2) BPM is detected using onset detection: the algorithm identifies sharp energy increases in the high-frequency band (where drum transients appear) by computing the energy of the audio in 10ms windows and finding local maxima above a threshold. The spacing between detected onsets is used to estimate the BPM. (3) Beat timestamps are computed from the detected BPM: if BPM is 120, beats occur at 0.0, 0.5, 1.0, 1.5... seconds. (4) Auto-cut mode: the editor inserts clip cut points at each beat timestamp—the sequence of clips will change exactly on the beat, creating the characteristic "music video" editing style. (5) Snap-to-beat: when the user manually drags a clip edge, it snaps to the nearest beat within 50ms (magnetic snap), making it easy to manually align cuts to beats.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Preview Engine with requestVideoFrameCallback</h3>
-        <p>The preview engine uses requestVideoFrameCallback (RVFC), a browser API that fires a callback just before a new video frame is presented—more precise than requestAnimationFrame for video-synchronized work. The preview loop: (1) RVFC callback fires with metadata including mediaTime (the current video presentation timestamp, frame-accurate). (2) The callback determines which clip in the timeline is active at the current playback time. (3) The active clip's frame at the corresponding source time (accounting for in-point offset) is decoded from the source video. (4) The frame is drawn to the preview canvas and the effects pipeline is applied. (5) RVFC is re-registered for the next frame.</p>
-        <HighlightBlock as="p" tier="important">Scrub preview: when the user drags the timeline playhead, the handler updates the playback position and calls video.currentTime = seekTime on a hidden HTMLVideoElement (which browsers can seek more efficiently than WebCodecs for simple preview). The seeked event fires (typically within one rAF frame on modern browsers), and the current frame is drawn to the preview canvas. The effects pipeline is applied in the same frame. Scrub throttling: seeks are throttled to one per rAF frame (using a flag that prevents queueing multiple seeks within a single 16ms window).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Export Pipeline</h3>
-        <HighlightBlock as="p" tier="important">For clips under 60 seconds (the common case for short-video platforms), the in-browser export uses WebCodecs: (1) VideoEncoder is configured with codec "avc1.42001f" (H.264 Baseline Profile, universally compatible), target bitrate, frame rate, and canvas dimensions. (2) For each frame in the timeline (at 30fps, 60 seconds = 1,800 frames), the frame is decoded from its source clip, the effects pipeline is applied, and the resulting frame is fed to VideoEncoder.encode(videoFrame). (3) The encoder outputs encoded chunks (both keyframes and delta frames). These chunks are written sequentially to an in-memory MP4 container (using the mp4-muxer library). (4) On completion, the MP4 container is finalized and the result is available as a Uint8Array, which is downloaded as a .mp4 file. Hardware acceleration: on devices with GPU-based H.264 encoders (most modern phones and laptops), VideoEncoder uses the hardware encoder, achieving real-time or faster-than-real-time encoding. On devices without hardware H.264 encoding (some Linux desktops), the encoder falls back to software encoding, which is 5–10x slower. The export UI shows a progress bar (frame count / total frames).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/short-video-editing-system-playback.svg"
-          alt="Short-video editor preview engine showing requestVideoFrameCallback loop (RVFC callback → find active clip → draw frame → apply effects → loop back via requestVideoFrameCallback); requestVideoFrameCallback fires before each new frame is presented after rAF before paint, provides metadata.mediaTime current video presentation timestamp frame-accurate; scrub preview user drags timeline pointerMove event computeSeekTime x → video.currentTime = seekTime HTMLVideoElement fast seek → seeked event fires → draw current frame to preview canvas → effects pipeline applied; throttle 1 seek per rAF frame 16ms to avoid seek queue buildup; thumbnail strip generation Web Worker VideoDecoder seeks 1 frame per 500ms OffscreenCanvas thumbnail Blob results stored Map frameTime to thumbnailURL displayed in timeline strip. Beat-sync cuts BPM detection: decode audio AudioContext.decodeAudioData audioBlob → AudioBuffer, BPM detect onset detection energy spikes HF band estimate beats per minute, beat timestamps 0.53 1.06 1.59 2.12 seconds at detected BPM, auto-cut mode insert clip cut at each beat timestamp cuts sync to music, snap drag clip edge snaps to nearest beat within 50ms magnetic snap. Project state model clips array id srcUrl inPoint outPoint x y w h effects, audio array id srcUrl volume fadeIn fadeOut startAt, overlays type text sticker content startSec endSec pos, duration number total edit duration, history Command array undo stack serializable IndexedDB. Undo redo lightweight for video: video edits are metadata-only no pixel data undo = revert JSON diff, trim store prevInPoint prevOutPoint undo = restore prev values no ImageData snapshots needed. Social platform export TikTok Reels format 9:16 H.264 1080x1920 max 60s 287MB AAC audio upload TikTok API OAuth multipart; Instagram formats 1:1 4:5 9:16 Reels max 60s feed 90s Reels upload Basic Display API video; YouTube Shorts format 9:16 H.264 up to 60s max 256GB upload YouTube Data API v3. In-browser export benchmarks 30s clip 1080p 30fps H.264 hardware ~8s encode, 60s clip 1080p 30fps H.264 hardware ~18s encode, 60s clip without HW accel VP9 software ~90s encode."
-          caption="RVFC preview loop (frame-accurate RVFC → active clip → effects pipeline), scrub (video.currentTime seek throttled to 16ms), BPM beat-sync cut detection, metadata-only undo, project state JSON model, and social platform export specs with encode benchmarks"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">WebCodecs versus server-side FFmpeg: WebCodecs enables fully in-browser video encoding, eliminating the server round-trip for short clips and providing instant export feedback. The limitations are: browser support is limited to Chromium (Firefox and Safari require fallback); the maximum output format is VP9 or H.264 Baseline (WebCodecs does not support HEVC/H.265 in most browsers); and encoding very long videos (10+ minutes) will exhaust browser memory because the encoder's output chunks must be held in memory before being written to the MP4 container. FFmpeg on the server handles all codec variations, arbitrary duration, and complex audio processing (noise reduction, multi-track mixing) that Web Audio API cannot match. The practical strategy is WebCodecs for the common case (under 60 seconds, single-track audio) and FFmpeg for edge cases.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Metadata-only editing versus pixel-based editing: treating the edit as a JSON document (in/out points, transition types, effect parameters) rather than encoded video makes all operations instantaneous and undo trivial (JSON diff). The cost is deferred: effects are not baked until export. This means the preview is always an approximation (drawn frame-by-frame from the effects pipeline rather than reading pre-encoded video), which is more computationally expensive during preview than reading a pre-rendered video. For complex effects (particle systems, complex compositing), the preview frame rate may drop below 30 fps. Proxy rendering (generating a low-quality pre-encoded preview clip) mitigates this: a server-side job renders a 480p preview version of the edit that the browser plays directly as a video element, reserving WebCodecs for the final export.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Beat-sync accuracy: BPM detection from audio onset analysis is accurate to ±2 BPM for regular rhythms (4/4 time, consistent tempo) but degrades for irregular rhythms, live recordings with tempo fluctuation, or songs with complex polyrhythm. For better accuracy, the BPM can be computed on a server using a more sophisticated algorithm (Essentia, Librosa) and the beat timestamps returned to the client. The client uses the beat timestamps for snap-to-beat without needing to recompute on the client.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A short-video editing system uses a metadata-only project model: the edit is a JSON document describing how to composite source clips (in/out points, transitions, effects parameters), with no re-encoding until export. The timeline editor is a JSON mutation interface—trim is a property update, split is an object insertion, reorder is array reordering—making all operations instantaneous and undo trivial (JSON diff). WebCodecs (VideoDecoder/VideoEncoder) enables frame-accurate in-browser decode and H.264 encode, running in a Web Worker to keep the main thread free. The preview engine uses requestVideoFrameCallback for frame-synchronized rendering: each frame is decoded from the active source clip, processed through a WebGL LUT filter stage (O(1) per pixel), overlaid with Canvas 2D text/stickers, and displayed. Beat-sync cuts use Web Audio API's AudioBuffer (from AudioContext.decodeAudioData) to detect onset energy spikes, convert them to beat timestamps, and auto-insert clip cuts at beat boundaries. Export uses WebCodecs in-browser for clips under 60 seconds (targeting 25 seconds for a 60-second 1080p edit with hardware H.264 encoding), with server-side FFmpeg for multi-format social platform export (TikTok 9:16, Instagram 4:5, YouTube Shorts 9:16 rendered in parallel). The defining design constraint is that no video pixels should be re-encoded during editing—only during final export—because maintaining a 30fps preview with real-time effects requires deferred rather than immediate re-encoding.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

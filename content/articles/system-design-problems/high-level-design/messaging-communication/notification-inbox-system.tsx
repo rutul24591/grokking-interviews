@@ -8,87 +8,140 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-notification-inbox-system",
   title: "Design a Notification Inbox System",
-  description:
-    "Architecture for a notification inbox like GitHub notifications or Linear: real-time notification delivery via WebSocket push, notification grouping and deduplication (same actor, same object within 5 minutes), mark-as-read cursor with optimistic update, notification type routing (mention, assignment, comment, system), notification preferences per type and channel, badge count across browser tabs via BroadcastChannel API, notification snooze and mute, and infinite scroll notification list with virtual rendering.",
+  description: "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability.",
   category: "high-level-design",
   subcategory: "messaging-communication",
   slug: "notification-inbox-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "notifications", "inbox", "badge-count", "read-cursor", "broadcast-channel", "grouping", "preferences"],
-  relatedTopics: ["threaded-messaging-system", "multi-channel-communication-hub"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "messaging", "realtime", "notifications", "privacy", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Notification Inbox System is a communication system where correctness is user-visible: people notice missing messages, wrong unread counts, late notifications, broken drafts, and privacy leaks immediately. A principal-ready design treats a notification inbox system as a distributed event and state synchronization problem, not simply a list of messages.",
+  "The design must define message identity, ordering, delivery acknowledgement, read state, presence, offline behavior, notification policy, abuse controls, and recovery after reconnect. Different surfaces can be eventually consistent, but user intent and privacy-sensitive state need stronger guarantees.",
+  "Communication systems also sit at the boundary between realtime UX and durable history. The UI should feel live, but messages, edits, deletes, receipts, and moderation decisions must survive refresh, device changes, network loss, and replay.",
+  "A staff/principal answer should name what is authoritative: message append log, conversation membership, consent or preference policy, delivery receipt, read state, and moderation state. Derived views such as inbox rows, snippets, unread counts, search results, and push notifications can lag if they are observable and repairable.",
+  "The system must be abuse-aware. Spam, phishing, harassment, notification bombing, large-room fanout, and provider outages are expected operating conditions, not rare edge cases."
+];
+const concepts = [
+  "The first concept is message identity and ordering. Every message or communication event needs a stable ID, conversation or recipient scope, sender, timestamp, sequence or logical clock, edit/delete state, and idempotency key.",
+  "The second concept is delivery semantics. Sent, accepted, delivered, read, failed, suppressed, and moderated are different states. Collapsing them into delivered creates incorrect UI and support confusion.",
+  "The third concept is multi-device synchronization. event stream, inbox projection, and read-state store must converge after offline use, app restart, token refresh, and reconnect.",
+  "The fourth concept is privacy and membership. Conversation membership, blocks, consent, retention, legal hold, and channel policy must be enforced across message history, notifications, search, exports, and previews.",
+  "The fifth concept is fanout and backpressure. Large rooms, high-volume channels, notification storms, and provider retries can overload clients and backend queues unless traffic is shaped by priority and recipient state.",
+  "The sixth concept is observability. Track send success, delivery lag, unread drift, websocket reconnects, push receipt latency, provider failures, moderation actions, search indexing lag, and duplicate suppression."
+];
+const architecture = [
+  "The architecture has event stream, inbox projection, preference policy, read-state store, digest worker. The write path accepts user intent and appends durable events. The realtime path streams events to online clients. Projection workers build inboxes, unread counts, snippets, search documents, notifications, and analytics. Policy services enforce membership, consent, mute state, and moderation.",
+  "Clients should maintain a local event cache and pending operation queue. This allows instant local rendering for pending sends while preserving authoritative reconciliation when the server accepts, rejects, edits, redacts, or reorders events.",
+  "Ordering should be scoped. A global total order is unnecessary and expensive. Conversations or channels need stable ordering semantics, and cross-channel inbox projections can use per-conversation latest-event time plus tie-breakers.",
+  "Read state and delivery receipts should be modeled separately. Read state is often per-user per-conversation and may be eventually consistent across devices. Delivery receipt may depend on device connectivity, provider acknowledgement, or policy suppression.",
+  "The frontend should show truthful states: sending, sent, delivered, read, failed retryable, failed permanent, hidden by policy, deleted, edited, or blocked. These states reduce support issues and prevent dangerous duplicate user actions.",
+  "Operations need controls to disable a provider, mute a noisy event type, replay a projection, rebuild search, quarantine spam, revoke a compromised sender, and inspect a message timeline with privacy-safe audit trails."
+];
+const tradeoffs = [
+  "WebSockets or persistent connections give low-latency delivery but require connection management, backpressure, auth refresh, and fallback to polling. Polling is simpler but increases latency and cost at scale.",
+  "Server-authoritative ordering prevents inconsistent history but can make local sends appear to move after acknowledgement. Local optimistic ordering feels responsive but needs reconciliation and visible pending states.",
+  "Push notifications improve re-engagement but can leak private content on locked screens, violate user preferences, or amplify spam. Notification payloads should be minimized and policy-checked.",
+  "Storing full local history improves offline UX but creates privacy, storage, and deletion challenges. A principal design caches only what is needed, encrypts where appropriate, and clears data on logout or device distrust.",
+  "End-to-end encryption protects content privacy but limits server-side search, moderation, and support visibility. Systems must decide where encryption applies and how metadata, abuse reports, and recovery work.",
+  "Strongly consistent unread counts are expensive and often unnecessary. Users tolerate slight unread drift if it converges quickly, but message loss, privacy leaks, and duplicate sends are not acceptable."
+];
+const practices = [
+  "Use idempotency for send, edit, delete, mark-read, and notification creation. Retries from mobile devices and provider callbacks should converge on one logical event.",
+  "Model conversation membership and consent as policy inputs for every surface: message fetch, push, email, search, preview, export, and support view.",
+  "Keep pending local state visibly distinct from accepted server state. Users should know when a message or notification action is not yet durable.",
+  "Use backpressure for realtime streams. Drop or coalesce low-value typing, presence, and read events before dropping durable messages.",
+  "Build projection repair paths. Inbox rows, unread counts, search indexes, and digest summaries should be rebuildable from the authoritative event log.",
+  "Create abuse controls for spam senders, phishing links, notification floods, and toxic threads. Moderation state should propagate to clients and notifications quickly.",
+  "Instrument device cohorts separately. Messaging bugs often appear only on reconnect, app backgrounding, low battery, stale tokens, or older clients."
+];
+const pitfalls = [
+  "notification fatigue is usually caused by unclear ordering or reconciliation semantics. The design needs scoped sequence, idempotency, and client reconciliation.",
+  "read-state drift undermines user trust because communication UIs become task lists. Unread/read state should be observable, repairable, and separated from delivery.",
+  "privacy leak happens when privacy policy is enforced in the main view but not in notifications, previews, search, or exports.",
+  "fanout spike should be expected for large rooms, provider retries, or viral notifications. Backpressure and throttling must be first-class.",
+  "Another pitfall is treating push, email, websocket, and inbox as independent products. Users perceive them as one communication system, so policy and state must converge.",
+  "Teams also forget retention and legal hold. Delete for user, delete for everyone, archive, export, and legal retention require explicit semantics."
+];
+const useCases = [
+  "social inbox requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "SaaS activity inbox requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "creator notification center requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "During provider outage, the hub should fail over channels where allowed, queue retryable messages, suppress duplicates, and show delivery uncertainty clearly.",
+  "During abuse spike, the system should throttle senders, reduce notification fanout, scan links, quarantine suspicious threads, and preserve review evidence.",
+  "During reconnect, the client should fetch missed events from a cursor, reconcile local pending operations, update read state, and avoid replaying already accepted actions."
+];
+const questions = [
+  {
+    "question": "How would you design a notification inbox system end to end?",
+    "answer": "I would design an authoritative event log for durable communication events, realtime gateways for online delivery, projection workers for inboxes and unread counts, policy services for membership and consent, and client local state for pending operations and offline recovery. The frontend shows truthful delivery states while the backend owns ordering, idempotency, and enforcement."
+  },
+  {
+    "question": "Why this architecture over direct client-to-client messaging or a simple notifications table?",
+    "answer": "Direct client-to-client messaging cannot provide durable history, moderation, multi-device sync, search, retention, or support reconstruction. A simple notifications table cannot represent delivery, read state, retries, provider acknowledgements, and policy suppression. The event-log plus projection model adds complexity but makes the system repairable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are notification fatigue, read-state drift, privacy leak, fanout spike, plus reconnect storms, websocket fanout, unread drift, provider rate limits, spam waves, and projection lag. Prevention requires scoped ordering, backpressure, idempotency, projection repair, provider abstraction, and abuse controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Message append, membership, deletion/redaction, and consent policy need strong server control. Inbox rows, unread counts, search indexes, push delivery receipts, and presence can be eventually consistent if they converge and expose uncertainty. Read state usually accepts eventual consistency across devices."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with reconnect cursors, retry queues, provider failover, local pending state, and projection rebuilds. Rollback uses feature flags, provider disablement, and event replay. Abuse is controlled through rate limits, link scanning, reputation, and moderation. Privacy requires minimizing notification payloads and enforcing membership everywhere. Cost is controlled by coalescing presence/read events, batching, and sampling telemetry. Observability tracks send lag, delivery lag, reconnects, unread drift, provider errors, and moderation actions."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate durable message truth from derived communication surfaces. I would defend eventual unread counts but not eventual privacy enforcement. I would defend websocket complexity for realtime UX while keeping polling fallback. I would also acknowledge that E2EE, search, moderation, and support visibility create real trade-offs that must be product-specific."
+  }
+];
+const references = [
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Slack engineering blog",
+    "href": "https://slack.engineering/"
+  },
+  {
+    "label": "RFC 5322 Internet Message Format",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5322"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  }
+];
 
 export default function NotificationInboxSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A notification inbox system aggregates activity from across an application into a single list that the user can review, mark as read, and dismiss. GitHub's notification inbox, Linear's activity feed, and Slack's "All Unreads" are examples. The key challenges are: delivering notifications in real-time without overwhelming the user (grouping, deduplication), maintaining accurate unread counts across multiple browser tabs and devices, providing granular notification preferences per type and channel, and handling the inbox at scale (a heavily active GitHub user may receive 10,000+ notifications per day).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The notification inbox differs from a messaging channel in a critical way: notifications are generated by backend events (a commit was pushed, a PR was assigned, a build failed) and must be routed to the correct user through a fan-out pipeline. The frontend receives the notification payload and must render it meaningfully — showing "Alice commented on your PR" rather than a raw event object. Rich notification rendering requires a template system that maps event types to human-readable strings with entity links.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Real-time notification delivery, grouping and deduplication, mark-as-read with cross-tab sync, notification preferences UI, and the inbox rendering pipeline. Not in scope: notification fan-out infrastructure, email/SMS delivery, or notification archiving.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/notification-inbox-system.svg" alt="Design a Notification Inbox System architecture" caption="Architecture view: durable event log, realtime gateway, projections, policy, and client sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/notification-inbox-system-flow.svg" alt="Design a Notification Inbox System flow" caption="Flow view: send, acknowledge, deliver, read, moderate, notify, and recover." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/notification-inbox-system-operations.svg" alt="Design a Notification Inbox System operations" caption="Operations view: fanout, reconnect, provider health, abuse controls, privacy, and projection repair." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Real-time delivery:</strong> New notifications appear in the inbox and increment the badge count within 2 seconds of the triggering event. Delivery is via WebSocket push. The badge count (number in the browser tab favicon and the notification bell icon) updates without page refresh.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Grouping and deduplication:</strong> Multiple notifications of the same type for the same object within a 5-minute window are grouped into a single inbox item ("Alice, Bob, and 3 others commented on your PR"). Grouping is computed server-side — the client receives a GroupedNotification object with a representative notification, a count, and an actor list. Clicking a grouped notification opens the source object, not a list of individual notifications.</HighlightBlock>
-          <li><strong>Mark as read:</strong> Clicking a notification marks it as read (individual) and navigates to the linked resource. "Mark all as read" sets the lastReadAt timestamp, marking all notifications older than that timestamp as read. The unread count badge updates optimistically — the count decrements immediately on click without waiting for the server.</li>
-          <HighlightBlock as="li" tier="important"><strong>Notification preferences:</strong> Users can configure per-type notification settings: "notify me for mentions always, for comments only when I'm assigned, for system alerts never." Preferences are stored per user on the server and drive the fan-out pipeline. The preferences UI is a matrix of notification types × channels (web, email, mobile push). Changes take effect within 10 seconds (the fan-out pipeline reads preferences from a cached copy, refreshed every 10s).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Cross-tab sync:</strong> If the user has two tabs open, marking a notification as read in one tab updates the badge count in the other tab within 1 second. This is achieved using the BroadcastChannel API (a browser API for same-origin inter-tab messaging) — no server round trip required for cross-tab badge sync.</li>
-          <HighlightBlock as="li" tier="important"><strong>Performance:</strong> The notification inbox opens (panel slides in) with the first 20 notifications visible within 200ms (loaded from IndexedDB cache or React Query stale cache). Virtual scrolling for inboxes with &gt;500 notifications. The badge count is never wrong for more than 2 seconds (server-authoritative count fetched on tab focus).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Snooze and mute:</strong> Notifications from a specific object (a PR, an issue) can be snoozed (suppressed for 1 hour, 1 day, or 1 week) or muted (suppressed permanently until the user re-subscribes). Snooze state is stored server-side and respected in the fan-out pipeline. Muted notifications are still stored in the database but not delivered in real-time.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture has three layers. The Delivery Layer: the server fan-out pipeline generates a notification object (type, actor, object, objectId, timestamp) and pushes it to the user's WebSocket connection. If the user is offline, the notification is stored in the database and delivered when the user next connects. The Inbox Layer: the client receives notification events and stores them in a Zustand store (in-memory) and IndexedDB (persistent). The notification list is rendered from the Zustand store with virtual scrolling. The Badge Layer: the unread count is derived from the store (count of notifications where readAt is null and createdAt is after the user's global muted timestamp). The badge count is broadcast to all same-origin tabs via BroadcastChannel when it changes.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/messaging-communication/notification-inbox-system.svg"
-          alt="Notification inbox system: delivery (WS push: &#123;type:MENTION, actor:Alice, object:PR#42, objectId:pr-123, groupKey:pr-123-comment, createdAt&#125;; grouping: same groupKey within 5min → grouped notification with actorList+count; offline: stored in DB, delivered on reconnect), inbox rendering (React Query loads 20 from cache; virtual scroll 500+ items; notification item: actor avatar + template string 'Alice commented on PR#42' + timestamp + unread dot; click: mark read + navigate to objectId URL; optimistic: unread count -1 before server ack), cross-tab badge (BroadcastChannel 'notifications': mark-read event → all tabs update badge; no server round trip; tab focus: fetch authoritative count GET /api/notifications/count?unread=true), mark-as-read (individual: PATCH /api/notifications/{id}/read; bulk: POST /api/notifications/mark-all-read &#123;before:timestamp&#125;; optimistic update in Zustand; lastReadAt cursor stored server-side), preferences (matrix: type×channel toggles; PATCH /api/notification-preferences; fan-out pipeline reads cached prefs every 10s; snooze: PATCH /api/subscriptions/{objectId}/snooze &#123;until:timestamp&#125;; mute: DELETE /api/subscriptions/{objectId})."
-          caption="WS push grouped notification (same groupKey 5min window, actorList+count), offline delivery on reconnect, virtual scroll inbox with template-string rendering, optimistic mark-read, BroadcastChannel cross-tab badge sync, authoritative count on tab focus, preferences matrix with 10s fan-out cache refresh, snooze/mute per object"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Notification Grouping and Deduplication</h3>
-        <HighlightBlock as="p" tier="important">Notification grouping prevents inbox flooding when many events occur for the same object in a short time. The grouping key is: (notificationType, objectId, recipientId, 5-minute time bucket). For example, 10 comments on PR #42 within 5 minutes from different users produce one grouped notification: "Alice, Bob, and 8 others commented on PR #42." The server groups notifications before delivery: a background job runs every 30 seconds, groups ungrouped notifications by key, and emits a single grouped event per key. The client receives a GroupedNotification object: &#123;id, type, groupKey, actorList, actorCount, latestActorName, objectId, objectTitle, objectUrl, readAt, createdAt, groupedCount&#125;.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Deduplication on the client handles the case where a notification arrives via WebSocket and is also returned by the initial inbox fetch. The Zustand store uses a Map keyed by notification ID — inserting an existing ID is a no-op. For grouped notifications, the groupKey is used as the dedup key — a new event for the same groupKey within the same time bucket updates the existing group (incrementing actorCount and prepending the new actor to actorList) rather than creating a duplicate.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Badge Count and Cross-Tab Sync</h3>
-        <HighlightBlock as="p" tier="important">The notification badge count (the red number on the bell icon and the page title "&#40;3&#41; Dashboard") is derived from the Zustand store: count of notifications where readAt is null. When a new notification arrives via WebSocket, it is added to the store with readAt: null, incrementing the badge. When a notification is marked as read, its readAt is set optimistically in the store, decrementing the badge. When "mark all as read" is clicked, a lastReadAt timestamp is stored locally (all notifications with createdAt before this timestamp are treated as read).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cross-tab sync: when the badge count changes in one tab, a BroadcastChannel message (channel name: "notifications") is posted: &#123;type: "BADGE_UPDATED", count: 3&#125;. All other tabs listening on the same channel update their badge display. This requires no server round trip for cross-tab badge consistency. On tab focus (visibilitychange event), the tab fetches the authoritative unread count from the server (GET /api/notifications/count?unread=true) to correct any drift that may have occurred (e.g., notifications read on mobile that the browser tabs don't know about).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Notification Template Rendering</h3>
-        <HighlightBlock as="p" tier="important">Notifications are stored as structured data (type, actorId, objectId, objectType) rather than pre-rendered strings. The frontend maps each notification type to a rendering template: a function that takes the notification data and returns a JSX element. For example: COMMENT_CREATED → &#123;actor&#125; commented on &#123;object&#125; (with actor linking to the user profile and object linking to the comment). MENTION → &#123;actor&#125; mentioned you in &#123;object&#125;. ASSIGNMENT → &#123;actor&#125; assigned you to &#123;object&#125;. This template approach allows the notification string to be localized (different language templates per locale) and updated without changing the stored notification data. Rich templates can include inline thumbnails (PR review diff preview, issue label colors).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Notification Preferences Matrix</h3>
-        <HighlightBlock as="p" tier="important">The preferences UI renders a two-dimensional matrix: notification types on rows (mention, comment, assignment, status change, system alert), delivery channels on columns (web push, email, mobile push, in-app only). Each cell is a three-state toggle: always notify, notify only when assigned, never notify. The matrix state is stored in a flat preferences object: &#123;"mention.web": "always", "comment.email": "never", "assignment.web": "assigned_only"&#125;. Changes are PATCHed to the server immediately with optimistic update (the toggle responds instantly). The fan-out pipeline reads user preferences from a Redis cache (refreshed every 10 seconds from the database) — this cache ensures the pipeline does not query the database per notification per user.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Real-time vs. polling for badge count: maintaining a persistent WebSocket connection per user just for notification badge updates is expensive at scale. An alternative: Server-Sent Events (SSE) for push updates (lighter than WebSocket, unidirectional), with a polling fallback (GET /api/notifications/count every 60 seconds) for browsers where SSE connections are dropped by corporate firewalls. The SSE connection sends only badge count updates (tiny payloads) — the full notification content is fetched via REST when the inbox panel is opened. This "notification-only" SSE is much cheaper than a full message WebSocket.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Notification fatigue and smart defaults: a system that sends too many notifications trains users to ignore them. Smart defaults — mention notifications always enabled, comment notifications only when assigned, system alerts email-only — reduce notification volume without requiring users to configure preferences manually. Progressive preference disclosure: show a "You are receiving too many notifications" prompt when the user's unread count exceeds 100, with a one-click "Reduce notifications" option that applies sensible defaults. This is a product design decision as much as a technical one.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A notification inbox system is built on: (1) server-side grouping (same groupKey + 5-minute bucket → one GroupedNotification with actorList, dedup by groupKey in Zustand Map, WS delivery or DB storage for offline); (2) inbox rendering (React Query cache → 20 items, virtual scroll for 500+, type→template function rendering with actor links and object links, optimistic mark-read); (3) cross-tab badge sync (BroadcastChannel "notifications" channel, BADGE_UPDATED message, no server round trip, authoritative count GET on tab focus); (4) preferences matrix (type × channel toggles, flat preferences object, PATCH with optimistic update, fan-out pipeline Redis cache 10s refresh); and (5) snooze/mute (per-object subscriptions, server-enforced in fan-out, stored notifications accessible in inbox but not pushed). The defining constraint: notification systems must be conservative — it is better to slightly under-notify than to train users to ignore the badge by flooding it with low-value alerts.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

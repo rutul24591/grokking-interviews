@@ -1,79 +1,90 @@
-/**
- * Image Gallery — Staff-Level Memory Management for Large Galleries.
- *
- * Staff differentiator: Image preloading with LRU cache, memory-aware
- * thumbnail generation, and IntersectionObserver-based lazy loading with
- * prefetch threshold.
- */
+export type imageGalleryLightboxRuntimeState = {
+  topic: "image-gallery-lightbox";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-/**
- * Image cache with LRU eviction and memory tracking.
- * Automatically evicts least recently used images when memory threshold is exceeded.
- */
-export class ImageMemoryCache {
-  private cache: Map<string, { blob: Blob; lastAccessed: number; size: number }> = new Map();
-  private maxMemoryBytes: number;
-  private currentMemoryBytes: number = 0;
+export type imageGalleryLightboxRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-  constructor(maxMemoryMB: number = 50) {
-    this.maxMemoryBytes = maxMemoryMB * 1024 * 1024;
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
+}
+
+export function planImageGalleryLightboxRecovery(
+  state: imageGalleryLightboxRuntimeState,
+  nowMs: number,
+): imageGalleryLightboxRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: imageGalleryLightboxRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Adds an image to the cache. Evicts LRU entries if memory threshold is exceeded.
-   */
-  async set(url: string, response: Response): Promise<void> {
-    const blob = await response.blob();
-    const size = blob.size;
-
-    // Evict if necessary
-    while (this.currentMemoryBytes + size > this.maxMemoryBytes && this.cache.size > 0) {
-      this.evictLRU();
-    }
-
-    this.cache.set(url, { blob, lastAccessed: Date.now(), size });
-    this.currentMemoryBytes += size;
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Gets an image from the cache. Updates lastAccessed for LRU tracking.
-   */
-  get(url: string): Blob | null {
-    const entry = this.cache.get(url);
-    if (!entry) return null;
-    entry.lastAccessed = Date.now();
-    return entry.blob;
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  /**
-   * Evicts the least recently used entry.
-   */
-  private evictLRU(): void {
-    let lruKey: string | null = null;
-    let lruTime = Infinity;
+export function runImageGalleryLightboxEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planImageGalleryLightboxRecovery(
+    {
+      topic: "image-gallery-lightbox",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
 
-    for (const [key, entry] of this.cache) {
-      if (entry.lastAccessed < lruTime) {
-        lruTime = entry.lastAccessed;
-        lruKey = key;
-      }
-    }
+  const failure = planImageGalleryLightboxRecovery(
+    {
+      topic: "image-gallery-lightbox",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
 
-    if (lruKey) {
-      const entry = this.cache.get(lruKey)!;
-      this.currentMemoryBytes -= entry.size;
-      this.cache.delete(lruKey);
-    }
-  }
-
-  /**
-   * Returns cache statistics.
-   */
-  getStats(): { count: number; memoryMB: number; maxMemoryMB: number } {
-    return {
-      count: this.cache.size,
-      memoryMB: this.currentMemoryBytes / (1024 * 1024),
-      maxMemoryMB: this.maxMemoryBytes / (1024 * 1024),
-    };
-  }
+  return {
+    topic: "Image Gallery Lightbox",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

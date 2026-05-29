@@ -1,75 +1,90 @@
-/**
- * Calendar — Staff-Level Multi-Calendar Support and Timezone Overlays.
- *
- * Staff differentiator: Simultaneous display of multiple calendar systems
- * (Gregorian + Hijri + Hebrew), timezone overlay showing meeting times
- * across multiple timezones, and working hours visualization.
- */
+export type calendarSchedulerRuntimeState = {
+  topic: "calendar-scheduler";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-export interface TimezoneOverlay {
-  timezone: string;
-  label: string;
-  color: string;
-  workingHours: { start: number; end: number }; // 0-24
+export type calendarSchedulerRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Manages multiple timezone overlays for calendar viewing.
- */
-export class MultiTimezoneCalendar {
-  private primaryTimezone: string;
-  private overlays: TimezoneOverlay[] = [];
+export function planCalendarSchedulerRecovery(
+  state: calendarSchedulerRuntimeState,
+  nowMs: number,
+): calendarSchedulerRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: calendarSchedulerRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  constructor(primaryTimezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone) {
-    this.primaryTimezone = primaryTimezone;
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Adds a timezone overlay.
-   */
-  addOverlay(overlay: TimezoneOverlay): void {
-    this.overlays.push(overlay);
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Removes a timezone overlay.
-   */
-  removeOverlay(timezone: string): void {
-    this.overlays = this.overlays.filter((o) => o.timezone !== timezone);
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  /**
-   * Converts a time from the primary timezone to an overlay timezone.
-   */
-  convertTime(date: Date, targetTimezone: string): Date {
-    const formatter = new Intl.DateTimeFormat('en-US', { timeZone: targetTimezone });
-    const parts = formatter.formatToParts(date);
-    // In production: use proper timezone conversion library
-    return date;
-  }
+export function runCalendarSchedulerEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planCalendarSchedulerRecovery(
+    {
+      topic: "calendar-scheduler",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
 
-  /**
-   * Finds overlapping working hours across all overlays.
-   */
-  findOverlappingWorkingHours(): { start: number; end: number } | null {
-    if (this.overlays.length === 0) return null;
+  const failure = planCalendarSchedulerRecovery(
+    {
+      topic: "calendar-scheduler",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
 
-    let latestStart = 0;
-    let earliestEnd = 24;
-
-    for (const overlay of this.overlays) {
-      latestStart = Math.max(latestStart, overlay.workingHours.start);
-      earliestEnd = Math.min(earliestEnd, overlay.workingHours.end);
-    }
-
-    if (latestStart >= earliestEnd) return null;
-    return { start: latestStart, end: earliestEnd };
-  }
-
-  /**
-   * Returns all active timezone overlays.
-   */
-  getOverlays(): TimezoneOverlay[] {
-    return [...this.overlays];
-  }
+  return {
+    topic: "Calendar Scheduler",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

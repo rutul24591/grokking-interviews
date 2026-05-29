@@ -9,13 +9,13 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-web-react-native-shared-system",
   title: "Design a Web + React Native Shared System",
   description:
-    "Architecture for a web and React Native code-sharing system: monorepo structure with shared business logic, API clients, and state management; platform-specific component implementations via .native.tsx and .web.tsx file extensions; design token system shared across platforms; navigation architecture differences (React Navigation vs React Router); shared form validation and error handling; deep link handling; push notification integration; and CI/CD pipeline for simultaneous web and mobile deployments.",
+    "Principal-level design of a shared Web and React Native system using monorepo boundaries, platform-specific UI implementations, shared domain logic, design tokens, storage adapters, navigation separation, release governance, and CI/CD.",
   category: "high-level-design",
   subcategory: "cross-platform-mobile-systems",
   slug: "web-react-native-shared-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
+  wordCount: 5700,
+  readingTime: 33,
+  lastUpdated: "2026-05-22",
   tags: ["hld", "react-native", "monorepo", "code-sharing", "cross-platform", "design-tokens", "deep-links", "push-notifications", "turborepo"],
   relatedTopics: ["responsive-cross-device-architecture", "pwa-offline-sync"],
 };
@@ -24,71 +24,224 @@ export default function WebReactNativeSharedSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A web + React Native shared system aims to maximize code reuse between a web application (React) and a mobile application (React Native) without sacrificing the native feel of the mobile experience. The spectrum of approaches: (1) fully separate codebases (maximum platform optimization, maximum duplication); (2) a shared monorepo with platform-specific components and shared business logic (the common approach — sharing ~60–70% of code); (3) universal components that render correctly on both platforms (maximum sharing, but often results in a compromised experience on both). The right architecture is almost always option 2: share everything that is not inherently platform-specific (business logic, API calls, state management, validation) and implement platform-specific UI components separately.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The key insight: React and React Native share the same component model (JSX, hooks, context) but render to completely different output — web renders to DOM elements (&lt;div&gt;, &lt;span&gt;, &lt;button&gt;), while React Native renders to native UI primitives (View, Text, TouchableOpacity). Any code that touches the DOM (CSS, document, localStorage, window) cannot be shared. Any code that does not touch the DOM (data fetching, state management, business logic, validation schemas) can be shared exactly. The architecture must draw this boundary clearly and enforce it at the module level.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Monorepo structure, platform boundary definition, design token sharing, navigation architecture differences, deep link handling, and push notification integration. Not in scope: Expo vs. bare React Native tradeoffs, app store submission, or over-the-air update systems.</p>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          A Web and React Native shared system lets a product organization build a browser application and a native mobile application from one coordinated codebase while preserving platform-specific user experience. React and React Native share a programming model, but they do not share a rendering target. Web renders DOM, CSS, browser navigation, cookies, and service workers. React Native renders native views, uses native navigation, and integrates with APNs, FCM, SecureStore, Keychain, Keystore, sensors, and app lifecycle APIs.
+        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The principal-level design problem is deciding what must be shared, what must remain platform-native, and how to enforce that boundary as teams scale. The winning architecture shares domain logic aggressively, shares UI contracts selectively, and keeps rendering, navigation, storage, permissions, notifications, and release mechanics platform-aware.
+        </HighlightBlock>
+        <p>
+          The common target is not one hundred percent code reuse. A realistic high-quality system may share API clients, schema validation, domain models, business workflows, state machines, analytics contracts, design tokens, and test utilities, while keeping web and native screen implementations distinct where interaction quality matters. The goal is consistent product behavior, not identical implementation.
+        </p>
+        <p>
+          This architecture fits organizations that need a web product, iOS app, and Android app with aligned behavior and moderate to high product velocity. It is risky when teams use sharing as a mandate rather than an engineering decision. Over-sharing can produce awkward mobile UI, inaccessible web components, fragile bundling, and platform bugs that are harder to isolate.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Monorepo structure:</strong> The codebase is organized as a Turborepo monorepo: apps/web (Next.js), apps/mobile (React Native / Expo), packages/ui (shared component primitives), packages/core (shared business logic, API clients, state), packages/tokens (design tokens), packages/validators (Zod schemas). The build system (Turborepo) caches build outputs per package — unchanged packages are not rebuilt. packages/core has zero platform-specific imports — it must run in both Node.js (for Next.js SSR) and the React Native JS runtime (Hermes). This constraint is enforced by a custom ESLint rule that flags any import of browser-specific APIs (window, document, localStorage) inside packages/core.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Platform-specific component resolution:</strong> React Native's Metro bundler supports platform-specific file extensions: Button.native.tsx is loaded on React Native; Button.web.tsx is loaded on web. A shared Button component in packages/ui has: Button.native.tsx (renders a TouchableOpacity with native press feedback), Button.web.tsx (renders a &lt;button&gt; element with CSS styles), and Button.types.ts (shared prop types — the contract between the two implementations). The web build uses webpack/Next.js which respects .web.tsx extensions via resolve.extensions config. This pattern means consuming code (import &#123;Button&#125; from "@repo/ui") is identical on both platforms — the bundler selects the correct implementation.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Shared state with platform-specific storage:</strong> Zustand stores in packages/core manage shared application state. The persistence layer (where Zustand stores data across sessions) must be platform-specific: on web, use localStorage; on React Native, use AsyncStorage (from @react-native-async-storage/async-storage). The store definition uses a createStorage factory pattern: const storage = createStorage() — the createStorage function is implemented in packages/core/storage.web.ts (returns localStorage adapter) and packages/core/storage.native.ts (returns AsyncStorage adapter). The platform file extension resolution handles the selection. The Zustand persist middleware receives the storage object and is otherwise identical on both platforms.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Deep link handling:</strong> Deep links are URLs that open the app to a specific screen (myapp://profile/123 or https://myapp.com/profile/123). On web, React Router handles URL routing automatically. On React Native, deep links require: (1) registering the URL scheme (myapp://) in the iOS Info.plist and Android AndroidManifest.xml; (2) using React Navigation's linking configuration to map URL patterns to screen names; (3) handling the initial URL (the app was cold-started by a deep link) and subsequent links (the app was already running and a link was tapped). Universal links (https:// deep links to the app) require server-side configuration (Apple App Site Association file at /.well-known/apple-app-site-association, verified by Apple before the deep link works).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Design token sharing:</strong> Design tokens (colors, spacing, typography, border-radius) are defined once in packages/tokens as JavaScript objects: &#123;colors: &#123;primary: '#6d5bd0', ...&#125;, spacing: &#123;4: 16, 8: 32, ...&#125;&#125;. On web, tokens are converted to CSS custom properties at build time (a script generates tokens.css with --color-primary: #6d5bd0). On React Native, tokens are imported as a JavaScript object and passed to StyleSheet.create(). The single-source token definition ensures that the mobile and web apps use exactly the same color values, spacing scale, and type scale — visual consistency across platforms is guaranteed, not hoped for.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Push notifications:</strong> Push notifications on web use the Web Push API (browser notification via Service Worker + Push API). On React Native, push notifications use native SDKs (APNs for iOS, FCM for Android), typically mediated by Expo Notifications or react-native-push-notification. The notification payload and routing logic (which screen to navigate to on tap) are defined in packages/core as notification action handlers. The platform-specific layer handles delivery and permission requests. On notification tap: web navigates to the URL in the notification payload; React Native uses React Navigation's navigate function with the screen name extracted from the notification payload's data field.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Shared form validation:</strong> Form validation schemas are defined using Zod in packages/validators: const loginSchema = z.object(&#123;email: z.string().email(), password: z.string().min(8)&#125;). These schemas run identically on web (with React Hook Form's zodResolver) and React Native (with the same zodResolver, since React Hook Form works on React Native). Error messages are defined in the schema (z.string().email("Please enter a valid email")) — consistent validation messages across platforms. Backend validation uses the same Zod schemas (via Next.js API routes or a shared validation middleware) — the schema is the single source of truth for data shape, used by frontend (both platforms) and backend.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The monorepo is the coordination mechanism. It allows atomic changes across shared packages and platform apps, common linting, shared testing utilities, consistent dependency versions, and cached CI tasks. A typical structure separates web and mobile apps from packages for core logic, API clients, validation, design tokens, analytics, and UI contracts. The dependency graph must flow inward from apps to shared packages, not from shared packages back to platform applications.
+        </p>
+        <p>
+          The core package should be platform-neutral. It can contain domain models, validation schemas, API request construction, state machines, feature-flag evaluation, analytics event definitions, and business rules. It should not import browser APIs, React Native APIs, navigation libraries, storage implementations, DOM types, or native modules. This boundary should be enforced by TypeScript configuration, lint rules, package dependency checks, and code ownership.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Platform-specific file resolution is a controlled escape hatch. A shared import can resolve to web or native implementations for UI primitives, storage adapters, network reachability, secure token access, and notification delivery. The shared contract remains stable, while the implementation uses the right platform primitive.
+        </HighlightBlock>
+        <p>
+          Design tokens provide visual consistency without forcing identical components. Tokens define color semantics, spacing, radii, typography scale, motion duration, and density rules once. Web can consume tokens as CSS custom properties or compiled CSS. React Native can consume them as JavaScript values for native styles. The same semantic token can map to platform-appropriate rendering while preserving brand and accessibility intent.
+        </p>
+        <p>
+          Navigation should usually not be shared as an abstraction. Web navigation is URL and browser-history centered. React Native navigation is stack, tab, modal, and deep-link centered. What can be shared is route identity, typed route params, permission rules, deep-link parsing, analytics events, and business side effects. The actual navigation call should remain platform-specific.
+        </p>
+        <p>
+          Release governance differs by platform. Web can deploy many times per day. Mobile requires app-store review, installed-version compatibility, phased rollout, crash monitoring, and long-tail support. Shared package changes must account for both clocks. A change that is safe for web can still break an older mobile app if the contract is not versioned and guarded.
+        </p>
+        <p>
+          Dependency governance is part of the system design. React Native, Metro, Expo, Hermes, native modules, Next.js, bundlers, and TypeScript do not always upgrade on the same cadence. A shared repository needs compatibility windows, upgrade ownership, dependency grouping, and a policy for native-module adoption. Otherwise a web-only dependency decision can force mobile bundle growth, native build failures, or JavaScript runtime incompatibilities.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The architecture enforces a clear layering: (1) Shared core (packages/core, packages/validators, packages/tokens) — pure JavaScript/TypeScript with no platform APIs; (2) Shared UI primitives (packages/ui) — JSX components with platform-specific implementations behind file extension resolution; (3) Platform applications (apps/web, apps/mobile) — platform-specific navigation, entry points, and native module integration. The rule: dependencies flow inward (apps depend on packages, packages/ui depends on packages/core) — never outward. No circular dependencies between packages. packages/core must have no React dependencies — it should be usable in any JavaScript environment, including backend services.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Turborepo's task pipeline: turbo build runs in topological order — packages/tokens is built first (no dependencies), then packages/validators and packages/core (depend on tokens), then packages/ui (depends on core), then apps/web and apps/mobile in parallel. Turborepo's remote caching means CI builds skip unchanged packages — a change to apps/web only triggers a rebuild of apps/web, not packages/core (if it hasn't changed). This makes CI fast even as the monorepo grows.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has three layers. Platform apps own entry points, routing, platform permissions, native module wiring, platform-specific storage, and release configuration. Shared platform adapters expose a common interface for storage, network status, notifications, analytics transport, and secure token access. Pure shared packages contain domain logic, schemas, state transitions, API contracts, feature flag interpretation, and reusable UI contracts.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/cross-platform-mobile-systems/web-react-native-shared-system.svg"
-          alt="Web + React Native shared system: monorepo structure (Turborepo; apps/web Next.js, apps/mobile RN/Expo; packages/core: zero platform APIs enforced by ESLint; packages/ui: Button.web.tsx + Button.native.tsx; packages/tokens; packages/validators Zod), platform file resolution (Metro resolves .native.tsx; webpack resolves .web.tsx; import same path → different impl; TouchableOpacity vs button), shared state storage (Zustand store in core; createStorage() factory; storage.web.ts→localStorage, storage.native.ts→AsyncStorage; persist middleware identical), design tokens (JS object once; CSS custom properties generated for web; StyleSheet.create() for RN; same values guaranteed), deep links (RN: register scheme Info.plist+AndroidManifest; React Navigation linking config URL→screen; initial URL cold start; universal links AASA file; web: React Router handles), push notifications (web: Service Worker + Web Push API; RN: APNs/FCM via Expo; shared notification action handlers in core; tap→web navigate URL, RN navigate screen), CI/CD (Turborepo remote cache; topo build order tokens→core→ui→apps parallel; change in apps/web → only web rebuild)."
-          caption="Turborepo monorepo (topological build, remote cache, zero platform-API ESLint rule in packages/core), platform file extension resolution (.native.tsx/.web.tsx behind same import), createStorage() factory (localStorage web vs AsyncStorage native), single-source design tokens (JS→CSS custom props + RN StyleSheet), React Navigation linking deep links (URL→screen map, cold start + running states, AASA universal links), shared Zod validation schemas (React Hook Form zodResolver on both platforms)"
+          alt="Web and React Native shared monorepo architecture with web app, mobile app, shared UI, core package, design tokens, platform file resolution, deep links, push notifications, and Turborepo CI."
+          caption="A shared Web and React Native system works best when pure domain logic is shared, platform adapters isolate runtime differences, and UI implementations remain native where interaction quality matters."
+        />
+        <p>
+          A typical feature begins with a shared domain contract: API types, validation, feature flag names, analytics events, and state transition rules. The web app composes a route using DOM components, browser storage, and web navigation. The mobile app composes a screen using React Native primitives, native storage, and native navigation. Both consume the same domain workflow and emit the same analytics event names, but they render and navigate through platform-native mechanisms.
+        </p>
+        <p>
+          Boundary enforcement should run before code reaches production. The core package should be compiled without DOM types, linted against platform imports, and tested in a runtime that resembles both server-side JavaScript and React Native&apos;s JavaScript engine constraints. UI packages should allow platform imports only inside platform-specific files. Dependency graph checks should prevent shared packages from depending on apps.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/cross-platform-mobile-systems/web-react-native-shared-system-boundaries.svg"
+          alt="Platform boundary diagram showing pure shared core, platform adapters, web app, mobile app, forbidden imports, and allowed dependency direction."
+          caption="Mechanical boundary enforcement matters more than team convention: pure shared packages must not depend on browser, native, navigation, or app-layer APIs."
+        />
+        <p>
+          CI/CD should understand the dependency graph. A token-only change should rebuild token consumers. A core change should run web, mobile, and shared package tests. A web-only route change should not rebuild the mobile app. Remote build caching and affected-package detection keep the monorepo fast enough for daily work, while release pipelines remain platform-specific after validation passes.
+        </p>
+        <p>
+          Runtime capability negotiation protects against release skew. The mobile app should expose app version, native module versions, enabled capabilities, and supported contract versions to shared code at startup. Shared workflows can then choose a supported path, hide unsupported actions, or request an app update for hard dependencies. Web can usually update with the backend, but mobile must assume old native capability surfaces will exist in the wild for months.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/cross-platform-mobile-systems/web-react-native-shared-system-release.svg"
+          alt="Release governance flow showing shared package change, affected tests, web deployment, mobile phased rollout, version compatibility, crash monitoring, and rollback."
+          caption="Shared systems need release governance across two clocks: web deploys immediately, while mobile rolls out through app stores and must support older installed versions."
         />
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Enforcing the Platform Boundary</h3>
-        <HighlightBlock as="p" tier="important">The platform boundary (what can and cannot be shared) must be enforced mechanically, not by convention. Convention-only boundaries break down as teams grow. Mechanical enforcement: (1) ESLint plugin no-restricted-imports in packages/core prevents importing from 'react-dom', 'next/navigation', 'react-native', or any browser API modules. (2) TypeScript's lib compiler option in packages/core's tsconfig.json excludes dom — this means TypeScript will flag any use of window, document, or other DOM globals as undefined types. (3) The package.json for packages/core has no peer dependency on react-native — it works with or without React Native present. These three layers make it impossible to accidentally break the shared/platform boundary.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The packages/ui boundary is looser: it imports from React (allowed on both platforms), from packages/core (allowed), and from react-native in .native.tsx files (allowed). The ESLint rule for packages/ui allows react-native imports only in *.native.tsx files. This prevents accidentally importing React Native APIs in the web implementation of a shared component.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Navigation Architecture Differences</h3>
-        <HighlightBlock as="p" tier="important">Navigation is inherently platform-specific and is not shared. On web (Next.js App Router): file-system-based routing, URL state is the source of truth, back/forward uses browser history, modals are routes (or route interceptors). On React Native (React Navigation): stack navigator manages a navigation stack (native push/pop animations), tab navigator manages tab switching, modal navigator shows over-current-screen. The two navigation systems have fundamentally different mental models — there is no portable abstraction that works well for both.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">What is shared: the business logic triggered by navigation events. A navigateToProduct(productId) action in packages/core fetches the product data and updates the store. On web, the React component calls router.push('/products/' + productId) and the page component calls navigateToProduct. On React Native, the screen component calls navigation.navigate('ProductDetail', &#123;id: productId&#125;) and the screen component calls navigateToProduct. The navigation call is platform-specific; the data fetching that follows is shared.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Handling Offline State Across Platforms</h3>
-        <HighlightBlock as="p" tier="important">Network state detection: on web, navigator.onLine and window online/offline events detect network changes. On React Native, the NetInfo library (@react-native-community/netinfo) detects network changes. Both platforms write to a shared isOnline boolean in the Zustand store (in packages/core). The store has platform-specific initialization code (in packages/core/network.web.ts and packages/core/network.native.ts) that subscribes to the platform's network events and calls setOnline(true/false) on the store. Components that need to react to network state (e.g., showing an offline banner) import the isOnline selector — identical on both platforms. Offline data queuing (buffering mutations to replay when online) uses IndexedDB on web and SQLite (via Expo SQLite) on React Native — both accessed via a platform-specific adapter in packages/core/db.web.ts and packages/core/db.native.ts.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Shared API Client with Platform-Specific Fetch</h3>
-        <HighlightBlock as="p" tier="crucial">The API client in packages/core uses the Fetch API, which is available natively in React Native (Hermes includes a Fetch polyfill). The client handles: authentication (attaches the access token from the auth store to every request), retry logic (exponential backoff on 5xx responses), and error normalization (maps HTTP errors to typed AppError objects). One difference: on React Native, the HttpOnly cookie that holds the refresh token is not automatically sent with fetch requests to the API — React Native's fetch does not have access to the browser's cookie jar. The refresh token must be stored in SecureStore (Expo's encrypted secure storage) and manually attached to the refresh request header. The API client's refresh function is therefore platform-specific: packages/core/auth.web.ts relies on the cookie, packages/core/auth.native.ts reads from SecureStore and adds the token to the request headers.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Sharing more code reduces duplication and keeps behavior aligned, but it can also flatten platform quality. Business rules, validation, API clients, feature flags, analytics contracts, and state machines are usually good sharing candidates. Rendering, navigation, gestures, platform permissions, storage, notification delivery, and performance-sensitive UI often need platform-specific implementation. The important decision is not how much code is shared, but whether the shared boundary preserves product correctness and platform quality.
+        </p>
+        <p>
+          A monorepo improves atomic changes and dependency visibility, but it increases tooling complexity, CI cost, and ownership coordination. Multiple repositories can provide clearer access boundaries and independent release cycles, but shared package versioning becomes slower and cross-platform changes require more choreography. For a product team that owns both web and mobile, a monorepo is usually worth it. For independent platform organizations, versioned shared packages may be safer.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Universal UI components are tempting but risky. A button, icon, token, or simple text primitive can be shared behind platform implementations. Complex screens, gestures, modals, forms, tables, maps, media controls, and navigation flows often need platform-specific UX. Principal-level answers should emphasize native-feeling outcomes over theoretical reuse percentages.
+        </HighlightBlock>
+        <p>
+          Shared validation improves consistency but does not replace backend validation. Client schemas can provide immediate feedback on both platforms, but the server remains authoritative for security, authorization, and business invariants. If the same schema is used across client and server, versioning still matters because mobile clients may run older schema versions after the backend changes.
+        </p>
+        <p>
+          Shared state management reduces duplicate behavior, but persistence and lifecycle differ. Browser storage, HttpOnly cookies, service workers, tab synchronization, app backgrounding, secure native storage, and mobile memory pressure are not equivalent. The state model can be shared, but storage adapters and lifecycle reconciliation should be platform-specific.
+        </p>
+        <p>
+          Shared analytics improves product consistency but can hide platform-specific meaning. A tap on a mobile push notification, a browser deep link, and a desktop sidebar click might all open the same route, but they represent different acquisition and lifecycle contexts. The event taxonomy should share stable event names and entity ids while allowing platform fields such as notification campaign, app foreground state, browser referrer, install source, and native app version.
+        </p>
+        <p>
+          Faster web deployment can create contract skew with mobile. If web and backend move ahead of mobile assumptions, old app versions may break. Shared API and feature contracts should be versioned, capabilities should be negotiated, and backend changes should remain backward-compatible across the supported mobile version window.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">How much to share: sharing more code reduces duplication but risks making the shared layer too generic to be excellent on either platform. The sweet spot: share all business logic, API contracts, state management, and validation. Use platform-specific implementations for anything that touches rendering, animation, input handling, or platform APIs. Accept that the mobile app will have native animations (react-native-reanimated, 60fps smooth) that the web app cannot replicate, and vice versa (the web app can use CSS animations that the mobile app cannot). Cross-platform excellence means native-feeling on each platform, not identical behavior on all platforms.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Monorepo vs. multiple repos: a monorepo (Turborepo) makes it easy to make atomic changes across packages (update a shared type and all consumers in one commit). The tradeoff: the monorepo grows large, CI pipelines become complex, and team access control is harder (every engineer can see all code). For small teams (&lt;20 engineers), a monorepo is almost always the right choice. For large organizations with separate platform teams, a polyrepo with a shared npm package registry (publishing packages/core as a versioned npm package) may be more appropriate.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Define package boundaries in writing and enforce them mechanically. Core packages should have no platform dependencies. Adapter packages can depend on platform APIs. App packages can compose everything. Lint rules, TypeScript project references, dependency graph checks, and code owners should all reinforce the same architecture.
+        </p>
+        <p>
+          Share contracts before sharing UI. Typed route params, analytics events, validation schemas, domain state machines, API clients, feature-flag names, and error models usually create more consistency than forcing every screen into one universal component model. This keeps product behavior aligned while leaving platform teams room to produce excellent UX.
+        </p>
+        <p>
+          Use platform adapters for storage, secure tokens, network status, notifications, and device capabilities. The shared layer should call a stable interface. Web implementations can use browser primitives. Native implementations can use AsyncStorage, SecureStore, Keychain, Keystore, NetInfo, APNs, FCM, and native lifecycle hooks.
+        </p>
+        <p>
+          Keep navigation platform-native but route contracts shared. A shared route registry can define route names, params, auth requirements, and analytics metadata. Web maps those routes to URLs. React Native maps them to screens and deep-link configurations. This avoids an awkward lowest-common-denominator navigation abstraction.
+        </p>
+        <p>
+          Build CI around affected packages. A changed validator package should run shared tests and app integration tests that consume it. A changed native adapter should run mobile tests. A changed web page should avoid unnecessary mobile rebuilds. Fast feedback is essential because slow monorepo CI encourages teams to bypass shared packages.
+        </p>
+        <p>
+          Treat mobile compatibility as a long-lived contract. Feature flags, API versions, migration plans, and deprecation windows should account for users who do not update immediately. Monitor app version adoption before removing old shared contract behavior.
+        </p>
+        <p>
+          Shared web and React Native systems need a clear boundary between portable domain logic and platform-specific capability. Validation, state machines, analytics schemas, feature flags, and API clients often share well. Navigation primitives, accessibility semantics, file handling, push notifications, background tasks, and media permissions usually need platform adapters. Principal-level designs avoid pretending that every component can be universal.
+        </p>
+        <p>
+          Dependency governance is a production concern. A shared package can pull different transitive dependencies into web and native bundles, affect app-store review, break tree shaking, or introduce native module version conflicts. The platform should define allowed dependency classes, bundle budgets, native-module review, and release compatibility across web deploys and mobile app versions.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A web + React Native shared system requires: (1) Turborepo monorepo (topological build, remote cache, packages/core with ESLint no-restricted-imports + TypeScript no-dom-lib enforcement); (2) platform file extension resolution (.native.tsx/.web.tsx behind same import path — Metro for RN, webpack for web); (3) shared Zustand state with createStorage() factory (localStorage on web, AsyncStorage on native, same persist middleware); (4) single-source design tokens (JS object → CSS custom properties on web, StyleSheet.create() values on native); (5) platform-specific navigation (React Navigation stack/tab/modal vs. Next.js file-system routing, business logic in core is shared, navigation calls are not); (6) deep links (React Navigation linking config URL→screen map, AASA universal links, cold-start + running-state handling); (7) push notifications (Web Push API + Service Worker on web, APNs/FCM via Expo on native, shared notification action handlers in core); and (8) shared Zod validation schemas (zodResolver works on both platforms via React Hook Form). The core principle: share the domain model and business logic aggressively, and accept that the UI layer must be platform-native — resist the temptation to build universal components that are mediocre on both platforms.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is importing platform APIs into shared core packages because it is convenient. One browser storage call or one React Native module import can make a package unusable in SSR, tests, or the other platform. The boundary must fail at lint or compile time, not during a mobile release candidate.
+        </p>
+        <p>
+          Another pitfall is abstracting navigation too aggressively. A generic navigate function that hides browser history, deep links, modal stacks, tab state, and native back behavior often becomes leaky. Shared route metadata is useful; shared navigation execution is usually not.
+        </p>
+        <p>
+          Teams also overestimate UI reuse. Components that look similar in design files may need different accessibility semantics, focus behavior, press feedback, gestures, layout constraints, and performance tuning. Sharing a contract and platform-specific implementation is often better than sharing one universal implementation.
+        </p>
+        <p>
+          Release coupling can surprise teams. A shared package change might be deployed instantly to web but only reach mobile users over weeks. If backend behavior changes during that gap, older mobile apps may fail. Versioned contracts, capability checks, and staged mobile rollout are necessary parts of the architecture.
+        </p>
+        <p>
+          Monorepo tooling can become a bottleneck. If dependency graphs are unclear, cache keys are unstable, or every change triggers every build, developers will avoid shared improvements. The build system must be treated as production infrastructure for the engineering organization.
+        </p>
+        <p>
+          Teams often underestimate release skew. Web can deploy many times per day, while native users may run old app versions for months. Shared contracts must be backward compatible, feature flags must include minimum app versions, and server APIs should support old clients during migration. A principal-ready design treats version skew as normal rather than exceptional.
+        </p>
+        <p>
+          Another pitfall is sharing UI too aggressively and losing platform quality. Native users expect platform navigation, gestures, accessibility, keyboard handling, and performance characteristics. Web users expect links, browser history, responsive layout, and SEO where relevant. Shared systems should maximize consistency in behavior and design language while still allowing platform-native presentation.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Consumer marketplaces often share search query construction, filter schemas, listing models, pricing rules, experimentation flags, and analytics events across web and mobile. The web app may prioritize SEO and dense comparison pages, while native apps focus on push re-engagement, saved searches, and smooth gesture navigation.
+        </p>
+        <p>
+          Banking and fintech products share validation, money formatting, error models, fraud challenge state machines, and API clients, while keeping secure token storage, biometrics, native attestation, and platform-specific risk flows separate. This preserves consistency while respecting mobile security requirements.
+        </p>
+        <p>
+          SaaS tools can share permissions, role models, entity schemas, notification routing, and business workflows. Desktop web may provide dense admin screens and bulk actions, while mobile focuses on approvals, alerts, comments, and lightweight updates.
+        </p>
+        <p>
+          Media and learning platforms share content models, entitlement checks, playback metadata, progress tracking, and recommendation contracts. Web uses browser media and SEO surfaces. Native apps integrate downloads, background playback, push, and app-store subscription flows.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">1. What would you share between web and React Native, and what would you keep separate?</h3>
+        <p>
+          I would share domain models, API clients, validation schemas, business workflows, feature-flag interpretation, analytics contracts, design tokens, and state-machine logic. I would keep rendering, navigation execution, native modules, secure storage, notification delivery, gestures, animations, and platform lifecycle handling separate or behind adapters. The goal is shared product correctness with platform-native UX.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">2. How would you enforce the platform boundary?</h3>
+        <p>
+          I would enforce it with package layering, TypeScript project references, lint rules that block platform imports in shared core, dependency graph checks, code ownership, and tests that compile shared packages in platform-neutral environments. UI packages can allow platform imports only in platform-specific files. This makes architecture violations fail during development instead of after a mobile build or SSR deployment.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">3. How do you handle storage and authentication differences?</h3>
+        <p>
+          The shared auth state and API client can be common, but token persistence should be platform-specific. Web can rely on HttpOnly cookies or browser storage depending on security requirements. Native should use SecureStore, Keychain, or Keystore-backed storage for sensitive tokens. The shared layer should depend on a storage and token adapter interface so the auth workflow remains consistent while storage mechanics remain platform-appropriate.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">4. How would you design navigation and deep links across both platforms?</h3>
+        <p>
+          I would share route names, typed params, auth requirements, analytics metadata, and deep-link parsing rules. Web maps those contracts to URLs and browser history. React Native maps them to navigation screens, stacks, tabs, and universal or app links. Deep links should be tested for cold start and already-running app states. I would not hide both routing systems behind a single generic navigation abstraction because their behavior differs too much.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">5. How do you manage CI/CD and releases in a shared monorepo?</h3>
+        <p>
+          CI should run tasks based on the affected dependency graph. Shared package changes trigger tests for consumers. Platform-only changes run platform-specific checks. Build caching keeps feedback fast. Release remains platform-specific: web can deploy immediately with rollback, while mobile uses app-store builds, phased rollout, crash monitoring, and compatibility windows. Shared contracts need versioning because mobile clients update slowly.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">6. What are the main risks of this architecture at scale?</h3>
+        <p>
+          The main risks are leaky shared boundaries, over-shared UI, slow monorepo builds, dependency conflicts, release skew between web and mobile, and unclear ownership of shared packages. I would mitigate them with strict package rules, clear ownership, affected-package CI, platform adapter patterns, contract versioning, and product guidelines that optimize for platform quality rather than a reuse percentage target.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://reactnative.dev/docs/platform-specific-code" target="_blank" rel="noreferrer">React Native Documentation: Platform-Specific Code</a>
+          </li>
+          <li>
+            <a href="https://reactnavigation.org/docs/deep-linking/" target="_blank" rel="noreferrer">React Navigation: Deep Linking</a>
+          </li>
+          <li>
+            <a href="https://turbo.build/repo/docs" target="_blank" rel="noreferrer">Turborepo Documentation</a>
+          </li>
+          <li>
+            <a href="https://docs.expo.dev/versions/latest/sdk/securestore/" target="_blank" rel="noreferrer">Expo Documentation: SecureStore</a>
+          </li>
+          <li>
+            <a href="https://docs.expo.dev/push-notifications/overview/" target="_blank" rel="noreferrer">Expo Documentation: Push Notifications</a>
+          </li>
+          <li>
+            <a href="https://www.typescriptlang.org/docs/handbook/project-references.html" target="_blank" rel="noreferrer">TypeScript Documentation: Project References</a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

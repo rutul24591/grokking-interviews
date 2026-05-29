@@ -1,58 +1,90 @@
-/**
- * Tooltip — Staff-Level Performance and Accessibility Optimization.
- *
- * Staff differentiator: IntersectionObserver-based visibility tracking
- * (hide tooltip when trigger scrolls out of view), MutationObserver for
- * trigger element removal, and reduced-motion support.
- */
+export type tooltipSystemRuntimeState = {
+  topic: "tooltip-system";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-/**
- * Hook that tracks tooltip trigger visibility and hides tooltip when trigger
- * is no longer visible in the viewport.
- */
-export function useTooltipVisibilityTracking(
-  triggerRef: React.RefObject<HTMLElement | null>,
-  onHidden: () => void,
-) {
-  const observerRef = useRef<IntersectionObserver | null>(null);
+export type tooltipSystemRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-  useEffect(() => {
-    if (!triggerRef.current) return;
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) {
-            onHidden();
-          }
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    observerRef.current.observe(triggerRef.current);
-
-    return () => observerRef.current?.disconnect();
-  }, [triggerRef, onHidden]);
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Detects if the user prefers reduced motion and returns a configuration
- * that disables tooltip animations.
- */
-export function useReducedMotion(): { animated: boolean } {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+export function planTooltipSystemRecovery(
+  state: tooltipSystemRuntimeState,
+  nowMs: number,
+): tooltipSystemRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: tooltipSystemRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
 
-    const onChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', onChange);
-    return () => mediaQuery.removeEventListener('change', onChange);
-  }, []);
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
 
-  return { animated: !prefersReducedMotion };
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runTooltipSystemEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planTooltipSystemRecovery(
+    {
+      topic: "tooltip-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planTooltipSystemRecovery(
+    {
+      topic: "tooltip-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Tooltip System",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

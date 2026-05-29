@@ -1,1 +1,5 @@
-# Design a unified notification platform (push + email + SMS + in-app) — Example 3
+# Unified Notification Platform - Example 3
+
+Concrete notification delivery edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,1 +1,5 @@
-# Design WhatsApp Web / Slack frontend — Example 2
+# Whatsapp WEB Slack Frontend - Example 2
+
+Concrete messaging production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

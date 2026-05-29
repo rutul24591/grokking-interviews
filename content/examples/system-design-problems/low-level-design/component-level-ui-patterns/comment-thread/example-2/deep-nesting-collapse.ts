@@ -1,63 +1,89 @@
-/**
- * Deep Nesting Collapse — Enforces max nesting depth with "show more replies" pattern.
- *
- * Interview edge case: Comment threads can go arbitrarily deep (reply to reply to reply).
- * Rendering deeply nested comments causes horizontal overflow and poor UX.
- * Solution: collapse threads beyond max depth into "Show X more replies" expandable sections.
- */
+export type commentThreadSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-export interface CommentNode {
+export type commentThreadEvent = {
   id: string;
-  content: string;
-  replies: CommentNode[];
-  depth: number;
-}
+  topic: "comment-thread";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: commentThreadSignal;
+};
 
-/**
- * Transforms a comment tree, collapsing nodes beyond maxDepth into expandable summaries.
- */
-export function collapseDeepComments(
-  root: CommentNode,
-  maxDepth: number,
-): CommentNode | CollapsedSummary {
-  if (root.depth > maxDepth) {
-    // Count total descendants
-    const count = countDescendants(root);
-    return { type: 'collapsed', count, root };
-  }
+export type commentThreadDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateCommentThreadEvent(event: commentThreadEvent): commentThreadDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: commentThreadDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
 
   return {
-    ...root,
-    replies: root.replies.map((reply) => collapseDeepComments(reply, maxDepth)),
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Comment Thread",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
   };
 }
 
-export interface CollapsedSummary {
-  type: 'collapsed';
-  count: number;
-  root: CommentNode;
-}
+export function runCommentThreadContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateCommentThreadEvent({
+    id: "comment-thread-evt-1",
+    topic: "comment-thread",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-/**
- * Counts all descendants of a comment node (including the node itself).
- */
-function countDescendants(node: CommentNode): number {
-  let count = 1;
-  for (const reply of node.replies) {
-    count += countDescendants(reply);
-  }
-  return count;
-}
+  const guarded = evaluateCommentThreadEvent({
+    id: "comment-thread-evt-late",
+    topic: "comment-thread",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-/**
- * Flattens a collapsed tree back into a full tree for rendering when user expands.
- */
-export function expandCollapsed(root: CommentNode | CollapsedSummary): CommentNode {
-  if (root.type === 'collapsed') {
-    return root.root;
-  }
-  return {
-    ...root,
-    replies: root.replies.map((reply) => expandCollapsed(reply as CommentNode | CollapsedSummary)),
-  };
+  return { accepted, guarded };
 }

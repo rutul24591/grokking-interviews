@@ -1,117 +1,14 @@
-<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-  <rect width="900" height="500" fill="#f3f1f8"/>
-  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Media Upload &amp; Processing Pipeline — Architecture</text>
-
-  <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
-    </marker>
-    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
-    </marker>
-    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
-    </marker>
-  </defs>
-
-  <!-- Upload UI top band -->
-  <rect x="20" y="54" width="860" height="22" rx="6" fill="#6d5bd0" opacity="0.12"/>
-  <text x="450" y="69" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">UPLOAD PIPELINE (client → cloud)</text>
-
-  <rect x="30" y="88" width="110" height="44" rx="7" fill="#6d5bd0"/>
-  <text x="85" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">File Picker</text>
-  <text x="85" y="122" text-anchor="middle" font-size="10" fill="#edeaf5">drag-drop · paste · input</text>
-  <line x1="140" y1="110" x2="172" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-
-  <rect x="172" y="88" width="110" height="44" rx="7" fill="#1a1822"/>
-  <text x="227" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Client Validate</text>
-  <text x="227" y="122" text-anchor="middle" font-size="10" fill="#d7d1e6">type, size, MIME magic bytes</text>
-  <line x1="282" y1="110" x2="314" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-
-  <rect x="314" y="88" width="110" height="44" rx="7" fill="#2f9d74"/>
-  <text x="369" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Multipart Upload</text>
-  <text x="369" y="122" text-anchor="middle" font-size="10" fill="#e8f5f0">5MB chunks · presigned URLs</text>
-  <line x1="424" y1="110" x2="456" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-
-  <rect x="456" y="88" width="110" height="44" rx="7" fill="#d97843"/>
-  <text x="511" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">S3 Origin</text>
-  <text x="511" y="122" text-anchor="middle" font-size="10" fill="#fff">raw storage bucket</text>
-  <line x1="566" y1="110" x2="598" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-
-  <rect x="598" y="88" width="120" height="44" rx="7" fill="#6d5bd0" opacity="0.8"/>
-  <text x="658" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">S3 Event → SQS</text>
-  <text x="658" y="122" text-anchor="middle" font-size="10" fill="#edeaf5">triggers processing queue</text>
-  <line x1="718" y1="110" x2="750" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-
-  <rect x="750" y="88" width="130" height="44" rx="7" fill="#6d5bd0"/>
-  <text x="815" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Processing Workers</text>
-  <text x="815" y="122" text-anchor="middle" font-size="10" fill="#edeaf5">async job queue</text>
-
-  <!-- divider -->
-  <line x1="20" y1="148" x2="880" y2="148" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <text x="450" y="164" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">PROCESSING JOBS (per media type)</text>
-
-  <!-- 3 columns: image, video, document -->
-  <rect x="20" y="174" width="260" height="306" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="150" y="196" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Image Processing</text>
-  <rect x="35" y="208" width="230" height="36" rx="7" fill="#6d5bd0"/>
-  <text x="150" y="223" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Resize to Variants</text>
-  <text x="150" y="236" text-anchor="middle" font-size="10" fill="#edeaf5">thumb 150px · med 800px · orig</text>
-  <rect x="35" y="252" width="230" height="36" rx="7" fill="#2f9d74"/>
-  <text x="150" y="267" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Format Convert</text>
-  <text x="150" y="280" text-anchor="middle" font-size="10" fill="#e8f5f0">JPEG/PNG → WebP + AVIF</text>
-  <rect x="35" y="296" width="230" height="36" rx="7" fill="#1a1822"/>
-  <text x="150" y="311" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Strip Metadata</text>
-  <text x="150" y="324" text-anchor="middle" font-size="10" fill="#d7d1e6">EXIF: GPS, device info removed</text>
-  <rect x="35" y="340" width="230" height="36" rx="7" fill="#d97843"/>
-  <text x="150" y="355" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Perceptual Hash</text>
-  <text x="150" y="368" text-anchor="middle" font-size="10" fill="#fff">pHash for dedup + CSAM</text>
-  <rect x="35" y="384" width="230" height="36" rx="7" fill="#6d5bd0" opacity="0.6"/>
-  <text x="150" y="399" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Blurhash Placeholder</text>
-  <text x="150" y="412" text-anchor="middle" font-size="10" fill="#edeaf5">compact colour preview string</text>
-  <rect x="35" y="428" width="230" height="36" rx="7" fill="#2f9d74" opacity="0.6"/>
-  <text x="150" y="443" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CDN Publish</text>
-  <text x="150" y="456" text-anchor="middle" font-size="10" fill="#e8f5f0">immutable URL → edge cache</text>
-
-  <rect x="300" y="174" width="280" height="306" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="440" y="196" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Video Processing</text>
-  <rect x="315" y="208" width="250" height="36" rx="7" fill="#6d5bd0"/>
-  <text x="440" y="223" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Probe &amp; Validate</text>
-  <text x="440" y="236" text-anchor="middle" font-size="10" fill="#edeaf5">ffprobe: duration, codec, res</text>
-  <rect x="315" y="252" width="250" height="36" rx="7" fill="#1a1822"/>
-  <text x="440" y="267" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Transcode Renditions</text>
-  <text x="440" y="280" text-anchor="middle" font-size="10" fill="#d7d1e6">360p / 720p / 1080p · H.264</text>
-  <rect x="315" y="296" width="250" height="36" rx="7" fill="#2f9d74"/>
-  <text x="440" y="311" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">HLS Segmentation</text>
-  <text x="440" y="324" text-anchor="middle" font-size="10" fill="#e8f5f0">2s chunks + m3u8 manifests</text>
-  <rect x="315" y="340" width="250" height="36" rx="7" fill="#d97843"/>
-  <text x="440" y="355" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Thumbnail Sprite</text>
-  <text x="440" y="368" text-anchor="middle" font-size="10" fill="#fff">1 frame/10s → seek preview</text>
-  <rect x="315" y="384" width="250" height="36" rx="7" fill="#6d5bd0" opacity="0.6"/>
-  <text x="440" y="399" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Status Events</text>
-  <text x="440" y="412" text-anchor="middle" font-size="10" fill="#edeaf5">SSE: queued→processing→ready</text>
-  <rect x="315" y="428" width="250" height="36" rx="7" fill="#2f9d74" opacity="0.6"/>
-  <text x="440" y="443" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CDN Publish</text>
-  <text x="440" y="456" text-anchor="middle" font-size="10" fill="#e8f5f0">segs cached 365d · manifest 5s</text>
-
-  <rect x="600" y="174" width="280" height="306" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="740" y="196" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Document Processing</text>
-  <rect x="615" y="208" width="250" height="36" rx="7" fill="#6d5bd0"/>
-  <text x="740" y="223" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Text Extraction</text>
-  <text x="740" y="236" text-anchor="middle" font-size="10" fill="#edeaf5">PDF → text · DOCX → HTML</text>
-  <rect x="615" y="252" width="250" height="36" rx="7" fill="#2f9d74"/>
-  <text x="740" y="267" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Page Thumbnails</text>
-  <text x="740" y="280" text-anchor="middle" font-size="10" fill="#e8f5f0">Puppeteer render → PNG pages</text>
-  <rect x="615" y="296" width="250" height="36" rx="7" fill="#1a1822"/>
-  <text x="740" y="311" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Search Indexing</text>
-  <text x="740" y="324" text-anchor="middle" font-size="10" fill="#d7d1e6">extracted text → Elasticsearch</text>
-  <rect x="615" y="340" width="250" height="36" rx="7" fill="#d97843"/>
-  <text x="740" y="355" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Virus Scan</text>
-  <text x="740" y="368" text-anchor="middle" font-size="10" fill="#fff">ClamAV → quarantine if infected</text>
-  <rect x="615" y="384" width="250" height="36" rx="7" fill="#6d5bd0" opacity="0.6"/>
-  <text x="740" y="399" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Embedding Index</text>
-  <text x="740" y="412" text-anchor="middle" font-size="10" fill="#edeaf5">chunk + embed for RAG search</text>
-  <rect x="615" y="428" width="250" height="36" rx="7" fill="#2f9d74" opacity="0.6"/>
-  <text x="740" y="443" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Metadata DB</text>
-  <text x="740" y="456" text-anchor="middle" font-size="10" fill="#e8f5f0">status, variants, dimensions</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Media Upload Processing Pipeline Architecture: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Media Upload Processing Pipeline Architecture: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">render</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">media rich content systems</text>
+  <path d="M480 286 C562.6929506291599 297.62868487307276, 630.3508193257453 327.04241719908026, 696 330" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="696" cy="330" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="696" y="335" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">timeline</text><path d="M480 286 C495.2810396346899 319.4834636024151, 507.78370842670887 404.176930361465, 526 432" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="526" cy="432" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="526" y="437" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">asset</text><path d="M480 286 C412.5880890055299 307.85477872934234, 357.4328891009635 363.13451316238474, 304 393" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="304" cy="393" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="304" y="398" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">codec</text><path d="M480 286 C397.30704937084005 274.37131512692724, 329.64918067425464 244.95758280091977, 232 242" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="232" cy="242" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="232" y="247" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">buffer</text><path d="M480 286 C464.7189603653101 252.51653639758493, 452.21629157329113 167.82306963853503, 440 140" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="440" cy="140" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="440" y="145" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">policy</text><path d="M480 286 C547.4119109944701 264.14522127065766, 602.5671108990365 208.86548683761526, 682 179" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="682" cy="179" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="682" y="184" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">export</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>

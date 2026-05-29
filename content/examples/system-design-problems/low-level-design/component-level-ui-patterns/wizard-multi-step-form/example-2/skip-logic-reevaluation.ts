@@ -1,73 +1,89 @@
-/**
- * Skip Logic Re-evaluation — Re-evaluates downstream conditions when user goes back.
- *
- * Interview edge case: User is at step 4, goes back to step 2, changes answer.
- * Step 3 was previously skipped because step 2 answer was "No". Now step 2 is "Yes",
- * so step 3 should be shown. All downstream skip conditions must be re-evaluated.
- */
+export type wizardMultiStepFormSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-export interface StepCondition {
-  stepId: string;
-  fieldId: string;
-  operator: 'eq' | 'neq';
-  value: unknown;
-}
-
-export interface Step {
+export type wizardMultiStepFormEvent = {
   id: string;
-  skipIf?: StepCondition[]; // Skip this step if ANY condition matches
+  topic: "wizard-multi-step-form";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: wizardMultiStepFormSignal;
+};
+
+export type wizardMultiStepFormDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateWizardMultiStepFormEvent(event: wizardMultiStepFormEvent): wizardMultiStepFormDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: wizardMultiStepFormDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Wizard Multi Step Form",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Re-evaluates skip logic for all steps after a changed step.
- * Returns the updated list of visible step IDs.
- */
-export function reevaluateSkipLogic(
-  steps: Step[],
-  values: Record<string, unknown>,
-  changedStepId: string,
-): string[] {
-  const visibleSteps: string[] = [];
-  const changedIndex = steps.findIndex((s) => s.id === changedStepId);
+export function runWizardMultiStepFormContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateWizardMultiStepFormEvent({
+    id: "wizard-multi-step-form-evt-1",
+    topic: "wizard-multi-step-form",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  // All steps before the changed step remain as-is
-  for (let i = 0; i < changedIndex; i++) {
-    visibleSteps.push(steps[i].id);
-  }
+  const guarded = evaluateWizardMultiStepFormEvent({
+    id: "wizard-multi-step-form-evt-late",
+    topic: "wizard-multi-step-form",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-  // Re-evaluate from the changed step onward
-  for (let i = changedIndex; i < steps.length; i++) {
-    const step = steps[i];
-    const shouldSkip = step.skipIf?.some(
-      (cond) => values[cond.fieldId] === cond.value,
-    );
-
-    if (!shouldSkip) {
-      visibleSteps.push(step.id);
-    }
-  }
-
-  return visibleSteps;
-}
-
-/**
- * Computes the next visible step given current position and values.
- */
-export function getNextStep(
-  steps: Step[],
-  currentStepId: string,
-  values: Record<string, unknown>,
-): string | null {
-  const currentIndex = steps.findIndex((s) => s.id === currentStepId);
-  if (currentIndex >= steps.length - 1) return null;
-
-  for (let i = currentIndex + 1; i < steps.length; i++) {
-    const step = steps[i];
-    const shouldSkip = step.skipIf?.some(
-      (cond) => values[cond.fieldId] === cond.value,
-    );
-    if (!shouldSkip) return step.id;
-  }
-
-  return null; // No more visible steps
+  return { accepted, guarded };
 }

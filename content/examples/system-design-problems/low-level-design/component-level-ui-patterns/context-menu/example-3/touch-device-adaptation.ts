@@ -1,62 +1,90 @@
-/**
- * Context Menu — Staff-Level Touch Device Adaptation.
- *
- * Staff differentiator: Adapts context menu for touch devices using
- * long-press detection, bottom sheet pattern for mobile, and
- * gesture-based dismissal.
- */
+export type contextMenuRuntimeState = {
+  topic: "context-menu";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-import { useState, useCallback, useRef } from 'react';
+export type contextMenuRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-/**
- * Hook that adapts context menu behavior for touch vs mouse devices.
- * Touch: long-press to open, bottom sheet pattern.
- * Mouse: right-click to open, positioned dropdown.
- */
-export function useAdaptiveContextMenu(isTouchDevice: boolean) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
+}
 
-  const LONG_PRESS_DELAY = 500;
+export function planContextMenuRecovery(
+  state: contextMenuRuntimeState,
+  nowMs: number,
+): contextMenuRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: contextMenuRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  /**
-   * For mouse: right-click handler.
-   * For touch: long-press start handler.
-   */
-  const onTriggerStart = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    if (isTouchDevice && 'touches' in e) {
-      // Touch: start long-press timer
-      const touch = e.touches[0];
-      longPressTimerRef.current = setTimeout(() => {
-        setPosition({ x: touch.clientX, y: touch.clientY });
-        setIsOpen(true);
-      }, LONG_PRESS_DELAY);
-    } else if (!isTouchDevice && 'button' in e) {
-      // Mouse: right-click
-      e.preventDefault();
-      setPosition({ x: e.clientX, y: e.clientY });
-      setIsOpen(true);
-    }
-  }, [isTouchDevice]);
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-  /**
-   * Cancels long-press timer on touch move or touch end.
-   */
-  const onTriggerCancel = useCallback(() => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current);
-      longPressTimerRef.current = null;
-    }
-  }, []);
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
 
-  /**
-   * Closes the context menu.
-   */
-  const close = useCallback(() => {
-    setIsOpen(false);
-    onTriggerCancel();
-  }, [onTriggerCancel]);
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
 
-  return { isOpen, position, onTriggerStart, onTriggerCancel, close };
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runContextMenuEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planContextMenuRecovery(
+    {
+      topic: "context-menu",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planContextMenuRecovery(
+    {
+      topic: "context-menu",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Context Menu",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

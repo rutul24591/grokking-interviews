@@ -1,1 +1,5 @@
-# Design Google-like search frontend — Example 3
+# Google Like Search Frontend - Example 3
+
+Concrete search discovery edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

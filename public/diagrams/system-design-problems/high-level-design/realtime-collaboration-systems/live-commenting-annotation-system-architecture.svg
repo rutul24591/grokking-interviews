@@ -1,40 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Live commenting and annotation architecture">
-  <defs>
-    <style>
-      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
-      .muted { fill: #334155; }
-      .h { font-weight: 700; }
-      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
-      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
-      .arrow { fill: #64748b; }
-      @media (prefers-color-scheme: dark) {
-        .t { fill: #e5e7eb; }
-        .muted { fill: #cbd5e1; }
-        .box { fill: #0b1220; stroke: #334155; }
-        .line { stroke: #94a3b8; }
-        .arrow { fill: #94a3b8; }
-      }
-    </style>
-  </defs>
-  <text class="t h" x="40" y="54" font-size="22">Live Comments: Stable Anchors + Realtime Thread Updates</text>
-  <text class="t muted" x="40" y="78" font-size="13">Anchors are transform-aware ranges or stable object IDs</text>
-
-  <rect class="box" x="40" y="180" width="280" height="240" rx="14"/>
-  <text class="t h" x="60" y="210" font-size="16">Client</text>
-  <text class="t muted" x="60" y="240" font-size="12">Anchor renderer + thread UI</text>
-  <text class="t muted" x="60" y="262" font-size="12">Scoped subscriptions</text>
-
-  <rect class="box" x="360" y="160" width="260" height="140" rx="14"/>
-  <text class="t h" x="380" y="190" font-size="16">Thread Service</text>
-  <text class="t muted" x="380" y="220" font-size="12">Authoritative thread state</text>
-
-  <rect class="box" x="660" y="160" width="260" height="140" rx="14"/>
-  <text class="t h" x="680" y="190" font-size="16">Realtime Fanout</text>
-  <text class="t muted" x="680" y="220" font-size="12">Events + moderation actions</text>
-
-  <path class="line" d="M320 280 L350 280" />
-  <polygon class="arrow" points="350,280 342,276 342,284"/>
-  <path class="line" d="M620 230 L650 230" />
-  <polygon class="arrow" points="650,230 642,226 642,234"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Live Commenting Annotation System Architecture: topology map</title>
+  <desc id="desc">Curved topology for realtime collaboration systems runtime states.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Live Commenting Annotation System Architecture: topology map</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Curved topology for realtime collaboration systems runtime states.</text>
+  <rect x="66" y="122" width="828" height="332" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M116 380 C180 220, 260 193, 338 236" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><circle cx="154" cy="356" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="154" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cursor</text><path d="M270 310 C300 250, 360 193, 440 288" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/><circle cx="306" cy="274" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="306" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">CRDT</text><path d="M424 380 C420 280, 460 193, 542 236" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><circle cx="458" cy="356" r="30" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="458" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">presence</text><path d="M578 310 C540 220, 560 193, 644 288" fill="none" stroke="#9333ea" stroke-width="4" stroke-linecap="round"/><circle cx="610" cy="274" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="610" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">merge</text><path d="M732 380 C660 250, 660 193, 746 236" fill="none" stroke="#b91c1c" stroke-width="4" stroke-linecap="round"/><circle cx="762" cy="356" r="30" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="762" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">offline</text>
+  <rect x="210" y="138" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="274" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">awareness</text><rect x="390" y="138" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">conflict</text><rect x="570" y="138" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="634" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">snapshot</text>
+  <path d="M118 456 C270 500, 420 426, 568 468 S760 496, 846 444" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/><text x="520" y="494" text-anchor="middle" fill="#be123c" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">state convergence requires explicit observability and fallback routes</text>
 </svg>
-

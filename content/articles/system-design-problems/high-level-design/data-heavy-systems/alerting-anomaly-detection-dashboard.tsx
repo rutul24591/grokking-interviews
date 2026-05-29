@@ -9,13 +9,13 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-alerting-anomaly-detection-dashboard",
   title: "Design an Alerting & Anomaly Detection Dashboard",
   description:
-    "Architecture for an alerting and anomaly detection dashboard: multi-condition alert rule builder (threshold, rate-of-change, absence), anomaly detection algorithms (Z-score, seasonal ARIMA, isolation forest), alert lifecycle management (firing, acknowledged, resolved), PagerDuty/Slack notification routing, alert grouping and deduplication, on-call schedule integration, runbook linking, alert replay for historical validation, and noise reduction via alert suppression windows.",
+    "Principal-level design of an alerting and anomaly detection dashboard with rule evaluation, anomaly baselines, state machines, grouping, inhibition, routing, on-call workflows, replay, and noise reduction.",
   category: "high-level-design",
   subcategory: "data-heavy-systems",
   slug: "alerting-anomaly-detection-dashboard",
-  wordCount: 5000,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
+  wordCount: 5700,
+  readingTime: 33,
+  lastUpdated: "2026-05-22",
   tags: ["hld", "alerting", "anomaly-detection", "pagerduty", "oncall", "z-score", "arima", "alert-fatigue"],
   relatedTopics: ["log-monitoring-ui", "time-series-visualization"],
 };
@@ -24,73 +24,239 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">An alerting and anomaly detection dashboard serves the on-call engineer — a person who is potentially woken at 3am by a page and must understand within 60 seconds whether the alert is real, how severe it is, what is causing it, and what action to take. Every design decision must be evaluated against this high-stress, time-critical use case. Alert fatigue — the condition where an on-call engineer receives so many alerts that they begin ignoring them — is the primary failure mode of alerting systems. The dashboard must make real alerts unambiguous and actionable while actively suppressing noise (duplicate alerts, low-severity transient spikes, known maintenance windows).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The anomaly detection challenge is that production metrics are highly seasonal: CPU usage is higher during business hours than at night, e-commerce traffic spikes on Fridays, and batch jobs create predictable load patterns every hour. A simple threshold alert (alert if CPU &gt; 80%) will fire every day during the afternoon peak and never fire during a real anomaly that occurs during low-traffic hours (where 70% CPU would be abnormal). Effective anomaly detection requires seasonal awareness — comparing the current value against what is expected at this time of day/week, not against a fixed absolute threshold. This requires storing and computing a baseline from historical data.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Alert rule builder, anomaly detection algorithms, alert lifecycle management, notification routing, alert grouping, and suppression. Not in scope: log-based alerting (covered in log monitoring article), infrastructure provisioning for the detection compute layer, or the underlying metrics storage system.</p>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          An alerting and anomaly detection dashboard helps teams define alert rules, detect abnormal behavior, route notifications, manage active incidents, and reduce operational noise. The primary user is often an on-call engineer who may be tired, under pressure, and trying to decide within seconds whether a page is real, severe, actionable, and owned by their team.
+        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The principal-level design goal is alert quality, not alert volume. A system that pages engineers for noisy, unactionable conditions trains them to ignore alerts. The dashboard must make real alerts actionable while providing tooling to suppress, group, replay, tune, and delete bad rules.
+        </HighlightBlock>
+        <p>
+          The system has two related but different jobs. Alerting evaluates known conditions such as error rate above threshold, no data for a service, or latency burn rate exceeding an SLO. Anomaly detection identifies unexpected deviations from historical or seasonal behavior. Alerting is explainable and reliable for known failure modes. Anomaly detection can catch unknown patterns but often has higher false-positive risk.
+        </p>
+        <p>
+          An interview-ready design must cover evaluation state, rule ownership, routing, deduplication, silences, inhibition, notification delivery, replay against history, on-call escalation, and metrics that measure alert quality. Without these operational controls, the system is only a rule editor, not a production alerting platform.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Alert rule builder:</strong> Visual rule editor supporting three alert types: (1) Threshold: metric &gt;/&lt;/=/!= value for at least N minutes; (2) Rate-of-change: metric changes by more than X% within Y minutes; (3) Absence: metric has no data for N minutes (service down detection). Rules can be applied to a single metric series or to any series matching a label selector (service=~"auth.*" matches all auth services). Preview mode shows the rule applied to the last 7 days of historical data — how many times would this rule have fired?</HighlightBlock>
-          <li><strong>Anomaly detection:</strong> Toggle between threshold alerting and anomaly-based alerting per rule. Anomaly methods: Z-score against rolling 7-day baseline (configurable: window size, number of standard deviations); seasonal decomposition (subtract weekly/daily seasonality, alert on residuals); isolation forest (ML model trained on 30-day history, scores current point). Anomaly alerts include a visualization: the metric value, the expected range (baseline ± N*sigma), and the current deviation magnitude.</li>
-          <li><strong>Alert lifecycle:</strong> Alert states: Pending (condition met but not yet for the required duration) → Firing (condition met for required duration) → Acknowledged (on-call has seen it) → Resolved (condition no longer met) → Silenced (suppressed for a time window). Alert timeline shows state transitions with timestamps. MTTR (Mean Time to Resolve) is computed per alert and per service.</li>
-          <li><strong>Notification routing:</strong> Route alerts to channels based on severity (Critical → PagerDuty; Warning → Slack; Info → Email) and service (each service team can configure their own routing). On-call schedule integration: automatically routes to the current on-call engineer (via PagerDuty schedule API). Escalation: if no acknowledgment within 15 minutes, escalate to the on-call manager.</li>
-          <li><strong>Alert grouping and suppression:</strong> Related alerts that fire simultaneously are grouped into an "alert group" (e.g., all services reporting errors when a database goes down). The group shows a single notification with all affected services listed. Suppression windows: scheduled maintenance events suppress all alerts for the affected service during the window. Inhibition: if "database down" alert fires, inhibit all dependent service alerts (to avoid 50 alerts from one root cause).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Alert firing latency:</strong> Alert fires within 1 minute of the metric violating the threshold (detection cycle: 30-second evaluation interval, alert fires after 2 consecutive violations = 1 minute).</li>
-          <HighlightBlock as="li" tier="important"><strong>Notification delivery:</strong> PagerDuty page delivered within 30 seconds of alert firing. Slack notification within 60 seconds.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Dashboard load:</strong> Alert list (active alerts) loads within 500ms. Historical alert timeline loads within 2 seconds for 30-day range.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Alert rules describe a signal, condition, duration, severity, owner, routing policy, and runbook. The condition can be a threshold, rate of change, absence of data, burn-rate expression, or anomaly score. The duration clause prevents one-sample spikes from paging humans.
+        </p>
+        <p>
+          The alert engine evaluates rules on a schedule. Each rule can produce many alert instances because the same expression may match many label sets, such as service, region, cluster, endpoint, or customer tier. The engine must track state per rule and label set, not only per rule.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Alert state must be durable. Pending, firing, acknowledged, silenced, resolved, and inhibited transitions should survive evaluator restarts and should be auditable. In-memory-only alert state creates duplicate pages, lost acknowledgements, and confusing incident timelines.
+        </HighlightBlock>
+        <p>
+          Grouping reduces notification storms by bundling related alerts that fire close together. Inhibition suppresses downstream alerts when a likely root-cause alert is already firing. Silences suppress known maintenance windows or temporary work. These mechanisms are essential for avoiding alert fatigue in large systems.
+        </p>
+        <p>
+          Anomaly detection needs baseline context. Simple z-score can work for stable metrics. Seasonal baselines work better for daily or weekly patterns. Isolation forests and other models can catch unusual multi-dimensional behavior but are harder to explain. For paging alerts, explainability and low false-positive rate matter more than model sophistication.
+        </p>
+        <p>
+          Routing maps alert labels and severity to destinations such as PagerDuty, Slack, email, ticketing systems, or incident platforms. Routing also resolves on-call schedules, escalation chains, notification throttles, and ownership. A critical alert without a clear owner is operational debt.
+        </p>
+        <p>
+          Principal-level alerting also requires alert lifecycle governance. Rule creation, edits, silences, ownership changes, and routing changes should be reviewed or at least audited. A misconfigured rule can page hundreds of engineers or suppress a real outage. The UI should show rule age, last edited actor, replay result, recent firing history, linked incidents, and whether the rule has ever produced an actionable page.
+        </p>
+        <p>
+          Alert quality must be measured as a product metric. Pages per service, false-positive rate, percentage of pages tied to incidents, acknowledgement delay, auto-resolve-before-acknowledge rate, and stale runbooks are signals that tell platform teams whether alerting is helping or hurting reliability. Without those metrics, organizations accumulate noisy rules indefinitely.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The Alert Engine is a stateful streaming service that evaluates alert rules on a 30-second cycle. It queries the metrics data source (Prometheus, InfluxDB, or the internal time-series store) for each active rule, compares the result against the rule condition, and updates the alert state machine. State is persisted in PostgreSQL (alert_instances table: ruleId, labelSet, state, firedAt, resolvedAt, lastEvaluatedAt). When an alert transitions to Firing state, the Alert Engine publishes an alert_firing event to a Kafka topic (alerts.events). The Notification Router consumes this topic, resolves the routing configuration for the alert's service/severity labels, and dispatches notifications to PagerDuty, Slack, or Email. The Alert API (Node.js REST API) serves the dashboard frontend — listing active alerts, historical alert data, and rule management. The Anomaly Detection Service runs as a separate sidecar that periodically trains and evaluates anomaly models, publishing anomaly_detected events to the same Kafka topic.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has five planes. The rule plane stores rule definitions, ownership, runbooks, and replay results. The evaluation plane queries metrics and computes state transitions. The anomaly plane trains and applies baselines or models. The routing plane groups, inhibits, silences, deduplicates, and sends notifications. The dashboard plane shows active alerts, timelines, tuning insights, and alert quality metrics.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/alerting-anomaly-detection-dashboard.svg"
-          alt="Alerting and anomaly detection architecture showing alert rule builder (rule types: threshold metric>value for N min; rate-of-change >X% in Y min; absence no-data N min; label selector: service=~'auth.*'; preview: apply rule to last 7d → count historical fires → false-positive rate estimate), alert engine (30s evaluation cycle: query Prometheus/InfluxDB per rule; compare result to condition; state machine: Pending{count violations}→Firing{firedAt}→Acknowledged{ackBy}→Resolved{resolvedAt}|Silenced; persist to PostgreSQL alert_instances; on Firing: publish to Kafka alerts.events {ruleId, labelSet, value, threshold, severity}), anomaly detection (Z-score: rolling_mean=avg last 7d same time-of-day; rolling_std=stddev last 7d; z=(current-rolling_mean)/rolling_std; |z|>3 → anomaly; seasonal ARIMA: decompose weekly/daily seasonality → residual alert; isolation forest: train on 30d history → score current point → score>0.7 → anomaly; viz: metric line + baseline band ±3sigma + deviation callout), notification routing (Kafka alerts.events consumer; route by {severity:Critical→PagerDuty, Warning→Slack, Info→Email} AND service routing config; PagerDuty: POST /incidents {title, body, service_key}; Slack: POST webhook {blocks:[alert-card]}; on-call schedule: GET /oncall → current on-call person → assign; escalation: no ack 15min → POST /escalate to manager), alert grouping (AlertManager-style: group by {service, severity}; simultaneous fires within 30s → single notification group; inhibition rule: database_down inhibits all dependent service alerts; suppression window: POST /silences {matchers, start, end} → suppress matching alerts), alert dashboard (active alerts list: severity-sorted; per-alert timeline: state transitions + timestamps; MTTR per service; runbook link per rule; replay: apply rule to historical range → show historical fires; noise analysis: false-positive rate per rule last 7d)."
-          caption="Alert Engine (30s evaluation cycle, Prometheus query, state machine Pending→Firing→Acknowledged→Resolved, PostgreSQL alert_instances), Kafka alert events fan-out, Notification Router (severity+service routing, PagerDuty POST, Slack webhook, on-call schedule API, 15min escalation), anomaly detection (Z-score rolling 7d baseline ±3σ, seasonal ARIMA residuals, isolation forest 30d training), AlertManager-style grouping + inhibition + suppression windows, and dashboard (active list, MTTR, runbook links, rule replay)"
+          alt="Alerting and anomaly detection dashboard architecture with rule builder, alert engine, anomaly detection, notification routing, grouping, suppression, and dashboard."
+          caption="Alerting platforms combine stateful rule evaluation, anomaly baselines, grouping, inhibition, routing, and dashboard workflows for incident response and noise reduction."
         />
+        <p>
+          The evaluation flow starts with a scheduler that selects due rules. The alert engine queries the metrics backend for each rule, evaluates the condition for each returned label set, updates or creates alert instances, and persists state transitions. When an instance moves to firing, it emits an alert event to the routing pipeline. The router applies silences, inhibition rules, grouping windows, deduplication, and destination policies before notifying humans.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/alerting-state-routing-flow.svg"
+          alt="Alert state and routing flow showing scheduler, evaluator, durable state machine, grouping, inhibition, silences, notification router, PagerDuty, Slack, and escalation."
+          caption="Durable alert state and routing controls prevent evaluator crashes, duplicate notifications, and downstream alert storms from overwhelming on-call engineers."
+        />
+        <p>
+          Anomaly detection has a separate lifecycle. Historical data is used to train or refresh baselines. The anomaly service computes expected ranges, residuals, or anomaly scores, then emits anomaly candidates with enough explanation for the dashboard. High-confidence anomalies can become warning alerts, while lower-confidence anomalies should usually appear as investigation signals rather than pages.
+        </p>
+        <p>
+          Rule replay should be treated as a pre-production environment for alerts. Before enabling a rule, the owner can run it over recent history and see when it would have fired, how long it would have stayed active, which labels would have grouped together, which silences would have applied, and how many pages would have been sent. This prevents theoretical alert rules from becoming production noise.
+        </p>
+        <p>
+          The dashboard should also support incident-linked rule tuning. After an incident, responders should be able to mark whether alerts were early, late, noisy, missing, or misrouted. That feedback should attach to the rule and inform future tuning. This closes the loop between alert configuration and real operational outcomes instead of relying on subjective memory after the incident has faded.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/alerting-anomaly-replay-flow.svg"
+          alt="Anomaly baseline and replay flow showing historical training, expected bands, anomaly scoring, rule replay, false-positive analysis, and tuning recommendations."
+          caption="Rule replay and anomaly baselines let teams estimate false positives before enabling a rule and tune noisy alerts using historical evidence."
+        />
+        <p>
+          Principal-level alerting systems need an explicit signal lifecycle. A candidate alert starts as an experimental detector, graduates to non-paging notification, then becomes paging only after it proves precision, ownership, and remediation value. The dashboard should show detector maturity, recent false-positive rate, owner, runbook, and whether the alert is allowed to wake someone. This prevents teams from turning every anomaly score into a production page.
+        </p>
+        <p>
+          The architecture should separate detection, routing, and incident state. Detection computes whether a signal is abnormal. Routing decides who should know based on ownership, service dependency, time of day, severity, and suppression policy. Incident state records acknowledgement, escalation, linked deploys, mitigation, and resolution. Mixing these concerns makes it difficult to tune noisy detectors without losing incident history.
+        </p>
+        <p>
+          Detector evaluation should also be capacity-aware. A platform with thousands of rules cannot let every rule query broad historical ranges at the same cadence. The scheduler should shard rules, enforce evaluation budgets, prioritize user-impacting pages, and degrade non-paging anomaly scans before critical SLO alerts. The dashboard should show evaluation lag because a late alert evaluation changes how responders interpret detection time.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Alert State Machine and Evaluation Loop</h3>
-        <HighlightBlock as="p" tier="important">The Alert Engine runs a strict evaluation loop: every 30 seconds, for each active alert rule, it executes the rule's query against the data source (a PromQL instant query for Prometheus, or a parameterized SQL query for time-series databases). The result is a set of time series, each identified by its label set (&#123; service: "auth", method: "POST" &#125;). For each series, the engine checks the condition (e.g., value &gt; 500). If the condition is true, the series transitions to Pending state with a violation_count = 1. On the next evaluation (30 seconds later), if the condition is still true, violation_count = 2. When violation_count × evaluation_interval &gt;= for_duration (the "fire after N minutes" setting), the series transitions to Firing state. This two-cycle requirement prevents transient spikes from creating false positives — a single-sample spike will not fire an alert.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The state machine uses PostgreSQL for persistence, not in-memory state. This means the Alert Engine is restartable without losing alert state — if the evaluation pod crashes, a replacement pod picks up from the last persisted state. The alert_instances table is indexed by (ruleId, labelSetHash) — the labelSetHash is a SHA256 of the sorted JSON representation of the label set, enabling O(1) lookup per series. The evaluation loop uses a work queue (one queue entry per rule) with a single shared thread pool — rules evaluate concurrently, but each rule's evaluation is serialized (no two evaluations of the same rule run simultaneously, preventing state machine races).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Anomaly Detection Algorithms</h3>
-        <HighlightBlock as="p" tier="important">Z-score anomaly detection: for each metric series with anomaly alerting enabled, the Anomaly Detection Service maintains a rolling baseline of the last 7 days of data at the same time of day and day of week (Sunday-to-Sunday hourly seasonality). For each new data point, the z-score is computed: z = (current_value - rolling_mean) / rolling_std. A z-score above 3 (3 standard deviations above the mean) is a high-confidence anomaly. The rolling mean and standard deviation are updated incrementally (using Welford's online algorithm) to avoid recomputing from scratch on each new point. The baseline and z-score are stored alongside each data point, enabling the dashboard to show the expected range at any historical timestamp.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Seasonal decomposition (STL): for metrics with strong weekly seasonality (e.g., web traffic, which is always high on weekdays and low on weekends), simple Z-score against a time-of-day baseline is insufficient — the "normal" value on a Monday morning is different from a Sunday morning. STL (Seasonal-Trend decomposition using LOESS) decomposes the time series into trend, seasonality, and residual components. Anomaly detection runs on the residual component after removing the trend and seasonal patterns. This makes the detection sensitive to genuinely abnormal deviations while immune to expected daily/weekly patterns. STL is computed as a nightly batch job over the last 90 days of data for each monitored metric, producing a seasonality model that is applied in real time.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Alert Grouping and Inhibition</h3>
-        <HighlightBlock as="p" tier="important">Alert grouping is modeled after Prometheus Alertmanager's grouping concept. When multiple alerts fire within a 30-second window and share the same group_by labels (e.g., severity and team), they are bundled into a single notification group. Instead of 20 separate Slack messages for 20 services experiencing high error rates after a database failure, the on-call receives one Slack message: "20 alerts firing: high error rate — services: auth, payments, orders, catalog [+16 more]". The notification manager waits a configurable group_wait period (default: 30 seconds) after the first alert fires before sending, to accumulate related alerts that fire in quick succession.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Inhibition rules define "if alert A is firing, suppress alert B". This is the key mechanism for root-cause correlation: if "PostgreSQL down" (severity: critical) is firing, inhibit all alerts where label database="postgres" (the downstream service alerts that are consequences of the database being down). Inhibition rules are configured in the Alert Engine's YAML configuration: &#123; source_matchers: [&#123;severity: "critical"&#125;, &#123;type: "database_down"&#125;], target_matchers: [&#123;database: "postgres"&#125;], equal: ["region", "cluster"] &#125;. The equal field ensures inhibition only applies when source and target alerts share the same region and cluster labels — preventing a database failure in us-west from suppressing alerts in eu-east.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Alert Dashboard: Active Alerts and MTTR</h3>
-        <HighlightBlock as="p" tier="important">The alert dashboard's main view is a severity-sorted list of active (Firing + Acknowledged) alerts. Each row shows: severity badge (red=Critical, yellow=Warning, blue=Info), alert name, affected service/labels, current metric value vs threshold, time since firing, and a one-click "Acknowledge" button. The list auto-refreshes every 30 seconds (polling the Alert API) or subscribes to a Server-Sent Events stream for real-time updates. Acknowledged alerts are moved to a separate "Acknowledged" section to de-emphasize them while keeping them visible.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">MTTR (Mean Time to Resolve) is computed per service and per alert rule over rolling 30-day windows. MTTR = average(resolvedAt - firedAt) for all resolved alerts in the window. High MTTR for a specific alert indicates either that the alert is for a systemic issue that takes long to fix, or that the alert is noisy and engineers stop responding promptly. The dashboard surfaces MTTR trends (is MTTR increasing or decreasing?) alongside a false-positive rate (what percentage of alert firings were resolved within 5 minutes — a proxy for alerts that were false positives or transient). These noise metrics help alert owners tune their alert conditions to reduce fatigue.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Threshold alerts are simple, explainable, and predictable. They are best for well-understood user-impacting signals such as error rate, availability, queue age, SLO burn rate, and failed payment rate. Their weakness is that fixed thresholds often ignore seasonality and changing traffic levels.
+        </p>
+        <p>
+          Anomaly alerts are useful for detecting unexpected behavior in seasonal or poorly understood metrics. Their weakness is false positives, model drift, and lower explainability. For wake-up pages, anomaly detection should usually be conservative and supported by visual baseline evidence. For Slack investigation signals, it can be more exploratory.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Paging policy is a product decision. Critical pages should be tied to user impact, fast actionability, and a known owner. Warnings can go to Slack. Informational anomalies can go to dashboards. Treating every interesting deviation as a page creates alert fatigue.
+        </HighlightBlock>
+        <p>
+          Centralized alert evaluation gives consistent routing, state, silences, and audit logs, but it can become a scaling bottleneck. Distributed evaluators scale better, but require careful sharding, lease management, idempotent state transitions, and deduplication to avoid duplicate notifications.
+        </p>
+        <p>
+          Grouping waits slightly before sending notifications so related alerts can be batched. This reduces noise but delays the first notification. Critical alerts may use short group waits, while warning notifications can wait longer to accumulate context.
+        </p>
+        <p>
+          Suppression windows reduce noise during planned maintenance, but broad silences can hide real incidents. Silences need explicit scope, expiration, owner, reason, and audit trail. The dashboard should show when alerts are currently silenced.
+        </p>
+        <p>
+          Central model-based anomaly detection is powerful but can create trust issues when users cannot explain the score. Local rule-based anomaly detection per service is easier to own but duplicates effort and may miss cross-service patterns. A mature platform offers explainable shared baselines for common metrics and allows teams to layer service-specific thresholds and runbooks on top.
+        </p>
+        <p>
+          Alert ownership can be centralized or delegated. Central SRE ownership creates consistency but does not scale to every product-specific signal. Team-owned alerts preserve context but can drift into inconsistent severity and routing. A principal-ready platform supports team ownership with central guardrails: required runbooks, severity definitions, replay before paging, stale-rule reviews, and global emergency controls.
+        </p>
+        <p>
+          Model confidence separately from severity. A severe business impact with weak anomaly confidence should be routed differently from a high-confidence infrastructure failure with limited blast radius. The UI should show observed value, expected band, seasonality context, training window, missing-data behavior, and confidence. This lets responders decide whether to investigate, suppress, or wait for corroborating signals.
+        </p>
+        <p>
+          Treat suppressions as auditable policy, not temporary UI state. Maintenance windows, known incidents, deploy suppressions, customer-specific suppressions, and detector warm-up periods should have owner, scope, start, end, and reason. Silent or indefinite suppressions are a common reason important alerts disappear.
+        </p>
+        <p>
+          Automated remediation is another trade-off. Linking an alert to an auto-rollback, traffic shift, cache purge, or queue drain can reduce incident duration, but a false positive can create a larger outage. Mature systems start with human-in-the-loop runbooks, add automation for narrow and reversible actions, and require stronger confidence, blast-radius limits, and audit for self-healing actions.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Threshold alerting versus anomaly-based alerting: threshold alerting (metric &gt; fixed value) is simple, predictable, and easy to explain to stakeholders ("we alert when error rate exceeds 1%"). Anomaly-based alerting is more sensitive to unexpected changes (catching anomalies that would not trigger a fixed threshold) but produces more false positives during unusual-but-legitimate events (a flash sale, a product launch, a new customer segment) that look like anomalies compared to the training data. The practical recommendation: use threshold alerting as the primary mechanism for well-understood, business-critical metrics (error rate, checkout failures), and use anomaly detection as a secondary layer that generates lower-severity "investigation recommended" alerts rather than pages. Anomaly alerts should flow to Slack for review, not to PagerDuty for immediate wakeup.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Alert fatigue and the "crying wolf" problem: when on-call engineers receive too many false-positive alerts, they begin acknowledging alerts without investigating them — training themselves to treat pages as noise. This is the most dangerous operational failure mode: when a real incident occurs, the on-call engineer has been conditioned to dismiss pages. The dashboard should actively surface noise metrics (false-positive rate per rule, MTTR trends, alert-to-incident correlation rate) and prompt alert owners to tune or mute high-noise alerts. Some teams implement an "alert budget" — each team is allowed a maximum number of alerts per week, and rules that consistently exceed their budget must be fixed or removed. This incentivizes alert quality over quantity.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Require every paging alert to have an owner, runbook, severity, actionability statement, and expected user impact. Alerts without these fields should not be allowed to page humans.
+        </p>
+        <p>
+          Provide rule replay before enabling a rule. Applying the rule to recent history gives estimated firing count, false-positive candidates, noisy time windows, and example incidents. This is one of the best controls for preventing bad rules from entering production.
+        </p>
+        <p>
+          Use SLO burn-rate alerts for user-impacting reliability signals. Multi-window burn-rate alerts are often better than raw error-rate thresholds because they capture both fast outages and slow burns against an error budget.
+        </p>
+        <p>
+          Persist every state transition and notification attempt. Alert timelines should show when the condition started, when the alert fired, who acknowledged it, what notifications were sent, which silences or inhibition rules applied, and when it resolved.
+        </p>
+        <p>
+          Make alert quality visible. Track pages per service, false-positive rate, auto-resolved-within-five-minutes rate, alert-to-incident correlation, MTTA, MTTR, acknowledgement delay, and alerts without runbooks.
+        </p>
+        <p>
+          Keep anomaly detection explainable. Show expected bands, actual value, deviation, seasonality context, and previous similar events. If on-call engineers cannot understand why an anomaly fired, they will not trust it.
+        </p>
+        <p>
+          Connect alerts to incident workflows. A firing page should open directly into relevant dashboards, logs, traces, recent deploys, owners, and runbooks. A resolved alert should update the timeline and support post-incident analysis. Alerting is most valuable when it shortens diagnosis, not just when it sends a notification.
+        </p>
+        <p>
+          Review alert portfolios periodically. The dashboard should identify rules that have not fired in months, rules that fire often without incident links, routes with no active owner, and runbooks that have not been reviewed. Alert debt compounds quietly; portfolio review keeps the system aligned with current architecture and current on-call ownership.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An alerting and anomaly detection dashboard is built around a stateful Alert Engine (30-second evaluation loop, PromQL/SQL queries, two-cycle violation confirmation before Firing, PostgreSQL alert_instances state persistence with SHA256 labelSetHash index) publishing to a Kafka alerts.events topic. The Notification Router consumes this topic and dispatches to PagerDuty (Critical), Slack (Warning), and Email (Info) based on service routing config, with PagerDuty on-call schedule API integration and 15-minute escalation. Anomaly detection runs Z-score (rolling 7-day time-of-day baseline, |z|&gt;3), STL seasonal decomposition (residuals after weekly/daily pattern removal), and isolation forest (30-day training, score &gt;0.7). AlertManager-style grouping accumulates related alerts (group_wait 30s) into single notifications; inhibition rules suppress downstream alerts when root-cause alert fires. The dashboard surfaces MTTR per service and false-positive rate per rule to identify and reduce alert noise. The defining operational principle: an alert that engineers dismiss without investigating has negative value — every noisy alert is a step toward the silent incident that goes undetected.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most damaging pitfall is creating alerts for symptoms that require no action. Every unactionable page reduces trust in the system. Alerts should map to decisions and owners.
+        </p>
+        <p>
+          Another pitfall is storing alert state only in memory. Evaluator restarts then create duplicate pages or lose pending duration. Durable per-label-set state is required for a reliable alerting platform.
+        </p>
+        <p>
+          Teams often add anomaly detection before cleaning up threshold alert quality. Anomaly detection does not fix poor ownership, missing runbooks, or noisy routing. It can make noise worse if introduced without replay and tuning workflows.
+        </p>
+        <p>
+          Broad silences can hide unrelated incidents. Suppression rules should be narrow, time-bound, auditable, and visible in the dashboard.
+        </p>
+        <p>
+          Alert grouping without careful labels can merge unrelated incidents or fail to merge related ones. Grouping labels should reflect operational ownership and root-cause domains, not arbitrary metric labels.
+        </p>
+        <p>
+          Another pitfall is training anomaly models on bad history. Incident periods, deploy experiments, backfills, and missing-data windows can pollute baselines. The dashboard should let owners exclude ranges, annotate known abnormal periods, and understand when a model is still warming up.
+        </p>
+        <p>
+          Alert dashboards also fail when they do not distinguish no data from healthy data. A missing metric, broken scraper, delayed warehouse job, or disabled integration can look like a normal zero. Principal-ready designs make missing-data policy explicit for every detector.
+        </p>
+        <p>
+          A less obvious pitfall is measuring alert success only by page count. Fewer pages can mean better signal, but it can also mean missing incidents. The dashboard should connect alerts to incidents, customer impact, time to acknowledge, time to mitigate, and post-incident feedback so teams improve reliability rather than merely reducing noise.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          SRE teams use alert dashboards to manage service reliability alerts, SLO burn rates, deployment regressions, dependency outages, and incident response timelines.
+        </p>
+        <p>
+          Payments and commerce teams alert on checkout failure rate, payment authorization drop, fraud decision latency, inventory sync lag, and order processing backlogs. These alerts need low false-positive rates because they often page business-critical on-call rotations.
+        </p>
+        <p>
+          Data platform teams alert on pipeline freshness, failed jobs, schema drift, data quality thresholds, and warehouse cost anomalies. Anomaly detection is useful for unusual cost or volume patterns, but pipeline failure alerts should remain deterministic.
+        </p>
+        <p>
+          Security and abuse teams use anomaly detection for unusual login volume, suspicious traffic spikes, credential stuffing patterns, or sudden changes in moderation queues. These often start as warning-level investigation signals before becoming automated pages.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you design the alert evaluation engine?</h3>
+        <p>
+          I would run scheduled evaluations for active rules, query the metrics backend, evaluate conditions per label set, and persist state transitions in durable storage. Each alert instance is keyed by rule and label set. The engine supports pending duration before firing, resolved transitions when conditions clear, and idempotent event emission to the routing pipeline.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">2. How do you reduce alert fatigue?</h3>
+        <p>
+          Require ownership and runbooks, use pending durations, group related alerts, inhibit downstream alerts when a root-cause alert is firing, support scoped silences, replay rules before activation, and track alert quality metrics. Critical pages should be reserved for actionable user-impacting issues.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">3. When would you use anomaly detection?</h3>
+        <p>
+          I would use anomaly detection for seasonal or poorly understood metrics where fixed thresholds are inadequate. For paging, I would use it conservatively and require clear expected bands and low false-positive rates. For exploratory detection, I would route anomalies to Slack or dashboards first and promote only proven signals to paging.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">4. How do grouping and inhibition work?</h3>
+        <p>
+          Grouping batches related alerts by labels such as service, team, severity, region, or cluster within a short window. Inhibition suppresses target alerts when a source alert is already firing, such as suppressing dependent service alerts when a database-down alert exists in the same region. Both need careful labels and auditability.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">5. How would you validate an alert rule before enabling it?</h3>
+        <p>
+          I would replay the rule over historical data and show firing count, affected services, firing duration, overlap with known incidents, auto-resolved events, and noise windows. Builders can adjust threshold, duration, labels, or severity before publishing. This prevents rules that would immediately spam on-call.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">6. What metrics would you monitor for the alerting system itself?</h3>
+        <p>
+          I would monitor evaluator lag, rule evaluation duration, query failures, alert event delivery latency, notification delivery success, duplicate notification rate, routing failures, page volume, false-positive proxies, MTTA, MTTR, silenced alert count, and rules without owners or runbooks.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li><a href="https://prometheus.io/docs/alerting/latest/alertmanager/" target="_blank" rel="noreferrer">Prometheus Alertmanager Documentation</a></li>
+          <li><a href="https://sre.google/sre-book/monitoring-distributed-systems/" target="_blank" rel="noreferrer">Google SRE Book: Monitoring Distributed Systems</a></li>
+          <li><a href="https://sre.google/workbook/alerting-on-slos/" target="_blank" rel="noreferrer">Google SRE Workbook: Alerting on SLOs</a></li>
+          <li><a href="https://support.pagerduty.com/docs/event-management" target="_blank" rel="noreferrer">PagerDuty Documentation: Event Management</a></li>
+          <li><a href="https://grafana.com/docs/grafana/latest/alerting/" target="_blank" rel="noreferrer">Grafana Alerting Documentation</a></li>
+          <li><a href="https://otexts.com/fpp3/stl.html" target="_blank" rel="noreferrer">Forecasting: STL Decomposition</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

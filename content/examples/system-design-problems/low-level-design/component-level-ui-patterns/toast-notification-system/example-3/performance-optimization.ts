@@ -1,50 +1,90 @@
-/**
- * Toast System — Staff-Level Performance Optimization.
- *
- * Staff differentiator: Implementing CSS custom property-based toast rendering
- * to avoid React re-renders entirely during drag/animations. Uses direct DOM
- * manipulation for 60fps performance with 100+ concurrent toasts.
- */
+export type toastNotificationSystemRuntimeState = {
+  topic: "toast-notification-system";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-/**
- * Direct DOM manipulation for toast animations — bypasses React render cycle.
- * Updates CSS custom properties on the container element, which triggers
- * GPU-composited transforms without React re-rendering.
- */
-export function animateToastPosition(container: HTMLElement, toastId: string, x: number, y: number) {
-  const toastEl = container.querySelector(`[data-toast-id="${toastId}"]`) as HTMLElement | null;
-  if (!toastEl) return;
-  toastEl.style.setProperty('--toast-x', `${x}px`);
-  toastEl.style.setProperty('--toast-y', `${y}px`);
+export type toastNotificationSystemRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Batched state updates — collects multiple toast state changes and applies
- * them in a single requestAnimationFrame to avoid layout thrashing.
- */
-export function batchToastUpdates(updates: Array<{ id: string; property: string; value: string }>) {
-  requestAnimationFrame(() => {
-    for (const { id, property, value } of updates) {
-      const el = document.querySelector(`[data-toast-id="${id}"]`);
-      el?.style.setProperty(property, value);
-    }
-  });
+export function planToastNotificationSystemRecovery(
+  state: toastNotificationSystemRuntimeState,
+  nowMs: number,
+): toastNotificationSystemRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: toastNotificationSystemRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
+
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
 }
 
-/**
- * Web Worker offloading — for large toast queues (100+), move queue management
- * to a Web Worker to keep the main thread free for rendering.
- */
-export function createToastWorker(): Worker {
-  const workerCode = `
-    self.onmessage = function(e) {
-      const { type, data } = e.data;
-      if (type === 'enqueue') {
-        // Manage toast queue in worker
-        self.postMessage({ type: 'enqueue-result', id: data.id, position: data.position });
-      }
-    };
-  `;
-  const blob = new Blob([workerCode], { type: 'application/javascript' });
-  return new Worker(URL.createObjectURL(blob));
+export function runToastNotificationSystemEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planToastNotificationSystemRecovery(
+    {
+      topic: "toast-notification-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planToastNotificationSystemRecovery(
+    {
+      topic: "toast-notification-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Toast Notification System",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

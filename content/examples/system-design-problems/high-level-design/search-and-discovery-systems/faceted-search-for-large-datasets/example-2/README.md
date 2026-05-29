@@ -1,1 +1,5 @@
-# Design faceted search for large datasets — Example 2
+# Faceted Search FOR Large Datasets - Example 2
+
+Concrete search discovery production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

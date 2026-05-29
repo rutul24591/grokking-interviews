@@ -1,1 +1,5 @@
-# Design an AR/VR interface system — Example 3
+# AR VR Interface System - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

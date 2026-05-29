@@ -1,1 +1,5 @@
-# Design an authentication system (OAuth, SSO, MFA flows) — Example 2
+# Authentication System - Example 2
+
+Concrete security privacy production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

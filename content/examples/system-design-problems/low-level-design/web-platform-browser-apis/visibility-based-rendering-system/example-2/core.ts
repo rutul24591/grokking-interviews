@@ -1,13 +1,89 @@
-export function debounce<TArgs extends unknown[]>(fn: (...args: TArgs) => void, delayMs: number) {
-  let handle: ReturnType<typeof setTimeout> | null = null;
-  return (...args: TArgs) => {
-    if (handle) clearTimeout(handle);
-    handle = setTimeout(() => fn(...args), delayMs);
+export type visibilityBasedRenderingSystemSignal = {
+  permissionDenied: number;
+  visibilityAgeMs: number;
+  workerQueueDepth: number;
+  fallbackCount: number;
+};
+
+export type visibilityBasedRenderingSystemEvent = {
+  id: string;
+  topic: "visibility-based-rendering-system";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: visibilityBasedRenderingSystemSignal;
+};
+
+export type visibilityBasedRenderingSystemDecision = {
+  accepted: boolean;
+  action: "use-progressive-fallback" | "pause-background-work" | "request-permission-lazily" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Browser APIs must degrade predictably when permission, lifecycle, or support changes.";
+
+export function evaluateVisibilityBasedRenderingSystemEvent(event: visibilityBasedRenderingSystemEvent): visibilityBasedRenderingSystemDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.permissionDenied > 2_000) reasons.push("permissionDenied-outside-slo");
+  if (event.signal.workerQueueDepth > 0.2) reasons.push("workerQueueDepth-requires-guardrail");
+
+  let action: visibilityBasedRenderingSystemDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "use-progressive-fallback";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "pause-background-work";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "request-permission-lazily";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Visibility Based Rendering System",
+      "subcategory:web-platform-browser-apis",
+      "entity:browser capability event",
+      "state:capability permission state",
+      "operation:progressive platform action",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
   };
 }
 
-export function jitterBackoffMs(attempt: number, baseMs = 250, maxMs = 10_000) {
-  const exp = Math.min(maxMs, baseMs * 2 ** Math.max(0, attempt - 1));
-  const jitter = Math.random() * exp * 0.2;
-  return Math.floor(exp + jitter);
+export function runVisibilityBasedRenderingSystemContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateVisibilityBasedRenderingSystemEvent({
+    id: "visibility-based-rendering-system-evt-1",
+    topic: "visibility-based-rendering-system",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { permissionDenied: 180, visibilityAgeMs: 0, workerQueueDepth: 0.01, fallbackCount: 1 },
+  });
+
+  const guarded = evaluateVisibilityBasedRenderingSystemEvent({
+    id: "visibility-based-rendering-system-evt-late",
+    topic: "visibility-based-rendering-system",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { permissionDenied: 2_700, visibilityAgeMs: 3, workerQueueDepth: 0.34, fallbackCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

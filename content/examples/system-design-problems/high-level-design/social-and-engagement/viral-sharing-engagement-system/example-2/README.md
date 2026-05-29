@@ -1,1 +1,5 @@
-# Design a viral sharing / engagement system — Example 2
+# Viral Sharing Engagement System - Example 2
+
+Concrete social engagement production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,54 +1,89 @@
-/**
- * CSS Variable Transition — Smooth theme switching without FOUC.
- *
- * Interview edge case: When switching from light to dark mode, changing all CSS
- * variables simultaneously causes a flash. Solution: group variables by transition
- * group and apply them with requestAnimationFrame to ensure smooth transitions.
- */
+export type themeThemingSystemSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-type CSSVariableMap = Record<string, string>;
+export type themeThemingSystemEvent = {
+  id: string;
+  topic: "theme-theming-system";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: themeThemingSystemSignal;
+};
 
-/**
- * Applies CSS variable changes with smooth transitions.
- * Groups changes into a single rAF frame to avoid intermediate states.
- */
-export function applyThemeTransition(
-  variables: CSSVariableMap,
-  targetElement: HTMLElement = document.documentElement,
-): void {
-  requestAnimationFrame(() => {
-    for (const [name, value] of Object.entries(variables)) {
-      targetElement.style.setProperty(name, value);
-    }
-  });
+export type themeThemingSystemDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateThemeThemingSystemEvent(event: themeThemingSystemEvent): themeThemingSystemDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: themeThemingSystemDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Theme Theming System",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Preloads a theme's CSS variables before applying them, preventing FOUC.
- * Loads all variable values first, then applies them in a single frame.
- */
-export function preloadAndApplyTheme(
-  variables: CSSVariableMap,
-  onLoad?: () => void,
-): Promise<void> {
-  return new Promise((resolve) => {
-    // Simulate preloading — in production this might fetch a CSS file
-    requestAnimationFrame(() => {
-      applyThemeTransition(variables);
-      onLoad?.();
-      resolve();
-    });
+export function runThemeThemingSystemContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateThemeThemingSystemEvent({
+    id: "theme-theming-system-evt-1",
+    topic: "theme-theming-system",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
   });
-}
 
-/**
- * Detects if the browser supports CSS transitions on custom properties.
- * Falls back to instant switch if not supported.
- */
-export function supportsCSSTransitions(): boolean {
-  if (typeof window === 'undefined') return false;
-  const el = document.createElement('div');
-  el.style.setProperty('--test-transition', '0s');
-  const computed = getComputedStyle(el).getPropertyValue('--test-transition');
-  return computed !== '';
+  const guarded = evaluateThemeThemingSystemEvent({
+    id: "theme-theming-system-evt-late",
+    topic: "theme-theming-system",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

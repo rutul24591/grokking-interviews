@@ -8,90 +8,140 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-medium-like-article-platform",
   title: "Design a Medium-like Article Platform",
-  description:
-    "Architecture for a Medium-like article publishing platform: rich text editor with autosave and collaborative drafts, publish pipeline with SEO metadata generation and canonical URL management, content delivery with ISR for published articles, reading progress tracking and highlight/annotation system, recommendation engine for personalized feeds, clap/reaction system with eventual consistency, paywall and member-only content gating, author analytics dashboard, and comment threading with moderation queue.",
+  description: "Principal-level knowledge and content system design covering lifecycle, indexing, ranking, moderation, trust, progress, rollback, and observability.",
   category: "high-level-design",
   subcategory: "knowledge-content-systems",
   slug: "medium-like-article-platform",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "article-platform", "rich-text-editor", "content-delivery", "recommendation", "paywall", "isr", "publishing"],
-  relatedTopics: ["qa-system-stackoverflow", "learning-platform-course-progress"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "knowledge", "content", "search", "moderation", "ranking"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Medium-like Article Platform is a knowledge product system where content quality, authorship, discovery, trust, moderation, and user progress matter as much as rendering pages. A principal-ready answer treats a publishing and reading platform as a lifecycle for knowledge objects, not as a CRUD site.",
+  "Knowledge objects have versions, authors, visibility, quality signals, policy state, search representation, recommendation features, and sometimes learning or reputation effects. Derived views can lag, but users must understand which content is current, trusted, and accessible.",
+  "The design should cover creation, editing, publishing, indexing, ranking, moderation, feedback, analytics, and operational recovery. The hardest problems are usually trust and freshness: bad content can spread, good content can become stale, and search or recommendation systems can keep showing old projections.",
+  "A staff/principal interview answer should also separate community/product policy from infrastructure. The system must support policy decisions such as takedown, duplicate closure, accepted answer change, certificate revocation, or paid-content access without hardcoding them into one UI path.",
+  "Operationally, knowledge systems need support tooling to reconstruct why a user saw content, why progress changed, why an answer ranked highly, or why a piece of content was removed."
+];
+const concepts = [
+  "The first concept is content lifecycle. Draft, submitted, published, edited, archived, deleted, blocked, and appealed states need explicit transitions and audit history.",
+  "The second concept is derived discovery. search index and recommendation surfaces should use versioned content, policy state, and quality signals. Search results that ignore takedowns or stale versions create trust failures.",
+  "The third concept is quality and reputation. Votes, reads, completions, comments, reports, editor picks, author reputation, and freshness can influence ranking, but each signal can be gamed or biased.",
+  "The fourth concept is consistency. Authoritative content state, access control, paid entitlement, takedown decisions, and course completion records need stronger consistency than search index, feed ranking, or analytics projections.",
+  "The fifth concept is moderation and governance. Community reports, automated classifiers, editorial workflows, plagiarism checks, duplicate detection, and appeals should produce durable policy decisions.",
+  "The sixth concept is observability. Track publishing failures, indexing lag, ranking experiments, moderation queue age, stale-content reports, progress drift, fraud signals, and search zero-result rates."
+];
+const architecture = [
+  "The architecture contains draft store, editor, publishing pipeline, search index, recommendation feed. The write path records durable content or learning events. The processing path builds derived artifacts: rendered pages, snippets, search documents, recommendation features, progress summaries, and moderation queues. The read path serves personalized or permissioned views.",
+  "Content writes should be versioned. Edits should not silently mutate search, notifications, certificates, or historical audit views without a version decision. Versioning also supports rollback after bad edits, spam waves, or rendering regressions.",
+  "Indexing should be asynchronous but observable. Each content version should know whether it is indexed, searchable, recommended, blocked, or stale. Users and operators need different levels of this state.",
+  "Ranking should combine relevance, quality, freshness, personalization, safety, and policy. Principal designs avoid optimizing a single metric such as click-through because it can reward clickbait, outdated answers, or low-quality learning paths.",
+  "The frontend should expose trustworthy state: draft saved, published, under review, blocked, stale, completed, in progress, certificate pending, or access restricted. These states are product semantics, not generic loading spinners.",
+  "Operational controls should include index rebuild, content rollback, moderation override, feature-flagged ranking, duplicate merge, progress repair, and certificate revocation with audit trail."
+];
+const tradeoffs = [
+  "Synchronous indexing gives fast search freshness but slows writes and couples publishing to search availability. Asynchronous indexing improves write reliability but creates lag. The answer should include index status, freshness metrics, and fallback behavior for newly published content.",
+  "Open contribution increases knowledge growth but increases spam, plagiarism, misinformation, and moderation load. Curated contribution improves quality but slows content coverage and may centralize bias.",
+  "Personalized recommendations improve engagement and learning continuity, but they can hide high-quality canonical content or trap users in narrow paths. Ranking needs diversity, freshness, and explicit user controls.",
+  "Strong consistency for progress or paid access protects trust and compliance. Eventual consistency is acceptable for read counts, recommendation features, and analytics. Accepted answers, certificate issuance, and entitlement checks need durable server confirmation.",
+  "Community moderation scales better than staff-only review but can be brigaded or biased. Automated moderation is fast but error-prone. Mature systems combine reputation weighting, classifier triage, staff escalation, and appeals.",
+  "Detailed author and learner analytics help improve content but create privacy risk. Telemetry should avoid exposing private reading behavior unnecessarily and should respect consent and enterprise policy."
+];
+const practices = [
+  "Represent content, answer, lesson, progress, and certificate state with explicit lifecycle transitions and audit history.",
+  "Make derived artifacts version-aware: rendered HTML, snippets, search documents, recommendation features, notifications, and certificates should point to the content or progress version that produced them.",
+  "Track indexing and recommendation lag as product metrics. Users do not care that a queue is delayed; they care that published content is missing or stale.",
+  "Use abuse controls for posting, voting, reporting, progress completion, and certificate issuance. Reputation and rate limits should protect both content quality and platform integrity.",
+  "Build moderation and support views with evidence, actor history, policy version, appeal state, and safe redaction of private data.",
+  "Design rollback. Bad content, bad ranking, bad certificate logic, or bad search indexing needs a reversible operational path.",
+  "Measure quality beyond engagement: helpfulness, accepted-answer freshness, completion validity, report rate, stale reports, and long-term retention."
+];
+const pitfalls = [
+  "spam posts becomes a platform problem when ranking or recommendations amplify it. The architecture needs prevention, detection, demotion, removal, and appeal.",
+  "SEO abuse often reflects missing governance in content identity. Duplicate detection, canonicalization, merge workflows, and redirect policy are core system behavior.",
+  "stale index happens when derived projections are treated as secondary. Search, feeds, notifications, and certificates can all expose stale or unsafe state.",
+  "copyright takedown is dangerous because users make decisions based on trust. Knowledge systems should show freshness, policy state, and authoritative source where needed.",
+  "Another pitfall is allowing analytics to drive ranking without integrity checks. Clicks and completions can be noisy, fraudulent, or biased toward shallow content.",
+  "Teams also forget accessibility and internationalization. Knowledge systems often contain long-form text, code, captions, transcripts, and learning flows that must work for diverse users."
+];
+const useCases = [
+  "public article publishing needs durable content state, quality signals, search or recommendation projection, and policy-aware visibility.",
+  "member-only content needs durable content state, quality signals, search or recommendation projection, and policy-aware visibility.",
+  "editorial curation needs durable content state, quality signals, search or recommendation projection, and policy-aware visibility.",
+  "During a spam attack, the platform should throttle creation, demote suspicious content, pause recommendation of risky items, and preserve review evidence.",
+  "During an indexing incident, newly published content should still be accessible by direct URL, while search freshness dashboards and rebuild controls guide recovery.",
+  "During a policy dispute, the system should preserve versions, reports, reviewer actions, and appeal history so the decision can be audited."
+];
+const questions = [
+  {
+    "question": "How would you design a publishing and reading platform end to end?",
+    "answer": "I would model knowledge objects with versioned lifecycle state, authorship, visibility, quality signals, and policy state. Writes create durable records and events. Processing builds rendered pages, search documents, recommendations, summaries, and moderation queues. Reads use surface-specific projections with access control. Operations include index rebuild, rollback, moderation override, progress repair, and audit views."
+  },
+  {
+    "question": "Why this architecture over a simple CMS or CRUD model?",
+    "answer": "A simple CRUD model cannot explain search freshness, ranking, moderation, version rollback, paid or private access, reputation, or learning progress. Knowledge products rely on derived surfaces, so the architecture must make those surfaces observable and version-aware."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are spam posts, SEO abuse, stale index, copyright takedown, plus spam waves, ranking manipulation, search lag, moderation backlog, cache stampedes, and stale recommendations. Prevention requires lifecycle state, abuse controls, async processing with lag metrics, quality signals, and operational rollback."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative content state, permissions, paid access, takedowns, accepted answers, and certificate issuance need strong server-controlled consistency. Search indexes, recommendations, read counts, and analytics can be eventually consistent if they carry version and freshness signals."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with direct URL access, index rebuilds, queue retry, content rollback, and support-visible state. Abuse is controlled with rate limits, reputation, classifiers, reports, and moderation. Privacy requires careful analytics and entitlement checks. Cost is controlled by incremental indexing, cache policy, and sampled telemetry. Observability tracks indexing lag, search quality, moderation SLA, progress drift, and ranking experiments."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate authoritative knowledge state from derived discovery views. I would defend asynchronous indexing because it protects write reliability, but I would pair it with freshness metrics and direct access. I would defend mixed moderation because community, automation, and staff review each solve different parts of the scale-quality trade-off."
+  }
+];
+const references = [
+  {
+    "label": "Elasticsearch guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "Google Search Central documentation",
+    "href": "https://developers.google.com/search/docs"
+  },
+  {
+    "label": "Stack Overflow Engineering blog",
+    "href": "https://stackoverflow.blog/engineering/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "W3C Web Content Accessibility Guidelines",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  }
+];
 
 export default function MediumLikeArticlePlatformArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A Medium-like article platform solves two distinct problems: the authoring experience (writing and publishing articles) and the reading experience (discovering and consuming content). These have very different performance and scalability characteristics. Publishing is a low-frequency operation requiring a rich, reliable editor. Reading is a high-frequency operation — published articles get the vast majority of traffic and must be served fast globally with zero read latency from the database.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The critical architectural decision: published articles must be statically served via CDN with ISR (Incremental Static Regeneration) for fast global delivery, while the draft experience is a fully dynamic, autosaving rich-text editor. The two modes share a content model but have completely different serving paths. Articles that go viral (appearing on social media or aggregators) will receive sudden traffic spikes — the ISR/CDN architecture ensures these spikes hit the CDN cache, not the origin database.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Rich text editor with drafts, publish pipeline, ISR content delivery, reading progress, clap/reaction system, recommendation feed, paywall gating, and author analytics. Not in scope: video/audio hosting, full moderation infrastructure, or advertising delivery.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/medium-like-article-platform.svg" alt="Design a Medium-like Article Platform architecture" caption="Architecture view: content lifecycle, indexing, ranking, moderation, policy, and read surfaces." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/medium-like-article-platform-flow.svg" alt="Design a Medium-like Article Platform flow" caption="Flow view: creation, processing, discovery, feedback, moderation, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/medium-like-article-platform-operations.svg" alt="Design a Medium-like Article Platform operations" caption="Operations view: index lag, quality signals, abuse controls, policy decisions, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Rich text editor with autosave:</strong> The editor is a ProseMirror or TipTap-based rich text editor supporting headings, bold/italic/underline, blockquotes, code blocks (with syntax highlighting), inline images (drag-and-drop to S3 presigned URL), embedded tweets/YouTube, numbered and bulleted lists, and horizontal rules. The editor autosaves drafts every 5 seconds if the document has changed (debounced, using a PATCH /api/drafts/&#123;id&#125; endpoint). Autosave state is shown in the top bar: "Saved just now" / "Saving..." / "Save failed — check connection." The draft is stored as a JSON document (ProseMirror schema or Tiptap JSON) in the database. Draft-to-publish is a separate explicit action (the "Publish" button) which triggers the publish pipeline.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Publish pipeline:</strong> When an author clicks "Publish", the pipeline: (1) validates the draft (minimum 100 characters, title present); (2) generates SEO metadata — the meta description is auto-generated from the first 160 characters of the article body if not explicitly set; (3) assigns a canonical URL: medium.com/@username/slug-derived-from-title-&#123;shortId&#125;; (4) renders the ProseMirror JSON to HTML for storage; (5) triggers ISR revalidation (calls Next.js revalidatePath or revalidateTag for the article page); (6) indexes the article in the search system (Elasticsearch or Typesense); (7) fans out to followers' feeds (write to a feed table or fan-out queue for the author's follower list). The pipeline is async — the UI shows "Publishing..." and updates to "Published" when the webhook confirms completion.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Clap / reaction system:</strong> Medium's signature "clap" interaction allows readers to clap up to 50 times per article. Each clap is a client-side increment (the clap count shown in the UI increments immediately with optimistic UI). Batched writes: the client accumulates claps for 2 seconds after the last clap action, then sends a single POST /api/articles/&#123;id&#125;/claps with the batch count. This prevents a storm of 50 individual writes from rapid clicking. The server applies the clap count with an atomic increment (SQL: UPDATE articles SET claps = claps + ? WHERE id = ?). The displayed clap count is eventually consistent — it reflects the database count (not real-time across sessions) and refreshes on page load and every 60 seconds via SWR revalidation.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Reading progress tracking:</strong> As the reader scrolls, the article page reports scroll depth events: 25%, 50%, 75%, 100% read. These are sent via sendBeacon on visibilitychange (when the tab is hidden or closed) to avoid blocking the user's navigation. Scroll depth is used for: (1) author analytics (what fraction of readers finish the article); (2) recommendation signals (a user who reads 100% of an article has a stronger interest signal than one who reads 25%); and (3) "resume reading" — if the user navigates away and returns, the page scrolls to their last position (stored in localStorage by articleId).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>ISR for published articles:</strong> Published articles are served via Next.js ISR with a revalidation time of 1 hour. On publish, revalidatePath is called to immediately invalidate the CDN cache so the new article is live within seconds. Article pages are pre-rendered at build time for the top 1,000 most-read articles (based on clap count). All other articles are rendered on first request and cached. The CDN cache hit rate for article pages should be &gt;95% — the origin database is never queried directly for published article reads. The article HTML is stored in the page cache; dynamic elements (clap count, comment count) are loaded client-side via SWR after the initial page paint.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Paywall and member-only content gating:</strong> Authors can mark articles as "member-only." For non-members, the article renders a teaser (first 200 words) followed by a paywall CTA. The paywall check is server-side: the Next.js page component checks the user's membership status from the session cookie before rendering. If not a member, it renders the truncated version. This prevents client-side paywall bypasses (e.g., disabling JavaScript to see the full article). The full article HTML is never sent to non-member clients — the truncated render is computed server-side. Membership state is cached in the session JWT (with a 1-hour TTL) so the server-side check is a JWT decode, not a database query on every article load.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Personalized feed and recommendation:</strong> The home feed is a ranked list of articles based on: the user's reading history (topics and authors they have engaged with), followed authors' recent publications, trending articles in the user's interest tags (top by clap velocity in the last 24 hours), and articles from authors with similar readership to those the user follows. The feed is pre-computed every 30 minutes per user and stored in Redis as an ordered list of article IDs. The feed API (GET /api/feed) reads from Redis and enriches each article ID with metadata (title, thumbnail, author, read time, clap count) from a read-through Redis cache backed by the article database.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Author analytics dashboard:</strong> Authors see: total views (unique readers per article per day), reads (readers who reached 75%+ scroll depth), read ratio (reads / views), claps, external referrers (google.com, twitter.com, etc. — derived from Referer header), and follower count change. Analytics are computed from the event stream (scroll depth events, page view events) by a nightly batch job. The dashboard shows a 30-day trend chart per article and an aggregate summary. Near-real-time views (last 1 hour) are available via a streaming counter in Redis, incremented on each page view event.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system has three planes: the authoring plane (draft editor, publish pipeline, media upload), the reading plane (ISR article pages, CDN delivery, dynamic clap/comment loading), and the discovery plane (feed generation, search, recommendation). The authoring plane is a fully authenticated, dynamic Next.js app with real-time autosave. The reading plane is a hybrid: the article shell is statically served via CDN (ISR), and dynamic data is loaded client-side via SWR. The discovery plane is powered by a pre-computed recommendation service that runs on a 30-minute cadence.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Content storage: drafts and published article bodies are stored in PostgreSQL (as JSON for ProseMirror schema and as HTML for the rendered output). Images are stored in S3 with a CloudFront CDN in front. The article database is read via a read replica for analytics queries and the recommendation service — writes go to the primary only. Elasticsearch handles full-text search across published articles, indexed on publish via a queue consumer.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/medium-like-article-platform.svg"
-          alt="Medium-like article platform: rich text editor (ProseMirror/TipTap) with 5s debounced autosave to PATCH /api/drafts; publish pipeline generates SEO metadata, canonical URL, triggers ISR revalidation, Elasticsearch index, follower feed fan-out; ISR article pages served from CDN cache (>95% hit rate), clap count and comments loaded client-side via SWR; paywall check server-side from JWT session; feed pre-computed every 30min per user in Redis; author analytics from scroll-depth event stream."
-          caption="Rich text editor (autosave 5s debounce), publish pipeline (ISR revalidate, search index, feed fan-out), ISR article delivery (&gt;95% CDN hit), paywall (server-side JWT check), personalized feed (Redis 30min cadence), author analytics (scroll-depth events, nightly batch)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Editor Collaboration and Conflict Resolution</h3>
-        <HighlightBlock as="p" tier="crucial">Single-author drafts use last-write-wins: the most recent PATCH from the autosave wins. This is safe because only the author edits their draft. Multi-device editing (author editing on laptop and mobile simultaneously) is resolved by a server-side version counter: each PATCH includes the client's last-seen version number. If the server version is higher than the client's version, the server returns a 409 Conflict with the current document state. The client reconciles by merging its local changes on top of the server state using a three-way merge (base = last synced version, local = local changes, remote = server state). For production-grade collaborative editing (multiple authors on the same draft), Yjs/CRDT would be integrated — but single-author drafts don't require this complexity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The editor persists the draft to localStorage as a backup: on every autosave write (successful or failed), the JSON document is written to localStorage with the draft ID as the key. On editor load, if the localStorage version is newer than the server version (by comparing modification timestamps), the editor prompts: "We found unsaved changes from your last session. Restore or discard?" This protects against data loss from browser crashes or network failures during autosave.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Publish Pipeline Architecture</h3>
-        <HighlightBlock as="p" tier="crucial">The publish action creates a background job in a job queue (BullMQ or similar). The job processor: (1) fetches the draft from the database; (2) runs the HTML renderer (ProseMirror JSON → sanitized HTML, handling code block syntax highlighting server-side with Shiki); (3) writes the published article record to PostgreSQL (status: published, publishedAt: now, html: renderedHtml); (4) calls Next.js revalidatePath('/articles/&#123;slug&#125;') to bust the ISR cache; (5) enqueues a search indexing job (Elasticsearch document upsert with title, body text, author, tags, publishedAt); (6) enqueues a fan-out job (for each follower of the author, write a feed entry to the feed table). The fan-out job is chunked for authors with large follower counts — it processes 1,000 followers per chunk, with each chunk as a separate job to avoid timeout.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Fan-out at scale: for authors with &gt;100K followers, full fan-out is not done at publish time — the feed for these high-follower authors is computed as a hybrid: pre-computed feed entries for regular authors + on-read inclusion of the top high-follower authors' recent articles. This is the "celebrity problem" solution — avoid writing to 1M follower records on every publish by pulling their articles at read time instead.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Content Moderation and SEO</h3>
-        <HighlightBlock as="p" tier="important">Published articles go through an async content moderation check: the article HTML is sent to a moderation service (perspective API for toxicity scoring, custom classifier for spam patterns) after publish. If the moderation score exceeds the threshold, the article is flagged for human review and hidden from the home feed (but still accessible via direct URL for the author). The author receives an email notification. Human reviewers have a moderation queue dashboard that shows flagged articles with the toxicity score breakdown. The article is restored or permanently removed after human decision.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">SEO: each article page has a canonical &#60;link&#62;, Open Graph tags (og:title, og:description, og:image — using the article's first image or a generated cover), and JSON-LD structured data (Article schema). The meta description is capped at 160 characters. Canonical URLs prevent duplicate content indexing if the same article is shared via multiple URLs (e.g., with and without UTM parameters). The robots.txt blocks crawling of draft and unpublished article paths.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Highlight and Annotation System</h3>
-        <HighlightBlock as="p" tier="important">Readers can highlight text in published articles. The highlight is stored by position: &#123;articleId, startOffset: number, endOffset: number, text: string, note?: string, userId&#125;. The start/end offsets are character positions in the article's plaintext (not the HTML), which is stable across minor article edits. On article load, the client fetches the user's highlights for that article (GET /api/articles/&#123;id&#125;/highlights) and applies them by finding the text range in the DOM and wrapping it in a &#60;mark&#62; element. Public highlights (shared by the author or featured) are shown to all readers as a social layer on top of the article text.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">ISR vs. full SSR for article pages: ISR (static rendering + periodic revalidation) is the right choice for article content because articles rarely change after publish. Full SSR (rendering on every request) would handle dynamic elements (clap count, comment count) natively but would mean every article read hits the origin server — unacceptable at scale and during traffic spikes. The hybrid approach (ISR static shell + client-side SWR for dynamic data) gives the best of both: fast static delivery with up-to-date dynamic content.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Clap count consistency: the clap count shown to the reader is eventually consistent — multiple readers clapping simultaneously may see stale counts until SWR revalidates. This is acceptable for a "like" count — exact real-time accuracy is not required, and the cost of a WebSocket connection per reader just for clap count updates is not justified. If exact real-time clap counts were required (e.g., for a live event), a Redis pub/sub channel per article broadcasting clap increments would be the solution.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A Medium-like article platform requires: (1) rich text editor (ProseMirror/TipTap, 5s debounced autosave, PATCH /api/drafts, localStorage crash recovery, three-way merge for multi-device conflict); (2) publish pipeline (background job: HTML render with Shiki, revalidatePath ISR bust, Elasticsearch index, follower fan-out chunked at 1K, celebrity pull-on-read for &gt;100K); (3) ISR article delivery (&gt;95% CDN hit rate, dynamic clap/comment count via SWR after paint); (4) paywall gating (server-side truncation from JWT membership claim, full HTML never sent to non-members); (5) clap system (2s batching client-side, atomic SQL increment, eventual consistency via SWR); (6) personalized feed (pre-computed 30min per user in Redis, enriched from read-through cache); (7) author analytics (scroll-depth events via sendBeacon, nightly batch aggregation, near-real-time Redis view counter); (8) highlight/annotation (char-offset based, DOM range application on load, public featured highlights); and (9) async content moderation (perspective API + spam classifier, flag to human review queue, hidden from feed pending decision). The key architectural principle: published content is static infrastructure — serve it from the edge and never touch the database on reads.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

@@ -1,1 +1,5 @@
-# Design a content moderation & reporting UI — Example 2
+# Content Moderation AND Reporting UI - Example 2
+
+Concrete social engagement production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

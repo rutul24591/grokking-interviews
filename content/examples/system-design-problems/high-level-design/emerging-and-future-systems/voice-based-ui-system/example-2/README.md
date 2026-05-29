@@ -1,1 +1,5 @@
-# Design a voice-based UI system — Example 2
+# Voice Based UI System - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

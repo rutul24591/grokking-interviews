@@ -7,89 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-meeting-scheduling-system",
-  title: "Design a Meeting Scheduling System (like Calendly)",
-  description:
-    "Architecture for a Calendly-like meeting scheduling system: event type configuration with working hours RRULE and buffer rules, real-time free/busy aggregation from Google and Outlook calendar APIs, Redis SETNX slot locking to prevent double-booking during form fill, atomic booking commit with idempotency on reservation token, Google Calendar event creation with conferencing data for Meet/Zoom link, signed JWT reschedule/cancel links requiring no login, round-robin host assignment for team scheduling, and timezone-aware availability display for global guests.",
+  title: "Design a Meeting Scheduling System",
+  description: "Principal-level scheduling and calendar system design covering availability, recurrence, time zones, resource holds, conflict detection, reminders, external sync, privacy, and observability.",
   category: "high-level-design",
   subcategory: "scheduling-calendar-systems",
   slug: "meeting-scheduling-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "scheduling", "calendly", "booking", "free-busy", "slot-locking", "caldav", "icalendar", "round-robin"],
-  relatedTopics: ["google-calendar-system", "resource-booking-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "calendar", "scheduling", "availability", "recurrence", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Meeting Scheduling System is a coordination system where correctness depends on time, people, resources, notifications, permissions, and external calendar state. A principal-ready design treats a meeting scheduling system as a reservation and availability system, not just a date-picker UI.",
+  "The hard problems are ambiguous time zones, recurrence, conflict detection, temporary holds, invitation state, external synchronization, reminder delivery, privacy, and operational repair. Users lose trust quickly when a system double-books them or sends incorrect reminders.",
+  "The design should define authoritative state: event or reservation record, participant response, resource hold, recurrence rule, availability projection, notification state, and external sync cursor. Derived availability views and reminders can lag, but booking decisions need stronger protection.",
+  "Calendar systems also have social and organizational semantics. A meeting can be tentative, accepted, declined, private, delegated, recurring, moved, canceled, or externally owned. A resource can require approval, capacity constraints, check-in, or cleanup time.",
+  "A staff/principal answer should cover end-to-end creation, conflict checking, external sync, reminder delivery, cancellation, rollback, auditability, and how the system behaves when clocks, time zones, or provider integrations disagree."
+];
+const concepts = [
+  "The first concept is time normalization. Store canonical instants in UTC, preserve the user's intended local time zone, and use a real time zone database for daylight-saving transitions. Recurring events need local-time semantics, not only UTC arithmetic.",
+  "The second concept is reservation consistency. proposal workflow and hold service need atomic conflict checks for scarce resources or participant slots. Availability projections are useful, but final booking must revalidate authoritative state.",
+  "The third concept is recurrence expansion. Recurrence rules should be stored compactly and expanded over bounded windows. Expanding unbounded recurring meetings into physical rows creates storage and update problems.",
+  "The fourth concept is invitation workflow. Participants, resources, external guests, and approvers can each have independent state. The UI should not treat sent, delivered, accepted, tentative, declined, canceled, and failed as one status.",
+  "The fifth concept is external sync. External calendar APIs are eventually consistent and can fail, rate limit, reorder, or replay changes. Sync needs cursors, idempotency, conflict policy, and user-visible stale states.",
+  "The sixth concept is observability. Track booking conflict rate, hold expiry, reminder lag, sync error rate, recurrence expansion cost, timezone conversion errors, external provider latency, and user-visible stale availability."
+];
+const architecture = [
+  "The architecture contains availability index, proposal workflow, hold service, invite service, reminder pipeline. The write path creates or updates authoritative event/reservation state. The availability path builds read-optimized projections. The reminder path schedules notifications. The sync path reconciles external providers. The operations path repairs conflicts and failed notifications.",
+  "Creation should begin with intent and validation: actor permission, participant/resource scope, requested time range, recurrence rule, buffer time, capacity, and policy constraints. Before committing, the system revalidates conflicts against authoritative records, not only cached availability.",
+  "Temporary holds protect scarce slots during multi-step booking. A hold needs owner, resource, time range, TTL, idempotency key, and release semantics. Holds should expire automatically and be visible enough that users understand why a slot disappeared.",
+  "Recurrence should store a rule, exceptions, cancellations, and moved instances. Query APIs can expand bounded windows for display. Edits should distinguish this instance, this and following, or all instances.",
+  "Reminders and notifications should be driven by durable schedules. If a worker fails, reminders should be replayable without duplicate sends. Notification preferences and quiet hours must be respected.",
+  "External sync should be asynchronous and conflict-aware. Provider events may arrive late or out of order. The system should store sync cursor, provider version, last successful sync, and conflict resolution decision."
+];
+const tradeoffs = [
+  "Strong conflict checks protect users from double booking but add write latency and reduce availability during datastore issues. Cached availability improves browse performance but cannot be the final source of truth for booking.",
+  "Pessimistic holds reduce conflicts but can make popular slots appear unavailable because users abandon flows. Optimistic booking improves utilization but creates more failed confirmations. TTL-based holds are usually the middle ground.",
+  "Pre-expanding recurrence makes reads fast but creates huge update and deletion problems. On-demand bounded expansion is more flexible but needs efficient query windows and caching.",
+  "External calendar sync improves adoption but adds rate limits, provider-specific semantics, privacy concerns, and eventual consistency. The UI should show sync uncertainty instead of pretending all providers are instantly consistent.",
+  "Detailed reminders reduce no-shows but can become noisy or leak private event details. Notification payloads should respect event privacy, participant visibility, and channel preferences.",
+  "Audit history helps support resolve disputes but stores sensitive calendar metadata. Retention, redaction, and access control are part of the design."
+];
+const practices = [
+  "Use a proven recurrence and timezone model. Do not implement daylight-saving rules by hand. Preserve local-time intent for recurring events.",
+  "Make final booking server-authoritative. Cached availability, client-side calendars, and external free/busy results are hints until revalidated.",
+  "Use idempotency for create, update, cancel, RSVP, hold, reminder, and sync operations. Calendars are retry-heavy because clients and providers reconnect frequently.",
+  "Separate event truth from projections: availability grids, notification schedules, search indexes, and external sync state should be rebuildable.",
+  "Design explicit lifecycle states: proposed, held, confirmed, tentative, declined, canceled, expired, failed sync, failed reminder, and requires approval.",
+  "Instrument provider-specific sync and reminder behavior. External API outages should not look like product bugs without context.",
+  "Build repair tools for conflicting bookings, stuck holds, failed reminders, bad recurrence edits, and provider sync divergence."
+];
+const pitfalls = [
+  "double booking is the classic calendar failure. It happens when systems treat a local recurring meeting as fixed UTC or ignore daylight-saving transitions.",
+  "hold expiry races occurs when recurrence is expanded without bounds or when edits to one instance mutate the wrong set of future events.",
+  "external calendar lag undermines trust because participants act on stale invite state. The UI should distinguish local state from externally synced state.",
+  "no-show reminders shows that notifications are part of the product contract. Late, duplicate, or privacy-leaking reminders can be as damaging as a wrong booking.",
+  "Another pitfall is treating resource booking like ordinary CRUD. Scarce resources need conflict checks, holds, capacity rules, approvals, and operational repair.",
+  "Teams also forget privacy. Free/busy is not the same as full event detail, and private events should not leak through reminders, search, availability suggestions, or support tools."
+];
+const useCases = [
+  "sales scheduling requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "interview scheduling requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "doctor appointment booking requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "During external provider outage, the system should keep local bookings safe, mark external sync stale, retry with backoff, and avoid overwriting newer provider state blindly.",
+  "During a timezone rule change or daylight-saving bug, operators need to identify affected recurring events, replay expansion, notify impacted users, and preserve audit history.",
+  "During a high-demand booking window, the system should use holds, rate limits, queueing, and clear expiry messaging to avoid overselling scarce slots."
+];
+const questions = [
+  {
+    "question": "How would you design a meeting scheduling system end to end?",
+    "answer": "I would model authoritative event or reservation state, recurrence rules, participant/resource status, temporary holds, notification schedules, and external sync cursors. The UI reads availability projections but final booking revalidates against authoritative records. Workers handle reminders and external sync with idempotency and replay. Operations need repair tools for conflicts, stuck holds, failed reminders, and provider divergence."
+  },
+  {
+    "question": "Why this architecture over a simple events table?",
+    "answer": "A simple events table cannot model recurrence exceptions, temporary holds, RSVP state, resource conflicts, external sync, reminders, privacy, and repair workflows. The layered model adds complexity, but it separates authoritative booking from projections and asynchronous side effects."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are double booking, hold expiry races, external calendar lag, no-show reminders, plus hot resource contention, provider rate limits, sync loops, reminder fanout, stale availability caches, and support disputes. Prevention requires server-authoritative conflict checks, bounded recurrence expansion, idempotency, sync cursors, and operational repair."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative bookings, holds, resource conflicts, cancellations, and permission changes need strong server-side consistency. Availability grids, search, reminders, and external sync can be eventually consistent if they expose freshness and reconcile safely. Cached free/busy should never be the final booking decision."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "Failures are handled through hold expiry, idempotent retries, reminder replay, sync backoff, and repair tools. Rollback uses event version history and provider reconciliation. Privacy requires free/busy controls and redacted notifications. Cost is controlled through bounded recurrence expansion, cached availability windows, and batched reminders. Observability tracks conflicts, sync lag, reminder lag, stale availability, and provider errors."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend server-authoritative final booking because double booking is worse than slight latency. I would defend cached availability for browsing because it improves UX, but only as a hint. I would use TTL holds to balance utilization and conflict prevention. I would also explain why recurrence and time zones require established standards rather than ad hoc logic."
+  }
+];
+const references = [
+  {
+    "label": "RFC 5545 iCalendar specification",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5545"
+  },
+  {
+    "label": "Google Calendar API concepts",
+    "href": "https://developers.google.com/calendar/api/concepts"
+  },
+  {
+    "label": "Microsoft Graph calendar API",
+    "href": "https://learn.microsoft.com/en-us/graph/api/resources/calendar"
+  },
+  {
+    "label": "IANA time zone database",
+    "href": "https://www.iana.org/time-zones"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function MeetingSchedulingSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A meeting scheduling system (like Calendly) allows a host to share a booking page where guests can self-schedule meetings without back-and-forth emails. The core challenge is computing availability: the host's available slots are their configured working hours minus all existing calendar events, minus buffers between meetings, minus days they have exceeded their maximum bookings limit. This availability must be computed in real time from the host's live calendar (Google Calendar, Outlook, or both) so that the guest sees only actually-available slots — not stale data that leads to double-bookings.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The double-booking problem is subtle: two guests might simultaneously view the same available slot and both try to book it. The system must use a reservation lock (the first guest to click "select" holds the slot for a short window while they fill in the booking form) and an atomic commit (only one booking succeeds at the database level). The system must also handle calendar sync latency — the host might book a meeting directly in Google Calendar, and that new event must be reflected in the available slots before another guest books over it.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Single-host and team scheduling, availability computation from external calendars, slot reservation locking, booking confirmation with calendar event creation and video link, reschedule/cancel flows, and round-robin assignment. Not in scope: payments, group polls (Doodle-style), or enterprise SSO integration.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/meeting-scheduling-system.svg" alt="Design a Meeting Scheduling System architecture" caption="Architecture view: authoritative event or reservation state, availability projections, reminders, and external sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/meeting-scheduling-system-flow.svg" alt="Design a Meeting Scheduling System flow" caption="Flow view: proposal, hold, conflict check, confirmation, reminder, cancellation, and external reconciliation." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/meeting-scheduling-system-operations.svg" alt="Design a Meeting Scheduling System operations" caption="Operations view: timezone issues, stuck holds, recurrence repair, sync lag, reminder lag, and privacy controls." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Event type configuration:</strong> A host creates event types: &#123;name: "30-min intro call", duration: 30, bufferBefore: 5, bufferAfter: 10, maxPerDay: 8, workingHours: RRULE, locations: ["zoom", "google_meet", "in_person"]&#125;. Working hours are stored as an RRULE (e.g., "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYHOUR=9,10,11,12,13,14,15,16;BYMINUTE=0,30") defining the set of half-hour slots within which meetings can be booked. The event type also specifies how far in advance guests can book (e.g., no bookings within 24 hours, no bookings more than 60 days ahead). These constraints are enforced when computing the available slots list shown to the guest.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Availability computation:</strong> When a guest opens the booking page, the system computes available slots for the next 60 days (paginated by month): (1) generate candidate slots from the working hours RRULE for each day; (2) fetch busy intervals from the host's connected calendars (Google Calendar Free-Busy API, Outlook Calendar API); (3) expand existing bookings from the system's own database (already-booked meetings); (4) remove slots that overlap with any busy interval (including buffer time: a 30-minute meeting with 10-minute buffer-after means the slot 30 minutes before any busy event is also unavailable); (5) remove slots where the daily booking count is at or above maxPerDay. The result is cached in Redis per (eventTypeId, date) with a 5-minute TTL. When the host updates their calendar, a webhook from Google/Outlook invalidates the affected date's cache.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Slot reservation locking:</strong> When a guest clicks a slot, before showing the booking form, the system reserves the slot with a Redis lock: SETNX slot:&#123;eventTypeId&#125;:&#123;slotISO&#125; &#123;guestSessionId&#125; EX 600 (10-minute TTL). If SETNX returns 0 (another guest holds the lock), return 409 — the UI refreshes the availability view and shows "This slot was just taken. Please select another." If SETNX returns 1, the slot is reserved and the booking form is shown. The 10-minute TTL ensures that abandoned forms (guest closes the tab) automatically release the slot. The lock is released immediately on successful booking commit or explicit cancellation by the guest.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Booking confirmation and calendar write:</strong> POST /bookings with the reservation token, guest name, email, timezone, and any custom question answers. The booking service: (1) verifies the reservation token matches the Redis lock (preventing replays); (2) re-checks availability from the live calendar (the 5-minute cache may be stale — a final authoritative check prevents double-booking if the host added a blocking event after the cache was populated); (3) writes the booking record to PostgreSQL; (4) creates a calendar event on the host's Google/Outlook calendar via API (with all attendees, so both host and guest receive the invite); (5) generates a conference link (Google Meet via conferenceData in the Calendar API, or Zoom via Zoom API); (6) sends confirmation emails to both parties with .ics attachment and video link. All steps 2–6 are idempotent on the reservation token — if the request is retried, duplicate calendar events and emails are not created.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Reschedule and cancel:</strong> The confirmation email contains signed JWT links for reschedule and cancel. The JWT payload: &#123;bookingId, action: "reschedule"/"cancel", exp: now+30days&#125;, signed with the server's HMAC key. No login is required — the signed token authenticates the action. Reschedule: verify token → show available slots → guest selects new slot → repeat the slot-lock → booking-commit flow → delete old calendar event → create new calendar event → send updated .ics. Cancel: verify token → delete booking → delete calendar event → send cancellation .ics (status: CANCELLED) to both parties. Cancelled .ics causes both Google Calendar and Outlook to remove the event from the attendee's calendar automatically.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Round-robin team scheduling:</strong> Team event types assign incoming bookings to one host from a pool (e.g., a sales team where any available rep can take the call). Assignment algorithm: round-robin with availability filter — the booking goes to the next rep in rotation who is available at the requested slot. State: a Redis sorted set tracks the last booking timestamp for each rep; the rep with the oldest last_booking is next in rotation. If that rep is not available (busy at the requested slot), try the next rep. If no rep is available, the slot is not offered. This ensures fair distribution while guaranteeing availability. Alternative: "first available" (show all reps who are free at each slot — the guest does not see rep names, just the slot). Round-robin is preferred for equitable lead distribution in sales contexts.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Timezone display:</strong> The guest's booking page shows available slots in the guest's local timezone (detected from the browser's Intl API, overridable by a dropdown). The host configures their working hours in their own timezone. Available slot computation produces UTC intervals, which the display layer converts to the guest's timezone. Daylight saving edge cases: slots that span a DST transition (e.g., a 2am–3am slot on DST spring-forward night that technically doesn't exist) are automatically filtered out by the UTC conversion (they produce an invalid local time and are excluded from the list).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Calendar webhook handling:</strong> Google Calendar and Outlook support push notifications when the calendar changes. The booking service registers a webhook: when any event is added, modified, or deleted on the host's calendar, Google sends a POST to the booking service's webhook endpoint. The webhook handler invalidates the Redis availability cache for all dates affected by the change. This keeps the displayed availability up-to-date within seconds of a host adding a blocking event to their calendar directly. The webhook registration must be renewed every 7 days (Google's limit); a cron job renews all active webhook registrations 24 hours before expiry.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Rate limiting and abuse prevention:</strong> The slot reservation endpoint must be rate-limited to prevent bots from locking all slots without booking. Limit: 3 slot reservations per IP per hour. A bot that reserves all slots would hold them for 10 minutes (the lock TTL) — so even if rate limiting fails, the maximum damage is 10 minutes of slot unavailability. Additionally, the booking form requires a CAPTCHA (hCaptcha or Cloudflare Turnstile) for unauthenticated guests. For authenticated users (guests who have a Calendly account), CAPTCHA is skipped and their account ID is used for rate limiting instead of IP.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The scheduling system has three main services: the availability service (computes and caches available slots from working hours + external calendar APIs), the booking service (handles slot reservation, booking commit, calendar writes, and email delivery), and the calendar sync service (manages OAuth tokens for calendar API access, webhook registrations, and cache invalidation on calendar changes). These are backed by PostgreSQL (bookings, event types, host profiles, OAuth tokens) and Redis (slot reservation locks, availability cache).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">External calendar integration: the host connects their Google/Outlook calendar via OAuth 2.0. The access token and refresh token are stored encrypted in the database. The availability service uses the access token to call the Google Calendar Free-Busy API when computing slots. Token refresh: before each API call, check if the access token expires within 5 minutes — if so, refresh it using the refresh token. Refresh is idempotent (concurrent refreshes use a distributed lock to avoid race conditions causing both to use the same refresh token, which invalidates it).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/meeting-scheduling-system.svg"
-          alt="Meeting scheduling system: Guest opens booking page → Availability Service fetches working hours minus Google/Outlook busy slots (5min cache); guest clicks slot → Redis SETNX lock (10min TTL) → 409 if taken; guest submits form → Booking API re-checks live calendar, writes booking, creates Google Calendar event with Meet link, sends .ics to both parties; reschedule/cancel via signed JWT links."
-          caption="Availability = working_hours RRULE minus busy slots minus buffers (5min Redis cache); Redis SETNX slot lock prevents double-booking during form fill; booking commit re-checks live calendar; signed JWT reschedule/cancel links require no login; round-robin assignment for team scheduling"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Availability Computation Performance</h3>
-        <HighlightBlock as="p" tier="important">Computing availability for 60 days requires: generating ~5,760 candidate 30-minute slots (60 days × 16 waking hours × 2 per hour), fetching busy intervals from Google Calendar (one API call covering the entire 60-day range — Google Free-Busy API accepts a multi-calendar, multi-day query), and performing interval subtraction. The interval subtraction algorithm: sort busy intervals by start time, merge overlapping busy intervals, then compute the complement within the working hours set. This is O(N log N) where N is the number of busy intervals (typically a few hundred for a busy professional). The result is the list of free slots.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The Google Free-Busy API is the bottleneck: it takes 200–500ms depending on network conditions. The 5-minute Redis cache absorbs this cost for subsequent requests. Cache key granularity: per (eventTypeId, date, timezone) — the timezone is part of the key because the same UTC slots render differently for guests in different timezones, and some slots available in UTC may not be available in all timezones (DST edge cases). For the initial page load (cache miss), the system computes availability for the visible month synchronously, then pre-computes the next month asynchronously (eager loading the next page the guest will likely request).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Double-Booking Prevention Deep Dive</h3>
-        <HighlightBlock as="p" tier="crucial">Double-booking has two failure modes: (1) two guests simultaneously reserve the same slot (handled by Redis SETNX — only one succeeds); (2) a slot appears available in the cached free/busy data, but the host added a blocking event after the cache was populated (handled by the live re-check in the booking commit step). The live re-check in step (2) is the authoritative guard: it calls the Google Free-Busy API with a narrow time window (just the requested slot, plus buffers) with a fresh, non-cached result. This re-check adds 200–500ms to the booking commit flow but is only run once per booking (not per page load), so the latency impact on the user experience is acceptable.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">A third failure mode exists with team round-robin: two guests simultaneously book two different slots assigned to the same rep, where both booking commits pass the live re-check (both slots were truly free) but the combined result exceeds the rep's maxPerDay limit. This is resolved by a database-level constraint: a partial unique index on (repId, date) with a check that count of bookings per rep per day does not exceed maxPerDay. This check is enforced inside a database transaction, preventing the race condition.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Calendar Event Creation</h3>
-        <HighlightBlock as="p" tier="important">Creating a Google Calendar event on the host's calendar via the API requires the host's OAuth access token (stored and refreshed by the calendar sync service). The event is created with: summary (event type name + guest name), description (answers to custom questions), start/end in UTC with timezone, attendees (host email + guest email — Google will send invites to both), conferenceData.createRequest (Google generates a Meet link and attaches it to the event), and reminders (host's default reminder settings). Google Calendar API returns the created event with the conference data populated (Meet URL). This URL is included in the confirmation email and stored in the booking record.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Outlook integration uses the Microsoft Graph API (/me/events endpoint) with similar fields. Zoom integration (for hosts who prefer Zoom over Google Meet) uses the Zoom API to create a meeting, then stores the Zoom join URL in the booking record and includes it in the .ics LOCATION field. The .ics file format allows the video link to appear in the calendar event's location field in all calendar apps, including non-Google ones.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Polling vs. webhooks for calendar sync: webhooks (Google Calendar push notifications) give near-real-time sync but require managing webhook registrations, handling webhook validation (Google sends a POST with a challenge token that must be echoed back to register), and handling webhook delivery failures (Google retries failed webhooks but may give up after several attempts). Polling (checking for calendar changes every 5 minutes) is simpler but means availability can be stale by up to 5 minutes. For a scheduling tool where stale availability causes visible double-bookings, webhooks are worth the complexity. A hybrid: webhooks for fast invalidation, with a 5-minute polling fallback for webhook failures (any cache entry older than 5 minutes is refreshed on the next availability request).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">External calendar dependency: the availability computation depends on Google/Outlook being available. If the Google Calendar API is down, the system cannot compute accurate availability. Options: (1) fail open (show no available slots if the calendar API is unavailable — the guest sees "no availability today, please try again later"); (2) use stale cache (show the last computed availability, clearly labeled as "possibly outdated due to a technical issue"). Option 1 is safer (prevents double-bookings) but hurts the host's booking rate during outages. Option 2 keeps the service usable but risks double-bookings. For the scheduling use case, option 1 (fail closed) is the safer default — a missed booking opportunity is less damaging than a double-booking that wastes both parties' time.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A Calendly-like scheduling system requires: (1) event type config with working hours RRULE, buffer times, maxPerDay, and advance booking windows; (2) availability computation: working_hours RRULE candidate slots minus Google/Outlook busy intervals minus buffers minus existing bookings, cached per (eventTypeId, date) with 5-minute Redis TTL; (3) Redis SETNX slot lock (10-minute TTL) on slot click to prevent double-booking during form fill; (4) booking commit: live re-check (non-cached) from Google Calendar API + PostgreSQL write + Google Calendar event creation with conferenceData (Meet URL) + .ics confirmation email to both parties; (5) idempotency on reservation token (no duplicate calendar events on retry); (6) reschedule/cancel via HMAC-signed JWT links in confirmation email (no login required, 30-day expiry); (7) Google Calendar webhook + cache invalidation for near-real-time availability updates; (8) round-robin team scheduling via Redis sorted set (last_booking score) with availability filter and DB-level maxPerDay constraint; (9) timezone display in guest's local TZ (Intl API detection, DST-invalid slots auto-excluded); (10) rate limiting: 3 slot reservations per IP per hour + CAPTCHA for unauthenticated guests.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

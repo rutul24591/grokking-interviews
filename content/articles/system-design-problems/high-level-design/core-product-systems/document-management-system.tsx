@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   category: "high-level-design",
   subcategory: "core-product-systems",
   slug: "document-management-system",
-  wordCount: 5500,
-  readingTime: 33,
-  lastUpdated: "2026-05-10",
+  wordCount: 6200,
+  readingTime: 37,
+  lastUpdated: "2026-05-20",
   tags: ["hld", "document-management", "versioning", "annotations", "preview", "RBAC"],
   relatedTopics: ["version-history-system", "audit-log-viewer-ui"],
 };
@@ -24,91 +24,401 @@ export default function DocumentManagementSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">An enterprise document management system (DMS) is the authoritative repository for organizational knowledge: contracts, engineering specs, legal briefs, financial reports. The requirements that distinguish an enterprise DMS from a simple file storage system are version history (every change is preserved; documents can be rolled back), in-browser preview (users can view PDFs, Word documents, and presentations without downloading them or installing software), collaborative annotations (multiple users can annotate a document simultaneously without overwriting each other's notes), and granular access control (specific users or groups can read, comment, edit, or administer specific documents, with inheritance from folder-level permissions).</HighlightBlock>
-        <p>The technical complexity concentrates in two areas. Preview rendering: a PDF viewer can be implemented in the browser using PDF.js, but rendering large PDFs (200-page contracts) performantly requires progressive page loading, thumbnail generation, and text layer extraction for search. Annotations: overlaying annotations on a document preview requires coordinate systems that remain stable as the document is zoomed, scrolled, and annotated by multiple simultaneous users—a problem with similarities to collaborative editing but with the constraint that the underlying document is immutable (annotations are overlaid on the document, not embedded in it).</p>
-        <p><strong>Explicit assumptions:</strong> Documents are primarily PDFs, Word documents (DOCX), Excel spreadsheets (XLSX), and PowerPoint presentations (PPTX). All document formats are converted to PDF server-side for preview rendering (using LibreOffice or a managed conversion service), ensuring a single preview rendering pipeline. Maximum document size is 100MB. Annotations are stored separately from documents (documents are immutable once uploaded; annotation data is a separate database entity). The system serves up to 10,000 concurrent users.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="crucial">
+          An enterprise document management system is the authoritative repository for contracts, engineering specs,
+          legal briefs, financial reports, design documents, security evidence, and operational runbooks. It is not
+          just "upload files to object storage." The system must preserve immutable history, render documents safely
+          in the browser, support annotation and review workflows, enforce granular permissions, index text for
+          discovery, and produce audit evidence that stands up to compliance and incident investigations.
+        </HighlightBlock>
+        <p>
+          The core product promise is trust. Users must believe that the version they are viewing is the right version,
+          that comments are anchored to the correct page and revision, that unauthorized users cannot access a file by
+          guessing a URL, and that a rollback or permission change leaves an explainable trail. In interviews, this is
+          a strong problem because it combines object storage, asynchronous processing, search, real-time collaboration,
+          authorization, data retention, and browser performance into one system.
+        </p>
+        <p>
+          A practical scope is PDF, DOCX, XLSX, and PPTX uploads up to 100 MB, with server-side conversion to PDF for a
+          unified preview pipeline. The first page should be visible within roughly two seconds after processing is
+          complete. Annotation updates should reach active viewers within two seconds. Every view, download, share,
+          permission change, version upload, and export should be recorded. The system should support 10,000
+          concurrent users and a permission model based on users, groups, folders, and document-level overrides.
+        </p>
+        <p>
+          A principal-level design should explicitly separate documents, versions, renditions, annotations, search
+          indexes, permission state, and audit events. These entities evolve at different rates and have different
+          consistency needs. The original uploaded binary should be immutable. A rendered PDF is a derived artifact.
+          Text extraction and thumbnails are rebuildable. Annotations are collaborative metadata tied to a specific
+          version. Audit events are append-only evidence. Mixing these concerns into one mutable record creates weak
+          history, brittle recovery, and dangerous authorization shortcuts.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Document storage and versioning:</strong> Upload documents; each upload creates a new version. Version history is preserved indefinitely (or per retention policy). Users can download or preview any historical version.</li>
-          <li><strong>In-browser preview:</strong> View PDF, DOCX, XLSX, PPTX documents in the browser without downloading. Preview loads the first page within 2 seconds.</li>
-          <li><strong>Annotations:</strong> Add text annotations, highlights, and drawing annotations to document pages. Annotations are user-attributed, timestamped, and visible to all users with document access. Multiple users can annotate simultaneously without conflicts.</li>
-          <li><strong>Search:</strong> Full-text search across document content (requires text extraction from PDFs and Office documents). Metadata search (file name, uploader, date, tags).</li>
-          <li><strong>Access control:</strong> Documents and folders have configurable permissions (read, comment, edit, admin) per user or group. Folder permissions inherit to contained documents unless explicitly overridden.</li>
-          <li><strong>Audit trail:</strong> Every access (view, download, edit, share) is logged with user, timestamp, and action. Audit logs are immutable.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Preview latency:</strong> First page visible within 2 seconds. Subsequent pages load on demand as the user scrolls.</li>
-          <li><strong>Storage durability:</strong> 99.999999999% (11 nines) durability via S3-compatible object storage.</li>
-          <li><strong>Access control enforcement:</strong> Document access must be authorized on every request; no document is accessible without a valid permission check. Pre-signed URLs must be short-lived (15 minutes maximum).</li>
-          <li><strong>Annotation consistency:</strong> Annotations from multiple simultaneous users must not overwrite each other. All users viewing the same document see the same annotation state within 2 seconds of a new annotation being created.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Immutable Versions and Derived Renditions</h3>
+        <p>
+          Each upload creates a new version record with a stable document ID, a unique version ID, storage key,
+          content hash, uploader, upload timestamp, version number, and previous version pointer. Rollback should not
+          mutate history. Rolling back version 7 to version 4 creates version 8 with metadata that says it was copied
+          from version 4. This append-only model preserves causality and lets compliance reviewers see what happened
+          instead of only seeing the final state.
+        </p>
+        <p>
+          Derived renditions are separate from original files. A DOCX may produce a preview PDF, page thumbnails,
+          extracted text, table metadata, and searchable OCR output. These artifacts can fail independently, be
+          regenerated when converter versions change, and be stored with their own processing status. The user may be
+          allowed to download the original file even while preview conversion is still pending, depending on policy.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Preview as a Secure, Progressive Read Path</h3>
+        <p>
+          Browser preview is a performance and security feature. Users should inspect documents without downloading
+          sensitive files to unmanaged devices. Server-side conversion gives a consistent preview format and avoids
+          relying on incomplete client-side Office renderers. PDF.js can render the final PDF progressively using
+          range requests, which lets the browser fetch the cross-reference table and visible pages instead of the
+          entire file.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Annotations Are Versioned Overlays</h3>
+        <p>
+          Annotations should be stored separately from document binaries. A highlight, note, drawing, approval stamp,
+          or threaded comment references document ID, version ID, page number, normalized page coordinates, author,
+          creation time, visibility scope, and resolution state. Normalized coordinates keep overlays stable when a
+          user zooms, rotates, or views the page on a different device. Version-specific annotations avoid the common
+          bug where a note on page three of an old contract appears on the wrong paragraph after a new version changes
+          pagination.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Authorization Must Sit on Every Boundary</h3>
+        <p>
+          A DMS has many access paths: metadata APIs, preview PDFs, original downloads, thumbnails, OCR text, search
+          snippets, annotation streams, export jobs, audit logs, and shared links. Every boundary needs authorization.
+          Short-lived pre-signed URLs are useful for object storage delivery, but they are not a replacement for
+          permission checks. The application should mint them only after evaluating the user's effective permission,
+          and the URL should be scoped to the exact object, rendition, action, and TTL.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The DMS has four primary subsystems: document storage (S3 for raw files and generated PDFs, with a Document Service managing metadata and versioning), preview rendering (server-side PDF generation from Office formats, progressive PDF delivery to the browser, PDF.js for rendering), annotation service (stores and delivers annotation data, handles concurrent annotation events), and access control (an RBAC service that evaluates permissions on every document and folder operation). These subsystems are connected by a Document API that the frontend interacts with for all operations.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/document-management-system-architecture.svg"
-          alt="Document management system architecture showing upload pipeline (S3 storage → Office-to-PDF conversion → text extraction for search → thumbnail generation), preview delivery (pre-signed S3 URL → PDF.js progressive page loading), annotation service (PostgreSQL annotation store → WebSocket delivery for real-time sync), RBAC permission evaluation, and version chain management."
-          caption="DMS architecture: upload → conversion pipeline, PDF.js preview, annotation WebSocket sync, RBAC permission chain, and S3 versioned storage"
+          alt="Document management architecture showing upload API, object storage, conversion workers, preview service, search indexing, annotation service, permission service, and audit log"
+          caption="Architecture: immutable uploads feed asynchronous conversion, search, thumbnails, preview delivery, annotation sync, RBAC checks, and audit logging."
         />
+        <p>
+          The upload path starts at the Document API. The API authenticates the user, checks write permission for the
+          target folder, reserves a document or version record, and issues an upload target. For large documents, the
+          client should use multipart upload directly to object storage through scoped credentials or pre-signed part
+          URLs. After upload completion, the API verifies size, checksum, content type, malware scan status, and
+          tenant limits before marking the version as accepted.
+        </p>
+        <p>
+          Accepted versions enqueue asynchronous processing jobs. A conversion worker turns Office files into PDF
+          using a sandboxed converter such as LibreOffice or a managed service. A text extraction worker extracts
+          searchable text and page-level offsets. A thumbnail worker renders page previews for grids and sidebars. An
+          OCR worker may run for scanned documents. Each job writes status back to the version record. The UI can show
+          "uploaded," "scanning," "converting," "indexing," and "ready" states instead of pretending the upload is
+          immediately previewable.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/core-product-systems/document-management-system-workflow.svg"
+          alt="Document upload workflow from permission check to multipart upload, malware scan, conversion, text extraction, thumbnail generation, indexing, and preview readiness"
+          caption="Workflow: upload acceptance and preview readiness are separate milestones, which keeps the UI honest and the processing path retryable."
+        />
+        <p>
+          The preview path resolves metadata first, not bytes. The client asks the Document API for a preview session.
+          The API checks read permission, records an audit event, chooses the correct rendition, and returns a
+          short-lived signed URL or a streaming proxy token. PDF.js then performs range requests against the PDF
+          rendition so the first page can render quickly. The frontend should virtualize pages and evict distant
+          canvases because a 300-page PDF can exhaust browser memory if every page remains rendered.
+        </p>
+        <p>
+          The annotation path is write-through to the Annotation Service. Creating a note is an HTTP write that checks
+          comment permission, validates page and coordinate bounds, persists the annotation, records an audit event,
+          and broadcasts a small event to subscribers on the document-version channel. Active viewers receive the
+          event through WebSocket or Server-Sent Events and add the overlay. Because annotations are independent rows,
+          concurrent creation is much simpler than collaborative text editing; the hard parts are ordering, deletion,
+          visibility, and anchoring to the correct version.
+        </p>
+        <p>
+          Search has two phases. Ingestion indexes extracted text and metadata after processing. Query execution must
+          apply permissions before returning titles, snippets, or thumbnails. For users with a small accessible corpus,
+          the search service can filter by accessible document IDs. For admins or broad-access groups, it may use
+          folder or tenant-level filters plus post-checks. Search snippets are sensitive because they can leak content
+          even when the document itself is blocked, so permission filtering must happen before snippets leave the
+          service boundary.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Document Upload and Version Management</h3>
-        <HighlightBlock as="p" tier="important">Each document upload creates a new version in the version chain. The version chain is a linked list: each version record has a documentId (stable across all versions), versionId (unique per version), storageKey (the S3 object key for this version's file), contentHash (SHA-256 of the file content for deduplication), uploadedBy, uploadedAt, versionNumber (monotonically increasing integer), and previousVersionId. If a document is uploaded with the same contentHash as an existing version, the system can create a version record pointing to the same S3 object (deduplication at the storage level) or reject the upload with "This file is identical to the current version."</HighlightBlock>
-        <p>The document's canonical display version is always the highest-numbered version. The Document Service tracks this in a documents table (current_version_id field). Version rollback creates a new version (not a mutation of history): rolling back to version 3 creates version 5 as a copy of version 3's content with a rolledBackFromVersionId annotation. This append-only approach ensures the full history is always preserved—you can always see that a rollback occurred and what triggered it.</p>
-        <HighlightBlock as="p" tier="important">Post-upload processing runs asynchronously: the Document Service queues a conversion job, text extraction job, and thumbnail generation job. The conversion job (LibreOffice in headless mode, or a managed service like Gotenberg) converts DOCX/XLSX/PPTX to PDF and stores the result as a separate S3 object referenced from the version record. The text extraction job extracts the document's text for full-text search indexing (Elasticsearch). The thumbnail job renders the first page as a JPEG for use in file browser thumbnail views. All three jobs complete within 30–60 seconds for typical documents; the preview remains unavailable until the conversion job completes (the UI shows a "Processing..." state for freshly uploaded documents).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Progressive PDF Preview</h3>
-        <HighlightBlock as="p" tier="important">PDF.js is an open-source JavaScript PDF rendering library that renders PDFs in the browser using HTML canvas. For large PDFs (100+ pages), loading and rendering the entire document at once would be prohibitively slow. Progressive loading renders pages on demand: the first page renders immediately using the first chunk of the PDF file; subsequent pages render as the user scrolls. PDF.js's PDFDocumentProxy.getPage() fetches individual page data; the viewer maintains a pool of rendered canvases and evicts pages far from the current viewport to control memory usage.</HighlightBlock>
-        <p>The PDF is not served directly from S3 to the browser for large documents. Instead, the Document Service generates a pre-signed S3 URL with a 15-minute TTL and returns it to the browser. The browser fetches the PDF from S3 using range requests (HTTP Range header), allowing PDF.js to fetch only the pages needed for the current viewport. S3 supports range requests natively. The first range request fetches the PDF's cross-reference table (the last 1–2KB of the PDF file, which indexes all page positions), enabling PDF.js to calculate the byte ranges for specific pages without downloading the entire file. Subsequent requests fetch individual page data as needed. A 50-page, 10MB PDF can render the first page with only a few hundred KB of downloaded data.</p>
-        <p>Thumbnail generation for the document browser view: the server renders the first page of each document to a JPEG thumbnail (stored in S3 alongside the PDF) during the post-upload processing pipeline. The browser displays these thumbnails in list and grid views without needing to load the full PDF. Thumbnails are generated at 200×260px for grid view and 80×104px for list view, using LibreOffice's headless export or a PDF-to-image library.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Annotation System</h3>
-        <p>Annotations are stored in a relational database (PostgreSQL) as separate entities from the document. The annotation schema: annotationId, documentId, versionId (annotations are version-specific—an annotation on page 3 of version 2 may not be meaningful on version 3 if the page count changed), authorId, createdAt, type (highlight, text-note, drawing, stamp), page (1-indexed page number), coordinates (normalized to the page's coordinate space: x and y as fractions of page width and height, width and height as fractions for region annotations), content (text for text-note type), color, resolved (boolean, for comment resolution workflows), and parentAnnotationId (for reply threads).</p>
-        <p>Normalized coordinates (0.0–1.0 fractions of page dimensions) rather than pixel coordinates are critical: the user may view the document at different zoom levels on different devices. An annotation at (x=0.5, y=0.25) is always at the center-top of the page regardless of the zoom level. The PDF.js viewer converts between normalized document coordinates and pixel coordinates for rendering annotation overlays on the canvas.</p>
-        <HighlightBlock as="p" tier="important">Concurrent annotation delivery uses WebSocket. When the user opens a document, a WebSocket connection is established to the Annotation Service, subscribed to the documentId + versionId channel. Creating a new annotation triggers an HTTP POST to the Annotation API, which saves the annotation and broadcasts it to all WebSocket subscribers for the document. All other users viewing the same document see the new annotation within 1–2 seconds. This is much simpler than collaborative document editing (no OT/CRDT needed) because annotations are independent entities—two users creating annotations simultaneously do not conflict. Each annotation is a separate database row; there is no shared mutable state to reconcile.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">RBAC and Permission Inheritance</h3>
-        <HighlightBlock as="p" tier="important">The permission model has two layers: folder-level permissions (inherited by all documents within the folder unless overridden) and document-level permissions (explicit overrides for specific documents). Each permission record associates a principal (userId or groupId) with a resource (folderId or documentId) and a permission level (read, comment, edit, admin). The permission evaluation algorithm: for a given user and document, check for an explicit document-level permission first; if none, check the parent folder; then the grandparent folder; continue up the hierarchy to the root. The most specific (deepest) permission wins.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Permission inheritance is evaluated at request time, not precomputed (precomputation would require re-evaluating all documents' effective permissions every time a folder permission changes, which is impractical at scale). For performance, permission evaluations are cached in Redis with a short TTL (60 seconds): the cache key is (userId, documentId), the value is the effective permission level. When permissions change (a new permission is added, an existing one is removed), the affected cache entries are invalidated. Cache invalidation scope: when a folder's permission changes, all documents within that folder must have their cached permissions invalidated—the cache uses folder tags for this purpose (all cache entries for documents in a folder are tagged with the folderId; clearing the tag invalidates all related entries).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Full-Text Search</h3>
-        <HighlightBlock as="p" tier="important">Full-text search indexes the text extracted from documents during post-upload processing. The search index (Elasticsearch) stores: documentId, versionId, a content field containing the extracted text, and metadata fields (filename, uploadedBy, uploadedAt, tags). The permission-aware search challenge: users should only see documents they have access to in search results. Two approaches: post-filter (search Elasticsearch, then check permissions on each result, discarding unauthorized ones—simple but potentially returns fewer results than the requested page size when many are filtered out) or per-document permission storage in the index with a must_match clause on allowed documents (accurate but requires keeping the index updated when permissions change).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The pragmatic solution for most DMS implementations: query Elasticsearch with the user's accessible documentIds as a filter. Before executing the search, the RBAC service returns all documentIds the user can access (read or higher). This list is passed to Elasticsearch as a terms filter. For users with broad access (admins), this list may be too long to use as a terms filter; in that case, the query runs without the filter and post-filtering is applied on the results, accepting a potential reduction in result accuracy for page boundaries. For most users with limited access (specific project folders), the list is small and the terms filter is efficient.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Server-side conversion gives better fidelity and consistent rendering for Office documents, but it adds
+          compute cost, processing delay, converter vulnerabilities, and operational complexity. Client-side rendering
+          reduces backend work but has weaker fidelity for legal and financial documents, inconsistent font handling,
+          and unpredictable performance on low-end devices. Enterprise systems usually prefer server-side conversion
+          because correctness of the preview matters more than immediate rendering of every format.
+        </p>
+        <p>
+          Serving previews directly from object storage through short-lived signed URLs is efficient and scalable.
+          The trade-off is that access control is front-loaded: once the URL is minted, object storage will serve it
+          until expiration. A proxy service can enforce authorization on every range request and revoke access
+          instantly, but it adds cost and can become a bandwidth bottleneck. Many systems use signed URLs for normal
+          documents and a proxy path for highly sensitive repositories, watermarking, data rooms, or legal holds.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/document-management-system-permissions.svg"
-          alt="DMS permission model showing folder hierarchy with inherited permissions, explicit document-level permission overrides, permission evaluation algorithm (deepest wins), Redis permission cache with folder tag invalidation, and permission-aware search (accessible documentIds as Elasticsearch terms filter)"
-          caption="DMS permission model: folder hierarchy inheritance, explicit document overrides, Redis caching with tag invalidation, and permission-aware Elasticsearch search"
+          alt="Document management permission model with folder inheritance, document overrides, permission cache invalidation, and permission-aware search"
+          caption="Permission model: inherited folder grants, document overrides, cache invalidation, and search filtering must agree on the same effective access rules."
         />
+        <p>
+          Annotation storage outside the PDF keeps original files immutable and supports rich collaboration features
+          such as threads, mentions, resolution, visibility scopes, and audit metadata. The cost is export complexity:
+          "download with annotations" requires a server-side composition job. Embedding annotations into the PDF makes
+          export simple but mutates the document artifact, complicates content hashes, and weakens the version model.
+          For enterprise DMS products, overlays are usually the safer primary model, with composed PDFs generated as
+          derived exports.
+        </p>
+        <p>
+          Permission inheritance can be evaluated at request time or materialized into effective ACLs. Request-time
+          evaluation is simpler to keep correct when folder permissions change, but it can be expensive for deep folder
+          trees and high-QPS preview traffic. Materialized ACLs make reads fast but make permission updates costly and
+          risky. A pragmatic approach is request-time evaluation with short-lived caching and explicit invalidation by
+          folder tags, plus materialized search filters only where query performance demands it.
+        </p>
+        <p>
+          Full-text search can over-index or under-index. Indexing all extracted text maximizes recall but increases
+          storage cost and leak impact if permissions are wrong. Indexing only metadata is safer but makes the DMS much
+          less useful. A principal-level answer should mention document-level security boundaries, encrypted indexes
+          where appropriate, snippet authorization, and re-indexing after permission model changes or content
+          extraction improvements.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Principal-level decision frame</h3>
+        <p>
+          The strongest interview framing is to separate normal documents, regulated documents, and legal-hold
+          documents into different serving policies. Normal documents can use signed URLs, cached permission decisions,
+          and asynchronous processing. Regulated repositories may require proxy-mediated previews, watermarking,
+          just-in-time permission checks, download prevention, and stricter audit trails. Legal-hold documents may
+          require immutable retention and reprocessing controls. A principal answer should not force one policy on all
+          tenants; it should define risk tiers and make the expensive controls opt-in or policy-driven.
+        </p>
+        <p>
+          Capacity planning should also be explicit. Preview conversion is CPU and memory heavy, OCR can dominate cost,
+          and search indexing can lag during large imports. The architecture should expose separate SLOs for upload
+          acknowledgement, preview availability, search availability, and permission propagation. This lets the system
+          preserve fast uploads while admitting that derived artifacts may take minutes for very large files or bulk
+          migrations.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Server-side PDF conversion versus client-side rendering: converting all document formats to PDF server-side creates a uniform preview pipeline (one renderer, PDF.js, for all formats) but adds processing latency and requires server-side conversion infrastructure. Rendering Office documents directly in the browser (using libraries like SheetJS for Excel or DOCX.js for Word) would eliminate the server-side conversion step, but client-side Office rendering libraries have lower fidelity than LibreOffice's conversion (formatting differences, unsupported features) and varying performance characteristics. For enterprise use where document fidelity is critical (contracts, legal briefs), server-side conversion to PDF provides the most accurate preview.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Annotation storage as database records versus embedded in the PDF: storing annotations in the database (separate from the document) keeps the document immutable—an annotation does not change the document file. This is important for legal and compliance contexts where the original document must remain tamper-evident. The trade-off is that exporting a document "with annotations" requires re-rendering the document with annotations overlaid (a server-side PDF composition step). Embedding annotations in the PDF (using PDF annotation APIs) makes export trivial but makes the document mutable every time an annotation is added, complicating the version history model and breaking content hash-based deduplication.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Pre-signed URL duration: 15-minute pre-signed URLs balance usability (users need enough time to view the document) against security (compromised URLs are valid for only 15 minutes). For documents in active review sessions (a user annotating for 2 hours), the URL will expire mid-session. The viewer must request a new pre-signed URL before the current one expires: the frontend fetches a fresh URL from the Document API every 10 minutes (before the 15-minute TTL expires) and updates the PDF.js document source. This URL refresh happens transparently to the user, without reloading the document or losing scroll position.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Treat processing as a durable workflow with idempotent jobs. Conversion, OCR, thumbnailing, and indexing
+          should be retryable without creating duplicate versions or corrupting metadata. Store processing attempts,
+          converter version, input hash, output hash, failure reason, and final artifact keys. This lets the system
+          reprocess affected documents after a converter bug or security patch while keeping the original upload
+          unchanged.
+        </p>
+        <p>
+          Make authorization a shared service or library with one effective-permission contract. The preview API,
+          download API, annotation API, search service, sharing workflow, and audit viewer should not each implement
+          slightly different permission logic. The contract should define inherited permissions, explicit denies,
+          group membership, document overrides, shared links, legal holds, tenant policy, and admin bypass rules. Cache
+          decisions only with clear invalidation semantics.
+        </p>
+        <p>
+          Build document security controls into the main flow. Scan uploads for malware, enforce file type allowlists,
+          isolate conversion workers, strip active content from previews, block external references during conversion,
+          and watermark sensitive previews when required. Conversion services process untrusted files, so they should
+          run in hardened sandboxes with restricted network access, resource limits, and short-lived working
+          directories.
+        </p>
+        <p>
+          Design the frontend previewer around memory and latency budgets. Render only visible pages and a small
+          buffer. Keep text layers and annotation layers aligned with the canvas. Preload thumbnails and adjacent page
+          metadata, not every page bitmap. Preserve scroll position, zoom level, annotation selection, and search
+          highlights when refreshing signed URLs. Large documents should degrade gracefully rather than freezing the
+          browser.
+        </p>
+        <p>
+          Keep audit events append-only and queryable by compliance dimensions. Store actor, action, resource,
+          version, IP/device context where allowed, timestamp, permission decision, and correlation ID. The audit path
+          should not block every user action on a slow analytics pipeline, but it should be durable enough that access
+          and mutation events are not silently lost. A common design is transactional audit records for critical
+          actions and asynchronous enrichment for analytics views.
+        </p>
+        <p>
+          Prepare reprocessing and migration tooling before it is needed. Converter bugs, OCR improvements, malware
+          signature updates, permission-model changes, and tenant exports all require replaying derived artifact
+          pipelines. Keep original uploads immutable, version derived artifacts, and support controlled backfills with
+          rate limits so operational fixes do not starve live uploads.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An enterprise document management system is built around five technical pillars: versioned document storage (append-only version chain in PostgreSQL + S3, with content hash deduplication), server-side document conversion (LibreOffice converts Office formats to PDF, text is extracted for search, thumbnails are generated), progressive PDF preview (PDF.js with range requests fetches only visible pages, normalized coordinates enable zoom-stable annotation overlays), annotation service (independent annotation entities in PostgreSQL, WebSocket delivery for real-time multi-user annotation synchronization), and RBAC with inheritance (folder-level permissions inherited by documents, Redis-cached permission evaluations with tag-based invalidation). Pre-signed S3 URLs with 15-minute TTLs enforce access control at the storage level. Full-text search uses Elasticsearch with accessible documentIds as a permission-aware filter. The defining architecture choice is treating documents as immutable objects—annotations, versions, and audit events are all separate entities that reference documents, never modifying them.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most dangerous pitfall is authorization drift. Metadata APIs may enforce folder inheritance while preview
+          URLs, thumbnails, OCR text, or search snippets accidentally skip it. This creates partial leaks that are hard
+          to notice because the main document page appears secure. Every derived artifact should be treated as
+          sensitive and tied back to the same effective permission decision as the source document.
+        </p>
+        <p>
+          Another common mistake is making annotations version-agnostic. Page numbers and coordinates are meaningful
+          only for a particular rendition of a particular version. If a new version inserts a cover page, old page
+          three annotations should not silently move to page four of the new document. The product can offer migration
+          or "view annotations from prior version," but it should be explicit.
+        </p>
+        <p>
+          Teams often underbuild the processing state model. A user uploads a file and sees only "processing" forever
+          because conversion failed, OCR timed out, or indexing rejected malformed text. Processing should have visible
+          states, retry controls, support diagnostics, and fallback behavior. If preview conversion fails but download
+          is allowed, the UI should explain the difference rather than hiding the document.
+        </p>
+        <p>
+          Pre-signed URLs also create subtle bugs. Long TTLs make leaked URLs dangerous. Very short TTLs interrupt
+          reading sessions unless refresh is seamless. URLs should be scoped to exact objects, never folder prefixes,
+          and preview refresh should preserve PDF.js state. Permission revocation should invalidate future URL minting
+          immediately, and highly sensitive documents may require proxy delivery to enforce revocation mid-session.
+        </p>
+        <p>
+          Finally, search result paging can become incorrect after permission filtering. If the system asks the search
+          index for 20 hits and then removes 15 unauthorized hits, the user sees sparse pages and inconsistent totals.
+          The search service should either pre-filter by accessible corpus or over-fetch and continue filtering until
+          it has enough authorized results, while making total counts approximate if exact permission-aware counts are
+          too expensive.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Legal and procurement teams use a DMS for contracts, redlines, approvals, and executed agreements. They care
+          about immutable history, exact preview fidelity, restricted sharing, and audit trails. Annotation threads may
+          represent negotiation comments, so version anchoring and export-with-annotations become important product
+          requirements.
+        </p>
+        <p>
+          Engineering organizations use document repositories for design docs, architecture reviews, runbooks, and
+          incident evidence. Search relevance and permission-aware discovery are critical because users often know the
+          concept but not the file name. Integration with identity groups and project folders reduces manual sharing
+          errors, while audit logs help investigate access to sensitive security documents.
+        </p>
+        <p>
+          Finance, healthcare, and regulated enterprises use DMS platforms for reports, policies, claims, patient or
+          customer documentation, and compliance evidence. These environments require retention policies, legal holds,
+          watermarking, download restrictions, regional storage controls, and separation between ordinary read access
+          and administrative access to audit logs.
+        </p>
+        <p>
+          Customer-facing SaaS products also embed document management into workflows such as onboarding, claims,
+          loan applications, support cases, and vendor portals. In those systems, the DMS is not a standalone product
+          but a shared platform capability. The design must support tenant isolation, externally shared links,
+          asynchronous virus scanning, lifecycle policies, and clear status for documents that are uploaded but not
+          yet safe or ready to preview.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you model document versions and rollback?
+        </h3>
+        <p>
+          I would keep a stable document ID and create a new immutable version ID for every accepted upload. Each
+          version stores object keys, hashes, uploader, timestamp, version number, processing status, and a pointer to
+          the previous version. Rollback creates another new version copied from the target historical version rather
+          than mutating current state. That preserves the audit trail and lets users see that a rollback occurred,
+          who triggered it, and which version became current afterward.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you deliver secure browser preview for large documents?
+        </h3>
+        <p>
+          I would convert supported formats to PDF server-side, store the PDF rendition separately, and use PDF.js with
+          HTTP range requests so the browser fetches only needed page ranges. The client first asks the Document API
+          for a preview session; the API checks permission, records an audit event, and returns a short-lived signed
+          URL or proxy token. The viewer virtualizes pages, evicts distant canvases, refreshes expiring URLs before
+          they break the session, and never assumes the signed URL itself is proof of permission.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you design collaborative annotations?
+        </h3>
+        <p>
+          I would store annotations as separate version-specific records with normalized coordinates. Creating an
+          annotation is an authenticated write that checks comment permission, validates bounds, persists the row, and
+          broadcasts the new annotation to active viewers on a document-version channel. Because annotations are
+          independent entities, concurrent creates do not need OT or CRDT. I would still handle ordering, deletes,
+          edits, visibility, replies, and migration across versions explicitly.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you make search permission-aware?
+        </h3>
+        <p>
+          Search must not return unauthorized titles, snippets, thumbnails, or counts. For narrow-access users, I
+          would pre-filter the query by accessible document or folder IDs from the permission service. For broad-access
+          users, I may use tenant or folder filters plus post-checking, over-fetching enough results to fill the page.
+          Permission changes need cache invalidation and possibly re-indexing of materialized ACL fields. I would treat
+          snippets as sensitive content and enforce authorization before snippet generation leaves the search service.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          What failure modes should the system expose to users?
+        </h3>
+        <p>
+          The UI should distinguish upload failure, malware scan pending or rejected, conversion failure, preview not
+          ready, indexing pending, annotation write failure, and permission denial. These states imply different user
+          actions. A conversion failure may still allow original download. A malware rejection should block download
+          and notify administrators. An indexing delay should not block preview. A permission denial should not reveal
+          metadata beyond what policy allows.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          What are the most important operational metrics?
+        </h3>
+        <p>
+          I would track upload success rate, conversion latency and failure rate by file type, malware scan time,
+          preview first-page latency, PDF range request error rate, annotation broadcast latency, permission check
+          latency, cache hit rate, search indexing lag, unauthorized access denials, signed URL refresh failures, and
+          audit write failures. These metrics separate user-facing preview problems from backend processing problems
+          and permission-system problems.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://mozilla.github.io/pdf.js/" target="_blank" rel="noreferrer">
+              PDF.js project documentation
+            </a>
+            , browser PDF rendering and range-loading behavior.
+          </li>
+          <li>
+            <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html" target="_blank" rel="noreferrer">
+              Amazon S3 presigned URL documentation
+            </a>
+            , scoped object access and expiration behavior.
+          </li>
+          <li>
+            <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPart.html" target="_blank" rel="noreferrer">
+              Amazon S3 multipart upload API
+            </a>
+            , large-object upload mechanics.
+          </li>
+          <li>
+            <a href="https://opensearch.org/docs/latest/security/access-control/document-level-security/" target="_blank" rel="noreferrer">
+              OpenSearch document-level security documentation
+            </a>
+            , permission-aware search considerations.
+          </li>
+          <li>
+            <a href="https://tika.apache.org/" target="_blank" rel="noreferrer">
+              Apache Tika
+            </a>
+            , document text and metadata extraction.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

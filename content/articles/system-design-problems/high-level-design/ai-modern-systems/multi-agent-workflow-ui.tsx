@@ -42,7 +42,7 @@ export default function MultiAgentWorkflowUiArticle() {
         caption="Multi-agent workflow: graph builder, orchestrator/sub-agent pattern, per-agent SSE streams, HITL gates, and run observability with swimlane timeline"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h2>Definition &amp; Context</h2>
       <p>
         Multi-agent systems span a wide spectrum in complexity. Establish scope:
       </p>
@@ -71,7 +71,11 @@ export default function MultiAgentWorkflowUiArticle() {
         run state from the server's event log.
       </HighlightBlock>
 
-      <h2>Workflow Design: The Agent Graph Builder</h2>
+      <h2>Core Concepts</h2>
+      <p>The core concepts are workflow graph design, orchestrator state, agent dependencies, live run monitoring, human gates, shared memory, tool sandboxing, trace replay, cancellation, and cost control. These concepts define the production contract for multi-agent workflow UI: what the UI can promise, what the backend must enforce, and what operators need to observe when the feature behaves unexpectedly.</p>
+      <p>For principal-level interviews, frame this as a product system rather than a model demo. The answer should cover ownership, permissions, safety, rollback, quality measurement, degraded behavior, and cost control in addition to the visible interaction.</p>
+
+      <h2>Architecture &amp; Flow</h2>
       <p>
         The workflow graph builder is a visual DAG editor. Nodes represent agents; edges
         represent data dependencies (the output of agent A becomes an input to agent B).
@@ -101,7 +105,7 @@ export default function MultiAgentWorkflowUiArticle() {
         and approve).
       </p>
 
-      <h2>Orchestrator and Sub-Agent Pattern</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Orchestrator and Sub-Agent Pattern</h3>
       <p>
         The orchestrator is the coordinating LLM that decomposes the user's high-level
         task into subtasks and assigns them to specialized sub-agents. The sub-agents
@@ -130,7 +134,7 @@ export default function MultiAgentWorkflowUiArticle() {
         the read.
       </HighlightBlock>
 
-      <h2>Live Run Monitoring</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Live Run Monitoring</h3>
       <p>
         During execution, the UI shows a live view of the run with per-agent status
         and event streams. The visualization must convey: which agents are active, which
@@ -154,7 +158,7 @@ export default function MultiAgentWorkflowUiArticle() {
         is per-lane and persisted across reconnects.
       </p>
 
-      <h2>SSE Event Stream Architecture</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">SSE Event Stream Architecture</h3>
       <p>
         The backend maintains a server-side event log for each run. The frontend subscribes
         via a single SSE connection for the entire run, receiving a multiplexed stream
@@ -180,8 +184,13 @@ export default function MultiAgentWorkflowUiArticle() {
         requiring a separate "get run state" API call. This makes the event log the
         authoritative source of truth for run state.
       </HighlightBlock>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/multi-agent-workflow-ui-run-lifecycle.svg"
+        alt="Multi-agent workflow lifecycle showing agent states, event stream types, HITL pauses, retry paths, and a parallel agent waterfall"
+        caption="Run lifecycle: agent state transitions, multiplexed SSE events, HITL pauses, retries, and a timeline view for parallel execution"
+      />
 
-      <h2>Human-in-the-Loop Gate UI</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Human-in-the-Loop Gate UI</h3>
       <p>
         When the run reaches a HITL gate, the entire run pauses (the downstream agents
         do not start until the gate is resolved). The UI shows a prominent notification:
@@ -207,7 +216,7 @@ export default function MultiAgentWorkflowUiArticle() {
         alert to an alternate reviewer).
       </p>
 
-      <h2>Run Observability and Artifacts</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Run Observability and Artifacts</h3>
       <p>
         After a run completes (successfully or with failures), the observability view
         lets users understand what happened, evaluate quality, and debug failures.
@@ -235,7 +244,160 @@ export default function MultiAgentWorkflowUiArticle() {
         all the work done by upstream agents.
       </HighlightBlock>
 
-      <h2>Interview Q&A</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Agent Memory and Shared State Management</h3>
+      <p>
+        Multi-agent workflows that run beyond a single LLM context window require persistent
+        memory — a structured store that agents can write to during their execution and
+        read from at the start of the next step. Without persistent memory, each agent
+        invocation starts cold, unable to build on the reasoning and discoveries of prior
+        steps. The shared state model defines where agent memory lives, what format it
+        uses, and how conflicts are resolved when multiple agents write concurrently.
+      </p>
+      <p>
+        The run context object serves as the short-term shared memory for a single run:
+        a JSON document stored server-side (Redis for fast reads, database for durability)
+        that all agents within the run can read and write. Long-term memory (across runs)
+        requires a persistent memory store — a vector database where key facts, decisions,
+        and learned patterns from prior runs are stored as embeddings. When a new run
+        starts, the orchestrator retrieves relevant long-term memory using the run's initial
+        task as the query, injecting the top-K retrieved memories into each agent's context.
+        This allows workflows that improve over time: a research workflow that has processed
+        10 similar tasks stores learnings about effective search strategies, source reliability,
+        and common pitfalls that are retrieved for the 11th similar task.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Memory write conflicts are the hardest operational problem in multi-agent shared
+        state. Two agents that attempt to write to the same key in the run context
+        simultaneously produce a race condition. Namespace isolation (each agent owns
+        a dedicated key prefix) prevents the most common cases. For shared resources
+        — a list of URLs to process, a queue of subtasks — use an atomic queue abstraction
+        (Redis RPOPLPUSH for work-stealing queues) rather than a shared list that multiple
+        agents read-modify-write. The UI should surface write conflict events in the
+        run trace so developers can diagnose unexpected behavior: "Agent B's write to
+        research_urls was overwritten by Agent C 200ms later."
+      </HighlightBlock>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/multi-agent-workflow-ui-shared-state.svg"
+        alt="Shared run state diagram showing isolated agent namespaces, atomic shared queues, ETag version checks, conflict events, and trace replay visibility"
+        caption="Shared state model: isolate per-agent outputs, use atomic shared queues, version writes, and surface conflicts in trace replay"
+      />
+      <p>
+        Memory pruning and context management: agent context windows have a token limit.
+        The orchestrator is responsible for deciding what to inject from the run context
+        into each agent's context. A research agent starting its task does not need the
+        full output from all prior agents — only the relevant upstream outputs and the
+        initial task description. Context injection policies (what to include from the
+        run context for each agent type) are configurable per workflow and displayed
+        in the agent configuration panel, making the context budget visible and controllable.
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Debugging Agent Failures with Trace Replay</h3>
+      <p>
+        Multi-agent workflow failures are hard to debug. A failure in agent C may have
+        been caused by incorrect output from agent B, which was caused by incomplete input
+        from agent A. Debugging requires reconstructing the exact sequence of events,
+        agent reasoning, and data transformations that led to the failure — not just
+        the error message at the point of failure.
+      </p>
+      <p>
+        Trace replay is the debugging tool that makes this possible. The event log (which
+        records every agent transition, tool call, and context write with millisecond
+        timestamps) is the raw material. The trace replay UI presents this log in two
+        views: a chronological timeline (events in order of occurrence) and an agent-scoped
+        view (all events for a specific agent, in order). The developer can step through
+        the trace event by event, inspecting the run context state at each step — what
+        data was in the shared context when each agent started, what it wrote, and what
+        changed as a result.
+      </p>
+      <p>
+        Causal analysis: the trace UI highlights the causal chain from an agent's failure
+        back to its inputs. If agent C failed with "Expected field 'company_summary' in
+        run context but it was missing," the trace shows that agent B (which should have
+        written company_summary) completed without error but wrote to "company_sumary"
+        (a typo in the agent's system prompt). The trace replay surfaces this by showing
+        a diff between what the failing agent expected to find in the run context and what
+        was actually present at the time it started — making the root cause obvious without
+        requiring the developer to manually search through the event log.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Deterministic trace replay (being able to re-run the exact sequence of events from
+        a historical trace to reproduce a failure in a debugging environment) requires
+        capturing not just the events but the LLM responses verbatim, the tool call inputs
+        and outputs, and the run context state at each checkpoint. Without full state
+        capture, replay is approximate — using the same prompts but getting different
+        LLM responses due to non-determinism (temperature greater than 0). For debugging,
+        replay with temperature set to 0 and the original model version to maximize
+        reproducibility, but flag the replay as approximate when the original run used
+        temperature above 0.
+      </HighlightBlock>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Cost Management for Multi-Agent Runs</h3>
+      <p>
+        A multi-agent workflow can consume orders of magnitude more tokens than a single
+        LLM call. An orchestrator that plans by reasoning through a 1,000-token context,
+        dispatches 4 parallel agents each with 2,000-token contexts, and synthesizes
+        results in a 3,000-token context consumes over 12,000 tokens per run — before
+        any tool calls. At $0.01 per 1K tokens and 10,000 runs per day, that is $1,200
+        per day from a single workflow. Multi-agent workflows require cost visibility
+        and budget controls that single-LLM systems do not.
+      </p>
+      <p>
+        Per-run cost estimation: before executing a run, the orchestrator can estimate
+        cost based on the workflow topology (number of agents, expected context sizes,
+        tool call overhead) and the selected models. Show this estimate in the run
+        confirmation UI — "This workflow will cost approximately $0.12 to execute" —
+        allowing users to decide whether to proceed or choose a cheaper model configuration.
+        The estimate is based on median token counts from prior runs of the same workflow;
+        it will be inaccurate for first-ever runs or runs with highly variable inputs.
+      </p>
+      <p>
+        Budget enforcement: each workflow definition can have a per-run budget cap.
+        When the running cost exceeds the cap, the orchestrator pauses the run and
+        presents a HITL gate: "This run has exceeded its $0.50 budget cap with 3 agents
+        still pending. Approve additional budget or cancel remaining agents." This prevents
+        runaway costs from workflows that encounter unexpectedly verbose inputs or loops.
+        Budget caps are configured per workflow in the graph builder and are visible
+        in the run monitoring view alongside the real-time cost counter.
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Agency Control and Tool Sandboxing</h3>
+      <p>
+        The principal-level risk in multi-agent workflows is not only that an agent may
+        answer incorrectly; it is that several agents can compound mistakes while holding
+        powerful tools. Tool access should be capability-scoped per agent and per workflow
+        run. A research agent may read web pages and write artifacts, but it should not
+        send email, update tickets, or run production-changing scripts. A code execution
+        agent should run in an isolated container with network egress disabled by default,
+        file-system quotas, execution timeouts, and a fixed artifact export path.
+      </p>
+      <p>
+        Shared artifacts should be treated as untrusted input. A malicious web page or
+        a compromised upstream tool result can inject instructions into a research summary
+        that a downstream writer agent later follows. The orchestrator should pass
+        artifacts with provenance, trust level, and allowed usage metadata, and downstream
+        agents should receive explicit instructions to treat external content as data,
+        not as instructions. For high-consequence steps, use a policy engine outside the
+        LLM to decide whether a tool call is allowed, then show the human reviewer the
+        exact tool, target, parameters, and artifact provenance before approval.
+      </p>
+
+      <h2>Trade offs &amp; Comparison</h2>
+      <p>The core trade-off is capability versus control. Rich AI experiences improve user productivity, but they add uncertainty, cost, latency, data-access risk, and operational complexity. A principal-ready design explains which paths are authoritative, which paths are best-effort, and how the system degrades when retrieval, model execution, policy checks, or tool calls fail.</p>
+      <p>The design should also compare build-versus-buy boundaries. Provider APIs, vector stores, evaluation tools, moderation classifiers, and orchestration frameworks can accelerate delivery, but the product still owns permission enforcement, user trust, auditability, rollback, and quality measurement.</p>
+
+      <h2>Best practices</h2>
+      <p>Use explicit contracts between UI, orchestration, model, retrieval, policy, and tool layers. Persist durable state, keep correlation IDs across model and tool calls, separate user-visible confidence from internal scores, and make failed or degraded states visible. Treat prompts, policies, retrieval settings, and model versions as production configuration with owners and rollback.</p>
+      <p>Measure quality continuously with offline evaluation sets, production feedback, latency and cost telemetry, safety outcomes, and incident reviews. Principal-level systems do not rely on subjective demos to decide whether an AI feature is working.</p>
+
+      <h2>Common Pitfalls</h2>
+      <p>Common pitfalls include letting the model decide authorization, hiding uncertainty, storing sensitive context unnecessarily, treating provider streaming formats as frontend contracts, and shipping without replayable traces. Another frequent issue is optimizing for impressive answers while neglecting source evidence, policy enforcement, and operator visibility.</p>
+      <p>Teams also underestimate lifecycle problems: model behavior changes, documents are deleted, prompts drift, evaluation sets go stale, and users discover adversarial inputs. The architecture needs ongoing governance, not only launch-time safeguards.</p>
+
+      <h2>Real-world use cases</h2>
+      <p>These patterns apply to enterprise copilots, knowledge assistants, developer tools, moderation systems, model-evaluation platforms, support automation, document Q&A, search products, and workflow automation. In each case, the AI surface becomes a governance and reliability surface as soon as users depend on it for real decisions.</p>
+      <p>For staff and principal interviews, connect the design to rollout safety, tenant isolation, incident response, data access, cost controls, and measurable quality improvement. That is what separates a feature explanation from a system design answer.</p>
+
+      <h2>Common interview question with detailed answer</h2>
 
       <h3>Q: How do you handle a loop in agent communication where agent A's output triggers agent B, which then triggers agent A again?</h3>
       <p>
@@ -276,117 +438,6 @@ export default function MultiAgentWorkflowUiArticle() {
         users building complex workflows.
       </p>
 
-      <h2>Agent Memory and Shared State Management</h2>
-      <p>
-        Multi-agent workflows that run beyond a single LLM context window require persistent
-        memory — a structured store that agents can write to during their execution and
-        read from at the start of the next step. Without persistent memory, each agent
-        invocation starts cold, unable to build on the reasoning and discoveries of prior
-        steps. The shared state model defines where agent memory lives, what format it
-        uses, and how conflicts are resolved when multiple agents write concurrently.
-      </p>
-      <p>
-        The run context object serves as the short-term shared memory for a single run:
-        a JSON document stored server-side (Redis for fast reads, database for durability)
-        that all agents within the run can read and write. Long-term memory (across runs)
-        requires a persistent memory store — a vector database where key facts, decisions,
-        and learned patterns from prior runs are stored as embeddings. When a new run
-        starts, the orchestrator retrieves relevant long-term memory using the run's initial
-        task as the query, injecting the top-K retrieved memories into each agent's context.
-        This allows workflows that improve over time: a research workflow that has processed
-        10 similar tasks stores learnings about effective search strategies, source reliability,
-        and common pitfalls that are retrieved for the 11th similar task.
-      </p>
-      <HighlightBlock as="p" tier="important">
-        Memory write conflicts are the hardest operational problem in multi-agent shared
-        state. Two agents that attempt to write to the same key in the run context
-        simultaneously produce a race condition. Namespace isolation (each agent owns
-        a dedicated key prefix) prevents the most common cases. For shared resources
-        — a list of URLs to process, a queue of subtasks — use an atomic queue abstraction
-        (Redis RPOPLPUSH for work-stealing queues) rather than a shared list that multiple
-        agents read-modify-write. The UI should surface write conflict events in the
-        run trace so developers can diagnose unexpected behavior: "Agent B's write to
-        research_urls was overwritten by Agent C 200ms later."
-      </HighlightBlock>
-      <p>
-        Memory pruning and context management: agent context windows have a token limit.
-        The orchestrator is responsible for deciding what to inject from the run context
-        into each agent's context. A research agent starting its task does not need the
-        full output from all prior agents — only the relevant upstream outputs and the
-        initial task description. Context injection policies (what to include from the
-        run context for each agent type) are configurable per workflow and displayed
-        in the agent configuration panel, making the context budget visible and controllable.
-      </p>
-
-      <h2>Debugging Agent Failures with Trace Replay</h2>
-      <p>
-        Multi-agent workflow failures are hard to debug. A failure in agent C may have
-        been caused by incorrect output from agent B, which was caused by incomplete input
-        from agent A. Debugging requires reconstructing the exact sequence of events,
-        agent reasoning, and data transformations that led to the failure — not just
-        the error message at the point of failure.
-      </p>
-      <p>
-        Trace replay is the debugging tool that makes this possible. The event log (which
-        records every agent transition, tool call, and context write with millisecond
-        timestamps) is the raw material. The trace replay UI presents this log in two
-        views: a chronological timeline (events in order of occurrence) and an agent-scoped
-        view (all events for a specific agent, in order). The developer can step through
-        the trace event by event, inspecting the run context state at each step — what
-        data was in the shared context when each agent started, what it wrote, and what
-        changed as a result.
-      </p>
-      <p>
-        Causal analysis: the trace UI highlights the causal chain from an agent's failure
-        back to its inputs. If agent C failed with "Expected field 'company_summary' in
-        run context but it was missing," the trace shows that agent B (which should have
-        written company_summary) completed without error but wrote to "company_sumary"
-        (a typo in the agent's system prompt). The trace replay surfaces this by showing
-        a diff between what the failing agent expected to find in the run context and what
-        was actually present at the time it started — making the root cause obvious without
-        requiring the developer to manually search through the event log.
-      </p>
-      <HighlightBlock as="p" tier="crucial">
-        Deterministic trace replay (being able to re-run the exact sequence of events from
-        a historical trace to reproduce a failure in a debugging environment) requires
-        capturing not just the events but the LLM responses verbatim, the tool call inputs
-        and outputs, and the run context state at each checkpoint. Without full state
-        capture, replay is approximate — using the same prompts but getting different
-        LLM responses due to non-determinism (temperature greater than 0). For debugging,
-        replay with temperature set to 0 and the original model version to maximize
-        reproducibility, but flag the replay as approximate when the original run used
-        temperature above 0.
-      </HighlightBlock>
-
-      <h2>Cost Management for Multi-Agent Runs</h2>
-      <p>
-        A multi-agent workflow can consume orders of magnitude more tokens than a single
-        LLM call. An orchestrator that plans by reasoning through a 1,000-token context,
-        dispatches 4 parallel agents each with 2,000-token contexts, and synthesizes
-        results in a 3,000-token context consumes over 12,000 tokens per run — before
-        any tool calls. At $0.01 per 1K tokens and 10,000 runs per day, that is $1,200
-        per day from a single workflow. Multi-agent workflows require cost visibility
-        and budget controls that single-LLM systems do not.
-      </p>
-      <p>
-        Per-run cost estimation: before executing a run, the orchestrator can estimate
-        cost based on the workflow topology (number of agents, expected context sizes,
-        tool call overhead) and the selected models. Show this estimate in the run
-        confirmation UI — "This workflow will cost approximately $0.12 to execute" —
-        allowing users to decide whether to proceed or choose a cheaper model configuration.
-        The estimate is based on median token counts from prior runs of the same workflow;
-        it will be inaccurate for first-ever runs or runs with highly variable inputs.
-      </p>
-      <p>
-        Budget enforcement: each workflow definition can have a per-run budget cap.
-        When the running cost exceeds the cap, the orchestrator pauses the run and
-        presents a HITL gate: "This run has exceeded its $0.50 budget cap with 3 agents
-        still pending. Approve additional budget or cancel remaining agents." This prevents
-        runaway costs from workflows that encounter unexpectedly verbose inputs or loops.
-        Budget caps are configured per workflow in the graph builder and are visible
-        in the run monitoring view alongside the real-time cost counter.
-      </p>
-
       <h3>Q: How do you handle an agent that consistently produces low-quality output that degrades downstream agents?</h3>
       <p>
         Agent output quality monitoring requires evaluating each agent's output against
@@ -415,6 +466,36 @@ export default function MultiAgentWorkflowUiArticle() {
         timeout fires, all active agents are cancelled simultaneously and the run is
         marked as partially complete with a summary of completed artifacts and the
         timeout context as the final output.
+      </p>
+
+      <h2>References</h2>
+      <p>
+        <a href="https://www.w3.org/TR/server-sent-events/" target="_blank" rel="noreferrer">
+          W3C Server-Sent Events
+        </a>{" "}
+        defines the browser streaming primitive used for run-event replay, Last-Event-ID
+        recovery, and long-lived workflow monitoring.
+      </p>
+      <p>
+        <a href="https://opentelemetry.io/docs/concepts/signals/traces/" target="_blank" rel="noreferrer">
+          OpenTelemetry Traces
+        </a>{" "}
+        provides the tracing model needed to connect orchestrator planning, agent spans,
+        tool calls, context writes, HITL gates, and retry attempts into one debuggable run.
+      </p>
+      <p>
+        <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noreferrer">
+          OWASP Top 10 for Large Language Model Applications
+        </a>{" "}
+        covers excessive agency, insecure plugin design, sensitive data leakage, and
+        prompt-injection concerns that become more severe as agents gain tools and autonomy.
+      </p>
+      <p>
+        <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noreferrer">
+          NIST AI Risk Management Framework
+        </a>{" "}
+        is useful for framing governance, measurement, and human oversight requirements
+        for autonomous or semi-autonomous AI workflows.
       </p>
     </ArticleLayout>
   );

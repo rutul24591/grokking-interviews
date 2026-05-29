@@ -1,61 +1,89 @@
-/**
- * Ripple Performance — GPU-composited ripple animation with concurrent ripple cap.
- *
- * Interview edge case: User clicks button rapidly, creating 10+ ripples simultaneously.
- * Each ripple is a DOM element with CSS animation. Too many concurrent ripples cause
- * jank. Solution: cap concurrent ripples at 5, use transform + opacity only
- * (GPU-composited), clean up after animation ends.
- */
+export type reusableButtonSystemSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-import { useRef, useCallback } from 'react';
-
-const MAX_CONCURRENT_RIPPLES = 5;
-
-interface Ripple {
+export type reusableButtonSystemEvent = {
   id: string;
-  x: number;
-  y: number;
-  size: number;
-  timestamp: number;
+  topic: "reusable-button-system";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: reusableButtonSystemSignal;
+};
+
+export type reusableButtonSystemDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateReusableButtonSystemEvent(event: reusableButtonSystemEvent): reusableButtonSystemDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: reusableButtonSystemDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Reusable Button System",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Manages ripple animations with performance constraints.
- */
-export function useRippleAnimation() {
-  const ripplesRef = useRef<Ripple[]>([]);
-  const containerRef = useRef<HTMLButtonElement | null>(null);
+export function runReusableButtonSystemContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateReusableButtonSystemEvent({
+    id: "reusable-button-system-evt-1",
+    topic: "reusable-button-system",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  /**
-   * Creates a ripple at the click position. Capped at MAX_CONCURRENT_RIPPLES.
-   */
-  const createRipple = useCallback((e: React.MouseEvent) => {
-    const container = containerRef.current;
-    if (!container) return;
+  const guarded = evaluateReusableButtonSystemEvent({
+    id: "reusable-button-system-evt-late",
+    topic: "reusable-button-system",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-    const rect = container.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height) * 2;
-
-    // Remove oldest ripples if at capacity
-    if (ripplesRef.current.length >= MAX_CONCURRENT_RIPPLES) {
-      ripplesRef.current = ripplesRef.current.slice(-MAX_CONCURRENT_RIPPLES + 1);
-    }
-
-    const ripple: Ripple = {
-      id: `ripple_${Date.now()}_${Math.random()}`,
-      x: e.clientX - rect.left - size / 2,
-      y: e.clientY - rect.top - size / 2,
-      size,
-      timestamp: Date.now(),
-    };
-
-    ripplesRef.current.push(ripple);
-
-    // Clean up old ripples after animation completes
-    setTimeout(() => {
-      ripplesRef.current = ripplesRef.current.filter((r) => r.id !== ripple.id);
-    }, 600); // Match animation duration
-  }, []);
-
-  return { containerRef, ripples: ripplesRef.current, createRipple };
+  return { accepted, guarded };
 }

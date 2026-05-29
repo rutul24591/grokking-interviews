@@ -1,1 +1,5 @@
-# Design a notification inbox system — Example 3
+# Notification Inbox System - Example 3
+
+Concrete messaging edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

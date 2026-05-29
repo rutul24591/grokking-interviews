@@ -1,72 +1,89 @@
-/**
- * Component Registry with Versioning — Tracks component metadata and version compatibility.
- *
- * Interview edge case: A consuming app upgrades the component library from v2 to v3,
- * but some components have breaking API changes. The registry must detect version
- * mismatches and provide migration warnings.
- */
+export type componentLibrarySignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-export interface ComponentMetadata {
-  name: string;
-  version: string;
-  a11yCompliant: boolean;
-  tokensUsed: string[];
-  deprecatedIn?: string;
-  migrationGuide?: string;
+export type componentLibraryEvent = {
+  id: string;
+  topic: "component-library";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: componentLibrarySignal;
+};
+
+export type componentLibraryDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateComponentLibraryEvent(event: componentLibraryEvent): componentLibraryDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: componentLibraryDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Component Library",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Singleton registry that tracks all registered components and their versions.
- */
-export class ComponentRegistry {
-  private static instance: ComponentRegistry;
-  private components: Map<string, ComponentMetadata> = new Map();
-  private currentVersion: string = '0.0.0';
+export function runComponentLibraryContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateComponentLibraryEvent({
+    id: "component-library-evt-1",
+    topic: "component-library",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  static getInstance(): ComponentRegistry {
-    if (!ComponentRegistry.instance) {
-      ComponentRegistry.instance = new ComponentRegistry();
-    }
-    return ComponentRegistry.instance;
-  }
+  const guarded = evaluateComponentLibraryEvent({
+    id: "component-library-evt-late",
+    topic: "component-library",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-  register(metadata: ComponentMetadata): void {
-    if (this.components.has(metadata.name)) {
-      console.warn(`[ComponentRegistry] Component "${metadata.name}" already registered. Overwriting.`);
-    }
-    this.components.set(metadata.name, metadata);
-
-    // Check for deprecation
-    if (metadata.deprecatedIn) {
-      console.warn(
-        `[ComponentRegistry] "${metadata.name}" is deprecated since v${metadata.deprecatedIn}.` +
-        (metadata.migrationGuide ? ` Migration guide: ${metadata.migrationGuide}` : ''),
-      );
-    }
-  }
-
-  getComponent(name: string): ComponentMetadata | undefined {
-    return this.components.get(name);
-  }
-
-  getAllComponents(): ComponentMetadata[] {
-    return Array.from(this.components.values());
-  }
-
-  getAccessibilityReport(): { total: number; compliant: number; nonCompliant: string[] } {
-    const all = this.getAllComponents();
-    return {
-      total: all.length,
-      compliant: all.filter((c) => c.a11yCompliant).length,
-      nonCompliant: all.filter((c) => !c.a11yCompliant).map((c) => c.name),
-    };
-  }
-
-  setVersion(version: string): void {
-    this.currentVersion = version;
-  }
-
-  getVersion(): string {
-    return this.currentVersion;
-  }
+  return { accepted, guarded };
 }

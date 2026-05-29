@@ -1,68 +1,90 @@
-/**
- * Tree View — Staff-Level Large Tree Performance Optimization.
- *
- * Staff differentiator: Flat list virtualization of tree nodes, lazy loading
- * of child nodes on expand, and path caching for fast parent lookup.
- */
+export type treeViewFolderExplorerRuntimeState = {
+  topic: "tree-view-folder-explorer";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-/**
- * Manages lazy loading of tree children on expand.
- * Fetches children only when a node is expanded for the first time.
- */
-export class LazyTreeLoader {
-  private loadedChildren: Map<string, any[]> = new Map();
-  private loadingPromises: Map<string, Promise<any[]>> = new Map();
-  private fetchChildrenFn: (parentId: string) => Promise<any[]>;
+export type treeViewFolderExplorerRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-  constructor(fetchChildrenFn: (parentId: string) => Promise<any[]>) {
-    this.fetchChildrenFn = fetchChildrenFn;
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
+}
+
+export function planTreeViewFolderExplorerRecovery(
+  state: treeViewFolderExplorerRuntimeState,
+  nowMs: number,
+): treeViewFolderExplorerRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: treeViewFolderExplorerRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Loads children for a node. Returns cached data if already loaded.
-   */
-  async loadChildren(parentId: string): Promise<any[]> {
-    // Return cached if available
-    if (this.loadedChildren.has(parentId)) {
-      return this.loadedChildren.get(parentId)!;
-    }
-
-    // Return pending promise if already loading
-    if (this.loadingPromises.has(parentId)) {
-      return this.loadingPromises.get(parentId)!;
-    }
-
-    // Fetch and cache
-    const promise = this.fetchChildrenFn(parentId).then((children) => {
-      this.loadedChildren.set(parentId, children);
-      this.loadingPromises.delete(parentId);
-      return children;
-    });
-
-    this.loadingPromises.set(parentId, promise);
-    return promise;
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Clears cached children for a node (e.g., after adding/removing children).
-   */
-  invalidate(parentId: string): void {
-    this.loadedChildren.delete(parentId);
-    this.loadingPromises.delete(parentId);
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  /**
-   * Clears all cached data.
-   */
-  clearCache(): void {
-    this.loadedChildren.clear();
-    this.loadingPromises.clear();
-  }
+export function runTreeViewFolderExplorerEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planTreeViewFolderExplorerRecovery(
+    {
+      topic: "tree-view-folder-explorer",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
 
-  /**
-   * Returns whether children are loaded for a node.
-   */
-  areChildrenLoaded(parentId: string): boolean {
-    return this.loadedChildren.has(parentId);
-  }
+  const failure = planTreeViewFolderExplorerRecovery(
+    {
+      topic: "tree-view-folder-explorer",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Tree View Folder Explorer",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

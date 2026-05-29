@@ -1,15 +1,26 @@
-function buildRequestKey(input) {
-  return JSON.stringify(input);
+function reciprocalRankFusion(resultLists, rankConstant = 60) {
+  const byId = new Map();
+
+  for (const results of resultLists) {
+    for (const result of results) {
+      const existing = byId.get(result.id) ?? {
+        id: result.id,
+        fusedScore: 0,
+        sources: [],
+      };
+      existing.fusedScore += 1 / (result.rank + rankConstant);
+      existing.sources.push(result.source);
+      byId.set(result.id, existing);
+    }
+  }
+
+  return [...byId.values()].sort((a, b) => b.fusedScore - a.fusedScore);
 }
 
-function jitterBackoffMs(attempt, baseMs, maxMs) {
-  const exp = Math.min(maxMs, baseMs * 2 ** Math.max(0, attempt - 1));
-  const jitter = Math.random() * exp * 0.2;
-  return Math.floor(exp + jitter);
+function shouldGenerateAnswerBox({ intent, topScore, hasCitations }) {
+  if (intent !== 'informational') return false;
+  if (!hasCitations) return false;
+  return topScore >= 0.75;
 }
 
-function applyRetryPolicy({ attempt, baseMs, maxMs }) {
-  return { delayMs: jitterBackoffMs(attempt, baseMs, maxMs) };
-}
-
-module.exports = { buildRequestKey, applyRetryPolicy };
+module.exports = { reciprocalRankFusion, shouldGenerateAnswerBox };

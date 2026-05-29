@@ -1,1 +1,5 @@
-# Design a frontend architecture for an internal developer platform — Example 3
+# Frontend Architecture FOR AN Internal Developer Platform - Example 3
+
+Concrete platform infrastructure edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

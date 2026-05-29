@@ -1,1 +1,5 @@
-# Design a multi-agent workflow UI — Example 3
+# Multi Agent Workflow UI - Example 3
+
+Concrete AI product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

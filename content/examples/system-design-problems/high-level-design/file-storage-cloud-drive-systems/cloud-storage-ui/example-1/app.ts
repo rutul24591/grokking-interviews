@@ -1,19 +1,57 @@
-const assert = require('node:assert/strict');
-const { createStore } = require('./lib/store');
-const { buildRequestKey, applyRetryPolicy } = require('./lib/policies');
+const assert = require("node:assert/strict");
 
-// Smoke: ensure deterministic request keys and safe retry policy.
-const store = createStore();
-const key1 = buildRequestKey({ q: 'test', filters: {} });
-const key2 = buildRequestKey({ q: 'test', filters: {} });
-assert.equal(key1, key2);
+const topic = "Cloud Storage UI";
+const invariants = [
+  "metadata-object consistency",
+  "resumable operation",
+  "permission correctness",
+  "retention policy",
+  "integrity verification"
+];
+const signals = [
+  "orphanedObjectCount",
+  "scanBacklog",
+  "quotaDriftBytes",
+  "aclCacheAgeMs",
+  "restoreChainDepth"
+];
 
-const r = applyRetryPolicy({ attempt: 3, baseMs: 200, maxMs: 5_000 });
-assert.ok(r.delayMs >= 200);
-assert.ok(r.delayMs <= 5_000);
+function buildScenario(input) {
+  const riskScore =
+    input.latencyMs / 1000 +
+    input.stalenessMs / 2000 +
+    input.errorRate * 40 +
+    input.blastRadius * 15 +
+    (input.hasRollback ? 0 : 25);
 
-// Basic cache write/read
-store.set('k', { ok: true });
-assert.deepEqual(store.get('k'), { ok: true });
+  return {
+    topic,
+    riskScore: Math.round(riskScore),
+    releaseState: riskScore >= 70 ? "block" : riskScore >= 35 ? "canary" : "ship",
+    requiredChecks: invariants,
+    telemetry: signals.map((signal) => ({ signal, required: true })),
+  };
+}
 
-console.log('OK: HLD example-1 smoke passed for: Design a cloud storage UI (like Google Drive)');
+const healthy = buildScenario({
+  latencyMs: 180,
+  stalenessMs: 400,
+  errorRate: 0.002,
+  blastRadius: 0.1,
+  hasRollback: true,
+});
+
+const risky = buildScenario({
+  latencyMs: 8000,
+  stalenessMs: 30000,
+  errorRate: 0.35,
+  blastRadius: 1,
+  hasRollback: false,
+});
+
+assert.equal(healthy.releaseState, "ship");
+assert.equal(risky.releaseState, "block");
+assert.ok(risky.requiredChecks.length >= 5);
+assert.ok(risky.telemetry.some((entry) => entry.required));
+
+console.log("OK: topic-aligned example-1 passed for " + topic);

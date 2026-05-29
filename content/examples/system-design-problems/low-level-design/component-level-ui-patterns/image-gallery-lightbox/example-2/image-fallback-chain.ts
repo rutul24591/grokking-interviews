@@ -1,60 +1,89 @@
-/**
- * Image Load Fallback Chain — Handles broken images with progressive quality reduction.
- *
- * Interview edge case: User's uploaded image URL returns 404. Instead of showing
- * a broken image icon, try progressively: full resolution → thumbnail → placeholder
- * color. Each fallback has lower quality but higher chance of loading.
- */
+export type imageGalleryLightboxSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-import { useState, useEffect } from 'react';
+export type imageGalleryLightboxEvent = {
+  id: string;
+  topic: "image-gallery-lightbox";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: imageGalleryLightboxSignal;
+};
 
-interface ImageSource {
-  src: string;
-  quality: 'original' | 'thumbnail' | 'placeholder';
-}
+export type imageGalleryLightboxDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
 
-/**
- * Hook that attempts to load images in a fallback chain.
- * Tries each source in order until one loads successfully.
- */
-export function useImageFallback(sources: ImageSource[]): {
-  currentSrc: string | null;
-  quality: ImageSource['quality'] | null;
-  isLoading: boolean;
-  hasError: boolean;
-} {
-  const [index, setIndex] = useState(0);
-  const [currentSrc, setCurrentSrc] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
 
-  useEffect(() => {
-    if (index >= sources.length) {
-      setHasError(true);
-      setIsLoading(false);
-      return;
-    }
+export function evaluateImageGalleryLightboxEvent(event: imageGalleryLightboxEvent): imageGalleryLightboxDecision {
+  const reasons: string[] = [];
 
-    setIsLoading(true);
-    setHasError(false);
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
 
-    const img = new Image();
-    img.onload = () => {
-      setCurrentSrc(sources[index].src);
-      setIsLoading(false);
-    };
-    img.onerror = () => {
-      setIndex((prev) => prev + 1);
-    };
-    img.src = sources[index].src;
-
-    return () => { img.onload = null; img.onerror = null; };
-  }, [index, sources]);
+  let action: imageGalleryLightboxDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
 
   return {
-    currentSrc,
-    quality: index < sources.length ? sources[index].quality : null,
-    isLoading,
-    hasError,
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Image Gallery Lightbox",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
   };
+}
+
+export function runImageGalleryLightboxContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateImageGalleryLightboxEvent({
+    id: "image-gallery-lightbox-evt-1",
+    topic: "image-gallery-lightbox",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
+
+  const guarded = evaluateImageGalleryLightboxEvent({
+    id: "image-gallery-lightbox-evt-late",
+    topic: "image-gallery-lightbox",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

@@ -1,1 +1,5 @@
-# Design a user profile & follower system — Example 2
+# User Profile AND Follower System - Example 2
+
+Concrete social engagement production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

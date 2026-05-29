@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   category: "high-level-design",
   subcategory: "core-product-systems",
   slug: "multi-device-session-continuity-system",
-  wordCount: 5300,
-  readingTime: 32,
-  lastUpdated: "2026-05-10",
+  wordCount: 6200,
+  readingTime: 37,
+  lastUpdated: "2026-05-20",
   tags: ["hld", "session-continuity", "multi-device", "handoff", "state-sync", "security"],
   relatedTopics: ["cross-device-user-settings-sync", "device-session-management-ui"],
 };
@@ -24,101 +24,365 @@ export default function MultiDeviceSessionContinuityArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <p>Session continuity is the ability to start an activity on one device and seamlessly continue it on another without losing context. Apple's Handoff feature, Google's Nearby Share, and Spotify Connect are the most visible implementations. The UX is deceptively simple from the user's perspective: they pick up their laptop and the article they were reading on their phone is already open, mid-scroll, with the same tab state. The technical complexity lies in capturing sufficient session state to reconstruct the experience on the new device, transferring it securely, and handling the inevitable mismatch between device capabilities (a state captured on a desktop with a 4K display resuming on a mobile device with limited storage).</p>
-        <p>There are two fundamentally different session continuity models: explicit handoff (the user intentionally initiates a transfer, like clicking "Continue on laptop" on their phone) and passive continuity (the device detects the user's presence and automatically surfaces what they were doing, like iOS's Handoff showing app icons in the Dock/App Switcher). This design covers both, with the explicit handoff path as primary.</p>
-        <p><strong>Explicit assumptions:</strong> The application is a web-based content consumption platform (articles, videos, shopping). Session state includes: current URL, scroll position, form input state, media playback position, open tabs/panels, and user-specific UI customizations. Devices are linked to the user's account (not anonymous). The transfer is initiated explicitly by the user (not automatic proximity-based). Security requirement: a session transfer to a new device requires re-authentication on the receiving device.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Multi-device session continuity lets a user start an activity on one device and continue it on another with
+          useful context preserved. The visible experience can feel simple: continue reading an article on a laptop,
+          move a shopping session from phone to desktop, resume video playback on a TV, or pick up a support workflow
+          on a tablet. The system behind it must decide what state is safe to capture, how to transfer it, how to
+          authenticate the receiving device, and how to adapt state across very different form factors.
+        </HighlightBlock>
+        <p>
+          The feature is not the same as authentication session sharing. A session-continuity snapshot should carry
+          navigation and interaction context, not reusable login credentials or sensitive form data. The target device
+          should already belong to the user and may still need re-authentication before restoration. This boundary is
+          important in interviews because the most dangerous failure mode is turning a convenience feature into a
+          session hijacking primitive.
+        </p>
+        <p>
+          There are two common product modes. Explicit handoff lets the user choose a target device and initiate
+          transfer. Passive continuity surfaces recently active sessions on nearby or recently active devices. Explicit
+          handoff is simpler, easier to secure, and easier to explain in a system design round. Passive continuity
+          requires stronger device presence, notification, privacy, and ranking rules because it can reveal activity
+          without an explicit user action.
+        </p>
+        <p>
+          A strong scope is a web product with articles, media, commerce, and forms. Captured state may include URL,
+          route params, scroll anchor, media playback position, selected tab, open panel identifiers, lightweight draft
+          state, and feature flags needed to interpret the snapshot. Excluded state includes passwords, payment fields,
+          identity documents, medical data, secret tokens, and any field explicitly marked non-transferable.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>State capture:</strong> Capture the current session state (URL, scroll position, form state, media position, open panels) on the source device.</li>
-          <li><strong>Device discovery:</strong> Show the user a list of their other active devices to transfer the session to. Active devices are those where the user is logged in and the app is in the foreground or recently active.</li>
-          <li><strong>Transfer initiation:</strong> User selects a target device; the source device sends the session state to the server; the server notifies the target device.</li>
-          <li><strong>Session restoration:</strong> The target device receives the session state and restores the user to the equivalent state on the new device (same URL, best-effort scroll position, media playback position).</li>
-          <li><strong>Cross-platform adaptation:</strong> Session state captured on desktop adapts to mobile: full-page scroll position approximates to the nearest section heading on mobile; desktop panel states (sidebars, split views) degrade gracefully on mobile.</li>
-          <li><strong>Security:</strong> Session transfer to a new device (one that has not completed the current session's authentication) requires re-authentication. A session cannot be transferred to a device not linked to the user's account.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Transfer latency:</strong> From the user initiating the transfer on the source device to the target device receiving the session state: under 3 seconds.</li>
-          <li><strong>State freshness:</strong> The captured state should represent the user's session within 500ms of the capture moment (not a stale 30-second-old snapshot).</li>
-          <li><strong>Reliability:</strong> If the target device is offline, the session state is stored on the server for 5 minutes and delivered when the device comes online.</li>
-          <li><strong>Privacy:</strong> Form input values (especially password fields, payment information) are explicitly excluded from session state capture. The system captures navigation state, not user data.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Portable Session Snapshot</h3>
+        <p>
+          A portable snapshot should be semantic rather than pixel-perfect. Absolute scroll pixels from a desktop page
+          rarely map well to mobile. Better signals include URL, content ID, nearest section anchor, scroll percentage,
+          media ID, playback offset, selected object ID, and open workflow step. The target device uses these signals
+          to reconstruct the closest equivalent experience.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Device Registry and Presence</h3>
+        <p>
+          Devices must be linked to the user's account and represented in a registry with device ID, display name,
+          platform, trust level, last-seen time, push token or websocket connection, and revocation state. Active-device
+          discovery should filter out the source device, expired devices, revoked devices, and devices that do not
+          support the requested app or capability.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Transfer Tokens and One-Time Redemption</h3>
+        <p>
+          A handoff should use a short-lived, target-scoped, one-time transfer token. The token identifies a server-side
+          snapshot and intended target device; it should not contain the full snapshot. One-time redemption protects
+          against replay. Short TTLs reduce exposure if a notification or target device is compromised. The server logs
+          all transfer creation, delivery, redemption, expiry, and denial events.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Adaptation and Capability Negotiation</h3>
+        <p>
+          Devices differ in screen size, input method, installed app capability, permission state, and available routes.
+          Restoration should use a target capability manifest. A desktop split view may become a single mobile route. A
+          mobile-only deep link may become a web fallback. A video session may restore playback position but require
+          the user to press play due to autoplay restrictions.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The session continuity system has three components: the Session State Capture layer (running on the source device, producing a serialized session state snapshot), the Session Relay Service (a server-side store and delivery mechanism for session states), and the Session Restoration layer (running on the target device, consuming the snapshot and reconstructing the session). Devices communicate with the Session Relay Service via authenticated API calls; the relay service handles device discovery, state storage, and delivery notification via WebSocket or push notification.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/multi-device-session-continuity-system-architecture.svg"
-          alt="Multi-device session continuity architecture showing source device (session state capture: URL, scroll position, media position, form state, open panels), Session Relay Service (device registry, state store with 5-minute TTL, target device notification), target device (session restoration, re-authentication gate, cross-platform adaptation). Security layer: transfer tokens, device verification, and sensitive field exclusion."
-          caption="Session continuity architecture: state capture → server relay with TTL → target device notification → authenticated restoration with cross-platform adaptation"
+          alt="Multi-device session continuity architecture showing source device state capture, device registry, session relay, state store with TTL, target device notification, authentication gate, and restoration"
+          caption="Architecture: source captures safe state, relay stores a short-lived snapshot, target authenticates and redeems a one-time transfer."
         />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Session State Schema</h3>
-        <HighlightBlock as="p" tier="important">
-          The session state is a structured snapshot serialized as JSON. The schema: url (the current page URL, including query parameters but not URL fragments—fragments are client-only state), scrollPosition (percentage of page scrolled, 0.0–1.0, rather than absolute pixel offset—pixel offsets are device-specific), sectionAnchor (the ID of the nearest visible section heading, as a fallback for scroll position when the target device has different layout), mediaState (an array of{" "}
-          <code>{`{ mediaId, positionMs, isPlaying }`}</code>{" "}
-          for all media elements on the page), formState (an array of{" "}
-          <code>{`{ fieldId, value }`}</code>{" "}
-          for non-sensitive form fields—password and payment fields are explicitly excluded), openPanels (a list of panel IDs that are currently expanded or open), selectedTabId (for tabbed interfaces), and capturedAt (timestamp for freshness validation).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">Scroll position as a percentage (0.0–1.0) is more portable than absolute pixel coordinates: a 2000px tall page on desktop viewed at 500px from the top is 25% scrolled, which maps reasonably to the equivalent 25% position on a mobile page where the same content may be 3000px tall. The sectionAnchor provides a semantically meaningful fallback: if the scroll percentage calculation produces a wildly different position due to layout differences, the target device can scroll to the nearest section anchor instead. This is the same approach Apple uses for Handoff: the restored state is a "best approximation" of the source state, not an exact reproduction.</HighlightBlock>
-        <p>Sensitive field exclusion is enforced at the capture layer: before the form state is included in the session snapshot, it is filtered against a denylist of field types (input[type="password"], input[type="credit-card-number"], and fields marked with data-no-session-capture) and a denylist of field names (password, cvv, creditCard, ssn). This exclusion is conservative by default: it is safer to not capture a field than to accidentally include sensitive data in a session state that traverses the network.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Device Registry and Discovery</h3>
-        <HighlightBlock as="p" tier="important">The device registry maintains a list of devices associated with each user's account. A device is added to the registry on first login: the client generates a device fingerprint (a stable identifier derived from device characteristics: user agent, screen resolution, hardware concurrency, timezone) and sends it to the server along with a device name (auto-generated: "Chrome on MacBook Pro" or user-customizable). The server assigns a deviceId and stores it with the device fingerprint, name, platform, and last-seen timestamp.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Active device discovery: a device is considered "active" if its last heartbeat was within the past 5 minutes. Heartbeats are sent by the client every 60 seconds while the app is in the foreground. The device list API returns active devices for the current user, excluding the requesting device (you cannot send a session to yourself). For each active device, the response includes the deviceId, device name, platform icon (mobile/tablet/desktop), and last-active timestamp. This list is displayed in the "Transfer to device" picker in the app's session continuity UI.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Transfer Protocol</h3>
-        <HighlightBlock as="p" tier="crucial">
-          The transfer protocol has four steps. Step 1 (initiation): the source device captures the current session state and sends it to the Session Relay Service via{" "}
-          <code>POST /sessions/transfer</code> with the session state JSON and the target deviceId. The server validates that the target device belongs to the requesting user, stores the session state with a 5-minute TTL (in Redis), and generates a transferToken (a signed JWT with{" "}
-          <code>{`{ sessionId, sourceDeviceId, targetDeviceId, expiresAt }`}</code>
-          ). Step 2 (notification): the server sends a push notification or WebSocket event to the target device: &ldquo;Session available from [source device name]. Tap to continue.&rdquo; Step 3 (authentication): the target device receives the notification. If the user has a valid session on the target device, they are shown the session restore prompt. If not, they are asked to authenticate first (re-enter password or use biometrics). Step 4 (restoration): after authentication, the target device calls{" "}
-          <code>GET /sessions/&lt;sessionId&gt;?token=&lt;transferToken&gt;</code> to retrieve the session state. The server verifies the token, returns the state, and deletes it (one-time use). The target device restores the session.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">The transferToken is one-time-use: once redeemed (or expired after 5 minutes), it cannot be used again. This prevents replay attacks where a malicious party intercepts the notification and attempts to redeem the session state. The token is signed with a secret key; the server verifies the signature on redemption. The session state is stored in Redis (not in the token itself) so the token payload is minimal and the session state can be as large as needed without token size constraints.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cross-Platform Session Adaptation</h3>
-        <p>Desktop-to-mobile adaptation: desktop apps commonly have sidebars, split views, and expanded panels that do not exist on mobile. The session state includes openPanels, but the target device's restoration logic filters these against a platform capability manifest: if the target device is mobile, right-sidebar panels are ignored (they don't exist on mobile); if the source device had a document open in a split view, the mobile device opens the primary document only. The URL is the only truly universal state—it reconstructs the page regardless of device capability differences.</p>
-        <p>Mobile-to-desktop adaptation is simpler: desktop devices have more capability, so they can always render the source state and more. A mobile session opened on desktop may lose fidelity in the other direction only if the source URL was a mobile-specific deep link (a mobile app deep link that does not have a web equivalent); in this case, the restoration falls back to the base URL of the section, with a message: "Content from mobile app not available in browser. Showing the closest available page."</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Security and Privacy Controls</h3>
-        <HighlightBlock as="p" tier="important">Session continuity is a high-value target for attackers: if a session state can be hijacked, an attacker can impersonate the user on their own device. The security controls: (1) the session state is only accessible via a one-time transferToken that expires in 5 minutes; (2) the target device must be linked to the user's account (not any device that receives the notification); (3) the target device requires authentication before the session state is restored (prevents a stolen unlocked device from being used to receive session states); (4) the session state excludes sensitive field values; (5) the transfer uses HTTPS, so the token and state are encrypted in transit; (6) the server logs all session transfer events (sourceDeviceId, targetDeviceId, timestamp) in the audit log for security review.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Privacy controls allow users to opt out of session continuity entirely (disabling it for all devices) or to configure which devices can receive session transfers (an allowlist of device IDs). The opt-out is stored in the user's account settings and checked before any session state is transmitted. A user who is concerned about session states traversing the server can disable the feature; the alternative (peer-to-peer session transfer without a server) is not implemented in this design due to the complexity of NAT traversal and device discovery on different networks.</HighlightBlock>
-      </section>
-
-      <section>
+        <p>
+          The source device owns capture. It asks feature modules for their transferable state, filters sensitive
+          fields, stamps the snapshot with app version and capture time, and sends it to the relay service with the
+          selected target device. Capture should be fast and bounded. For complex apps, modules should register small
+          capture adapters rather than letting a generic scraper serialize arbitrary DOM or application memory.
+        </p>
+        <p>
+          The relay service validates user identity, target ownership, device trust, user opt-in, and target capability.
+          It stores the snapshot in a TTL-backed state store, creates a one-time transfer token, and notifies the
+          target device through WebSocket, push notification, or in-app polling. If the target is temporarily offline,
+          the snapshot can wait for a short window such as five minutes. Longer retention increases privacy risk and
+          makes stale restoration more likely.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/multi-device-session-continuity-system-workflow.svg"
-          alt="Session transfer workflow showing four steps: (1) source device captures state + POST to relay service, (2) server stores state in Redis with 5-min TTL and sends WebSocket/push notification to target device, (3) target device authentication gate, (4) target device redeems one-time transferToken, retrieves session state, applies cross-platform adaptation, and restores session. Security events logged in audit trail."
-          caption="Session transfer workflow: state capture → server relay → authentication gate → one-time token redemption → adapted session restoration"
+          alt="Session transfer workflow showing capture, relay storage, target notification, authentication check, one-time token redemption, adaptation, and audit logging"
+          caption="Workflow: capture and delivery are decoupled, but redemption is target-scoped, authenticated, auditable, and short-lived."
+        />
+        <p>
+          The target device receives an availability signal, not the full state. If the user accepts, the target checks
+          current authentication and device trust. A sensitive workflow may require step-up authentication even when the
+          user already has a session. After redemption, the target applies adaptation rules, navigates to the target
+          route, restores scroll or section anchor, applies media offset, opens compatible panels, and reports
+          restoration outcome.
+        </p>
+        <p>
+          Restoration should be idempotent from the user's perspective. If a target app crashes after redeeming but
+          before rendering, the system can either allow a bounded second redemption by the same target or treat the
+          snapshot as consumed and ask the source to resend. The choice depends on sensitivity. For general reading
+          state, retry is acceptable. For sensitive workflows, one-time consumption is safer.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/core-product-systems/multi-device-session-continuity-system-security.svg"
+          alt="Session continuity security model showing sensitive field exclusion, device trust, reauthentication, one-time token, TTL, target binding, and audit trail"
+          caption="Security model: session continuity transfers context, not credentials; target binding, reauthentication, TTLs, and sensitive-field exclusion are core controls."
         />
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Server-mediated versus peer-to-peer transfer: routing the session state through a server adds latency (2× round trips) and introduces a server as a trust intermediary (the server could theoretically access session state in transit). Peer-to-peer transfer (WebRTC DataChannel for same-network devices, similar to Apple's local Handoff implementation) eliminates the server from the data path, reduces latency to near zero for same-network devices, and keeps sensitive state off the network. The trade-off: peer-to-peer requires complex setup (WebRTC signaling, NAT traversal, device discovery on arbitrary networks), fails for cross-network transfers (phone on cellular, laptop on a different WiFi), and provides no offline delivery (the target device must be reachable at the moment of transfer). Server-mediated transfer is simpler, more reliable across network boundaries, and supports offline delivery via TTL storage—the correct default for a web-based product.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">State capture timing: capturing the session state at the exact moment the user clicks "Transfer" (on-demand capture) is most accurate but may introduce a brief delay if the state capture is expensive (serializing a complex editor state, measuring scroll position across many elements). Alternatively, state can be captured proactively and updated every 30 seconds (background snapshot), making the transfer instant but potentially transferring a state that is 30 seconds stale. For most use cases (article reading, shopping browsing), 30-second staleness is acceptable. For media playback (video, audio), on-demand capture with the exact playback position is required—a 30-second-stale media position is a noticeable UX failure.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Privacy of session state notifications: the push notification to the target device says "Session available from iPhone." This notification reveals to anyone who sees the target device's screen (and lock screen) that the user was active on their iPhone. For users with shared devices, this is a privacy concern. The notification should not display the URL (which might reveal the content being viewed), only the source device name. In the most privacy-conscious implementation, the notification is a silent notification (no visible toast) that triggers a background fetch; the app checks for pending session states and shows an in-app prompt only, not a system notification.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Server-mediated transfer works across networks, supports offline target delivery, simplifies device discovery,
+          and gives the product audit and policy enforcement. The trade-off is that state passes through the server and
+          must be protected by encryption, TTL, access control, and minimization. Peer-to-peer transfer can reduce
+          server exposure and latency, but device discovery, NAT traversal, cross-network behavior, and offline
+          delivery become much harder.
+        </p>
+        <p>
+          On-demand capture is freshest and best for media playback or form workflows. Background snapshots make
+          transfer feel instant but can be stale. A hybrid approach works well: maintain low-risk coarse state
+          continuously, then capture precise volatile state when the user initiates transfer. The article position,
+          media offset, and current route should be captured at click time if possible.
+        </p>
+        <p>
+          Pixel-perfect restoration is usually the wrong goal. It creates brittle coupling between devices and layouts.
+          Semantic restoration is more resilient but may feel approximate. The UI should make approximation acceptable:
+          resume near the relevant section, show the same item, restore the same video offset, and drop incompatible
+          desktop-only panel state on mobile.
+        </p>
+        <p>
+          Push notifications are useful for target awareness, but visible notifications can leak activity on shared or
+          locked devices. A privacy-sensitive product can use silent push or in-app badges that reveal details only
+          after unlock. The notification text should avoid URLs, titles, search terms, or content names unless the user
+          explicitly opts in.
+        </p>
+        <p>
+          Capturing form state improves convenience but raises risk. Low-risk drafts such as a search query or comment
+          draft may be acceptable. Payment, password, health, identity, and secret fields should be excluded by default.
+          Products should use explicit allowlists for transferable form fields rather than trying to maintain an
+          exhaustive denylist.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Principal-level decision frame</h3>
+        <p>
+          The highest-level decision is whether continuity is a convenience feature or a regulated workflow feature. A
+          consumer reading or media product can tolerate approximate restoration, longer TTLs, and lightweight device
+          trust. Healthcare, finance, enterprise admin, and identity workflows need shorter TTLs, step-up
+          authentication, strict payload minimization, audit trails, and explicit user confirmation on the receiving
+          device. The same transfer primitive should support policy tiers rather than one universal behavior.
+        </p>
+        <p>
+          Operability depends on understanding failed handoffs. The system should classify failures as source capture
+          failure, relay persistence failure, target notification failure, target authentication failure, incompatible
+          route, expired token, or user cancellation. These categories matter because a high failure rate from
+          notification delivery is fixed very differently from a high failure rate caused by schema incompatibility
+          after a mobile release.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A multi-device session continuity system captures navigation state (URL, scroll position as percentage, section anchor, media position, open panels) on the source device, relays it through a server-side store with a 5-minute TTL, and delivers it to the target device via push notification or WebSocket. The session state is accessed via a one-time signed transferToken that expires in 5 minutes and requires target device authentication before redemption. Cross-platform adaptation maps desktop-specific state (sidebars, split views) to equivalent mobile views using a platform capability manifest. Sensitive form fields (passwords, payment data) are explicitly excluded from captured state. The device registry tracks active devices via 60-second heartbeats; only devices active within 5 minutes are shown as transfer targets. Security events (all transfers) are logged in the audit trail. The defining constraint is that session continuity is a convenience feature, not a security model: the authentication gate on the receiving device is what prevents misuse, and the one-time-use token prevents replay attacks.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Use a schema-versioned snapshot. Include source app version, route schema version, capture timestamp, and
+          feature capabilities. The target can reject snapshots from incompatible versions, use migration rules, or fall
+          back to URL-only restoration instead of failing silently.
+        </p>
+        <p>
+          Make sensitive-state exclusion conservative. Prefer module-level allowlists. Add platform-level filters for
+          password, payment, secret, and explicitly private fields. Redact before the snapshot leaves the source device.
+          Do not rely only on the relay service to remove sensitive data.
+        </p>
+        <p>
+          Treat device trust as dynamic. Users should be able to rename, revoke, and remove devices. A target device
+          that has not been seen recently, has lost push trust, or was reported lost should not receive handoffs.
+          Enterprise environments may require managed-device checks before continuity is allowed.
+        </p>
+        <p>
+          Record audit events without storing unnecessary content. Log source device, target device, user, time,
+          result, and reason for denial or failure. Avoid logging full URLs or snapshot payloads when they may reveal
+          private user activity.
+        </p>
+        <p>
+          Design restoration as best-effort with visible fallback. If exact panel state or scroll position cannot be
+          restored, open the closest route and tell the user the session was resumed approximately. Silent partial
+          failure makes the feature feel unreliable.
+        </p>
+        <p>
+          Test continuity across release boundaries. Source and target devices may run different app versions for weeks.
+          Snapshot schemas need compatibility tests, migration rules, and telemetry for rejected snapshots by version.
+          This is especially important for mobile apps where users do not upgrade in lockstep with web deployments.
+        </p>
+        <p>
+          Session continuity needs a clear authority model. Some state should follow the user across devices, such as drafts, playback position, cart contents, or recently viewed items. Other state should stay device-local, such as biometric unlock, unsaved secrets, camera permission, or transient UI focus. A principal-level design classifies state by sensitivity, conflict behavior, freshness needs, and whether it can be safely synced through the cloud.
+        </p>
+        <p>
+          Conflict resolution should be domain-specific. Last-write-wins is acceptable for a recently viewed list but dangerous for a document draft, checkout cart, or security setting. The system should record device id, user id, state version, timestamp, and operation intent so it can merge, prompt, or reject conflicts according to product semantics.
+        </p>
+        <p>
+          Observability should be designed around continuity outcomes. Track resume success, handoff latency, conflict rate, stale-device writes, session revocations, failed decryptions, and user-visible recovery prompts by platform and app version. These metrics show whether continuity is helping users or creating confusing cross-device behavior. They also reveal when a new app release or backend policy change breaks older clients.
+        </p>
+        <p>
+          The design should also cover offline-first devices. A mobile app may update draft state while offline and reconnect after the desktop session has advanced. The sync service needs operation timestamps, causal versions, and conflict UX so it can preserve user work without reviving stale state. For sensitive flows, stale offline writes may need to be rejected with a recovery prompt instead of merged automatically.
+        </p>
+        <p>
+          Product teams should define explicit continuity boundaries per surface. A media queue, checkout cart, document draft, and security setting do not deserve the same sync interval or conflict policy. That classification should be visible in design docs and operational metrics.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most serious pitfall is transferring authentication instead of context. Session continuity should not
+          move access tokens or bypass target-device authentication. The receiving device must already be trusted and
+          may need step-up authentication before restoration.
+        </p>
+        <p>
+          Another pitfall is serializing arbitrary app state. Large snapshots become brittle, leak private data, and
+          fail across versions. Capture only the minimum semantic state needed to reconstruct the user experience.
+        </p>
+        <p>
+          Device fingerprints can be unstable and privacy-sensitive. Use server-issued device IDs after login rather
+          than relying on browser fingerprinting as an identity primitive. Treat fingerprint-like signals only as risk
+          hints, not as durable identity.
+        </p>
+        <p>
+          Long-lived pending transfers create privacy and freshness issues. A handoff from yesterday should not appear
+          unexpectedly on a shared tablet. Use short TTLs, clear expiry messaging, and user-controlled device settings.
+        </p>
+        <p>
+          Finally, hidden notification content can leak activity. A lock-screen message saying the exact article,
+          product, or document being continued can expose private context. Keep external notifications generic and show
+          details only inside an authenticated app session.
+        </p>
+        <p>
+          Another common failure is designing only the happy-path handoff. Devices can be offline, revoked, shared,
+          stale, managed by enterprise policy, or missing the relevant app route. The relay and target should classify
+          these failures explicitly so users and support teams know whether to retry, reauthenticate, update the app,
+          or choose a different device.
+        </p>
+        <p>
+          Teams often underestimate trust and account-boundary transitions. A user can sign out on one device, lose a device, rotate credentials, join an enterprise tenant, or revoke sessions after compromise. Continuity features must respond to security events quickly and should not keep syncing sensitive state to stale devices.
+        </p>
+        <p>
+          Another pitfall is making presence look stronger than it is. Online indicators, active-device lists, and handoff prompts are eventually consistent. The UI should avoid promising exact real-time truth when mobile backgrounding, push delivery, and network transitions make presence inherently approximate.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Content platforms use continuity for articles, videos, podcasts, and learning modules. The most important
+          state is content ID, scroll anchor, playback position, and completion progress. Exact pixel restoration is
+          less important than resuming at the right semantic section.
+        </p>
+        <p>
+          Commerce products use continuity for carts, product comparison, checkout preparation, and support flows.
+          They must be careful not to transfer payment fields or identity verification data, while still preserving
+          product selection and workflow step where safe.
+        </p>
+        <p>
+          Productivity tools use continuity for documents, dashboards, and workflows. They often need route-level
+          restoration, selected object state, filter state, and tenant/project context. Enterprise policy may restrict
+          transfer to managed devices.
+        </p>
+        <p>
+          Media ecosystems use continuity to move playback from phone to TV, desktop, or speaker. These systems must
+          handle device capability, autoplay policy, DRM constraints, network availability, and remote-control state.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          What state would you capture for session continuity?
+        </h3>
+        <p>
+          I would capture semantic navigation state: route, content ID, query parameters, nearest section anchor,
+          scroll percentage, media playback offset, selected tab, workflow step, and compatible open panel IDs. I would
+          exclude credentials, payment data, passwords, sensitive identity fields, and arbitrary component memory. The
+          snapshot should be schema-versioned and minimal enough to survive app and device differences.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you secure transfer to another device?
+        </h3>
+        <p>
+          The target device must belong to the same user, be trusted and not revoked, and authenticate before
+          restoration if the snapshot is sensitive. The relay stores the snapshot with a short TTL and issues a
+          target-scoped one-time transfer token. The target receives only a notification until it redeems the token.
+          All attempts are audited, and sensitive fields are excluded before upload.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          Why not put the entire session state inside the transfer token?
+        </h3>
+        <p>
+          Tokens should stay small, short-lived, and easy to revoke. Full snapshots can be large, sensitive, and need
+          server-side deletion or expiry. Storing the snapshot server-side behind an opaque one-time token allows TTL
+          cleanup, target binding, policy checks at redemption time, and smaller notifications.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you adapt desktop state to mobile?
+        </h3>
+        <p>
+          Use a capability manifest. Universal state such as URL, content ID, media offset, and section anchor is
+          restored first. Desktop-only state such as split panes or sidebars is ignored or mapped to a mobile route.
+          If the exact target route does not exist, fall back to the closest available route and show a lightweight
+          message that restoration was approximate.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you handle offline target devices?
+        </h3>
+        <p>
+          The relay can store a pending transfer for a short TTL, such as five minutes, and deliver it when the target
+          reconnects through WebSocket, push, or polling. If the TTL expires, the target should not receive stale
+          continuity prompts. The source can offer to resend. Short retention protects privacy and avoids surprising
+          users later.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          What metrics would you monitor?
+        </h3>
+        <p>
+          I would track transfer initiation success, target delivery latency, redemption success, expired transfers,
+          denied transfers by reason, restoration success by state type, sensitive-field filter hits, device registry
+          churn, and user opt-out rate. These metrics show whether failures are caused by device presence, security
+          policy, notification delivery, or weak adaptation.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.apple.com/handoff/" target="_blank" rel="noreferrer">
+              Apple Handoff overview
+            </a>
+            , product reference for continuity concepts.
+          </li>
+          <li>
+            <a href="https://developer.apple.com/documentation/foundation/nsuseractivity" target="_blank" rel="noreferrer">
+              Apple NSUserActivity documentation
+            </a>
+            , activity-state handoff model.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API" target="_blank" rel="noreferrer">
+              MDN: WebSockets API
+            </a>
+            , realtime target notification transport.
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">
+              W3C WebAuthn specification
+            </a>
+            , step-up authentication on target devices.
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" target="_blank" rel="noreferrer">
+              OWASP Session Management Cheat Sheet
+            </a>
+            , session security principles relevant to continuity boundaries.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

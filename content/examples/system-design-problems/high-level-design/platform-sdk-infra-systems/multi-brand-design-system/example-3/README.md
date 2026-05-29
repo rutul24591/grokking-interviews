@@ -1,1 +1,5 @@
-# Design a multi-brand design system — Example 3
+# Multi Brand Design System - Example 3
+
+Concrete platform infrastructure edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

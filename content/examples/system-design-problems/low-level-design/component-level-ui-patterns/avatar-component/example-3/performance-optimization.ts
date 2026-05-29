@@ -1,78 +1,90 @@
-/**
- * Avatar Component — Staff-Level Performance Optimization.
- *
- * Staff differentiator: Image decoding with createImageBitmap for
- * off-main-thread decoding, IntersectionObserver for lazy loading,
- * and object pool for avatar image elements.
- */
+export type avatarComponentRuntimeState = {
+  topic: "avatar-component";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-/**
- * Off-main-thread image decoding using createImageBitmap.
- * Prevents jank when loading multiple avatar images simultaneously.
- */
-export async function decodeAvatarImage(
-  imageUrl: string,
-  size: number,
-): Promise<ImageBitmap | null> {
-  try {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
+export type avatarComponentRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-    // Decode off main thread
-    const bitmap = await createImageBitmap(blob, {
-      resizeWidth: size * 2, // 2x for HiDPI
-      resizeHeight: size * 2,
-      resizeQuality: 'high',
-    });
-
-    return bitmap;
-  } catch {
-    return null;
-  }
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Object pool for avatar image elements.
- * Reuses image elements instead of creating/destroying them,
- * reducing GC pressure in large avatar stacks.
- */
-export class AvatarImagePool {
-  private pool: HTMLImageElement[] = [];
-  private maxSize: number = 50;
+export function planAvatarComponentRecovery(
+  state: avatarComponentRuntimeState,
+  nowMs: number,
+): avatarComponentRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: avatarComponentRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  /**
-   * Gets an image element from the pool or creates a new one.
-   */
-  acquire(): HTMLImageElement {
-    if (this.pool.length > 0) {
-      return this.pool.pop()!;
-    }
-    const img = document.createElement('img');
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    return img;
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Returns an image element to the pool for reuse.
-   */
-  release(img: HTMLImageElement): void {
-    if (this.pool.length < this.maxSize) {
-      img.src = '';
-      img.onload = null;
-      img.onerror = null;
-      this.pool.push(img);
-    }
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Clears the pool.
-   */
-  clear(): void {
-    this.pool = [];
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  getPoolSize(): number {
-    return this.pool.length;
-  }
+export function runAvatarComponentEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planAvatarComponentRecovery(
+    {
+      topic: "avatar-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planAvatarComponentRecovery(
+    {
+      topic: "avatar-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Avatar Component",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

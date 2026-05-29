@@ -1,1 +1,5 @@
-# Design an order tracking & returns system — Example 2
+# Order Tracking AND Returns System - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

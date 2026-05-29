@@ -1,94 +1,11 @@
-<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-  <rect width="900" height="460" fill="#f3f1f8"/>
-  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Upload UI States &amp; Multipart Upload Flow</text>
-
-  <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
-    </marker>
-    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
-    </marker>
-    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
-    </marker>
-  </defs>
-
-  <!-- Left: Upload UI states -->
-  <rect x="20" y="54" width="360" height="390" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="200" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Upload UI States</text>
-
-  <!-- State 1: idle -->
-  <rect x="35" y="88" width="330" height="52" rx="7" fill="#f3f1f8" stroke="#d7d1e6"/>
-  <text x="200" y="110" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Idle — Drop Zone</text>
-  <text x="200" y="128" text-anchor="middle" font-size="10" fill="#d7d1e6">Drag files here or click to browse</text>
-
-  <!-- State 2: validating -->
-  <rect x="35" y="150" width="330" height="52" rx="7" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
-  <text x="200" y="172" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Validating</text>
-  <text x="200" y="188" text-anchor="middle" font-size="10" fill="#1a1822">Type ✓ · Size ✓ · MIME ✓ …</text>
-
-  <!-- State 3: uploading with progress -->
-  <rect x="35" y="212" width="330" height="70" rx="7" fill="#2f9d74" opacity="0.08" stroke="#2f9d74" stroke-width="1"/>
-  <text x="200" y="234" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Uploading — Part 3/8</text>
-  <rect x="50" y="242" width="300" height="12" rx="5" fill="#d7d1e6"/>
-  <rect x="50" y="242" width="115" height="12" rx="5" fill="#2f9d74"/>
-  <text x="200" y="271" text-anchor="middle" font-size="10" fill="#1a1822">38% · 14.2 MB/s · 2.1s remaining</text>
-
-  <!-- State 4: processing -->
-  <rect x="35" y="292" width="330" height="52" rx="7" fill="#d97843" opacity="0.08" stroke="#d97843" stroke-width="1"/>
-  <text x="200" y="314" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Processing</text>
-  <text x="200" y="330" text-anchor="middle" font-size="10" fill="#1a1822">Transcoding 720p… (SSE progress)</text>
-
-  <!-- State 5: ready -->
-  <rect x="35" y="354" width="330" height="52" rx="7" fill="#2f9d74" opacity="0.12" stroke="#2f9d74" stroke-width="1"/>
-  <text x="200" y="376" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">✓ Ready</text>
-  <text x="200" y="392" text-anchor="middle" font-size="10" fill="#1a1822">Preview available · Insert in editor</text>
-
-  <!-- Right top: multipart flow -->
-  <rect x="400" y="54" width="480" height="230" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="640" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Multipart Upload Flow (S3)</text>
-
-  <!-- Flow steps horizontal -->
-  <rect x="415" y="90" width="90" height="34" rx="6" fill="#6d5bd0"/>
-  <text x="460" y="108" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Client</text>
-  <text x="460" y="121" text-anchor="middle" font-size="9" fill="#edeaf5">splits file</text>
-  <line x1="505" y1="107" x2="537" y2="107" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="521" y="100" text-anchor="middle" font-size="8" fill="#6d5bd0">POST /upload</text>
-
-  <rect x="537" y="90" width="90" height="34" rx="6" fill="#1a1822"/>
-  <text x="582" y="108" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">API</text>
-  <text x="582" y="121" text-anchor="middle" font-size="9" fill="#d7d1e6">issues URLs</text>
-  <line x1="627" y1="107" x2="659" y2="107" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="643" y="100" text-anchor="middle" font-size="8" fill="#6d5bd0">presigned URLs</text>
-
-  <rect x="659" y="90" width="90" height="34" rx="6" fill="#2f9d74"/>
-  <text x="704" y="108" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">S3</text>
-  <text x="704" y="121" text-anchor="middle" font-size="9" fill="#e8f5f0">receives parts</text>
-  <line x1="749" y1="107" x2="781" y2="107" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="765" y="100" text-anchor="middle" font-size="8" fill="#6d5bd0">complete</text>
-
-  <rect x="781" y="90" width="90" height="34" rx="6" fill="#d97843"/>
-  <text x="826" y="108" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">S3</text>
-  <text x="826" y="121" text-anchor="middle" font-size="9" fill="#fff">assembled</text>
-
-  <!-- Part details -->
-  <text x="410" y="148" font-size="10" fill="#6d5bd0" font-weight="bold">Part details:</text>
-  <text x="410" y="164" font-size="10" fill="#1a1822">• Min part size: 5 MB (S3 requirement except last part)</text>
-  <text x="410" y="180" font-size="10" fill="#1a1822">• Parts uploaded in parallel (up to 3 concurrent)</text>
-  <text x="410" y="196" font-size="10" fill="#1a1822">• Each part PUT returns an ETag (used in CompleteMultipartUpload)</text>
-  <text x="410" y="212" font-size="10" fill="#1a1822">• Retry: failed part resumes from part boundary, no full re-upload</text>
-  <text x="410" y="228" font-size="10" fill="#1a1822">• Upload ID expires 7 days (incomplete uploads auto-purged by lifecycle)</text>
-
-  <!-- Right bottom: resumable + error handling -->
-  <rect x="400" y="300" width="480" height="144" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="640" y="322" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Resumable Upload &amp; Error Handling</text>
-
-  <text x="410" y="344" font-size="11" fill="#d97843" font-weight="bold">Resume on failure:</text>
-  <text x="410" y="362" font-size="10" fill="#1a1822">Upload ID + completed parts stored in localStorage</text>
-  <text x="410" y="378" font-size="10" fill="#1a1822">On retry: skip already-uploaded parts, resume from failed part</text>
-  <text x="410" y="394" font-size="10" fill="#1a1822">Upload UI shows "Resuming upload…" on reconnect</text>
-
-  <text x="410" y="416" font-size="11" fill="#2f9d74" font-weight="bold">Validation errors (client-side, instant):</text>
-  <text x="410" y="432" font-size="10" fill="#1a1822">File too large · unsupported MIME · EXIF magic bytes mismatch</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Media Upload Processing Pipeline Ui: route overlay</title>
+  <desc id="desc">Route, locality, and accuracy overlay for media rich content systems.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Media Upload Processing Pipeline Ui: route overlay</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Route, locality, and accuracy overlay for media rich content systems.</text>
+  <rect x="70" y="120" width="820" height="342" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M112 394 C198 286, 276 328, 354 248 S510 160, 614 242 S748 356, 846 220" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M118 178 C238 206, 330 138, 458 190 S668 226, 836 152" fill="none" stroke="#16a34a" stroke-width="3" stroke-dasharray="9 8"/>
+  <circle cx="152" cy="370" r="32" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7" opacity="0.95"/><text x="152" y="375" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">render</text><circle cx="310" cy="300" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7" opacity="0.95"/><text x="310" y="305" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">timeline</text><circle cx="468" cy="240" r="32" fill="#fef3c7" stroke="#d97706" stroke-width="1.7" opacity="0.95"/><text x="468" y="245" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">asset</text><circle cx="626" cy="230" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7" opacity="0.95"/><text x="626" y="235" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">codec</text><circle cx="784" cy="258" r="32" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7" opacity="0.95"/><text x="784" y="263" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">buffer</text>
+  <rect x="220" y="424" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="284" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">policy</text><rect x="390" y="424" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">export</text><rect x="560" y="424" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="624" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">QoE</text>
 </svg>

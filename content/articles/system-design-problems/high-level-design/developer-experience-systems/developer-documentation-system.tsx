@@ -9,14 +9,14 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-developer-documentation-system",
   title: "Design a Developer Documentation System (like Notion/Docusaurus)",
   description:
-    "Architecture for a developer documentation system: markdown/MDX authoring with live preview, versioned documentation tied to software releases, full-text search with code snippet indexing, API reference auto-generation from OpenAPI/AsyncAPI specs, interactive code playground embeds with executable examples, feedback and contribution workflows (edit on GitHub), table of contents with scroll-spy, and documentation health metrics (broken links, stale pages, missing examples).",
+    "Principal-level design for developer documentation covering content build pipelines, versioning, API reference generation, search, interactive examples, health metrics, and trust.",
   category: "high-level-design",
   subcategory: "developer-experience-systems",
   slug: "developer-documentation-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "documentation", "docusaurus", "mdx", "openapi", "search", "versioning", "scroll-spy", "code-playground"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
+  tags: ["hld", "documentation", "developer-tools", "search", "openapi"],
   relatedTopics: ["api-playground", "cicd-dashboard"],
 };
 
@@ -24,73 +24,195 @@ export default function DeveloperDocumentationSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A developer documentation system is the primary interface between a software product and the developers who build with it. Stripe Docs, React Docs, and AWS documentation are canonical examples. The challenge: documentation must be accurate (in sync with the software), discoverable (developers find what they need quickly), and interactive (developers can try the API without leaving the docs). The system serves multiple personas: new developers exploring the API for the first time (tutorial-first), experienced developers looking up specific method signatures (reference-first), and contributors maintaining the docs (authoring workflow).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The defining tension: documentation often lags behind the software it describes. A docs system must enforce or incentivize synchronicity between code and docs. The best docs systems are generated directly from code (OpenAPI specs, TypeDoc, Storybook) so they cannot fall out of sync. For hand-authored content, the system must provide signals about staleness: "This page was last updated 18 months ago. The API it describes changed in v2.3." Without staleness signals, developers cannot trust whether the docs reflect the current version.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Markdown/MDX authoring pipeline, full-text search, versioned documentation, API reference from OpenAPI specs, interactive code examples, scroll-spy ToC, and documentation health metrics. Not in scope: the CMS authoring interface, localization/i18n infrastructure, or A/B testing of documentation.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A developer documentation system is the discovery, learning, reference, and troubleshooting surface for a technical product. Docusaurus, Stripe Docs, React Docs, AWS Docs, and internal platform portals all solve this problem. At principal level, the design must go beyond rendering markdown. It must explain how content stays correct as APIs change, how search works across prose and reference material, how versions are served, how interactive examples are sandboxed, and how maintainers detect stale or broken documentation.
+        </HighlightBlock>
+        <p>
+          Documentation quality directly affects support load, developer activation, and platform trust. The system must serve new users following tutorials, experienced developers searching for a specific parameter, maintainers reviewing pull requests, and support engineers linking canonical answers. The hard problem is not page rendering; it is keeping a large, versioned knowledge base accurate, searchable, fast, and safe.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Versioned documentation:</strong> Documentation is versioned to match software releases (v1.0, v1.1, v2.0). The current version is served at /docs (no version prefix); older versions at /docs/v1.x/. A version switcher dropdown in the navigation allows switching between versions. When a user is on a versioned page (/docs/v1.x/authentication) and switches to v2.0, the system navigates to the equivalent v2.0 page (/docs/v2.0/authentication) if it exists, or to the v2.0 docs root if the page was removed or renamed. Version management: docs for new versions are created by copying the previous version's content and updating changed pages — the diff between versions is a git diff of the docs source.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Full-text search:</strong> Search covers all documentation pages including code snippets. The search index is built at deploy time (a static search index) using a tool like Pagefind or Flexsearch — the index is served as a static file and executed entirely client-side. This avoids a server-side search infrastructure for a read-heavy, relatively static corpus. Search results show: page title, URL, a text snippet with the query term highlighted (bold), and a breadcrumb (section &gt; page). Code snippets within pages are indexed separately and shown with a "Code" label in results — allowing developers to search for specific function names or error messages that appear only in code examples.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>OpenAPI-based API reference:</strong> The API reference section is auto-generated from an OpenAPI 3.0 spec file (openapi.yaml, committed to the repository). The docs build process parses the spec and generates reference pages for each endpoint: method + path, summary, description, request parameters (path, query, headers, body schema), response schemas, and example request/response pairs. Interactive "Try it" widgets on the reference pages use the same CORS proxy from the API playground to make live API calls from the browser. Authentication credentials for "Try it" are stored in browser localStorage (not the docs system server).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Interactive code examples:</strong> Code blocks in MDX can be marked as executable (```js sandbox). Executable code blocks are rendered with a "Run" button that executes the code in a sandboxed iframe using a service like CodeSandbox, StackBlitz, or a self-hosted sandpack instance. The sandbox has access to the current SDK version and any required API credentials the developer provides. The sandbox state (code, output) persists in the iframe's local storage — modifying the code and clicking Run shows the output inline below the code block. For Node.js/backend examples, execution is routed to a serverless sandbox (e.g., AWS Lambda) rather than a browser iframe.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Scroll-spy table of contents:</strong> The right-side Table of Contents (ToC) shows all h2 and h3 headings on the current page. As the user scrolls, the active heading is highlighted (the ToC item corresponding to the heading currently at the top of the viewport). Implementation: IntersectionObserver on all heading elements — when a heading enters/exits the viewport, update the activeHeadingId state. The ToC scrolls itself to keep the active item visible (if the page has many headings and the ToC is long). Clicking a ToC item scrolls the page to that heading using smooth-scroll and updates the URL hash (without a full page navigation).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Documentation health metrics:</strong> A health dashboard (accessible to maintainers) surfaces: broken internal links (detected at build time by the docs build pipeline), stale pages (not updated in &gt;90 days while the referenced API version changed), pages with no code examples, and pages with no "Last updated" timestamp. The dashboard data is generated as a JSON report during the docs build and exposed via a /docs/health endpoint (protected behind auth). It sends alerts to a Slack channel when: a page's staleness score crosses a threshold, or a broken link is detected in the build.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Edit on GitHub contribution flow:</strong> Every page has an "Edit this page" link that navigates to the page's source file in the GitHub repository (constructing the URL: https://github.com/org/repo/edit/main/docs/&#123;filepath&#125;). GitHub's web editor allows contributors to make small edits and submit a pull request without cloning the repository. The docs site automatically rebuilds from the PR preview branch via a CI/CD webhook — a preview URL is posted as a PR comment so reviewers can see the rendered docs before merging.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The core content model includes authored pages, generated API reference pages, navigation metadata, version metadata, code snippets, media assets, redirects, and health signals. Hand-authored guides explain concepts and workflows. Generated reference pages should come from source-of-truth artifacts such as OpenAPI, AsyncAPI, TypeDoc, protobuf schemas, or component metadata. Mixing authored and generated content is powerful, but it requires a build pipeline that can validate links, headings, examples, and referenced API entities.
+        </p>
+        <p>
+          Versioning is central. A page can be current, older-but-supported, deprecated, or archived. The URL structure should make versions shareable and cacheable. A version switcher should navigate to the equivalent page when it exists and fall back gracefully when it does not. Old versions can be cached aggressively, while the current version needs faster invalidation after deploys.
+        </p>
+        <p>
+          Search must support intent, not just text matching. Developers search for endpoint names, error messages, class names, configuration keys, and migration phrases. The index should include titles, headings, body text, code snippets, API paths, schema property names, and synonyms. Large sites may need hosted search for analytics and relevance tuning, while smaller static sites can use client-side indexes.
+        </p>
+        <p>
+          At principal level, documentation is a reliability system for human operators. A stale migration page can cause a production rollback. A missing rate-limit note can create a customer outage. An incorrect code sample can generate a support wave. Therefore the content model should include ownership, freshness, validation status, source-of-truth links, and release applicability. Documentation pages are not all equal: installation guides, authentication docs, migration guides, and incident runbooks deserve stricter validation than marketing-oriented overview pages.
+        </p>
+        <p>
+          The docs platform also needs governance for generated versus authored material. Generated API reference gives correctness and coverage, but it rarely explains intent, sequencing, failure cases, and migration paths. Authored guides provide judgment but drift easily. The architecture should make both visible in the same navigation while preserving their provenance: generated reference links back to schema or source commit, authored guides link to owners and last reviewed release.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">Developer documentation is a publish-once, read-many workload. The build pipeline (triggered on git push to the docs repository) processes MDX files through a series of transformations: (1) frontmatter extraction (title, description, version, last-updated); (2) MDX compilation (React components embedded in markdown); (3) syntax highlighting of code blocks (Shiki or Prism — applied at build time, not runtime, so no highlighting library ships to the browser); (4) search index generation (Pagefind crawls the built HTML); (5) static HTML generation (Next.js static export or Astro). The result is a fully static site that is deployed to a CDN with no server component needed for reading — only the "Try it" API proxy and the collaborative features (comments, feedback) require a server.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Versioning is implemented at the file system level: docs/v1.x/ and docs/v2.0/ are separate directory trees. The build generates separate route namespaces for each version. The version switcher is a static dropdown — it does not require a server call to switch versions. CDN caching: the current version's pages are cached with short TTL (60 seconds) to pick up deployment updates quickly. Older version pages are cached aggressively (Cache-Control: public, max-age=31536000, immutable) — old docs do not change.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A practical architecture uses a source repository, content build pipeline, generated reference pipeline, static rendering layer, search index generator, CDN, and a small set of dynamic services for feedback, authenticated examples, or health dashboards. On each content change, CI validates the content graph, builds pages, generates reference material, builds the search index, runs link checks, produces a health report, and deploys immutable assets to the CDN.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/developer-experience-systems/developer-documentation-system.svg"
-          alt="Developer documentation system: build pipeline (git push → MDX compile + frontmatter extract; Shiki syntax highlight at build time; Pagefind search index from HTML; static export → CDN; PR preview via CI webhook), versioned docs (current /docs no prefix; old /docs/v1.x/; version switcher → navigate equivalent page; old versions: Cache-Control immutable; docs diff = git diff), full-text search (Pagefind client-side index; code snippets indexed separately; results: title+snippet+breadcrumb; query term bold-highlighted), OpenAPI ref gen (openapi.yaml → per-endpoint pages: method+path+params+schemas+examples; Try-it widget → CORS proxy → live API call; auth in localStorage), interactive sandbox (```js sandbox → Run button → sandpack iframe; SDK preloaded; output inline; Node.js → Lambda serverless sandbox), scroll-spy ToC (IntersectionObserver h2/h3; activeHeadingId state; ToC auto-scroll to active; click → smooth scroll + URL hash update), docs health (build-time: broken internal links; stale >90 days; no code examples; /docs/health endpoint auth-gated; Slack alert on threshold)."
-          caption="Static build pipeline (MDX → Shiki highlight → Pagefind index → CDN static), versioned docs (directory-per-version, version switcher navigate-or-fallback), client-side Pagefind search (code snippets indexed separately), OpenAPI-generated reference with CORS-proxy Try-it, sandpack interactive code execution, IntersectionObserver scroll-spy ToC, build-time health metrics (broken links, staleness, Slack alerts)"
+          alt="Developer documentation system high level architecture"
+          caption="Docs are built from authored content, generated API references, validation, search indexing, static rendering, and CDN delivery."
         />
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/developer-experience-systems/docs-versioning-search-flow.svg"
+          alt="Documentation versioning and search flow"
+          caption="Versioned routes, generated search indexes, redirects, and stale-page signals help users land on the right documentation quickly."
+        />
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/developer-experience-systems/docs-health-feedback-flow.svg"
+          alt="Documentation health and feedback flow"
+          caption="Build-time checks and runtime feedback feed a maintainer dashboard for broken links, stale pages, missing examples, and low-confidence content."
+        />
+        <p>
+          Interactive examples and API try-it widgets should be isolated from the static docs runtime. Browser examples can run in sandboxed iframes with strict permissions. API calls should use scoped credentials and a controlled proxy similar to an API playground. Server-side examples should run only in constrained execution environments with timeouts, network policy, and per-user quotas.
+        </p>
+        <p>
+          The build pipeline should produce more than HTML. It should emit a route manifest, redirect table, heading index, search index, health report, ownership report, and API-reference coverage report. These artifacts let the runtime stay simple while maintainers still get operational visibility. The deployment model should support preview builds for pull requests so reviewers can inspect rendered docs, generated references, broken links, and search behavior before merging.
+        </p>
+        <p>
+          Large documentation systems also need content lineage. A migration guide might be authored manually, quote generated API fields, embed snippets from SDK repositories, and include examples tested against a sandbox. The build should preserve where each fragment came from and which source revision produced it. This lineage is what lets maintainers answer whether a stale code sample came from an SDK release, an OpenAPI change, or a hand-written page that missed review.
+        </p>
+        <p>
+          The platform should support different publishing risk levels. A typo fix can merge and deploy quickly. A migration guide for a breaking API change may require engineering owner approval, support readiness, redirect validation, search synonym updates, and SDK example verification. A security advisory page may require embargo handling, coordinated release time, and restricted preview access. Modeling these workflows prevents the docs system from becoming either too bureaucratic for small edits or too loose for high-impact changes.
+        </p>
+        <p>
+          Documentation runtime should degrade to static content first. Search, feedback widgets, interactive examples, personalization, and health badges are useful, but docs must remain readable during backend outages and incidents. The CDN-served article and reference pages should work independently from dynamic services. Dynamic islands should fail with narrow messages, not blank the page or block users from reading critical troubleshooting material during an outage.
+        </p>
+        <p>
+          For large enterprises, the docs system also needs a multi-product and multi-version matrix. A single company may have public APIs, private beta APIs, SDKs, CLIs, admin consoles, regional deployments, and regulated variants that do not all ship at the same cadence. The build pipeline should understand applicability metadata such as product, plan, region, API version, SDK version, and release channel. Without that model, teams either duplicate pages until they drift or overload one page with conditional notes that nobody can safely review.
+        </p>
+        <p>
+          The platform should expose release readiness as a first-class workflow. A breaking API change is not ready just because the schema changed. It may require regenerated reference docs, migration guides, deprecation banners, redirect rules, SDK sample updates, search synonyms, support macros, and customer communication. A principal-level design should show how a release owner can see all required documentation artifacts, their owners, validation status, and whether incomplete docs block the launch or only create a follow-up task.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">MDX Compilation Pipeline</h3>
-        <HighlightBlock as="p" tier="important">MDX allows React components to be embedded in Markdown. The docs use MDX for: custom callout boxes (&lt;Callout type="warning"&gt;), tabs for language-specific examples (&lt;Tabs&gt;&lt;Tab lang="js"&gt;...&lt;Tab lang="python"&gt;...&lt;/Tabs&gt;), interactive code sandboxes (&lt;CodeSandbox /&gt;), and API reference embeds (&lt;ApiEndpoint path="/users" method="GET" /&gt;). The MDX compilation happens at build time: the .mdx source is compiled to a JavaScript module that exports a React component. The compiled output is statically analyzed for: heading structure (to build the ToC), internal link targets (to check for broken links), and referenced API endpoints (to verify they exist in the OpenAPI spec).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Syntax highlighting at build time with Shiki: Shiki uses the same TextMate grammars as VS Code, producing accurate, VS Code-quality syntax highlighting. The output is static HTML with inline CSS classes — no JavaScript is needed at runtime for highlighting. The trade-off: Shiki increases build time (it must tokenize every code block) but eliminates runtime highlighting overhead entirely. For a docs site with thousands of code blocks, build time can be significant; Shiki supports incremental compilation (only re-highlight changed files) to keep build times acceptable.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Client-Side Search with Pagefind</h3>
-        <HighlightBlock as="p" tier="important">Pagefind works by crawling the built HTML output and generating a compressed search index (typically 1–5% of the site's total HTML size — a 10MB site has a ~100–500KB search index). The index is split into chunks — only the chunk containing the search term is downloaded on demand (lazy loading). On first search, Pagefind downloads ~30KB of the Pagefind WASM binary and the initial index chunk. Subsequent searches within the same session use the cached index. Search latency: &lt;50ms for most queries (WASM execution is fast).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Code indexing: by default, Pagefind indexes visible text — code blocks render as text and are indexed. To distinguish code results from prose results, code blocks are wrapped in a data-pagefind-filter="type:code" attribute during the MDX compilation. Search results with type=code show a code snippet icon and are grouped separately in the results UI. This allows developers to search "useEffect cleanup function" and find both the explanatory prose and the code example that contains the pattern.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">OpenAPI Reference Generation</h3>
-        <HighlightBlock as="p" tier="important">The OpenAPI spec (openapi.yaml) is the source of truth for the API reference section. The docs build process runs a code generator (openapi-to-mdx, a custom or open-source transformer) that reads each endpoint in the spec and emits an MDX file: the endpoint's summary becomes the page title, the description becomes the introductory paragraph, request parameters are rendered as a structured table, request/response schemas are rendered as nested property tables with type and description columns, and example request/response pairs are shown as side-by-side JSON code blocks.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The "Try it" widget: each endpoint page has a form that pre-fills the endpoint URL and allows filling in parameters. On clicking "Run," the browser sends the request to the CORS proxy (same as the API playground), which forwards it to the actual API. Authentication is handled via a "Set API key" button that stores the key in localStorage (under a docs-specific key) and injects it into the Authorization header on every "Try it" request. The stored API key persists across page navigations in the same browser session, so the developer does not need to re-enter it for every endpoint.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Documentation Staleness Detection</h3>
-        <HighlightBlock as="p" tier="important">Staleness detection is a build-time analysis that compares each docs page's last-updated date (from frontmatter or git log) against the last change date of the API endpoints it references. The docs build extracts API endpoint references from MDX files (via AST analysis of &lt;ApiEndpoint /&gt; components and code blocks containing endpoint paths). It then queries the OpenAPI spec's git history to find when each endpoint was last changed. If an endpoint changed after the docs page was last updated, the page is flagged as potentially stale.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The health report is generated as a JSON file at build time and deployed alongside the static site. It is consumed by: (1) the /docs/health dashboard (a protected page for maintainers showing a sortable table of health signals); (2) a Slack webhook that posts alerts when new broken links or high-staleness pages are detected (compared to the previous build's health report); (3) PR status checks — if a PR introduces a broken link, the CI check fails and blocks the PR merge until the link is fixed.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Static generation is fast, cheap, resilient, and CDN-friendly, but it rebuilds indexes and pages after changes. Server-rendered documentation can personalize content, update immediately, and integrate live permissions, but it costs more to operate and is less resilient to backend outages. For most public documentation, static pages plus small dynamic islands are the best default. Internal portals with per-team permissions may justify more server-side rendering.
+        </p>
+        <p>
+          Client-side search is inexpensive and works offline for moderate corpus sizes, but relevance ranking, typo tolerance, synonyms, analytics, and index size become limiting. Hosted or server-side search provides better ranking and search analytics, but introduces cost, privacy review, and operational dependency. A mature design can start with static search and graduate to a search service when the content corpus or search failure rate demands it.
+        </p>
+        <p>
+          Generated reference material reduces drift, but generated pages can be hard to read if they only mirror schemas. Hand-authored guides are clearer, but they drift unless validated against source-of-truth artifacts. The strongest documentation systems combine generated reference for correctness with authored guides for intent, examples, and migration advice.
+        </p>
+        <p>
+          Versioning strategy is another trade-off. Copying docs per major version gives simple URLs and immutable archives, but fixes and shared explanations must be backported manually. Single-source conditional content reduces duplication, but it makes authoring and review harder because a page may render differently across versions. For most large products, major-version directories plus shared includes for evergreen concepts is a practical balance. Deprecated versions should remain available but carry clear support status and migration links.
+        </p>
+        <p>
+          Search outsourcing has privacy and control implications. Sending internal docs or customer-specific docs to a hosted search provider may be unacceptable. In that case, self-hosted search or static indexes are safer, but relevance tuning and analytics become harder. The design should choose based on data sensitivity and corpus size, not on search library preference.
+        </p>
+        <p>
+          Interactive documentation trades activation speed for blast radius. A "try it" example can prove value quickly, but it can also send real requests, consume quota, leak tokens, or produce state-changing side effects. The safer design uses sandbox tenants, scoped keys, dry-run modes where possible, and clear separation between read-only examples and destructive examples. Destructive examples should require explicit confirmation and should never run with shared documentation credentials.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Static search vs. server-side search: client-side search (Pagefind, Flexsearch) has no server cost and works offline. But it has limitations: the index must fit in memory (&lt;100MB practically), relevance ranking is basic (no machine learning-based ranking), and the index must be rebuilt on every docs update. Server-side search (Algolia DocSearch, Elasticsearch) provides ML-based ranking, analytics (what are developers searching for? What searches return no results?), and can index content dynamically without a rebuild. The tradeoff is cost (Algolia is not free at scale) and operational complexity. For most docs sites, client-side search is sufficient and preferred. As the site grows beyond ~50,000 pages or requires advanced ranking, server-side search becomes worth the cost.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Versioning strategy: directory-based versioning (separate file trees per version) is simple but creates maintenance overhead — a fix to a shared component must be applied to each version separately. An alternative: symbolic links or symlinks that allow shared content to be referenced across versions. The tradeoff: symlinks complicate the build process and git history. For most products, docs are only actively maintained for the current and one previous major version — older versions are frozen and not updated (with a banner: "This is documentation for an older version. See the current docs.").</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Make correctness observable. Every page should have ownership, last update signal, version status, source file link, and health score. CI should fail on broken internal links, missing frontmatter, invalid generated references, and inaccessible heading hierarchy. Search should log zero-result queries and low-click queries so documentation teams can prioritize gaps.
+        </p>
+        <p>
+          Treat examples as product surface. Executable examples should be pinned to SDK versions, tested during CI when feasible, and isolated from user credentials. API reference generation should preserve descriptions, constraints, examples, and error states, not just method and path. Deprecated docs should show clear banners and link to the current version or migration guide.
+        </p>
+        <p>
+          Close the feedback loop. Page feedback, search failures, support ticket links, and developer forum questions should feed a docs backlog with owner and priority. A documentation platform that only publishes content but cannot tell which content is failing will not stay healthy at scale. The best systems treat documentation quality as an operational metric alongside availability and latency.
+        </p>
+        <p>
+          Treat redirects and deprecations as product contracts. Developers bookmark pages, search engines cache paths, SDKs link to reference anchors, and support teams paste docs into tickets. Removing or renaming pages without redirect ownership creates silent failure. A mature docs system validates redirects in CI, keeps anchor compatibility for high-traffic pages, and uses deprecation banners that explain support status, replacement pages, and migration deadlines.
+        </p>
+        <p>
+          Add docs observability that maps content to business outcomes. Track search zero-result rate, search-to-click success, copy-code interactions, example execution failures, page feedback, support-ticket deflection, and stale-page exposure for high-traffic pages. A principal-level design should explain how maintainers prioritize fixes when thousands of pages exist. Raw page views are not enough; the platform should reveal which docs mislead users or fail to get them to a working integration.
+        </p>
+        <p>
+          Build an explicit migration-guide workflow. Breaking changes usually require reference updates, concept pages, changelog entries, SDK examples, redirect strategy, deprecation banners, and support macros. A docs platform should let a release owner track those artifacts as one readiness checklist. This prevents the common failure where the API reference is technically updated but the migration path, examples, and search synonyms still point users to old behavior.
+        </p>
+        <p>
+          Internal platform docs need permission-aware publishing. Some pages describe incident procedures, security architecture, unreleased features, or customer-specific integrations. The documentation system should support private spaces and group-based access without fragmenting search or link validation. Search snippets must respect permission boundaries because a title or heading can leak sensitive project names even when the page body is blocked.
+        </p>
+        <p>
+          Treat code snippets as tested artifacts, not decorative text. Snippets should declare language, SDK version, required environment, expected output, and whether they are runnable. CI can execute a subset against mock services or sandbox tenants. When snippets cannot be executed, the system should still validate syntax and referenced API fields. This raises documentation from prose quality to integration reliability.
+        </p>
+        <p>
+          Build an incident documentation path. During a major outage, maintainers may need to publish a temporary mitigation, freeze edits to canonical pages, link status updates, and later merge the incident learnings into permanent troubleshooting docs. The system should support urgent publishing with clear ownership and audit history while still preventing accidental changes to unrelated pages. This matters because documentation often becomes the fastest way to steer thousands of customers during a live operational event.
+        </p>
+        <p>
+          Use quality tiers instead of one universal publishing policy. A homepage typo, a conceptual guide, an authentication setup page, a compliance document, and a production runbook should not require the same review depth. High-risk pages can require owner approval, automated validation, accessibility checks, snippet verification, and support sign-off, while low-risk pages can merge quickly. This keeps the platform usable without weakening trust in critical content.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A developer documentation system requires: (1) static build pipeline (MDX → Shiki build-time highlighting → Pagefind HTML crawl → CDN static deploy; PR preview via CI webhook; incremental rebuild for Shiki); (2) directory-based versioning (current at /docs, old at /docs/vX.x/, version switcher navigate-or-fallback, old versions immutable-cached); (3) client-side Pagefind search (WASM + lazy chunk loading, code blocks separately filtered with data-pagefind-filter, results with breadcrumb and highlighted snippet); (4) OpenAPI-generated reference (per-endpoint MDX pages, parameter tables, side-by-side examples, CORS-proxy Try-it widget with localStorage auth key); (5) sandpack interactive code execution (```js sandbox → sandpack iframe + SDK preloaded + inline output; backend → Lambda serverless); (6) IntersectionObserver scroll-spy ToC (activeHeadingId state, smooth-scroll + URL hash, ToC auto-scroll to active item); and (7) build-time health report (broken links, staleness vs. OpenAPI git history, /docs/health dashboard, Slack alert on threshold breach, PR check block on broken links). The defining principle: documentation that can go stale is worse than no documentation — the system must enforce the coupling between docs and the code it describes.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common failure is allowing docs to become detached from code. If an endpoint changes but reference docs and guides do not, users lose trust quickly. Another failure is hiding version context; developers may copy an old installation command or outdated parameter because the page does not clearly state its version. Search can also fail silently when it indexes only prose and misses snippets, error messages, and API paths.
+        </p>
+        <p>
+          Interactive examples can introduce security and cost risks. A try-it widget that sends user tokens through a poorly controlled proxy has the same risk profile as an API playground. A sandbox that allows arbitrary network or long-running execution can be abused. These features need limits, isolation, and clear credential boundaries.
+        </p>
+        <p>
+          Another common failure is treating internal documentation as a wiki with no lifecycle. Platform docs often describe service ownership, access procedures, incident commands, and deployment practices. If these pages are not tied to owners, service catalogs, and review cycles, they become dangerous because developers follow obsolete runbooks during high-pressure incidents. A mature platform flags pages whose owning service has changed, whose linked repo disappeared, or whose last reviewed release is too old for the current production environment.
+        </p>
+        <p>
+          Teams also underestimate migration search behavior. Users often search for an old error message, a removed parameter, or a previous product name. If redirects and search synonyms only cover current terminology, the docs site fails exactly when developers are trying to escape old behavior. Principal-level systems preserve old anchors, index deprecation language, and make migration destinations discoverable from legacy terms.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Public API companies use developer docs to reduce integration friction and support tickets. Platform engineering teams use internal docs portals to explain service templates, deployment standards, incident response, and golden paths. Open source projects use docs systems to accept community pull requests, publish versioned guides, and keep examples aligned with releases.
+        </p>
+        <p>
+          In enterprise settings, documentation health becomes an operational metric. Broken setup guides delay onboarding, stale migration pages increase release risk, and missing troubleshooting guides increase escalation load. A principal-level design should explain how the system reveals those gaps before they become support incidents.
+        </p>
+        <p>
+          Internal platform portals use the same architecture to publish golden paths for service creation, secrets management, deployment, observability, and incident response. The system must handle permissioned pages, source-linked generated references, and search that respects organizational boundaries. A staff-level answer may stop at markdown rendering; a principal-level answer explains how the docs platform reduces operational variance across hundreds of engineering teams.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How do you keep documentation from becoming stale?</h3>
+        <p>
+          I would tie generated reference pages to source-of-truth specs, validate authored references during CI, track ownership and last-updated metadata, and produce a health report on every build. If an API endpoint changes after a page that references it, the page is marked stale and assigned to an owner. I would also use search and feedback signals such as zero-result searches, thumbs-down feedback, and support-ticket links to prioritize content updates.
+        </p>
+        <h3>Would you use static or server-rendered documentation?</h3>
+        <p>
+          I would default to static generation for public docs because it is fast, cheap, reliable, and CDN-cacheable. Dynamic islands can handle feedback, authenticated examples, and health dashboards. I would use server rendering when content is highly permissioned, personalized by tenant, or dependent on live entitlement checks.
+        </p>
+        <h3>How would you design search for a large docs site?</h3>
+        <p>
+          I would index titles, headings, body text, code snippets, API paths, schema fields, error messages, and synonyms. For a moderate static site, I would use a generated client-side index with lazy-loaded chunks. For a large site, I would use a search service with ranking, typo tolerance, analytics, and crawler control. I would monitor zero-result searches and reformulations to find documentation gaps.
+        </p>
+        <h3>How would you safely support interactive examples?</h3>
+        <p>
+          Browser examples should run in sandboxed iframes with constrained permissions. API try-it calls should use scoped credentials, clear origin policy, and a hardened proxy with request limits and redaction. Server-side execution should run in isolated workers with CPU, memory, time, and network restrictions. The docs system should never persist user secrets in shared content.
+        </p>
+        <h3>How would you make documentation part of release readiness?</h3>
+        <p>
+          I would model critical documentation artifacts as release deliverables with owners, validation status, and launch-blocking policy. For a breaking API change, the checklist would include generated reference updates, migration guide, changelog, redirects, SDK examples, search synonyms, support macros, and deprecation banners. The release dashboard should show which artifacts are complete, which checks failed, and which pages are allowed to publish after launch. This makes docs quality measurable instead of relying on a last-minute manual review.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li>Docusaurus documentation: versioning, search, and deployment.</li>
+          <li>OpenAPI Specification 3.1.</li>
+          <li>Pagefind documentation for static site search.</li>
+          <li>Google Search Central guidance on documentation indexing and structured content.</li>
+          <li>OWASP guidance for sandboxing and untrusted code execution.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

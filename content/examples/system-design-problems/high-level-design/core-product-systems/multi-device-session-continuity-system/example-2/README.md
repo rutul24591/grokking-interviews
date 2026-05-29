@@ -1,1 +1,5 @@
-# Design a multi-device session continuity system — Example 2
+# Multi Device Session Continuity System - Example 2
+
+Concrete core product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

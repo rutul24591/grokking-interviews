@@ -8,87 +8,231 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-progressive-hydration-system",
   title: "Design a Progressive Hydration System",
-  description:
-    "Architecture for progressive hydration: SSR-rendered HTML is sent immediately for fast FCP, then JavaScript hydrates components incrementally by priority — above-the-fold critical components first (synchronous hydration on main thread), interactive components on interaction (event-triggered hydration), non-critical components on idle (requestIdleCallback hydration), and below-fold components when visible (IntersectionObserver hydration). Eliminates the monolithic TTI cliff of full-bundle hydration.",
+  description: "Principal-level design for progressive hydration covering server rendering, island prioritization, streaming, interaction replay, scheduling, partial failure, and observability.",
   category: "high-level-design",
   subcategory: "performance-scale-edge-cases",
   slug: "progressive-hydration-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "progressive-hydration", "ssr", "islands-architecture", "ttI", "fcp", "react-18", "suspense"],
-  relatedTopics: ["low-end-device-frontend", "high-latency-network-optimized-ui"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: [
+  "hld",
+  "frontend",
+  "hydration",
+  "streaming",
+  "performance",
+  "react"
+],
+  relatedTopics: [
+  "core-web-vitals-production-optimization",
+  "low-end-device-frontend"
+],
 };
+
+const definition = [
+  "Design a Progressive Hydration System is not a narrow rendering problem. It is a production system design problem where the frontend, edge, backend-for-frontend, platform APIs, observability, and product policy must work together for large server-rendered pages become visible before all JavaScript is ready, creating a gap between paint and interactivity. A principal-ready answer starts by defining the user promise: what remains usable, what is allowed to be stale, what must be confirmed by the server, and what should be disabled before the product harms trust.",
+  "The main goal is to hydrate the most valuable interactive regions first while keeping the rendered page stable and truthful. The design should avoid the common trap of optimizing only average page load. Interviewers expect you to reason about p95 and p99 users, regional cohorts, low-end devices, dependency failures, and operational behavior during incident conditions.",
+  "This topic sits at the boundary between product experience and distributed systems. The browser is not a passive renderer; it caches, schedules, retries, batches, predicts, persists state, and emits telemetry. Those client decisions can either protect the backend or multiply load during an outage.",
+  "The scope should explicitly name what is in and out. In scope are route architecture, data loading, client scheduling, dependency handling, fallback behavior, observability, release guardrails, and user-facing recovery. Out of scope are rewriting every backend service or assuming unlimited network and device capability.",
+  "A principal-level answer should also define decision ownership. Product owns which experiences can degrade. Platform owns shared performance budgets and observability contracts. Feature teams own route-level regressions. Operations owns incident playbooks and rollback controls. Without ownership, performance systems become dashboards that nobody acts on."
+];
+const concepts = [
+  "The first core concept is an explicit user journey budget. For a progressive hydration system, define budgets for startup, first useful content, first reliable interaction, bytes per route, request count, retry count, and background work. These budgets need route-level owners because a global average lets important cohorts fail quietly.",
+  "The second concept is criticality tiering. Not every request, widget, script, metric, or personalization call deserves the same priority. Critical path work supports navigation, authentication, visible content, and correctness-sensitive actions. Secondary work supports recommendations, analytics, decorations, previews, and speculative prefetch.",
+  "The third concept is client-side scheduling. The client should prioritize visible work, cancel obsolete requests, limit concurrency, pause nonessential background work, and avoid retry storms. Scheduling becomes especially important when hydration mismatches can discard server markup.",
+  "The fourth concept is correctness classification. Some experiences can be optimistic or stale, while others require authoritative confirmation. The server-rendered DOM is an initial snapshot, not the source of truth for interactive state. Critical actions should revalidate on the server after hydration, and queued interactions need freshness checks before execution.",
+  "The fifth concept is operational observability. A production design needs RUM, synthetic checks, edge metrics, API metrics, client error reports, long-task data, cache hit ratio, and release correlation. Metrics should be segmented by route, region, device class, network class, browser, and experiment variant.",
+  "The sixth concept is progressive enhancement. The system should deliver a useful baseline first, then layer richer behavior when device, network, dependency, and permission state allow it. This is different from graceful failure after a rich app breaks; it is designing the baseline as a first-class product."
+];
+const architecture = [
+  "The recommended architecture contains five cooperating layers: server component or SSR pipeline, hydration manifest, priority scheduler, interaction queue, client error boundary and telemetry. The exact technology choices vary, but the responsibility boundaries should be clear. The edge handles cacheable and regional concerns, the BFF shapes route payloads, the client schedules work and preserves local state, and telemetry closes the feedback loop.",
+  "Requests should be grouped by route intent instead of by backend ownership. The browser should not make a sequence of dependent calls when a BFF or edge function can compose a page-specific response with stable latency and caching semantics. This reduces round trips and gives the platform one place to apply request budgets, timeouts, and fallback policy.",
+  "The client should maintain a small runtime policy engine. It reads device and network hints, route priority, user intent, feature flags, and dependency health. Based on that policy it chooses image quality, prefetch aggressiveness, hydration priority, polling interval, cache strategy, and which widgets to defer.",
+  "State should be split into durable server state, durable local intent, ephemeral UI state, and derived presentation state. Durable local intent matters when users act during degraded conditions. Ephemeral UI state should not be treated as truth after refresh or reconnect.",
+  "The observability flow should correlate route render, data load, user interaction, dependency calls, cache behavior, errors, and release version. When a regression appears, engineers should know whether it came from a bundle change, third-party tag, CDN miss, backend latency, hydration error, feature flag, or experiment.",
+  "The diagrams for this article should be read as architecture, flow, and operations views. The architecture diagram explains ownership boundaries. The flow diagram explains user-visible progression and fallback. The operations diagram explains how the system is observed, controlled, and recovered during abnormal conditions."
+];
+const tradeoffs = [
+  "The first major trade-off is hydrate the entire app eagerly versus hydrate islands by business priority and user intent. Direct client access can be simple for small teams, but it creates route waterfalls, exposes backend shape to the browser, and makes fallback behavior inconsistent. A route-focused BFF adds another service tier, but it centralizes payload shaping, cache policy, and dependency control.",
+  "ship static HTML with no interactivity until route JavaScript loads can be attractive because it improves first paint and cacheability. The downside is that not all interactions become safe or fast just because the first HTML arrived quickly. You still need hydration or client logic, state reconciliation, and a plan for dynamic user-specific data.",
+  "Aggressive caching improves latency and availability but creates correctness risk. Public static assets and editorial content can be cached heavily. User-specific data, entitlement checks, privacy-sensitive responses, and mutable transaction state require careful cache keys, short TTLs, or server confirmation.",
+  "Optimistic UI improves perceived responsiveness but increases rollback complexity. It is appropriate for reversible actions such as toggling a view preference or drafting local text. It is unsafe for payment, permission, inventory, identity, deletion, and security-sensitive actions unless the UI clearly represents a pending state.",
+  "Prefetching improves next-step latency but consumes bandwidth, battery, memory, and backend capacity. The principal answer should recommend intent-based prefetch, cohort-aware limits, data-saver respect, and cancellation when intent changes.",
+  "Feature shedding protects the core journey but can damage product metrics or user trust if it is invisible. Degraded states should be explicit enough that users understand what happened, while avoiding noisy technical errors.",
+  "Cost deserves a first-class trade-off. Every extra script, beacon, retry, cache miss, and speculative request becomes meaningful at scale. A principal design should defend a cost budget, not only a latency target."
+];
+const practices = [
+  "Create route-level performance and resilience budgets. Budgets should include bytes, JavaScript execution, API calls, round trips, cache hit ratio, timeout rate, long tasks, and user interaction latency. Route owners should review budget changes during code review and release planning.",
+  "Define a dependency criticality matrix. For each dependency, document whether it blocks rendering, blocks interaction, can use cached data, can fail open, can fail closed, or can be bypassed. This turns outage behavior from improvisation into design.",
+  "Use idempotency and explicit pending states for writes. If the browser retries or the user refreshes, the backend should converge on one logical action. The UI should poll or subscribe to authoritative status rather than asking users to repeat dangerous actions.",
+  "Use progressive loading and bounded resource use. Virtualize large lists, lazy-load below-fold widgets, cap memory caches, reduce image quality for constrained cohorts, and pause nonessential work while the user is interacting.",
+  "Instrument the client as a production component. Track route timing, interaction timing, long tasks, hydration or render failures, cache state, retry count, timeout class, dependency health, and release version. Sample responsibly, but keep enough attribution to debug.",
+  "Build rollback controls. Feature flags, remote config, kill switches, CDN invalidation, third-party script disablement, and route-level fallback switches should be available before an incident. These controls need audit logging and blast-radius limits.",
+  "Exercise degraded modes continuously. Synthetic tests and game days should verify that fallback paths still work, because rarely used fallback code often rots faster than the primary path."
+];
+const pitfalls = [
+  "A common pitfall is optimizing a lab metric while real users continue to fail. Lab tools are useful, but principal interviews expect field measurement segmented by real cohorts.",
+  "Another pitfall is moving complexity to the client without operational controls. Client schedulers, local stores, and prefetchers can create backend load, stale data, or privacy issues if they are not governed.",
+  "low-priority widgets can starve forever. This is not a reason to avoid the technique entirely; it is a reason to bound it, observe it, and disable it remotely when it harms the system.",
+  "interaction replay can submit stale intent. A strong design identifies which actions need rollback, which need confirmation, and which should be blocked during degraded conditions.",
+  "third-party scripts can steal the main thread. Ambiguity is especially dangerous because users may repeat an action, support may not see the same state, and backend teams may reconcile the wrong records.",
+  "Many designs forget support and operations. If a user reports a failed journey, support should see route, device, network cohort, dependency health, client state, server state, and recent release context without asking engineering to query raw logs."
+];
+const useCases = [
+  "News homepage hydrating nav and paywall before comments is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Commerce PDP hydrating size selector and buy box before recommendation rails is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Analytics dashboard hydrating above-fold filters before lower widgets is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "A principal interviewer may ask you to handle a regional outage, a third-party script regression, an API latency spike, a client memory leak, or a sudden traffic surge. In each case, answer with the control loop: detect, isolate, degrade, communicate, recover, and prevent recurrence.",
+  "For consumer products, the biggest risk is usually silent trust erosion: taps do nothing, pages jump, data appears stale, or users repeat actions. For enterprise products, auditability and support reconstruction often matter as much as the immediate UI behavior.",
+  "For regulated or financial workflows, the product should prefer truthful pending states over optimistic success. Users can tolerate a slower confirmed action better than a fast lie that later becomes a support incident."
+];
+const questions = [
+  {
+    "question": "How would you design a progressive hydration system end to end?",
+    "answer": "I would start by defining the user journey and classifying each operation by criticality. Then I would place cacheable/static work at the CDN or edge, shape route payloads through a BFF, let the client scheduler prioritize visible and user-initiated work, and use local state only where correctness allows it. I would add RUM segmented by route, region, device, and network cohort, plus remote controls for feature shedding and rollback. The design is end to end because it covers request path, client runtime, backend dependencies, fallback behavior, observability, and operations."
+  },
+  {
+    "question": "Why choose this architecture over a simpler client-only design?",
+    "answer": "A client-only design is simpler initially, but it exposes every backend dependency to the browser, creates request waterfalls, and makes fallback policy inconsistent across teams. The proposed architecture adds a BFF or edge composition layer so the product can control payload shape, timeouts, cache behavior, and dependency degradation centrally. The trade-off is another operational tier, but that tier pays for itself when large server-rendered pages become visible before all JavaScript is ready, creating a gap between paint and interactivity."
+  },
+  {
+    "question": "What breaks at scale and how do you prevent it?",
+    "answer": "The likely failures are hydration mismatches can discard server markup; low-priority widgets can starve forever; interaction replay can submit stale intent; third-party scripts can steal the main thread. Prevention requires budgets, backpressure, cancellation, bounded prefetch, idempotent writes, dependency health signals, route-level ownership, and remote kill switches. At scale, small client inefficiencies become infrastructure incidents, so the frontend must be treated as a traffic-shaping system."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "The server-rendered DOM is an initial snapshot, not the source of truth for interactive state. Critical actions should revalidate on the server after hydration, and queued interactions need freshness checks before execution. The important interview move is to classify state rather than claim everything is strongly consistent or eventually consistent. Cached reads, derived widgets, analytics, and noncritical counters can usually be stale. Security, entitlement, financial, inventory, and destructive actions require authoritative confirmation and reconciliation."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "If an island fails to hydrate, the page should keep readable content, show a scoped fallback for that island, and report the failed module, route, device class, and blocking dependency. Hydration failure must not take down the whole page. Rollback relies on flags, config, CDN invalidation, third-party disablement, and safe fallback routes. Privacy requires data minimization in cache keys, logs, telemetry, and local storage. Cost is controlled through request budgets, sampling, cache hit targets, payload limits, and disabled speculation for constrained cohorts. Observability must connect client symptoms to release, route, dependency, device, network, and region."
+  },
+  {
+    "question": "How would you defend the trade-offs under interviewer pressure?",
+    "answer": "I would explicitly separate correctness-critical paths from experience-enhancing paths. Then I would explain why the architecture spends complexity on the former and sheds or simplifies the latter during stress. If challenged on complexity, I would point to the failure modes: ambiguous writes, retry storms, privacy leaks, hidden regressions, and poor p99 cohorts. The design is justified when those risks are more expensive than the added platform layer."
+  }
+];
+const references = [
+  {
+    "label": "web.dev: Core Web Vitals",
+    "href": "https://web.dev/vitals/"
+  },
+  {
+    "label": "web.dev: Interaction to Next Paint",
+    "href": "https://web.dev/inp/"
+  },
+  {
+    "label": "MDN: Service Worker API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+  },
+  {
+    "label": "MDN: Network Information API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Cloudflare: CDN and edge learning center",
+    "href": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+  },
+  {
+    "label": "React documentation: server rendering APIs",
+    "href": "https://react.dev/reference/react-dom/server"
+  }
+];
 
 export default function ProgressiveHydrationSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Full-bundle hydration is the standard Next.js/React behavior: the server renders the entire page to HTML (excellent for FCP), sends the full JS bundle to the client, and then React traverses the entire component tree to "hydrate" it — attaching event listeners and initializing state. On a low-end device with a 1MB JS bundle, this hydration phase can block the main thread for 5–10 seconds. During this window, the page looks interactive (the HTML is visible) but is not — clicks on buttons do nothing because the event listeners are not yet attached. This creates a frustrating UX where the Time-to-Interactive (TTI) lags far behind the First Contentful Paint (FCP).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Progressive hydration solves this by prioritizing which components hydrate first. If the user is looking at the hero section, hydrate that first. If a dropdown is below the fold, delay its hydration until the user scrolls to it. If a chatbot widget is non-critical, hydrate it only when the browser is idle. This approach closes the FCP-to-TTI gap by ensuring that the most important interactive components are hydrated first, making the page feel interactive quickly even when the total hydration cost is high.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Hydration prioritization strategies, island-based hydration, React 18 Suspense-based streaming hydration, and trigger-based hydration patterns. Not in scope: server-side streaming implementation details, RSC (React Server Components) architecture, or framework-specific bundler configuration.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>
+        {definition.slice(1).map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Immediate FCP:</strong> The server-rendered HTML must be sent to the browser before any JavaScript executes. The user sees real content within 1–2 seconds on a 3G connection, regardless of JS bundle size. The HTML is complete and readable — not a loading spinner waiting for JS.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Priority-ordered hydration:</strong> Components hydrate in a defined priority order: (1) Critical interactive components above the fold (navigation, hero CTA button, search bar) hydrate first, synchronously; (2) User-triggered components (dropdowns, modals, tooltips) hydrate when the user first interacts with them (click, hover, focus); (3) Non-critical components (chatbot, social share buttons, comments section) hydrate on requestIdleCallback; (4) Below-fold components hydrate when they enter the viewport via IntersectionObserver.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>No interactivity cliff:</strong> The time from FCP to the first interactive element (navigation, primary CTA) must be under 1 second. Even if total hydration takes 10 seconds, the user can interact with critical elements immediately after FCP.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Graceful degradation for slow JS:</strong> If JS has not hydrated a component when the user tries to interact with it, the system must handle this gracefully: show a brief loading indicator, queue the interaction to replay once hydrated, or use the SSR form submission fallback (for forms).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>TTI improvement:</strong> Progressive hydration must reduce TTI (as measured by Lighthouse) by at least 40% compared to full-bundle synchronous hydration on a Moto G4 device. This is the primary metric — FCP is already good with SSR; TTI improvement is the goal.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Hydration ordering predictability:</strong> The hydration order must be deterministic and controllable by developers. Engineers must be able to explicitly set component hydration priority without guessing framework internals. A HydrationPriority enum (Critical, Interactive, Idle, Visible) provides this control.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>No hydration mismatch:</strong> The client-side hydration must produce identical DOM to the server-rendered HTML. Hydration mismatches (where React throws away server HTML and re-renders) eliminate the FCP benefit and are treated as critical bugs. All data-dependent rendering must use the same data on server and client.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        {concepts.map((item, index) => index === 3 ? (
+          <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture builds on React 18's concurrent rendering capabilities. The server streams HTML using React 18's renderToPipeableStream — the HTML head and above-fold content are sent first (within the first chunk), with Suspense boundaries around below-fold sections. The client receives the initial HTML and begins rendering (FCP). The JS bundle is split by hydration priority: the critical bundle (contains code for Critical-priority components only, ~20KB) is loaded eagerly; lower-priority component code is loaded lazily when triggered. React 18's hydrateRoot with concurrent mode allows interrupting hydration for user input — if the user clicks during hydration, React pauses the hydration work, processes the click event, and resumes hydration. This ensures clicks are never silently dropped during the hydration phase.</HighlightBlock>
-      </section>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
 
-      <section>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/progressive-hydration-system.svg"
-          alt="Progressive hydration system: server streaming SSR (React 18 renderToPipeableStream; first chunk: HTML head + above-fold HTML; Suspense fallback for below-fold; streamed incrementally — browser can paint before JS loads), critical hydration (hydrateRoot starts immediately on bundle load; priority 1: nav + hero CTA + search bar; synchronous hydration — main thread; bundle size: ~20KB critical chunk only), interaction-triggered hydration (user hovers/clicks component not yet hydrated; event listener at document level captures event; dynamic import() loads component chunk; hydrate that subtree; replay queued interaction), idle hydration (requestIdleCallback: hydrate P3 components when idle; deadline.timeRemaining() check — yield if &lt;5ms; chatbot, social share, newsletter widget), visibility hydration (IntersectionObserver threshold=0.1 on each P4 component container; when visible: load chunk + hydrate; comments section, related articles, footer widgets), React 18 concurrent (hydrateRoot with concurrent mode; user click during hydration: React yields, processes event, resumes; Suspense boundaries: selective hydration — partially hydrated tree still interactive at hydrated parts)."
-          caption="Server streaming SSR (first chunk above-fold HTML, Suspense below-fold), critical bundle hydration (&lt;20KB, nav+hero+search first), interaction-triggered hydration (document event capture → dynamic import → subtree hydrate → replay), idle hydration (requestIdleCallback + timeRemaining check), visibility hydration (IntersectionObserver 0.1 threshold), React 18 concurrent hydrateRoot (yields for user input during hydration)"
+          alt="Design a Progressive Hydration System architecture"
+          caption="Architecture view: ownership boundaries, control-plane decisions, and runtime paths for a progressive hydration system."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/progressive-hydration-system-flow.svg"
+          alt="Design a Progressive Hydration System flow"
+          caption="Flow view: user-visible progression, fallback behavior, and degraded-state recovery."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/progressive-hydration-system-operations.svg"
+          alt="Design a Progressive Hydration System operations"
+          caption="Operations view: observability, rollback, cost controls, privacy boundaries, and incident response."
         />
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Hydration Priority Implementation</h3>
-        <HighlightBlock as="p" tier="important">A HydrationBoundary component wraps each island with its priority configuration. The component uses a custom hook (useHydration) that determines when to trigger hydration based on the priority prop. For Critical priority, hydration is triggered immediately via hydrateRoot when the component mounts on the client. For Interactive priority, a global event capture listener (document.addEventListener("click", handleInteraction, &#123; capture: true &#125;)) intercepts the first event targeting the component's DOM container — the event is prevented, the component's JS chunk is dynamically imported, the subtree is hydrated, and the event is replayed. For Idle priority, a requestIdleCallback queue processes components in order of their registration; each iteration checks deadline.timeRemaining() and yields if less than 5ms remain (preventing janky long tasks). For Visible priority, an IntersectionObserver with threshold=0.1 triggers hydration when 10% of the component's container enters the viewport.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The server adds data-hydration-priority="critical|interactive|idle|visible" attributes to the SSR-rendered HTML containers. The client-side bootstrap script reads these attributes and registers each container with the appropriate hydration queue before the React bundles load. This ensures that even if the JS takes 5 seconds to arrive, the hydration orchestration code is already set up from the tiny bootstrap script (2KB, inline in HTML).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">React 18 Streaming and Selective Hydration</h3>
-        <HighlightBlock as="p" tier="important">React 18's renderToPipeableStream enables streaming SSR: the server starts sending HTML before the full component tree is rendered. Suspense boundaries define natural split points — when the server hits a Suspense boundary around a slow-loading component (e.g., one that requires a database query), it sends the Suspense fallback HTML (skeleton) immediately and continues rendering other parts of the page. When the slow component resolves, its HTML is streamed as a subsequent chunk with an inline script tag that tells React where to inject it in the DOM. The browser handles this injection without a page reload.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Selective hydration (a React 18 feature) allows React to hydrate whichever Suspense boundary the user interacts with first, even if it has not yet hydrated in order. If the user clicks a button in the "below-fold" section before the "above-fold" section has finished hydrating, React prioritizes hydrating the clicked section first. This is automatic when using hydrateRoot with React 18 — no configuration required. The result: user interactions are never silently dropped, even in partially hydrated pages.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Islands Architecture</h3>
-        <HighlightBlock as="p" tier="important">The Islands Architecture is a specific progressive hydration pattern where most of the page is static HTML (server-rendered, never hydrated) and only specific "islands" of interactivity are hydrated as React components. For a content-heavy page (news article, product detail), the article body, breadcrumb, and static header are never hydrated — they are served as plain HTML. Only the interactive elements (comments section, share widget, related products carousel, add-to-cart button) are islands that hydrate. This reduces the total JavaScript that executes on the page, since un-hydrated components never load their JS. Astro, Qwik, and Fresh implement this pattern natively; in Next.js, it is achieved by using Server Components for static content (RSC, which never hydrate) and Client Components only for interactive islands.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The trade-off: islands cannot share React state with each other directly (they are separate React roots). Cross-island communication requires a non-React mechanism: a global event bus (CustomEvent dispatch/listen), a shared Zustand store (loaded by both islands), or URL state (sharing data through query parameters). For simple cases (a counter that two components read), URL state is the cleanest. For complex shared state (cart contents shared across header badge and product page), a small global Zustand store is appropriate.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Handling Interaction Before Hydration</h3>
-        <HighlightBlock as="p" tier="crucial">The hardest UX problem in progressive hydration: the user clicks a button before it is hydrated. The button looks clickable (it is rendered HTML), but the React event handler is not attached yet. Solutions: (1) Replay strategy — the event capture listener queues the event, hydrates the component, then dispatches the same event on the now-hydrated component. Works for simple clicks. Fails for complex events with side effects (file drops, form submissions with validation). (2) Optimistic HTML form fallback — for critical actions (add to cart, submit form), the SSR-rendered HTML uses a real HTML form with a POST action. Without JavaScript, the form submits via full page reload to the server (classic HTML form behavior). With JavaScript, the form's submit handler is replaced by React's event handler after hydration. This means the action always works, before and after hydration. (3) Pending indicator — show a subtle loading indicator on components that are not yet hydrated when the user hovers over them (CSS :hover on [data-hydration-pending] attribute). This signals to the user that the component is loading, preventing confusion when clicks are slightly delayed.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        {tradeoffs.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Progressive hydration complexity vs. benefit: implementing the full hydration priority system with event queuing and replay adds significant complexity compared to standard Next.js hydration. The benefit is only tangible on pages with large JS bundles (&gt;200KB) and significant below-fold content. For simple pages (login form, settings page), progressive hydration adds complexity without meaningful TTI improvement. The decision should be data-driven: measure TTI on key pages with a simulated Moto G4 device before adding progressive hydration complexity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Hydration mismatch prevention: any data that differs between server and client renders (random numbers, Date.now(), window dimensions, user locale) will cause a hydration mismatch. Solutions: suppress hydration for known-mismatch components (suppressHydrationWarning prop), ensure server and client use the same data source (pass data as JSON in the initial HTML rather than re-fetching on the client), and use React 18's useId() for deterministic IDs (replaces the common pattern of Math.random() for unique IDs that caused mismatches). Hydration mismatches are logged as React warnings in development — they must be treated as P1 bugs, not ignored.</HighlightBlock>
+        <h2>Best practices</h2>
+        {practices.map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A progressive hydration system reduces TTI without sacrificing FCP by hydrating components in priority order: (1) Critical (nav + hero CTA + search bar, synchronous hydration, ~20KB critical bundle); (2) Interactive (event-triggered via document capture listener → dynamic import → subtree hydrate → event replay); (3) Idle (requestIdleCallback queue with deadline.timeRemaining() yield guard); (4) Visible (IntersectionObserver 0.1 threshold → chunk load + hydrate). React 18's streaming SSR (renderToPipeableStream + Suspense) enables above-fold HTML delivery before below-fold DB queries complete, and selective hydration prioritizes user-clicked sections. The Islands Architecture (RSC for static, Client Components only for interactive islands) eliminates JS for never-interactive content. Pre-hydration interaction is handled via HTML form fallbacks for critical actions and event replay for simple clicks. The core principle: every millisecond of main-thread JS work should earn its place — hydration that the user cannot yet see or interact with is wasted time.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        {pitfalls.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        {useCases.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        {questions.map((item) => (
+          <div key={item.question} className="mb-6">
+            <h3 className="mb-2 text-lg font-semibold">{item.question}</h3>
+            <p>{item.answer}</p>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          {references.map((item) => (
+            <li key={item.href}>
+              <a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
     </ArticleLayout>
   );

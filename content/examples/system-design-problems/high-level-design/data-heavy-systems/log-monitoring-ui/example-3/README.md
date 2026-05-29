@@ -1,1 +1,5 @@
-# Design log monitoring UI (Datadog/Kibana) — Example 3
+# LOG Monitoring UI - Example 3
+
+Concrete data dashboard edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

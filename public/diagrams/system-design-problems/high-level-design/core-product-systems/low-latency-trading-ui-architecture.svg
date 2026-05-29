@@ -1,63 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Low latency trading UI architecture">
-  <defs>
-    <style>
-      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
-      .muted { fill: #334155; }
-      .h { font-weight: 700; }
-      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
-      .chip { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
-      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
-      .arrow { fill: #64748b; }
-      @media (prefers-color-scheme: dark) {
-        .t { fill: #e5e7eb; }
-        .muted { fill: #cbd5e1; }
-        .box { fill: #0b1220; stroke: #334155; }
-        .chip { fill: #111827; stroke: #334155; }
-        .line { stroke: #94a3b8; }
-        .arrow { fill: #94a3b8; }
-      }
-    </style>
-  </defs>
-
-  <text class="t h" x="40" y="54" font-size="22">Trading UI: Market Data vs Order Execution Paths</text>
-  <text class="t muted" x="40" y="78" font-size="13">Snapshot+delta for correctness; idempotent orders for safety</text>
-
-  <rect class="box" x="40" y="110" width="300" height="360" rx="14"/>
-  <text class="t h" x="60" y="140" font-size="16">Client</text>
-  <rect class="chip" x="60" y="160" width="260" height="70" rx="10"/>
-  <text class="t" x="74" y="186" font-size="13">Market data renderer</text>
-  <text class="t muted" x="74" y="206" font-size="12">Batching + degraded mode under load</text>
-
-  <rect class="chip" x="60" y="244" width="260" height="76" rx="10"/>
-  <text class="t" x="74" y="270" font-size="13">Order entry state machine</text>
-  <text class="t muted" x="74" y="290" font-size="12">Local validation, idempotent submit</text>
-  <text class="t muted" x="74" y="308" font-size="12">Never infer success without ack</text>
-
-  <rect class="chip" x="60" y="332" width="260" height="62" rx="10"/>
-  <text class="t" x="74" y="358" font-size="13">Reconciliation</text>
-  <text class="t muted" x="74" y="378" font-size="12">Authoritative snapshot on reconnect</text>
-
-  <rect class="box" x="390" y="140" width="240" height="160" rx="14"/>
-  <text class="t h" x="410" y="170" font-size="15">API Gateway</text>
-  <text class="t muted" x="410" y="194" font-size="12">Auth, step-up, rate limits</text>
-  <text class="t muted" x="410" y="214" font-size="12">Request IDs</text>
-
-  <rect class="box" x="680" y="110" width="240" height="150" rx="14"/>
-  <text class="t h" x="700" y="140" font-size="15">Market Data Stream</text>
-  <text class="t muted" x="700" y="164" font-size="12">Snapshot + deltas (sequence)</text>
-  <text class="t muted" x="700" y="184" font-size="12">Edge relay fanout</text>
-
-  <rect class="box" x="680" y="290" width="240" height="180" rx="14"/>
-  <text class="t h" x="700" y="320" font-size="15">Order + Risk Services</text>
-  <text class="t muted" x="700" y="344" font-size="12">Authoritative risk checks</text>
-  <text class="t muted" x="700" y="364" font-size="12">Idempotent submit and ack</text>
-  <text class="t muted" x="700" y="384" font-size="12">Execution updates + snapshots</text>
-
-  <path class="line" d="M340 230 L380 230" />
-  <polygon class="arrow" points="380,230 372,226 372,234"/>
-  <path class="line" d="M630 200 L670 200" />
-  <polygon class="arrow" points="670,200 662,196 662,204"/>
-  <path class="line" d="M630 360 L670 360" />
-  <polygon class="arrow" points="670,360 662,356 662,364"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Low Latency Trading Ui Architecture: topology map</title>
+  <desc id="desc">Curved topology for core product systems runtime states.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Low Latency Trading Ui Architecture: topology map</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Curved topology for core product systems runtime states.</text>
+  <rect x="66" y="122" width="828" height="332" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M116 380 C180 220, 260 203, 338 236" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><circle cx="154" cy="356" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="154" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">client</text><path d="M270 310 C300 250, 360 203, 440 288" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/><circle cx="306" cy="274" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="306" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">state</text><path d="M424 380 C420 280, 460 203, 542 236" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><circle cx="458" cy="356" r="30" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="458" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">service</text><path d="M578 310 C540 220, 560 203, 644 288" fill="none" stroke="#9333ea" stroke-width="4" stroke-linecap="round"/><circle cx="610" cy="274" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="610" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text><path d="M732 380 C660 250, 660 203, 746 236" fill="none" stroke="#b91c1c" stroke-width="4" stroke-linecap="round"/><circle cx="762" cy="356" r="30" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="762" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">risk</text>
+  <rect x="210" y="138" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="274" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">SLO</text><rect x="390" y="138" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">audit</text><rect x="570" y="138" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="634" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">recover</text>
+  <path d="M118 456 C270 500, 420 426, 568 468 S760 496, 846 444" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/><text x="520" y="494" text-anchor="middle" fill="#be123c" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">state convergence requires explicit observability and fallback routes</text>
 </svg>
-

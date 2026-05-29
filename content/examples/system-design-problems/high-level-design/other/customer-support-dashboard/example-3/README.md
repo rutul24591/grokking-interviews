@@ -1,1 +1,5 @@
-# Design a customer support dashboard (Zendesk-like) — Example 3
+# Customer Support Dashboard - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

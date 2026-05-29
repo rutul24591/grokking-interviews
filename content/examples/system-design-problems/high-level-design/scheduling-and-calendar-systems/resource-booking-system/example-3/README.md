@@ -1,1 +1,5 @@
-# Design a resource booking system (rooms, slots, etc.) — Example 3
+# Resource Booking System - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

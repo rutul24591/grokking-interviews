@@ -8,88 +8,230 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-graceful-degradation-system",
   title: "Design a Graceful Degradation System",
-  description:
-    "Architecture for a frontend that degrades gracefully under partial failures: circuit breakers per service dependency, feature flags for runtime feature removal, priority-tiered UI components (critical vs. enhanced vs. non-essential), fallback content strategies (cached data, skeleton screens, static placeholders), progressive enhancement baseline, error boundary isolation per feature zone, health-check-driven degradation mode toggle, and user-facing degradation notices with expected recovery time.",
+  description: "Principal-level graceful degradation architecture covering capability tiers, dependency failure, feature shedding, fallbacks, user messaging, and operational control.",
   category: "high-level-design",
   subcategory: "performance-scale-edge-cases",
   slug: "graceful-degradation-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "graceful-degradation", "circuit-breaker", "feature-flags", "error-boundary", "fallback", "resilience"],
-  relatedTopics: ["frontend-1m-concurrent-users", "multi-region-frontend-architecture"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: [
+  "hld",
+  "frontend",
+  "degradation",
+  "resilience",
+  "availability"
+],
+  relatedTopics: [
+  "frontend-1m-concurrent-users",
+  "multi-region-frontend-architecture"
+],
 };
+
+const definition = [
+  "Design a Graceful Degradation System is not a narrow rendering problem. It is a production system design problem where the frontend, edge, backend-for-frontend, platform APIs, observability, and product policy must work together for frontends depend on APIs, CDNs, identity providers, search, payments, experiments, personalization, and third parties that fail independently. A principal-ready answer starts by defining the user promise: what remains usable, what is allowed to be stale, what must be confirmed by the server, and what should be disabled before the product harms trust.",
+  "The main goal is to keep the highest-value user journeys available while shedding optional features and making reduced capability explicit. The design should avoid the common trap of optimizing only average page load. Interviewers expect you to reason about p95 and p99 users, regional cohorts, low-end devices, dependency failures, and operational behavior during incident conditions.",
+  "This topic sits at the boundary between product experience and distributed systems. The browser is not a passive renderer; it caches, schedules, retries, batches, predicts, persists state, and emits telemetry. Those client decisions can either protect the backend or multiply load during an outage.",
+  "The scope should explicitly name what is in and out. In scope are route architecture, data loading, client scheduling, dependency handling, fallback behavior, observability, release guardrails, and user-facing recovery. Out of scope are rewriting every backend service or assuming unlimited network and device capability.",
+  "A principal-level answer should also define decision ownership. Product owns which experiences can degrade. Platform owns shared performance budgets and observability contracts. Feature teams own route-level regressions. Operations owns incident playbooks and rollback controls. Without ownership, performance systems become dashboards that nobody acts on."
+];
+const concepts = [
+  "The first core concept is an explicit user journey budget. For a graceful degradation system, define budgets for startup, first useful content, first reliable interaction, bytes per route, request count, retry count, and background work. These budgets need route-level owners because a global average lets important cohorts fail quietly.",
+  "The second concept is criticality tiering. Not every request, widget, script, metric, or personalization call deserves the same priority. Critical path work supports navigation, authentication, visible content, and correctness-sensitive actions. Secondary work supports recommendations, analytics, decorations, previews, and speculative prefetch.",
+  "The third concept is client-side scheduling. The client should prioritize visible work, cancel obsolete requests, limit concurrency, pause nonessential background work, and avoid retry storms. Scheduling becomes especially important when fallbacks rot if never exercised.",
+  "The fourth concept is correctness classification. Some experiences can be optimistic or stale, while others require authoritative confirmation. The UI needs a consistent view of degradation state per route or session. If the product hides personalization due to an outage, all dependent widgets should share the same degraded reason rather than each making a separate guess.",
+  "The fifth concept is operational observability. A production design needs RUM, synthetic checks, edge metrics, API metrics, client error reports, long-task data, cache hit ratio, and release correlation. Metrics should be segmented by route, region, device class, network class, browser, and experiment variant.",
+  "The sixth concept is progressive enhancement. The system should deliver a useful baseline first, then layer richer behavior when device, network, dependency, and permission state allow it. This is different from graceful failure after a rich app breaks; it is designing the baseline as a first-class product."
+];
+const architecture = [
+  "The recommended architecture contains five cooperating layers: dependency health model, feature tier registry, fallback renderer, kill-switch control plane, user-facing degraded-state components. The exact technology choices vary, but the responsibility boundaries should be clear. The edge handles cacheable and regional concerns, the BFF shapes route payloads, the client schedules work and preserves local state, and telemetry closes the feedback loop.",
+  "Requests should be grouped by route intent instead of by backend ownership. The browser should not make a sequence of dependent calls when a BFF or edge function can compose a page-specific response with stable latency and caching semantics. This reduces round trips and gives the platform one place to apply request budgets, timeouts, and fallback policy.",
+  "The client should maintain a small runtime policy engine. It reads device and network hints, route priority, user intent, feature flags, and dependency health. Based on that policy it chooses image quality, prefetch aggressiveness, hydration priority, polling interval, cache strategy, and which widgets to defer.",
+  "State should be split into durable server state, durable local intent, ephemeral UI state, and derived presentation state. Durable local intent matters when users act during degraded conditions. Ephemeral UI state should not be treated as truth after refresh or reconnect.",
+  "The observability flow should correlate route render, data load, user interaction, dependency calls, cache behavior, errors, and release version. When a regression appears, engineers should know whether it came from a bundle change, third-party tag, CDN miss, backend latency, hydration error, feature flag, or experiment.",
+  "The diagrams for this article should be read as architecture, flow, and operations views. The architecture diagram explains ownership boundaries. The flow diagram explains user-visible progression and fallback. The operations diagram explains how the system is observed, controlled, and recovered during abnormal conditions."
+];
+const tradeoffs = [
+  "The first major trade-off is fail closed for every dependency versus tier features and degrade by business criticality. Direct client access can be simple for small teams, but it creates route waterfalls, exposes backend shape to the browser, and makes fallback behavior inconsistent. A route-focused BFF adds another service tier, but it centralizes payload shaping, cache policy, and dependency control.",
+  "silently hide broken features can be attractive because it improves first paint and cacheability. The downside is that not all interactions become safe or fast just because the first HTML arrived quickly. You still need hydration or client logic, state reconciliation, and a plan for dynamic user-specific data.",
+  "Aggressive caching improves latency and availability but creates correctness risk. Public static assets and editorial content can be cached heavily. User-specific data, entitlement checks, privacy-sensitive responses, and mutable transaction state require careful cache keys, short TTLs, or server confirmation.",
+  "Optimistic UI improves perceived responsiveness but increases rollback complexity. It is appropriate for reversible actions such as toggling a view preference or drafting local text. It is unsafe for payment, permission, inventory, identity, deletion, and security-sensitive actions unless the UI clearly represents a pending state.",
+  "Prefetching improves next-step latency but consumes bandwidth, battery, memory, and backend capacity. The principal answer should recommend intent-based prefetch, cohort-aware limits, data-saver respect, and cancellation when intent changes.",
+  "Feature shedding protects the core journey but can damage product metrics or user trust if it is invisible. Degraded states should be explicit enough that users understand what happened, while avoiding noisy technical errors.",
+  "Cost deserves a first-class trade-off. Every extra script, beacon, retry, cache miss, and speculative request becomes meaningful at scale. A principal design should defend a cost budget, not only a latency target."
+];
+const practices = [
+  "Create route-level performance and resilience budgets. Budgets should include bytes, JavaScript execution, API calls, round trips, cache hit ratio, timeout rate, long tasks, and user interaction latency. Route owners should review budget changes during code review and release planning.",
+  "Define a dependency criticality matrix. For each dependency, document whether it blocks rendering, blocks interaction, can use cached data, can fail open, can fail closed, or can be bypassed. This turns outage behavior from improvisation into design.",
+  "Use idempotency and explicit pending states for writes. If the browser retries or the user refreshes, the backend should converge on one logical action. The UI should poll or subscribe to authoritative status rather than asking users to repeat dangerous actions.",
+  "Use progressive loading and bounded resource use. Virtualize large lists, lazy-load below-fold widgets, cap memory caches, reduce image quality for constrained cohorts, and pause nonessential work while the user is interacting.",
+  "Instrument the client as a production component. Track route timing, interaction timing, long tasks, hydration or render failures, cache state, retry count, timeout class, dependency health, and release version. Sample responsibly, but keep enough attribution to debug.",
+  "Build rollback controls. Feature flags, remote config, kill switches, CDN invalidation, third-party script disablement, and route-level fallback switches should be available before an incident. These controls need audit logging and blast-radius limits.",
+  "Exercise degraded modes continuously. Synthetic tests and game days should verify that fallback paths still work, because rarely used fallback code often rots faster than the primary path."
+];
+const pitfalls = [
+  "A common pitfall is optimizing a lab metric while real users continue to fail. Lab tools are useful, but principal interviews expect field measurement segmented by real cohorts.",
+  "Another pitfall is moving complexity to the client without operational controls. Client schedulers, local stores, and prefetchers can create backend load, stale data, or privacy issues if they are not governed.",
+  "hidden degradation can corrupt user trust. This is not a reason to avoid the technique entirely; it is a reason to bound it, observe it, and disable it remotely when it harms the system.",
+  "global kill switches can over-shoot. A strong design identifies which actions need rollback, which need confirmation, and which should be blocked during degraded conditions.",
+  "partial outages create inconsistent pages. Ambiguity is especially dangerous because users may repeat an action, support may not see the same state, and backend teams may reconcile the wrong records.",
+  "Many designs forget support and operations. If a user reports a failed journey, support should see route, device, network cohort, dependency health, client state, server state, and recent release context without asking engineering to query raw logs."
+];
+const useCases = [
+  "Commerce site keeping browse available while recommendations fail is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "SaaS admin console showing cached audit logs when analytics is down is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Media app switching from personalized feed to editorial fallback is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "A principal interviewer may ask you to handle a regional outage, a third-party script regression, an API latency spike, a client memory leak, or a sudden traffic surge. In each case, answer with the control loop: detect, isolate, degrade, communicate, recover, and prevent recurrence.",
+  "For consumer products, the biggest risk is usually silent trust erosion: taps do nothing, pages jump, data appears stale, or users repeat actions. For enterprise products, auditability and support reconstruction often matter as much as the immediate UI behavior.",
+  "For regulated or financial workflows, the product should prefer truthful pending states over optimistic success. Users can tolerate a slower confirmed action better than a fast lie that later becomes a support incident."
+];
+const questions = [
+  {
+    "question": "How would you design a graceful degradation system end to end?",
+    "answer": "I would start by defining the user journey and classifying each operation by criticality. Then I would place cacheable/static work at the CDN or edge, shape route payloads through a BFF, let the client scheduler prioritize visible and user-initiated work, and use local state only where correctness allows it. I would add RUM segmented by route, region, device, and network cohort, plus remote controls for feature shedding and rollback. The design is end to end because it covers request path, client runtime, backend dependencies, fallback behavior, observability, and operations."
+  },
+  {
+    "question": "Why choose this architecture over a simpler client-only design?",
+    "answer": "A client-only design is simpler initially, but it exposes every backend dependency to the browser, creates request waterfalls, and makes fallback policy inconsistent across teams. The proposed architecture adds a BFF or edge composition layer so the product can control payload shape, timeouts, cache behavior, and dependency degradation centrally. The trade-off is another operational tier, but that tier pays for itself when frontends depend on APIs, CDNs, identity providers, search, payments, experiments, personalization, and third parties that fail independently."
+  },
+  {
+    "question": "What breaks at scale and how do you prevent it?",
+    "answer": "The likely failures are fallbacks rot if never exercised; hidden degradation can corrupt user trust; global kill switches can over-shoot; partial outages create inconsistent pages. Prevention requires budgets, backpressure, cancellation, bounded prefetch, idempotent writes, dependency health signals, route-level ownership, and remote kill switches. At scale, small client inefficiencies become infrastructure incidents, so the frontend must be treated as a traffic-shaping system."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "The UI needs a consistent view of degradation state per route or session. If the product hides personalization due to an outage, all dependent widgets should share the same degraded reason rather than each making a separate guess. The important interview move is to classify state rather than claim everything is strongly consistent or eventually consistent. Cached reads, derived widgets, analytics, and noncritical counters can usually be stale. Security, entitlement, financial, inventory, and destructive actions require authoritative confirmation and reconciliation."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "During an outage, the system should shift from personalized to generic content, from live to cached data, from synchronous side effects to queued work where safe, and from rich widgets to basic controls. Rollback relies on flags, config, CDN invalidation, third-party disablement, and safe fallback routes. Privacy requires data minimization in cache keys, logs, telemetry, and local storage. Cost is controlled through request budgets, sampling, cache hit targets, payload limits, and disabled speculation for constrained cohorts. Observability must connect client symptoms to release, route, dependency, device, network, and region."
+  },
+  {
+    "question": "How would you defend the trade-offs under interviewer pressure?",
+    "answer": "I would explicitly separate correctness-critical paths from experience-enhancing paths. Then I would explain why the architecture spends complexity on the former and sheds or simplifies the latter during stress. If challenged on complexity, I would point to the failure modes: ambiguous writes, retry storms, privacy leaks, hidden regressions, and poor p99 cohorts. The design is justified when those risks are more expensive than the added platform layer."
+  }
+];
+const references = [
+  {
+    "label": "web.dev: Core Web Vitals",
+    "href": "https://web.dev/vitals/"
+  },
+  {
+    "label": "web.dev: Interaction to Next Paint",
+    "href": "https://web.dev/inp/"
+  },
+  {
+    "label": "MDN: Service Worker API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+  },
+  {
+    "label": "MDN: Network Information API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Cloudflare: CDN and edge learning center",
+    "href": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+  },
+  {
+    "label": "React documentation: server rendering APIs",
+    "href": "https://react.dev/reference/react-dom/server"
+  }
+];
 
 export default function GracefulDegradationSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A graceful degradation system ensures that partial backend failures do not cause total frontend failures. Modern web applications depend on dozens of microservices — recommendations, search, notifications, analytics, payment, authentication, personalization, ad targeting, and more. Any one of these services can be slow, throwing errors, or completely unavailable at any given time. Without deliberate degradation design, a single failing microservice can cascade: a slow recommendations API blocks the page render, a crashing notifications service causes unhandled React errors that unmount the entire component tree, or a degraded search cluster makes the search bar spin indefinitely, confusing users about whether their query was received.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Graceful degradation means: when a dependency fails, the system continues to provide the most valuable functionality with reduced features, rather than failing completely. The user can still browse products, read articles, and complete purchases even when the recommendations panel is down, the search is slow, and the notification badge is missing. The degradation is transparent when possible (the section simply disappears or shows cached data), and explained when not (a brief "Some features are temporarily unavailable" notice).</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Frontend circuit breakers, React error boundaries, feature flag-driven degradation, fallback content strategies, and health-check-driven degradation mode. Not in scope: backend circuit breaker implementation (Hystrix/Resilience4j), infrastructure failover, or database availability patterns.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>
+        {definition.slice(1).map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Failure isolation:</strong> A failure in one feature zone must not propagate to other zones. A crash in the recommendations component must not unmount the product listing or checkout flow. Error boundaries isolate failures to the smallest possible UI surface.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Circuit breaker per dependency:</strong> Each external API dependency has a circuit breaker with three states: Closed (healthy, all requests pass through), Open (failing, all requests return immediately with fallback data — no actual network requests), and Half-Open (recovery testing, one request passes through to check if the service has recovered). Circuit breaker opens after a configurable threshold (e.g., 5 failures in 10 seconds). It transitions to Half-Open after a cooldown (30 seconds).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Feature flag degradation:</strong> An operator can remotely disable specific features via feature flags (LaunchDarkly or a custom flag service) without a deployment. When a feature is disabled, its component renders a static placeholder or nothing. This allows instant response to a newly discovered problem without redeployment.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Fallback content:</strong> For non-critical features that fail, the UI shows: (a) cached content from the previous successful load (if available in the service worker cache or React Query cache); (b) a static placeholder (a muted list of generic items to maintain layout); (c) nothing (if the feature is non-essential and its absence is not disorienting). Never show infinite spinners for optional features.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Critical path protection:</strong> Core user journeys (login, browse primary content, add to cart, checkout) must never be affected by failures in non-critical services. Critical paths are isolated from non-critical dependencies at the component level — they do not share the same API calls or state contexts.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Degradation visibility:</strong> Engineers can see real-time which features are degraded via a degradation dashboard. Each circuit breaker's state (open/closed/half-open), open duration, and error rate is logged and visualized. On-call engineers receive alerts when a circuit breaker opens.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Fast recovery:</strong> When a failing service recovers, degraded features automatically recover without user intervention. Circuit breakers probe the service in Half-Open state and re-close on success. Degradation notices disappear automatically. No page refresh required.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        {concepts.map((item, index) => index === 3 ? (
+          <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture treats the UI as a set of independent feature zones, each with its own failure domain. The critical zone (primary content, authentication, checkout) is built with no non-essential dependencies — it works even when every other service is down. The enhanced zone (recommendations, search, notifications, social features) is wrapped in error boundaries and connected to circuit breakers. The non-essential zone (analytics, A/B test variants, ad slots, onboarding hints) degrades silently (empty space or nothing). The DegradationContext (a React context) holds the current circuit breaker state and feature flag state — components subscribe to this context to know whether to render their full experience, a fallback, or nothing.</HighlightBlock>
-      </section>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
 
-      <section>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/graceful-degradation-system.svg"
-          alt="Graceful degradation system: circuit breaker state machine (Closed: requests pass, count errors; threshold 5 errors/10s → Open: return fallback immediately; cooldown 30s → Half-Open: 1 probe request; success → Closed; failure → Open), feature priority tiers (P0 critical: auth+browse+checkout — isolated, no non-essential deps, never shed; P1 enhanced: recommendations+search+notifications — error boundaries, circuit breakers, cached fallbacks; P2 non-essential: analytics+ads+hints — silent fail, empty space), React error boundaries (boundary per feature zone: catches render errors; logs to Sentry; renders fallback UI from boundary props; never crashes parent zone), fallback strategy (1. React Query cache: serve stale data with 'may be outdated' label; 2. SW cache: last known API response; 3. Static placeholder: maintains layout; 4. Empty/hide: non-essential zones), feature flags (LaunchDarkly or custom flag service: disable_recommendations=true → component returns null; remote kill switch without deploy; gradual re-enable: 1%→10%→100% rollout), health dashboard (circuit breaker states real-time: green=closed, amber=half-open, red=open; error rate sparklines per service; auto-alert on open &gt;60s)."
-          caption="Circuit breaker state machine (Closed→Open 5 errors/10s, Half-Open probe after 30s), P0/P1/P2 feature priority tiers (critical never shed, enhanced fallback to cache, non-essential silent fail), React error boundaries per zone, 4-tier fallback strategy (React Query cache → SW cache → static placeholder → hide), feature flag kill switch, real-time degradation dashboard"
+          alt="Design a Graceful Degradation System architecture"
+          caption="Architecture view: ownership boundaries, control-plane decisions, and runtime paths for a graceful degradation system."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/graceful-degradation-system-flow.svg"
+          alt="Design a Graceful Degradation System flow"
+          caption="Flow view: user-visible progression, fallback behavior, and degraded-state recovery."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/graceful-degradation-system-operations.svg"
+          alt="Design a Graceful Degradation System operations"
+          caption="Operations view: observability, rollback, cost controls, privacy boundaries, and incident response."
         />
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Frontend Circuit Breaker Implementation</h3>
-        <HighlightBlock as="p" tier="important">A frontend circuit breaker is a class that wraps API calls and tracks their success/failure rates. Implementation: the circuit breaker maintains a sliding window of the last N requests (using a circular buffer of timestamps and outcomes). When the error rate in the window exceeds the threshold, the circuit opens. In the Open state, the execute() method immediately returns a rejected promise with a CircuitOpenError, bypassing the actual API call. The calling code catches this error and renders the fallback. After the cooldown period, the state transitions to Half-Open, and the next execute() call is allowed through — if it succeeds, the circuit closes; if it fails, the circuit returns to Open with a fresh cooldown.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Each API endpoint or microservice dependency gets its own circuit breaker instance, stored in a React context (CircuitBreakerProvider). The configuration is per-service: the recommendations service has a low threshold (3 errors in 10s, fast to open because it is non-critical) while the authentication service has a high threshold (20 errors in 10s, slow to open because it is critical). The circuit breaker state is persisted in React state, not localStorage — circuit breaker state should be local to the current session (a new page load retries all services fresh).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">React Error Boundaries</h3>
-        <HighlightBlock as="p" tier="important">React error boundaries catch rendering errors (thrown during render, in lifecycle methods, or in constructor) within their subtree and render a fallback UI instead. Each feature zone (recommendations, search, notifications, product listing) is wrapped in its own ErrorBoundary component with a zone-specific fallback. The ErrorBoundary's fallback prop determines what to show: for recommendations, the fallback is a static list of generic popular items (maintaining the layout width); for notifications, the fallback is an empty badge (the bell icon with no count); for the checkout flow, the fallback is an error message with a "try again" button that retriggers the ErrorBoundary's componentDidUpdate retry logic.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Error boundaries do not catch: async errors (unhandled promise rejections), event handler errors (onClick, onChange), or errors in the error boundary itself. For async errors (fetch failures), the pattern is to catch the error in the data-fetching hook and throw it as a synchronous render error that the boundary will catch: if (error) throw error inside the render function (React Query's throwOnError option does this automatically). Event handler errors must be caught manually and fed into component state as an error flag that triggers a conditional render of the error state.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Fallback Content Strategy</h3>
-        <HighlightBlock as="p" tier="important">The fallback hierarchy for non-critical features: (1) React Query stale cache — if the data was successfully fetched in the last session and React Query's stale time allows, render the stale data with a subtle "Last updated X minutes ago" label. This is the best fallback — the layout is identical to the success state and the content is real. (2) Service worker cache — if React Query has no in-memory cache but the service worker has a cached API response from a previous visit, use that. (3) Static placeholder — a muted, non-interactive version of the component that maintains its space in the layout. For a recommendations carousel, this is a row of grey rounded rectangles with the same dimensions as real cards. This prevents layout shift when the real content loads. (4) Collapse/hide — if showing a placeholder would be more confusing than hiding the section, remove it from the DOM entirely and let the adjacent layout flow into the space.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The fallback selection logic is encoded in a useFallback hook that takes the API loading/error state and returns the appropriate FallbackLevel enum. Components use this hook to decide what to render rather than writing if-error-then logic inline. This centralizes the fallback strategy and makes it easy to change the policy globally.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Health-Check Degradation Mode</h3>
-        <HighlightBlock as="p" tier="crucial">A global degradation mode (triggered by the health check endpoint returning a degraded status) enables pre-emptive simplification of the UI before individual circuit breakers open. The health check endpoint (GET /api/health) returns a JSON response with the status of each dependency: &#123;"status": "degraded", "services": &#123;"recommendations": "down", "search": "slow", "auth": "healthy"&#125;&#125;. The frontend fetches this endpoint on page load and every 30 seconds. When a service is flagged as "down," the corresponding circuit breaker is pre-opened (skipping the failure accumulation phase), and the feature is immediately shown in its fallback state. This provides a faster user experience than waiting for 5 failed API calls to open the circuit organically.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The degraded mode banner ("Some features are temporarily unavailable. Our team is working on it.") is shown when any non-critical circuit is open. It auto-dismisses when all circuits close. A "Show details" link expands the banner to show which specific features are affected and an estimated recovery time (pulled from the health check endpoint's estimated_recovery field, which engineering sets when they page an incident).</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        {tradeoffs.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Circuit breaker threshold tuning: setting the threshold too low (opens on 2 errors in 10s) causes false positives — a brief network blip opens the circuit and hides the feature unnecessarily. Setting it too high (opens on 50 errors in 10s) allows the degraded service to hammer users with failures for longer before the circuit opens. Threshold tuning requires understanding the normal error rate of each service (ambient failures from timeouts, transient 5xx) and setting the circuit threshold above the ambient rate but below the failure-mode rate. Per-service thresholds are better than a single global threshold.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Progressive enhancement as the degradation baseline: true progressive enhancement (the page works without JavaScript entirely, enhanced by JS) is the ultimate graceful degradation — even if the entire client-side JS bundle fails to load, the user gets a functional HTML response from SSR. For modern SPAs, full progressive enhancement is rarely achievable, but the philosophy applies: each enhancement layer (JS interactivity, real-time updates, personalization) should be optional rather than required for basic functionality. An app where the core read experience works without any client-side data fetching (all data in SSR) is inherently more resilient than an app where the page is blank without successful API calls.</HighlightBlock>
+        <h2>Best practices</h2>
+        {practices.map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A graceful degradation system is built on four pillars: (1) circuit breakers per dependency (sliding window, Closed/Open/Half-Open state machine, per-service thresholds, Open state returns fallback immediately bypassing network); (2) React error boundaries per feature zone (zone-specific fallback UI, async errors surfaced via throwOnError, event errors caught manually); (3) priority-tiered UI (P0 critical — isolated, never shed; P1 enhanced — circuit-breaker-wrapped, cached fallbacks; P2 non-essential — silent fail); and (4) health-check-driven pre-degradation (GET /api/health every 30s, pre-open circuits for flagged services, degradation banner with recovery ETA). The defining principle: every non-critical dependency must have an explicit fallback before it is integrated — the question "what does this feature look like when its API is down?" must be answered in the design phase, not discovered in production.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        {pitfalls.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        {useCases.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        {questions.map((item) => (
+          <div key={item.question} className="mb-6">
+            <h3 className="mb-2 text-lg font-semibold">{item.question}</h3>
+            <p>{item.answer}</p>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          {references.map((item) => (
+            <li key={item.href}>
+              <a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
     </ArticleLayout>
   );

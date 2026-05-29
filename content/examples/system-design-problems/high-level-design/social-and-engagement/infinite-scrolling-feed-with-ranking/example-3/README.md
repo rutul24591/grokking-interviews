@@ -1,1 +1,5 @@
-# Design infinite scrolling feed with ranking — Example 3
+# Infinite Scrolling Feed With Ranking - Example 3
+
+Concrete social engagement edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

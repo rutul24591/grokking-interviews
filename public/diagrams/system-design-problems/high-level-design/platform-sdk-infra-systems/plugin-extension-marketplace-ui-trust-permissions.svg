@@ -1,65 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Trust and permission model for plugin marketplace showing risk tiers, enforcement layers, and enterprise controls">
-  <title>Trust and Permissions Model</title>
-  <desc>Shows how the UI communicates permissions and risk tiers while enforcement occurs at runtime sandbox and server policy gates.</desc>
-  <style>
-    .bg{fill:#ffffff}
-    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
-    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
-    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
-    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
-    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
-    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
-    .dash{stroke-dasharray:7 6}
-    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
-    .small{font-size:14px;fill:#334155}
-    .bold{font-weight:700}
-    @media (prefers-color-scheme: dark){
-      .bg{fill:#0b1220}
-      .box{fill:#0f172a;stroke:#e5e7eb}
-      .warn{fill:#2a1606;stroke:#fb923c}
-      .good{fill:#052018;stroke:#34d399}
-      .accent{fill:#0b1b3a;stroke:#60a5fa}
-      .muted{fill:#0b1220;stroke:#64748b}
-      .arrow{stroke:#e5e7eb}
-      .label{fill:#e5e7eb}
-      .small{fill:#cbd5e1}
-    }
-  </style>
-  <rect class="bg" x="0" y="0" width="1200" height="640"/>
-
-  <rect class="box" x="60" y="90" width="520" height="200"/>
-  <text class="label bold" x="90" y="130">Permissions (what users understand)</text>
-  <text class="label small" x="90" y="160">Read customer data: limited scopes</text>
-  <text class="label small" x="90" y="185">Network access: restricted domains</text>
-  <text class="label small" x="90" y="210">UI injection: isolated surfaces</text>
-  <text class="label small" x="90" y="235">Background tasks: rate limited</text>
-  <text class="label small" x="90" y="260">Risk tier: low, medium, high</text>
-
-  <rect class="warn" x="620" y="90" width="520" height="200"/>
-  <text class="label bold" x="650" y="130">Enterprise controls (what admins enforce)</text>
-  <text class="label small" x="650" y="160">Allowlist publishers and plugins</text>
-  <text class="label small" x="650" y="185">Block high-risk permissions without approval</text>
-  <text class="label small" x="650" y="210">Pin versions, staged rollout, kill switch</text>
-  <text class="label small" x="650" y="235">Audit installs, updates, access</text>
-
-  <rect class="good" x="60" y="330" width="520" height="150"/>
-  <text class="label bold" x="90" y="370">Enforcement layer (runtime)</text>
-  <text class="label small" x="90" y="400">sandbox isolation</text>
-  <text class="label small" x="90" y="425">scoped tokens per permission</text>
-  <text class="label small" x="90" y="450">rate limits and egress controls</text>
-
-  <rect class="accent" x="620" y="330" width="520" height="150"/>
-  <text class="label bold" x="650" y="370">Feedback loop (observability)</text>
-  <text class="label small" x="650" y="400">crash rate and error spikes</text>
-  <text class="label small" x="650" y="425">uninstall and disable signals</text>
-  <text class="label small" x="650" y="450">anomaly detection per plugin</text>
-
-  <rect class="box" x="60" y="520" width="1080" height="90"/>
-  <text class="label bold" x="90" y="560">Key principle</text>
-  <text class="label small" x="90" y="585">The UI communicates risk, but enforcement must be technical and auditable.</text>
-
-  <path class="arrow dash" d="M320 290 L320 330"/>
-  <path class="arrow dash" d="M900 290 L900 330"/>
-  <path class="arrow" d="M580 405 L620 405"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Plugin Extension Marketplace Ui Trust Permissions: topology map</title>
+  <desc id="desc">Curved topology for platform sdk infra systems runtime states.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Plugin Extension Marketplace Ui Trust Permissions: topology map</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Curved topology for platform sdk infra systems runtime states.</text>
+  <rect x="66" y="122" width="828" height="332" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M116 380 C180 220, 260 203, 338 236" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><circle cx="154" cy="356" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="154" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">SDK</text><path d="M270 310 C300 250, 360 203, 440 288" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/><circle cx="306" cy="274" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="306" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">gateway</text><path d="M424 380 C420 280, 460 203, 542 236" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><circle cx="458" cy="356" r="30" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="458" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">token</text><path d="M578 310 C540 220, 560 203, 644 288" fill="none" stroke="#9333ea" stroke-width="4" stroke-linecap="round"/><circle cx="610" cy="274" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="610" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">version</text><path d="M732 380 C660 250, 660 203, 746 236" fill="none" stroke="#b91c1c" stroke-width="4" stroke-linecap="round"/><circle cx="762" cy="356" r="30" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="762" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">tenant</text>
+  <rect x="210" y="138" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="274" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">quota</text><rect x="390" y="138" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">trace</text><rect x="570" y="138" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="634" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">compat</text>
+  <path d="M118 456 C270 500, 420 426, 568 468 S760 496, 846 444" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/><text x="520" y="494" text-anchor="middle" fill="#be123c" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">state convergence requires explicit observability and fallback routes</text>
 </svg>
-

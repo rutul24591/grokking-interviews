@@ -1,1 +1,5 @@
-# Design a privacy & consent management system — Example 2
+# Privacy AND Consent Management System - Example 2
+
+Concrete security privacy production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

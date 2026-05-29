@@ -27,6 +27,7 @@
     "lint": "eslint",
     "scan:code-snippets": "tsx scripts/scan-code-snippets.ts",
     "scan:code-snippets:fix": "tsx scripts/scan-code-snippets.ts --fix",
+    "audit:problem-readiness": "tsx scripts/audit-problem-readiness.ts",
     "svgs:check": "python3 scripts/fix-svgs.py --check",
     "svgs:fix": "python3 scripts/fix-svgs.py --fix",
     "orchestrator:help": "node --import tsx ./scripts/orchestrator.ts help"

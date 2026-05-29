@@ -1,1 +1,5 @@
-# Design frontend for 1M+ concurrent users — Example 3
+# Frontend FOR 1M Concurrent Users - Example 3
+
+Concrete performance edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,1 +1,5 @@
-# Design a multi-role RBAC dashboard system — Example 2
+# Multi Role Rbac Dashboard System - Example 2
+
+Concrete enterprise SaaS production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

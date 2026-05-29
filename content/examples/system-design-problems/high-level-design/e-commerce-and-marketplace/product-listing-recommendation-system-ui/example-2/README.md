@@ -1,1 +1,5 @@
-# Design product listing + recommendation system UI — Example 2
+# Product Listing Recommendation System UI - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

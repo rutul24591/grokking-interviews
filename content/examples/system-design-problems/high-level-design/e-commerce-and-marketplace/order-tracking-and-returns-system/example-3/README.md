@@ -1,1 +1,5 @@
-# Design an order tracking & returns system — Example 3
+# Order Tracking AND Returns System - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

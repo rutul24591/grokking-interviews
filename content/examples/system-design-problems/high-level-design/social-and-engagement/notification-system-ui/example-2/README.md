@@ -1,1 +1,5 @@
-# Design notification system UI (multi-channel) — Example 2
+# Notification System UI - Example 2
+
+Concrete social engagement production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

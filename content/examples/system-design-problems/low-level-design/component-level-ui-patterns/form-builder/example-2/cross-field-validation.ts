@@ -1,51 +1,89 @@
-/**
- * Cross-Field Validation — Validators that depend on multiple field values.
- *
- * Interview edge case: When field A depends on field B's value, validation must
- * re-run on BOTH fields when either changes. Common cases: password match,
- * date range (end > start), sum of percentages = 100.
- */
-
-export type CrossFieldValidator = (
-  values: Record<string, unknown>,
-) => Record<string, string | null>;
-
-/**
- * Password must match confirmation validator.
- */
-export const passwordMatch: CrossFieldValidator = (values) => {
-  const pw = values.password as string | undefined;
-  const confirm = values.confirmPassword as string | undefined;
-  if (!confirm) return {};
-  if (pw !== confirm) return { confirmPassword: 'Passwords do not match' };
-  return { confirmPassword: null };
+export type formBuilderSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
 };
 
-/**
- * End date must be after start date validator.
- */
-export const dateRange: CrossFieldValidator = (values) => {
-  const start = values.startDate as string | undefined;
-  const end = values.endDate as string | undefined;
-  if (!start || !end) return {};
-  if (new Date(end) <= new Date(start)) return { endDate: 'End date must be after start date' };
-  return { endDate: null };
+export type formBuilderEvent = {
+  id: string;
+  topic: "form-builder";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: formBuilderSignal;
 };
 
-/**
- * Runs all cross-field validators and merges results.
- * Only returns errors for fields that have non-null errors.
- */
-export function runCrossFieldValidation(
-  values: Record<string, unknown>,
-  validators: CrossFieldValidator[],
-): Record<string, string> {
-  const errors: Record<string, string> = {};
-  for (const validator of validators) {
-    const result = validator(values);
-    for (const [field, error] of Object.entries(result)) {
-      if (error) errors[field] = error;
-    }
-  }
-  return errors;
+export type formBuilderDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateFormBuilderEvent(event: formBuilderEvent): formBuilderDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: formBuilderDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Form Builder",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
+}
+
+export function runFormBuilderContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateFormBuilderEvent({
+    id: "form-builder-evt-1",
+    topic: "form-builder",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
+
+  const guarded = evaluateFormBuilderEvent({
+    id: "form-builder-evt-late",
+    topic: "form-builder",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

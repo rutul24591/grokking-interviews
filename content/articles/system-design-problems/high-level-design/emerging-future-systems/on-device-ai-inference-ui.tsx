@@ -8,85 +8,144 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-on-device-ai-inference-ui",
   title: "Design an On-Device AI Inference UI",
-  description:
-    "Architecture for an on-device AI inference UI: model loading and caching strategy (ONNX/TensorFlow.js, IndexedDB model storage, progressive chunk loading), WebGPU vs. WebAssembly execution backends, quantization tradeoffs (INT8/FP16 vs. FP32), streaming token generation with ReadableStream for LLM output, model selection UI (capability vs. size tradeoff), inference progress and cancellation, privacy-by-default architecture (no data leaves the device), memory pressure management (model eviction, tensor cleanup), and graceful degradation to cloud API when on-device inference is too slow.",
+  description: "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability.",
   category: "high-level-design",
   subcategory: "emerging-future-systems",
   slug: "on-device-ai-inference-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "on-device-ai", "webgpu", "onnx", "llm", "inference", "quantization", "transformers-js"],
-  relatedTopics: ["voice-based-ui-system", "ar-vr-interface-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "emerging", "ai", "privacy", "safety", "fallback"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design an On-Device AI Inference UI is an emerging product system where device capability, user trust, safety, privacy, and fallback behavior are as important as the primary interaction. A principal-ready design treats an on-device AI inference UI as a risk-managed experience, not as a novelty interface.",
+  "The difficult part is uncertainty. Devices vary, sensors lie, networks disappear, models drift, chains fail, users misunderstand prompts, and irreversible actions can happen from ambiguous input. The architecture must make uncertainty visible and controllable.",
+  "The design should define the boundary between local computation, remote services, user intent, policy enforcement, and operational control. Emerging systems fail when teams hide this boundary behind a magical UI that cannot explain or recover from mistakes.",
+  "A strong interview answer should classify actions by reversibility and sensitivity. Browsing, previewing, suggesting, and drafting can be forgiving. Payments, wallet signatures, permission grants, identity changes, public posts, and physical-world actions need confirmation and auditability.",
+  "Operationally, these systems need feature flags, capability gating, cohort rollout, fallback routes, safety kill switches, privacy controls, and telemetry that measures quality without collecting more sensitive data than needed."
+];
+const concepts = [
+  "The first concept is capability detection. model runtime, capability detector, and prompt/data boundary should not assume every device, browser, sensor, model, or wallet provider behaves the same way. The UI needs graceful downgrade paths.",
+  "The second concept is intent confirmation. Emerging interfaces often infer intent from speech, gestures, camera input, model output, or wallet metadata. Inferred intent should not trigger irreversible actions without explicit confirmation.",
+  "The third concept is local versus remote execution. Local execution improves privacy and latency but has device, battery, model, and upgrade constraints. Remote execution improves consistency and observability but increases latency, cost, and data exposure.",
+  "The fourth concept is safety boundaries. Spatial boundaries, prompt boundaries, transaction boundaries, permission boundaries, and model output boundaries should be explicit in both UI and backend policy.",
+  "The fifth concept is fallback. A user should be able to continue through a simpler text, touch, web, cloud, or manual review path when the emerging interface is unavailable or low confidence.",
+  "The sixth concept is observability. Track capability failures, fallback rate, confirmation cancellation, model confidence, sensor drift, transaction simulation warnings, privacy control usage, latency, battery impact, and incident overrides."
+];
+const architecture = [
+  "The architecture contains model runtime, capability detector, prompt/data boundary, fallback router, telemetry sampler. The client detects capability and collects user intent. The runtime or gateway evaluates confidence, policy, and safety. Sensitive actions pass through confirmation and audit. Fallback routing keeps the core journey available when the new interaction is not trustworthy.",
+  "State should be separated into user intent, inferred context, device/runtime state, remote policy state, and committed action state. Inferred context can be wrong; committed state should be durable and explainable.",
+  "The system should keep sensitive inputs local where possible and send minimized, purpose-bound data when remote services are required. Logs should store event class, confidence, policy decision, and correlation ID rather than raw voice, camera, seed, private prompt, or spatial map data unless explicitly necessary and consented.",
+  "Capability gating should run before rendering advanced controls. The UI should know whether it is in full mode, degraded mode, remote fallback, read-only mode, or blocked mode because of device, policy, provider, or safety constraints.",
+  "For high-risk actions, the design should include preflight simulation or validation. A wallet simulates transaction effects; voice confirms destructive intent; AR checks safe placement; on-device AI checks output confidence and policy.",
+  "Operations need remote disablement for risky model versions, wallet providers, voice intents, spatial features, or transaction types. Emerging systems should assume fast rollback is necessary because field failures can be hard to reproduce in lab testing."
+];
+const tradeoffs = [
+  "Local-first execution improves latency and privacy, but creates fragmentation across devices and model/runtime versions. Cloud execution improves control and quality consistency, but sends more data over the network and increases cost.",
+  "Rich immersive UI can improve understanding and engagement, but it increases accessibility, motion comfort, battery, and hardware constraints. A principal design keeps a non-immersive fallback for critical flows.",
+  "Low-friction confirmations improve speed, but high-risk actions need deliberate friction. The right design uses risk-based confirmation rather than one prompt style for every action.",
+  "Telemetry is necessary to improve quality, but emerging interfaces often observe sensitive context. Collecting raw audio, camera frames, private prompts, spatial maps, or wallet details can become a privacy incident. Use minimization and aggregation by default.",
+  "Aggressive rollout improves learning speed, but field failures can cause irreversible harm or public trust loss. Use staged rollout, holdouts, model/version attribution, and kill switches.",
+  "Fallbacks add product and engineering complexity, but they make the system usable when the novel interface is unavailable, unsafe, low confidence, or blocked by policy."
+];
+const practices = [
+  "Design confidence-aware UI states: ready, low confidence, needs confirmation, degraded, blocked, failed, and manual fallback. Do not represent uncertain inference as fact.",
+  "Use policy and risk classification before sensitive actions. The system should know which actions are reversible, destructive, financial, public, privacy-sensitive, or safety-sensitive.",
+  "Version every runtime decision: model version, wallet provider, device capability tier, intent schema, safety policy, and fallback route. Versioning makes rollback and incident analysis possible.",
+  "Use explicit consent and local data controls for voice, camera, spatial maps, private prompts, wallet metadata, and personalization history.",
+  "Build simulation or preview for irreversible actions. Users should see transaction effects, public posting consequences, physical placement, or destructive command summary before committing.",
+  "Instrument fallback and cancellation. High fallback rate or confirmation cancellation is a quality signal, not only a UX inconvenience.",
+  "Exercise incident playbooks for bad model rollout, wallet provider outage, false activation spike, sensor drift, privacy complaint, and unsafe action pattern."
+];
+const pitfalls = [
+  "model mismatch can turn a promising interface into a trust failure if the UI hides uncertainty or removes fallback paths.",
+  "battery drain is often caused by doing too much on-device or in realtime without resource budgets and user-visible degradation.",
+  "privacy leak is the largest principal-level risk. Emerging interfaces often touch personal surroundings, private text, speech, biometrics, wallet metadata, or sensitive intent.",
+  "silent quality regression requires rollback, quality monitoring, and explicit user recovery. The system cannot rely on users understanding hidden model, sensor, chain, or provider behavior.",
+  "Another pitfall is demo-driven design. A prototype can assume perfect lighting, perfect speech, perfect network, perfect device, and harmless actions; production cannot.",
+  "Teams also underinvest in accessibility. Voice, AR/VR, wallets, and AI assistants must have alternative interaction modes for users who cannot or do not want to use the novel surface."
+];
+const useCases = [
+  "offline summarization needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "keyboard suggestions needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "camera-based assistant needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "During a provider or model incident, the system should fall back to a simpler safe path, preserve user work, disable high-risk actions, and expose the reason without leaking sensitive internals.",
+  "During a privacy review, the system should prove what data was processed locally, what was sent remotely, what was logged, and how users can revoke or delete it.",
+  "During scale-up, cost and latency should be tracked per capability tier because local, edge, and cloud execution have very different operational economics."
+];
+const questions = [
+  {
+    "question": "How would you design an on-device AI inference UI end to end?",
+    "answer": "I would start with capability detection, user intent capture, policy/risk classification, confidence-aware execution, confirmation for sensitive actions, and fallback routing. The architecture includes model runtime, capability detector, prompt/data boundary, fallback router, telemetry sampler. Committed actions are durable and auditable; inferred context remains tentative. Operations need versioning, staged rollout, telemetry, and kill switches."
+  },
+  {
+    "question": "Why this architecture over a direct UI-to-provider integration?",
+    "answer": "Direct integration is fast for a demo but weak for policy, fallback, privacy, observability, and rollback. A principal architecture adds a control plane that understands capability, risk, consent, model/provider version, and action sensitivity. The trade-off is more complexity, but it prevents silent unsafe actions and makes incidents recoverable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are model mismatch, battery drain, privacy leak, silent quality regression, plus provider outages, device fragmentation, quality drift, high cloud cost, privacy complaints, and low-confidence actions. Prevention requires versioning, cohort rollout, capability gating, fallback paths, telemetry, and remote disablement."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Inferred state can be probabilistic and temporary. Committed user actions, permissions, wallet transactions, account state, and privacy choices need authoritative confirmation and audit. Derived suggestions, previews, model outputs, and sensor interpretations can be stale or low confidence if the UI represents them honestly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with fallback modes, confirmation, retries where safe, and preserved user intent. Rollback uses version gates and feature kill switches. Abuse is handled through risk policy, rate limits, transaction simulation, and unsafe-intent blocking. Privacy uses local processing, minimization, consent, and redaction. Cost is managed by routing between local, edge, and cloud execution. Observability tracks confidence, fallback, cancellation, latency, battery, and incident controls."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would classify actions by reversibility and sensitivity. I would defend local execution for privacy-sensitive low-latency tasks, cloud fallback for quality or capability gaps, and explicit confirmation for irreversible actions. I would also emphasize that emerging interfaces need safe fallback more than perfect novelty."
+  }
+];
+const references = [
+  {
+    "label": "WebXR Device API",
+    "href": "https://www.w3.org/TR/webxr/"
+  },
+  {
+    "label": "MDN: Web Speech API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API"
+  },
+  {
+    "label": "W3C WebAuthn",
+    "href": "https://www.w3.org/TR/webauthn-3/"
+  },
+  {
+    "label": "OWASP Mobile Application Security",
+    "href": "https://mas.owasp.org/"
+  },
+  {
+    "label": "Ethereum JSON-RPC API",
+    "href": "https://ethereum.org/en/developers/docs/apis/json-rpc/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function OnDeviceAiInferenceUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">On-device AI inference runs machine learning models directly in the browser or on the device, without sending data to a cloud server. The primary motivation is privacy: medical records, personal photos, financial documents, and private messages should not be transmitted to a third-party server for AI processing. The secondary motivation is latency and offline capability: inference with zero network round-trip eliminates the 100–500ms cloud API latency and allows the AI feature to work without internet connectivity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The fundamental constraint is the device's compute budget. A large language model like Llama 3 8B requires ~16GB of GPU memory at FP16 precision — more than most laptops have available for the browser tab, and orders of magnitude beyond mobile devices. On-device AI inference therefore requires aggressive model optimization: quantization (INT8/INT4 reduces memory 4–8×), model distillation (smaller models with similar capabilities), and careful batching to maximize GPU utilization within the available VRAM. The UI must clearly communicate inference progress, estimated wait times, and gracefully degrade to cloud APIs when the device is incapable.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Model loading/caching strategy, WebGPU vs. WASM backends, quantization tradeoffs, streaming token generation, model selection UI, inference cancellation, privacy architecture, memory pressure management, and cloud fallback. Not in scope: model training or fine-tuning in the browser, federated learning, or custom CUDA kernels.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/on-device-ai-inference-ui.svg" alt="Design an On-Device AI Inference UI architecture" caption="Architecture view: capability, runtime/provider boundary, policy, confirmation, fallback, and telemetry." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/on-device-ai-inference-ui-flow.svg" alt="Design an On-Device AI Inference UI flow" caption="Flow view: inferred intent, confidence, validation, confirmation, committed action, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/on-device-ai-inference-ui-operations.svg" alt="Design an On-Device AI Inference UI operations" caption="Operations view: model/provider/device incidents, privacy controls, rollback, cost, and observability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Model loading and IndexedDB caching:</strong> AI models are large binary files (100MB to 8GB). Loading from a CDN on every session would be prohibitively slow and expensive. Models are cached in IndexedDB after the first download. The download flow: (1) check IndexedDB for the model file (by hash of the model URL); (2) if not cached, download from CDN in chunks (fetch with Range header, 10MB chunks) with a progress bar showing download percentage; (3) each chunk is written to IndexedDB as it arrives (streaming write — no need to buffer the entire file in memory); (4) on completion, validate the file hash (SHA-256) against the CDN-provided hash to detect corruption or tampering; (5) on subsequent loads, read from IndexedDB — no network request. Model metadata (name, size, quantization level, supported tasks) is stored separately in a JSON config in localStorage for fast access without loading the full model binary.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Streaming token generation with ReadableStream:</strong> LLM inference generates text token by token. The UI should display tokens as they are generated (streaming output), not wait for the full response to complete. The inference engine (Transformers.js, llama.cpp compiled to WASM, or a custom WebGPU pipeline) exposes a ReadableStream of token strings. The UI reads from the stream using a reader: const reader = stream.getReader(); while(true) &#123; const &#123;done, value&#125; = await reader.read(); if(done) break; appendToken(value); &#125;. Tokens are appended to a &lt;div&gt; using textContent concatenation (not innerHTML — to prevent XSS if the model generates HTML). A blinking cursor is shown after the last token while generation is ongoing, removed on stream close.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Model selection UI with capability vs. size tradeoffs:</strong> The model selection UI presents a matrix of available models: name, size on disk, quantization level, supported tasks (text generation, summarization, image classification, embedding), and a "capability score" (a 1–5 rating of accuracy relative to the largest available model). The user selects a model based on their use case and available storage. A "recommended" badge highlights the best tradeoff for the device's capability (detected via navigator.deviceMemory, navigator.hardwareConcurrency, and a WebGPU adapter query for available VRAM). The model selection persists in localStorage — users don't re-select on every session.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Inference cancellation and progress:</strong> Long inference runs (summarizing a 50-page document) must be cancellable. The inference function accepts an AbortSignal: inference(input, &#123;signal: abortController.signal&#125;). The inference loop checks signal.aborted on each token generation step and throws an AbortError if set. The UI shows a "Cancel" button that calls abortController.abort(). On cancellation, the partial output is shown with a "Cancelled" badge — the user can read what was generated before cancellation. For determinate tasks (classification, embedding), a progress bar shows inference step count / total steps. For generative tasks (LLM), progress is indeterminate (tokens generated so far + tokens/second rate).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>WebGPU vs. WebAssembly execution backend:</strong> WebGPU is the preferred backend for neural network inference: GPU parallelism reduces inference time by 10–50× compared to CPU-based WASM for matrix multiplication-heavy operations (the core of transformer attention). WebGPU availability: supported in Chrome 113+ and Edge 113+, not yet available in Firefox or Safari (as of 2025, behind flags). Feature detection: if (navigator.gpu) &#123; /* use WebGPU */ &#125; else &#123; /* fall back to WASM */ &#125;. The WASM backend uses SIMD (Single Instruction Multiple Data) instructions (WebAssembly SIMD proposal) for vectorized CPU operations — 4–8× faster than scalar WASM. SIMD availability: navigator.hardwareConcurrency &gt; 1 and WASM feature detection at runtime. The backend selection is automatic based on feature detection, with the WebGPU backend preferred when available.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Quantization tradeoffs (INT8/FP16 vs. FP32):</strong> Model quantization reduces the precision of model weights to use less memory and enable faster computation: FP32 (32-bit float): full precision, largest size, best accuracy. FP16 (16-bit float): half size, ~1% accuracy drop for most models, 2× faster on GPUs with FP16 units (most modern GPUs). INT8 (8-bit integer): quarter size vs. FP32, ~2–5% accuracy drop, ~4× faster on supported hardware. INT4 (4-bit): eighth size, ~5–15% accuracy drop, best for very large models on constrained devices. The model selection UI shows the accuracy tradeoff for each quantization level. The default recommendation: FP16 for devices with dedicated GPU; INT8 for mobile and integrated GPU; INT4 for models &gt;3GB on mobile devices. Quantized models are stored as separate files (not dynamically quantized at runtime, which would be too slow).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Memory pressure management:</strong> Browser tabs have limited memory (typically 2–4GB before the browser OOM-kills the tab). Large models occupy most of this budget, leaving little for application state and rendering. Memory pressure management: (1) load the model lazily (only when the user first requests an AI feature, not on app startup); (2) evict the model from memory when the user navigates to a page that doesn't use AI (unload the inference session, releasing GPU resources); (3) monitor memory pressure via the navigator.deviceMemory API and the PerformanceObserver memory-warning event; (4) if memory pressure is critical, fall back to cloud inference and display a notice: "On-device AI temporarily unavailable due to memory constraints. Using cloud processing." The model file remains in IndexedDB — only the in-memory session is evicted.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Graceful degradation to cloud API:</strong> On-device inference is not available for all users: old devices with no WebGPU, low-RAM devices where models don't fit, or incognito mode (where IndexedDB quota is minimal). The system detects these cases at startup and falls back to a cloud AI API (OpenAI, Anthropic, Google Gemini). The cloud fallback shows a clear UI notice: "AI processing on server — your data will be sent to [provider]." A privacy-sensitive mode (opt-in) skips cloud fallback entirely and disables AI features when on-device inference is unavailable. The API client uses the same interface as the on-device inference engine (same function signatures) — the UI layer is unaware of whether inference is on-device or cloud.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The on-device AI system has three layers: the model management layer (download, cache in IndexedDB, validate, version), the inference engine layer (backend selection WebGPU/WASM, session management, tensor operations), and the application layer (streaming output, cancellation, progress, UI integration). The inference engine runs in a Web Worker to prevent blocking the main thread during intensive computation — a large matrix multiplication can take 50ms, which would freeze the UI if run on the main thread. The Web Worker exposes an inference API via postMessage: the main thread sends the input prompt and receives streaming token events back.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Transformers.js (a port of Hugging Face's transformers library to JavaScript) is the recommended starting point: it provides a high-level API for running ONNX models with automatic WebGPU/WASM backend selection, model caching, and streaming generation. For more control over the inference pipeline (custom quantization, custom attention patterns), ONNX Runtime Web (the official ONNX JavaScript runtime) provides lower-level access to the execution graph.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/on-device-ai-inference-ui.svg"
-          alt="On-device AI inference UI: model download from CDN (10MB Range chunks → IndexedDB storage → SHA-256 hash validation); model load from IndexedDB into Web Worker → backend selection (WebGPU if navigator.gpu, else WASM+SIMD fallback); inference session in Web Worker → streaming tokens via postMessage → ReadableStream to UI; AbortController cancellation per token step; FP32/FP16/INT8/INT4 quantization selection in model picker UI; memory pressure monitoring → evict in-memory session on pressure; cloud API fallback (same interface) when on-device unavailable; privacy notice shown for cloud fallback."
-          caption="IndexedDB model cache (10MB chunks, SHA-256 validation), Web Worker inference (WebGPU preferred, WASM SIMD fallback), streaming tokens via postMessage ReadableStream, AbortController cancellation, quantization picker (FP32/FP16/INT8/INT4), memory eviction on pressure, cloud API fallback with privacy notice"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">IndexedDB Model Storage and Versioning</h3>
-        <HighlightBlock as="p" tier="important">Model files are stored in IndexedDB as ArrayBuffer chunks. The storage schema: one object store for model metadata (modelId, version, hash, downloadedAt, size) and one for binary chunks (key: modelId + chunkIndex, value: ArrayBuffer). On model load, chunks are read in order and concatenated into a single ArrayBuffer before being passed to the inference engine. For very large models (&gt;1GB), the chunks are streamed directly to the ONNX runtime's model loading API (which accepts a ReadableStream) without concatenating the entire file in memory — this prevents OOM during model loading.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Model versioning: the model metadata includes a version field. On app startup, the app checks the CDN model registry (a small JSON file listing current model versions) and compares against the cached version. If a new version is available, a non-blocking notification is shown: "Model update available. Download in background?" The update downloads the new model to a staging key in IndexedDB, validates the hash, then swaps the staging key to the active key atomically. The old version is deleted after the swap. This zero-downtime update ensures the user can continue using the current model while the update downloads.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">WebGPU Shader Pipeline for Inference</h3>
-        <HighlightBlock as="p" tier="important">WebGPU inference uses compute shaders (WGSL — WebGPU Shading Language) for matrix multiplication (the core of transformer attention). The attention computation for a single token requires: Q = input × W_q, K = input × W_k, V = input × W_v, attention_scores = softmax(Q × K^T / sqrt(d_k)), output = attention_scores × V. Each of these is a matrix multiplication dispatched as a compute shader with workgroup sizes tuned for the GPU's compute unit count. The KV cache (key-value cache for previous tokens in the context) is stored as GPU buffers and reused across token generation steps — this is the key optimization that makes autoregressive generation fast (only the new token's computation needs to run, not the full context each step).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Privacy Architecture and Data Minimization</h3>
-        <HighlightBlock as="p" tier="crucial">The privacy-by-default architecture ensures: (1) no input data (prompts, documents, images) is sent to any server when on-device inference is active; (2) the inference Web Worker has no network access (the worker is created without the cross-origin-isolated flag and with a Content Security Policy that blocks fetch from the worker context); (3) inference telemetry (tokens/second, model size, task type) is collected only as aggregate anonymized metrics, never including the actual input or output content; (4) the privacy notice in the UI clearly distinguishes on-device mode (lock icon) from cloud mode (cloud icon with the provider name). The on-device mode badge is a trust signal — users who care about privacy actively prefer it.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Model size vs. capability: smaller models (SmolLM 135M, Phi-3 mini 3.8B) run fast on-device but produce lower-quality outputs than large cloud models (GPT-4, Claude Opus). The on-device AI UI should be transparent about this tradeoff: show users a side-by-side comparison of on-device vs. cloud output quality for a representative task, and let them decide. Framing: "On-device: fast, private, good for simple tasks. Cloud: slower, sends data to server, best for complex tasks." Giving users agency over this tradeoff builds trust better than making the decision invisibly.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cold start latency: loading a 500MB model from IndexedDB into GPU memory takes 2–5 seconds. This is acceptable if the user has explicitly requested an AI feature (they expect to wait). It is unacceptable if the AI feature is triggered automatically on page load. The model should be loaded lazily, on first user request, with a clear loading indicator. Model warmup (running a short dummy inference after loading) primes the GPU's compiled shader cache, reducing the first real inference latency from 500ms to &lt;100ms. Warmup should run in the background after load, not blocking the first user request.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">An on-device AI inference UI requires: (1) IndexedDB model cache (10MB Range chunks, SHA-256 validation, streaming chunk write, zero-downtime version swap); (2) Web Worker inference (isolates compute from main thread, postMessage streaming token events); (3) backend selection (WebGPU preferred via navigator.gpu, WASM SIMD fallback, automatic selection); (4) quantization picker UI (FP32/FP16/INT8/INT4, accuracy vs. size tradeoffs, device-appropriate default recommendation); (5) streaming token generation (ReadableStream reader, textContent append, blinking cursor, tokens/second rate display); (6) AbortController cancellation (checked per token step, partial output preserved with "Cancelled" badge); (7) memory pressure management (lazy model load, evict in-memory session on pressure, PerformanceObserver memory-warning, IndexedDB retained); (8) cloud API fallback (same function interface, privacy notice with provider name, privacy-sensitive mode opt-out); (9) WebGPU KV cache (GPU buffers reused across token steps, only new token computed); and (10) privacy architecture (no network in inference worker, no PII in telemetry, on-device lock badge vs. cloud icon). The governing tradeoff: on-device inference trades model capability for privacy and offline capability — be transparent about this tradeoff in the UI rather than hiding it.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

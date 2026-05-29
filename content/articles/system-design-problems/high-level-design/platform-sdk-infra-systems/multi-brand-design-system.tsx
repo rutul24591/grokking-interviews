@@ -7,107 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-multi-brand-design-system",
-  title: "Design a Multi-Brand Design System",
-  description:
-    "Architecture for a multi-brand design system: token layering, theme generation, brand-specific overrides, component versioning, and cross-team governance at scale.",
+  title: "Design a Multi-brand Design System",
+  description: "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance.",
   category: "high-level-design",
   subcategory: "platform-sdk-infra-systems",
   slug: "multi-brand-design-system",
-  wordCount: 5200,
-  readingTime: 31,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "design-system", "multi-brand", "tokens", "theming", "governance"],
-  relatedTopics: ["frontend-sdk-for-third-party-developers", "multi-app-monorepo-management-dashboard"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "platform", "sdk", "infrastructure", "governance", "observability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Multi-brand Design System is a platform system, which means the product is not only the UI that users see but also the contract other teams, tenants, developers, plugins, SDKs, or automation depend on. A principal-ready design treats a multi-brand design system as a versioned control plane with operational guarantees.",
+  "The design must define ownership boundaries, compatibility rules, tenant isolation, permission enforcement, rollout mechanics, observability, rollback, and support operations. Platform systems fail differently from normal product screens because a bad release can break many downstream teams or external customers at once.",
+  "The visible dashboard or SDK should be backed by durable state: configuration versions, release channels, manifests, audit logs, policy decisions, dependency graph, tenant scopes, and operational history. Derived views such as impact analysis, metrics, install status, and rollout health can lag if they are observable and repairable.",
+  "A staff/principal answer should make the platform contract explicit. Who can publish? Who can install? What is backward compatible? What happens when a plugin, SDK, flag, deployment, token, or tenant job misbehaves? How do teams roll back without corrupting customer state?",
+  "The design should also include governance. Platform features need approvals, blast-radius limits, staged rollout, auditability, and usage visibility because they frequently grant power to other teams or external developers."
+];
+const concepts = [
+  "The first concept is contract-first design. token registry, component catalog, and brand theme engine should expose stable schemas, versioned APIs, documented lifecycle states, and compatibility guarantees. Hidden contracts are what make platform migrations painful.",
+  "The second concept is isolation. Tenants, projects, plugins, SDK integrations, build jobs, and admin actions should be scoped so a mistake or malicious actor cannot affect unrelated users. Isolation applies to data, permissions, compute, rollout, and telemetry.",
+  "The third concept is versioning and rollout. Platform artifacts should support draft, approved, staged, active, deprecated, and rolled-back states. The UI should show which version is used where and who owns it.",
+  "The fourth concept is operational feedback. A platform UI should not only let users change state; it should show health, lag, adoption, errors, blast radius, and rollback readiness before and after the change.",
+  "The fifth concept is permission and audit. Admin actions, SDK configuration, plugin install, feature rollout, tenant bulk jobs, and deployment changes should be authorized, recorded, reviewable, and reversible where possible.",
+  "The sixth concept is developer experience. Good platform systems reduce cognitive load with safe defaults, schema validation, preview environments, dry runs, examples, error explanations, and migration guidance."
+];
+const architecture = [
+  "The architecture contains token registry, component catalog, brand theme engine, release channel, migration dashboard. The control plane stores configuration, versions, ownership, approvals, and audit. The execution plane applies changes through SDKs, plugins, build systems, rollout engines, or tenant jobs. The observability plane measures impact and supports rollback.",
+  "Every change should have an identity: actor, target scope, version, policy decision, approval state, rollout percentage, dependency impact, and correlation ID. Without this metadata, support and incident response cannot reconstruct what happened.",
+  "The frontend should render lifecycle state explicitly: draft, validating, approved, staged, active, partially rolled out, blocked, deprecated, failed, or rolled back. Platform users need to understand whether a change is safe to proceed, not just whether a form submitted.",
+  "The system should support dry-run or preview. Before applying a flag, plugin install, tenant bulk job, deployment, SDK config, or component release, users should see affected projects, tenants, permissions, compatibility warnings, and estimated blast radius.",
+  "Rollback should be designed as a product path. Some state can be reverted directly; some requires compensating changes; some must be disabled at runtime while data cleanup happens asynchronously. The UI should make these differences visible.",
+  "Platform observability should connect user-visible changes to downstream symptoms: SDK errors, plugin crashes, build failures, tenant job failures, RUM regressions, permission denials, adoption metrics, and support tickets."
+];
+const tradeoffs = [
+  "Centralized platforms improve consistency, governance, and reuse, but they can become bottlenecks if every team waits for the platform team. Extensibility and self-service reduce bottlenecks but increase policy and compatibility risk.",
+  "Strict compatibility protects consumers but slows innovation. Fast-moving APIs or components let teams ship quickly but create migration debt. Mature platforms define support windows, deprecation workflows, and compatibility tests.",
+  "Runtime configuration gives fast rollback and experimentation, but it creates distributed state that can drift across SDK caches, edge nodes, tenants, and clients. Build-time configuration is simpler but slower to change during incidents.",
+  "Plugin and extension ecosystems increase platform value but introduce supply-chain, permission, performance, and trust risks. Sandboxing, manifest review, version pinning, and kill switches are not optional.",
+  "High-cardinality observability improves debugging but can become expensive and privacy-sensitive. Principal designs sample intelligently, aggregate by stable dimensions, and restrict raw event access.",
+  "Self-service bulk operations improve admin productivity but can create large blast radius. Dry runs, approvals, quotas, staged execution, pause/resume, and audit logs are the trade-off that makes self-service safe."
+];
+const practices = [
+  "Represent platform artifacts with explicit lifecycle state, owner, version, scope, dependencies, approval, rollout status, and audit history.",
+  "Build validation into authoring. Catch schema errors, permission violations, dependency breaks, accessibility regressions, privacy issues, and compatibility problems before publish or install.",
+  "Use staged rollout and blast-radius limits. Platform changes should support canary, tenant allowlists, percentage rollout, automatic stop on guardrail failures, and one-click disable where safe.",
+  "Keep execution idempotent. Deployments, plugin installs, SDK config updates, tenant bulk jobs, and flag changes should converge after retries rather than duplicate work.",
+  "Enforce least privilege. Extensions, support tools, admin dashboards, SDK keys, and workflow runners should receive narrow scoped permissions with audit trails.",
+  "Expose operational truth in the UI. Users should see queue state, rollout health, adoption, errors, stale clients, incompatible versions, and rollback options.",
+  "Design support tooling. Operators need to inspect which version, plugin, flag, token, deployment, or tenant job affected a customer without querying raw databases."
+];
+const pitfalls = [
+  "token drift usually means the platform lacks compatibility gates, staged rollout, or blast-radius controls. Platform failures multiply because many teams depend on one surface.",
+  "brand inconsistency often comes from treating permissions or integration boundaries as documentation instead of enforceable runtime policy.",
+  "breaking component release is a state-distribution problem. SDK caches, build artifacts, edge nodes, tenants, and clients may observe different versions unless the design tracks propagation and freshness.",
+  "accessibility regression requires rollback and audit. Platform users should know whether they can disable, revert, compensate, or escalate the issue.",
+  "Another pitfall is measuring adoption without measuring harm. A platform can be widely used and still create latency, privacy, accessibility, compatibility, or support problems.",
+  "Teams also forget deprecation. Old SDKs, plugins, components, flags, and deployment settings remain in production long after the happy-path migration guide is written."
+];
+const useCases = [
+  "multi-brand SaaS UI requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "white-label product suite requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "enterprise design system requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "During a bad rollout, the system should identify affected tenants or projects, stop further rollout, disable the runtime path if possible, and preserve audit evidence.",
+  "During a compatibility break, owners should see consumers, version usage, failing checks, migration status, and deprecation deadlines.",
+  "During an abuse or supply-chain incident, the platform should revoke permissions, disable extensions or keys, notify affected owners, and support forensic review."
+];
+const questions = [
+  {
+    "question": "How would you design a multi-brand design system end to end?",
+    "answer": "I would model it as a platform control plane plus execution plane. The control plane stores versions, ownership, permissions, approvals, rollout state, and audit history. The execution plane applies changes through SDKs, plugins, workflows, deployments, tenant jobs, or runtime config. The UI supports validation, preview, staged rollout, health monitoring, and rollback. Observability connects platform changes to downstream customer impact."
+  },
+  {
+    "question": "Why this architecture over a simple admin dashboard or SDK config page?",
+    "answer": "A simple dashboard can mutate state but cannot safely manage platform contracts, compatibility, blast radius, tenant isolation, approvals, or rollback. Platform systems need lifecycle and governance because one change can affect many downstream consumers. The additional control-plane complexity is justified by operational risk."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are token drift, brand inconsistency, breaking component release, accessibility regression, plus stale clients, incompatible versions, high-cardinality telemetry, queue backlogs, cross-tenant leakage, support overload, and uncontrolled blast radius. Prevention requires versioning, validation, staged rollout, idempotent execution, scoped permissions, and observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative configuration, permissions, ownership, approvals, and audit entries need strong server-controlled consistency. Runtime propagation to SDKs, edge nodes, build systems, dashboards, and tenants is often eventually consistent, but it must expose version and freshness. Rollback should target both control-plane state and distributed runtime state."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with dry runs, staged rollout, automatic guardrails, pause/resume, and rollback controls. Abuse is handled through least privilege, sandboxing, review, and key/plugin revocation. Privacy requires scoped telemetry and data minimization. Cost is controlled through sampling, quotas, batch execution, and cardinality limits. Observability tracks rollout health, adoption, error rates, stale versions, queue lag, and customer impact."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would argue that platform surfaces are leverage points, so governance is not bureaucracy; it is blast-radius control. I would defend self-service only when paired with validation, approvals for high-risk changes, staged rollout, and rollback. I would also distinguish authoritative control-plane consistency from eventually consistent runtime propagation."
+  }
+];
+const references = [
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "W3C Web Components",
+    "href": "https://www.w3.org/TR/components-intro/"
+  },
+  {
+    "label": "OWASP Third Party JavaScript Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Third_Party_Javascript_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  },
+  {
+    "label": "Cloudflare Workers platform docs",
+    "href": "https://developers.cloudflare.com/workers/"
+  }
+];
 
 export default function MultiBrandDesignSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A multi-brand design system serves multiple product brands or white-label customers from a single component library. The challenge is maintaining a shared component codebase while allowing each brand to express a distinct visual identity—different colors, typography, spacing, border radius, icon sets, and even some layout variations—without forking the component library and creating independent maintenance burdens. The naive solution (duplicate the component library for each brand) creates N times the maintenance cost and eventually leads to divergence that makes cross-brand features impossible.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The sophisticated solution uses a token-based theming architecture: components reference semantic design tokens (color.action.primary, spacing.component.padding.md) rather than literal values. Each brand provides its own token definitions that map to brand-specific values. Components render correctly for any brand without modification; only the token definitions change. This architecture works for visual variations but has limits: if two brands require different component behavior (brand A's button has a loading state, brand B's does not), the token system cannot express that difference and component branching is required.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The system serves 3–10 brands, each with distinct visual identities but largely shared component requirements. Components are React-based. Token management uses a design-to-code pipeline (Figma tokens → Style Dictionary → CSS custom properties). Each brand may have brand-specific components in addition to the shared library. The system serves both web and React Native targets from the same token definitions. A platform team maintains the shared library; brand teams own brand tokens and brand-specific components.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/multi-brand-design-system-architecture.svg" alt="Design a Multi-brand Design System architecture" caption="Architecture view: control plane, execution plane, permissions, versioning, and observability boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/multi-brand-design-system-rollout.svg" alt="Design a Multi-brand Design System flow" caption="Flow view: authoring, validation, rollout, execution, health checks, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/multi-brand-design-system-token-layers.svg" alt="Design a Multi-brand Design System operations" caption="Operations view: blast radius, stale versions, abuse controls, cost, privacy, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Brand theming:</strong> Each brand has a distinct visual identity applied by switching token sets. Theme switching at runtime (for preview tools and white-label customers) is supported.</li>
-          <li><strong>Shared component library:</strong> A core component set (buttons, inputs, cards, navigation) is shared across all brands. Components are brand-agnostic; they read from tokens only.</li>
-          <li><strong>Brand-specific extensions:</strong> Individual brands can add brand-specific components (a brand-specific hero section, a brand-specific chart style) without modifying the shared library.</li>
-          <li><strong>Token pipeline:</strong> Design tokens defined in Figma are automatically exported and transformed into CSS custom properties, TypeScript constants, and React Native StyleSheet values by an automated pipeline.</li>
-          <li><strong>Version management:</strong> Breaking changes to the shared library are versioned. Brand teams are notified and given a migration window before breaking changes take effect.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Bundle efficiency:</strong> Only the active brand's tokens are included in the production bundle. Unused brand tokens do not increase bundle size.</li>
-          <li><strong>Consistency:</strong> All components across all brands use the same semantic token names. A component built for one brand works correctly in all other brands without modification.</li>
-          <li><strong>Design-to-code fidelity:</strong> Token values in production CSS must match Figma token values within a defined tolerance (exact match for colors and typography, ±1px for spacing).</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <p>The design system has three layers. The foundation layer: global tokens (literal values: color.blue.500 = #3b82f6, spacing.4 = 16px) that are brand-independent. The semantic layer: semantic tokens that map to global tokens with brand-specific mappings (color.action.primary maps to color.blue.500 for Brand A and color.indigo.600 for Brand B). The component layer: React components that reference semantic tokens only, with no awareness of which brand is active. Brand themes are CSS custom property files generated per brand by the token pipeline and loaded at runtime by wrapping the application in a theme provider that applies the brand's custom properties to the root element.</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/multi-brand-design-system-token-layers.svg"
-          alt="Multi-brand design system token layers showing three-tier architecture: global tokens (literal values, brand-independent), semantic tokens (per-brand mappings: Brand A color.action.primary → color.blue.500, Brand B → color.indigo.600), component tokens (component-specific aliases: button.background.primary → color.action.primary). Token pipeline: Figma Token Studio → JSON token files → Style Dictionary transform → CSS custom properties + TypeScript + React Native StyleSheet. Brand theme provider applies CSS custom properties to root element."
-          caption="Three-tier token hierarchy: global (literals) → semantic (brand-specific mappings) → component (component aliases), processed by Style Dictionary into CSS custom properties"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Token Architecture and Pipeline</h3>
-        <p>The token system has three tiers. Global tokens define the design vocabulary: all colors in all shades (color.blue.50 through color.blue.950), the full spacing scale (spacing.1 = 4px through spacing.16 = 64px), font sizes, font weights, border radii, and shadow definitions. Global tokens are brand-agnostic—they define what values exist, not what they mean. These are rarely changed and are not exposed directly to components.</p>
-        <HighlightBlock as="p" tier="important">Semantic tokens map meaning to global values, with a separate mapping per brand. color.action.primary is the "primary action color"—it maps to color.blue.600 for Brand A, color.purple.600 for Brand B, color.teal.500 for Brand C. Semantic tokens define the design language's intent: color.feedback.error, color.surface.elevated, spacing.layout.sectionGap. Components use semantic tokens; they never reference global tokens directly. The semantic token file per brand is the primary artifact that brand designers own and modify.</HighlightBlock>
-        <p>Component tokens are optional component-specific aliases of semantic tokens: button.background.primary → color.action.primary, button.text.primary → color.action.primaryForeground. Component tokens allow component-level customization (a brand wants their buttons to use a slightly different shade than the semantic action color) without modifying the component's source code. Not all systems need component tokens; they are valuable when fine-grained per-component customization is needed beyond what semantic tokens provide.</p>
-        <HighlightBlock as="p" tier="important">The pipeline: designers export tokens from Figma using the Token Studio plugin as JSON files. A CI job (triggered by a GitHub webhook on Figma token export) runs Style Dictionary on the JSON files to generate: a CSS custom properties file per brand (brand-a-tokens.css), a TypeScript module with typed token constants (used for non-CSS contexts like chart color scales), and a React Native StyleSheet file. The generated files are published to an npm package (@design-system/tokens-brand-a) that brand applications install. The CI job also runs a validation step: it checks that all semantic token names referenced in component source code are defined in every brand's token file (missing tokens produce a build error, preventing a component from silently rendering with no value for a token).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Theme Provider and Runtime Switching</h3>
-        <p>The theme is applied by a ThemeProvider component that wraps the application and sets CSS custom properties on the root element (or a scoped container). The ThemeProvider accepts a theme prop (a string brand identifier) and applies the corresponding brand's CSS custom properties. Because CSS custom properties cascade, all nested components automatically pick up the correct brand values without any prop drilling.</p>
-        <HighlightBlock as="p" tier="important">Runtime theme switching (for white-label preview tools and demos) works by swapping the CSS custom properties on the root element. The ThemeProvider listens for theme prop changes and re-applies the new brand's custom properties. Switching themes does not require any JavaScript component re-renders beyond the ThemeProvider itself (CSS custom property changes are applied by the browser's CSS engine, not by React); the visual update is instant. For production applications where only one brand is active, the brand's CSS custom properties file is loaded as a static CSS file (not injected by JavaScript), which is preferable for performance (no JavaScript execution required to apply the theme).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Dark mode: each brand defines two semantic token sets (light and dark), and the ThemeProvider applies the correct set based on the user's prefers-color-scheme media query or an explicit user preference stored in localStorage. The dark token set maps to different global token values (color.action.primary maps to color.blue.400 in dark mode rather than color.blue.600 in light mode, adjusted for contrast on dark backgrounds). Dark mode is handled entirely within the token system; component code has no awareness of light versus dark mode.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Shared Components and Brand-Specific Extensions</h3>
-        <p>The shared component library exports fully token-referenced components. A Button component references button.background.primary, button.text.primary, button.border.radius, and button.padding.x as CSS custom properties. The component has no hard-coded colors, font sizes, or spacing values. This makes it trivially brand-agnostic: applying Brand A's tokens gives a blue button; Brand B's tokens give a purple button; the Button component source code is identical for both.</p>
-        <HighlightBlock as="p" tier="important">Brand-specific components: Brand C might require a hero section with a unique layout that no other brand uses. This component lives in Brand C's own package (@design-system/components-brand-c), not in the shared library. Brand C's components can import shared library components (Button, Input, Card) and use brand semantic tokens. The brand-specific components are not subject to the shared library's versioning contract—they are owned entirely by Brand C's team. This separation is important: the shared library team must not be blocked on brand-specific requirements, and brand teams must not be blocked on the shared library team's release cadence for their brand-specific work.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Governance and Contribution Model</h3>
-        <HighlightBlock as="p" tier="important">The multi-brand design system requires a clear governance model to prevent both over-centralization (all component decisions blocked on the platform team) and fragmentation (brands diverging uncontrollably). The governance model has three zones. Zone 1 (platform-owned): the global token vocabulary, the component library's core components, and the semantic token schema (the names of semantic tokens are shared across all brands—only the values differ). Changes to Zone 1 require platform team review and follow the RFC process. Zone 2 (brand-owned, constrained): each brand's semantic token values, dark mode tokens, and brand-specific components. Brand teams own these fully. Zone 3 (shared, brand-contributed): components that are brand-specific initially but candidates for the shared library (a brand-specific DatePicker that three brands end up wanting). Brand-contributed components enter a proposal process, are generalized to token references, and are promoted to Zone 1 after review.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Breaking change process: when the shared library needs a breaking change (a component prop is renamed, a semantic token is removed), the platform team follows an expand-contract process. The new API is added alongside the old; the old is deprecated with a console warning in development mode; after a migration period (typically two minor versions), the old is removed in a major version. Brand teams receive automated migration codemods (AST-based transforms using jscodeshift) that update their usage of deprecated APIs. Codemods reduce the manual migration cost from days to minutes for most breaking changes.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Visual Regression Testing Across Brands</h3>
-        <HighlightBlock as="p" tier="important">Changes to shared components must be tested against all brand themes to catch visual regressions. The visual regression testing pipeline runs on every PR to the shared library: it renders a set of component stories (one per component variant) in each brand's theme and compares the rendered screenshots against baseline screenshots. A pixel diff above a configurable threshold (1% by default) flags the PR for review. This catches regressions like "the button's text color changed to an illegible shade in Brand C's theme after a semantic token rename."</HighlightBlock>
-        <p>The visual regression tool (Chromatic, Percy, or a self-hosted Storybook with Playwright) runs in CI. The component stories are written once (in the shared library's Storybook) and rendered multiple times with different ThemeProvider wrappers (once per brand). This means the test count is (number of stories) × (number of brands), which grows as brands are added. The test count is managed by only running cross-brand visual regression on components that changed in the PR (using git diff to identify changed component files), not on every component for every PR.</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/multi-brand-design-system-rollout.svg"
-          alt="Multi-brand design system rollout showing governance zones (Zone 1: platform-owned shared components and token schema; Zone 2: brand-owned token values and brand-specific components; Zone 3: brand-contributed component proposals), breaking change process (expand-contract: add new API, deprecate old with console warning, remove in major version, automated jscodeshift codemod), and visual regression pipeline (component stories × brand themes rendered in Chromatic, pixel diff threshold, only changed components tested per PR)."
-          caption="Governance zones (platform/brand/shared contribution), expand-contract breaking change process with automated codemods, and cross-brand visual regression per PR"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">CSS custom properties versus CSS-in-JS for theming: CSS custom properties (applied by the ThemeProvider) require no JavaScript at runtime to apply the theme—the browser's CSS engine handles the cascade. This is optimal for performance and SSR compatibility (the theme is applied before JavaScript runs, preventing a flash of un-themed content). CSS-in-JS theming (styled-components ThemeProvider, Emotion's ThemeProvider) requires JavaScript to inject styles, adding runtime overhead and complexity with SSR. For a design system serving multiple brands including SSR-heavy applications, CSS custom properties are the correct choice. The trade-off: CSS custom properties cannot be used in contexts where CSS is not available (React Native, email templates), requiring a separate TypeScript token export for those contexts.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Token granularity: a token system with too few tokens (only 10 semantic tokens) forces brands to share values they want to differentiate. A token system with too many tokens (500 tokens) becomes unwieldy to maintain and understand. The right granularity depends on the variation space across brands: if brands vary only in primary color and border radius, 20 tokens are sufficient; if brands vary in typography, density, spacing, iconography, and motion, 100+ tokens may be needed. Starting with fewer tokens and expanding as specific brand requirements arise is generally better than starting with a comprehensive token taxonomy that most brands never use.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Monorepo versus polyrepo for the design system: a monorepo (all brands' tokens and the shared library in one repository) simplifies cross-brand refactors (a single PR can update the shared library and all brands' token mappings simultaneously) but requires more CI infrastructure and creates a larger repository. A polyrepo (shared library in one repo, each brand's tokens in a separate repo) provides cleaner ownership boundaries but makes cross-cutting changes difficult. Most design system teams start with a monorepo and split out brand-specific packages only when team boundaries require it (brand teams want independent deployment cadence and access control).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A multi-brand design system uses a three-tier token architecture: global tokens (literal values, brand-independent), semantic tokens (per-brand mappings of meaning to values), and component tokens (optional component-specific aliases). The token pipeline (Figma Token Studio → Style Dictionary → CSS custom properties + TypeScript + React Native) automates the design-to-code flow. Components reference semantic CSS custom properties exclusively; brand themes are applied by the ThemeProvider setting custom properties on the root element, enabling runtime theme switching without React re-renders. Dark mode is handled within the token system (a dark semantic token set). Governance uses three zones: platform-owned core (RFC process, breaking changes via expand-contract with automated codemods), brand-owned tokens and brand-specific components (brand team autonomy), and brand-contributed component proposals (promotion to shared library after generalization). Visual regression testing runs component stories × brand themes in CI using a pixel-diff threshold on changed components. The defining design decision is token granularity: the number of semantic tokens determines the expression space for brand variation versus the maintenance overhead of the token vocabulary.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

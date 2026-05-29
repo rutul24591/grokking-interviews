@@ -1,73 +1,89 @@
-/**
- * PDF Text Search — In-PDF text extraction and match finding.
- *
- * Interview edge case: User searches for "report" in a 50-page PDF. The system
- * must extract text content from all pages, find all matches, and allow navigation
- * between matches (next/previous). Must handle case sensitivity and whole-word matching.
- */
+export type pdfViewerSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-export interface SearchMatch {
-  pageIndex: number;
-  text: string;
-  offset: number;
-  length: number;
+export type pdfViewerEvent = {
+  id: string;
+  topic: "pdf-viewer";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: pdfViewerSignal;
+};
+
+export type pdfViewerDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluatePdfViewerEvent(event: pdfViewerEvent): pdfViewerDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: pdfViewerDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Pdf Viewer",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Extracts text content from a page (simulated — in production uses PDF.js).
- */
-async function extractPageText(pageIndex: number): Promise<string> {
-  // In production: use PDF.js page.getTextContent()
-  return `Sample text content for page ${pageIndex + 1}`;
-}
+export function runPdfViewerContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluatePdfViewerEvent({
+    id: "pdf-viewer-evt-1",
+    topic: "pdf-viewer",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-/**
- * Searches for text matches across all pages of a PDF.
- */
-export async function searchPdf(
-  numPages: number,
-  query: string,
-  options: { caseSensitive?: boolean; wholeWord?: boolean } = {},
-): Promise<SearchMatch[]> {
-  const { caseSensitive = false, wholeWord = false } = options;
-  const matches: SearchMatch[] = [];
-  const searchTerm = caseSensitive ? query : query.toLowerCase();
+  const guarded = evaluatePdfViewerEvent({
+    id: "pdf-viewer-evt-late",
+    topic: "pdf-viewer",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-  // Build regex for matching
-  const escapedQuery = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = wholeWord ? `\\b${escapedQuery}\\b` : escapedQuery;
-  const flags = caseSensitive ? 'g' : 'gi';
-  const regex = new RegExp(pattern, flags);
-
-  for (let pageIndex = 0; pageIndex < numPages; pageIndex++) {
-    const text = await extractPageText(pageIndex);
-    const searchText = caseSensitive ? text : text.toLowerCase();
-
-    let match: RegExpExecArray | null;
-    while ((match = regex.exec(searchText)) !== null) {
-      matches.push({
-        pageIndex,
-        text: match[0],
-        offset: match.index,
-        length: match[0].length,
-      });
-    }
-  }
-
-  return matches;
-}
-
-/**
- * Returns the page index and text offset for the next/previous match.
- */
-export function navigateToMatch(
-  matches: SearchMatch[],
-  currentIndex: number,
-  direction: 'next' | 'prev',
-): number {
-  if (matches.length === 0) return -1;
-  if (direction === 'next') {
-    return (currentIndex + 1) % matches.length;
-  }
-  return (currentIndex - 1 + matches.length) % matches.length;
+  return { accepted, guarded };
 }

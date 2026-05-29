@@ -1,7 +1,5 @@
-export type Id = string;
-
-export type Entity<T> = T & { id: Id };
-
-export function newId(prefix: string, now = Date.now()) {
-  return `${prefix}_${now}_${Math.floor(Math.random() * 1e6)}`;
+function excerpt(text, maxLength = 132) {
+  return text.length <= maxLength ? text : `${text.slice(0, maxLength - 1)}…`;
 }
+
+module.exports = { excerpt };

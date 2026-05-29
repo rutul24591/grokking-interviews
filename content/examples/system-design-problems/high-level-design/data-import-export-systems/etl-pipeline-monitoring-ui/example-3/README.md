@@ -1,1 +1,5 @@
-# Design a ETL pipeline monitoring UI — Example 3
+# ETL Pipeline Monitoring UI - Example 3
+
+Concrete data movement edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

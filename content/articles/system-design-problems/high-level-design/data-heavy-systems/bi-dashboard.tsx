@@ -9,13 +9,13 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-bi-dashboard",
   title: "Design a BI Dashboard (Tableau-like)",
   description:
-    "Architecture for a Tableau-like BI dashboard: drag-and-drop chart builder, multi-source data connector (SQL, REST, CSV), column profiling, live and cached query execution, dashboard canvas with responsive grid layout, cross-filter interactions between charts, parameterized filters, scheduled data refresh, PDF/image export, row-level security per viewer, and shared dashboard links with permission-gated access.",
+    "Principal-level design of a Tableau-like BI dashboard with chart building, query generation, live and extract execution, cross-filtering, row-level security, caching, sharing, exports, and dashboard governance.",
   category: "high-level-design",
   subcategory: "data-heavy-systems",
   slug: "bi-dashboard",
-  wordCount: 5000,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
+  wordCount: 5700,
+  readingTime: 33,
+  lastUpdated: "2026-05-22",
   tags: ["hld", "bi", "dashboard", "tableau", "data-visualization", "query-engine", "cross-filter", "row-level-security"],
   relatedTopics: ["large-dataset-exploration-ui", "reporting-analytics-dashboard"],
 };
@@ -24,78 +24,236 @@ export default function BIDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A BI dashboard like Tableau serves two distinct user archetypes: the builder (a data analyst who connects to data sources, designs visualizations, and assembles dashboards) and the viewer (a business stakeholder who interacts with published dashboards via filters and drill-downs but cannot modify the underlying queries). The design challenge is that these personas have radically different latency tolerance and interaction patterns. The builder can tolerate a 5–10 second query execution while iterating on a chart; the viewer expects sub-second response when clicking a filter chip that cross-filters three charts simultaneously. A naive implementation that fires full re-queries on every cross-filter click will feel unusable for viewers.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The data scale challenge is fundamental to BI: a single dashboard may query a fact table with 500 million rows. Returning 500 million rows to the browser is impossible; the query engine must push computation to the data source (GROUP BY, aggregations, LIMIT) and return only the summarized result set needed for the specific visualization. The chart builder must expose this query generation transparently enough that non-technical users can build charts without writing SQL, while still allowing power users to override with raw SQL. This is the core UX tension in every BI tool: abstraction versus power.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Chart builder, dashboard canvas with cross-filter, query execution layer, data source connectors, row-level security, and export. Not in scope: ETL pipeline design, data warehouse architecture, or ML-based insights.</p>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          A BI dashboard system lets analysts build charts and dashboards from business data, then lets stakeholders view, filter, drill into, share, export, and schedule those dashboards. A Tableau-like product has two distinct surfaces: a builder experience for analysts and a viewer experience for business users. The builder optimizes for flexibility and explainability. The viewer optimizes for fast loading, safe access, and predictable interaction.
+        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The principal-level design challenge is not drawing charts. It is safely turning visual intent into governed queries, enforcing row-level security, avoiding warehouse overload, supporting fast cross-filter interactions, and managing freshness trade-offs between live data and cached extracts.
+        </HighlightBlock>
+        <p>
+          BI dashboards sit between product analytics, finance, sales operations, executive reporting, customer success, and data engineering. A single dashboard can be viewed by hundreds of users, query many sources, and rely on sensitive fields. That means the design must include permission-aware caching, query queues, audit logs, extract governance, and explainable freshness.
+        </p>
+        <p>
+          Users expect spreadsheet-like freedom, but the system cannot behave like a spreadsheet internally. The frontend should hold dashboard definitions and small result sets. The query layer should push aggregation, filtering, grouping, limits, and row-level security to the data source or extract engine.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Chart builder:</strong> Drag fields from a schema browser onto X-axis, Y-axis, Color, Size, and Tooltip shelves. Supported chart types: bar, line, area, scatter, pie, heatmap, table, geographic map. Auto-suggest chart type based on field data types (date + measure → line; dimension + measure → bar; two measures → scatter). Column profiling: clicking a field shows distribution histogram, null rate, cardinality, and sample values.</li>
-          <li><strong>Data sources:</strong> Connect to PostgreSQL, BigQuery, Snowflake, Redshift, MySQL via JDBC-style credentials. REST API connector (specify URL, auth header, JSON path). CSV upload (parsed in-browser, stored in object storage, queried via DuckDB). Live mode: query executes on every filter change. Extract mode: query result cached as an in-memory columnar store, filters applied client-side with sub-millisecond response.</li>
-          <li><strong>Dashboard canvas:</strong> Responsive grid layout (12-column, 1–12 span per widget). Widgets: charts, text blocks, images, filter controls (dropdown, multi-select, date range, slider). Cross-filter: clicking a bar in one chart filters all other charts on the dashboard to the selected dimension value. Parameterized filters: filter controls at the top apply WHERE clause parameters to all charts that reference them.</li>
-          <li><strong>Row-level security:</strong> Data source can define RLS rules: &#123;field: "region", operator: "=", valueFrom: "viewer.attribute.region"&#125;. When a viewer opens the dashboard, the RLS rules inject WHERE clauses based on the viewer's identity attributes. Builders see all data; viewers see only their permitted rows. RLS rules are enforced server-side on every query — the viewer cannot bypass them by inspecting network requests.</li>
-          <HighlightBlock as="li" tier="important"><strong>Sharing and export:</strong> Dashboard share link with permission levels: View, Filter (can change filters but not layout), Edit. Schedule email delivery (PDF, PNG) at set times. Embed via iframe with signed JWT token. Export current view as PDF (server-side headless Chrome render) or CSV (raw query results).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Query latency (live mode):</strong> Simple aggregation queries (&lt;100M rows) return within 3 seconds. Dashboard load shows all charts within 5 seconds of page open via parallel query execution.</li>
-          <li><strong>Cross-filter latency (extract mode):</strong> Cross-filter interactions respond within 100ms using client-side DuckDB-WASM or Arrow columnar store.</li>
-          <li><strong>Concurrent viewers:</strong> A popular shared dashboard must support 500 concurrent viewers without hammering the underlying data warehouse — achieved via query result caching with TTL per data source refresh schedule.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The chart builder converts field selections into a declarative visualization specification. Fields are assigned to axes, measures, color, size, tooltip, filters, and grouping. The query builder translates that specification into a safe query using dataset metadata and a semantic model. This allows non-SQL users to build charts while still giving power users transparency into generated queries.
+        </p>
+        <p>
+          The semantic model is the contract between raw data and dashboard users. It defines dimensions, measures, joins, default aggregations, fiscal calendars, time grains, friendly names, formatting rules, and allowed filters. Without this layer, every dashboard can interpret revenue, active user, region, and customer differently.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Row-level security must be enforced on the server for every query and every export. The browser can receive only the data the viewer is allowed to see. Cache keys must include tenant, dashboard version, query shape, and viewer security context, otherwise cached results can leak across users.
+        </HighlightBlock>
+        <p>
+          Live mode runs queries against the source database or warehouse at view time. It gives fresher data but has higher latency and can overload the warehouse during dashboard bursts. Extract mode materializes data into a columnar store or precomputed cube. It gives fast interaction and protects source systems, but it introduces staleness, refresh failure modes, and security-versioning concerns.
+        </p>
+        <p>
+          Cross-filtering lets interaction in one chart affect others. A click on a bar, map region, or table row adds a filter to the dashboard state. Each dependent chart recomputes its effective query from global filters, widget filters, and cross-filter events. In extract mode this may run locally against a columnar extract. In live mode it usually triggers server-side re-queries.
+        </p>
+        <p>
+          Export and sharing are high-risk paths. A dashboard image is lower risk than raw CSV. CSV can expose row-level data at scale. Embedded dashboards require signed tokens, scoped permissions, expiration, and origin controls. Scheduled email delivery must recheck permissions and RLS at send time, not only at schedule creation.
+        </p>
+        <p>
+          Principal-level BI design also needs metric governance. If two teams define revenue differently, the dashboard platform can create organizational disagreement instead of clarity. The semantic layer should include metric owners, certification status, deprecation notices, lineage to source tables, and review workflow for promoted measures. Users should be able to tell whether a chart uses a certified business metric or an ad hoc draft calculation.
+        </p>
+        <p>
+          The system also needs an explicit freshness contract. Some dashboards are operational and must show current data. Others are executive summaries over yesterday&apos;s closed books. The UI should expose refresh cadence, source lag, extract status, and last successful query. A stale chart with a green visual state is worse than a failed chart because it invites confident but wrong decisions.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The system has three major planes. The Builder Plane is a rich client-side application (Next.js) where analysts compose dashboards. It communicates with a Query Service (Node.js) that translates visual field selections into SQL, executes them against the configured data source via a connector layer, and returns result sets. The Viewer Plane is a read-only dashboard renderer that loads the dashboard definition (JSON schema of widget layouts, chart configs, filter configs) from a Dashboard Service and fires chart queries through the Query Service with the viewer's RLS context injected. The Cache Plane sits between the Query Service and the data sources: a Redis layer keyed by SHA256(query + tenantId + rlsContext) with TTL equal to the data source's refresh interval (configurable: 5 minutes to 24 hours). In extract mode, the Query Service pre-fetches the full query result into an in-memory columnar store (Apache Arrow format) hosted in a Node.js worker; subsequent filter operations are applied by the client-side DuckDB-WASM instance that operates on the same Arrow buffer via shared memory or postMessage transfer.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The system has five planes. The builder plane manages schema browsing, chart authoring, layout, saved versions, and preview. The viewer plane renders published dashboard definitions and interactive filters. The query plane validates visualization specs, generates queries, injects RLS, enforces limits, and calls connectors. The cache and extract plane accelerates repeated reads. The governance plane handles permissions, audit, sharing, scheduling, and lineage.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/bi-dashboard.svg"
-          alt="BI dashboard architecture showing chart builder (drag field → shelf: X-axis Y-axis Color Size Tooltip; auto-suggest chart type; generate SQL: SELECT dim, AGG(measure) FROM table WHERE {params} GROUP BY dim ORDER BY dim; schema browser: column profiling histogram null-rate cardinality; column types: dimension string date / measure integer float; chart types: bar line scatter pie heatmap table geo-map), query execution layer (Query Service: receive {datasourceId, sql, rlsContext, viewerId}; inject RLS: append AND region={viewer.region} to WHERE; cache lookup: Redis SHA256(query+tenantId+rlsContext) TTL=refresh_interval; cache miss → JDBC connector → data warehouse: BigQuery/Snowflake/Redshift/Postgres; result set → Arrow format → return; extract mode: prefetch full table → Arrow buffer in worker → DuckDB-WASM client-side sub-queries), dashboard canvas (12-column responsive grid; widget types: chart text-block image filter-control; cross-filter: click bar value → dispatch {field:region value:West} → all charts re-query with additional WHERE region=West; parameterized filters: date-range dropdown slider → inject {params} into all chart SQLs; layout save: PATCH /api/dashboards/{id}/layout), row-level security (viewer login → JWT {userId, org, region:West, role:analyst}; Dashboard Service: load RLS rules [{field:region op:= valueFrom:viewer.region}]; inject into Query Service context; server enforces: viewer cannot inspect raw data without RLS; builder: no RLS applied; RLS rules editor: field + operator + viewer attribute mapping), sharing and export (share link: signed JWT {dashboardId, permission:View|Filter|Edit, expiry}; iframe embed: src=/embed/{token}; PDF export: POST /api/export/pdf → Puppeteer headless Chrome → render dashboard → return PDF binary; CSV export: raw query result → stream CSV; scheduled delivery: cron job → render → email via SES; query result cache: 500 concurrent viewers → single warehouse query per TTL window)."
-          caption="Chart builder (field shelves → SQL generation, column profiling), Query Service (RLS injection, Redis cache SHA256 keyed, JDBC connectors), extract mode (Arrow buffer + DuckDB-WASM client-side), dashboard canvas (cross-filter dispatch, parameterized filter injection), row-level security (server-enforced viewer attribute WHERE injection), and sharing/export (signed JWT, Puppeteer PDF, scheduled email delivery)"
+          alt="BI dashboard architecture with chart builder, query service, row-level security, live and extract execution, dashboard canvas, sharing, and export."
+          caption="A BI system turns visual chart intent into governed queries, then serves builders and viewers through live execution, cached results, or extracts depending on freshness and latency requirements."
         />
+        <p>
+          The builder flow begins with a dataset connection and schema introspection. The system profiles columns, maps field types, applies semantic definitions, and lets the analyst build chart specifications. The query service validates the specification, generates source-specific SQL or query language, runs a preview query with limits, and returns a small result set for chart rendering. When the dashboard is published, the immutable dashboard version records widget layout, chart specs, parameters, data source references, and security rules.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/bi-dashboard-query-plane.svg"
+          alt="BI query plane showing visual spec, semantic model, RLS injection, cache lookup, query queue, source connectors, and normalized result sets."
+          caption="The query plane is the safety boundary: it validates visual intent, applies semantic definitions and RLS, checks cache, limits concurrency, and normalizes connector responses."
+        />
+        <p>
+          The viewer flow loads a published dashboard version, resolves the viewer identity and permissions, applies default parameter values, and issues chart queries in parallel through the query service. Each chart renders independently as data arrives. Query concurrency is capped per data source, so a dashboard with many charts and many viewers does not stampede the same warehouse.
+        </p>
+        <p>
+          Cross-filtering updates dashboard state. The client computes which charts are affected, marks them loading, and sends updated query requests with cross-filter predicates. In live mode the query service evaluates those predicates against the warehouse with cache and queue controls. In extract mode the filter may run inside a browser or worker-based columnar engine when data volume and security policy allow it.
+        </p>
+        <p>
+          Query scheduling should be priority-aware. A dashboard preview from a builder, an executive board dashboard at 9 AM, a background scheduled PDF, and an exploratory raw SQL query should not compete equally. The query service can prioritize interactive viewer requests, cap background exports, and isolate expensive exploration from high-priority dashboards. This prevents a single analyst experiment from degrading many viewers.
+        </p>
+        <p>
+          Dashboard publication should be treated as a governed transition. A draft can use experimental fields, broad filters, and expensive queries, but a published dashboard should pass validation for RLS, query cost, certified metric usage, broken fields, and viewer performance. This distinction keeps exploration flexible while preventing unfinished analyst work from becoming a widely shared operational dependency.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/bi-dashboard-sharing-export.svg"
+          alt="BI sharing and export governance with signed links, embed tokens, scheduled delivery, PDF rendering, CSV export, RLS recheck, audit logs, and expiration."
+          caption="Sharing and export re-enter the governance layer: signed links, embedded tokens, scheduled jobs, and CSV exports must recheck permissions and record audit events."
+        />
+        <p>
+          A mature BI dashboard architecture treats the semantic layer as the contract between raw data and business interpretation. Metrics such as active users, revenue, churn, margin, and inventory availability should have definitions, owners, version history, approved dimensions, and deprecation paths. Without this, every dashboard can compute a slightly different version of the same metric and leaders lose trust in the platform.
+        </p>
+        <p>
+          Dashboard publication should be staged. Personal exploration can be flexible and fast, team dashboards should have ownership and data-source review, and executive or external dashboards should require certified metrics, access review, freshness SLA, and change history. The UI should distinguish draft, team-owned, certified, deprecated, and archived dashboards so consumers understand how much trust to place in what they see.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Chart Builder and SQL Generation</h3>
-        <p>The chart builder exposes a visual shelf metaphor (popularized by Tableau, derived from Leland Wilkinson's Grammar of Graphics). Fields from the data source schema are listed in a sidebar panel, showing the field name, data type icon (string: A, integer: #, date: calendar, boolean: toggle), and an expand arrow to see column profiling stats. Dragging a field to the X-axis shelf, Y-axis shelf, Color shelf, or Tooltip shelf updates a declarative chart specification object: &#123; xField: "region", yField: "revenue", colorField: "category", chartType: "bar", aggregation: "SUM", filters: [] &#125;.</p>
-        <HighlightBlock as="p" tier="important">SQL generation from the chart spec: the Query Builder module translates the spec into SQL — for the example above: SELECT region, category, SUM(revenue) AS revenue FROM sales_table WHERE &#123;params&#125; GROUP BY region, category ORDER BY revenue DESC LIMIT 10000. The generated SQL is shown in a "View SQL" panel below the chart for transparency. Power users can switch to Raw SQL mode, replacing the auto-generated SQL with their own query. In raw SQL mode, the field shelf UI is disabled and the chart binds directly to the named columns returned by the raw query.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Column profiling: when a field is clicked in the schema browser, a side panel shows a distribution histogram (a lightweight SELECT field, COUNT(*) FROM table GROUP BY field ORDER BY COUNT(*) DESC LIMIT 20 query), null rate (SELECT COUNT(*) WHERE field IS NULL / COUNT(*)), cardinality (SELECT COUNT(DISTINCT field)), and 5 sample values. This query is executed against the live data source with a 30-second timeout and cached for 1 hour in Redis. The histogram helps analysts understand the data before deciding how to use the field.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Live Mode vs Extract Mode</h3>
-        <HighlightBlock as="p" tier="crucial">Live mode: every chart query fires against the underlying data source in real time. When a filter changes, each chart re-fires its SQL with the updated WHERE clause. This mode is necessary for dashboards that must reflect data as of the last few minutes (e.g., operations dashboards). The Query Service parallelizes chart queries on a dashboard page load — all N chart queries fire concurrently using Promise.all, and charts render as their queries complete (independent loading states per chart). Query results are cached in Redis by SHA256(SQL + tenantId + rlsContext) with a TTL configured per data source (default 5 minutes).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Extract mode: the Query Service pre-fetches the full query result (without aggregation, up to 10 million rows) from the data source and stores it as an Apache Arrow columnar buffer. This buffer is serialized and sent to the browser once on page load. The browser-side DuckDB-WASM instance loads the Arrow buffer as an in-memory table. All subsequent filter interactions — cross-filters, parameterized filter changes, chart type changes — execute as SQL queries inside DuckDB-WASM in the browser, returning results in under 100ms for datasets up to 1 million rows. Extract mode is ideal for dashboards where the underlying data changes infrequently (daily refreshes) and interaction latency is critical. The extract is refreshed on a configurable schedule (nightly, hourly) and the new Arrow buffer is pushed to the browser via a WebSocket message or detected on next page load.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Cross-Filter Architecture</h3>
-        <HighlightBlock as="p" tier="important">Cross-filtering is the most complex interaction on the dashboard canvas. When a viewer clicks a bar in Chart A (e.g., the bar for "West" in a region breakdown chart), the dashboard state manager adds a cross-filter event: &#123; sourceChartId: "chart-a", field: "region", value: "West" &#125;. All other charts on the dashboard subscribe to the cross-filter state (via Zustand in the React client). Each chart recomputes its effective WHERE clause by merging its own parameterized filters with the active cross-filter events: WHERE region = 'West' AND date &gt;= '2024-01-01'. In live mode, this triggers a re-query against the data source. In extract mode, this re-queries the DuckDB-WASM instance.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cross-filter highlight versus filter: clicking a bar can either filter (hide non-selected data from all charts) or highlight (dim non-selected data). The dashboard builder configures the interaction type per chart. Highlight is implemented by returning all data but adding an isHighlighted boolean to each row based on whether it matches the cross-filter — the chart renderer uses opacity 1.0 for highlighted rows and 0.3 for non-highlighted. This is computed entirely client-side without a re-query, making highlight mode instantaneous. Multiple cross-filters from different charts are ANDed together — clicking "West" in Chart A and "Q4" in Chart B filters all other charts to rows where region = 'West' AND quarter = 'Q4'.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Row-Level Security Implementation</h3>
-        <HighlightBlock as="p" tier="important">RLS is defined at the data source level by the dashboard admin: a list of rules, each specifying a field, an operator, and a viewer attribute reference. For example: &#123; field: "customer_id", operator: "IN", valueFrom: "viewer.allowedCustomerIds" &#125;. When a viewer authenticates, their JWT includes their identity attributes (encoded in the token claims). The Query Service extracts these attributes from the JWT and injects them into every SQL WHERE clause before execution. The injection happens server-side in the Query Service — the viewer's browser only sees the filtered result set, never the raw SQL or the full data.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">RLS consistency: because results are cached in Redis, the cache key must include the RLS context. The cache key is SHA256(sql + tenantId + JSON.stringify(sortedRLSClaims)) — two viewers with different RLS contexts will always get separate cache entries. This prevents the scenario where Viewer A's query result (containing only West region data) is served to Viewer B (who should see East region data) because the SQL text happened to match. The dashboard builder has a "Preview as viewer" mode that simulates the RLS context of a selected viewer persona, allowing builders to verify that RLS rules are correctly restricting data before publishing.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Dashboard Canvas and Layout System</h3>
-        <HighlightBlock as="p" tier="important">The dashboard canvas uses a 12-column CSS Grid layout with configurable row heights (per widget). Each widget has a position (col, row, colSpan, rowSpan) stored in the dashboard JSON schema. On mobile (viewport &lt;768px), widgets stack vertically in the order defined in the layout. The builder uses a drag-to-resize and drag-to-reposition interaction implemented with pointer events — a drag handle on the widget's bottom-right corner changes the colSpan/rowSpan; dragging the widget's header changes its col/row position. Layout changes are auto-saved with a debounce of 2 seconds using PATCH /api/dashboards/{`{id}`}/layout.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Text blocks support a subset of Markdown (bold, italic, headers, links) rendered client-side. Image widgets accept a URL or a file upload stored in object storage. Filter controls (dropdown, multi-select date range, slider) are separate widgets that publish their state to the dashboard's filter context — any chart that references the parameter &#123;date_range&#125; in its SQL will re-query when the date range filter changes. Filter controls can be pinned to the top of the dashboard (sticky on scroll) for dashboards with many charts below the fold.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Live mode prioritizes freshness and source-of-truth correctness. It is appropriate for operations dashboards, rapidly changing RLS memberships, and dashboards where stale data could cause bad decisions. Its cost is latency, warehouse load, and sensitivity to data-source outages. Query result caching helps, but cache keys must include security context and freshness requirements.
+        </p>
+        <p>
+          Extract mode prioritizes interactivity and cost control. It is appropriate for executive dashboards, daily business reviews, and heavy cross-filter interactions over mostly stable data. Its cost is stale data, extract refresh jobs, storage overhead, and complexity around RLS changes. If RLS attributes change frequently, extracts need per-viewer slicing, fast invalidation, or a return to live mode.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Cross-filter latency is where many BI designs fail. Viewer interactions need sub-second feedback, but live cross-filtering across many charts can trigger a warehouse query storm. A principal design should include result caching, query deduplication, per-source concurrency limits, extract acceleration, and progressive chart loading.
+        </HighlightBlock>
+        <p>
+          Generated SQL is safer for most users, but raw SQL unlocks power and risk. Raw SQL can bypass semantic definitions, produce unbounded scans, and make lineage harder. It should be limited by permissions, query timeouts, result limits, and mandatory RLS wrapping where possible.
+        </p>
+        <p>
+          Client-side extracts can deliver excellent interactions but increase browser memory pressure and may expose more data to the client than the current chart needs. Server-side extracts or precomputed cubes reduce client risk, but require backend compute for every filter interaction. The right choice depends on dataset size, sensitivity, viewer concurrency, and interaction depth.
+        </p>
+        <p>
+          PDF and image export preserve the dashboard view but do not support downstream analysis. CSV export supports analysis but increases data exfiltration risk. Sensitive dashboards should restrict CSV export, mask fields, add watermarking where appropriate, and audit all export requests.
+        </p>
+        <p>
+          Dashboard embedding has a separate security trade-off. Embeds help customers and partners consume analytics inside another product, but they require scoped tokens, allowed origins, expiration, and tenant-specific theming without leaking data. Static public links are simpler but risky for sensitive dashboards. Mature systems distinguish internal sharing, authenticated external embedding, public snapshots, and scheduled delivery, each with different controls.
+        </p>
+        <p>
+          Drill-down depth is another trade-off. Letting viewers move from aggregate charts to raw rows improves explainability, but it can bypass the intent of aggregation and expose sensitive detail. The system should define which measures are drillable, which fields are masked, and whether a drill-down is executed as a new governed query with its own audit event.
+        </p>
+        <p>
+          Query admission control trades exploration speed against platform stability. BI users can accidentally submit wide scans, high-cardinality group-bys, or cross-source joins that overwhelm warehouses. The query service should estimate cost, route to cached extracts when possible, cap concurrency, and show users why a query is queued or rejected. Principal-level design should protect shared analytical infrastructure while preserving useful exploration.
+        </p>
+        <p>
+          Row-level security placement is another important trade-off. Filtering only in the browser is unacceptable, while duplicating permission logic across every connector is brittle. The semantic or query layer should enforce tenant, role, geography, and data-classification rules centrally, then audit access to sensitive datasets and exports.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Live mode versus extract mode is the central trade-off. Live mode always shows current data but is slow for complex dashboards (N charts × query latency) and can overload the data warehouse when 500 viewers open the same dashboard simultaneously. Extract mode is fast and warehouse-friendly but shows stale data — a viewer might see yesterday's numbers while the warehouse already has today's data. The extract mode's stale data problem is compounded for RLS: if Viewer A's allowed customers change (a new customer assignment), the extract won't reflect this until the next scheduled refresh. For dashboards with frequently changing RLS data, live mode is necessary despite the latency cost. Most BI tools solve this with a hybrid: a short TTL Redis cache in live mode (capturing the burst of concurrent viewers at the same moment) while still querying the live data source every 5 minutes.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cross-filter performance in live mode with many charts: a dashboard with 10 charts and 500 concurrent viewers clicking cross-filters would generate 5,000 simultaneous queries. The Redis cache absorbs much of this (viewers clicking the same cross-filter within the TTL window share a cached result), but the first click for each unique filter combination hits the warehouse. A query queue with per-datasource concurrency limits (e.g., max 10 concurrent queries to a Snowflake warehouse) prevents overload — subsequent queries wait in the queue rather than failing. Charts show a spinner while their query is queued, which is a reasonable UX for interactive dashboards.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Build around a semantic layer. Define measures, dimensions, joins, units, time grains, and default aggregations centrally. This prevents each dashboard from redefining core business metrics differently and makes generated queries easier to govern.
+        </p>
+        <p>
+          Enforce RLS in the query service, not in the frontend. Every query, profile, export, scheduled email, embedded view, and preview-as-user request should pass through the same security injection and audit path.
+        </p>
+        <p>
+          Make freshness visible. Each chart should show whether it is live, cached, or extract-backed, along with last refresh time and query errors. Users should know whether they are looking at current data or an extract from the previous refresh.
+        </p>
+        <p>
+          Use cache keys that encode security and freshness. Include tenant, dashboard version, data source version, query hash, parameter values, RLS context, and extract version. Avoid sharing cache entries across viewers with different access scopes.
+        </p>
+        <p>
+          Limit query blast radius. Apply per-source concurrency caps, query timeouts, max result sizes, scanned-byte budgets, and deduplication for identical in-flight queries. Dashboards should degrade by showing queued or partial chart states rather than taking down the warehouse.
+        </p>
+        <p>
+          Treat published dashboard versions as immutable. Builders can edit drafts, but viewers should load a stable published version. This makes caching, scheduled delivery, permissions, and audit history more predictable.
+        </p>
+        <p>
+          Provide lineage and impact analysis. Before a dataset, field, or metric changes, owners should know which dashboards, scheduled reports, embedded views, and exports depend on it. This reduces silent breakage and gives dashboard owners a path to migrate before a source change lands.
+        </p>
+        <p>
+          Make dashboard health visible to owners. A dashboard with frequent query timeouts, low cache hit rate, stale extracts, failing scheduled delivery, or fields from deprecated datasets should surface an owner-facing warning. Without ownership feedback, dashboards decay into unreliable artifacts even if the underlying query engine is healthy.
+        </p>
+        <p>
+          Expose data quality state near the chart, not only in pipeline tools. A BI tile should be able to show that its source extract is late, a validation rule failed, or a metric definition changed. Users making decisions from the dashboard need trust context at the point of consumption.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A BI dashboard like Tableau is built around a Grammar of Graphics chart builder (field shelves → SQL generation), a Query Service that injects RLS WHERE clauses from JWT viewer claims (server-enforced, cache-key includes RLS context), and a dual-mode query execution strategy: live mode (Redis-cached queries to the data warehouse, parallel execution across charts) and extract mode (full result set prefetched as Apache Arrow buffer, DuckDB-WASM client-side sub-queries for &lt;100ms cross-filter response). The dashboard canvas is a 12-column CSS Grid with cross-filter state managed via Zustand (AND-merged filter events dispatch re-queries or client-side DuckDB filters). RLS rules inject viewer identity attributes into WHERE clauses server-side; "Preview as viewer" mode lets builders verify restrictions before publishing. The defining performance challenge: 500 concurrent viewers opening the same dashboard must not hammer the data warehouse — solved by the Redis result cache (keyed by SHA256 of SQL + tenantId + RLS context) and a per-datasource query queue with concurrency limits.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is enforcing permissions only when the dashboard loads. Every chart query and export must enforce permissions because filters, raw SQL, drilldowns, and schedules create new data access paths.
+        </p>
+        <p>
+          Another pitfall is using cache keys that ignore RLS. If two viewers run the same chart query but have different allowed regions or customers, they must not share the same cached result unless the cache is partitioned by effective security context.
+        </p>
+        <p>
+          Teams often underestimate dashboard stampedes. A widely shared dashboard opened at 9 AM by hundreds of employees can trigger thousands of warehouse queries. The query layer needs concurrency control, deduplication, and cached refresh patterns.
+        </p>
+        <p>
+          Cross-filtering can become inconsistent if each widget implements filtering differently. The dashboard state model should have a single definition for global filters, widget filters, cross-filter events, and parameter precedence.
+        </p>
+        <p>
+          Export paths often bypass visualization-level limits. A chart may show 500 aggregated rows, but CSV export may request raw millions of rows. Export should have separate permissions, quotas, masking, and approval for sensitive datasets.
+        </p>
+        <p>
+          Teams also fail to manage dashboard lifecycle. A dashboard that nobody owns can continue to drive decisions long after its source table or metric definition changed. Ownership, certification, and deprecation are core product features for BI systems at scale.
+        </p>
+        <p>
+          Another pitfall is hiding freshness and data-quality status. A chart can render beautifully while showing yesterday&apos;s failed pipeline output or a metric with failed validation. BI dashboards should expose freshness, quality warnings, and source incidents near the affected tiles so users do not interpret stale numbers as current truth.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Executive reporting dashboards summarize revenue, growth, retention, margin, and forecast metrics. They value stable definitions, scheduled delivery, commentary, and consistent freshness more than raw interactivity.
+        </p>
+        <p>
+          Sales and customer-success dashboards use row-level security heavily because regional managers, account owners, and executives see different customer scopes. Cache and extract design must account for those scopes.
+        </p>
+        <p>
+          Product analytics dashboards let teams slice funnels, cohorts, experiments, and adoption metrics by segment. Cross-filtering and drilldowns matter, but raw event access may need strict governance.
+        </p>
+        <p>
+          Operations dashboards monitor inventory, fulfillment, support queues, incident volume, and service-level metrics. They often require live mode or short TTL caching because stale values can trigger wrong operational decisions.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you design the query layer for a BI dashboard?</h3>
+        <p>
+          I would have the client send declarative chart specs rather than raw SQL for normal users. The query service validates the spec against a semantic model, injects tenant and row-level-security predicates, checks cache, applies query limits, and routes to source-specific connectors. It normalizes result sets for chart renderers and records audit metadata for sensitive access.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">2. How would you handle live mode versus extract mode?</h3>
+        <p>
+          Live mode queries the source at view time and is best for freshness and frequently changing permissions. Extract mode materializes data into a columnar representation or cube and is best for fast interaction and warehouse protection. I would choose per dashboard or data source, show freshness clearly, and make RLS changes invalidate or bypass extracts when necessary.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">3. How do you enforce row-level security safely?</h3>
+        <p>
+          RLS should be enforced server-side on every query and export. Viewer identity attributes are resolved by the backend, converted into validated predicates, and injected into generated queries. Cache keys include effective RLS context. The browser never receives unrestricted raw data and cannot disable security by modifying network requests.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">4. How would you prevent a popular dashboard from overloading the warehouse?</h3>
+        <p>
+          I would deduplicate in-flight identical queries, cache results by query and security context, cap concurrent queries per data source, apply query timeouts and scanned-byte limits, use extracts for high-traffic stable dashboards, and progressively load charts. The dashboard should show queued or stale-but-labeled results rather than stampeding the source.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">5. How do cross-filters work across charts?</h3>
+        <p>
+          A cross-filter interaction adds a typed filter event to dashboard state with source chart, field, value, and mode. Each chart computes effective filters from dashboard parameters, widget filters, and active cross-filters. In live mode this creates updated server queries. In extract mode it can run locally against a columnar extract. Filter precedence and clearing behavior should be consistent across widgets.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">6. What would you monitor in production?</h3>
+        <p>
+          I would monitor dashboard load time, per-chart query latency, cache hit rate, warehouse concurrency, query timeout rate, scanned bytes, extract refresh success, RLS injection failures, export volume, scheduled delivery failures, cross-filter latency, and viewer errors segmented by tenant, dashboard, data source, and dashboard version.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li><a href="https://www.tableau.com/products/desktop" target="_blank" rel="noreferrer">Tableau: Product Concepts</a></li>
+          <li><a href="https://duckdb.org/docs/api/wasm/overview.html" target="_blank" rel="noreferrer">DuckDB-WASM Documentation</a></li>
+          <li><a href="https://arrow.apache.org/docs/" target="_blank" rel="noreferrer">Apache Arrow Documentation</a></li>
+          <li><a href="https://cloud.google.com/bigquery/docs/row-level-security-intro" target="_blank" rel="noreferrer">BigQuery: Row-Level Security</a></li>
+          <li><a href="https://docs.snowflake.com/en/user-guide/security-row-intro" target="_blank" rel="noreferrer">Snowflake: Row Access Policies</a></li>
+          <li><a href="https://pptr.dev/" target="_blank" rel="noreferrer">Puppeteer Documentation</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

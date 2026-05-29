@@ -1,1 +1,5 @@
-# Design an account security dashboard (sessions, devices) — Example 2
+# Account Security Dashboard - Example 2
+
+Concrete security privacy production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

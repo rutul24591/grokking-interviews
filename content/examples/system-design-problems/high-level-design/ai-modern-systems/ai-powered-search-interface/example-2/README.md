@@ -1,1 +1,5 @@
-# Design AI-powered search interface — Example 2
+# AI Powered Search Interface - Example 2
+
+Concrete AI product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

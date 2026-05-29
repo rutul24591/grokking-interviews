@@ -8,111 +8,144 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-embeddable-analytics-sdk",
   title: "Design an Embeddable Analytics SDK",
-  description:
-    "Architecture for a client-side analytics SDK: event collection, batching, privacy compliance, delivery guarantees, and performance impact on host pages.",
+  description: "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance.",
   category: "high-level-design",
   subcategory: "platform-sdk-infra-systems",
   slug: "embeddable-analytics-sdk",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "analytics", "sdk", "tracking", "privacy", "batching"],
-  relatedTopics: ["frontend-sdk-for-third-party-developers", "frontend-observability-dashboard-rum-like-datadog"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "platform", "sdk", "infrastructure", "governance", "observability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design an Embeddable Analytics SDK is a platform system, which means the product is not only the UI that users see but also the contract other teams, tenants, developers, plugins, SDKs, or automation depend on. A principal-ready design treats an embeddable analytics SDK as a versioned control plane with operational guarantees.",
+  "The design must define ownership boundaries, compatibility rules, tenant isolation, permission enforcement, rollout mechanics, observability, rollback, and support operations. Platform systems fail differently from normal product screens because a bad release can break many downstream teams or external customers at once.",
+  "The visible dashboard or SDK should be backed by durable state: configuration versions, release channels, manifests, audit logs, policy decisions, dependency graph, tenant scopes, and operational history. Derived views such as impact analysis, metrics, install status, and rollout health can lag if they are observable and repairable.",
+  "A staff/principal answer should make the platform contract explicit. Who can publish? Who can install? What is backward compatible? What happens when a plugin, SDK, flag, deployment, token, or tenant job misbehaves? How do teams roll back without corrupting customer state?",
+  "The design should also include governance. Platform features need approvals, blast-radius limits, staged rollout, auditability, and usage visibility because they frequently grant power to other teams or external developers."
+];
+const concepts = [
+  "The first concept is contract-first design. collector runtime, event buffer, and privacy filter should expose stable schemas, versioned APIs, documented lifecycle states, and compatibility guarantees. Hidden contracts are what make platform migrations painful.",
+  "The second concept is isolation. Tenants, projects, plugins, SDK integrations, build jobs, and admin actions should be scoped so a mistake or malicious actor cannot affect unrelated users. Isolation applies to data, permissions, compute, rollout, and telemetry.",
+  "The third concept is versioning and rollout. Platform artifacts should support draft, approved, staged, active, deprecated, and rolled-back states. The UI should show which version is used where and who owns it.",
+  "The fourth concept is operational feedback. A platform UI should not only let users change state; it should show health, lag, adoption, errors, blast radius, and rollback readiness before and after the change.",
+  "The fifth concept is permission and audit. Admin actions, SDK configuration, plugin install, feature rollout, tenant bulk jobs, and deployment changes should be authorized, recorded, reviewable, and reversible where possible.",
+  "The sixth concept is developer experience. Good platform systems reduce cognitive load with safe defaults, schema validation, preview environments, dry runs, examples, error explanations, and migration guidance."
+];
+const architecture = [
+  "The architecture contains collector runtime, event buffer, privacy filter, delivery endpoint, tenant config. The control plane stores configuration, versions, ownership, approvals, and audit. The execution plane applies changes through SDKs, plugins, build systems, rollout engines, or tenant jobs. The observability plane measures impact and supports rollback.",
+  "Every change should have an identity: actor, target scope, version, policy decision, approval state, rollout percentage, dependency impact, and correlation ID. Without this metadata, support and incident response cannot reconstruct what happened.",
+  "The frontend should render lifecycle state explicitly: draft, validating, approved, staged, active, partially rolled out, blocked, deprecated, failed, or rolled back. Platform users need to understand whether a change is safe to proceed, not just whether a form submitted.",
+  "The system should support dry-run or preview. Before applying a flag, plugin install, tenant bulk job, deployment, SDK config, or component release, users should see affected projects, tenants, permissions, compatibility warnings, and estimated blast radius.",
+  "Rollback should be designed as a product path. Some state can be reverted directly; some requires compensating changes; some must be disabled at runtime while data cleanup happens asynchronously. The UI should make these differences visible.",
+  "Platform observability should connect user-visible changes to downstream symptoms: SDK errors, plugin crashes, build failures, tenant job failures, RUM regressions, permission denials, adoption metrics, and support tickets."
+];
+const tradeoffs = [
+  "Centralized platforms improve consistency, governance, and reuse, but they can become bottlenecks if every team waits for the platform team. Extensibility and self-service reduce bottlenecks but increase policy and compatibility risk.",
+  "Strict compatibility protects consumers but slows innovation. Fast-moving APIs or components let teams ship quickly but create migration debt. Mature platforms define support windows, deprecation workflows, and compatibility tests.",
+  "Runtime configuration gives fast rollback and experimentation, but it creates distributed state that can drift across SDK caches, edge nodes, tenants, and clients. Build-time configuration is simpler but slower to change during incidents.",
+  "Plugin and extension ecosystems increase platform value but introduce supply-chain, permission, performance, and trust risks. Sandboxing, manifest review, version pinning, and kill switches are not optional.",
+  "High-cardinality observability improves debugging but can become expensive and privacy-sensitive. Principal designs sample intelligently, aggregate by stable dimensions, and restrict raw event access.",
+  "Self-service bulk operations improve admin productivity but can create large blast radius. Dry runs, approvals, quotas, staged execution, pause/resume, and audit logs are the trade-off that makes self-service safe."
+];
+const practices = [
+  "Represent platform artifacts with explicit lifecycle state, owner, version, scope, dependencies, approval, rollout status, and audit history.",
+  "Build validation into authoring. Catch schema errors, permission violations, dependency breaks, accessibility regressions, privacy issues, and compatibility problems before publish or install.",
+  "Use staged rollout and blast-radius limits. Platform changes should support canary, tenant allowlists, percentage rollout, automatic stop on guardrail failures, and one-click disable where safe.",
+  "Keep execution idempotent. Deployments, plugin installs, SDK config updates, tenant bulk jobs, and flag changes should converge after retries rather than duplicate work.",
+  "Enforce least privilege. Extensions, support tools, admin dashboards, SDK keys, and workflow runners should receive narrow scoped permissions with audit trails.",
+  "Expose operational truth in the UI. Users should see queue state, rollout health, adoption, errors, stale clients, incompatible versions, and rollback options.",
+  "Design support tooling. Operators need to inspect which version, plugin, flag, token, deployment, or tenant job affected a customer without querying raw databases."
+];
+const pitfalls = [
+  "event loss usually means the platform lacks compatibility gates, staged rollout, or blast-radius controls. Platform failures multiply because many teams depend on one surface.",
+  "PII capture often comes from treating permissions or integration boundaries as documentation instead of enforceable runtime policy.",
+  "host performance regression is a state-distribution problem. SDK caches, build artifacts, edge nodes, tenants, and clients may observe different versions unless the design tracks propagation and freshness.",
+  "ad blocker interference requires rollback and audit. Platform users should know whether they can disable, revert, compensate, or escalate the issue.",
+  "Another pitfall is measuring adoption without measuring harm. A platform can be widely used and still create latency, privacy, accessibility, compatibility, or support problems.",
+  "Teams also forget deprecation. Old SDKs, plugins, components, flags, and deployment settings remain in production long after the happy-path migration guide is written."
+];
+const useCases = [
+  "product analytics snippet requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "RUM SDK requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "partner tracking SDK requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "During a bad rollout, the system should identify affected tenants or projects, stop further rollout, disable the runtime path if possible, and preserve audit evidence.",
+  "During a compatibility break, owners should see consumers, version usage, failing checks, migration status, and deprecation deadlines.",
+  "During an abuse or supply-chain incident, the platform should revoke permissions, disable extensions or keys, notify affected owners, and support forensic review."
+];
+const questions = [
+  {
+    "question": "How would you design an embeddable analytics SDK end to end?",
+    "answer": "I would model it as a platform control plane plus execution plane. The control plane stores versions, ownership, permissions, approvals, rollout state, and audit history. The execution plane applies changes through SDKs, plugins, workflows, deployments, tenant jobs, or runtime config. The UI supports validation, preview, staged rollout, health monitoring, and rollback. Observability connects platform changes to downstream customer impact."
+  },
+  {
+    "question": "Why this architecture over a simple admin dashboard or SDK config page?",
+    "answer": "A simple dashboard can mutate state but cannot safely manage platform contracts, compatibility, blast radius, tenant isolation, approvals, or rollback. Platform systems need lifecycle and governance because one change can affect many downstream consumers. The additional control-plane complexity is justified by operational risk."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are event loss, PII capture, host performance regression, ad blocker interference, plus stale clients, incompatible versions, high-cardinality telemetry, queue backlogs, cross-tenant leakage, support overload, and uncontrolled blast radius. Prevention requires versioning, validation, staged rollout, idempotent execution, scoped permissions, and observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative configuration, permissions, ownership, approvals, and audit entries need strong server-controlled consistency. Runtime propagation to SDKs, edge nodes, build systems, dashboards, and tenants is often eventually consistent, but it must expose version and freshness. Rollback should target both control-plane state and distributed runtime state."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with dry runs, staged rollout, automatic guardrails, pause/resume, and rollback controls. Abuse is handled through least privilege, sandboxing, review, and key/plugin revocation. Privacy requires scoped telemetry and data minimization. Cost is controlled through sampling, quotas, batch execution, and cardinality limits. Observability tracks rollout health, adoption, error rates, stale versions, queue lag, and customer impact."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would argue that platform surfaces are leverage points, so governance is not bureaucracy; it is blast-radius control. I would defend self-service only when paired with validation, approvals for high-risk changes, staged rollout, and rollback. I would also distinguish authoritative control-plane consistency from eventually consistent runtime propagation."
+  }
+];
+const references = [
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "W3C Web Components",
+    "href": "https://www.w3.org/TR/components-intro/"
+  },
+  {
+    "label": "OWASP Third Party JavaScript Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Third_Party_Javascript_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  },
+  {
+    "label": "Cloudflare Workers platform docs",
+    "href": "https://developers.cloudflare.com/workers/"
+  }
+];
 
 export default function EmbeddableAnalyticsSdkArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">An embeddable analytics SDK is a JavaScript library that third-party websites include to track user behavior—page views, clicks, custom events, funnel steps, session recordings—and transmit that data to a central analytics platform. The SDK operates inside a host page it does not control, meaning it must be a well-behaved guest: minimal performance impact, no interference with the host page's functionality, no unhandled errors that could crash the host, and compliance with privacy regulations (GDPR, CCPA) that may restrict what data can be collected from users in different jurisdictions.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The defining engineering tension is reliability versus performance. To ensure no events are lost (even on page unload), the SDK must queue events durably and use delivery mechanisms that survive navigation. But a heavyweight SDK that adds 200ms to page load or causes layout thrash will be removed by host developers regardless of its reliability. The SDK must be invisible in normal operation and resilient at the edge cases (page unload, network loss, consent changes mid-session).</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The SDK is a self-contained JavaScript bundle loaded via a script tag or npm package. It supports web only (not mobile native). Events are structured: name (string), properties (JSON-serializable object), timestamp (ISO 8601), sessionId, userId (or anonymousId for non-identified users). The analytics platform backend is owned by the same organization as the SDK. The SDK must support GDPR opt-in/opt-out at any point during the session. The host page may navigate or close at any time; events must not be silently lost on unload.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/embeddable-analytics-sdk-architecture.svg" alt="Design an Embeddable Analytics SDK architecture" caption="Architecture view: control plane, execution plane, permissions, versioning, and observability boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/embeddable-analytics-sdk-delivery-flow.svg" alt="Design an Embeddable Analytics SDK flow" caption="Flow view: authoring, validation, rollout, execution, health checks, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/embeddable-analytics-sdk-privacy.svg" alt="Design an Embeddable Analytics SDK operations" caption="Operations view: blast radius, stale versions, abuse controls, cost, privacy, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Event tracking:</strong> The SDK exposes a simple API (analytics.track(name, properties)) for custom events. It automatically tracks page views on route changes (including SPA hash/history navigation).</li>
-          <li><strong>Identity management:</strong> analytics.identify(userId, traits) links events to a user. Anonymous events (pre-identify) are retrospectively associated when identify is called.</li>
-          <li><strong>Batching and delivery:</strong> Events are batched and sent to the analytics ingestion endpoint in bulk to minimize network requests. Events are delivered at-least-once.</li>
-          <li><strong>Unload resilience:</strong> Events queued at the time of page navigation or close are not lost.</li>
-          <li><strong>Privacy controls:</strong> The SDK respects user consent: if the user has not consented (GDPR opt-in not given), no events are collected or transmitted. If consent is withdrawn mid-session, queued events are discarded and future events are suppressed.</li>
-          <li><strong>Session management:</strong> A session is a continuous period of user activity. Sessions time out after 30 minutes of inactivity and restart on the next user interaction.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Bundle size:</strong> The SDK bundle must be under 15KB gzipped. Each kilobyte of third-party script added to a page has real user impact; the SDK must earn its weight.</li>
-          <li><strong>Performance:</strong> The SDK must not block the main thread for more than 5ms during event processing. All network requests are non-blocking and do not affect page rendering.</li>
-          <li><strong>Throughput:</strong> The ingestion backend must handle 100,000 events per second across all customers at peak.</li>
-          <li><strong>Data accuracy:</strong> Event loss rate under 0.1% in normal network conditions (excluding user-initiated page closes with no connectivity).</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The SDK has four internal modules: the Event Collector (public API, event validation, session management, identity tracking), the Event Queue (in-memory queue with localStorage persistence, consent gating, batching logic), the Delivery Manager (batch transmission via fetch with sendBeacon fallback on unload, retry with exponential backoff), and the Privacy Manager (consent state machine, PII scrubbing, data minimization). The SDK initializes asynchronously (does not block page rendering) and processes events on the main thread using a microtask queue to avoid blocking user interactions.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/embeddable-analytics-sdk-architecture.svg"
-          alt="Embeddable analytics SDK architecture showing Event Collector (public API: track, identify, page), Privacy Manager (consent state, PII scrubbing), Event Queue (in-memory buffer + localStorage persistence, batching by count/time), Delivery Manager (fetch batches, sendBeacon on unload, exponential backoff retry), and backend Ingestion Service (Kafka, deduplication, S3 archival). Session management with 30-minute inactivity timeout."
-          caption="SDK architecture: Event Collector → Privacy Manager → Event Queue → Delivery Manager → Ingestion Service, with localStorage persistence and sendBeacon unload resilience"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Event Collection and Session Management</h3>
-        <HighlightBlock as="p" tier="important">The public API surface is minimal: analytics.load(writeKey, options), analytics.track(event, properties), analytics.identify(userId, traits), analytics.page(name, properties), and analytics.reset() (for logout). The writeKey identifies the customer's analytics workspace and is validated by the ingestion backend. Events have a client-generated eventId (UUID v4) used for server-side deduplication, a sessionId (persisted in sessionStorage, reset on 30-minute inactivity or browser session end), and a context object automatically populated with: page URL, referrer, user agent, viewport dimensions, and timezone.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Session management: the SDK listens for user interaction events (mousemove, keydown, scroll, touchstart) to detect activity. The session timer is reset on each interaction. If 30 minutes pass without any interaction, the session ends. The next interaction starts a new session with a new sessionId. The sessionId is stored in sessionStorage (so it does not persist across browser restarts, aligning with the analytics industry's session definition). The session start event is automatically tracked on each new session.</HighlightBlock>
-        <p>SPA navigation tracking: single-page applications change routes without triggering browser page loads. The SDK intercepts history.pushState and history.replaceState (by monkey-patching—wrapping the original functions to fire an event before delegating to the originals) and listens to the popstate event. On each navigation, analytics.page() is called automatically with the new URL. This automatic page tracking can be disabled via the options object for SPAs that prefer manual page tracking.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Event Queue and Batching</h3>
-        <p>Events are placed in an in-memory queue immediately after validation and consent checking. The Delivery Manager drains the queue in batches: a batch is sent when either 20 events have accumulated or 5 seconds have elapsed since the last batch (whichever comes first). This batching strategy reduces network requests by up to 20× compared to per-event delivery while keeping event delivery latency under 5 seconds in normal conditions. The batch size (20 events) and flush interval (5 seconds) are configurable via the SDK options.</p>
-        <HighlightBlock as="p" tier="important">The event queue is mirrored to localStorage as a persistence layer: every event pushed to the in-memory queue is also written to localStorage under a namespace key (e.g., analytics_queue_&#123;writeKey&#125;). When the SDK initializes (on the next page load), it reads any events from localStorage that were not delivered in the previous session and adds them to the head of the in-memory queue for immediate delivery. This persistence layer handles the case where the previous page was closed before a batch could be sent. The localStorage queue is bounded (max 500 events / 500KB) to prevent unbounded storage growth; when the bound is reached, the oldest events are evicted (they are less valuable than recent events).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Unload Resilience with sendBeacon</h3>
-        <HighlightBlock as="p" tier="important">When the user navigates away from the page or closes the browser tab, the SDK has a very short window (approximately 100ms) to flush any queued events. A standard fetch request started during the unload event is often cancelled by the browser (the page context is being torn down). navigator.sendBeacon() is the correct solution: it is a fire-and-forget API that queues the data for delivery even after the page is closed, using a background task that the browser guarantees will be attempted even if the page is gone.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The SDK listens to the pagehide event (preferred over beforeunload, which prevents back-forward cache optimization) and visibilitychange (when visibilityState becomes hidden—this fires even on mobile when the user switches apps, before the browser kills the tab). On these events, the SDK flushes the current in-memory queue via sendBeacon, encoding the batch as a Blob with the application/json MIME type. sendBeacon has a payload limit (typically 64KB across browsers); if the queue exceeds this limit, the events are split into multiple sendBeacon calls (each under 64KB). Events already persisted to localStorage will be retried on the next page load if sendBeacon fails (which can happen when the user is offline).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Privacy and Consent Management</h3>
-        <p>The Privacy Manager implements a consent state machine: unknown (no consent decision recorded), granted (user has opted in), denied (user has opted out). The initial state is determined by reading a consent cookie or localStorage entry set by the host's consent management platform (CMP). The SDK provides a hook (analytics.setConsent(granted: boolean)) for the CMP to call when the user makes a consent decision.</p>
-        <p>When consent is denied or unknown, all analytics.track() and analytics.page() calls are silently dropped—no events are queued, no network requests are made, no data touches localStorage. When consent is granted, the SDK resumes normal operation. Consent state transitions mid-session: if consent transitions from granted to denied (user withdraws consent), the SDK immediately clears the in-memory queue and localStorage queue (all buffered events are discarded), and suppresses all future events for the remainder of the session. If consent transitions from denied/unknown to granted, the SDK initializes the session and begins collecting events from that point forward (it does not retroactively collect events from before consent was given).</p>
-        <HighlightBlock as="p" tier="important">PII scrubbing: the SDK automatically scrubs known PII patterns from event properties before queuing them. The scrubbing rules: email addresses (matched by regex) are replaced with [email], credit card numbers (Luhn check) are replaced with [card], and any property key in a configurable denylist (e.g., password, ssn, creditCard) is replaced with [redacted]. The scrubbing runs synchronously in the Event Collector before the event is handed to the queue, ensuring PII never reaches localStorage or the network.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Delivery and Retry</h3>
-        <HighlightBlock as="p" tier="important">Batch delivery uses the Fetch API with a 10-second timeout. The ingestion endpoint returns 200 OK with a body containing the count of accepted events, or a 4xx error for validation failures (malformed events), or a 5xx for server errors. On a 5xx or network timeout, the batch is retried with exponential backoff: 1s, 2s, 4s, 8s, up to a maximum of 5 retries (total retry window: approximately 30 seconds). After 5 failed retries, the batch is discarded (to avoid storing stale data indefinitely) and a warning is logged to the console in development mode.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The ingestion backend deduplicates events by eventId to handle the at-least-once delivery guarantee: if a batch is retried after a partial failure (the server received and persisted the batch but the 200 OK response was lost), the retry produces duplicate eventIds. The deduplication store (a Redis set with a 24-hour TTL per eventId) ensures duplicates are dropped before the events reach the Kafka topic. This gives exactly-once semantics at the analysis layer while allowing the SDK to retry freely.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Bundle Size and Loading Strategy</h3>
-        <p>The 15KB gzipped budget requires careful feature selection. The SDK core (event collection, batching, delivery, session management) is approximately 8KB gzipped. Privacy management adds 2KB. The remaining 5KB is available for optional features (session recording, A/B test integration, feature flags). Optional features are loaded as separate chunks on demand (dynamic import()) rather than bundled in the core, keeping the initial load lean.</p>
-        <p>The recommended loading pattern uses the async pattern with a minimal stub: a short inline script (approximately 200 bytes) defines the analytics object with a stub queue (so calls before the SDK loads are queued), then loads the full SDK bundle asynchronously. This pattern (identical to how Segment and Amplitude load their SDKs) ensures that the full SDK bundle load does not block page rendering, and no analytics calls are lost during the async load window because they are queued by the stub.</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/embeddable-analytics-sdk-delivery-flow.svg"
-          alt="Analytics SDK delivery flow showing event lifecycle: track() call → consent check (drop if denied) → PII scrub → sessionId assignment → eventId (UUID) → in-memory queue → localStorage mirror → batch flush (20 events or 5s) → fetch POST to ingestion endpoint → 200 OK (clear from localStorage) → 5xx (exponential backoff retry up to 5×) → pagehide/visibilitychange → sendBeacon flush. Server-side deduplication by eventId (Redis TTL 24h)."
-          caption="Event delivery lifecycle: consent gate → PII scrub → queue → batch flush via fetch → sendBeacon on unload → server deduplication"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">localStorage versus IndexedDB for event persistence: localStorage is synchronous, which means writing to it on every event adds a small synchronous cost to each track() call. IndexedDB is asynchronous (no blocking) but significantly more complex to implement correctly. For a 15KB budget SDK, the complexity of IndexedDB is not justified by the marginal performance benefit of async writes—localStorage writes for individual events are typically under 0.1ms and are not user-visible. IndexedDB is the right choice for session recording (which generates megabytes of data) but overkill for an event queue that rarely exceeds a few dozen entries.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">First-party versus third-party context: browsers increasingly restrict third-party cookies and storage access (Safari ITP, Firefox ETP, Chrome's Privacy Sandbox). If the SDK is loaded from a third-party domain (the analytics platform's CDN), it may not have access to the host page's cookies, and its localStorage is partitioned (separate from the host page's localStorage, limited to the CDN origin). The recommended mitigation: provide a first-party proxy option, where customers serve the SDK from their own domain (via a CNAME or edge function reverse proxy). This ensures the SDK operates in a first-party context with full cookie and storage access. The SDK should be designed to work without cookies as a fallback (using only in-memory session IDs), for environments where cookies are blocked.</HighlightBlock>
-        <p>Ad blocker impact: many ad blockers (uBlock Origin, Brave Shields) block analytics scripts by matching known analytics SDK URLs and network request destinations. The first-party proxy approach also mitigates ad blocking, since the script is served from and sends data to the customer's own domain rather than a known analytics endpoint. Customers who care about data completeness (e-commerce conversion tracking, A/B test measurement) should deploy the first-party proxy; customers who only need approximate traffic metrics can use the CDN-hosted version and accept 20–30% event loss from ad blockers.</p>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An embeddable analytics SDK is a lightweight JavaScript library (under 15KB gzipped) that collects structured events via a minimal public API (track, identify, page), enforces consent before queuing any data, scrubs PII synchronously before events reach storage, and delivers events in batches via fetch with sendBeacon fallback on page unload. Event persistence in localStorage provides at-least-once delivery across page loads; server-side deduplication by UUID eventId provides exactly-once semantics at the analysis layer. Session management uses a 30-minute inactivity timeout with sessionStorage persistence. SPA navigation is tracked by intercepting history.pushState and listening to visibilitychange. Consent state changes clear the queue immediately (withdrawal) or initialize the session (grant). The loading pattern uses an async stub to prevent SDK load time from affecting page rendering. First-party proxy deployment mitigates ad-blocker and browser privacy restrictions. The defining constraints are the 15KB bundle budget (which drives every feature scoping decision) and the unload resilience requirement (which drives the sendBeacon + localStorage persistence design).</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

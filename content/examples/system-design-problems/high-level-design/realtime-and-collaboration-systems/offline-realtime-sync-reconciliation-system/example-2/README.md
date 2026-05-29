@@ -1,1 +1,5 @@
-# Design offline + realtime sync reconciliation system — Example 2
+# Offline Realtime Sync Reconciliation System - Example 2
+
+Concrete real-time collaboration production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

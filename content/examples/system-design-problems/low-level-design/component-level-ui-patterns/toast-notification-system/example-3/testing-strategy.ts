@@ -1,67 +1,90 @@
-/**
- * Toast — Staff-Level Performance Benchmarking.
- *
- * Staff differentiator: Performance benchmarks for toast creation, animation
- * frame tracking, and memory leak detection during rapid toast cycles.
- */
-
-/**
- * Benchmarks toast creation and rendering performance.
- * Measures time from toast creation to first paint.
- */
-export async function benchmarkToastCreation(
-  createToast: (message: string) => string,
-  dismissToast: (id: string) => void,
-  count: number = 100,
-): Promise<{ avgMs: number; maxMs: number; minMs: number; p95Ms: number }> {
-  const times: number[] = [];
-
-  for (let i = 0; i < count; i++) {
-    const start = performance.now();
-    const id = createToast(`Toast ${i}`);
-    // Wait for next frame (first paint)
-    await new Promise((r) => requestAnimationFrame(r));
-    const end = performance.now();
-    times.push(end - start);
-    dismissToast(id);
-  }
-
-  times.sort((a, b) => a - b);
-  return {
-    avgMs: times.reduce((a, b) => a + b, 0) / times.length,
-    maxMs: times[times.length - 1],
-    minMs: times[0],
-    p95Ms: times[Math.floor(times.length * 0.95)],
+export type toastNotificationSystemRuntimeState = {
+  topic: "toast-notification-system";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
   };
+};
+
+export type toastNotificationSystemRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Detects memory leaks during rapid toast creation/dismissal cycles.
- * Uses Performance.memory API (Chrome only) or heap snapshot comparison.
- */
-export async function detectToastMemoryLeaks(
-  createToast: (message: string) => string,
-  dismissToast: (id: string) => void,
-  cycles: number = 1000,
-): Promise<{ leaked: boolean; beforeBytes: number; afterBytes: number }> {
-  // Get baseline memory
-  const before = (performance as any).memory?.usedJSHeapSize ?? 0;
+export function planToastNotificationSystemRecovery(
+  state: toastNotificationSystemRuntimeState,
+  nowMs: number,
+): toastNotificationSystemRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: toastNotificationSystemRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  // Create and dismiss many toasts
-  for (let i = 0; i < cycles; i++) {
-    const id = createToast(`Toast ${i}`);
-    dismissToast(id);
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  // Wait for garbage collection
-  await new Promise((r) => setTimeout(r, 100));
-  if ((globalThis as any).gc) (globalThis as any).gc();
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
 
-  // Get post-cycle memory
-  const after = (performance as any).memory?.usedJSHeapSize ?? 0;
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  // Consider leaked if memory grew by more than 10%
-  const leaked = after > before * 1.1 && after - before > 1024 * 1024; // > 1MB growth
+export function runToastNotificationSystemEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planToastNotificationSystemRecovery(
+    {
+      topic: "toast-notification-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
 
-  return { leaked, beforeBytes: before, afterBytes: after };
+  const failure = planToastNotificationSystemRecovery(
+    {
+      topic: "toast-notification-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Toast Notification System",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

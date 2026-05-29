@@ -72,7 +72,7 @@
 
   <!-- Error Classification and Retry Decision -->
   <g>
-    <text x="100" y="290" font-size="14" font-weight="bold" fill="#1a1a1a">Error Types & Retry Decision</text>
+    <text x="100" y="290" font-size="14" font-weight="bold" fill="#1a1a1a">Error Types &amp; Retry Decision</text>
 
     <!-- Retryable Errors -->
     <rect x="50" y="320" width="280" height="140" fill="#dcfce7" stroke="#10b981" stroke-width="2" rx="4"/>

@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   category: "high-level-design",
   subcategory: "core-product-systems",
   slug: "social-media-stories-reels-feature",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-10",
+  wordCount: 6200,
+  readingTime: 38,
+  lastUpdated: "2026-05-20",
   tags: ["hld", "stories", "reels", "short-video", "CDN", "pre-fetching", "HLS"],
   relatedTopics: ["frontend-for-a-social-media-news-feed", "music-audio-streaming-frontend"],
 };
@@ -24,90 +24,379 @@ export default function SocialMediaStoriesReelsArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Stories (24-hour ephemeral content) and Reels (short-form video, typically 15–90 seconds, non-expiring) share a common UX paradigm: sequential, full-screen viewing with swipe navigation. The user experience expectation—that swiping to the next story or reel triggers instant playback—drives the core technical requirement: content must be pre-fetched and buffered before the user navigates to it. A reel that requires two seconds to start playing after a swipe is an experience failure; the entire format is designed for instant, continuous consumption.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The distinction between Stories and Reels has technical implications: stories expire after 24 hours (requiring expiration logic, cleanup pipelines, and viewer tracking that gates access before expiry), while Reels are permanent content in a ranked feed (requiring ranking, recommendation, and engagement analytics at news feed scale). Both formats require the same media pipeline (upload, transcoding, CDN distribution) and the same playback pipeline (HLS streaming, pre-fetching, pause-on-background), but differ in their discovery and lifecycle management systems.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> Maximum story/reel duration: 60 seconds for stories, 90 seconds for reels. Input formats: any mobile video format (H.264 MP4, HEVC). Output: HLS segments in multiple quality levels (480p, 720p, 1080p). Stories expire 24 hours after creation. Reels are ranked and surfaced in a dedicated tab. Viewer tracking records who has viewed each story (visible to the creator). The frontend handles both the stories carousel (horizontal swipe within a user's story collection) and the reels feed (vertical swipe between different creators' reels).</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="crucial">
+          Stories and reels are full-screen short-media experiences optimized for continuous consumption. Stories are
+          usually ephemeral, follower-oriented, and viewer-list aware. Reels are usually persistent, recommendation
+          driven, and engagement-ranked. Both require fast upload processing, adaptive media delivery, aggressive
+          prefetching, autoplay control, telemetry, moderation, and lifecycle management.
+        </HighlightBlock>
+        <p>
+          Assume short videos up to 60 seconds for stories and 90 seconds for reels, mobile uploads in multiple source
+          formats, HLS or DASH outputs at several qualities, CDN delivery, story expiry after 24 hours, and a vertical
+          reels feed ranked by watch behavior. The product target is swipe-to-next playback within roughly 200
+          milliseconds and first playback within a few hundred milliseconds when the viewer opens.
+        </p>
+        <p>
+          Strong interview answers distinguish the creation path from the consumption path. Creation is an eventually
+          consistent media-processing workflow. Consumption is a low-latency playback and prefetch workflow. Engagement
+          telemetry feeds ranking, creator analytics, moderation, ads, and notification systems.
+        </p>
+        <p>
+          A principal-level design also includes safety, privacy, and creator trust. Stories have viewer lists, expiry,
+          screenshot or share policies, reply controls, blocked-user rules, and region-specific compliance. Reels have
+          moderation, copyright, ads, recommendation feedback, and creator analytics. The frontend must reflect these
+          policies consistently even when media processing, ranking, or telemetry pipelines are eventually consistent.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Creation:</strong> Record video in-app or upload from camera roll. Apply filters, add text overlays, music tracks, and stickers. Preview before posting.</li>
-          <li><strong>Stories carousel:</strong> Horizontal strip at the top of the feed showing followed users' story avatars. Tapping opens the full-screen story viewer, cycling through all of a user's stories before auto-advancing to the next followed user's stories.</li>
-          <li><strong>Reels feed:</strong> Vertical-swipe feed of algorithmically ranked short videos. Autoplay when visible, pause when scrolled away.</li>
-          <li><strong>Viewer tracking (stories):</strong> Track who viewed each story. Creator can see the viewer list. Viewers are not notified that the creator can see them. Viewer data expires with the story.</li>
-          <li><strong>Story expiration:</strong> Stories expire 24 hours after creation. The story is removed from all carousels and the creator's story archive is updated.</li>
-          <li><strong>Engagement:</strong> Reactions (emoji reactions to stories), replies (DM to creator), shares, saves. Like and comment on reels.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Playback start time:</strong> First frame of a story/reel visible within 300ms of the user opening the viewer. (Pre-fetching makes this possible.)</li>
-          <li><strong>Swipe-to-next latency:</strong> The next story/reel begins playing within 200ms of the swipe gesture completing.</li>
-          <li><strong>Upload processing time:</strong> User's story is available to followers within 30 seconds of creation.</li>
-          <li><strong>Scale:</strong> Instagram-class: 500 million stories viewed per day, 1 billion reels plays per day.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Media Processing Pipeline</h3>
+        <p>
+          Users upload raw media directly to object storage through signed upload URLs. A processing pipeline validates
+          the file, extracts metadata, transcodes into streaming renditions, generates thumbnails, runs moderation, and
+          publishes a story or reel record when enough outputs are ready. The UI tracks states such as uploading,
+          processing, available, failed, removed, and expired.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Prefetch and Playback</h3>
+        <p>
+          Instant swipe playback is only possible when the next media item has already fetched a manifest and initial
+          segments. The client keeps a small prefetch window ahead of the current item, uses lower quality for
+          speculative startup bytes, and upgrades quality after playback begins. Data saver, battery, network type, and
+          memory pressure should reduce prefetch depth.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Lifecycle and Expiry</h3>
+        <p>
+          Stories expire from follower-visible surfaces after a fixed duration, while creators may retain archive access
+          for a longer period. Expiry should remove stories from feeds quickly without requiring massive synchronous
+          CDN invalidation. Segment URLs, feed caches, and viewer data should have TTLs that match lifecycle policy.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Engagement and Ranking</h3>
+        <p>
+          Reels ranking uses watch-through rate, replays, skips, likes, shares, comments, follows, and negative feedback.
+          Story analytics uses impressions, unique viewers, completion, replies, reactions, and exits. Telemetry must be
+          deduplicated and attributed to a request or ranking context so downstream models can learn correctly.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture has three layers. The creation pipeline: mobile app captures video → uploads raw video to an S3 upload bucket → triggers a transcoding pipeline (MediaConvert or FFmpeg workers) → produces HLS outputs at multiple quality levels → distributes via CDN → updates the story/reel record as available. The delivery layer: a Story API returns the ordered list of stories for a user's feed with CDN URLs for each story's HLS manifest; the client pre-fetches the HLS manifests and first segments of upcoming stories before the user reaches them. The interaction layer: viewer tracking (write-intensive during viral events), reaction and comment processing, and engagement analytics aggregation.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/social-media-stories-reels-feature-architecture.svg"
-          alt="Stories/Reels architecture showing creation pipeline (upload → transcoding → HLS output → CDN), story carousel with pre-fetching (HLS manifest + first 3 segments of next 2 stories always buffered), vertical reels feed with IntersectionObserver-based autoplay, viewer tracking write path (Redis incr + async DB persist), story expiration pipeline (24-hour TTL cleanup), and reels ranking service."
-          caption="Stories/Reels architecture: upload pipeline, HLS CDN delivery, carousel pre-fetching, viewer tracking, and reels ranking feed"
+          alt="Stories and reels architecture showing upload, transcoding, CDN, story feed API, reels ranking API, prefetch, viewer tracking, engagement logging, moderation, and expiration"
+          caption="Architecture: upload and transcoding publish playable media, while feed APIs, prefetch, telemetry, moderation, and expiry support consumption at scale."
         />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Upload and Transcoding Pipeline</h3>
-        <p>Raw video from the mobile app is uploaded directly to an S3 upload bucket using pre-signed URLs (same pattern as the large file upload system, though story videos are short enough—under 60 seconds—that multipart upload is rarely needed; a simple PUT to a pre-signed URL suffices). The upload triggers an S3 event notification that queues a transcoding job. The transcoding pipeline produces: HLS segments at 480p, 720p, and 1080p (each quality level producing 2-second segments), a thumbnail image (first frame or a keyframe at 1 second), and a preview GIF (a 5-frame GIF for use in thumbnails that auto-animate in the carousel). Transcoding time target: under 20 seconds for a 60-second input video.</p>
-        <HighlightBlock as="p" tier="important">The story record in the database transitions through states: uploading → processing → available. The mobile app polls the Story API for the story's status after upload; when available, it shows the story in the user's own profile and broadcasts to followers (via their story feed cache update). The polling interval is 2 seconds for the first 30 seconds, then backs off to 5 seconds. Alternatively, a WebSocket push notification can deliver the "story available" event to the creator's app, eliminating polling.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Content moderation runs concurrently with transcoding: the video is analyzed by a computer vision model (detecting NSFW content, hate symbols, violence) and flagged for human review if the model's confidence score exceeds a threshold. Videos that are auto-removed (high-confidence violations) are marked as removed before becoming available; the creator is notified. Videos pending review are made available after transcoding (to minimize creator wait time) but are proactively moderated within 2–4 hours of posting if flagged.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pre-fetching Strategy for Instant Playback</h3>
-        <p>The story/reel viewer pre-fetches content for upcoming items before the user swipes to them. The pre-fetching heuristic: always have the HLS manifest and the first 3 segments (6 seconds of video at 480p) of the next 2 stories/reels buffered. When the user is viewing story N, story N+1 and N+2 are being fetched in the background. When the user swipes to N+1, playback begins immediately from the pre-buffered data; the player simultaneously fetches segments N+1[4..] (the remaining segments of the current story) and begins pre-buffering N+3.</p>
-        <HighlightBlock as="p" tier="important">Pre-fetching uses the browser's fetch() API with cache: 'force-cache' for segments that are likely to be needed (next 2 items) and cache: 'no-store' for items further ahead (pre-fetching items 5+ ahead wastes bandwidth if the user swipes back or exits). The browser's HTTP cache holds pre-fetched segments; when the player requests them, they are served from cache with negligible latency. Service Workers can be used for more aggressive pre-fetching control, but the browser's HTTP cache is sufficient for this pre-fetch depth.</HighlightBlock>
-        <p>Quality selection for pre-fetching: pre-fetch at the lower quality level (480p) to minimize bandwidth consumption, then upgrade to higher quality when the item is actually playing. The 480p segments serve as the instant-start content; the 720p or 1080p segments replace them as the player buffers further ahead. This matches the observed behavior of Instagram Reels: first frame appears quickly at lower quality, then visibly sharpens within the first second of playback.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Story Viewer State and Expiration</h3>
-        <HighlightBlock as="p" tier="important">Story viewer state tracks which users have viewed each story. The data model: a view event has (storyId, viewerId, viewedAt). For popular stories (millions of views), writing a view event per view requires a write-optimized path. The viewer tracking write path: view events are written to a Redis sorted set (keyed by storyId, member = viewerId, score = viewedAt timestamp) for fast read access (creator queries viewer list sorted by time) and simultaneously batched and written to a database for durability. The Redis sorted set enables the creator to query recent viewers (ZREVRANGEBYSCORE with a LIMIT) without scanning the entire viewer list.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Story expiration is implemented as a two-phase cleanup. Phase 1 (at the 24-hour mark): a scheduled job marks the story as expired in the database and removes it from all follower story feed caches. Phase 2 (7 days later): a cleanup job deletes the story's CDN-cached HLS segments and thumbnails, and deletes the viewer tracking data. The two-phase approach allows a grace period for creator archive access (the creator can see their own expired stories in their profile archive for 7 days before permanent deletion), while immediately preventing the story from appearing in followers' feeds. CDN cache invalidation at expiration uses Cloudfront invalidation paths or a CDN-level TTL (story segment URLs include a short TTL that causes CDN caches to expire after 25 hours, slightly after the story expires).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Reels Ranking and Feed</h3>
-        <HighlightBlock as="p" tier="important">The Reels feed is algorithmically ranked: each user sees a personalized sequence of short videos based on their engagement history (which reels they watched fully, liked, shared, or commented on), the content's engagement rate (likes, watch-through rate across all viewers), and the recency of the content. The ranking model runs server-side and produces a ranked list of reelIds for each user. The Reels API returns pages of ranked reelIds with their CDN URLs; the client pre-fetches content as described above.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Watch-through rate is a particularly important engagement signal: a reel watched to completion (or multiple times) indicates higher quality than one skipped after 1 second. The client reports watch events: (reelId, userId, watchDurationMs, percentageWatched). This telemetry drives the ranking model. Watch events are sent via sendBeacon() when the user swipes away from a reel, ensuring the event is delivered even if the user closes the app immediately after swipe. Partial watches (under 50% of duration) count less in the engagement signal than full watches.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">HLS Playback and Video Player Architecture</h3>
-        <p>HLS (HTTP Live Streaming) is the universal streaming format for mobile video. The HLS manifest (a .m3u8 file) lists the available quality level manifests; each quality-level manifest lists the individual segment URLs (.ts files, typically 2–6 seconds each). The browser's native video element supports HLS on Safari (iOS and macOS) natively. Chrome and other browsers require hls.js, a JavaScript library that implements the HLS client using MSE. The video player component abstracts this: on Safari, it sets video.src to the HLS manifest URL; on Chrome, it initializes hls.js and attaches it to the video element.</p>
-        <p>Autoplay behavior in the stories carousel: the current story autoplays; tapping pauses; holding pauses (for the "hold to pause" gesture). In the reels feed, the reel autoplays when it enters the viewport (IntersectionObserver threshold: 0.5) and pauses when it exits. Only one video plays at a time: entering a new reel's viewport calls pause() on the previous reel's video element before calling play() on the new one. Muted autoplay is allowed by all browsers; unmuted autoplay requires user interaction (the user tapping an unmute button on the current reel). The muted state is persisted in localStorage so a user who unmuted once does not need to unmute on every reel.</p>
-      </section>
-
-      <section>
+        <p>
+          Creation begins with the client requesting an upload session. The media uploads directly to object storage,
+          then a processing job validates duration and codec, creates streaming segments, thumbnails, previews, and
+          metadata, and starts moderation. The media record becomes available when minimum playable renditions and
+          required safety checks are complete. Failure states must be explicit because upload and transcoding can fail
+          after the user leaves the creation screen.
+        </p>
+        <p>
+          Consumption begins with either a story tray API or a reels feed API. The story tray returns followed creators
+          with active stories ordered by recency and viewed state. The reels API returns ranked reel pages with media
+          URLs, ranking metadata, ads or sponsored placements, and impression tokens. The client opens the current item,
+          prefetches the next items, tracks watch progress, and sends engagement events when the user exits or swipes.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/core-product-systems/social-media-stories-reels-feature-workflow.svg"
+          alt="Stories and reels workflow showing upload, processing, availability, story tray fetch, reel ranking fetch, playback, prefetch, watch telemetry, view deduplication, and expiry"
+          caption="Workflow: upload is asynchronous, playback is prefetch-driven, and engagement events drive viewer lists, analytics, and ranking feedback."
+        />
+        <p>
+          Viewer tracking for stories is write-heavy. A unique view should be recorded once per viewer and story, then
+          surfaced to the creator in reverse chronological order. The hot path can write to Redis or another
+          write-optimized store for immediate viewer lists, while durable storage receives batched events. A viral story
+          should not overload the primary relational database with one synchronous write per view.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/social-media-stories-reels-feature-prefetch.svg"
-          alt="Stories pre-fetch strategy showing viewer position at story N, active pre-fetch of N+1 (HLS manifest + first 3 segments at 480p), background pre-fetch of N+2 (manifest only), quality upgrade path (480p instant → 720p buffered), viewer tracking Redis write path, and story expiration two-phase cleanup (24h mark → expiry + cache invalidation, 7d → segment deletion)"
-          caption="Stories pre-fetch: always buffer next 2 stories, quality upgrade during playback, Redis viewer tracking, and two-phase expiration cleanup"
+          alt="Stories prefetch diagram showing current item, next items, first segments, quality upgrade, data saver reduction, viewer tracking, and two-phase expiration"
+          caption="Prefetch and lifecycle: keep a small forward buffer, reduce speculation on constrained networks, and expire story visibility before deleting archive media."
         />
+        <p>
+          The client player abstracts native HLS support, JavaScript HLS playback where needed, muted autoplay policy,
+          pause-on-background, one-active-video ownership, and viewport-based play/pause. Reels use vertical
+          IntersectionObserver-style visibility to decide active playback. Stories use carousel position and timers,
+          with tap-to-advance, hold-to-pause, and reply/reaction overlays.
+        </p>
+        <p>
+          Ranking and playback should be loosely coupled. The feed API can return ranked candidates and impression
+          tokens, while the player owns buffering, autoplay, prefetch, and QoE reporting. If playback fails because a
+          rendition is missing or the CDN is slow, telemetry should flow back to ranking and media processing so the
+          system can demote broken items and alert owners.
+        </p>
+        <p>
+          Creator-side consistency matters as much as viewer playback. A creator should be able to see upload status,
+          processing progress, moderation state, reach, viewer counts, and monetization eligibility without receiving
+          contradictory information from eventually consistent systems. The creator dashboard can use delayed analytics,
+          but it should label freshness and distinguish estimated engagement from finalized metrics used for payouts
+          or recommendations.
+        </p>
+        <p>
+          Safety actions must propagate quickly through feeds and caches. If a story or reel is removed for policy,
+          blocked by a user, age-gated, or copyright-restricted in a region, the serving layer should stop returning it
+          even if CDN segments still exist. Feed eligibility should therefore be checked at manifest or feed response
+          time, not only when media was originally published.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">HLS segment duration: shorter segments (2 seconds) reduce time-to-first-frame (only 2 seconds of data needed to start) but increase the number of HTTP requests (a 60-second story requires 30 segment requests for one quality level). Longer segments (6 seconds) reduce request count but increase the time before the first frame can appear. The industry standard for short-form video is 2–4 second segments, which balances startup latency against request overhead. For very short content (10-second stories), a single segment is appropriate—the entire story is one HTTP request.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Story expiration consistency: when a story expires at exactly the 24-hour mark, followers in different time zones may see the story disappear at different times depending on their local story feed cache TTL. The story feed cache (Redis) has a short TTL (60 seconds); after expiration, the story is not returned in the feed API response. From the user's perspective, the story disappears "sometime around 24 hours"—the exact second of expiration is not visible to followers. Only the creator can see an exact expiration timer in their own story UI. This eventual consistency in the expiration experience is acceptable; the cost of precise real-time expiration (invalidating millions of cached feed entries simultaneously) outweighs the benefit.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Pre-fetching bandwidth cost: always pre-fetching the next 2 stories consumes bandwidth even for stories the user never views (if they exit the viewer before swiping twice). For users on limited mobile data, this pre-fetching can be wasteful. A "data saver" mode disables pre-fetching (loading each story on demand) at the cost of swipe latency. This mode is implemented by respecting the navigator.connection.saveData API (which browsers expose if the user has enabled "Data Saver" in their device settings) to automatically disable pre-fetching on metered connections.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Shorter media segments reduce startup latency and make prefetch more precise, but they increase request count
+          and CDN overhead. Longer segments reduce overhead but make instant playback harder. Short-form video usually
+          benefits from two-to-four-second segments and low-quality initial prefetch followed by adaptive upgrade.
+        </p>
+        <p>
+          Aggressive prefetch improves swipe latency but wastes bandwidth when users exit quickly. A production client
+          should tune prefetch depth by network quality, data saver, battery, device class, and observed user behavior.
+          On metered or constrained networks, loading the next item only may be preferable to prefetching several ahead.
+        </p>
+        <p>
+          Viewer counts and engagement metrics need deduplication and privacy controls. Exact viewer lists are useful
+          for stories but can be expensive and sensitive for viral content. Reels analytics can be aggregated more
+          heavily. The product should decide where exact per-viewer identity is required and where approximate counters
+          are sufficient.
+        </p>
+        <p>
+          Exact expiry at the same second for every follower is expensive because feed caches and CDN caches are
+          distributed. Eventual expiry within a small window is usually acceptable for consumer stories. Legal holds,
+          reports, and creator archives can require longer retention even after follower-visible expiry.
+        </p>
+        <p>
+          Client-side watch telemetry is easy to lose because users swipe, background, or close the app. Send events at
+          meaningful milestones and use reliable exit channels where available, but accept that analytics are eventually
+          consistent. Server-side CDN logs can supplement client telemetry but lack full UI context.
+        </p>
+        <p>
+          Reels and stories share media infrastructure, but their serving objectives differ. Stories prioritize social
+          graph recency and expiry; reels prioritize personalized discovery, ranking feedback, and repeated engagement.
+          Mixing the two into one feed service makes lifecycle and ranking rules harder to reason about.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Principal-level decision frame</h3>
+        <p>
+          The key decision is where to draw the boundary between shared media infrastructure and product-specific
+          lifecycle logic. Upload, transcoding, CDN, moderation, and playback can be shared. Story expiry, viewer lists,
+          privacy controls, and close-friends visibility should remain story-specific. Reels ranking, ad insertion,
+          watch-through optimization, and creator distribution should remain reels-specific. This split lets teams
+          reuse expensive infrastructure without creating one service that mixes incompatible product semantics.
+        </p>
+        <p>
+          The design should also state the cost policy for prefetch and media processing. Instant playback is valuable,
+          but every speculative segment is CDN spend and mobile data. High-resolution transcoding for content with tiny
+          expected reach may be wasteful. Mature systems can delay expensive renditions until demand justifies them,
+          prefetch conservatively on constrained devices, and expose metrics such as bytes prefetched per completed
+          watch, first-frame latency, and CDN cost per thousand plays.
+        </p>
+        <p>
+          Privacy and virality pull in opposite directions. Stories benefit from precise viewer lists and close-friends
+          rules, while reels benefit from broad distribution and ranking feedback. Reusing one analytics model for both
+          can leak more identity than needed or under-measure public content. Principal designs separate unique viewer
+          identity, aggregated watch metrics, creator analytics, and ranking features with different retention and
+          access rules.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A stories/reels feature is built on three technical foundations: a fast upload and transcoding pipeline (direct S3 upload → MediaConvert → HLS output in under 30 seconds), aggressive pre-fetching for instant swipe navigation (always pre-buffer HLS manifest + first 6 seconds at 480p for the next 2 items), and efficient engagement telemetry (watch-through rate via sendBeacon, viewer tracking via Redis sorted sets). Stories use a two-phase expiration (immediate feed removal at 24 hours, segment deletion at 31 days). Reels use an algorithmic ranking model fed by watch-through rate signals. HLS delivery abstracts over native Safari support and hls.js for Chrome. Autoplay is controlled by IntersectionObserver in the reels feed and by the carousel position in the stories viewer. The defining performance requirement is that swiping to the next story must trigger playback within 200ms—pre-fetching is the only technical approach that can meet this latency target on a mobile network.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Model media state explicitly. Uploading, processing, available, blocked, failed, expired, archived, and
+          deleted should be distinct states. The frontend can then show accurate progress and recover from partial
+          processing failures.
+        </p>
+        <p>
+          Keep the prefetch window small and adaptive. Fetch manifests and first segments for near-future items, not an
+          unbounded queue. Cancel prefetches when the user changes direction or exits. Use lower quality for speculative
+          startup and upgrade after the item becomes active.
+        </p>
+        <p>
+          Deduplicate views and engagement events. A user replaying the same story should not create unlimited unique
+          viewer entries, while repeated reel views may still matter for ranking. Store unique-view semantics separately
+          from watch-duration telemetry.
+        </p>
+        <p>
+          Separate safety and availability decisions. Some content can be blocked before publish, some can be published
+          while queued for review, and some can be downranked pending confidence. The UI should reflect removed or
+          processing states clearly to creators.
+        </p>
+        <p>
+          Instrument playback quality: first frame time, swipe-to-play time, startup failure, rebuffering, prefetch hit
+          rate, data saver behavior, watch-through, exits, upload processing latency, moderation latency, and expiry
+          cache lag.
+        </p>
+        <p>
+          Roll out media pipeline changes by format and cohort. New transcoders, codecs, segment durations, moderation
+          models, and CDN rules should be shadowed or limited before broad rollout because failures are expensive and
+          visible. Keep a fallback rendition strategy so older clients and weaker networks can still play content when
+          premium renditions fail or are delayed.
+        </p>
+        <p>
+          Keep lifecycle jobs idempotent and observable. Expiry, archive movement, deletion, moderation removal, and
+          analytics finalization may run in separate workers. Each should tolerate retries and expose progress so the
+          product can answer why a story is still visible, why a reel was removed, or why creator analytics are delayed.
+        </p>
+        <p>
+          Stories and reels require a safety propagation model. A media item can be uploaded, transcoded, ranked, cached, reported, taken down, restored, or region-restricted. Those state changes must propagate to feeds, profile trays, CDN URLs, notification surfaces, and analytics without leaving stale unsafe content visible. Principal-level designs should separate media availability, ranking eligibility, and moderation eligibility rather than treating publish as a single boolean.
+        </p>
+        <p>
+          Creator-side consistency matters as much as viewer-side latency. Creators need to see upload status, processing state, copyright or moderation decisions, reach metrics, and deletion state accurately. If a creator deletes a story, the system may not remove every cached impression instantly, but it should stop new distribution quickly and explain remaining propagation delay through state and audit events.
+        </p>
+        <p>
+          Ranking and distribution should be decoupled from media storage. A transcoded video may exist in storage but still be ineligible for distribution because moderation, copyright, privacy audience, or regional policy has not cleared. Conversely, a takedown should remove ranking eligibility immediately even if CDN cache purge takes time. Modeling these states separately prevents unsafe content from leaking through feed caches.
+        </p>
+        <p>
+          Analytics should separate impressions, qualified views, completions, replays, shares, and exits. Creator-facing metrics, ranking feedback, ads billing, and safety investigations all use these events differently. The client should emit idempotent session events and the backend should reconcile them with media eligibility and delivery state.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The biggest pitfall is designing only the upload pipeline. The product experience is mostly determined by
+          playback readiness, prefetch hit rate, and swipe latency. A beautifully processed video that starts two seconds
+          late still fails the feature.
+        </p>
+        <p>
+          Another pitfall is prefetching too aggressively. It can burn mobile data, battery, memory, and CDN budget.
+          The prefetch planner must adapt to device and network signals.
+        </p>
+        <p>
+          Viewer tracking can become a database hotspot for viral stories. Unique-view writes need deduplication,
+          batching, TTL-aware storage, and read paths optimized for creator-visible viewer lists.
+        </p>
+        <p>
+          Story expiry can be inconsistent if feed caches, CDN TTLs, archive policy, and viewer data TTLs are not
+          aligned. The design should state what disappears at 24 hours and what remains for archive, safety, or legal
+          purposes.
+        </p>
+        <p>
+          Finally, autoplay assumptions can break across browsers and platforms. Muted autoplay is broadly allowed;
+          unmuted autoplay generally requires user interaction. The client should persist user mute preference and
+          handle play promise failures.
+        </p>
+        <p>
+          Another pitfall is letting ranking, monetization, and safety share one opaque decision path. Reels may need
+          ads and ranking experiments, but safety removals and blocked-user constraints must override engagement goals.
+          Stories may need close-friends privacy and expiry guarantees. These constraints should be visible in logs and
+          enforcement order, not buried inside an unexplainable feed response.
+        </p>
+        <p>
+          Teams often over-focus on video delivery and under-focus on lifecycle jobs. Expiration, archive, music rights, safety review, metrics aggregation, ranking decay, and cache purge are all background workflows. If they are not observable and idempotent, old stories can reappear, counters can drift, or restricted media can keep circulating.
+        </p>
+        <p>
+          Another pitfall is mixing privacy audiences with ranking caches. Close-friends stories, blocked users, age-gated content, and regional restrictions must be enforced at every distribution layer. Cached trays and precomputed ranking lists need audience-aware keys or late filtering that cannot leak existence through counts or previews.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Social apps use stories for ephemeral follower updates, creator analytics, reactions, and direct replies. The
+          system emphasizes recency, privacy controls, and expiry.
+        </p>
+        <p>
+          Short-video products use reels-style feeds for discovery, advertising, creator growth, and recommendation
+          loops. Ranking quality and watch telemetry dominate product performance.
+        </p>
+        <p>
+          Commerce and marketplace apps use short videos for product demos, live-shopping clips, creator storefronts,
+          and shoppable stories. Availability, product linking, and moderation become additional constraints.
+        </p>
+        <p>
+          Enterprise and education products use short stories for announcements, training clips, and internal updates.
+          They often prioritize permissions, auditability, retention, and lower CDN cost over viral ranking.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you make swipe-to-next playback feel instant?
+        </h3>
+        <p>
+          Prefetch the next one or two items before the user swipes. Fetch the manifest and initial low-quality
+          segments, then upgrade quality after playback starts. Keep a small adaptive window based on network, data
+          saver, battery, and device memory. Track prefetch hit rate and swipe-to-play latency as first-class metrics.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How does the upload pipeline work?
+        </h3>
+        <p>
+          The client uploads directly to object storage using a signed URL. A processing job validates media, transcodes
+          streaming renditions, generates thumbnails, runs moderation, and publishes an available media record. The UI
+          polls or receives a push event for processing status and handles failed or removed states.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you store story viewer lists at viral scale?
+        </h3>
+        <p>
+          Use a write-optimized hot store with deduplication, such as a sorted set keyed by story identifier with viewer
+          and timestamp, then batch to durable storage. Reads for creator viewer lists can page recent viewers from the
+          hot store. TTLs should match story visibility and archive policy.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do stories and reels differ architecturally?
+        </h3>
+        <p>
+          They share upload, transcoding, CDN, playback, and telemetry infrastructure. Stories are social-graph,
+          recency, viewer-list, and expiry driven. Reels are persistent, recommendation-ranked, watch-through optimized,
+          and often monetized with ads. Keeping lifecycle and ranking rules separate avoids coupling conflicts.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you handle story expiration?
+        </h3>
+        <p>
+          At the visibility deadline, remove the story from follower-visible APIs and caches. Keep archive or moderation
+          data according to policy, then delete or age out media segments and viewer data later. CDN TTLs and signed
+          URLs should limit stale access without requiring massive synchronous invalidation.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          What metrics would you monitor?
+        </h3>
+        <p>
+          Monitor upload success, processing latency, moderation latency, first frame time, swipe-to-play latency,
+          prefetch hit rate, rebuffering, watch-through, skip rate, view dedupe rate, story expiry lag, CDN error rate,
+          and engagement event delivery rate.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.apple.com/streaming/" target="_blank" rel="noreferrer">
+              Apple Developer: HTTP Live Streaming
+            </a>
+            , HLS concepts and delivery.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement" target="_blank" rel="noreferrer">
+              MDN: HTMLMediaElement
+            </a>
+            , browser video playback behavior.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">
+              MDN: Intersection Observer API
+            </a>
+            , viewport-based playback activation.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon" target="_blank" rel="noreferrer">
+              MDN: Navigator sendBeacon
+            </a>
+            , reliable exit-time telemetry.
+          </li>
+          <li>
+            <a href="https://aws.amazon.com/mediaconvert/" target="_blank" rel="noreferrer">
+              AWS Elemental MediaConvert
+            </a>
+            , managed video transcoding pipeline reference.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

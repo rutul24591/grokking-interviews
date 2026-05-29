@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600">
   <!-- Title -->
   <text x="500" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
-    Snap-to-Grid & Alignment Guides System
+    Snap-to-Grid &amp; Alignment Guides System
   </text>
 
   <!-- Section 1: Grid Snapping -->

@@ -7,99 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-instagram-twitter-frontend",
-  title: "Design Instagram / Twitter Frontend",
-  description:
-    "Architecture for a social media frontend: feed rendering strategy (ISR + client hydration), media upload pipeline with presigned S3 URLs, infinite scroll with cursor-based pagination, story/reel playback with HLS adaptive streaming, real-time like/comment counts via WebSocket, optimistic UI for interactions, CDN image delivery with responsive srcsets, and client-side engagement tracking.",
+  title: "Design an Instagram/Twitter Frontend",
+  description: "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery.",
   category: "high-level-design",
   subcategory: "social-engagement",
   slug: "instagram-twitter-frontend",
-  wordCount: 5200,
-  readingTime: 32,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "social-media", "instagram", "twitter", "feed", "stories", "media-upload", "websocket", "cdn"],
-  relatedTopics: ["infinite-scrolling-feed", "notification-system-ui"],
+  wordCount: 3400,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "social", "feed", "graph", "moderation", "ranking"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design an Instagram/Twitter Frontend is a social-scale product system where the visible UI is only the last projection of graph state, ranking policy, media delivery, privacy rules, abuse controls, and user intent. A principal-ready design starts by separating durable social facts from derived surfaces.",
+  "Durable facts include posts, follows, blocks, reports, shares, reactions, preferences, and moderation decisions. Derived surfaces include feeds, counters, notification groups, recommendations, summaries, search snippets, and ranking features. Derived surfaces can lag or be rebuilt; privacy and safety decisions must propagate quickly.",
+  "The goal is to design a social timeline frontend so users see relevant, fresh, and safe social content without exposing private actors, losing user actions, or amplifying abuse. The design must address graph scale, hot users, projection lag, mobile constraints, ranking changes, and trust-and-safety intervention.",
+  "Social systems are adversarial. Engagement can be gamed, reports can be brigaded, spam can spread faster than review queues, and summaries can leak data that the main page hides. These are core architecture concerns, not policy details after launch.",
+  "A staff/principal answer should name ownership boundaries: product owns ranking and user controls, integrity owns abuse detection, platform owns graph and fanout primitives, media owns asset safety and delivery, and operations owns incidents, takedowns, and review tooling."
+];
+const concepts = [
+  "The first concept is graph-aware visibility. Every surface should call the same visibility policy for follow state, block state, private accounts, age restrictions, takedown state, regional policy, and viewer permissions. Inconsistency across feed, profile, notification, search, and share preview is a common privacy failure.",
+  "The second concept is projection architecture. post composer, timeline projection, and media service are optimized for different read patterns. The design should not force every UI to join raw social tables at request time.",
+  "The third concept is hybrid fanout. Fanout-on-write makes ordinary feed reads fast but struggles with hot accounts. Fanout-on-read is flexible for ranking but expensive for every viewer. Mature systems combine precomputed home timelines, hot-author handling, cache windows, and online ranking.",
+  "The fourth concept is stable pagination and dedupe. Feeds and notification lists should use opaque cursors tied to a ranking window or event sequence. Offset pagination fails when new content arrives, content is removed, or ranking changes mid-scroll.",
+  "The fifth concept is integrity-aware ranking. Ranking should not blindly optimize clicks or shares. It should incorporate spam scores, report velocity, account reputation, block feedback, freshness, diversity, and policy constraints.",
+  "The sixth concept is observability. Track fanout backlog, projection lag, ranking experiment health, duplicate rate, scroll restoration failures, moderation queue age, privacy invalidation delay, counter drift, and abuse escalation."
+];
+const architecture = [
+  "The architecture has five cooperating planes: post composer, timeline projection, media service, graph service, integrity service. The write plane records durable social facts and emits events. Projection workers build feed, profile, notification, counter, search, and analytics views. The read API serves surface-optimized projections. Integrity and moderation systems can remove or demote content quickly. The frontend renders stable cursors, pending actions, and recovery states.",
+  "Writes should be idempotent and policy-checked. Follow, like, share, report, mute, block, and post actions need actor authorization, target visibility, rate limit, abuse score, and durable event emission. If the client retries, the backend should converge on one logical action.",
+  "Projection workers should record source event sequence and policy version. This makes it possible to detect stale views and run fast invalidation when a block, takedown, private-account change, or legal removal occurs.",
+  "Read APIs should be purpose-built. A home feed API needs ranked windows and dedupe. A profile API needs ownership, pinned content, privacy, counters, and media summaries. A notification API needs grouping and read state. A moderation UI needs evidence, queue priority, audit, and reviewer-safe presentation.",
+  "The frontend should treat social actions as pending until acknowledged, but can use optimistic presentation for reversible low-risk actions. High-risk actions such as report submission, block changes, privacy changes, and account restriction need explicit confirmation and auditability.",
+  "Operationally, social systems need kill switches and throttles for sharing, recommendations, notification fanout, media autoplay, comment creation, and report intake. Viral failures happen faster than normal deployments can respond."
+];
+const tradeoffs = [
+  "Strong consistency for every counter and feed item is too expensive. Likes, follower counts, view counts, and notification grouping can be eventually consistent. Blocks, takedowns, private account visibility, and safety removals require fast invalidation and much stronger enforcement.",
+  "Personalized ranking improves engagement but reduces explainability and can amplify harmful content. Chronological ranking is simpler and predictable but often less relevant. A principal design supports ranking guardrails, user controls, experiment holdouts, and integrity scoring.",
+  "Fanout-on-write gives fast feed reads for ordinary accounts but creates write amplification for celebrities and viral posts. Fanout-on-read avoids massive writes but can increase read latency and backend load. Hybrid fanout is usually the defensible answer.",
+  "Grouping notifications reduces fatigue but can hide important context or leak private actor information. Group summaries must be recomputed or redacted after privacy changes, blocks, deleted accounts, and moderation actions.",
+  "Aggressive virality and sharing increase growth but also increase spam, fraud, harassment, and policy risk. Rate limits, reputation, link scanning, attribution validation, and circuit breakers are product architecture.",
+  "Moderation before distribution reduces harm but increases latency and false positives. Moderation after distribution improves speed but can allow rapid amplification. Risk-based gating by account reputation, media type, virality, and policy class is more nuanced."
+];
+const practices = [
+  "Centralize visibility policy and use it for every derived surface: feed, profile, search, notification, recommendation, share preview, email, push, and moderation queue.",
+  "Use opaque cursors and dedupe sets for feeds. Cursor state should include enough ranking-window context to avoid duplicates, gaps, and scroll jumps after refresh or new content insertion.",
+  "Track projection lag and invalidation latency as product SLOs. Privacy or safety invalidation should have a different urgency class from ordinary feed freshness.",
+  "Use idempotency keys for social actions and report submissions. Duplicate taps, mobile retries, and offline replay should not create duplicate follows, reports, shares, or notifications.",
+  "Build integrity and moderation tooling into the design. Reviewers need evidence, policy taxonomy, actor history, virality context, appeal state, and audit logs.",
+  "Plan for hot objects. Celebrity posts, viral shares, live events, controversial content, and spam waves need cache isolation, rate limits, backpressure, and sometimes manual controls.",
+  "Segment observability by surface, region, app version, ranking experiment, account class, and integrity bucket. Averages hide social failures because abuse and virality are highly skewed."
+];
+const pitfalls = [
+  "celebrity fanout is a scale failure that appears suddenly. The design should define hot-key handling, fanout backpressure, cache windows, and degraded behavior before traffic arrives.",
+  "privacy leak is usually caused by inconsistent policy enforcement across derived surfaces. Fixing the main UI is not enough if notifications, search, emails, or previews still expose restricted information.",
+  "ranking churn undermines user trust because social products feel personal. Users notice missing posts, duplicate cards, incorrect counters, and unexplained ranking shifts quickly.",
+  "unsafe media requires abuse-aware product design. Rate limits and classifiers help, but the system also needs support tooling, appeals, audit trails, and emergency controls.",
+  "Another pitfall is treating moderation as a back-office queue only. At scale, moderation changes feed eligibility, ranking, notification delivery, profile visibility, and search indexing.",
+  "Teams also underinvest in support reconstruction. When a user asks why they saw or did not see content, the system should expose ranking inputs, policy decisions, projection freshness, and moderation state at a safe level."
+];
+const useCases = [
+  "home timeline requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "profile timeline requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "short media viewer requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "During a viral event, the system may need to reduce fanout, demote suspicious shares, disable some notification types, or route content to review without taking the whole social surface offline.",
+  "During a privacy incident, the fastest path is not a UI patch. The system needs invalidation across projections, deletion from caches, search removal, notification redaction, and auditability.",
+  "During an experiment rollout, teams should compare engagement lift against integrity metrics, report rate, block rate, hide rate, diversity, and long-term retention rather than only clicks."
+];
+const questions = [
+  {
+    "question": "How would you design a social timeline frontend end to end?",
+    "answer": "I would separate durable social facts from derived projections. Writes go through policy, rate limits, idempotency, and event emission. Projection workers build feed, profile, notification, counter, search, and moderation views with source sequence and policy version. Read APIs serve surface-specific projections, and the frontend renders stable cursors, pending states, privacy-safe summaries, and recovery states. Integrity, moderation, observability, and kill switches are part of the core design."
+  },
+  {
+    "question": "Why this architecture over direct reads from source tables?",
+    "answer": "Direct reads are simpler but fail at social scale because every surface needs different ranking, grouping, dedupe, privacy, and freshness behavior. Projection APIs let each surface optimize reads while still enforcing shared visibility and invalidation policy. The cost is projection lag and operational complexity, which must be measured and reconciled."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are celebrity fanout, privacy leak, ranking churn, unsafe media, plus hot users, viral content, counter drift, notification storms, moderation backlog, and cache stampedes. Prevention requires hybrid fanout, ranked windows, idempotent actions, integrity scoring, projection-lag monitoring, and emergency throttles."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Most engagement surfaces are eventually consistent: feeds, counters, ranking order, grouped notifications, and analytics. Privacy, blocks, takedowns, account restrictions, and safety removals need fast invalidation and strong enforcement. The design should explicitly classify each state instead of claiming one consistency model for the whole product."
+  },
+  {
+    "question": "How do you handle abuse, privacy, rollback, cost, and observability?",
+    "answer": "Abuse is handled through rate limits, reputation, classifiers, graph anomaly detection, link scanning, and review workflows. Privacy is enforced through shared visibility policy and projection invalidation. Rollback uses ranking flags, fanout throttles, notification kill switches, and moderation overrides. Cost is controlled through hybrid fanout, caching, batch projections, and approximate counters. Observability tracks fanout backlog, projection lag, duplicate rate, report velocity, and invalidation latency."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would explain which parts need strong enforcement and which can be eventual. I would defend hybrid fanout because it balances read latency and write amplification. I would defend projection APIs because social surfaces need ranking and privacy semantics that raw tables cannot provide efficiently. I would also acknowledge the cost: projection lag, more operations, and the need for reconciliation tooling."
+  }
+];
+const references = [
+  {
+    "label": "Meta Engineering: TAO social graph storage",
+    "href": "https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/"
+  },
+  {
+    "label": "Twitter/X Engineering archive",
+    "href": "https://blog.x.com/engineering/en_us"
+  },
+  {
+    "label": "W3C ActivityPub recommendation",
+    "href": "https://www.w3.org/TR/activitypub/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST online safety and platform governance resources",
+    "href": "https://www.nist.gov/"
+  }
+];
 
 export default function InstagramTwitterFrontendArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Instagram and Twitter (now X) are canonical examples of content-heavy social platforms with fundamentally different rendering demands than e-commerce or SaaS products. The feed is the core surface: it is personalized per user (cannot be globally cached), refreshed frequently (new content every few minutes), and media-heavy (each post contains one or more images or videos). These three constraints force a specific rendering architecture: the page shell is statically served, but the feed itself is always fetched client-side because it is personalized and time-sensitive.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The second major challenge is media at scale. When a user with 10 million followers posts a photo, that photo must be accessible from CDN nodes worldwide within seconds, rendered at multiple resolutions (thumbnail, feed, fullscreen), and loaded with appropriate quality for the user's network conditions. The upload pipeline must handle images and videos, process them asynchronously (compression, format conversion, thumbnail generation), and make processed assets available via CDN before the post is visible to followers.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The third challenge is engagement state: likes, comments, bookmarks, and follows must reflect real-time counts and the current user's own interaction state (did I already like this post?). These are highly personalized and cannot be cached globally. They must be loaded with the feed content and updated live as other users interact.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Feed rendering, media upload pipeline, story/reel playback, real-time engagement counts, and the post composer. Not in scope: the ranking algorithm, ML-based content moderation, or advertising systems.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/instagram-twitter-frontend.svg" alt="Design an Instagram/Twitter Frontend architecture" caption="Architecture view: graph writes, projections, ranking, privacy, integrity, and surface-specific reads." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/instagram-twitter-frontend-flow.svg" alt="Design an Instagram/Twitter Frontend flow" caption="Flow view: user action, fanout or projection, ranking, notification, moderation, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/instagram-twitter-frontend-operations.svg" alt="Design an Instagram/Twitter Frontend operations" caption="Operations view: fanout backlog, projection lag, privacy invalidation, abuse signals, and moderation controls." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Feed:</strong> Paginated feed of posts from followed accounts and algorithmic recommendations. Each post shows media (image/video), caption, like/comment/share counts, and the current user's interaction state (liked, bookmarked). Feed is real-time: new posts appear without full page reload (either via pull-to-refresh or live push).</li>
-          <li><strong>Post creation:</strong> Upload photo or video, add caption, tag users, add location. Image upload via presigned S3 URL (direct browser-to-S3, no proxy through app server). Video upload with progress indicator. Post visible after media processing completes (async; user notified when live).</li>
-          <li><strong>Stories / Reels:</strong> Full-screen vertical media format with auto-advance. Stories expire after 24 hours. Reels use HLS adaptive bitrate streaming for variable network conditions. Progress bar per story segment.</li>
-          <li><strong>Real-time engagement:</strong> Like, comment, share, and bookmark. Like count updates in real time across all viewers of the same post. Optimistic UI: like animation plays immediately on tap, count increments locally, server confirms asynchronously.</li>
-          <li><strong>Notifications:</strong> In-app badge for new likes, comments, follows. Push notification for direct mentions and DMs. Notification panel with read/unread state.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Feed load time:</strong> First feed content visible within 1.5 seconds on 4G. Images lazy-loaded; above-fold images preloaded.</li>
-          <li><strong>Media upload throughput:</strong> 100MB video upload completes within 60 seconds on a 20 Mbps connection (no server-side proxy bottleneck).</li>
-          <li><strong>Engagement update latency:</strong> Like/comment counts reflect changes within 3 seconds of another user's interaction on the same post.</li>
-          <li><strong>CDN offload:</strong> &gt;95% of image and video requests served from CDN edge, not origin. Origin serves only cache misses and dynamic API responses.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The frontend is a React SPA with a static shell served from CDN. On load, the shell hydrates and immediately fetches the personalized feed from the Feed API. The Feed API returns cursor-paginated posts enriched with the current user's engagement state (liked, bookmarked) fetched from the Engagement Service. Media URLs in feed items point to CDN-hosted processed assets (multiple resolutions). The Post Composer uploads media directly to S3 via presigned URLs, then submits a post creation request with the S3 object key. A Media Processing Service (triggered by S3 event) converts, compresses, and generates thumbnails asynchronously, writing processed asset URLs back to the Post record. Real-time engagement counts are pushed via WebSocket from an Engagement Fan-out Service that consumes Kafka events from the Interaction Service.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/social-engagement/instagram-twitter-frontend.svg"
-          alt="Instagram/Twitter frontend architecture showing feed rendering flow (React SPA shell from CDN; GET /api/feed cursor=null → Feed Service → Engagement Service join → Redis feed:{userId} cache; cursor pagination: next_cursor in response; infinite scroll trigger at 80% scroll depth; above-fold images preload rel=preload; lazy load below fold), media upload pipeline (POST /api/upload/presign → S3 presigned URL; browser PUT direct to S3 100MB no proxy; S3 event → Media Processing Lambda: resize to 320/640/1080px WebP + AVIF; video → HLS segments; write processed URLs to posts DB; CDN cache-control: max-age=31536000 immutable), story and reel playback (HLS.js adaptive bitrate: start 360p → probe bandwidth → switch to 720p/1080p; prefetch next story segment; progress bar per segment TTL 24h; auto-advance 5s per story; Reels: vertical video loop; preload adjacent reels buffer), real-time engagement (WebSocket /ws/engagement; Interaction Service → Kafka interactions topic → Fan-out Service → Redis pub/sub post:{postId} → WebSocket server → all clients viewing post; optimistic: like animation immediate local count+1 → POST /api/like → 200 confirm or rollback; like count badge update within 3s), CDN image delivery (srcset: 320w 640w 1080w; sizes: 100vw md:50vw; loading=lazy except first 3 posts; blurhash placeholder while loading; AVIF with WebP fallback), post composer (caption rich text: @mention autocomplete users API; hashtag detection; location picker geolocation API; video upload: tus resumable upload protocol; progress bar; post status: DRAFT → PROCESSING → LIVE)."
-          caption="Feed rendering (cursor-paginated, Redis-cached, engagement-enriched), direct S3 media upload (presigned URL, no proxy), HLS adaptive Reels playback, WebSocket real-time like/comment counts (optimistic UI), CDN multi-resolution image delivery, and post composer with resumable video upload"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Feed Rendering and Cursor Pagination</h3>
-        <HighlightBlock as="p" tier="important">The feed is never server-side rendered with user-specific content because it is fully personalized and changes every few minutes, SSR would require bypassing all CDN caches for every request. Instead, the page shell (header, navigation, composer button) is statically served from CDN. On hydration, a useEffect fires GET /api/feed?cursor=null&amp;limit=20. The Feed Service queries the user&apos;s personalized ranked feed from its internal feed cache (Redis sorted set: feed:{"{userId}"} ordered by ranking score), enriches each post with the current user&apos;s engagement state (did this user like this post, did they bookmark it) by batching lookups against the Engagement Service, and returns the enriched posts with a next_cursor (the ID of the last returned post). The cursor is opaque to the client, it encodes the position in the feed and the timestamp of the last refresh, allowing the server to resume from exactly where pagination left off without re-querying everything.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Infinite scroll trigger: an IntersectionObserver watches a sentinel element 80% of the way down the feed. When the sentinel enters the viewport, a fetchNextPage() call is triggered with the current cursor. The response is appended to the feed (React Query's useInfiniteQuery manages the paginated state). To prevent layout shifts when new items load, the feed container has a fixed-height placeholder for the loading skeleton, which transitions into real content when the fetch resolves.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Media Upload Pipeline</h3>
-        <HighlightBlock as="p" tier="important">Routing image uploads through the application server creates a bandwidth and cost bottleneck: a 10 MB photo upload consumes 10 MB of server ingress bandwidth, and a 100 MB video upload would time out most HTTP proxies. The solution is direct browser-to-S3 upload via presigned URLs. The upload flow: (1) The browser sends POST /api/upload/presign with the file metadata (type, size, checksum). The API server calls S3&apos;s presignPost() to generate a short-lived (15-minute TTL) presigned upload URL and returns it to the browser. (2) The browser uploads the file directly to S3 using the presigned URL, the app server is not in the data path. (3) S3 fires an s3:ObjectCreated event to a Lambda (or SQS-triggered worker). (4) The Media Processing worker: for images, generates 320w/640w/1080w WebP and AVIF versions. For videos, encodes HLS segments (360p, 720p, 1080p) using FFmpeg and generates a poster thumbnail. Processed assets are written to the CDN origin bucket. The processed asset URLs are written to the posts database. (5) The client polls GET /api/posts/{"{draftId}"}/status until the status is LIVE, then redirects to the post page.</HighlightBlock>
-        <p>For large video uploads, the tus protocol (resumable upload standard) is used instead of a single PUT. tus allows uploads to be resumed after network interruptions, which is critical for mobile users uploading 100MB+ videos on cellular networks. The tus server (running on the upload service) handles chunk management and ultimately assembles the file in S3.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Stories and Reels Playback</h3>
-        <p>Stories are short-lived (24-hour TTL), image-or-video full-screen overlays. The story viewer component preloads the next story's media while the current story is playing, using link rel="preload" for images and a hidden video element with preload="auto" for videos. Each story shows a progress bar segment; the segment fills over the story's duration (5 seconds for images, video duration for videos). Auto-advance fires when the segment completes or when the user taps the right side of the screen.</p>
-        <p>Reels use HLS adaptive bitrate streaming via hls.js. The video starts at the lowest quality tier (360p) to minimize initial buffering, then hls.js probes the available bandwidth and switches to the appropriate tier (720p or 1080p). This is critical for users on variable mobile networks. The Reels feed prefetches the next 2 reels' HLS manifests and the first few segments of each, so swipe transitions are instant rather than showing a loading spinner. The prefetch budget is capped at 20 MB to avoid excess data consumption on metered connections (detected via navigator.connection.saveData).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Real-Time Engagement Counts</h3>
-        <HighlightBlock as="p" tier="important">When a user opens a post detail view or a post is visible in the feed, the client subscribes to WebSocket channel post:{"{postId}"} for live engagement updates. The subscription is managed client-side: when the post component mounts, it sends a subscribe message; when it unmounts (scrolled out of view or navigated away), it sends an unsubscribe. The WebSocket server subscribes to the corresponding Redis Pub/Sub channel. When another user likes the post, the Interaction Service writes the like to the database, publishes a LikeCreated event to Kafka, a fan-out consumer reads the event and publishes to Redis channel post:{"{postId}"}, and all connected WebSocket clients receive the updated count within 2–3 seconds.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Optimistic UI for likes: when the user taps the heart icon, the like animation plays immediately and the local like count increments by 1 — before the POST /api/interactions/like request returns. If the server returns an error (e.g., the user had already liked the post via another device), the UI reverts: the animation plays in reverse and the count decrements. This pattern (immediate feedback, async server confirmation) makes interactions feel instant even on high-latency mobile connections.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">CDN Image Delivery with Responsive Srcsets</h3>
-        <HighlightBlock as="p" tier="important">Every image in the feed is served via CDN with a responsive srcset pointing to the three resolution variants generated during media processing: &lt;img srcset=&quot;cdn.example.com/posts/{"{id}"}_320w.webp 320w, cdn.example.com/posts/{"{id}"}_640w.webp 640w, cdn.example.com/posts/{"{id}"}_1080w.webp 1080w&quot; sizes=&quot;(max-width: 768px) 100vw, 50vw&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot;/&gt;. The browser selects the appropriate variant based on the device&apos;s pixel density and the rendered image width. On a 1x display with a 640px-wide feed column, the browser requests the 640w variant. On a 3x display (high-DPI iPhone), the browser requests the 1080w variant even for a 360px column. AVIF is served with WebP fallback via &lt;picture&gt; element: AVIF reduces file size by 50% versus WebP for equivalent quality, but requires browser support checking. The Cache-Control header for processed media assets is max-age=31536000, immutable, the URL includes a content hash, so cache invalidation is not needed; updated images get new URLs.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Blurhash Placeholders and Perceived Performance</h3>
-        <HighlightBlock as="p" tier="important">Each post in the feed API response includes a blurhash string — a compact (~30-byte) Base83-encoded representation of the image's color palette and rough structure. The client renders a decoded blurhash as a blurred placeholder &lt;canvas&gt; element while the actual image loads. This eliminates the jarring "blank white box then image pop" experience of lazy loading. The blurhash is generated server-side during media processing and stored in the post record — no client computation required. The placeholder transitions to the real image via a CSS opacity transition once the image load event fires, providing a smooth fade-in. The transition takes 200ms to avoid flash on fast connections while still being perceptible on slow ones.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">WebSocket versus polling for engagement counts: WebSocket delivers sub-second engagement updates and enables the real-time "10K people liked this" experience that social platforms use to drive engagement. However, maintaining persistent WebSocket connections for every open post in the feed is expensive at scale — a user scrolling through 50 posts would hold 50 channel subscriptions. The subscription management strategy (subscribe only to in-viewport posts, unsubscribe on scroll) keeps the subscription count bounded. An alternative is long-polling (30-second intervals): cheaper to operate, but engagement counts lag by up to 30 seconds, which damages the live-social-activity feeling. For the home feed (where many posts are visible simultaneously), a hybrid is appropriate: WebSocket subscriptions for the currently-viewed post detail, polling for feed-level counts.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Optimistic versus conservative UI for likes: optimistic UI (instant animation, async confirm) feels fast but can show incorrect counts if the server rejects the interaction (duplicate like, rate limiting). Most social platforms accept this occasional inconsistency because the rejection rate is low (&lt;1% of interactions) and the perceived performance benefit is high. A conservative UI (wait for server confirmation before showing the animation) is safer but makes interactions feel sluggish on mobile networks. The design described above uses optimistic UI with rollback on failure — the optimal trade-off for social interaction patterns.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An Instagram/Twitter-style frontend uses a static shell with client-side feed fetching (cursor-paginated, engagement-enriched, Redis-cached on the server) to handle fully personalized, frequently-updated content without sacrificing CDN performance for the page shell. Media uploads bypass the app server entirely via presigned S3 URLs; processing (resize, HLS encoding, AVIF conversion) runs asynchronously with status polling. Reels use HLS adaptive bitrate streaming (hls.js auto-quality), prefetching the next 2 reels to enable instant swipe transitions. Engagement counts are pushed via WebSocket (subscribe on post-in-viewport, unsubscribe on scroll-out), with optimistic UI for likes (instant animation, async confirmation, rollback on error). CDN image delivery uses responsive srcsets (320w/640w/1080w WebP/AVIF) with blurhash placeholders to eliminate blank-box loading states. The core design insight: for social platforms, perceived responsiveness of interactions (likes, comments) drives engagement more than any other latency metric — optimistic UI with rollback is always the right trade-off for social interaction patterns.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

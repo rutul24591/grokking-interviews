@@ -8,85 +8,144 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-ar-vr-interface-system",
   title: "Design an AR/VR Interface System",
-  description:
-    "Architecture for an AR/VR interface system: WebXR session lifecycle management, 3D scene graph with frame-rate-locked render loop (90Hz target), hand tracking and gaze-based interaction models, spatial audio positioning, 6DoF tracking and world anchors for persistent AR content, foveated rendering for GPU budget management, progressive asset loading with LOD (level of detail) switching, passthrough camera integration, and comfort guidelines for preventing motion sickness.",
+  description: "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability.",
   category: "high-level-design",
   subcategory: "emerging-future-systems",
   slug: "ar-vr-interface-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "ar-vr", "webxr", "3d-rendering", "hand-tracking", "6dof", "spatial-audio", "foveated-rendering"],
-  relatedTopics: ["web3-wallet-frontend", "voice-based-ui-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "emerging", "ai", "privacy", "safety", "fallback"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design an AR/VR Interface System is an emerging product system where device capability, user trust, safety, privacy, and fallback behavior are as important as the primary interaction. A principal-ready design treats an AR/VR interface system as a risk-managed experience, not as a novelty interface.",
+  "The difficult part is uncertainty. Devices vary, sensors lie, networks disappear, models drift, chains fail, users misunderstand prompts, and irreversible actions can happen from ambiguous input. The architecture must make uncertainty visible and controllable.",
+  "The design should define the boundary between local computation, remote services, user intent, policy enforcement, and operational control. Emerging systems fail when teams hide this boundary behind a magical UI that cannot explain or recover from mistakes.",
+  "A strong interview answer should classify actions by reversibility and sensitivity. Browsing, previewing, suggesting, and drafting can be forgiving. Payments, wallet signatures, permission grants, identity changes, public posts, and physical-world actions need confirmation and auditability.",
+  "Operationally, these systems need feature flags, capability gating, cohort rollout, fallback routes, safety kill switches, privacy controls, and telemetry that measures quality without collecting more sensitive data than needed."
+];
+const concepts = [
+  "The first concept is capability detection. scene graph, spatial anchor service, and device capability layer should not assume every device, browser, sensor, model, or wallet provider behaves the same way. The UI needs graceful downgrade paths.",
+  "The second concept is intent confirmation. Emerging interfaces often infer intent from speech, gestures, camera input, model output, or wallet metadata. Inferred intent should not trigger irreversible actions without explicit confirmation.",
+  "The third concept is local versus remote execution. Local execution improves privacy and latency but has device, battery, model, and upgrade constraints. Remote execution improves consistency and observability but increases latency, cost, and data exposure.",
+  "The fourth concept is safety boundaries. Spatial boundaries, prompt boundaries, transaction boundaries, permission boundaries, and model output boundaries should be explicit in both UI and backend policy.",
+  "The fifth concept is fallback. A user should be able to continue through a simpler text, touch, web, cloud, or manual review path when the emerging interface is unavailable or low confidence.",
+  "The sixth concept is observability. Track capability failures, fallback rate, confirmation cancellation, model confidence, sensor drift, transaction simulation warnings, privacy control usage, latency, battery impact, and incident overrides."
+];
+const architecture = [
+  "The architecture contains scene graph, spatial anchor service, device capability layer, rendering pipeline, safety boundary. The client detects capability and collects user intent. The runtime or gateway evaluates confidence, policy, and safety. Sensitive actions pass through confirmation and audit. Fallback routing keeps the core journey available when the new interaction is not trustworthy.",
+  "State should be separated into user intent, inferred context, device/runtime state, remote policy state, and committed action state. Inferred context can be wrong; committed state should be durable and explainable.",
+  "The system should keep sensitive inputs local where possible and send minimized, purpose-bound data when remote services are required. Logs should store event class, confidence, policy decision, and correlation ID rather than raw voice, camera, seed, private prompt, or spatial map data unless explicitly necessary and consented.",
+  "Capability gating should run before rendering advanced controls. The UI should know whether it is in full mode, degraded mode, remote fallback, read-only mode, or blocked mode because of device, policy, provider, or safety constraints.",
+  "For high-risk actions, the design should include preflight simulation or validation. A wallet simulates transaction effects; voice confirms destructive intent; AR checks safe placement; on-device AI checks output confidence and policy.",
+  "Operations need remote disablement for risky model versions, wallet providers, voice intents, spatial features, or transaction types. Emerging systems should assume fast rollback is necessary because field failures can be hard to reproduce in lab testing."
+];
+const tradeoffs = [
+  "Local-first execution improves latency and privacy, but creates fragmentation across devices and model/runtime versions. Cloud execution improves control and quality consistency, but sends more data over the network and increases cost.",
+  "Rich immersive UI can improve understanding and engagement, but it increases accessibility, motion comfort, battery, and hardware constraints. A principal design keeps a non-immersive fallback for critical flows.",
+  "Low-friction confirmations improve speed, but high-risk actions need deliberate friction. The right design uses risk-based confirmation rather than one prompt style for every action.",
+  "Telemetry is necessary to improve quality, but emerging interfaces often observe sensitive context. Collecting raw audio, camera frames, private prompts, spatial maps, or wallet details can become a privacy incident. Use minimization and aggregation by default.",
+  "Aggressive rollout improves learning speed, but field failures can cause irreversible harm or public trust loss. Use staged rollout, holdouts, model/version attribution, and kill switches.",
+  "Fallbacks add product and engineering complexity, but they make the system usable when the novel interface is unavailable, unsafe, low confidence, or blocked by policy."
+];
+const practices = [
+  "Design confidence-aware UI states: ready, low confidence, needs confirmation, degraded, blocked, failed, and manual fallback. Do not represent uncertain inference as fact.",
+  "Use policy and risk classification before sensitive actions. The system should know which actions are reversible, destructive, financial, public, privacy-sensitive, or safety-sensitive.",
+  "Version every runtime decision: model version, wallet provider, device capability tier, intent schema, safety policy, and fallback route. Versioning makes rollback and incident analysis possible.",
+  "Use explicit consent and local data controls for voice, camera, spatial maps, private prompts, wallet metadata, and personalization history.",
+  "Build simulation or preview for irreversible actions. Users should see transaction effects, public posting consequences, physical placement, or destructive command summary before committing.",
+  "Instrument fallback and cancellation. High fallback rate or confirmation cancellation is a quality signal, not only a UX inconvenience.",
+  "Exercise incident playbooks for bad model rollout, wallet provider outage, false activation spike, sensor drift, privacy complaint, and unsafe action pattern."
+];
+const pitfalls = [
+  "motion sickness can turn a promising interface into a trust failure if the UI hides uncertainty or removes fallback paths.",
+  "anchor drift is often caused by doing too much on-device or in realtime without resource budgets and user-visible degradation.",
+  "thermal throttling is the largest principal-level risk. Emerging interfaces often touch personal surroundings, private text, speech, biometrics, wallet metadata, or sensitive intent.",
+  "privacy exposure requires rollback, quality monitoring, and explicit user recovery. The system cannot rely on users understanding hidden model, sensor, chain, or provider behavior.",
+  "Another pitfall is demo-driven design. A prototype can assume perfect lighting, perfect speech, perfect network, perfect device, and harmless actions; production cannot.",
+  "Teams also underinvest in accessibility. Voice, AR/VR, wallets, and AI assistants must have alternative interaction modes for users who cannot or do not want to use the novel surface."
+];
+const useCases = [
+  "AR product preview needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "VR training room needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "mixed-reality collaboration needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "During a provider or model incident, the system should fall back to a simpler safe path, preserve user work, disable high-risk actions, and expose the reason without leaking sensitive internals.",
+  "During a privacy review, the system should prove what data was processed locally, what was sent remotely, what was logged, and how users can revoke or delete it.",
+  "During scale-up, cost and latency should be tracked per capability tier because local, edge, and cloud execution have very different operational economics."
+];
+const questions = [
+  {
+    "question": "How would you design an AR/VR interface system end to end?",
+    "answer": "I would start with capability detection, user intent capture, policy/risk classification, confidence-aware execution, confirmation for sensitive actions, and fallback routing. The architecture includes scene graph, spatial anchor service, device capability layer, rendering pipeline, safety boundary. Committed actions are durable and auditable; inferred context remains tentative. Operations need versioning, staged rollout, telemetry, and kill switches."
+  },
+  {
+    "question": "Why this architecture over a direct UI-to-provider integration?",
+    "answer": "Direct integration is fast for a demo but weak for policy, fallback, privacy, observability, and rollback. A principal architecture adds a control plane that understands capability, risk, consent, model/provider version, and action sensitivity. The trade-off is more complexity, but it prevents silent unsafe actions and makes incidents recoverable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are motion sickness, anchor drift, thermal throttling, privacy exposure, plus provider outages, device fragmentation, quality drift, high cloud cost, privacy complaints, and low-confidence actions. Prevention requires versioning, cohort rollout, capability gating, fallback paths, telemetry, and remote disablement."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Inferred state can be probabilistic and temporary. Committed user actions, permissions, wallet transactions, account state, and privacy choices need authoritative confirmation and audit. Derived suggestions, previews, model outputs, and sensor interpretations can be stale or low confidence if the UI represents them honestly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with fallback modes, confirmation, retries where safe, and preserved user intent. Rollback uses version gates and feature kill switches. Abuse is handled through risk policy, rate limits, transaction simulation, and unsafe-intent blocking. Privacy uses local processing, minimization, consent, and redaction. Cost is managed by routing between local, edge, and cloud execution. Observability tracks confidence, fallback, cancellation, latency, battery, and incident controls."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would classify actions by reversibility and sensitivity. I would defend local execution for privacy-sensitive low-latency tasks, cloud fallback for quality or capability gaps, and explicit confirmation for irreversible actions. I would also emphasize that emerging interfaces need safe fallback more than perfect novelty."
+  }
+];
+const references = [
+  {
+    "label": "WebXR Device API",
+    "href": "https://www.w3.org/TR/webxr/"
+  },
+  {
+    "label": "MDN: Web Speech API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API"
+  },
+  {
+    "label": "W3C WebAuthn",
+    "href": "https://www.w3.org/TR/webauthn-3/"
+  },
+  {
+    "label": "OWASP Mobile Application Security",
+    "href": "https://mas.owasp.org/"
+  },
+  {
+    "label": "Ethereum JSON-RPC API",
+    "href": "https://ethereum.org/en/developers/docs/apis/json-rpc/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function ArVrInterfaceSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An AR/VR interface system must meet constraints that have no equivalent in traditional 2D UI engineering: the render loop must sustain 90 frames per second (11ms per frame budget) without exception — dropping below 72Hz causes perceptible judder; dropping below 45Hz on a head-mounted display causes motion sickness in most users. Every frame must complete rendering before the display's next scanout, because the headset's display is locked to the device's IMU (inertial measurement unit) and any discrepancy between head movement and rendered view causes vestibulo-ocular reflex (VOR) conflict — the biological cause of VR sickness.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">AR differs from VR in that the user can see the real world. AR content must be anchored to real-world locations (so that a virtual object placed on a physical table stays on that table even as the user moves), which requires continuous spatial understanding: detecting flat surfaces (plane detection), tracking feature points in the environment, and maintaining a persistent coordinate system (world origin) that survives head movements. These capabilities are provided by the device's SLAM (Simultaneous Localization and Mapping) system, exposed to web apps via the WebXR Device API.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> WebXR session lifecycle, 3D scene graph render loop, hand tracking, gaze-based interaction, spatial audio, world anchors for AR, foveated rendering, LOD asset loading, and motion sickness comfort guidelines. Not in scope: 3D asset creation pipelines, physics simulation, or multiplayer networking.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/ar-vr-interface-system.svg" alt="Design an AR/VR Interface System architecture" caption="Architecture view: capability, runtime/provider boundary, policy, confirmation, fallback, and telemetry." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/ar-vr-interface-system-flow.svg" alt="Design an AR/VR Interface System flow" caption="Flow view: inferred intent, confidence, validation, confirmation, committed action, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/ar-vr-interface-system-operations.svg" alt="Design an AR/VR Interface System operations" caption="Operations view: model/provider/device incidents, privacy controls, rollback, cost, and observability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>WebXR session lifecycle management:</strong> A WebXR session is started by a user gesture (button click: "Enter VR" or "Enter AR"). The app calls navigator.xr.requestSession('immersive-vr' or 'immersive-ar', &#123;requiredFeatures: ['hand-tracking', 'hit-test'], optionalFeatures: ['plane-detection', 'anchors']&#125;). The session provides: an XRReferenceSpace (the coordinate system), an XRFrame on each animation frame (containing poses for the viewer and input sources), and a WebGL layer for rendering. The render loop uses session.requestAnimationFrame(onFrame) — a separate RAF queue from window.requestAnimationFrame, synchronized to the headset's display refresh rate. On session end (user removes headset, or app calls session.end()), cleanup all XR resources and resume the 2D UI.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Hand tracking and gaze-based interaction:</strong> Hand tracking (XRHand) provides 25 joint poses per hand on each XRFrame — from wrist to fingertip for each finger. Pinch detection: the distance between the tip of the index finger (XRHandJoint.INDEX_FINGER_TIP) and the thumb tip (XRHandJoint.THUMB_TIP) falling below 20mm triggers a "pinch start" event; opening above 40mm triggers "pinch end." Gaze-based interaction: the viewer's forward ray (from the viewer XRReferenceSpace origin) is used to cast a ray against scene objects. An object "in focus" for more than 1 second without a pinch triggers a "dwell activation" — useful for users who cannot perform hand gestures. UI panels rendered in 3D space use gaze + pinch as the equivalent of hover + click.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>World anchors for persistent AR content:</strong> An XRAnchor persists the position and orientation of a virtual object relative to the real world. When the user places a virtual object (by pointing at a detected surface and pinching), the app creates an anchor at the hit point: session.createAnchor(hitTestResult.createAnchorFromHitTestResult()). The anchor is tracked across frames: on each frame, anchorPose = frame.getPose(anchor.anchorSpace, referenceSpace). If the anchor pose becomes unavailable (tracking lost due to poor lighting or fast movement), the object is hidden until tracking recovers. Persistent anchors (XRPersistentAnchor) survive session restarts — they are keyed to the physical environment and restored when the user re-enters the same room.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Spatial audio positioning:</strong> Sounds in an AR/VR scene must appear to come from the correct 3D position (an explosion sounds louder in the left ear when the explosion is to the user's left). Web Audio API's PannerNode with HRTF (Head-Related Transfer Function) panning provides this. Each sound source is attached to a PannerNode: panner.setPosition(x, y, z) is updated every frame to match the 3D object's current world position. The AudioListener position and orientation are updated to match the viewer's head pose: listener.setPosition and listener.forwardVector are set from the XRViewerPose. The HRTF algorithm simulates the way sound reflects off the listener's ears and head, creating the perception of 3D directionality in stereo headphones.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Frame-rate-locked render loop and GPU budget:</strong> The 11ms frame budget (90Hz) is divided: ~2ms for JavaScript (pose updates, interaction, state), ~7ms for GPU (draw calls, shaders), ~2ms for display composition. To stay within the GPU budget: (1) draw call batching — merge static geometry into single meshes to reduce GPU state changes; (2) instanced rendering — render repeated objects (trees, particles) in a single draw call with a per-instance transform buffer; (3) frustum culling — skip rendering objects outside the headset's field of view; (4) occlusion culling — skip objects hidden behind opaque geometry. The scene graph traversal and culling run in a Web Worker to free the main thread for rendering.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Foveated rendering:</strong> Modern headsets track the user's gaze direction within the display (eye tracking via infrared cameras). The area of the display the user is looking at (the fovea) needs full resolution; the periphery can be rendered at lower resolution without the user noticing. WebXR provides the XR_EXT_texture_foveation extension (on supported devices): rendering the foveal region at full resolution and the periphery at 50% resolution reduces GPU load by ~40%, allowing more complex scenes within the frame budget. The foveal position is provided by frame.getJointPose for eye tracking inputs, updated per frame.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Progressive LOD asset loading:</strong> 3D assets (GLTF/GLB files) are served at multiple levels of detail (LOD): LOD0 (full quality, ~50K polygons), LOD1 (medium, ~10K polygons), LOD2 (distant, ~2K polygons). The LOD level displayed for each object is determined by its distance from the viewer: &lt;2m → LOD0, 2–10m → LOD1, &gt;10m → LOD2. Assets are loaded progressively: LOD2 is loaded first (small file size, fast load), then LOD1 and LOD0 stream in the background. The swap from LOD2 to LOD0 is cross-faded over 200ms (blend material opacity) to avoid popping. Assets are cached in IndexedDB using the Cache API for offline access and faster subsequent loads.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Motion sickness comfort guidelines:</strong> The interface enforces comfort guidelines: (1) no artificial locomotion (walking the virtual camera without physical movement) unless the user has explicitly enabled it and has selected a vignette mode (black circles the periphery during movement to reduce veil illusion); (2) UI panels are fixed to the world, not the headset (head-locked UI causes discomfort because the panel moves with every head motion — the user can never "look away"); (3) all animations respect the user's Reduce Motion preference (prefers-reduced-motion media query; in WebXR, checked via a settings API); (4) the minimum text size in VR is 0.5° of visual arc (~14px at 1m distance), ensuring text is legible without squinting.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The XR app architecture has three layers: the session management layer (WebXR session lifecycle, reference space management, input source tracking), the scene layer (scene graph, entity-component system, LOD management, spatial audio), and the render layer (WebGL 2 or WebGPU pipeline, shader management, draw call batching, foveated rendering). The scene graph uses an entity-component architecture (similar to Unity's GameObject/Component model): entities are identifiers, components are data (Transform, Mesh, AudioSource, Interactable), and systems process components each frame (TransformSystem, AudioSystem, InteractionSystem).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The render loop: requestAnimationFrame → session.requestAnimationFrame → onFrame(time, xrFrame) → (1) get viewer pose from xrFrame; (2) update AudioListener from viewer pose; (3) run systems (interaction, physics, animation); (4) frustum cull scene graph; (5) sort draw calls (opaque front-to-back, transparent back-to-front); (6) dispatch draw calls to WebGL. The interaction system runs hand tracking pose processing and ray casting. The animation system interpolates transforms using the delta time between frames — this ensures animations play at the correct speed regardless of whether the frame rate is 72Hz or 90Hz.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/ar-vr-interface-system.svg"
-          alt="AR/VR interface system: WebXR session (immersive-vr/ar, hand-tracking, hit-test features); 90Hz render loop with 11ms budget (2ms JS + 7ms GPU + 2ms compositor); hand tracking 25 joints per hand, pinch detection (index-thumb &lt;20mm); gaze ray casting + 1s dwell activation; XRAnchor for persistent AR world anchors; PannerNode HRTF spatial audio updated per frame from viewer pose; foveated rendering via XR_EXT_texture_foveation (periphery at 50% resolution, ~40% GPU savings); LOD switching by distance (&lt;2m LOD0, 2-10m LOD1, &gt;10m LOD2) with cross-fade; progressive loading LOD2-first with IndexedDB cache."
-          caption="WebXR session lifecycle, 11ms/frame budget (2ms JS + 7ms GPU), hand tracking pinch (index-thumb &lt;20mm), gaze dwell (1s), XRAnchor world persistence, HRTF spatial audio, foveated rendering (40% GPU savings), LOD distance switching (&lt;2m/2–10m/&gt;10m)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Scene Graph and Entity-Component System</h3>
-        <HighlightBlock as="p" tier="important">The entity-component system (ECS) is the industry-standard architecture for real-time 3D applications because it avoids the deep inheritance hierarchies of OOP and enables cache-friendly data layouts. Entities are integers (IDs). Components are plain data structs stored in typed arrays (Float32Array for transforms — 16 floats per transform matrix, tightly packed for CPU cache efficiency). Systems iterate over all entities that have a specific component combination: the TransformSystem iterates over all entities with both a Transform and a Mesh component and computes world transforms (parent transform × local transform) for each.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Scene graph traversal: the scene tree (parent-child relationships) is stored as an adjacency list. Each frame, the TransformSystem does a depth-first traversal to compute world transforms top-down. Dirty flagging: if a transform is not changed this frame, its world transform is not recomputed (only dirty nodes and their descendants are traversed). In a typical scene where most objects are static, only a few nodes are dirty each frame, reducing traversal cost significantly.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Interaction System: Ray Casting and Hit Testing</h3>
-        <HighlightBlock as="p" tier="important">Interaction ray casting uses the XR hit test feature for AR (casting against real-world geometry detected by the SLAM system) and bounding volume hierarchy (BVH) for VR (casting against virtual scene objects). The BVH is built once at scene load time by partitioning scene geometry into a binary tree of axis-aligned bounding boxes (AABBs). Ray-BVH intersection: traverse the tree, test ray against each node's AABB — if miss, skip the entire subtree; if hit, recurse into children. This reduces ray-object intersection tests from O(N) to O(log N). The closest hit is the interacted object. The BVH is rebuilt when objects move (dynamic objects trigger a partial rebuild of the affected subtree).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Tracking Loss and Recovery</h3>
-        <HighlightBlock as="p" tier="crucial">The XRSession emits a 'visibilitychange' event when tracking is lost (poor lighting, fast movement, looking at a blank wall). On tracking loss: (1) the render loop continues but no pose updates are applied — the scene freezes in the last known state; (2) a "Tracking Lost" overlay appears (a heads-up warning rendered as a head-locked quad — the one acceptable case for head-locked UI, since it's a critical system message); (3) audio cues guide the user to look around slowly to help the SLAM system relocalize. On tracking recovery, the reference space origin may have shifted (the SLAM system's map was updated during recovery) — the app must account for this by re-reading all anchor poses from the new reference space rather than assuming continuity.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">WebXR vs. native XR: WebXR (browser-based) offers cross-platform reach (same codebase works on Meta Quest, Apple Vision Pro, HoloLens) but has higher latency than native OpenXR apps (the browser's compositing adds ~1 frame of latency) and less access to platform-specific features (eye tracking accuracy, pass-through camera quality). For consumer-facing AR/VR experiences where cross-platform reach matters, WebXR is the right choice. For latency-critical or platform-specific applications (surgery assistance, industrial inspection), a native OpenXR app is required.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Three.js vs. Babylon.js vs. custom WebGL: Three.js is the most popular WebGL library with the largest ecosystem, but it was designed for 3D scenes, not XR-first. Babylon.js has better WebXR support out of the box (XR session management, hand tracking, teleportation locomotion). A custom WebGL pipeline gives the most control over the render pipeline (custom shaders, minimal overhead) but requires significantly more engineering. For most XR experiences, Babylon.js is the right starting point — migrate to a custom pipeline only when Babylon.js's frame budget overhead becomes the bottleneck.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">An AR/VR interface system requires: (1) WebXR session lifecycle (navigator.xr.requestSession, requiredFeatures: hand-tracking + hit-test, XRReferenceSpace, session RAF synchronized to headset display); (2) 11ms frame budget (2ms JS systems + 7ms GPU draw calls + 2ms compositor; draw call batching, instanced rendering, frustum culling, dirty-flagged transform traversal); (3) hand tracking (25 joints per hand, pinch detection index-thumb &lt;20mm, dwell activation 1s gaze); (4) XRAnchor for persistent AR world anchors (createAnchorFromHitTestResult, tracked per frame, hidden on tracking loss, XRPersistentAnchor for session restart survival); (5) HRTF spatial audio (Web Audio PannerNode updated per frame from XRViewerPose); (6) foveated rendering (XR_EXT_texture_foveation, periphery 50% resolution, ~40% GPU savings); (7) LOD distance switching (&lt;2m LOD0, 2–10m LOD1, &gt;10m LOD2, 200ms cross-fade, LOD2-first progressive load, IndexedDB cache); (8) ECS scene graph (entity IDs, Float32Array component data, dirty-flagged depth-first transform traversal, BVH ray casting O(log N)); and (9) comfort guidelines (no artificial locomotion without vignette, world-fixed UI panels, 0.5° visual arc minimum text size, Reduce Motion respected). The inviolable constraint: 90fps sustained — every architectural decision is subordinate to maintaining the frame budget.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

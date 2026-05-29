@@ -1,123 +1,14 @@
-<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-  <rect width="900" height="520" fill="#f3f1f8"/>
-  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">AI Prompt Management UI — Architecture</text>
-
-  <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
-    </marker>
-    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
-    </marker>
-    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
-    </marker>
-  </defs>
-
-  <!-- Left: Prompt Library -->
-  <rect x="20" y="54" width="220" height="450" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="130" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Prompt Library</text>
-
-  <rect x="35" y="88" width="190" height="42" rx="7" fill="#6d5bd0"/>
-  <text x="130" y="106" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Template Browser</text>
-  <text x="130" y="121" text-anchor="middle" font-size="10" fill="#edeaf5">search, tag, category filter</text>
-
-  <rect x="35" y="140" width="190" height="42" rx="7" fill="#6d5bd0" opacity="0.8"/>
-  <text x="130" y="158" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Variable Schema</text>
-  <text x="130" y="173" text-anchor="middle" font-size="10" fill="#edeaf5">&#123;&#123;name&#125;&#125; &#123;&#123;context&#125;&#125; &#123;&#123;tone&#125;&#125;</text>
-
-  <rect x="35" y="192" width="190" height="42" rx="7" fill="#2f9d74"/>
-  <text x="130" y="210" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Version History</text>
-  <text x="130" y="225" text-anchor="middle" font-size="10" fill="#e8f5f0">v1 → v2 → v3, diff view</text>
-
-  <rect x="35" y="244" width="190" height="42" rx="7" fill="#1a1822"/>
-  <text x="130" y="262" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Deployment Tags</text>
-  <text x="130" y="277" text-anchor="middle" font-size="10" fill="#d7d1e6">draft · staging · production</text>
-
-  <rect x="35" y="296" width="190" height="42" rx="7" fill="#d97843"/>
-  <text x="130" y="314" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Access Control</text>
-  <text x="130" y="329" text-anchor="middle" font-size="10" fill="#fff">owner / editor / viewer</text>
-
-  <rect x="35" y="348" width="190" height="42" rx="7" fill="#2f9d74" opacity="0.7"/>
-  <text x="130" y="366" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Usage Analytics</text>
-  <text x="130" y="381" text-anchor="middle" font-size="10" fill="#e8f5f0">calls/day, avg tokens, cost</text>
-
-  <rect x="35" y="400" width="190" height="88" rx="7" fill="#f3f1f8" stroke="#d7d1e6"/>
-  <text x="130" y="419" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Prompt Lifecycle</text>
-  <text x="40" y="437" font-size="9" fill="#1a1822">draft → review → staging →</text>
-  <text x="40" y="451" font-size="9" fill="#1a1822">production (A/B test) →</text>
-  <text x="40" y="465" font-size="9" fill="#1a1822">champion (wins test) →</text>
-  <text x="40" y="479" font-size="9" fill="#1a1822">deprecated (superseded)</text>
-
-  <!-- Center: Editor + Playground -->
-  <rect x="260" y="54" width="320" height="450" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="420" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Prompt Editor &amp; Playground</text>
-
-  <!-- Editor area mock -->
-  <rect x="275" y="88" width="290" height="120" rx="7" fill="#1a1822"/>
-  <text x="420" y="108" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">System Prompt Editor</text>
-  <text x="283" y="126" font-size="10" fill="#2f9d74">You are a helpful assistant for</text>
-  <text x="283" y="142" font-size="10" fill="#fff">&#123;&#123;company&#125;&#125;. Answer questions about</text>
-  <text x="283" y="158" font-size="10" fill="#fff">&#123;&#123;product&#125;&#125; in a &#123;&#123;tone&#125;&#125; tone.</text>
-  <text x="283" y="174" font-size="10" fill="#d7d1e6">Always cite sources when available.</text>
-  <text x="420" y="200" text-anchor="middle" font-size="9" fill="#d97843">3 variables · 247 tokens · est. $0.0018/call</text>
-
-  <!-- Variable bindings -->
-  <rect x="275" y="218" width="290" height="84" rx="7" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
-  <text x="420" y="236" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Variable Bindings (Test Values)</text>
-  <text x="283" y="254" font-size="10" fill="#1a1822">company =  "Acme Corp"</text>
-  <text x="283" y="270" font-size="10" fill="#1a1822">product  =  "DataVault Pro"</text>
-  <text x="283" y="286" font-size="10" fill="#1a1822">tone     =  "professional and concise"</text>
-
-  <!-- User prompt area -->
-  <rect x="275" y="312" width="290" height="52" rx="7" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
-  <text x="420" y="330" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">User Prompt (Test Input)</text>
-  <text x="283" y="350" font-size="10" fill="#1a1822">"How do I export my data as CSV?"</text>
-
-  <!-- Run button area -->
-  <rect x="275" y="374" width="130" height="30" rx="6" fill="#6d5bd0"/>
-  <text x="340" y="393" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">▶ Run</text>
-  <rect x="415" y="374" width="150" height="30" rx="6" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1"/>
-  <text x="490" y="393" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Compare Versions</text>
-
-  <!-- Model config -->
-  <rect x="275" y="414" width="290" height="76" rx="7" fill="#f3f1f8" stroke="#d7d1e6"/>
-  <text x="420" y="432" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Model Config</text>
-  <text x="283" y="450" font-size="10" fill="#1a1822">Model: claude-sonnet-4-6  · Temp: 0.3</text>
-  <text x="283" y="466" font-size="10" fill="#1a1822">Max tokens: 1024  ·  Top-p: 0.9</text>
-  <text x="283" y="482" font-size="10" fill="#1a1822">Stop seq: "\n---"  · Streaming: on</text>
-
-  <!-- Right: Testing + Deployment -->
-  <rect x="600" y="54" width="280" height="450" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="740" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Testing &amp; Deployment</text>
-
-  <text x="610" y="100" font-size="11" fill="#6d5bd0" font-weight="bold">Evaluation Suite</text>
-
-  <rect x="610" y="108" width="258" height="60" rx="7" fill="#6d5bd0" opacity="0.08" stroke="#6d5bd0" stroke-width="1"/>
-  <text x="739" y="126" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Golden Test Set</text>
-  <text x="616" y="142" font-size="10" fill="#1a1822">Input/expected output pairs</text>
-  <text x="616" y="158" font-size="10" fill="#1a1822">Run on every version change</text>
-
-  <rect x="610" y="176" width="258" height="60" rx="7" fill="#2f9d74" opacity="0.08" stroke="#2f9d74" stroke-width="1"/>
-  <text x="739" y="194" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">LLM-as-Judge Scoring</text>
-  <text x="616" y="210" font-size="10" fill="#1a1822">Correctness / Relevance / Tone</text>
-  <text x="616" y="226" font-size="10" fill="#1a1822">Score 1–5 per dimension</text>
-
-  <rect x="610" y="244" width="258" height="60" rx="7" fill="#1a1822" opacity="0.08" stroke="#1a1822" stroke-width="1"/>
-  <text x="739" y="262" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Regression Guard</text>
-  <text x="616" y="278" font-size="10" fill="#1a1822">Block promotion if avg score drops</text>
-  <text x="616" y="294" font-size="10" fill="#1a1822">&gt;5% vs current production</text>
-
-  <line x1="610" y1="314" x2="868" y2="314" stroke="#d7d1e6"/>
-  <text x="610" y="332" font-size="11" fill="#d97843" font-weight="bold">A/B Deployment</text>
-  <text x="610" y="350" font-size="10" fill="#1a1822">Traffic split: 10% new / 90% current</text>
-  <text x="610" y="366" font-size="10" fill="#1a1822">Champion/Challenger pattern</text>
-  <text x="610" y="382" font-size="10" fill="#1a1822">Auto-promote if score &gt; threshold</text>
-  <text x="610" y="398" font-size="10" fill="#1a1822">Rollback: one-click revert to prev</text>
-
-  <line x1="610" y1="410" x2="868" y2="410" stroke="#d7d1e6"/>
-  <text x="610" y="428" font-size="11" fill="#2f9d74" font-weight="bold">Observability</text>
-  <text x="610" y="446" font-size="10" fill="#1a1822">Latency P50/P95/P99 per version</text>
-  <text x="610" y="462" font-size="10" fill="#1a1822">Token cost · error rate · cache hit%</text>
-  <text x="610" y="478" font-size="10" fill="#1a1822">User feedback score (thumbs)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Ai Prompt Management Ui Architecture: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Ai Prompt Management Ui Architecture: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">prompt</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">ai modern systems</text>
+  <path d="M480 286 C536.5653096524154 312.04551106604526, 582.8460175498462 377.92533317427734, 628 386" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="628" cy="386" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="628" y="391" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">retrieval</text><path d="M480 286 C449.90222738734116 317.9495491067209, 425.276777067893 398.763114494309, 390 425" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="390" cy="425" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="390" y="430" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">model</text><path d="M480 286 C393.3369177349257 291.90403804067563, 322.4307595180467 306.83778132003164, 253 315" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="253" cy="315" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="253" y="320" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">safety</text><path d="M480 286 C423.43469034758454 259.95448893395474, 377.15398245015365 194.07466682572266, 310 186" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="310" cy="186" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="310" y="191" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">latency</text><path d="M480 286 C510.0977726126588 254.0504508932791, 534.7232229321069 173.23688550569096, 559 147" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="559" cy="147" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="559" y="152" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">quality</text><path d="M480 286 C566.6630822650743 280.0959619593243, 637.5692404819533 265.16221867996825, 740 257" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="740" cy="257" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="740" y="262" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">policy</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>

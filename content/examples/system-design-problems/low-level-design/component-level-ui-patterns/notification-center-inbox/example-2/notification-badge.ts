@@ -1,81 +1,89 @@
-/**
- * Notification Badge with Document Title Prefix — Updates tab title with unread count.
- *
- * Interview edge case: User has 5 unread notifications but is looking at another tab.
- * The browser tab should show "(5) Page Title" so the user knows there are pending
- * notifications. When all are read, the prefix is removed.
- */
+export type notificationCenterInboxSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-const MAX_BADGE_COUNT = 99;
+export type notificationCenterInboxEvent = {
+  id: string;
+  topic: "notification-center-inbox";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: notificationCenterInboxSignal;
+};
 
-/**
- * Manages notification badge display and document title prefix.
- */
-export class NotificationBadgeManager {
-  private unreadCount: number = 0;
-  private originalTitle: string = '';
-  private initialized: boolean = false;
+export type notificationCenterInboxDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
 
-  /**
-   * Updates the unread count and updates the document title prefix.
-   */
-  updateCount(count: number): void {
-    this.unreadCount = Math.max(0, count);
-    this.updateTitle();
-  }
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
 
-  /**
-   * Increments the unread count by 1.
-   */
-  increment(): void {
-    this.unreadCount++;
-    this.updateTitle();
-  }
+export function evaluateNotificationCenterInboxEvent(event: notificationCenterInboxEvent): notificationCenterInboxDecision {
+  const reasons: string[] = [];
 
-  /**
-   * Decrements the unread count by 1 (min 0).
-   */
-  decrement(): void {
-    this.unreadCount = Math.max(0, this.unreadCount - 1);
-    this.updateTitle();
-  }
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
 
-  /**
-   * Resets the unread count to 0 and removes the title prefix.
-   */
-  reset(): void {
-    this.unreadCount = 0;
-    this.updateTitle();
-  }
+  let action: notificationCenterInboxDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
 
-  /**
-   * Returns the current unread count.
-   */
-  getCount(): number {
-    return this.unreadCount;
-  }
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Notification Center Inbox",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
+}
 
-  /**
-   * Returns the badge text (capped at 99+).
-   */
-  getBadgeText(): string {
-    if (this.unreadCount === 0) return '';
-    if (this.unreadCount > MAX_BADGE_COUNT) return `${MAX_BADGE_COUNT}+`;
-    return String(this.unreadCount);
-  }
+export function runNotificationCenterInboxContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateNotificationCenterInboxEvent({
+    id: "notification-center-inbox-evt-1",
+    topic: "notification-center-inbox",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  /**
-   * Updates the document title with the unread count prefix.
-   */
-  private updateTitle(): void {
-    if (typeof document === 'undefined') return;
+  const guarded = evaluateNotificationCenterInboxEvent({
+    id: "notification-center-inbox-evt-late",
+    topic: "notification-center-inbox",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-    if (!this.initialized) {
-      this.originalTitle = document.title;
-      this.initialized = true;
-    }
-
-    const badgeText = this.getBadgeText();
-    document.title = badgeText ? `(${badgeText}) ${this.originalTitle}` : this.originalTitle;
-  }
+  return { accepted, guarded };
 }

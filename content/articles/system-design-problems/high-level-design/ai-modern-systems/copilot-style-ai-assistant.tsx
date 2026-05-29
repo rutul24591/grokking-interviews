@@ -45,7 +45,7 @@ export default function CopilotStyleAiAssistantArticle() {
         caption="Copilot architecture: product context → intent classification → permission guard → streaming answer or approval gate → tool execution → audit log"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h2>Definition &amp; Context</h2>
       <p>
         The scope of a copilot varies enormously. Define these upfront:
       </p>
@@ -73,7 +73,11 @@ export default function CopilotStyleAiAssistantArticle() {
         the system prompt.
       </HighlightBlock>
 
-      <h2>Product Context Assembly</h2>
+      <h2>Core Concepts</h2>
+      <p>The core concepts are product-context assembly, intent classification, read versus write action separation, tool execution, approval gates, audit logging, disambiguation, privacy minimization, and tenant-aware control planes. These concepts define the production contract for copilot-style AI assistant: what the UI can promise, what the backend must enforce, and what operators need to observe when the feature behaves unexpectedly.</p>
+      <p>For principal-level interviews, frame this as a product system rather than a model demo. The answer should cover ownership, permissions, safety, rollback, quality measurement, degraded behavior, and cost control in addition to the visible interaction.</p>
+
+      <h2>Architecture &amp; Flow</h2>
       <p>
         When the user opens the copilot panel or submits a query, the product context
         is assembled into a structured block included in the LLM prompt. Context assembly
@@ -111,7 +115,7 @@ export default function CopilotStyleAiAssistantArticle() {
         being surprised when the permission guard rejects them.
       </p>
 
-      <h2>Intent Classification</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Intent Classification</h3>
       <p>
         Every query is classified before the main LLM response is generated. Intent
         classification determines whether the response is streamed immediately (read
@@ -137,7 +141,7 @@ export default function CopilotStyleAiAssistantArticle() {
         then displays the approval card before executing.
       </p>
 
-      <h2>Streaming Answers for Read Queries</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Streaming Answers for Read Queries</h3>
       <p>
         Read queries stream directly to the copilot panel using the same SSE+rAF batching
         pattern as a general chatbot. The key difference: the context is product-aware,
@@ -155,7 +159,7 @@ export default function CopilotStyleAiAssistantArticle() {
         them, while still going through the approval gate before any data modification.
       </p>
 
-      <h2>Approval Gate for Write Actions</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Approval Gate for Write Actions</h3>
       <p>
         When a write intent is detected, the LLM generates a structured action proposal
         rather than a prose response. The proposal contains: the action type (update_field,
@@ -187,7 +191,7 @@ export default function CopilotStyleAiAssistantArticle() {
         explicitly visible and controllable.
       </p>
 
-      <h2>Tool Execution Engine</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Tool Execution Engine</h3>
       <p>
         After the user approves an action, the tool execution engine calls the product's
         API on behalf of the user. This is not a direct LLM tool call (where the LLM
@@ -201,6 +205,11 @@ export default function CopilotStyleAiAssistantArticle() {
         generation and approval), (2) execute the API call with retry and error handling,
         and (3) record the action in the audit log.
       </p>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/copilot-style-ai-assistant-workflow.svg"
+        alt="Copilot workflow from context assembly through intent classification, approval gate, tool execution, rollback handling, and audit trail"
+        caption="Action workflow: classify intent, resolve ambiguity, request approval, execute with the user's permissions, and preserve rollback and audit data"
+      />
       <p>
         Error handling at execution: if the API call fails (network error, concurrent
         modification conflict, validation error), show an error card in the copilot
@@ -208,7 +217,7 @@ export default function CopilotStyleAiAssistantArticle() {
         absorb errors — the user must know their action didn't complete.
       </p>
 
-      <h2>Audit Logging</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Audit Logging</h3>
       <p>
         Every action the copilot takes is recorded in an immutable audit log: actorUserId,
         sessionId, timestamp, entityType, entityId, actionType, aiGeneratedDescription
@@ -233,7 +242,7 @@ export default function CopilotStyleAiAssistantArticle() {
         tool the user wields, not an autonomous actor with its own identity.
       </HighlightBlock>
 
-      <h2>Proactive Suggestions</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Proactive Suggestions</h3>
       <p>
         A fully reactive copilot (answers questions only when asked) is useful. A proactive
         copilot that surfaces relevant suggestions when the user navigates to a new context
@@ -250,48 +259,7 @@ export default function CopilotStyleAiAssistantArticle() {
         full-panel content (which would compete with the user's attention on the main product).
       </p>
 
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you prevent the LLM from hallucinating product data that doesn't exist in the context?</h3>
-      <p>
-        The system prompt explicitly instructs the LLM that it may only reference data
-        provided in the CURRENT_ENTITY and RECENT_ACTIVITY context blocks — it must not
-        invent field values, contact names, or historical events not present in the context.
-        Post-generation validation: for factual claims in the response (specific dates,
-        numbers, names), the system checks whether those values appear in the assembled
-        context. Mismatches flag a potential hallucination and add a disclaimer to the
-        response. For high-stakes actions (the LLM proposes to update a field to a value
-        that is not the current value and not a value the user mentioned), the approval
-        card shows a warning: "The AI suggested this value but it was not in the current
-        record data — please verify before applying."
-      </p>
-
-      <h3>Q: How do you handle copilot queries that require data not in the immediate product context (cross-entity queries)?</h3>
-      <p>
-        Cross-entity queries ("show me all deals from this contact" or "what's the team's
-        close rate this quarter?") require data that isn't in the current entity context.
-        These queries trigger a read tool call — the LLM requests specific data by type
-        and filter parameters, the backend queries the product database (applying the user's
-        RBAC filter), and the results are injected into the LLM's context before it
-        generates the response. This is similar to RAG retrieval but against the product
-        database rather than a document corpus. The tool call results are included in the
-        audit log with the query parameters and the access scope used.
-      </p>
-
-      <h3>Q: How would you implement slash commands alongside free-form natural language?</h3>
-      <p>
-        Slash commands (/summarize, /draft-email, /update-stage) provide structured inputs
-        with autocomplete for common operations. They appear in the copilot input field
-        when the user types "/", showing a picker with available commands based on the
-        current entity type and user permissions. Selecting a command may open a form
-        with specific fields (for /update-stage: a dropdown of valid stage values) rather
-        than free text — making the intent unambiguous without relying on NLP parsing.
-        The command is then processed through the same intent classification and approval
-        gate as a natural language equivalent. The UX benefit: slash commands surface
-        available capabilities and reduce the user's need to know what to ask.
-      </p>
-
-      <h2>Disambiguation and Clarifying Questions</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Disambiguation and Clarifying Questions</h3>
       <p>
         Many copilot queries are ambiguous in ways that have significant implications
         for the response. "Update the owner" could mean the deal owner, the account owner,
@@ -332,7 +300,7 @@ export default function CopilotStyleAiAssistantArticle() {
         resolve unambiguously.
       </p>
 
-      <h2>Copilot Discoverability and Onboarding</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Copilot Discoverability and Onboarding</h3>
       <p>
         The hardest product problem for copilot-style assistants is discoverability.
         Users who don't know what the copilot can do won't try it. Users who try it
@@ -362,7 +330,7 @@ export default function CopilotStyleAiAssistantArticle() {
         thing."
       </p>
 
-      <h2>Privacy and Data Minimization</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Privacy and Data Minimization</h3>
       <p>
         A copilot that assembles rich product context to generate helpful responses
         is also, by definition, sending that context to an LLM API. The context may
@@ -398,6 +366,89 @@ export default function CopilotStyleAiAssistantArticle() {
         them for use cases where they are necessary.
       </HighlightBlock>
 
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Enterprise Control Plane and Tenant Boundaries</h3>
+      <p>
+        A product-embedded copilot becomes an enterprise platform capability once it
+        appears across CRM records, inboxes, documents, dashboards, and mobile workflows.
+        At that point each tenant needs policy controls that are independent of prompt
+        text: which model providers are allowed, which regions can process data, which
+        tools are enabled, whether external network tools are disabled, and what data
+        classes may enter context. These controls should be evaluated by the server-side
+        context gateway before any model call, not left to individual product teams to
+        remember in prompts.
+      </p>
+      <p>
+        Auditability must be queryable, not just logged. Administrators need to search
+        by actor, entity, action type, tool, model provider, and approval outcome. When
+        a bad copilot action is reported, the operator should reconstruct the context
+        fields sent to the model, the proposed action, the human approval, the exact API
+        call made, and the rollback result. Store raw sensitive context carefully: for
+        regulated tenants, keep hashed or redacted evidence by default and retain full
+        context only under an explicit tenant policy.
+      </p>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/copilot-style-ai-assistant-enterprise-control-plane.svg"
+        alt="Enterprise copilot control plane showing product surfaces, context gateway, action guard, tools, tenant policy, audit explorer, and incident switches"
+        caption="Enterprise control plane: tenant policy, context gateway, DLP, user-scoped tool execution, audit search, and incident switches."
+      />
+
+      <h2>Trade offs &amp; Comparison</h2>
+      <p>The core trade-off is capability versus control. Rich AI experiences improve user productivity, but they add uncertainty, cost, latency, data-access risk, and operational complexity. A principal-ready design explains which paths are authoritative, which paths are best-effort, and how the system degrades when retrieval, model execution, policy checks, or tool calls fail.</p>
+      <p>The design should also compare build-versus-buy boundaries. Provider APIs, vector stores, evaluation tools, moderation classifiers, and orchestration frameworks can accelerate delivery, but the product still owns permission enforcement, user trust, auditability, rollback, and quality measurement.</p>
+
+      <h2>Best practices</h2>
+      <p>Use explicit contracts between UI, orchestration, model, retrieval, policy, and tool layers. Persist durable state, keep correlation IDs across model and tool calls, separate user-visible confidence from internal scores, and make failed or degraded states visible. Treat prompts, policies, retrieval settings, and model versions as production configuration with owners and rollback.</p>
+      <p>Measure quality continuously with offline evaluation sets, production feedback, latency and cost telemetry, safety outcomes, and incident reviews. Principal-level systems do not rely on subjective demos to decide whether an AI feature is working.</p>
+
+      <h2>Common Pitfalls</h2>
+      <p>Common pitfalls include letting the model decide authorization, hiding uncertainty, storing sensitive context unnecessarily, treating provider streaming formats as frontend contracts, and shipping without replayable traces. Another frequent issue is optimizing for impressive answers while neglecting source evidence, policy enforcement, and operator visibility.</p>
+      <p>Teams also underestimate lifecycle problems: model behavior changes, documents are deleted, prompts drift, evaluation sets go stale, and users discover adversarial inputs. The architecture needs ongoing governance, not only launch-time safeguards.</p>
+
+      <h2>Real-world use cases</h2>
+      <p>These patterns apply to enterprise copilots, knowledge assistants, developer tools, moderation systems, model-evaluation platforms, support automation, document Q&A, search products, and workflow automation. In each case, the AI surface becomes a governance and reliability surface as soon as users depend on it for real decisions.</p>
+      <p>For staff and principal interviews, connect the design to rollout safety, tenant isolation, incident response, data access, cost controls, and measurable quality improvement. That is what separates a feature explanation from a system design answer.</p>
+
+      <h2>Common interview question with detailed answer</h2>
+
+      <h3>Q: How do you prevent the LLM from hallucinating product data that doesn't exist in the context?</h3>
+      <p>
+        The system prompt explicitly instructs the LLM that it may only reference data
+        provided in the CURRENT_ENTITY and RECENT_ACTIVITY context blocks — it must not
+        invent field values, contact names, or historical events not present in the context.
+        Post-generation validation: for factual claims in the response (specific dates,
+        numbers, names), the system checks whether those values appear in the assembled
+        context. Mismatches flag a potential hallucination and add a disclaimer to the
+        response. For high-stakes actions (the LLM proposes to update a field to a value
+        that is not the current value and not a value the user mentioned), the approval
+        card shows a warning: "The AI suggested this value but it was not in the current
+        record data — please verify before applying."
+      </p>
+
+      <h3>Q: How do you handle copilot queries that require data not in the immediate product context (cross-entity queries)?</h3>
+      <p>
+        Cross-entity queries ("show me all deals from this contact" or "what's the team's
+        close rate this quarter?") require data that isn't in the current entity context.
+        These queries trigger a read tool call — the LLM requests specific data by type
+        and filter parameters, the backend queries the product database (applying the user's
+        RBAC filter), and the results are injected into the LLM's context before it
+        generates the response. This is similar to RAG retrieval but against the product
+        database rather than a document corpus. The tool call results are included in the
+        audit log with the query parameters and the access scope used.
+      </p>
+
+      <h3>Q: How would you implement slash commands alongside free-form natural language?</h3>
+      <p>
+        Slash commands (/summarize, /draft-email, /update-stage) provide structured inputs
+        with autocomplete for common operations. They appear in the copilot input field
+        when the user types "/", showing a picker with available commands based on the
+        current entity type and user permissions. Selecting a command may open a form
+        with specific fields (for /update-stage: a dropdown of valid stage values) rather
+        than free text — making the intent unambiguous without relying on NLP parsing.
+        The command is then processed through the same intent classification and approval
+        gate as a natural language equivalent. The UX benefit: slash commands surface
+        available capabilities and reduce the user's need to know what to ask.
+      </p>
+
       <h3>Q: How do you handle a user who asks the copilot questions outside the product domain ("write me a poem")?</h3>
       <p>
         Out-of-domain queries should be detected and handled gracefully — not silently
@@ -425,6 +476,38 @@ export default function CopilotStyleAiAssistantArticle() {
         captures general quality; action reversal rate captures specific outcome quality
         for write actions. Combine both signals in the quality dashboard, segmented by
         action type and entity type, to identify which specific capabilities need improvement.
+      </p>
+
+      <h2>References</h2>
+      <p>
+        <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noreferrer">
+          OWASP Top 10 for Large Language Model Applications
+        </a>{" "}
+        frames prompt injection, excessive agency, sensitive information disclosure,
+        and insecure plugin design risks that directly affect embedded copilots with
+        tool-calling capability.
+      </p>
+      <p>
+        <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noreferrer">
+          NIST AI Risk Management Framework
+        </a>{" "}
+        provides a governance model for mapping, measuring, managing, and documenting
+        AI risk across product surfaces, especially when model outputs can affect users
+        or regulated data.
+      </p>
+      <p>
+        <a href="https://www.w3.org/TR/server-sent-events/" target="_blank" rel="noreferrer">
+          W3C Server-Sent Events
+        </a>{" "}
+        is useful for understanding the streaming transport commonly used for incremental
+        copilot responses, cancellation behavior, and browser compatibility trade-offs.
+      </p>
+      <p>
+        <a href="https://opentelemetry.io/docs/concepts/signals/traces/" target="_blank" rel="noreferrer">
+          OpenTelemetry Traces
+        </a>{" "}
+        gives the observability vocabulary needed to trace context assembly, model calls,
+        approval decisions, tool execution, retries, and rollback outcomes across services.
       </p>
     </ArticleLayout>
   );

@@ -1,1 +1,5 @@
-# Design a device/session management system — Example 2
+# Device Session Management System - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

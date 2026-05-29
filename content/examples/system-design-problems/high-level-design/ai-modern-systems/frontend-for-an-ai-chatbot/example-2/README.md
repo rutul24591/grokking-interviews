@@ -1,1 +1,5 @@
-# Design a frontend for an AI chatbot (streaming, history, multimodal) — Example 2
+# Frontend FOR AN AI Chatbot - Example 2
+
+Concrete AI product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

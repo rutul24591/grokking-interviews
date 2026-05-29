@@ -7,94 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-cart-checkout-concurrency",
-  title: "Design Cart + Checkout at Scale with Concurrency",
-  description:
-    "Architecture for cart and checkout at scale: cart service with optimistic locking for concurrent updates, inventory reservation with Redis atomic operations, price snapshot at checkout, idempotent payment processing, saga pattern for distributed checkout transaction, flash sale concurrency handling, checkout session state machine, and rollback on payment failure.",
+  title: "Design Cart and Checkout Concurrency",
+  description: "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery.",
   category: "high-level-design",
   subcategory: "ecommerce-marketplace",
   slug: "cart-checkout-concurrency",
-  wordCount: 5200,
-  readingTime: 32,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "ecommerce", "cart", "checkout", "concurrency", "saga", "inventory", "idempotency"],
-  relatedTopics: ["amazon-flipkart-frontend", "inventory-aware-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "ecommerce", "marketplace", "checkout", "inventory", "payments"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design Cart and Checkout Concurrency is a commerce correctness system wrapped in a shopping experience. A principal-ready design treats cart and checkout concurrency as a coordinated set of catalog, pricing, inventory, payment, order, fulfillment, fraud, and support workflows rather than a collection of product cards.",
+  "The hardest part is that the user-facing promise is assembled from many independently changing facts: product availability, seller status, delivery promise, promotion eligibility, payment authorization, tax, shipping, subscription entitlement, and return/refund policy.",
+  "The design must define which state is authoritative and which state is a projection. Catalog pages, recommendations, facet counts, delivery estimates, and tracking views can lag. Payment, order creation, inventory reservation, subscription entitlement, and refund/return decisions require stronger server-side consistency and auditability.",
+  "Marketplaces are adversarial. Sellers can manipulate listings, buyers can abuse returns, bots can attack flash sales, promotion rules can be exploited, and recommendation systems can amplify low-quality inventory. Abuse controls are part of the architecture.",
+  "A staff/principal answer should explain how the system handles scale events, provider failures, stale inventory, duplicate checkout attempts, fraud/risk review, customer support reconstruction, and rollback after bad pricing, promotion, or recommendation changes."
+];
+const concepts = [
+  "The first concept is promise integrity. cart snapshot, price validation, and inventory hold produce the promise shown to the customer, but final purchase or refund decisions must revalidate authoritative state.",
+  "The second concept is idempotent commerce intent. Add-to-cart, quote, reserve, pay, place order, cancel, return, refund, and subscription change should converge under retries, double-clicks, browser refresh, provider callbacks, and mobile reconnect.",
+  "The third concept is inventory and price freshness. Read surfaces can use cached or eventually consistent data, but checkout and refunds need fresh validation with explicit handling when the promise changes.",
+  "The fourth concept is lifecycle state. Cart, quote, hold, payment intent, order, shipment, return, refund, subscription, and entitlement each need explicit states, expiry, transition history, and support visibility.",
+  "The fifth concept is risk and policy. Fraud scoring, seller trust, return abuse, promotion eligibility, payment risk, regulatory constraints, and marketplace policy should influence flows without making the UI opaque.",
+  "The sixth concept is observability. Track conversion, quote mismatch, inventory hold failure, payment pending duration, refund latency, recommendation quality, pricing rollback, carrier lag, and support contact rate."
+];
+const architecture = [
+  "The architecture contains cart snapshot, price validation, inventory hold, payment intent, order finalizer. Read APIs serve fast browse and discovery views. Transaction APIs own authoritative quote, reservation, payment, order, entitlement, and refund transitions. Event streams drive search, recommendations, notifications, analytics, and support timelines.",
+  "Every transaction should start from a durable intent: cart snapshot, pricing quote, inventory hold, payment intent, subscription change request, or return authorization. The UI renders that intent and its current state rather than inventing completion locally.",
+  "The system should use versioned source facts. Catalog version, price quote version, promotion version, inventory hold ID, payment provider ID, tax/shipping quote, return policy version, and entitlement version allow support and reconciliation to explain outcomes.",
+  "Browse surfaces can degrade gracefully. If recommendations fail, show popular or editorial products. If facets lag, show primary results. If delivery estimate is stale, mark it as estimate and revalidate before checkout.",
+  "Transactional surfaces should fail safely. Checkout should not double-charge. Dynamic pricing should not show one price and capture another without explanation. Subscription changes should not grant or remove entitlement without durable billing state.",
+  "Operations need controls for promotion rollback, pricing kill switch, recommendation demotion, inventory hold release, payment provider failover, refund retry, return fraud review, and customer-visible incident messaging."
+];
+const tradeoffs = [
+  "Caching catalog and listing data improves latency and cost, but stale data can mislead users. The defensible design caches browse state while revalidating price, stock, eligibility, and delivery at transaction boundaries.",
+  "Early inventory holds reduce customer disappointment but can reduce inventory utilization and enable hoarding. Late holds improve utilization but increase checkout failure. TTL-based holds at review/payment are usually the compromise.",
+  "Personalized recommendations improve conversion but can conflict with business constraints such as inventory health, fairness, ads, seller quality, and safety. Ranking needs guardrails beyond click-through rate.",
+  "Dynamic pricing can improve marketplace efficiency but can reduce trust if explanations, quote TTLs, and audit trails are weak. Users should understand whether a price is locked, estimated, personalized, or expired.",
+  "Synchronous payment/order completion gives simple UX but breaks when payment providers and banks are asynchronous. Pending states and webhook-driven completion are more reliable, with a more complex UI.",
+  "Strict fraud controls reduce loss but create false positives and conversion loss. Risk-based step-up, review queues, and appeal/support flows are better than a single hard threshold."
+];
+const practices = [
+  "Represent commerce workflows as state machines: quote, reserve, authorize, confirm, fulfill, return, refund, renew, cancel, dispute, and reconcile.",
+  "Use deterministic idempotency keys for cart mutations, payment attempts, order finalization, subscription changes, refund requests, and return authorizations.",
+  "Keep payment and sensitive data out of product JavaScript where possible. Use hosted fields, tokenization, webhook verification, and redacted logs.",
+  "Expose truthful UI states: estimate, locked quote, pending payment, inventory hold expired, under review, refund processing, return approved, carrier delayed, or entitlement pending.",
+  "Build support reconstruction views. Operators need cart snapshot, quote, hold, payment, order, shipment, return, refund, entitlement, provider callback, and customer notification history.",
+  "Design rollback and kill switches for prices, promotions, recommendations, inventory reservations, payment providers, subscription entitlement rules, and return workflows.",
+  "Instrument by seller, item, category, payment rail, region, delivery method, promotion, risk bucket, and app version. Commerce incidents are rarely evenly distributed."
+];
+const pitfalls = [
+  "double submit is a product trust failure. It should be handled through authoritative validation, explicit state, and support-visible history instead of silent UI correction.",
+  "price drift often appears when browse projections are used as transaction truth. The system should treat cached results as hints, not final commitments.",
+  "expired hold requires user-facing recovery. The UI should explain what changed and offer safe next actions rather than forcing a generic retry.",
+  "order without payment needs operational tooling. Manual database repair is not an acceptable support workflow for money, inventory, entitlement, or returns.",
+  "Another pitfall is optimizing only conversion. Commerce designs also need fraud loss, refund rate, return abuse, support contacts, seller fairness, accessibility, and long-term trust metrics.",
+  "Teams also forget regional and regulatory differences. Tax, payment methods, return windows, data retention, invoice rules, and consumer protection obligations vary by market."
+];
+const useCases = [
+  "guest checkout requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "multi-tab cart requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "flash sale checkout requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "During a flash sale, the system should throttle bots, use inventory holds, show truthful scarcity, protect checkout idempotency, and degrade nonessential widgets.",
+  "During a bad price or promotion rollout, operators should stop the rule, identify affected quotes and orders, decide honor/cancel policy, notify customers, and preserve audit evidence.",
+  "During a provider outage, the UI should show pending or alternate payment options where safe, avoid duplicate captures, and reconcile late callbacks."
+];
+const questions = [
+  {
+    "question": "How would you design cart and checkout concurrency end to end?",
+    "answer": "I would separate fast browse projections from authoritative transaction workflows. Browse uses catalog, search, recommendations, and cached availability. Transaction boundaries create durable intents for quote, inventory hold, payment, order, entitlement, return, or refund. The backend owns validation, idempotency, risk, ledger/order state, and support history. The UI renders truthful states and safe recovery actions."
+  },
+  {
+    "question": "Why this architecture over directly using catalog/search data for checkout or returns?",
+    "answer": "Catalog and search projections are optimized for discovery, not correctness. They can be stale or policy-filtered differently. Checkout, subscription, and returns require fresh authoritative validation and durable transition history. The trade-off is more backend complexity, but it prevents oversell, double charge, bad entitlement, and refund disputes."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are double submit, price drift, expired hold, order without payment, plus flash-sale bot traffic, hot SKUs, provider outages, promotion bugs, fraud rings, recommendation drift, and support overload. Prevention requires cache strategy, authoritative revalidation, idempotency, holds, risk controls, staged rollout, and operational kill switches."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Browse, search, recommendations, facet counts, tracking projections, and analytics can be eventually consistent with freshness indicators. Price capture, inventory hold, payment, order creation, subscription entitlement, refund approval, and return authorization need strong server-owned state and audit. The answer should classify each commerce state explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with pending states, idempotent retries, provider callbacks, reconciliation, and support timelines. Rollback uses price/promotion kill switches, recommendation demotion, entitlement correction, refund/reversal, or compensating transactions. Abuse controls include bot defense, risk scoring, rate limits, and return fraud review. Privacy requires redacted payment and customer data. Cost is controlled through caching, async projections, and telemetry sampling. Observability tracks conversion, mismatch, pending, refund, risk, and support metrics."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend eventual consistency for browse because it improves latency and cost, but not for money, entitlement, inventory reservation, or refund decisions. I would defend TTL holds because they balance utilization and correctness. I would defend pending payment states because external rails are asynchronous and duplicate charges are worse than waiting."
+  }
+];
+const references = [
+  {
+    "label": "Stripe PaymentIntents documentation",
+    "href": "https://docs.stripe.com/payments/payment-intents"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Elasticsearch guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "PCI Security Standards Council",
+    "href": "https://www.pcisecuritystandards.org/"
+  },
+  {
+    "label": "Shopify engineering blog",
+    "href": "https://shopify.engineering/"
+  },
+  {
+    "label": "AWS architecture blog",
+    "href": "https://aws.amazon.com/blogs/architecture/"
+  }
+];
 
 export default function CartCheckoutConcurrencyArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Cart and checkout is where the money is — and where the hardest concurrency problems in e-commerce live. Three scenarios create race conditions that naive implementations lose money on. First, inventory overselling: if 3 users simultaneously try to purchase the last unit of a product, all three might read "1 in stock" and proceed to checkout. Without atomic reservation, all three orders complete and the warehouse ships one package while two customers receive cancellation emails. Second, price race conditions: if a flash sale starts and drops a product's price by 50% at the exact moment a user is on the checkout confirmation page, should they get the old price (locked in at cart-add time) or the new price? Most platforms snapshot the price at checkout-initiation time — once the user sees the checkout price, that price is locked for a 15-minute session. Third, concurrent cart updates: if the user opens two browser tabs and adds items in both simultaneously, the cart must serialize the updates correctly without silent data loss.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The checkout process is also a distributed transaction: it spans cart validation (read inventory), inventory reservation (write inventory), payment processing (external API call), order creation (write orders DB), and inventory deduction (write inventory again). Any step can fail. The system must ensure that a partial completion leaves the customer and the business in a consistent state — paid but no order created is worse than no payment and no order.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Cart service, checkout session, inventory reservation, payment integration with saga pattern. Not in scope: payment gateway implementation, fraud detection, or warehouse management.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/cart-checkout-concurrency.svg" alt="Design Cart and Checkout Concurrency architecture" caption="Architecture view: browse projections, transaction state, risk controls, support history, and operational boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/cart-checkout-concurrency-flow.svg" alt="Design Cart and Checkout Concurrency flow" caption="Flow view: user intent, validation, hold or quote, payment/order/refund state, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/cart-checkout-concurrency-operations.svg" alt="Design Cart and Checkout Concurrency operations" caption="Operations view: stale data, provider failure, fraud, rollback, reconciliation, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Cart:</strong> Add/update/remove items, persist cart across sessions (logged-in user) and devices, merge guest cart with user cart on login, apply coupon codes, show estimated delivery date and total price with tax.</li>
-          <li><strong>Checkout initiation:</strong> Validate all items are in stock, snapshot current prices, lock prices for 15 minutes (checkout session), present order summary with final price breakdown, select delivery address and payment method.</li>
-          <li><strong>Inventory reservation:</strong> Atomically reserve inventory for items in the checkout session. Reserved inventory is unavailable to other buyers for the 15-minute session duration. If the session expires without payment, reservation is released.</li>
-          <li><strong>Payment:</strong> Process payment via external gateway. If payment succeeds, confirm order and deduct inventory. If payment fails, release inventory reservation and return to cart. Idempotent: retrying a failed payment request should not double-charge.</li>
-          <li><strong>Flash sale handling:</strong> During flash sales, checkout must handle 50K+ concurrent requests for limited-quantity items. Queue-based throttling must prevent overselling without crashing the service.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Cart update latency:</strong> P99 &lt; 100ms for add-to-cart. Cart reads are served from Redis cache (&lt;10ms).</li>
-          <li><strong>Checkout initiation:</strong> P99 &lt; 500ms (includes price snapshot, inventory check, session creation).</li>
-          <li><strong>Zero overselling:</strong> Under any concurrency level, inventory must never go below zero. This is a hard correctness requirement — a single oversell event is a business incident.</li>
-          <li><strong>Idempotency:</strong> All checkout and payment operations are idempotent. Retrying the same request (network timeout, double submit) must produce exactly one order and one charge.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system decomposes into three services. The Cart Service manages the user's item selection state (Redis-backed for speed, PostgreSQL-backed for durability). The Checkout Service owns the checkout session lifecycle (price snapshot → inventory reservation → payment → order creation) implemented as a saga with compensating transactions at each step. The Inventory Service manages stock levels using Redis atomic operations (DECRBY) as the hot-path reservation layer, backed by PostgreSQL as the durable inventory ledger. The three services communicate via synchronous REST for user-facing operations (where latency matters) and Kafka events for eventual-consistency operations (order confirmation emails, analytics, warehouse notification).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/cart-checkout-concurrency.svg"
-          alt="Cart and checkout at scale architecture showing cart service (Redis hash per user cart TTL 30d; PostgreSQL durable backup; add-to-cart optimistic locking version field; guest cart UUID cookie merge on login; coupon validation service; P99 <100ms), checkout session state machine (INITIATED price_snapshot created inventory_reserved payment_processing payment_succeeded order_created COMPLETED or FAILED with compensating transactions at each step; session TTL 15min Redis; price locked at INITIATED), inventory reservation (Redis DECRBY atomic no oversell; WATCH/MULTI/EXEC for concurrent reservation; reservation key reserved:{skuId} TTL 15min; on session expiry INCRBY release; PostgreSQL inventory_ledger durable write after payment confirmed), payment saga (idempotency_key = checkoutSessionId+attempt; POST /payment retry safe; payment gateway webhook confirms async; on success → create order → deduct inventory confirmed; on failure → INCRBY release reservation → notify user retry), flash sale concurrency (token bucket rate limiter per SKU; queue-based: checkout requests enter Redis sorted set by timestamp; worker dequeues and processes serially per SKU; user sees position in queue; fair ordering FIFO), cart merge on login (guest cartId → user account cart; UNION strategy: user item quantity takes priority if conflict; implemented as Redis ZUNIONSTORE; atomic swap old guest key → user key), order confirmation saga (Kafka order-created event → warehouse notification → email confirmation → analytics → loyalty points; each consumer idempotent; retry with backoff)."
-          caption="Cart (Redis hash + PostgreSQL backup, optimistic locking), checkout session state machine (price snapshot → inventory reservation → payment → order), atomic Redis DECRBY for zero-oversell inventory, payment saga with idempotency key and compensating transactions, flash sale queue-based throttling, and cart merge on login"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Cart Service and Concurrent Updates</h3>
-        <HighlightBlock as="p" tier="important">Each user&apos;s cart is stored as a Redis Hash: HSET cart:{"{userId}"} {"{skuId}"} {"{quantity,addedAt,priceAtAdd}"} with a 30-day TTL. Redis Hash operations are atomic at the key level, so HSET cart:{"{userId}"} sku123 3 (setting quantity to 3) is safe against concurrent updates from multiple devices. However, &quot;add N to existing quantity&quot; (HINCRBY cart:{"{userId}"} sku123 1) is atomic at the operation level, two concurrent HINCRBY calls will correctly add their quantities without racing. The cart is also written to PostgreSQL asynchronously (via a background job that syncs Redis to PostgreSQL every 60 seconds) for durability. If Redis loses the cart (eviction or failure), the PostgreSQL copy is loaded on the next cart read.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Guest-to-user cart merge: when a guest user adds items to their cart (stored under cart:{"{guestId}"}) and then logs in, the guest cart must be merged with any existing user cart. The merge strategy: for items in both carts, the user&apos;s existing quantity takes priority (the user may have intentionally set a quantity). For items only in the guest cart, they are added to the user cart. The merge is implemented as a Redis Lua script (atomic): SCAN the guest cart, MERGE into user cart with the priority rule, DELETE the guest cart key. Lua scripts in Redis execute atomically (no interleaving with other commands), preventing a race where a concurrent update to the guest cart during the merge is lost.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Checkout Session State Machine</h3>
-        <HighlightBlock as="p" tier="important">The checkout session progresses through states: INITIATED → PRICE_SNAPSHOTTED → INVENTORY_RESERVED → PAYMENT_PROCESSING → PAYMENT_SUCCEEDED → ORDER_CREATED → COMPLETED. Each state transition is a checkpoint written to PostgreSQL. If the process fails at any state, a compensating transaction restores consistency. INITIATED: checkout session created with a UUID, TTL 15 minutes. A background job runs every minute to find sessions with TTL elapsed and runs their compensating transactions (releasing inventory reservations). PRICE_SNAPSHOTTED: the current prices of all items in the session are read from the Product Service and stored in the session record. These prices are immutable for the session lifetime — even if the catalog price changes, the user sees the snapshotted price. INVENTORY_RESERVED: for each item, the Inventory Service atomically decrements the available stock in Redis (DECRBY). If any item's DECRBY would result in a negative value, the entire reservation is aborted (WATCH/MULTI/EXEC or Lua script) and the user is shown an "item is out of stock" error. PAYMENT_PROCESSING: the Payment Service submits the charge to the external gateway with an idempotency key (checkout_session_id + attempt_number). The gateway processes the charge asynchronously; the frontend polls for result or receives a webhook.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Atomic Inventory Reservation</h3>
-        <HighlightBlock as="p" tier="important">The core of zero-oversell is the atomic inventory decrement. The naive approach (read stock → check if sufficient → decrement) has a TOCTOU (time-of-check to time-of-use) race: two concurrent checkouts can both read &quot;1 in stock&quot; and both proceed to decrement, resulting in stock of -1. The correct approach uses a Lua script in Redis that atomically checks and decrements in a single transaction: local stock = redis.call(&apos;GET&apos;, KEYS[1]); if tonumber(stock) &gt;= tonumber(ARGV[1]) then return redis.call(&apos;DECRBY&apos;, KEYS[1], ARGV[1]); else return -1; end. This Lua script executes as a single Redis command (atomic), eliminating the TOCTOU race. If the script returns -1 (insufficient stock), the checkout is rejected immediately.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Reservation TTL: when inventory is reserved, a separate key reserved:{"{checkoutSessionId}"}:{"{skuId}"} = {"{quantity}"} is created with the same 15-minute TTL as the checkout session. A background Reaper process monitors expired session keys and runs INCRBY to release the reserved quantity back to available stock. The Reaper uses Redis keyspace notifications (CONFIG SET notify-keyspace-events Ex) to be notified when a key expires, triggering the release without polling.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Payment Saga and Idempotency</h3>
-        <HighlightBlock as="p" tier="important">The payment step is the most failure-prone: the external payment gateway call can timeout, return a non-deterministic error, or succeed but fail to deliver the webhook. Idempotency key: every payment API call includes an idempotency key (checkout_session_id + attempt_number). If the same call is retried (network timeout, duplicate submit), the gateway returns the cached result of the first call — the user is not double-charged. The checkout frontend disables the "Place Order" button immediately on click and re-enables it only on confirmed failure, preventing accidental duplicate submissions.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Saga compensating transactions: if payment fails, the Checkout Service executes the compensating transaction: (1) INCRBY the reserved inventory back to available (release reservation), (2) set the checkout session status to PAYMENT_FAILED, (3) return the cart to its pre-checkout state. If ORDER_CREATED fails after payment succeeds (a rare but possible scenario — database write failure after a successful payment), the Checkout Service publishes an OrderCreationFailed event. A reconciliation job (running every 15 minutes) finds paid sessions with no corresponding order record and creates the order retroactively, then sends the confirmation email with a note ("Your order was slightly delayed in processing — here is your order confirmation"). This dual-write approach (payment then order) prioritizes not losing money over order record consistency.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Flash Sale Concurrency</h3>
-        <HighlightBlock as="p" tier="important">During a flash sale (e.g., 1000 units at 50% off, sale starts at 12:00 PM), the checkout service may receive 50K+ concurrent requests in the first second. The atomic Redis DECRBY handles the oversell prevention, but the checkout service must also not crash under this load. A token bucket rate limiter per SKU allows a maximum of 500 checkout initiations per second per flash-sale item. Requests that exceed the rate limit are queued in a Redis sorted set (ZADD flash_queue:{"{skuId}"} {"{timestamp}"} {"{requestId}"}). A queue processor dequeues requests FIFO (ZPOPMIN) and processes them serially. Users in the queue see a &quot;You&apos;re in position N, estimated wait: X seconds&quot; message via SSE, updating as the queue drains. This provides a fair, first-come-first-served experience rather than random success or failure under load.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Redis versus database for inventory: using Redis as the hot-path inventory store (with PostgreSQL as the durable ledger) means inventory operations are fast (&lt;5ms) and atomic (Lua scripts). The risk is Redis data loss (AOF persistence mitigates this but adds write latency). An alternative is using PostgreSQL SELECT FOR UPDATE to atomically reserve inventory. This eliminates the Redis dependency at the cost of higher latency (PostgreSQL row locks are ~10ms vs. Redis &lt;1ms) and lower throughput (PostgreSQL row lock contention at high concurrency limits throughput to ~5K reservations/second vs. Redis Lua's ~100K/second). For flash sales with 50K+ concurrent reservations, PostgreSQL row locking alone is insufficient. Redis is the right choice for the hot path.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Price snapshot timing: snapshotting prices at checkout initiation (not at cart-add time) means a user can add a product at $100, leave it in their cart for 2 weeks as the price rises to $150, and proceed to checkout and see $150. This is surprising but legally correct (the cart is not a contract). Some platforms display the price at cart-add time as a "you added this at $100" historical note while showing the current checkout price. A small number of platforms lock prices at cart-add time for a 24-hour window — this requires storing price-at-add in the cart item record and recalculating the checkout price as min(price_at_add, current_price), which adds complexity and can conflict with dynamic pricing logic.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">Cart and checkout at scale requires atomic inventory control and a distributed transaction saga. Cart: Redis Hash per user (HINCRBY atomic for concurrent updates, PostgreSQL backup, Lua-script merge on login). Checkout session state machine: INITIATED → price snapshot (immutable for 15min) → inventory reservation (Lua script DECRBY, no TOCTOU race) → payment (idempotency key prevents double-charge) → order creation (saga with compensating transactions). Zero-oversell: Redis Lua atomic check-and-decrement; reservation TTL + keyspace notification Reaper releases expired reservations. Payment saga: idempotency key (session_id + attempt), compensating transaction on failure (INCRBY release + session PAYMENT_FAILED), reconciliation job for rare post-payment order creation failures. Flash sale: token bucket rate limiter per SKU (500/s) + FIFO Redis sorted set queue with SSE position updates. The defining constraint: inventory reservation must be an atomic operation — any read-check-write pattern has a TOCTOU race that causes overselling at scale.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

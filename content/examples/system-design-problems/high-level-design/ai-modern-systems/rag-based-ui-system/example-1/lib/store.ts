@@ -1,11 +1,20 @@
-// Minimal in-memory store (replace with Zustand/React Query in UI integration).
-function createStore() {
-  const map = new Map();
+function createAnswerTraceStore() {
+  const traces = [];
+
   return {
-    get(key) { return map.get(key) ?? null; },
-    set(key, value) { map.set(key, value); },
-    delete(key) { map.delete(key); },
+    record(trace) {
+      traces.push({
+        ...trace,
+        recordedAt: new Date('2026-05-19T00:00:00.000Z').toISOString(),
+      });
+    },
+    list() {
+      return [...traces];
+    },
+    findByQuery(query) {
+      return traces.filter((trace) => trace.query === query);
+    },
   };
 }
 
-module.exports = { createStore };
+module.exports = { createAnswerTraceStore };

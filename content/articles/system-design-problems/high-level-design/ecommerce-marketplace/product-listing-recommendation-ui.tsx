@@ -7,92 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-product-listing-recommendation-ui",
-  title: "Design Product Listing + Recommendation System UI",
-  description:
-    "Architecture for a product listing and recommendation UI: search-backed faceted filtering with Elasticsearch, real-time stock badge updates, sponsored product injection, collaborative filtering recommendation engine, two-stage retrieval-ranking pipeline, above-the-fold LCP optimization, infinite scroll with cursor pagination, and A/B tested recommendation placements.",
+  title: "Design a Product Listing and Recommendation UI",
+  description: "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery.",
   category: "high-level-design",
   subcategory: "ecommerce-marketplace",
   slug: "product-listing-recommendation-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "ecommerce", "product-listing", "recommendation", "elasticsearch", "ranking", "infinite-scroll"],
-  relatedTopics: ["amazon-flipkart-frontend", "cart-checkout-concurrency"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "ecommerce", "marketplace", "checkout", "inventory", "payments"],
+  relatedTopics: [],
 };
 
-export default function ProductListingRecommendationUIArticle() {
+const definition = [
+  "Design a Product Listing and Recommendation UI is a commerce correctness system wrapped in a shopping experience. A principal-ready design treats a product listing and recommendation UI as a coordinated set of catalog, pricing, inventory, payment, order, fulfillment, fraud, and support workflows rather than a collection of product cards.",
+  "The hardest part is that the user-facing promise is assembled from many independently changing facts: product availability, seller status, delivery promise, promotion eligibility, payment authorization, tax, shipping, subscription entitlement, and return/refund policy.",
+  "The design must define which state is authoritative and which state is a projection. Catalog pages, recommendations, facet counts, delivery estimates, and tracking views can lag. Payment, order creation, inventory reservation, subscription entitlement, and refund/return decisions require stronger server-side consistency and auditability.",
+  "Marketplaces are adversarial. Sellers can manipulate listings, buyers can abuse returns, bots can attack flash sales, promotion rules can be exploited, and recommendation systems can amplify low-quality inventory. Abuse controls are part of the architecture.",
+  "A staff/principal answer should explain how the system handles scale events, provider failures, stale inventory, duplicate checkout attempts, fraud/risk review, customer support reconstruction, and rollback after bad pricing, promotion, or recommendation changes."
+];
+const concepts = [
+  "The first concept is promise integrity. listing index, facet engine, and recommendation ranker produce the promise shown to the customer, but final purchase or refund decisions must revalidate authoritative state.",
+  "The second concept is idempotent commerce intent. Add-to-cart, quote, reserve, pay, place order, cancel, return, refund, and subscription change should converge under retries, double-clicks, browser refresh, provider callbacks, and mobile reconnect.",
+  "The third concept is inventory and price freshness. Read surfaces can use cached or eventually consistent data, but checkout and refunds need fresh validation with explicit handling when the promise changes.",
+  "The fourth concept is lifecycle state. Cart, quote, hold, payment intent, order, shipment, return, refund, subscription, and entitlement each need explicit states, expiry, transition history, and support visibility.",
+  "The fifth concept is risk and policy. Fraud scoring, seller trust, return abuse, promotion eligibility, payment risk, regulatory constraints, and marketplace policy should influence flows without making the UI opaque.",
+  "The sixth concept is observability. Track conversion, quote mismatch, inventory hold failure, payment pending duration, refund latency, recommendation quality, pricing rollback, carrier lag, and support contact rate."
+];
+const architecture = [
+  "The architecture contains listing index, facet engine, recommendation ranker, ad injector, quality guardrails. Read APIs serve fast browse and discovery views. Transaction APIs own authoritative quote, reservation, payment, order, entitlement, and refund transitions. Event streams drive search, recommendations, notifications, analytics, and support timelines.",
+  "Every transaction should start from a durable intent: cart snapshot, pricing quote, inventory hold, payment intent, subscription change request, or return authorization. The UI renders that intent and its current state rather than inventing completion locally.",
+  "The system should use versioned source facts. Catalog version, price quote version, promotion version, inventory hold ID, payment provider ID, tax/shipping quote, return policy version, and entitlement version allow support and reconciliation to explain outcomes.",
+  "Browse surfaces can degrade gracefully. If recommendations fail, show popular or editorial products. If facets lag, show primary results. If delivery estimate is stale, mark it as estimate and revalidate before checkout.",
+  "Transactional surfaces should fail safely. Checkout should not double-charge. Dynamic pricing should not show one price and capture another without explanation. Subscription changes should not grant or remove entitlement without durable billing state.",
+  "Operations need controls for promotion rollback, pricing kill switch, recommendation demotion, inventory hold release, payment provider failover, refund retry, return fraud review, and customer-visible incident messaging."
+];
+const tradeoffs = [
+  "Caching catalog and listing data improves latency and cost, but stale data can mislead users. The defensible design caches browse state while revalidating price, stock, eligibility, and delivery at transaction boundaries.",
+  "Early inventory holds reduce customer disappointment but can reduce inventory utilization and enable hoarding. Late holds improve utilization but increase checkout failure. TTL-based holds at review/payment are usually the compromise.",
+  "Personalized recommendations improve conversion but can conflict with business constraints such as inventory health, fairness, ads, seller quality, and safety. Ranking needs guardrails beyond click-through rate.",
+  "Dynamic pricing can improve marketplace efficiency but can reduce trust if explanations, quote TTLs, and audit trails are weak. Users should understand whether a price is locked, estimated, personalized, or expired.",
+  "Synchronous payment/order completion gives simple UX but breaks when payment providers and banks are asynchronous. Pending states and webhook-driven completion are more reliable, with a more complex UI.",
+  "Strict fraud controls reduce loss but create false positives and conversion loss. Risk-based step-up, review queues, and appeal/support flows are better than a single hard threshold."
+];
+const practices = [
+  "Represent commerce workflows as state machines: quote, reserve, authorize, confirm, fulfill, return, refund, renew, cancel, dispute, and reconcile.",
+  "Use deterministic idempotency keys for cart mutations, payment attempts, order finalization, subscription changes, refund requests, and return authorizations.",
+  "Keep payment and sensitive data out of product JavaScript where possible. Use hosted fields, tokenization, webhook verification, and redacted logs.",
+  "Expose truthful UI states: estimate, locked quote, pending payment, inventory hold expired, under review, refund processing, return approved, carrier delayed, or entitlement pending.",
+  "Build support reconstruction views. Operators need cart snapshot, quote, hold, payment, order, shipment, return, refund, entitlement, provider callback, and customer notification history.",
+  "Design rollback and kill switches for prices, promotions, recommendations, inventory reservations, payment providers, subscription entitlement rules, and return workflows.",
+  "Instrument by seller, item, category, payment rail, region, delivery method, promotion, risk bucket, and app version. Commerce incidents are rarely evenly distributed."
+];
+const pitfalls = [
+  "irrelevant ranking is a product trust failure. It should be handled through authoritative validation, explicit state, and support-visible history instead of silent UI correction.",
+  "filter mismatch often appears when browse projections are used as transaction truth. The system should treat cached results as hints, not final commitments.",
+  "ad conflict requires user-facing recovery. The UI should explain what changed and offer safe next actions rather than forcing a generic retry.",
+  "low-stock recommendation needs operational tooling. Manual database repair is not an acceptable support workflow for money, inventory, entitlement, or returns.",
+  "Another pitfall is optimizing only conversion. Commerce designs also need fraud loss, refund rate, return abuse, support contacts, seller fairness, accessibility, and long-term trust metrics.",
+  "Teams also forget regional and regulatory differences. Tax, payment methods, return windows, data retention, invoice rules, and consumer protection obligations vary by market."
+];
+const useCases = [
+  "category listing page requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "personalized homepage rail requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "search result grid requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "During a flash sale, the system should throttle bots, use inventory holds, show truthful scarcity, protect checkout idempotency, and degrade nonessential widgets.",
+  "During a bad price or promotion rollout, operators should stop the rule, identify affected quotes and orders, decide honor/cancel policy, notify customers, and preserve audit evidence.",
+  "During a provider outage, the UI should show pending or alternate payment options where safe, avoid duplicate captures, and reconcile late callbacks."
+];
+const questions = [
+  {
+    "question": "How would you design a product listing and recommendation UI end to end?",
+    "answer": "I would separate fast browse projections from authoritative transaction workflows. Browse uses catalog, search, recommendations, and cached availability. Transaction boundaries create durable intents for quote, inventory hold, payment, order, entitlement, return, or refund. The backend owns validation, idempotency, risk, ledger/order state, and support history. The UI renders truthful states and safe recovery actions."
+  },
+  {
+    "question": "Why this architecture over directly using catalog/search data for checkout or returns?",
+    "answer": "Catalog and search projections are optimized for discovery, not correctness. They can be stale or policy-filtered differently. Checkout, subscription, and returns require fresh authoritative validation and durable transition history. The trade-off is more backend complexity, but it prevents oversell, double charge, bad entitlement, and refund disputes."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are irrelevant ranking, filter mismatch, ad conflict, low-stock recommendation, plus flash-sale bot traffic, hot SKUs, provider outages, promotion bugs, fraud rings, recommendation drift, and support overload. Prevention requires cache strategy, authoritative revalidation, idempotency, holds, risk controls, staged rollout, and operational kill switches."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Browse, search, recommendations, facet counts, tracking projections, and analytics can be eventually consistent with freshness indicators. Price capture, inventory hold, payment, order creation, subscription entitlement, refund approval, and return authorization need strong server-owned state and audit. The answer should classify each commerce state explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with pending states, idempotent retries, provider callbacks, reconciliation, and support timelines. Rollback uses price/promotion kill switches, recommendation demotion, entitlement correction, refund/reversal, or compensating transactions. Abuse controls include bot defense, risk scoring, rate limits, and return fraud review. Privacy requires redacted payment and customer data. Cost is controlled through caching, async projections, and telemetry sampling. Observability tracks conversion, mismatch, pending, refund, risk, and support metrics."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend eventual consistency for browse because it improves latency and cost, but not for money, entitlement, inventory reservation, or refund decisions. I would defend TTL holds because they balance utilization and correctness. I would defend pending payment states because external rails are asynchronous and duplicate charges are worse than waiting."
+  }
+];
+const references = [
+  {
+    "label": "Stripe PaymentIntents documentation",
+    "href": "https://docs.stripe.com/payments/payment-intents"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Elasticsearch guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "PCI Security Standards Council",
+    "href": "https://www.pcisecuritystandards.org/"
+  },
+  {
+    "label": "Shopify engineering blog",
+    "href": "https://shopify.engineering/"
+  },
+  {
+    "label": "AWS architecture blog",
+    "href": "https://aws.amazon.com/blogs/architecture/"
+  }
+];
+
+export default function ProductListingRecommendationUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A product listing page (PLP) and recommendation system must solve two related but distinct problems. The PLP is a query-driven interface: the user enters a search query or navigates to a category, and the system must return the most relevant products matching their intent, filtered by facets they select, sorted by their preferred ordering. The recommendation system is proactive: without an explicit user query, it predicts what products the user is most likely to be interested in and surfaces them at the right moment (homepage "Recommended for you", PDP "Customers also bought", cart "Frequently bought together"). The two systems share infrastructure (product catalog, user signals, ranking models) but have different latency and freshness requirements and different UI patterns (grid vs. carousel).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The hardest engineering challenge on the PLP is facet performance: a search for "running shoes" in a catalog of 10 million products must return not just the matching products but also the counts for every possible facet value ("Brand: Nike (2,340), Adidas (1,890)...") in under 200ms. Computing these counts naively (scanning all matching products for each facet) is O(N×F) where F is the number of facets—too slow at scale. Elasticsearch solves this via aggregations computed alongside the search query using inverted index structures. The hardest challenge on the recommendation side is cold start (new users with no interaction history) and latency (a recommendation API call should complete in under 50ms to not delay page render).</HighlightBlock>
-        <p><strong>Explicit scope:</strong> PLP with faceted search, infinite scroll, sponsored injection, and recommendations. Not in scope: the search indexing pipeline itself, personalized pricing, or seller-side catalog management.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/product-listing-recommendation-ui.svg" alt="Design a Product Listing and Recommendation UI architecture" caption="Architecture view: browse projections, transaction state, risk controls, support history, and operational boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/product-listing-recommendation-ui-flow.svg" alt="Design a Product Listing and Recommendation UI flow" caption="Flow view: user intent, validation, hold or quote, payment/order/refund state, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/product-listing-recommendation-ui-operations.svg" alt="Design a Product Listing and Recommendation UI operations" caption="Operations view: stale data, provider failure, fraud, rollback, reconciliation, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Product listing:</strong> Full-text search with relevance ranking, category navigation, faceted filtering (brand, price range, rating, attributes), sort options (relevance, price asc/desc, rating, newest), real-time stock status badges, and pagination (infinite scroll for mobile, numbered pages for desktop).</li>
-          <li><strong>Sponsored products:</strong> Paid placements injected at fixed positions (positions 1, 5, 17 in the result grid). Sponsored products are selected by a separate auction system; the PLP receives pre-computed sponsored SKUs and injects them at the specified positions. Click and impression events for sponsored products are tracked separately for billing.</li>
-          <li><strong>Recommendations:</strong> Personalized "Recommended for you" section on homepage and PLP ("You might also like"). "Customers who viewed this also viewed" on PDP. "Frequently bought together" on cart page. Each placement uses a different recommendation algorithm appropriate to the context.</li>
-          <li><strong>Real-time stock:</strong> "Only N left" and "Out of stock" badges must reflect inventory within 60 seconds. Badges update without full page reload (polling or WebSocket push).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Search latency:</strong> P99 &lt; 200ms from query to first result rendered. Facet counts returned in the same response (no second round-trip for facets).</li>
-          <li><strong>Recommendation latency:</strong> P99 &lt; 50ms for recommendation API response. Recommendations must not block page render — they load asynchronously after the main content.</li>
-          <li><strong>Freshness:</strong> New products indexed within 5 minutes of catalog publish. Price changes reflected in search results within 2 minutes.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The PLP is backed by Elasticsearch for search and faceting. When a user applies filters or changes sort order, the frontend sends a query to the Search API (BFF layer), which translates the UI query parameters into an Elasticsearch DSL query with aggregations for facet counts. The response includes the matched products (with pagination cursor) and the facet aggregation results in a single round-trip. The Recommendation API is a separate service backed by a two-stage pipeline: a fast ANN retrieval layer (returns 200 candidates in &lt;20ms from a precomputed embedding index) followed by a lightweight ranking model (LightGBM, scores candidates in &lt;20ms). Recommendations are fetched asynchronously by the frontend after the main search results are displayed — they never block the critical rendering path.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/product-listing-recommendation-ui.svg"
-          alt="Product listing and recommendation UI architecture showing PLP query flow (user search/filter/sort → BFF Search API → Elasticsearch DSL query + aggregations → products + facet counts in single response <200ms P99; pagination cursor-based for infinite scroll; sponsored injection at positions 1 5 17), Elasticsearch index design (product index: title description brand attributes price rating stock; analyzed fields for full-text; keyword fields for facets; nested for variants; index refresh every 2min for price/stock; aggregations: terms brand price_range rating computed alongside query O(1) not O(N*F)), two-stage recommendation pipeline (retrieval: user embedding ANN FAISS top-200 candidates <20ms; ranking: LightGBM feature engineering item affinity recency context <20ms; diversity re-rank no consecutive same-brand; cold start: global popularity + geo-trending fallback), recommendation placements (homepage You might like carousel lazy-loaded after main content; PDP also-viewed collaborative filtering viewed-viewed signals; cart frequently-bought co-purchase signals; all load async never block main render), infinite scroll (IntersectionObserver on sentinel element; cursor pagination from last item_id score; prefetch next page when 80% scrolled; skeleton cards reserve layout CLS=0; restore scroll position on browser back from session storage), real-time stock badges (initial render from ISR snapshot; CSR hydration POST /api/stock itemIds[] on page load; 60s polling for out-of-stock re-check; SSE push for flash sale inventory changes), sponsored injection (auction result pre-computed; inject sku at position 1 5 17 in result array; impression event fired on IntersectionObserver; click event separate billing pipeline)."
-          caption="PLP query flow (Elasticsearch + facet aggregations in single round-trip), two-stage recommendation pipeline (ANN retrieval → LightGBM ranking), sponsored injection at fixed positions, infinite scroll with cursor pagination, async recommendation carousels (never block main render), and real-time stock badge polling"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Elasticsearch Query Design</h3>
-        <HighlightBlock as="p" tier="important">The search query is a bool query combining text matching, filter clauses, and aggregations. Text matching uses a multi-match query across boosted fields: title^3, brand^2, description^1. This weights exact title matches highest, brand matches second, and description matches least. Filters are applied as filter context (not scoring, cached by Elasticsearch): price range (range filter), brand (terms filter on keyword field), rating (range filter on avg_rating field). Aggregations run in parallel with the query: a terms aggregation on brand.keyword returns the top 50 brand values with document counts; a range aggregation on price returns counts per price bucket (0–500, 500–2000, 2000+); a terms aggregation on avg_rating_bucket (a pre-computed integer field 1–5) returns rating distribution.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cursor-based pagination: instead of offset-based pagination (which degrades with large offsets because Elasticsearch must score all N+offset documents), the PLP uses search_after pagination. The first page query returns results sorted by (relevance_score DESC, product_id ASC). The last item's (score, product_id) pair is sent as the search_after parameter in the next request, asking Elasticsearch to return the next page starting from that cursor. This is O(log N) regardless of page depth, making deep pagination in search results feasible.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Faceted Filter UX and State Management</h3>
-        <HighlightBlock as="p" tier="important">Facet state is managed in the URL query string (e.g., ?brand=Nike,Adidas&price=500-2000&sort=price_asc). URL-based state has several advantages: the filtered view is bookmarkable and shareable, browser back/forward navigation works correctly, and server-side rendering can read the initial filter state from the URL without waiting for JavaScript to hydrate. When a user selects a facet, the URL is updated via router.push (shallow routing), triggering a new Elasticsearch query. The new facet counts reflect only the documents matching all currently applied filters — this is "and-filtering": selecting Brand=Nike and Price=500-2000 returns facet counts for the intersection, not for each dimension independently. A key UX detail: the selected facet's own count does not update when you select it (showing "Nike (0)" when you've just selected Nike would be misleading). The self-facet count is held at the pre-selection count or hidden when the filter is applied.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Two-Stage Recommendation Pipeline</h3>
-        <HighlightBlock as="p" tier="important">Stage 1 — Candidate retrieval: the user's interest embedding (a 128-dimensional vector representing their interaction history, computed by a Matrix Factorization or two-tower model trained on purchase/click signals) is looked up from Redis. A FAISS ANN index over all product embeddings returns the 200 most similar products in under 20ms. For the "frequently bought together" placement, the candidate set is retrieved differently: a co-purchase graph (Spark-computed nightly, stored in Redis as adjacency lists) returns products frequently purchased with the current cart items.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Stage 2 — Ranking: the 200 candidates are scored by a LightGBM model with features: user-item affinity score from the embedding similarity, item popularity (global CTR), item recency (days since listing), price relative to user's historical price sensitivity, and context features (page type, device, time of day). LightGBM scores 200 candidates in under 10ms. Post-ranking, a diversity filter ensures no more than 2 consecutive items from the same brand and at least 20% of slots from outside the user's top 3 categories (exploration budget). Cold start: for users with fewer than 5 interactions, the recommendation API returns geo-trending products (most purchased items in the user's region in the past 7 days) blended with globally popular items, gradually shifting to personalized recommendations as signals accumulate.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Infinite Scroll and Performance</h3>
-        <HighlightBlock as="p" tier="important">Infinite scroll is implemented with IntersectionObserver on a sentinel element 800px above the bottom of the list. When the sentinel becomes visible (user is 800px from the bottom), the next page of results is prefetched. The prefetch calls the Search API with the next cursor and stages the results in a ref; they are appended to the displayed list when the user scrolls close enough to trigger render. This two-step pattern (prefetch ahead, then render on approach) ensures the user never sees a loading spinner during normal scroll velocity. Skeleton cards are rendered for the prefetched positions while the network request is in flight, reserving layout space (preventing CLS) and giving visual feedback that more content is loading.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Scroll position restoration: when a user navigates from the PLP to a PDP (via clicking a product) and then presses back, the browser's default behavior is to scroll to the top of the PLP. To restore the user's scroll position (and avoid requiring them to re-scroll to find their place), the current scroll position and the list of loaded products (cursor state) are saved to sessionStorage on navigation. On mount, the component checks sessionStorage and restores the product list and scroll position. This is especially important on mobile where re-scrolling a long list is a significant friction point.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Sponsored Product Injection and Tracking</h3>
-        <HighlightBlock as="p" tier="important">Sponsored products are injected at deterministic positions in the result grid (positions 1, 5, and 17 in the 0-indexed list). The sponsored SKUs are returned by the ad auction service as part of the Search API response (pre-computed before the API responds, not injected client-side to prevent SEO/accessibility issues with client-side-only content). Impression tracking: an IntersectionObserver fires when each sponsored product card enters the viewport (threshold: 50% visible for 1 second). At that point, an impression event is sent to the ads analytics pipeline (POST /ads/impression). Click tracking: the sponsored product's link element has a click handler that fires a click event to the ads pipeline before navigating to the PDP (the click event is sent via navigator.sendBeacon to avoid blocking navigation). The impression and click events flow to a separate analytics pipeline from the organic product events, enabling precise billing attribution for advertisers.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Offset versus cursor pagination: cursor-based pagination prevents the "page drift" problem (where a new product added while the user is browsing causes items to shift across pages) and is O(log N) regardless of depth. The downside is that users cannot jump to a specific page number (no "Page 47 of 123"), which matters for desktop users who prefer page-number navigation. The solution is to offer both: cursor-based infinite scroll for mobile (where jumping to page 47 is rare) and numbered pagination for desktop (using offset-based pagination but limited to the first 100 pages, beyond which cursor pagination takes over).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Real-time facet counts versus stale counts: recomputing facet counts on every user filter change (calling Elasticsearch on each checkbox click) adds latency and cost. An alternative is to compute facet counts once at initial load and display them as approximations that don't update as filters are applied. This is fine for broad facets (brand, price range) where the user expects the counts to reflect the full catalog. For narrow facets (e.g., size availability for a specific brand), stale counts mislead the user (showing "Size 10 (45 products)" when in reality there are 0 matching size 10 products from that brand after applying other filters). The standard practice: always recompute facet counts on filter application, cache the query at the Elasticsearch level (with query caching enabled for the filter context), and keep P99 well under the 200ms SLA.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A product listing and recommendation UI uses Elasticsearch for faceted search (bool query with aggregations for facet counts in a single round-trip, &lt;200ms P99; search_after cursor pagination for O(log N) deep page performance) and a two-stage recommendation pipeline (FAISS ANN retrieval of 200 candidates &lt;20ms + LightGBM ranking &lt;20ms, loaded asynchronously after main content). Sponsored products are pre-computed by the ad auction service and injected at fixed positions (1, 5, 17) server-side; impressions tracked via IntersectionObserver (50% visible, 1s dwell). Infinite scroll uses a prefetch-ahead pattern (sentinel 800px from bottom, two-step: prefetch → render on approach) with sessionStorage scroll position restoration for back-navigation UX. Real-time stock badges use initial CSR hydration + 60s polling + SSE for flash-sale events. Facet state lives in URL query string for shareability and server-side initial render. The defining constraints: search results and facet counts must arrive in one round-trip; recommendations must never block the main product grid render — load async, display only when ready.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

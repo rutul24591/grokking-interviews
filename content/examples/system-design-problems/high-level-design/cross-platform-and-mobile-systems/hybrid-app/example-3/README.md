@@ -1,1 +1,5 @@
-# Design a hybrid app (WebView + native bridge) — Example 3
+# Hybrid APP - Example 3
+
+Concrete cross-platform client edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

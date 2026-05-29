@@ -42,7 +42,7 @@ export default function AiGeneratedContentModerationUiArticle() {
         caption="Moderation architecture: two-stage detection (fast classifier + LLM scorer), policy routing, human review queue, appeal system, and classifier retraining feedback loop"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h2>Definition &amp; Context</h2>
       <p>
         Content moderation requirements vary significantly by platform type and content type:
       </p>
@@ -71,7 +71,11 @@ export default function AiGeneratedContentModerationUiArticle() {
         without engineering changes.
       </HighlightBlock>
 
-      <h2>Two-Stage Detection Pipeline</h2>
+      <h2>Core Concepts</h2>
+      <p>The core concepts are policy taxonomy, classifier confidence, review queue prioritization, evidence preservation, appeal state, drift monitoring, reviewer safety, and feedback loops. These concepts define the production contract for AI-generated content moderation UI: what the UI can promise, what the backend must enforce, and what operators need to observe when the feature behaves unexpectedly.</p>
+      <p>For principal-level interviews, frame this as a product system rather than a model demo. The answer should cover ownership, permissions, safety, rollback, quality measurement, degraded behavior, and cost control in addition to the visible interaction.</p>
+
+      <h2>Architecture &amp; Flow</h2>
       <p>
         Content moderation at scale requires a two-stage pipeline that balances speed
         and accuracy. Running an LLM scorer on every submission is too slow and expensive
@@ -109,7 +113,7 @@ export default function AiGeneratedContentModerationUiArticle() {
         → human review queue (with uncertainty flag).
       </p>
 
-      <h2>Policy-Based Routing</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Policy-Based Routing</h3>
       <p>
         Routing decisions should be driven by configurable policy rules, not hardcoded
         thresholds. The policy engine takes the classifier output (category, confidence)
@@ -133,8 +137,13 @@ export default function AiGeneratedContentModerationUiArticle() {
         signals are part of the routing policy, not the classifier — they're account-level
         context that the per-item classifier cannot see.
       </p>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-generated-content-moderation-ui-routing-sla.svg"
+        alt="Policy routing and SLA queue control diagram showing content signals, policy engine decisions, auto block, auto pass, review queue, severity, SLA urgency, reviewer skill, and fatigue guardrails"
+        caption="Routing model: policy combines classifier confidence, LLM score, severity, account velocity, queue capacity, and reviewer specialization into enforcement actions"
+      />
 
-      <h2>Human Review Queue</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Human Review Queue</h3>
       <p>
         The review queue is the operational dashboard for trust and safety teams. Each
         item in the queue shows: the content (with context — the thread it appears in,
@@ -169,7 +178,7 @@ export default function AiGeneratedContentModerationUiArticle() {
         to identify reviewers who may need retraining.
       </p>
 
-      <h2>Appeal System</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Appeal System</h3>
       <p>
         Users whose content is removed (or accounts actioned) must have a path to contest
         the decision. The appeal system receives the user's appeal, routes it to a human
@@ -190,7 +199,7 @@ export default function AiGeneratedContentModerationUiArticle() {
         are false positives that should inform classifier retraining).
       </p>
 
-      <h2>Feedback Loop and Classifier Retraining</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Feedback Loop and Classifier Retraining</h3>
       <p>
         Human reviewer decisions are the primary training signal for improving the classifier.
         Each review action — remove (violation confirmed), approve (false positive) —
@@ -218,8 +227,13 @@ export default function AiGeneratedContentModerationUiArticle() {
         (or decreases recall on confirmed violations), it doesn't promote to production.
         This validation catches regressions before they affect users.
       </p>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-generated-content-moderation-ui-feedback-loop.svg"
+        alt="Moderation feedback loop and appeal system showing moderator decisions, training labels, classifier retraining, shadow deployment, appeal routing, drift signals, and policy overrides"
+        caption="Feedback loop: human decisions and appeals become quality-filtered labels, shadow-tested classifier versions, drift alerts, and policy overrides"
+      />
 
-      <h2>Drift Detection and Monitoring</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Drift Detection and Monitoring</h3>
       <p>
         Content distribution shifts over time as bad actors adapt their tactics. A classifier
         trained on last year's spam patterns may miss this year's spam (which has evolved
@@ -239,7 +253,149 @@ export default function AiGeneratedContentModerationUiArticle() {
         has degraded. Track the human review rate as a primary operational metric.
       </p>
 
-      <h2>Interview Q&A</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Adversarial Operations and Evidence Governance</h3>
+      <p>
+        Moderation systems are adversarial infrastructure. Bad actors will probe threshold
+        boundaries, coordinate posting bursts, flood appeal queues, and mutate language
+        to evade classifiers. The UI and backend should support adversarial operations:
+        cluster related reports, detect repeated near-duplicate appeals, throttle abusive
+        appeal submissions without blocking legitimate users, and expose campaign-level
+        evidence rather than forcing reviewers to decide one post at a time. A queue
+        that only ranks individual content items misses the network behavior that often
+        defines the real harm.
+      </p>
+      <p>
+        Evidence retention is also a product and legal decision. Reviewers need enough
+        context to make accurate decisions, appeals need enough evidence to explain and
+        reverse mistakes, and legal teams may require preservation for severe categories.
+        At the same time, retaining graphic or personal content indefinitely increases
+        privacy and reviewer exposure risk. Store enforcement evidence with category-
+        specific retention, access controls, redacted user notifications, and audit
+        trails for every view of sensitive media. The moderation UI should make these
+        retention states visible so operators know when evidence is available, redacted,
+        preserved under legal hold, or scheduled for deletion.
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Trauma-Informed Reviewer UX</h3>
+      <p>
+        Human content moderators review disturbing material daily — graphic violence,
+        sexual abuse imagery, self-harm content. Clinical research on content moderation
+        teams documents elevated rates of PTSD, anxiety, and vicarious traumatization.
+        The reviewer UX has a direct impact on these outcomes and therefore on team
+        health, accuracy, and retention. A trauma-informed design approach applies
+        specific UI interventions that reduce unnecessary exposure without compromising
+        review accuracy.
+      </p>
+      <p>
+        Graduated exposure controls: for graphic image and video content, the reviewer
+        UI should not display the content at full resolution and full brightness immediately.
+        The default is a low-saturation, blurred thumbnail. The reviewer decides whether
+        to view at full quality for judgment. For audio content (audio posts with hate
+        speech or harassment), text transcription is shown by default; the audio is
+        playable but not auto-playing. For video, text-based frame annotations or the
+        LLM score justification may allow the reviewer to make a determination without
+        watching the full video. Always-visible exposure is appropriate for mild categories
+        (spam, misinformation) but not for CSAM, graphic violence, or self-harm content.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Mandatory session limits and psychological safety features are not optional amenities.
+        Reviewers who process disturbing content without enforced breaks suffer accelerating
+        desensitization, which both harms the reviewer and degrades their decision accuracy
+        over longer sessions. Implement hard session limits: after 90 minutes of active
+        review, the queue interface is replaced with a mandatory break screen. After a
+        configurable number of CSAM review sessions per week, block further assignments
+        and route to the reviewer's wellness manager. Psychological first aid resources
+        (access to confidential counseling, peer support contacts) should be accessible
+        from within the review interface with one click, not buried in HR documentation.
+      </HighlightBlock>
+      <p>
+        Review category specialization reduces unnecessary trauma exposure. Not every
+        reviewer needs to see every content category. A reviewer who specializes in
+        spam and misinformation should not be assigned CSAM or graphic violence reviews.
+        Category specialization also improves accuracy — reviewers develop expertise
+        in their assigned categories and make more consistent decisions than generalists
+        who rarely encounter a given category. Maintain separate specialist queues with
+        dedicated routing and track per-category reviewer accuracy separately.
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Policy Transparency and User Communication</h3>
+      <p>
+        Users whose content is removed or accounts actioned frequently don't understand
+        why. A removal notice that says "Your post was removed for violating our Community
+        Guidelines" without specifying which guideline or what about the content violated
+        it leaves the user unable to avoid the same issue in the future — and frustrated
+        enough to appeal even when the removal was correct. Well-designed user communication
+        reduces appeal volume and improves user understanding of platform policies.
+      </p>
+      <p>
+        The reviewer interface for removal decisions requires selecting: the specific policy
+        category (hate speech, harassment, spam, misinformation), the sub-category (targeted
+        harassment vs coordinated harassment; medical misinformation vs election misinformation),
+        and optionally a short excerpted reason (quoting the specific phrase that triggered
+        the violation, with care not to re-display graphic content back to the user in
+        the removal notice). These selections are passed to a templated notification
+        generator that produces a user-facing removal notice using the platform's policy
+        language rather than internal enforcement terminology.
+      </p>
+      <p>
+        Recidivism tracking: the reviewer's decision dashboard shows whether the content
+        creator has prior violations, how many, and of what category. Repeat violations
+        in the same category suggest the user doesn't understand the policy, the policy
+        is ambiguous, or the user is deliberately violating it. Reviewers can annotate
+        a removal as "first offense" (treat as educational, send detailed policy explanation),
+        "repeat offense" (escalate enforcement from content removal to account action),
+        or "escalation needed" (pattern suggests adversarial or coordinated behavior,
+        route to trust and safety leadership).
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Cross-Language Moderation Challenges</h3>
+      <p>
+        Content moderation at global scale requires enforcing the same policy across
+        dozens of languages, dialects, and cultural contexts. A phrase that is neutral
+        in one language may be a slur in another dialect of the same language. Dog
+        whistles (coded language that signals meaning to an in-group while appearing
+        innocuous to classifiers trained on standard text) evolve quickly and require
+        native speaker expertise to detect. No classifier trained on mainstream text
+        corpora captures dog whistles reliably.
+      </p>
+      <p>
+        Language-specific policy interpretation: the platform's content policy must be
+        interpreted in the cultural context of each language community. A ban on "derogatory
+        terms for ethnic groups" requires knowing which terms are derogatory in each
+        language — a list maintained by native-speaker policy reviewers, not derived
+        from translation. The policy team for each major language market defines a
+        lexicon of high-risk terms, slurs, and known dog whistles that are added to
+        the classifier's feature set and to the keyword blocklist reviewed synchronously.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Human review queues should be routed by language to native-speaker reviewers.
+        Machine translation before review introduces two failure modes: translation errors
+        that change the meaning of borderline content (causing incorrect allow or block
+        decisions), and loss of prosody, register, and cultural context that is essential
+        for judging harassment severity. For languages with insufficient reviewer capacity,
+        partner with specialist trust and safety contractors who have native-speaker
+        expertise in those languages rather than relying on translation. Track per-language
+        review accuracy and SLA separately — low-resource language queues frequently have
+        longer review times and lower accuracy that are masked by aggregate metrics.
+      </HighlightBlock>
+
+      <h2>Trade offs &amp; Comparison</h2>
+      <p>The core trade-off is capability versus control. Rich AI experiences improve user productivity, but they add uncertainty, cost, latency, data-access risk, and operational complexity. A principal-ready design explains which paths are authoritative, which paths are best-effort, and how the system degrades when retrieval, model execution, policy checks, or tool calls fail.</p>
+      <p>The design should also compare build-versus-buy boundaries. Provider APIs, vector stores, evaluation tools, moderation classifiers, and orchestration frameworks can accelerate delivery, but the product still owns permission enforcement, user trust, auditability, rollback, and quality measurement.</p>
+
+      <h2>Best practices</h2>
+      <p>Use explicit contracts between UI, orchestration, model, retrieval, policy, and tool layers. Persist durable state, keep correlation IDs across model and tool calls, separate user-visible confidence from internal scores, and make failed or degraded states visible. Treat prompts, policies, retrieval settings, and model versions as production configuration with owners and rollback.</p>
+      <p>Measure quality continuously with offline evaluation sets, production feedback, latency and cost telemetry, safety outcomes, and incident reviews. Principal-level systems do not rely on subjective demos to decide whether an AI feature is working.</p>
+
+      <h2>Common Pitfalls</h2>
+      <p>Common pitfalls include letting the model decide authorization, hiding uncertainty, storing sensitive context unnecessarily, treating provider streaming formats as frontend contracts, and shipping without replayable traces. Another frequent issue is optimizing for impressive answers while neglecting source evidence, policy enforcement, and operator visibility.</p>
+      <p>Teams also underestimate lifecycle problems: model behavior changes, documents are deleted, prompts drift, evaluation sets go stale, and users discover adversarial inputs. The architecture needs ongoing governance, not only launch-time safeguards.</p>
+
+      <h2>Real-world use cases</h2>
+      <p>These patterns apply to enterprise copilots, knowledge assistants, developer tools, moderation systems, model-evaluation platforms, support automation, document Q&A, search products, and workflow automation. In each case, the AI surface becomes a governance and reliability surface as soon as users depend on it for real decisions.</p>
+      <p>For staff and principal interviews, connect the design to rollout safety, tenant isolation, incident response, data access, cost controls, and measurable quality improvement. That is what separates a feature explanation from a system design answer.</p>
+
+      <h2>Common interview question with detailed answer</h2>
 
       <h3>Q: How do you handle content moderation in a language the classifier wasn't trained on?</h3>
       <p>
@@ -284,109 +440,6 @@ export default function AiGeneratedContentModerationUiArticle() {
         accounts in the network) rather than reviewing each post individually.
       </p>
 
-      <h2>Trauma-Informed Reviewer UX</h2>
-      <p>
-        Human content moderators review disturbing material daily — graphic violence,
-        sexual abuse imagery, self-harm content. Clinical research on content moderation
-        teams documents elevated rates of PTSD, anxiety, and vicarious traumatization.
-        The reviewer UX has a direct impact on these outcomes and therefore on team
-        health, accuracy, and retention. A trauma-informed design approach applies
-        specific UI interventions that reduce unnecessary exposure without compromising
-        review accuracy.
-      </p>
-      <p>
-        Graduated exposure controls: for graphic image and video content, the reviewer
-        UI should not display the content at full resolution and full brightness immediately.
-        The default is a low-saturation, blurred thumbnail. The reviewer decides whether
-        to view at full quality for judgment. For audio content (audio posts with hate
-        speech or harassment), text transcription is shown by default; the audio is
-        playable but not auto-playing. For video, text-based frame annotations or the
-        LLM score justification may allow the reviewer to make a determination without
-        watching the full video. Always-visible exposure is appropriate for mild categories
-        (spam, misinformation) but not for CSAM, graphic violence, or self-harm content.
-      </p>
-      <HighlightBlock as="p" tier="crucial">
-        Mandatory session limits and psychological safety features are not optional amenities.
-        Reviewers who process disturbing content without enforced breaks suffer accelerating
-        desensitization, which both harms the reviewer and degrades their decision accuracy
-        over longer sessions. Implement hard session limits: after 90 minutes of active
-        review, the queue interface is replaced with a mandatory break screen. After a
-        configurable number of CSAM review sessions per week, block further assignments
-        and route to the reviewer's wellness manager. Psychological first aid resources
-        (access to confidential counseling, peer support contacts) should be accessible
-        from within the review interface with one click, not buried in HR documentation.
-      </HighlightBlock>
-      <p>
-        Review category specialization reduces unnecessary trauma exposure. Not every
-        reviewer needs to see every content category. A reviewer who specializes in
-        spam and misinformation should not be assigned CSAM or graphic violence reviews.
-        Category specialization also improves accuracy — reviewers develop expertise
-        in their assigned categories and make more consistent decisions than generalists
-        who rarely encounter a given category. Maintain separate specialist queues with
-        dedicated routing and track per-category reviewer accuracy separately.
-      </p>
-
-      <h2>Policy Transparency and User Communication</h2>
-      <p>
-        Users whose content is removed or accounts actioned frequently don't understand
-        why. A removal notice that says "Your post was removed for violating our Community
-        Guidelines" without specifying which guideline or what about the content violated
-        it leaves the user unable to avoid the same issue in the future — and frustrated
-        enough to appeal even when the removal was correct. Well-designed user communication
-        reduces appeal volume and improves user understanding of platform policies.
-      </p>
-      <p>
-        The reviewer interface for removal decisions requires selecting: the specific policy
-        category (hate speech, harassment, spam, misinformation), the sub-category (targeted
-        harassment vs coordinated harassment; medical misinformation vs election misinformation),
-        and optionally a short excerpted reason (quoting the specific phrase that triggered
-        the violation, with care not to re-display graphic content back to the user in
-        the removal notice). These selections are passed to a templated notification
-        generator that produces a user-facing removal notice using the platform's policy
-        language rather than internal enforcement terminology.
-      </p>
-      <p>
-        Recidivism tracking: the reviewer's decision dashboard shows whether the content
-        creator has prior violations, how many, and of what category. Repeat violations
-        in the same category suggest the user doesn't understand the policy, the policy
-        is ambiguous, or the user is deliberately violating it. Reviewers can annotate
-        a removal as "first offense" (treat as educational, send detailed policy explanation),
-        "repeat offense" (escalate enforcement from content removal to account action),
-        or "escalation needed" (pattern suggests adversarial or coordinated behavior,
-        route to trust and safety leadership).
-      </p>
-
-      <h2>Cross-Language Moderation Challenges</h2>
-      <p>
-        Content moderation at global scale requires enforcing the same policy across
-        dozens of languages, dialects, and cultural contexts. A phrase that is neutral
-        in one language may be a slur in another dialect of the same language. Dog
-        whistles (coded language that signals meaning to an in-group while appearing
-        innocuous to classifiers trained on standard text) evolve quickly and require
-        native speaker expertise to detect. No classifier trained on mainstream text
-        corpora captures dog whistles reliably.
-      </p>
-      <p>
-        Language-specific policy interpretation: the platform's content policy must be
-        interpreted in the cultural context of each language community. A ban on "derogatory
-        terms for ethnic groups" requires knowing which terms are derogatory in each
-        language — a list maintained by native-speaker policy reviewers, not derived
-        from translation. The policy team for each major language market defines a
-        lexicon of high-risk terms, slurs, and known dog whistles that are added to
-        the classifier's feature set and to the keyword blocklist reviewed synchronously.
-      </p>
-      <HighlightBlock as="p" tier="important">
-        Human review queues should be routed by language to native-speaker reviewers.
-        Machine translation before review introduces two failure modes: translation errors
-        that change the meaning of borderline content (causing incorrect allow or block
-        decisions), and loss of prosody, register, and cultural context that is essential
-        for judging harassment severity. For languages with insufficient reviewer capacity,
-        partner with specialist trust and safety contractors who have native-speaker
-        expertise in those languages rather than relying on translation. Track per-language
-        review accuracy and SLA separately — low-resource language queues frequently have
-        longer review times and lower accuracy that are masked by aggregate metrics.
-      </HighlightBlock>
-
       <h3>Q: How do you handle moderation of audio and video content at scale without watching every video?</h3>
       <p>
         Audio and video moderation relies on preprocessing pipelines that extract multiple
@@ -418,6 +471,36 @@ export default function AiGeneratedContentModerationUiArticle() {
         whatever threshold policy specifies; the UI exposes threshold controls to policy
         operators so they can adjust without engineering changes when regulatory requirements
         or platform standards change.
+      </p>
+
+      <h2>References</h2>
+      <p>
+        <a href="https://transparency.fb.com/policies/community-standards/" target="_blank" rel="noreferrer">
+          Meta Community Standards
+        </a>{" "}
+        are a useful public example of category-specific policy language, enforcement
+        explanations, and appeal expectations at global platform scale.
+      </p>
+      <p>
+        <a href="https://transparencyreport.google.com/youtube-policy/removals" target="_blank" rel="noreferrer">
+          YouTube Community Guidelines Enforcement Report
+        </a>{" "}
+        provides production-scale moderation metrics such as removal volume, automation
+        rates, appeals, and reinstatements.
+      </p>
+      <p>
+        <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noreferrer">
+          NIST AI Risk Management Framework
+        </a>{" "}
+        helps frame governance, measurement, risk documentation, and human oversight for
+        AI-assisted moderation decisions.
+      </p>
+      <p>
+        <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noreferrer">
+          WCAG 2.2
+        </a>{" "}
+        is relevant when designing reviewer tooling that must remain accessible under
+        dense queues, blurred content controls, keyboard workflows, and high-stress use.
       </p>
     </ArticleLayout>
   );

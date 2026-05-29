@@ -1,1 +1,5 @@
-# Design a meeting scheduling system (like Calendly) — Example 2
+# Meeting Scheduling System - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

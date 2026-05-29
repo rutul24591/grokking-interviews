@@ -1,1 +1,5 @@
-# Design a secure token/session handling system — Example 2
+# Secure Token Session Handling System - Example 2
+
+Concrete security privacy production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

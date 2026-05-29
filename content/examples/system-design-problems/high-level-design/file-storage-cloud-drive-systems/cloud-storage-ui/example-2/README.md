@@ -1,1 +1,5 @@
-# Design a cloud storage UI (like Google Drive) — Example 2
+# Cloud Storage UI - Example 2
+
+Concrete cloud file storage production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

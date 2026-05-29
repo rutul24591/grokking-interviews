@@ -1,72 +1,90 @@
-/**
- * Rich Text Editor — Staff-Level Collaborative Editing with CRDTs.
- *
- * Staff differentiator: Y.js-based collaborative editing with presence
- * indicators, cursor awareness, and conflict-free merging.
- */
+export type richTextEditorRuntimeState = {
+  topic: "rich-text-editor";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-export interface CollaborativeCursor {
-  userId: string;
-  userName: string;
-  color: string;
-  position: number; // Character offset in the document
-  selection?: { anchor: number; head: number };
+export type richTextEditorRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Manages collaborative cursors for real-time editing.
- */
-export class CollaborativeCursorManager {
-  private cursors: Map<string, CollaborativeCursor> = new Map();
-  private onUpdate: (cursors: CollaborativeCursor[]) => void;
+export function planRichTextEditorRecovery(
+  state: richTextEditorRuntimeState,
+  nowMs: number,
+): richTextEditorRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: richTextEditorRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  constructor(onUpdate: (cursors: CollaborativeCursor[]) => void) {
-    this.onUpdate = onUpdate;
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Updates a remote cursor position.
-   */
-  updateCursor(userId: string, cursor: CollaborativeCursor): void {
-    this.cursors.set(userId, cursor);
-    this.onUpdate(Array.from(this.cursors.values()));
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Removes a cursor when a user disconnects.
-   */
-  removeCursor(userId: string): void {
-    this.cursors.delete(userId);
-    this.onUpdate(Array.from(this.cursors.values()));
-  }
-
-  /**
-   * Returns all active cursors except the local user's.
-   */
-  getRemoteCursors(localUserId: string): CollaborativeCursor[] {
-    return Array.from(this.cursors.values()).filter((c) => c.userId !== localUserId);
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
 }
 
-/**
- * Converts a character offset to a DOM position for cursor rendering.
- */
-export function offsetToDomPosition(
-  container: HTMLElement,
-  offset: number,
-): { node: Node; offset: number } | null {
-  let currentOffset = 0;
+export function runRichTextEditorEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planRichTextEditorRecovery(
+    {
+      topic: "rich-text-editor",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
 
-  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
-  let node: Node | null;
+  const failure = planRichTextEditorRecovery(
+    {
+      topic: "rich-text-editor",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
 
-  while ((node = walker.nextNode())) {
-    const textLength = node.textContent?.length || 0;
-    if (currentOffset + textLength >= offset) {
-      return { node, offset: offset - currentOffset };
-    }
-    currentOffset += textLength;
-  }
-
-  return null;
+  return {
+    topic: "Rich Text Editor",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

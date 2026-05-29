@@ -7,93 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-priority-notification-delivery-ui",
-  title: "Design a Priority-Based Notification Delivery UI",
-  description:
-    "Architecture for priority-based notification delivery: four SLA lanes (critical <5s bypassing preferences, high <15s, normal <60s, bulk <4hr batched), Kafka priority topic partitioning with consumer group weight allocation, parallel multi-channel send for critical events (push + SMS simultaneously), bulk rate limiting (1K emails/min per domain), SLA breach detection with PagerDuty escalation, dead-letter queue management, Kafka consumer lag monitoring, and delivery rate dashboards per lane.",
+  title: "Design a Priority Notification Delivery UI",
+  description: "Principal-level notification delivery platform design covering preferences, consent, priority, channel routing, idempotency, provider failures, privacy, receipts, and observability.",
   category: "high-level-design",
   subcategory: "notification-delivery-platform",
   slug: "priority-notification-delivery-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "notifications", "priority", "sla", "kafka", "rate-limiting", "dlq", "escalation", "pagerduty"],
-  relatedTopics: ["unified-notification-platform", "notification-preferences-system"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "notifications", "delivery", "preferences", "privacy", "reliability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Priority Notification Delivery UI is a delivery and trust system. A principal-ready design treats a priority notification delivery UI as a policy-controlled communication platform, not as a queue that sends push, email, SMS, or in-app messages.",
+  "The system must decide whether to notify, when to notify, which channel to use, how much content to reveal, how to respect preferences and consent, how to avoid duplicate or noisy delivery, and how to prove what happened when a user complains.",
+  "Notifications sit between product urgency and user attention. A good platform protects critical messages without letting every product team label its event critical. The architecture needs priority, preference, quiet-hour, rate-limit, and abuse controls.",
+  "The authoritative state includes event identity, recipient, topic, consent, preference version, policy decision, channel attempt, provider response, receipt, and user-visible notification state. Dashboards and analytics are derived from this delivery ledger.",
+  "A staff/principal answer should cover fanout at scale, provider failures, idempotency, retries, digesting, channel fallback, privacy-safe payloads, user controls, operational kill switches, and observability."
+];
+const concepts = [
+  "The first concept is event classification. priority classifier, urgency policy, and rate limiter determine whether an event is transactional, security-critical, workflow-critical, marketing, social, digestible, suppressible, or illegal to send without consent.",
+  "The second concept is preference and consent resolution. Channel availability, user opt-in, quiet hours, topic preferences, tenant policy, regional law, and product priority should be resolved before a delivery attempt is created.",
+  "The third concept is idempotent delivery. Every logical notification needs a stable notification ID so retries, duplicate events, provider callbacks, and multi-worker races do not spam the user.",
+  "The fourth concept is channel strategy. Push, email, SMS, in-app, webhook, and digest channels have different latency, reliability, cost, privacy, and regulatory properties. Fallback should be policy-driven, not automatic for every failure.",
+  "The fifth concept is attention budgeting. Rate limits, batching, digests, cooldowns, relevance scoring, and priority tiers protect users from fatigue and protect providers from traffic bursts.",
+  "The sixth concept is observability. Track intake rate, policy suppression, preference suppression, queue lag, provider attempts, delivery success, receipt lag, duplicate suppression, complaint rate, unsubscribe rate, and critical missed alerts."
+];
+const architecture = [
+  "The architecture contains priority classifier, urgency policy, rate limiter, digest scheduler, receipt tracker. Product systems emit notification intents. The platform resolves recipient, consent, preferences, priority, templates, and channel policy. Delivery workers send through providers. A delivery ledger records attempts, receipts, suppressions, and user interactions.",
+  "Event intake should validate schema, source authorization, recipient scope, dedupe key, priority claim, and template variables. Product teams should not be allowed to send arbitrary payloads directly to providers.",
+  "Preference resolution should be deterministic and versioned. A notification record should explain which preference version, consent state, topic taxonomy, quiet-hour policy, and tenant rule produced the decision.",
+  "Delivery workers should use idempotency, retry budgets, provider-specific backoff, and dead-letter queues. A provider timeout should not automatically create another user-visible notification unless the policy allows retry or fallback.",
+  "Payload rendering should be privacy-aware. Lock-screen push, email subject lines, SMS content, and in-app notifications may need different redaction. Sensitive messages can say an action is needed without revealing private details.",
+  "Operations need controls for pausing a topic, disabling a provider, draining a queue, replaying failed transactional messages, suppressing a noisy product event, revoking a bad template, and auditing why a notification was or was not sent."
+];
+const tradeoffs = [
+  "Centralized notification platforms improve consistency, compliance, and provider management, but they add dependency and governance overhead. Product-owned sending is faster initially but creates duplicate logic, inconsistent preferences, and provider sprawl.",
+  "Immediate delivery is correct for security and transactional alerts, but noisy for low-priority engagement events. Digesting improves attention quality but can delay useful information. The priority taxonomy should drive this decision.",
+  "Channel fallback improves reachability but can violate user expectations or consent. If push fails, SMS fallback may be inappropriate because SMS is more intrusive, expensive, and often more regulated.",
+  "Rich payloads improve engagement but increase privacy risk. Minimal payloads are safer but may reduce clarity. Sensitive topics should prefer redacted payloads and authenticated deep links.",
+  "Aggressive retries improve delivery probability but can create duplicate messages, provider throttling, and user annoyance. Retries need budgets, dedupe, and provider-specific backoff.",
+  "Exact delivery analytics are difficult because providers expose different receipt semantics. A principal design distinguishes sent, accepted by provider, delivered, displayed, opened, clicked, suppressed, and failed."
+];
+const practices = [
+  "Create a durable delivery ledger with event ID, recipient, topic, priority, preference version, policy decision, channel attempt, provider response, receipt, and interaction state.",
+  "Use stable idempotency keys per logical notification. Retries, callback replays, and queue redelivery should update the same delivery record.",
+  "Make preferences and consent a shared service used by every channel: push, email, SMS, in-app, webhook, and digest.",
+  "Use a topic taxonomy with ownership. Every topic should have owner, priority range, allowed channels, default behavior, template rules, and suppression policy.",
+  "Separate transactional, security-critical, workflow-critical, and marketing notifications. They have different consent, retry, fallback, and quiet-hour semantics.",
+  "Build provider abstraction without erasing provider differences. Store provider-specific response codes and map them into platform-level states for operators.",
+  "Instrument user harm signals: unsubscribe, mute, complaint, block, app notification disablement, duplicate reports, and missed-critical-event reports."
+];
+const pitfalls = [
+  "alert fatigue usually comes from missing idempotency or treating each provider attempt as a new logical notification. Users experience this as spam, not resilience.",
+  "missed urgent event should trigger provider failover or queueing only when policy allows it. Fallback without consent or urgency classification can be worse than delay.",
+  "priority abuse often happens through payloads, previews, subject lines, or logs. Notification content should be treated as a privacy surface.",
+  "quiet-hour violation is a system failure and a product failure. Rate limits, digests, cooldowns, topic ownership, and emergency suppressions are required.",
+  "Another pitfall is using one global unsubscribe for every message type. Users need control, but some security or transactional notifications may be legally or product-critical.",
+  "Teams also forget that provider accepted does not mean user saw it. Observability should not overstate delivery guarantees."
+];
+const useCases = [
+  "incident paging UI requires event classification, preference resolution, channel policy, idempotent delivery, receipts, and user-visible recovery.",
+  "financial risk alert requires event classification, preference resolution, channel policy, idempotent delivery, receipts, and user-visible recovery.",
+  "critical account security notification requires event classification, preference resolution, channel policy, idempotent delivery, receipts, and user-visible recovery.",
+  "During a provider outage, the platform should pause or reroute only eligible channels, preserve delivery records, avoid duplicate sends, and show provider-specific incident state.",
+  "During a notification storm, operators should suppress the noisy topic, enforce rate limits, drain or drop low-priority queues, and preserve critical transactional delivery.",
+  "During a privacy incident, teams should identify affected templates, payloads, channels, logs, and provider attempts so users and regulators can be notified accurately."
+];
+const questions = [
+  {
+    "question": "How would you design a priority notification delivery UI end to end?",
+    "answer": "I would accept notification intents from product systems, validate schema and source authorization, resolve recipient, consent, preferences, quiet hours, priority, template, and channel policy, then create durable delivery records. Workers send through provider adapters with idempotency and retry budgets. Receipts and user interactions update the delivery ledger. Operators get controls for suppressing topics, disabling providers, replaying safe failures, and auditing decisions."
+  },
+  {
+    "question": "Why this architecture over every product team sending its own push or email?",
+    "answer": "Product-owned sending leads to inconsistent preferences, duplicate notifications, provider sprawl, privacy mistakes, and no central audit. A platform adds governance and latency, but it gives consistent policy, shared provider management, dedupe, receipts, and operational controls."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are alert fatigue, missed urgent event, priority abuse, quiet-hour violation, plus queue backlogs, provider throttling, template mistakes, unsubscribe spikes, preference cache drift, and receipt ambiguity. Prevention requires idempotency, priority queues, provider backoff, topic ownership, preference versioning, rate limits, and emergency suppression."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Consent, unsubscribe, channel blocks, and critical security policy need strong enforcement or fast invalidation. Delivery attempts and receipts are eventually consistent because providers respond asynchronously. Analytics and engagement metrics are derived. The delivery ledger should be authoritative for what the platform attempted and why."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through retry budgets, dead-letter queues, provider failover where allowed, and replay for safe transactional messages. Rollback uses topic suppression, template revocation, provider disablement, and preference cache invalidation. Abuse is controlled with rate limits and priority governance. Privacy uses redacted payloads and log minimization. Cost is controlled by digesting, channel policy, and provider routing. Observability tracks queue lag, provider errors, suppression, duplicates, receipts, complaints, and unsubscribe rates."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would classify messages by urgency, consent, reversibility, and privacy. I would defend immediate retry for critical transactional messages, but digest or suppress low-priority engagement. I would not automatically fail over to more intrusive channels without user consent. I would also distinguish provider accepted from user seen."
+  }
+];
+const references = [
+  {
+    "label": "Firebase Cloud Messaging documentation",
+    "href": "https://firebase.google.com/docs/cloud-messaging"
+  },
+  {
+    "label": "Apple Push Notification service",
+    "href": "https://developer.apple.com/documentation/usernotifications"
+  },
+  {
+    "label": "Twilio Messaging documentation",
+    "href": "https://www.twilio.com/docs/messaging"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST Privacy Framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  }
+];
 
 export default function PriorityNotificationDeliveryUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A priority-based notification delivery system routes notification events into separate processing lanes based on urgency, ensuring that a bulk newsletter batch job does not starve a one-time-password (OTP) delivery. Without priority lanes, a large batch of 10 million marketing emails can consume all notification service capacity for hours, delaying OTPs and causing authentication failures for users trying to log in. Priority isolation is the core requirement: critical notifications must be delivered within 5 seconds regardless of system load from lower-priority traffic.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The system also controls how notifications are presented to users across multiple active notification sources. When a user is using the app, a burst of notifications (10 in 30 seconds) should not block the UI with a stack of modals. The priority-based UI layer determines: which notifications surface as interruptive alerts (critical, high priority), which appear as silent badge increments (normal), and which are batched into a digest (bulk). The server-side priority classification drives both the delivery urgency and the UI presentation mode.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Priority classification, Kafka lane architecture, SLA enforcement, critical lane behavior (preference bypass, parallel channel send), bulk lane rate limiting, SLA monitoring and escalation, and DLQ management. Not in scope: the visual design of in-app notification UI components (toast/banner/modal presentation is covered in a separate LLD article), push notification payload content, or email rendering.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/priority-notification-delivery-ui.svg" alt="Design a Priority Notification Delivery UI architecture" caption="Architecture view: intake, preferences, policy, channel routing, delivery ledger, and provider adapters." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/priority-notification-delivery-ui-flow.svg" alt="Design a Priority Notification Delivery UI flow" caption="Flow view: event classification, preference resolution, channel attempt, receipt, digesting, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/priority-notification-delivery-ui-operations.svg" alt="Design a Priority Notification Delivery UI operations" caption="Operations view: queue lag, provider outage, duplicate suppression, privacy, storm control, and user harm signals." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Priority classification:</strong> Every notification event is assigned a priority level at the source (upstream service sets the priority field in the notification request) or overridden by the notification platform based on the event type. Priority levels and their criteria: CRITICAL — security events (fraud alert, account takeover, OTP, password reset), system downtime alerts, and explicit emergency notifications. CRITICAL notifications bypass user preference filters and quiet hours (a user cannot opt out of fraud alerts). HIGH — order updates (shipped, delivered), payment confirmations, appointment reminders within 1 hour. HIGH notifications respect channel preferences but ignore quiet hours (a delivered package notification should not wait until morning). NORMAL — social activity (likes, comments, follows), product updates, inbox messages. NORMAL respects both channel preferences and quiet hours. BULK — newsletters, promotional offers, weekly digests, re-engagement campaigns. BULK respects all preferences, is batched, and is rate-limited per domain to protect email reputation. The classification can be overridden at the event level — the upstream service can explicitly set priority; otherwise, the notification platform applies classification rules based on event type.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Kafka lane architecture:</strong> Each priority level has a dedicated Kafka topic: notif.critical, notif.high, notif.normal, notif.bulk. Consumer groups are sized proportionally: critical has 32 consumers (maximum throughput, minimum latency), high has 16, normal has 8, bulk has 4. The consumers are dedicated — bulk consumers are in a separate consumer group from critical consumers, so a bulk processing lag does not affect critical consumer group offset commits. Kafka partition count per topic is set to match the maximum parallelism needed: critical has 64 partitions (each consumer thread can process one partition), bulk has 16 partitions (bulk is batched, so fewer partitions are needed). Partitioning key is userId — all notifications for the same user go to the same partition (and thus the same consumer), ensuring ordered delivery per user and preventing race conditions on per-user state (frequency caps, quiet-hours deferred queue).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Critical lane delivery:</strong> Critical notifications follow a special fast path: (1) no preference check (except for the legal channel immutability check — the user cannot have opted out of security channels); (2) no quiet hours check; (3) parallel multi-channel send — push notification AND SMS are sent concurrently (not sequentially with fallback) for maximum delivery probability; (4) no frequency cap — OTPs and fraud alerts are sent regardless of how many notifications the user received today; (5) 5-second SLA from event receipt to provider call. Implementation: the critical consumer invokes the push worker and SMS worker in parallel goroutines/async tasks and waits for the first successful delivery. If push succeeds (within 3 seconds), the SMS send is cancelled to avoid an unwanted SMS when push already delivered the message. If push fails (token invalid, FCM error), the SMS send continues. The 5-second SLA includes template rendering, Redis preference skip (just a priority check), device token lookup, and provider API call. Caching is critical: device tokens and templates must be in Redis to avoid PostgreSQL latency on the critical path.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Bulk lane rate limiting:</strong> Bulk notifications are rate-limited to protect email sending reputation and SMS carrier limits. Email rate limit: 1,000 messages per minute per sending domain (Amazon SES default; configurable per account). Implementation: a token bucket in Redis (DECR rate_limit:email:bulk:&#123;minute&#125; — initialized at 1,000 at the start of each minute). If the bucket is empty, the worker waits until the next minute. SMS bulk rate limit: 100 messages per second per short code (Twilio short code limit). Push bulk: no hard rate limit, but notifications are sent in batches of 500 to FCM to use the batch send API (reduces API calls by 500×). Bulk notifications are scheduled for specific delivery windows: no bulk emails between 9pm and 9am in the recipient's local timezone (sending emails at 3am has lower open rates and higher spam complaint rates). The bulk scheduler computes the correct sending time for each user based on their timezone preference.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>SLA monitoring and escalation:</strong> Each notification event carries a created_at timestamp. The delivery workers track the latency from created_at to provider_call_sent_at. SLA breach definition: critical — more than 5% of critical notifications exceed 5 seconds in a 5-minute rolling window; normal — more than 5% exceed 60 seconds. SLA breach detection: a Flink streaming job consuming from the delivery_events Kafka topic computes per-lane latency percentiles every 30 seconds. If a breach is detected: PagerDuty alert for critical lane breaches; Slack alert for normal/bulk lane breaches. The alert includes the Kafka consumer lag (primary indicator of processing backlog), error rate per channel, and the slowest provider (which provider is causing the latency — FCM, SES, or Twilio). Runbook: Kafka lag → scale up consumers; provider errors → check provider status page, activate backup provider.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Dead-letter queue management:</strong> After 3 failed delivery attempts (with exponential backoff), a notification is moved to a dead-letter Kafka topic (notif.dlq). DLQ events trigger an alert. DLQ processing: a monitoring dashboard shows DLQ depth per lane per channel; on-call engineers can inspect DLQ messages (message payload, error reason, retry history) and take action: re-queue (if the failure was transient, like a provider outage), discard (if the notification is expired or the user has since unsubscribed), or escalate (if the failure indicates a systemic bug). Backoff schedule: 1st retry after 1 second, 2nd after 10 seconds, 3rd after 60 seconds. For critical notifications, the backoff is shorter: 500ms, 2s, 8s — because a 60-second retry for an OTP is useless (OTPs typically expire in 5 minutes). DLQ retention: 7 days, sufficient for post-incident analysis.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Provider failover:</strong> The platform should not have a single point of failure on any notification provider. Dual-provider setup: push notifications are sent via FCM as primary and Amazon SNS Mobile Push as secondary. Email: Amazon SES as primary, SendGrid as secondary. SMS: Twilio as primary, AWS SNS SMS as secondary. Provider failover is automatic: if the primary provider returns a 5xx error rate &gt;20% over a 60-second window, the circuit breaker opens and traffic is shifted to the secondary provider. The circuit breaker is implemented per channel per priority lane (critical and normal have independent circuit breakers so a bulk email outage on SES doesn't affect transactional email). Secondary provider credentials are stored in AWS Secrets Manager and rotated quarterly.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Throttling upstream services:</strong> To prevent any single upstream service from monopolizing notification capacity, the platform implements per-source rate limiting. Each upstream service (order service, social service, billing service) is assigned a quota: maximum notifications per second and maximum percentage of each priority lane. If the order service exceeds its quota, additional notifications are queued (with a warning logged) rather than dropped — but if the queue exceeds a depth threshold, the notification platform returns 429 to the upstream service, signaling it to back off. This prevents a runaway upstream service from degrading notification delivery for all other services.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Delivery analytics dashboard:</strong> The priority-based delivery dashboard shows: per-lane throughput (notifications/second), p50/p95/p99 end-to-end latency, SLA compliance rate (% of notifications delivered within SLA), Kafka consumer lag per lane, error rate per provider, DLQ depth, and a comparison of critical vs. normal vs. bulk lane health. The dashboard is served from ClickHouse (aggregated delivery events, queried with OLAP-optimized column storage). Aggregation runs every 60 seconds. The dashboard auto-refreshes every 30 seconds. Alerting thresholds are configurable from the dashboard UI.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The priority system sits between the general notification service (which handles preference checks and template rendering) and the channel workers. The priority router receives the notification event after preference check and renders the template, then routes to the appropriate Kafka priority topic. Channel workers read from priority topics — critical workers have dedicated threads and dedicated connections to provider APIs; bulk workers share connections and batch requests. The SLA monitoring layer consumes from the delivery_events topic (written by every channel worker on each send attempt) and computes rolling SLA compliance metrics in Flink, publishing to both the monitoring dashboard (ClickHouse) and the alerting system (PagerDuty/Slack).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The key isolation mechanism is Kafka topic separation: critical events are never in the same Kafka topic as bulk events. Even if the bulk consumer group falls behind by 1 million messages (not unusual for a large newsletter blast), the critical consumer group is completely unaffected — it has its own topic, its own consumer group offset, and its own consumer pool. This isolation is the primary reason to use separate topics rather than a single topic with priority metadata — Kafka provides no internal priority ordering within a topic, so priority enforcement requires separate topics with separate consumers.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/notification-delivery-platform/priority-notification-delivery-ui.svg"
-          alt="Priority notification delivery: Priority Router classifies events into Critical (&lt;5s, bypass prefs, parallel push+SMS), Normal (&lt;60s, pref-checked), Bulk (&lt;4hr, 15min batch, 9am-6pm window, 1K email/min rate limit); SLA breach detection via Flink → PagerDuty escalation; 3 retries → DLQ → oncall alert."
-          caption="4 priority lanes (critical/high/normal/bulk), separate Kafka topics with dedicated consumer pools, critical bypass of quiet hours and frequency caps, bulk 15min batch window 9–18 local TZ, SLA breach →  PagerDuty, 3 retries then DLQ"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Kafka Priority Topic Design</h3>
-        <HighlightBlock as="p" tier="important">Kafka does not natively support priority queues within a single topic. The standard approach for priority in Kafka is separate topics with separate consumer groups, where higher-priority consumer groups are allocated more CPU/memory resources and process faster. An alternative approach — using a single topic with a priority field and having consumers skip lower-priority messages — does not work in Kafka because offsets are sequential; skipping a message requires processing it to advance the offset. Separate topics are the correct Kafka approach.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Topic configuration per priority lane: notif.critical: 64 partitions, replication factor 3, retention 1 hour (critical notifications older than 1 hour are expired — an OTP after 1 hour is useless), min.insync.replicas=2. notif.high: 32 partitions, retention 4 hours. notif.normal: 16 partitions, retention 24 hours. notif.bulk: 8 partitions, retention 72 hours. The retention times reflect the business value of delayed delivery — a fraud alert delivered 2 hours late is worse than not delivered at all, while a newsletter can wait 3 days. The notification worker checks the original_created_at field before processing a message and discards it if it's past the staleness threshold (5 minutes for critical, 4 hours for normal, 72 hours for bulk).</HighlightBlock>
-        <p>Consumer group scaling: critical consumers are scaled to maintain &lt;1,000 messages of lag at peak load. The scaling trigger is Kafka consumer lag — if lag exceeds 500 messages on notif.critical, the platform automatically scales up the consumer count (via Kubernetes HPA with a custom KEDA metric source reading Kafka lag from the Kafka exporter). For bulk consumers, a backlog of 100,000 messages is acceptable — the bulk SLA is 4 hours, and 100K messages at 1K/second = 100 seconds of backlog. Consumers are never auto-scaled down below the minimum count (to avoid cold start latency when scaling back up for the next bulk send wave).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">OTP Delivery Reliability</h3>
-        <HighlightBlock as="p" tier="crucial">OTP notifications are the highest-stakes critical notifications: a failed OTP delivery prevents a user from completing login or a payment. The OTP delivery path is optimized for the absolute minimum latency and maximum reliability: (1) device token lookup from Redis (token cached per user+platform, no PostgreSQL query); (2) FCM Data API call with the OTP payload (the OTP content is in the data payload, not the notification payload, to ensure delivery even when the app is in background and the OS throttles notification delivery); (3) parallel SMS send (Twilio) initiated at the same time as the push send, cancelled on successful push delivery. The OTP itself is generated by the authentication service (not the notification platform) and included in the notification payload. The notification platform does not generate or validate OTPs — it is a delivery mechanism only. OTP expiry: the authentication service sets the OTP TTL (typically 5 minutes); the notification platform does not enforce this. A stale OTP notification (delivered 6 minutes after generation due to a provider outage) will have an expired OTP, which the authentication service will reject. The user will need to request a new OTP. This is acceptable — the notification platform's job is to deliver the message; the application layer handles OTP validity.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Bulk Send Rate Control</h3>
-        <HighlightBlock as="p" tier="important">Sending 10 million marketing emails in 10 minutes would spike SES traffic, exhaust hourly quotas, and potentially trigger ISP rate limiting (which causes emails to be deferred or dropped). The bulk scheduler spreads sends across a 4-hour window, smoothing the send rate to ~42K emails/minute for a 10M campaign. Implementation: the bulk sender reads from the notif.bulk Kafka topic in batches of 1,000. Before each batch, it checks the rate limit token bucket: DECR rate_limit:email:bulk (decremented by 1,000 for a batch of 1,000). If the bucket is exhausted, the worker sleeps 60 seconds before trying again. The token bucket is refilled every 60 seconds by a cron job (SET rate_limit:email:bulk 1000). This approach is correct for single-node bulk workers but must be distributed for multi-node deployments: use a Lua script in Redis to atomically check and decrement the bucket across multiple worker nodes (EVAL with DECRBY and a minimum floor check).</HighlightBlock>
-        <p>Timezone-aware sending windows for bulk: to maximize open rates and minimize spam complaints, bulk emails are sent when the recipient is likely to be awake and checking email. The sending window is 9am–6pm in the recipient's local timezone. The bulk scheduler computes the send time for each user: if now is within the recipient's 9am–6pm window, send immediately; if now is outside the window, defer until the next 9am in the recipient's timezone. For a campaign targeting users in 10 time zones, this results in up to a 24-hour spread in delivery — some users receive the email on day 1, others on day 2. This is acceptable for bulk marketing; if the campaign has a strict deadline (e.g., a sale that ends at midnight), the campaign manager can specify a max_delay_hours to override the timezone window.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">SLA Enforcement Architecture</h3>
-        <HighlightBlock as="p" tier="important">SLA enforcement has two components: detection and response. Detection: every channel worker publishes a delivery_event to Kafka when it sends a notification. The event includes: notif_id, priority, channel, created_at (when the original event was received), sent_at (when the provider call was made), and status. A Flink streaming job computes the end-to-end latency (sent_at - created_at) for each notification and outputs rolling percentiles (p50, p95, p99) per priority lane to a ClickHouse table. An alerting rule queries this table every 30 seconds: if p95 for notif.critical &gt; 5 seconds, trigger a PagerDuty incident. Response: the on-call engineer receives the PagerDuty alert with a link to the delivery dashboard. The dashboard shows: Kafka lag per topic (if lag is high, the issue is processing throughput — scale up consumers), provider error rate (if a specific provider is failing, activate the backup provider), and per-consumer thread metrics (if one consumer thread is hung, restart it). The runbook for each alert is linked in the PagerDuty incident and includes step-by-step remediation procedures with the exact kubectl and Redis commands needed.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Priority inversion: a BULK notification from a very important event (e.g., a billing system batch sending payment receipts to 10 million users) may be incorrectly classified as BULK when it should be HIGH. The priority classification should not be solely based on the sending mode (batch vs. real-time) but on the business importance of the notification. The upstream service must explicitly set the priority field, and the notification platform must validate it against the event type registry. A billing_receipt event type is registered as HIGH, so even if the billing service sends 10 million of them in a batch, they are processed via the HIGH Kafka topic (with its 4-hour SLA, not the 4-hour BULK SLA — which may result in similar SLAs but with dedicated consumer resources).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Consumer isolation vs. resource utilization: separate consumer pools per priority lane mean that during off-peak hours, critical lane consumers sit idle while bulk lane consumers are saturated. This appears wasteful. The optimization: during off-peak periods (e.g., 2am), allow bulk consumers to "borrow" idle critical lane capacity. Implementation: a shared thread pool with a minimum reservation (critical always has at least N threads; bulk can use remaining threads up to a cap). This requires careful implementation to prevent bulk threads from consuming all shared capacity when critical events arrive. A simpler approach: just keep the separate pools and accept some idle resource waste during off-peak — operational simplicity is worth more than thread pool optimization at modest scale.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Latency vs. throughput for batch SMS: SMS providers charge per message and have per-second rate limits. Batching SMS messages and sending them at a lower rate (10/second instead of 100/second) reduces cost but increases latency for normal/bulk SMS. For critical SMS (OTP, fraud alert), never batch — send immediately. For normal/bulk SMS, batch into 100-message groups sent every 10 seconds. The 10-second batch window is invisible to users (they won't notice a notification that arrives 10 seconds later), but it reduces Twilio API call overhead by 100× and smooths the send rate to stay within rate limits.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A priority-based notification delivery system requires: (1) four priority lanes mapped to separate Kafka topics (notif.critical 64 partitions 1hr retention, notif.high 32 partitions 4hr, notif.normal 16 partitions 24hr, notif.bulk 8 partitions 72hr) with dedicated consumer pools; (2) CRITICAL lane: bypass preferences + quiet hours, parallel push + SMS send, cancel SMS if push succeeds within 3s, SLA &lt;5s; (3) HIGH lane: respect channel preferences, ignore quiet hours, SLA &lt;15s; (4) NORMAL lane: respect all preferences, SLA &lt;60s; (5) BULK lane: 15-minute batch aggregation, 9am–6pm local TZ sending window, 1K emails/min Redis token bucket rate limiter, SLA &lt;4hr; (6) stale message check on consume (discard critical &gt;5min old, bulk &gt;72hr old); (7) exponential backoff retries (3 attempts: 500ms/2s/8s for critical, 1s/10s/60s for normal) then DLQ (7-day retention); (8) Flink streaming SLA computation (p95 per lane every 30s) → PagerDuty for critical breach, Slack for normal/bulk; (9) Kafka consumer lag KEDA autoscaling (critical: scale at 500 lag, min 32 consumers); (10) provider circuit breaker per lane (&gt;20% 5xx over 60s → failover to secondary: FCM→SNS, SES→SendGrid, Twilio→AWS SNS SMS).</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

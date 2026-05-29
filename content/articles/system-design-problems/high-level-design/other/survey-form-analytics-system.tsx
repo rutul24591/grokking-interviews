@@ -7,101 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-survey-form-analytics-system",
-  title: "Design a Survey / Form Analytics System",
-  description:
-    "Architecture for a survey and form analytics system: form builder with conditional logic, response ingestion pipeline, real-time aggregation, completion funnel analytics, drop-off detection, partial response recovery, response export, spam/bot filtering, and multi-tenant access control.",
+  title: "Design a Survey Form and Analytics System",
+  description: "Principal-level operational product system design covering permissions, workflow state, analytics correctness, privacy, auditability, and support recovery.",
   category: "high-level-design",
   subcategory: "other",
   slug: "survey-form-analytics-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "analytics", "survey", "form", "pipeline", "aggregation", "funnel"],
-  relatedTopics: ["feature-usage-analytics-dashboard", "customer-support-dashboard"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "operations", "dashboard", "privacy", "analytics", "support"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Survey Form and Analytics System is an operational product system where the UI represents sensitive workflow, customer state, analytics state, or security state. A principal-ready design treats a survey form and analytics system as a governed control surface, not a generic dashboard.",
+  "The design must define who can see what, who can change what, which data is authoritative, which views are projections, how actions are audited, and how operators recover from bad data or bad actions.",
+  "These systems often sit close to privacy, compliance, support, and business decision-making. A wrong metric, wrong support action, wrong session revocation, or wrong export can cause customer harm even if the UI looks correct.",
+  "A strong answer should cover lifecycle state, permissions, workflow ownership, data freshness, auditability, abuse prevention, cost, and observability. The dashboard should help users make safe decisions, not merely display tables.",
+  "Operational systems also need support reconstruction. When a customer disputes an action, a user reports a session, or a business metric changes, the system should show source data, transformations, actor decisions, and policy versions."
+];
+const concepts = [
+  "The first concept is authority versus projection. form schema, response collector, and consent policy may feed the UI, but derived summaries should not be mistaken for source-of-truth state.",
+  "The second concept is scoped access. Support agents, analysts, admins, researchers, and customers should see different fields and actions. Field-level redaction and action-level authorization are often required.",
+  "The third concept is workflow state. Cases, sessions, metrics, surveys, exports, escalations, and revocations need explicit lifecycle states and audit trails.",
+  "The fourth concept is data quality. Operational dashboards must show freshness, sampling, confidence, known gaps, and delayed sources. Users should not make decisions from stale projections without knowing it.",
+  "The fifth concept is abuse and misuse. Internal tools are powerful. They need rate limits, approvals, break-glass controls, anomaly detection, and review for high-risk actions.",
+  "The sixth concept is observability. Track queue age, action success, stale data, export volume, permission denials, support overrides, metric freshness, and user-impacting errors."
+];
+const architecture = [
+  "The architecture contains form schema, response collector, consent policy, analytics aggregator, export workflow. Source systems emit durable events or records. Processing builds read models and aggregates. The UI enforces permissions, shows workflow state, and records user actions. Audit and observability systems make decisions reviewable.",
+  "Every sensitive action should include actor, target, reason, policy version, correlation ID, before/after state where appropriate, and whether approval or break-glass was used.",
+  "Read models should be versioned and freshness-aware. A dashboard row should be able to explain its source timestamp and transformation pipeline so users know if they are seeing current state or delayed analytics.",
+  "The frontend should show explicit states: pending, stale, escalated, approved, revoked, exported, suppressed, anonymized, sampled, or failed. These states reduce unsafe manual interpretation.",
+  "Exports and bulk actions require stronger controls than ordinary reads. They should have scoped filters, preview, row count, approval, audit, retention, and revocation or expiration where possible.",
+  "Operations need replay, backfill, redaction, export disablement, action rollback or compensation, and support-visible history when something goes wrong."
+];
+const tradeoffs = [
+  "Centralized dashboards improve governance and consistency but can become bottlenecks for teams that need custom workflows. Extensible dashboards improve team autonomy but increase permission, privacy, and quality risk.",
+  "Real-time data improves operational response but increases cost and can create noisy, unstable metrics. Batch data is cheaper and more stable but can be too stale for support or security decisions.",
+  "Detailed views help experts resolve issues but can expose unnecessary personal data. Progressive disclosure and field-level permissions are better than one all-powerful screen.",
+  "Self-service exports and bulk actions reduce operational load but increase blast radius. Dry runs, approvals, quotas, and audit trails make self-service safer.",
+  "Sampling lowers analytics cost and privacy exposure but can mislead small segments. The UI should show when metrics are sampled, estimated, or below confidence thresholds.",
+  "Rollback is not always deletion. Support actions, survey exports, session revocations, and analytics corrections may require compensating actions and audit notes rather than silent reversal."
+];
+const practices = [
+  "Model lifecycle state explicitly and make it visible. Avoid ambiguous active, done, or resolved flags without transition history.",
+  "Use least privilege, field-level redaction, scoped actions, and approval for high-risk operations.",
+  "Show freshness and provenance. Users should know when data was collected, transformed, sampled, anonymized, or delayed.",
+  "Record audit logs for reads of sensitive data, exports, bulk actions, overrides, revocations, escalations, and support notes.",
+  "Design safe exports: purpose, scope, retention, recipient, expiration, and download audit should be part of the workflow.",
+  "Build repair tools for stuck workflows, bad aggregations, duplicate responses, stale sessions, and incorrect support actions.",
+  "Instrument both product and operator outcomes: queue age, resolution quality, false positives, metric trust, export volume, and customer-impacting mistakes."
+];
+const pitfalls = [
+  "duplicate responses is usually a governance failure. The dashboard should not expose every field to every operator just because the backend has it.",
+  "biased sampling often happens when workflow state and ownership are weak. Escalation, approval, and assignment should be explicit and observable.",
+  "privacy leak causes bad decisions because users trust dashboards. Freshness, sampling, and source gaps should be visible.",
+  "export misuse requires audit and blast-radius controls. Powerful internal tools are abuse surfaces even when all users are employees.",
+  "Another pitfall is treating exports as harmless. Exports are often where privacy, compliance, and leakage risks concentrate.",
+  "Teams also forget that analytics and support data need deletion, retention, and redaction policies, not only technical storage."
+];
+const useCases = [
+  "NPS survey needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "research questionnaire needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "employee feedback form needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "During an incident, operators should see affected users, source freshness, action history, and safe remediation controls without gaining unnecessary data access.",
+  "During a privacy request, the system should identify derived records, exports, notes, and audit obligations rather than only deleting one primary row.",
+  "During a metric dispute, the dashboard should support drill-down to event definitions, sampling policy, identity stitching, and transformation version."
+];
+const questions = [
+  {
+    "question": "How would you design a survey form and analytics system end to end?",
+    "answer": "I would model authoritative source records, read-optimized projections, scoped permissions, workflow state, audit logs, and operational repair paths. The UI shows provenance, freshness, and allowed actions. Sensitive reads, exports, bulk operations, and overrides are audited. Background pipelines build aggregates, while support tools let operators repair or explain bad state."
+  },
+  {
+    "question": "Why this architecture over a simple dashboard on top of database tables?",
+    "answer": "A simple dashboard exposes data but does not encode permissions, workflow, provenance, audit, privacy, freshness, or safe actions. Operational systems need a governed control plane because users make decisions that affect customers, security, or business metrics."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are duplicate responses, biased sampling, privacy leak, export misuse, plus stale aggregates, high-cardinality cost, export abuse, permission drift, queue backlogs, and support overload. Prevention requires scoped access, lifecycle state, freshness indicators, audit, sampling strategy, and operational repair tools."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative customer, session, workflow, support, and consent state needs server-controlled consistency. Analytics aggregates, dashboards, survey summaries, and derived timelines can be eventually consistent if they show freshness and provenance. Sensitive actions should not rely solely on stale read models."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through replay, backfill, repair queues, redaction, and compensating actions. Rollback may be action reversal or an audited correction. Abuse is controlled with least privilege, approvals, quotas, and anomaly detection. Privacy uses minimization, redaction, retention, and export controls. Cost is controlled by sampling and aggregate design. Observability tracks freshness, workflow lag, action errors, export volume, and permission denials."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate source truth from dashboards and argue that operational users need provenance and scoped action controls. I would defend eventual consistency for aggregates, but not for high-risk support or security actions. I would also defend audit and approvals because internal tools have real blast radius."
+  }
+];
+const references = [
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  },
+  {
+    "label": "NIST Privacy Framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  }
+];
 
 export default function SurveyFormAnalyticsSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A survey and form analytics system has two distinct halves: a form runtime (rendering forms, collecting responses) and an analytics backend (aggregating responses, computing completion funnels, surfacing drop-off insights). The two halves have opposite characteristics. The form runtime is high-write, low-latency, and must be highly available—if the response submission endpoint goes down, respondents lose their answers. The analytics backend is read-heavy, high-computation, and can tolerate eventual consistency—a survey creator checking results at noon does not need to see the response submitted 3 seconds ago. Conflating these two halves into a single system creates an architecture where a spike in analytics queries degrades form response throughput, which is the wrong trade-off.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The problem has three distinct user roles. Respondents fill out forms (anonymous or authenticated, mobile or desktop, often on slow connections). Form creators build forms, configure logic, and analyze results (authenticated, desktop-first, need rich analytics UIs). Admins manage multi-tenant access, billing quotas, and compliance (GDPR response deletion, data retention policies). Each role has different latency and availability requirements; the architecture must serve all three without one role's traffic degrading another's experience.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Web-based survey and form platform with conditional logic, real-time analytics, completion funnel, drop-off analysis, and partial response recovery. Not in scope: native mobile SDK, payments, or advanced NLP text analysis.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/survey-form-analytics-system.svg" alt="Design a Survey Form and Analytics System architecture" caption="Architecture view: source systems, projections, permissions, workflow, audit, and operations." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/survey-form-analytics-system-flow.svg" alt="Design a Survey Form and Analytics System flow" caption="Flow view: intake, validation, decision, action, audit, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/survey-form-analytics-system-operations.svg" alt="Design a Survey Form and Analytics System operations" caption="Operations view: freshness, privacy, export controls, repair tools, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Form builder:</strong> Drag-and-drop question creation supporting types: short text, long text, single-choice, multi-choice, rating scale (1–10), NPS (0–10), date, file upload, matrix, and ranking. Conditional logic: show/hide questions based on prior answers (e.g., show Q5 only if Q3 answer = "Yes"). Question branching: route respondents to different question sequences based on answers. Form versioning: published forms are immutable; editing creates a new version (responses are attributed to a specific version).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Response collection:</strong> Anonymous and authenticated submissions. Partial response saving: respondents can save progress and resume later (via a resume token in localStorage or email link). Each page submission is saved immediately (not just on final Submit), so network failures lose at most one page of answers. File upload responses up to 10MB per file.</HighlightBlock>
-          <li><strong>Real-time analytics:</strong> Response count, completion rate, average completion time, NPS score, and per-question answer distributions update within 60 seconds of a response being submitted. No manual refresh required (WebSocket or SSE push to the analytics dashboard).</li>
-          <li><strong>Funnel and drop-off:</strong> Per-question drop-off rate (what fraction of respondents who reached question N did not answer it and left the form). Page-level time-on-page distribution. Identification of which questions have the highest abandonment rates.</li>
-          <HighlightBlock as="li" tier="important"><strong>Response export:</strong> CSV/XLSX export of all responses. Filtered exports (date range, completion status, specific answer values). Large exports (100K+ responses) are generated asynchronously and delivered via email link or downloadable job.</HighlightBlock>
-          <li><strong>Spam and bot filtering:</strong> Honeypot field detection, submission rate limiting per IP, CAPTCHA integration for public forms, duplicate submission detection (same respondent ID or fingerprint submitting twice).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Response submission latency:</strong> POST /responses must return 200 within 200ms at P99. Respondents should never see a spinning submit button.</li>
-          <HighlightBlock as="li" tier="important"><strong>Analytics freshness:</strong> Aggregated metrics (completion rate, answer distributions) must reflect submissions within 60 seconds.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Scale:</strong> Support forms with up to 10M responses. A single viral form campaign may generate 50K submissions/hour. The ingestion pipeline must handle 100K events/hour per tenant without degradation.</HighlightBlock>
-          <li><strong>Data retention:</strong> Responses retained for 24 months by default. GDPR deletion: individual response deletion within 24 hours of request.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system decomposes into four planes. The form delivery plane serves the form schema (JSON) to respondents via a CDN-cached endpoint. The form schema rarely changes (only on new version publish), so it can be cached aggressively (Cache-Control: max-age=3600) and served from edge nodes globally. The response ingestion plane receives submissions via a dedicated write-optimized API tier, validates, deduplicates, and writes to a raw response store (PostgreSQL for structured responses, S3 for file uploads) and simultaneously publishes to an event stream (Kafka) for downstream processing. The analytics computation plane consumes from Kafka, computes aggregations (per-question distributions, funnel metrics, completion rates), and writes results to an analytics store (ClickHouse or pre-aggregated Redis structures) optimized for analytical reads. The analytics delivery plane serves pre-computed analytics to the dashboard via a REST/WebSocket API, with real-time push updates as new aggregations arrive.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/other/survey-form-analytics-system.svg"
-          alt="Survey form analytics system architecture showing form delivery plane (form builder UI → form schema store PostgreSQL → CDN cache edge serve JSON schema → respondent browser renders form), response ingestion plane (respondent submits → response API POST /responses 200ms P99 → spam filter honeypot + rate limit + CAPTCHA + fingerprint dedup → response validator conditional logic check required fields → raw response store PostgreSQL + S3 file uploads → Kafka responses topic), analytics computation plane (Kafka consumer → streaming aggregator Flink/Lambda (per-question distributions NPS completion rate drop-off per page time-on-page) → analytics store ClickHouse pre-aggregated → cache layer Redis TTL 60s), analytics delivery plane (dashboard API WebSocket/SSE push → form creator dashboard real-time charts), partial response recovery (page-by-page save resume token localStorage or email link), export pipeline (async export job CSV/XLSX 100K+ responses → S3 presigned URL → email notification), multi-tenant access (workspace isolation row-level security form quota limits per plan), funnel metrics (per-question drop-off rate page dwell distribution abandonment heatmap identification highest abandonment questions)."
-          caption="Form delivery (CDN-cached schema), response ingestion (spam filter → validator → PostgreSQL + Kafka), analytics computation (Flink aggregations → ClickHouse), real-time dashboard push, partial response recovery, async export pipeline, and multi-tenant access"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Form Schema and Conditional Logic</h3>
-        <HighlightBlock as="p" tier="important">The form schema is a JSON document stored in PostgreSQL and cached in a CDN. Schema structure: a root form object contains an ordered array of pages; each page contains an ordered array of questions; each question has a type, label, validation rules, and optionally a conditions array specifying when the question is shown. Conditions reference other questions by ID and evaluate predicates: {"{ questionId: 'q3', operator: 'eq', value: 'Yes' }"}. The conditions engine runs client-side in the respondent's browser (evaluating conditions against the current answer state on every answer change). Running the conditions engine client-side eliminates a round-trip for each answer change and keeps the form responsive. The server re-validates conditions on submission to prevent a malicious client from skipping required questions by manipulating the DOM.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Form versioning: every publish operation creates a new immutable version record (formId + versionId). The currently published version is referenced by a pointer in the forms table. Respondents loading a form always receive the latest published version. Responses are attributed to the specific versionId at the time of submission, allowing analytics to be segmented by version (useful when a question is reworded between versions, making pre- and post-change distributions incomparable). Previous versions are archived but not deleted, as their responses remain valid and must be queryable.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Response Ingestion and Partial Save</h3>
-        <HighlightBlock as="p" tier="important">The response lifecycle has three states: partial (in progress), complete (submitted), and abandoned (partial with no activity for 24+ hours). Page-by-page saving: when a respondent advances to the next page, the frontend sends a PATCH /responses/{"{responseId}"}/pages/{"{pageIndex}"} request with the current page&apos;s answers. If the respondent navigates away, all submitted pages are persisted. A resume token (UUID) is stored in localStorage and in the URL fragment; returning to the same browser restores the in-progress response. For email-linked resumes, the token is embedded in the resume URL.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The response API performs three validations before writing. First, spam filtering: check IP submission rate (reject if &gt; 10 submissions/hour from same IP for the same form), validate the honeypot field is empty (bots typically fill all visible fields; a hidden honeypot field filled = bot), and check the fingerprint deduplication table (userId or device fingerprint + formId, reject if duplicate within 24 hours). Second, answer validation: for each submitted answer, verify it matches the expected type, respects required/optional, and satisfies any validation rules (e.g., "must be a valid email", "must be between 1 and 10"). Third, conditional logic re-validation: reconstruct the expected question sequence for this respondent's answer path and verify no required question was skipped.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">After passing validation, the response is written to PostgreSQL (normalized: responses table, answer_values table with one row per question answer) and a ResponseSubmitted event is published to Kafka. The Kafka publish is asynchronous and non-blocking to the HTTP response—the 200 is returned as soon as the PostgreSQL write commits. If the Kafka publish fails (transient error), it is retried by a background process reading from an outbox table (transactional outbox pattern), ensuring at-least-once delivery to the analytics pipeline without blocking the submission API.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Analytics Computation Pipeline</h3>
-        <HighlightBlock as="p" tier="important">The Flink streaming pipeline consumes ResponseSubmitted and PageAbandoned events from Kafka and maintains per-form, per-version aggregations in ClickHouse. Aggregations computed in real time: total response count (count(*)), completion rate (completed responses / total started responses), average completion time (average of end_time − start_time for completed responses), per-question answer distribution (for choice questions: count per option; for numeric: histogram buckets of 1–10), NPS score (% Promoters (9–10) − % Detractors (0–6)), and per-question drop-off rate (count of responses where this question was the last question answered, indicating abandonment at this point).</HighlightBlock>
-        <p>ClickHouse is chosen for the analytics store because it is optimized for append-only inserts and fast analytical reads over large datasets (COUNT, GROUP BY, percentiles). A typical ClickHouse query for answer distribution (SELECT answer_value, count(*) FROM answer_events WHERE form_id=X AND question_id=Y GROUP BY answer_value) completes in under 100ms for 10M rows, which is acceptable for dashboard refresh. Pre-aggregated summaries are also written to Redis (TTL 60 seconds) for the most common dashboard queries (response count, completion rate, NPS) to serve sub-10ms reads for the most popular forms.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Drop-off and Funnel Analytics</h3>
-        <HighlightBlock as="p" tier="important">Drop-off analysis requires tracking not just completed responses but also the furthest question reached for abandoned responses. Every page save (PATCH /responses/{"{responseId}"}/pages/{"{pageIndex}"}) records the page index reached; abandoned responses (no activity for 24 hours, never completed) are moved to abandoned status by a daily cron job. The analytics pipeline computes the per-question funnel: respondents_reached_Q(n) = responses where last_page_reached ≥ page containing Q(n). Drop-off rate at Q(n) = 1 − (respondents_reached_Q(n+1) / respondents_reached_Q(n)). Questions with drop-off rates above a threshold (e.g., &gt;15%) are highlighted in the analytics dashboard with a &quot;high abandonment&quot; indicator. Page-level time-on-page is computed as the delta between consecutive page save timestamps, providing form creators insight into which questions are causing cognitive friction (long time-on-page + high drop-off = confusing or too-long question).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Real-Time Dashboard and Export</h3>
-        <HighlightBlock as="p" tier="important">The analytics dashboard uses SSE (Server-Sent Events) to receive real-time updates. When the Flink pipeline writes a new aggregation, it publishes a FormMetricsUpdated event to a Redis Pub/Sub channel keyed by formId. The dashboard API server subscribes to this channel and forwards updates to connected SSE clients. Form creators see response counts, completion rates, and NPS scores increment in real time as responses arrive, without polling.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Large exports (100K+ responses) are handled asynchronously. A POST /exports request creates an export job record and returns immediately with a jobId. A background worker reads responses from PostgreSQL in batches (1000 rows/batch), streams them into a CSV/XLSX buffer, uploads the completed file to S3, and marks the job as complete. An email with a presigned S3 download URL (valid 24 hours) is sent to the requesting user. For very large exports (&gt;1M responses), the worker uses parallel partition reads (splitting by response_id range across multiple worker threads) and merges the results. Export jobs are idempotent: requesting an export for the same form + filter combination within 1 hour returns the existing job rather than creating a new one.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Multi-Tenant Access Control</h3>
-        <HighlightBlock as="p" tier="important">Every form, response, and analytics record is scoped to a workspace (tenant). Row-level security in PostgreSQL enforces workspace isolation: all queries include a WHERE workspace_id = ? predicate enforced at the application layer and verified by a middleware that reads the workspace from the authenticated user's JWT. Workspace quotas: form count, monthly response count, and file storage are metered per workspace and enforced at the API layer (429 Too Many Requests with a quota-exceeded message when exceeded). Form sharing permissions: forms can be private (only workspace members), workspace-visible, or public (anyone with the link). Analytics access: only workspace members with the "Analyst" or "Owner" role can view response-level data; "Viewer" role sees only aggregate metrics (protecting individual respondent privacy in shared workspaces).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Partial save granularity versus storage cost: saving every page as it is submitted increases storage (partial responses may outnumber completed responses by 3:1 for forms with high drop-off rates) but dramatically reduces data loss when respondents abandon mid-form. An alternative is client-side storage only (localStorage) with a single final submit, which reduces server storage but loses data if the respondent clears their browser or switches devices. The hybrid approach (page-by-page server save + localStorage backup) is the right default for enterprise survey platforms where losing a response from a high-value respondent is costly.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Real-time versus batch analytics: the Flink streaming pipeline adds operational complexity (Flink cluster management, exactly-once delivery guarantees, state management). An alternative for smaller-scale deployments is a simple batch pipeline: a cron job runs every 5 minutes, queries raw responses from PostgreSQL, and writes updated aggregations to Redis. This trades freshness (5-minute lag instead of 60-second lag) for significantly simpler infrastructure. The streaming approach is warranted only when real-time visibility is a product differentiator (e.g., live event feedback forms where the presenter wants to see audience reactions updating while they speak).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">ClickHouse versus PostgreSQL for analytics: PostgreSQL can serve analytics queries for response counts up to ~1M rows acceptably. Above 1M rows, analytical query latency degrades significantly, and adding ClickHouse as a separate analytics store is justified. The operational cost is maintaining two databases; the alternative is using PostgreSQL with aggressive indexing and pre-computed materialized views, which works to ~5M rows before requiring ClickHouse.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A survey and form analytics system separates concerns across four planes: form delivery (CDN-cached JSON schema, client-side conditional logic engine, server-side re-validation on submit), response ingestion (200ms P99 submission API, three-layer validation: spam filter + answer validation + conditional re-validation, transactional outbox for Kafka reliability), analytics computation (Flink streaming pipeline → ClickHouse for raw distributions + Redis for hot pre-aggregations, 60-second freshness), and analytics delivery (SSE push for real-time dashboard, async export worker for large CSV/XLSX jobs). Partial response recovery uses page-by-page server saves with resume tokens, ensuring at most one page of answers is lost on abandonment. Drop-off analysis tracks the last question reached for abandoned responses and computes per-question funnel metrics. Multi-tenant isolation uses workspace-scoped row-level security and role-based analytics access (aggregate-only for Viewers, response-level for Analysts). The critical design insight: the submission API must be isolated from the analytics read path to prevent analytics dashboard traffic from degrading form response throughput during high-traffic campaigns.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

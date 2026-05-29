@@ -1,79 +1,90 @@
-/**
- * Theme System — Staff-Level Multi-Theme Runtime Switching.
- *
- * Staff differentiator: Runtime theme switching without page reload,
- * smooth CSS variable transitions, and theme persistence with per-user
- * preference storage.
- */
+export type themeThemingSystemRuntimeState = {
+  topic: "theme-theming-system";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-/**
- * Manages runtime theme switching with smooth CSS transitions.
- * Applies theme CSS variables to the document root with transition support.
- */
-export class RuntimeThemeManager {
-  private currentTheme: string = 'light';
-  private transitionDuration: string = '200ms';
-  private listeners: Set<(theme: string) => void> = new Set();
+export type themeThemingSystemRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-  /**
-   * Switches to a new theme with smooth CSS transitions.
-   */
-  switchTheme(themeName: string, variables: Record<string, string>): void {
-    if (typeof document === 'undefined') return;
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
+}
 
-    const root = document.documentElement;
+export function planThemeThemingSystemRecovery(
+  state: themeThemingSystemRuntimeState,
+  nowMs: number,
+): themeThemingSystemRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: themeThemingSystemRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-    // Add transition class
-    root.classList.add('theme-transitioning');
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-    // Apply new CSS variables
-    for (const [name, value] of Object.entries(variables)) {
-      root.style.setProperty(name, value);
-    }
-
-    // Update data attribute for CSS selectors
-    root.setAttribute('data-theme', themeName);
-    this.currentTheme = themeName;
-
-    // Remove transition class after animation completes
-    setTimeout(() => {
-      root.classList.remove('theme-transitioning');
-    }, parseInt(this.transitionDuration, 10));
-
-    // Persist preference
-    try {
-      localStorage.setItem('user-theme', themeName);
-    } catch {
-      // Storage unavailable
-    }
-
-    // Notify listeners
-    for (const listener of this.listeners) {
-      listener(themeName);
-    }
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Restores the user's saved theme preference.
-   */
-  restoreSavedTheme(defaultTheme: string = 'light'): string {
-    try {
-      const saved = localStorage.getItem('user-theme');
-      return saved || defaultTheme;
-    } catch {
-      return defaultTheme;
-    }
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Subscribes to theme changes.
-   */
-  onChange(listener: (theme: string) => void): () => void {
-    this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  getCurrentTheme(): string {
-    return this.currentTheme;
-  }
+export function runThemeThemingSystemEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planThemeThemingSystemRecovery(
+    {
+      topic: "theme-theming-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planThemeThemingSystemRecovery(
+    {
+      topic: "theme-theming-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Theme Theming System",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

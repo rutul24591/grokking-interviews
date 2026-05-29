@@ -1,1 +1,5 @@
-# Design a developer documentation system (like Notion) — Example 2
+# Developer Documentation System - Example 2
+
+Concrete developer platform production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

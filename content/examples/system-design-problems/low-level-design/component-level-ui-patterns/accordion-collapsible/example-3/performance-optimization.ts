@@ -1,60 +1,90 @@
-/**
- * Accordion — Staff-Level Performance Optimization for Large Accordions.
- *
- * Staff differentiator: Content virtualization for accordions with many items,
- * deferred rendering (only render content when expanded), and CSS containment
- * for improved rendering performance.
- */
+export type accordionCollapsibleRuntimeState = {
+  topic: "accordion-collapsible";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+export type accordionCollapsibleRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-/**
- * Hook that defers content rendering until the accordion item is expanded.
- * Prevents rendering all accordion content upfront, improving initial load time.
- */
-export function useDeferredAccordionContent(isExpanded: boolean, children: React.ReactNode) {
-  const [hasBeenExpanded, setHasBeenExpanded] = useState(isExpanded);
-
-  useEffect(() => {
-    if (isExpanded) setHasBeenExpanded(true);
-  }, [isExpanded]);
-
-  // Only render content if it has been expanded at least once
-  return hasBeenExpanded ? children : null;
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Hook that measures accordion content height for smooth CSS transitions.
- * Uses ResizeObserver to detect content changes and update the max-height.
- */
-export function useAccordionHeight(contentRef: React.RefObject<HTMLElement | null>, isExpanded: boolean) {
-  const [height, setHeight] = useState<number | null>(null);
+export function planAccordionCollapsibleRecovery(
+  state: accordionCollapsibleRuntimeState,
+  nowMs: number,
+): accordionCollapsibleRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: accordionCollapsibleRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  useEffect(() => {
-    const content = contentRef.current;
-    if (!content) return;
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setHeight(entry.contentRect.height);
-      }
-    });
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
 
-    observer.observe(content);
-    return () => observer.disconnect();
-  }, [contentRef]);
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runAccordionCollapsibleEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planAccordionCollapsibleRecovery(
+    {
+      topic: "accordion-collapsible",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planAccordionCollapsibleRecovery(
+    {
+      topic: "accordion-collapsible",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
 
   return {
-    style: isExpanded ? { maxHeight: `${height}px` } : { maxHeight: '0px' },
+    topic: "Accordion Collapsible",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
   };
 }
-
-/**
- * CSS containment for accordion items — improves rendering performance
- * by isolating layout, paint, and style calculations per item.
- */
-export const accordionContainmentStyles = {
-  contain: 'layout style paint',
-  contentVisibility: 'auto' as const,
-  containIntrinsicSize: '0 200px', // Estimated size for off-screen rendering
-};

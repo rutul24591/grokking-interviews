@@ -3,7 +3,7 @@
 
   <!-- Error Boundary -->
   <g>
-    <text x="100" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Error Classification & Routing</text>
+    <text x="100" y="70" font-size="14" font-weight="bold" fill="#1a1a1a">Error Classification &amp; Routing</text>
 
     <rect x="50" y="100" width="1100" height="80" fill="#f3f4f6" stroke="#6b7280" stroke-width="2" rx="4"/>
     <text x="70" y="125" font-size="11" fill="#374151"><tspan font-weight="bold">Classify error:</tspan> Network, Timeout, 4xx (client), 5xx (server), Parsing, Unknown</text>
@@ -13,7 +13,7 @@
 
   <!-- Error Handler Types -->
   <g>
-    <text x="100" y="230" font-size="14" font-weight="bold" fill="#1a1a1a">Handler Types & Strategies</text>
+    <text x="100" y="230" font-size="14" font-weight="bold" fill="#1a1a1a">Handler Types &amp; Strategies</text>
 
     <!-- Network Errors -->
     <rect x="50" y="260" width="220" height="140" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
@@ -91,9 +91,9 @@
     <path d="M 430 505 L 470 505" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
     <path d="M 430 530 L 470 530" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
 
-    <!-- Classify & Route -->
+    <!-- Classify and Route -->
     <rect x="470" y="480" width="140" height="50" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="3"/>
-    <text x="540" y="513" font-size="10" font-weight="bold" text-anchor="middle" fill="#581c87">Classify & Route</text>
+    <text x="540" y="513" font-size="10" font-weight="bold" text-anchor="middle" fill="#581c87">Classify &amp; Route</text>
 
     <!-- Arrow to callback -->
     <path d="M 610 505 L 650 505" stroke="#a855f7" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>

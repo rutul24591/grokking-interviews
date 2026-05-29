@@ -17,10 +17,10 @@
   <text x="34" y="148" font-size="9" fill="#374151">  --blue-500: #3b82f6</text>
   <text x="34" y="163" font-size="9" fill="#374151">  --space-4: 16px</text>
   <text x="34" y="178" font-size="9" fill="#374151">Semantic: intent-named</text>
-  <text x="34" y="193" font-size="9" fill="#374151">  --color-primary: var(--blue-500)</text>
-  <text x="34" y="208" font-size="9" fill="#374151">  --color-bg: var(--gray-50)</text>
+  <text x="34" y="193" font-size="9" fill="#374151">  --color-primary: --blue-500 token</text>
+  <text x="34" y="208" font-size="9" fill="#374151">  --color-bg: --gray-50 token</text>
   <text x="34" y="223" font-size="9" fill="#374151">Component: scoped tokens</text>
-  <text x="34" y="240" font-size="9" fill="#374151">  --btn-bg: var(--color-primary)</text>
+  <text x="34" y="240" font-size="9" fill="#374151">  --btn-bg: --color-primary token</text>
   <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
   <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Token Schema</text>
   <text x="236" y="133" font-size="9" fill="#374151">Design tokens: JSON source</text>
@@ -52,7 +52,7 @@
   <text x="682" y="163" font-size="9" fill="#374151">Set data-theme on &lt;html&gt;</text>
   <text x="682" y="178" font-size="9" fill="#374151">  or root container element</text>
   <text x="682" y="193" font-size="9" fill="#374151">No re-render: CSS handles swap</text>
-  <text x="682" y="208" font-size="9" fill="#374151">  var() resolves at paint time</text>
+  <text x="682" y="208" font-size="9" fill="#374151">  custom properties resolve at paint time</text>
   <text x="682" y="225" font-size="9" fill="#374151">Transition: 200ms color change</text>
   <text x="682" y="240" font-size="9" fill="#374151">  * { transition: color 200ms }</text>
   <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>

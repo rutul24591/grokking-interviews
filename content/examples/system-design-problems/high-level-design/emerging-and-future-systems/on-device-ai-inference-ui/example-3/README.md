@@ -1,1 +1,5 @@
-# Design a on-device AI inference UI — Example 3
+# ON Device AI Inference UI - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

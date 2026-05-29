@@ -1,1 +1,5 @@
-# Design a UPI / wallet payment flow (India-specific scale) — Example 2
+# UPI Wallet Payment Flow - Example 2
+
+Concrete payments production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

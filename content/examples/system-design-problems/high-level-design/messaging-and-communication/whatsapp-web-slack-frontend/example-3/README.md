@@ -1,1 +1,5 @@
-# Design WhatsApp Web / Slack frontend — Example 3
+# Whatsapp WEB Slack Frontend - Example 3
+
+Concrete messaging edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

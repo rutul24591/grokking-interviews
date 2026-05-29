@@ -7,115 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-video-conferencing-frontend",
-  title: "Design a Video Conferencing Frontend (Zoom/Google Meet Style)",
-  description:
-    "Architecture for a browser-based video conferencing client: WebRTC mesh vs SFU, media negotiation, adaptive quality, layout management, and resilience under poor network conditions.",
+  title: "Design a Video Conferencing Frontend",
+  description: "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability.",
   category: "high-level-design",
   subcategory: "realtime-collaboration-systems",
   slug: "video-conferencing-frontend",
-  wordCount: 5600,
-  readingTime: 34,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "video-conferencing", "WebRTC", "SFU", "adaptive-bitrate", "media"],
-  relatedTopics: ["real-time-collaborative-whiteboard", "presence-system"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "realtime", "collaboration", "crdt", "websocket", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Video Conferencing Frontend is a realtime distributed product system where multiple clients observe, edit, or coordinate around shared state with low perceived latency. A principal-ready design treats a video conferencing frontend as shared-state replication with product semantics, not just a websocket channel.",
+  "The design must define what is durable, what is ephemeral, what can be approximate, what must be ordered, and what can be dropped. Durable edits, messages, lobby state, or meeting joins have different guarantees from cursors, typing indicators, heartbeats, viewport hints, and transient QoE signals.",
+  "The visible frontend is responsible for responsiveness and local recovery, but the backend must own sequencing, authorization, fanout, replay, abuse controls, and observability. If every client invents its own truth, collaboration becomes inconsistent the moment users reconnect or edit concurrently.",
+  "Realtime systems fail in user-visible ways: duplicated operations, lost updates, stale presence, delayed media, bad conflict resolution, and confusing pending states. The architecture should make these states explicit rather than hiding them behind generic loading spinners.",
+  "A staff/principal answer should compare CRDT, OT, server-authoritative sequencing, locks, and eventual reconciliation. The right model depends on the data type, collaboration intensity, offline needs, auditability, and conflict cost."
+];
+const concepts = [
+  "The first concept is state classification. signaling, media pipeline, and participant state should be classified as durable, derived, or ephemeral. Durable state needs replay and audit; ephemeral state needs freshness and expiry; derived state should be rebuildable.",
+  "The second concept is ordering scope. Global total order is usually unnecessary and expensive. A document, room, board, lobby, or meeting can have its own sequence, while presence and cursor updates can use last-writer-wins with expiry.",
+  "The third concept is conflict resolution. Text and structured document edits may use OT or CRDT. Object graphs may use operation transforms and snapshots. Lobbies may use server-authoritative state machines. Video conferencing uses signaling plus media adaptation rather than shared document merge.",
+  "The fourth concept is local responsiveness. Clients should render local intent immediately where safe, mark it pending, then reconcile with server acknowledgement, transformed operations, or conflict decisions.",
+  "The fifth concept is fanout and backpressure. Realtime systems can overload gateways and clients with low-value updates. Cursor, presence, typing, viewport, and QoE events should be sampled, coalesced, or dropped before durable edits are affected.",
+  "The sixth concept is observability. Track operation ack latency, reconnect rate, missed-event replay, conflict rate, fanout pressure, stale presence, media QoE, dropped transient updates, and client/server version skew."
+];
+const architecture = [
+  "The architecture contains signaling, media pipeline, participant state, network adaptation, QoE telemetry. Clients keep local state and pending operations. Gateways authenticate connections and route room traffic. Sequencers or collaboration services assign order or merge operations. Snapshot stores compact history. Projections serve read-optimized views and replay.",
+  "Every durable operation should include actor, target scope, client operation ID, base version or vector, schema version, authorization context, and idempotency key. This lets the system dedupe retries and explain why an operation was accepted, transformed, rejected, or replayed.",
+  "Ephemeral events should have TTLs and rate limits. Presence, cursor, typing, viewport, and media quality hints should expire naturally because a missed disconnect or network loss should not leave a permanent artifact.",
+  "Snapshots are essential at scale. Replaying an entire document, board, lobby, or room history from the beginning becomes too expensive. The system should periodically compact into snapshots while preserving enough operation history for audit, undo, and conflict repair.",
+  "Authorization must be enforced on connect, read, write, replay, export, search, and notification surfaces. Collaboration state often leaks through presence, cursors, thumbnails, comments, and invitations even when the main document appears protected.",
+  "Operations need controls for disabling a noisy ephemeral channel, rolling back a bad client version, replaying a room from snapshot, draining a gateway, isolating a hot room, and investigating missing or duplicated operations."
+];
+const tradeoffs = [
+  "CRDTs support offline and peer-like convergence, but they can increase metadata size, make intent hard to express, and complicate authorization or undo. OT can preserve editing intent for text but is harder to generalize across arbitrary object graphs. Server-authoritative sequencing is simpler to reason about but weakens offline editing.",
+  "WebSockets give low-latency bidirectional updates but require connection lifecycle, auth refresh, backpressure, and regional routing. Polling is simpler and robust but produces higher latency and more repeated work.",
+  "Optimistic local updates improve responsiveness but can create visible rollbacks. For reversible, low-risk edits this is acceptable. For payments, permission changes, lobby readiness, or destructive actions, server confirmation should drive final UI.",
+  "Strong consistency across all collaborators is expensive and often unnecessary. Durable document operations need convergence and replay. Presence, cursors, and typing can be approximate. Moderation, permission revocation, and room removal need fast enforcement.",
+  "Coalescing transient events protects scale and battery but lowers fidelity. Sending every cursor pixel movement is wasteful; sending no cursor updates makes collaboration feel dead. Principal designs set per-event budgets.",
+  "Regional routing improves latency but can split rooms or complicate sequencing. Room affinity, regional leaders, or global sequencers should be chosen based on collaboration intensity and correctness needs."
+];
+const practices = [
+  "Design an explicit operation schema. Include actor, room/document ID, client op ID, base version, timestamp, schema version, and idempotency key.",
+  "Keep durable and ephemeral channels separate. Durable edits need replay and acknowledgement; ephemeral presence and cursors need expiry, rate limits, and drop tolerance.",
+  "Use snapshots and compaction. Bound replay cost while preserving audit history and enough operation log for recovery.",
+  "Expose pending, synced, conflict, offline, reconnecting, and read-only states in the UI. Collaboration systems should not pretend every user sees the same state instantly.",
+  "Enforce permissions on every surface: connection, read, write, replay, cursor/presence, comments, export, thumbnails, notifications, and support tools.",
+  "Build abuse controls. Shared spaces need spam throttles, moderation, participant removal, report flows, and emergency room-level controls.",
+  "Instrument from both client and server. Server ack latency alone does not reveal blocked main thread, dropped media frames, websocket reconnect loops, or client memory pressure."
+];
+const pitfalls = [
+  "join failure usually means the system lacks clear operation identity, sequencing, or replay semantics. The fix is not more retries; it is a defined operation model.",
+  "audio/video drift is often caused by treating ephemeral state as durable truth. Presence, cursor, and QoE hints need expiry and freshness rules.",
+  "packet loss shows that conflict policy must be product-specific. A game lobby, text editor, whiteboard, and video call do not share one merge strategy.",
+  "speaker state drift appears during reconnect and offline replay. The client should not blindly resend operations without idempotency and base-version context.",
+  "Another pitfall is ignoring old clients. Realtime protocols need version negotiation and compatibility windows because users can keep stale browser tabs or mobile apps open for days.",
+  "Teams also underestimate support needs. Operators should be able to inspect room membership, operation history, gateway region, client versions, replay gaps, and permission decisions without reading raw private content unnecessarily."
+];
+const useCases = [
+  "team meeting needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "webinar needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "telehealth session needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "During a gateway outage, clients should reconnect with cursors, fetch missed durable events, discard expired ephemeral state, and avoid replaying already accepted operations.",
+  "During a bad client rollout, operators should disable the affected feature, reject incompatible operation versions, and keep older rooms recoverable from snapshots.",
+  "During abuse or spam, the system should throttle noisy actors, suppress low-value events, preserve evidence, and allow room owners or moderators to intervene safely."
+];
+const questions = [
+  {
+    "question": "How would you design a video conferencing frontend end to end?",
+    "answer": "I would classify state into durable operations, derived projections, and ephemeral realtime signals. Clients maintain local pending state and connect to authenticated gateways. Durable operations flow through a sequencer or merge service, are persisted in an operation log, compacted into snapshots, and replayed to reconnecting clients. Ephemeral channels use TTL and rate limits. Authorization, observability, rollback, and abuse controls are built into the protocol."
+  },
+  {
+    "question": "Why this architecture over just broadcasting websocket messages?",
+    "answer": "Broadcasting websocket messages is enough for a demo but not for recovery, replay, multi-device sync, authorization, conflict resolution, or support debugging. The operation-log plus snapshot model adds complexity, but it makes missed events recoverable and lets clients converge after reconnect or offline use."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are join failure, audio/video drift, packet loss, speaker state drift, plus hot rooms, reconnect storms, gateway overload, operation-log growth, stale clients, permission drift, and noisy ephemeral events. Prevention requires room affinity, backpressure, snapshots, protocol versioning, idempotency, replay cursors, and event priority tiers."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Durable shared edits need convergence and replayable ordering within a room or document. Presence, cursor, typing, and QoE events are ephemeral and eventually consistent with expiry. Permission revocation, moderation, room deletion, and destructive actions need fast server enforcement. The answer should classify state instead of claiming one model for everything."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failure handling uses reconnect cursors, missed-event replay, snapshots, idempotency, and visible pending/offline states. Rollback uses protocol flags, client-version blocking, snapshot restore, and feature disablement. Abuse controls throttle noisy users and allow moderation. Privacy requires enforcing access on presence, cursors, exports, and notifications. Cost is controlled through coalescing ephemeral events and compacting logs. Observability tracks ack latency, reconnects, conflicts, fanout, and client QoE."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend separating durable operations from ephemeral signals because they need different guarantees. I would choose CRDT, OT, or server sequencing based on data shape and offline requirements. I would accept approximate presence but not approximate authorization. I would also explain why snapshots and replay are worth the operational complexity."
+  }
+];
+const references = [
+  {
+    "label": "Automerge documentation",
+    "href": "https://automerge.org/"
+  },
+  {
+    "label": "Yjs documentation",
+    "href": "https://docs.yjs.dev/"
+  },
+  {
+    "label": "WebRTC specification",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function VideoConferencingFrontendArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A browser-based video conferencing system must solve one of the hardest real-time communication problems: delivering low-latency, high-quality audio and video between multiple participants while adapting to wildly heterogeneous network conditions, device capabilities, and participant counts. A two-person call has very different technical requirements than a 50-person all-hands meeting, and a user on fiber has very different constraints than a user on a congested mobile 4G connection. The frontend must handle all of these conditions gracefully, ideally without the user ever needing to troubleshoot their video quality.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">WebRTC (Web Real-Time Communication) is the browser API that enables peer-to-peer audio/video streaming without plugins. Understanding WebRTC's architecture—ICE (Interactive Connectivity Establishment), STUN/TURN servers for NAT traversal, SDP (Session Description Protocol) for capability negotiation, RTP for media delivery—is essential for designing a production video conferencing system. The choice between a peer-to-peer mesh architecture and a server-mediated SFU (Selective Forwarding Unit) architecture is the most consequential architectural decision for a multi-participant call.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> Browser-only clients (no native app in scope). Maximum 50 participants per call. Audio is always transmitted (unless explicitly muted); video is simulcast at multiple quality levels. The architecture uses an SFU (not a peer-to-peer mesh) for calls with more than 2 participants. Screen sharing is supported (a separate media stream from the camera stream). The signaling server uses WebSocket for SDP and ICE candidate exchange.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/video-conferencing-frontend-architecture.svg" alt="Design a Video Conferencing Frontend architecture" caption="Architecture view: clients, gateways, operation log, merge/sequencing, snapshots, authorization, and replay." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/video-conferencing-frontend-join-workflow.svg" alt="Design a Video Conferencing Frontend flow" caption="Flow view: local intent, acknowledgement, fanout, replay, conflict handling, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/video-conferencing-frontend-qoe.svg" alt="Design a Video Conferencing Frontend operations" caption="Operations view: fanout pressure, conflict rate, reconnects, stale clients, abuse controls, and rollback." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Audio/video calling:</strong> Real-time audio and video between 2–50 participants. Camera and microphone access via browser MediaDevices API.</li>
-          <li><strong>Screen sharing:</strong> Share the entire screen, a window, or a browser tab. Screen share stream is separate from camera stream.</li>
-          <li><strong>Mute/unmute and camera on/off:</strong> Instant local control. Visual indicator shown to all participants when a user is muted or camera-off.</li>
-          <li><strong>Layout management:</strong> Gallery view (grid of participant tiles), speaker view (large active speaker with thumbnails), and spotlight mode (presenter-pinned). Layout adapts to participant count.</li>
-          <li><strong>Active speaker detection:</strong> Automatically highlight the participant who is currently speaking. Transition smoothly as the active speaker changes.</li>
-          <li><strong>Chat, reactions, and raise hand:</strong> In-call text chat, emoji reactions, and raise-hand queue.</li>
-          <li><strong>Waiting room and admit/deny:</strong> Participants wait in a lobby before being admitted by the host.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Audio latency:</strong> End-to-end audio delay under 150ms for natural conversation. Video latency under 500ms is acceptable.</li>
-          <li><strong>Quality degradation:</strong> Under poor network (packet loss &gt; 5%, bandwidth &lt; 500kbps), the system must reduce video quality rather than freeze or disconnect.</li>
-          <li><strong>Join time:</strong> A participant should see and hear other participants within 3 seconds of clicking "Join."</li>
-          <li><strong>Reliability:</strong> Brief network interruptions (under 3 seconds) are recovered automatically without the user needing to rejoin.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The architecture uses a Selective Forwarding Unit (SFU) for all calls with more than 2 participants. In an SFU architecture, each participant sends their media streams to the SFU server, and the SFU selectively forwards each participant's streams to every other participant. The SFU does not decode or re-encode media (that would be an MCU—Media Control Unit, which is more expensive and higher-latency); it simply routes RTP packets. Each participant maintains one WebRTC connection to the SFU (one connection per participant would be a mesh architecture, which does not scale beyond 4–5 participants due to exponential upload bandwidth growth).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The signaling server handles the WebRTC handshake (SDP offer/answer exchange, ICE candidate sharing) via WebSocket. The SFU handles media routing. A presence and control API handles non-media events: mute status, camera status, raise hand, chat messages, waiting room management. These are logically separate services, though they may share infrastructure.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/video-conferencing-frontend-architecture.svg"
-          alt="Video conferencing architecture showing SFU topology (each client sends one uplink to SFU, SFU forwards to all others), signaling server (WebSocket SDP/ICE exchange), STUN/TURN for NAT traversal, simulcast layers (high/medium/low quality), active speaker detection pipeline, screen share as separate stream, and waiting room admit flow."
-          caption="Video conferencing architecture: SFU-based media routing, signaling server, simulcast quality layers, and active speaker detection"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">WebRTC Connection Setup</h3>
-        <HighlightBlock as="p" tier="important">The WebRTC connection lifecycle begins with media acquisition (getUserMedia for camera/microphone), followed by RTCPeerConnection creation, SDP offer/answer exchange (negotiating codecs, resolution, and bitrate capabilities), and ICE candidate gathering and exchange (determining the network path between client and SFU). This process takes 1–3 seconds on a typical connection; during this time the participant sees a "Connecting..." state.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">ICE (Interactive Connectivity Establishment) determines the best network path using a priority list of candidate types: host candidates (direct local network address, fastest if both endpoints are on the same network), server-reflexive candidates (via STUN: the public IP/port as seen by the STUN server, works for most NAT configurations), and relayed candidates (via TURN: all media routed through a TURN server, works for symmetric NAT and corporate firewalls). The ICE agent tries all candidate pairs and selects the highest-priority pair that succeeds. A TURN server fallback is critical for enterprise users behind restrictive firewalls; without it, approximately 10–20% of corporate users cannot establish direct connections. TURN relaying adds 50–100ms of additional latency.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">SDP negotiation establishes the codec parameters. For video, the preferred codec is VP9 (better compression than VP8, supported by Chrome and Firefox) with H.264 as fallback (required for Safari). For audio, Opus is universal (all modern browsers support it) with superior compression and quality over older codecs. The SDP offer from the client lists all supported codecs in priority order; the SFU responds with its preferred subset. Renegotiation (restarting ICE or changing codec parameters mid-call) is used when the network conditions change significantly or when the user starts screen sharing.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Simulcast and Adaptive Quality</h3>
-        <HighlightBlock as="p" tier="important">Simulcast is the technique of encoding the camera stream at multiple quality levels (spatial layers) simultaneously and sending all layers to the SFU. The SFU then forwards only the appropriate layer to each subscriber based on their available bandwidth. A typical simulcast configuration: high (1280×720, 1.5Mbps), medium (640×360, 500kbps), low (320×180, 150kbps). A subscriber on a fast connection receives the high layer; a subscriber on a slow connection receives the low layer. The encoder does this simultaneously, so the quality switch for individual subscribers is instant (no encoding delay when switching layers).</HighlightBlock>
-        <p>The SFU's layer selection logic is driven by subscriber bandwidth estimation: the SFU receives RTCP feedback (Receiver Estimated Maximum Bitrate, REMB, or Transport-wide Congestion Control, TWCC) from each subscriber's client, reporting the subscriber's estimated available bandwidth. When a subscriber's bandwidth drops below the threshold for the current layer (e.g., available bandwidth drops below 500kbps for the medium layer), the SFU switches the subscriber to the low layer. The switch is performed at a keyframe boundary (to avoid showing corrupted video during the transition). The client's video element continues playing uninterrupted; it simply receives lower-resolution frames.</p>
-        <p>Bandwidth estimation uses the Google Congestion Control (GCC) algorithm, which is built into Chrome's WebRTC implementation. GCC combines REMB (receiver-estimated bitrate based on inter-packet delays and packet loss) with probing (sending additional packets to test available bandwidth). The encoder's target bitrate is adjusted based on GCC's output, providing a feedback loop that adapts the encoding bitrate to the network conditions within 2–5 seconds of a bandwidth change.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Active Speaker Detection</h3>
-        <p>Active speaker detection identifies who is currently speaking and highlights their video tile (or switches it to the large position in speaker view layout). WebRTC provides the RTCPeerConnection.getStats() API, which includes audio level information for each audio track. The client polls getStats() every 500ms and computes a smoothed audio level per participant. A participant is classified as "speaking" when their smoothed audio level exceeds a threshold (e.g., -50dBFS) for at least 500ms continuously. Short sounds (coughs, background noise) do not trigger the "speaking" state.</p>
-        <HighlightBlock as="p" tier="important">The speaking state is also used for layout decisions: in speaker view, the largest tile shows the most recent "speaking" participant. Speaker transitions are smoothed (there is a debounce: the speaker does not change if the new candidate has been speaking for less than 1000ms, preventing rapid layout shifts when two people speak simultaneously). The "speaking" indicator (a green ring around the video tile) has a faster update rate (200ms) than the layout switch (1000ms debounce) so the user sees immediate audio level feedback without layout thrashing.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Layout Management</h3>
-        <p>Gallery view (grid layout) dynamically adjusts the grid configuration based on participant count: 2 participants use a side-by-side 2-column layout; 3–4 use a 2×2 grid; 5–9 use a 3×3 grid; 10–25 use a 5×5 grid (with pagination for the remainder); 25+ paginate with a fixed grid size per page. Each tile's aspect ratio is fixed (16:9 for video, with letterboxing for portrait mobile video). The grid reflows when participants join, leave, or turn their cameras on or off (a camera-off participant shows a placeholder with their name and avatar).</p>
-        <HighlightBlock as="p" tier="important">The layout computation must be CSS-based (not JavaScript-calculated positions) to avoid JavaScript-driven layout at 60fps. CSS Grid with auto-fill and minmax provides responsive grid reflow without JavaScript: grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) adapts the column count to the available container width automatically. Individual tile sizing and aspect ratio are enforced via CSS aspect-ratio and object-fit: cover on the video element.</HighlightBlock>
-        <p>Video tiles for participants with cameras off should not hold open the video element with an active MediaStream (which would consume decoding resources for a black frame). Camera-off tiles are rendered as static DOM elements (name + avatar), and the MediaStream for that participant's video track is unsubscribed from the SFU subscription. When the participant turns their camera back on, the SFU subscription is resumed, and the video element is reactivated. This subscription management is a key optimization for large calls: a 50-person call where 40 people have cameras off should not be consuming decoding resources for 40 inactive video streams.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Reconnection and Network Resilience</h3>
-        <p>Brief network interruptions (mobile user briefly in a tunnel, WiFi hiccup) should be recovered automatically without the user rejoining. The RTCPeerConnection ICE connection state transitions through disconnected → failed if packets stop flowing. The recovery strategy: on disconnected state, wait up to 5 seconds for automatic ICE restart (WebRTC's built-in reconnection). If the state transitions to failed (the full 5 seconds elapsed without recovery), the client initiates an explicit ICE restart: it sends a new SDP offer to the signaling server with the iceRestart flag set, triggering a fresh ICE candidate gathering and selection cycle. This usually reconnects within 1–3 seconds.</p>
-        <p>During reconnection, the participant's video tile shows a "Reconnecting..." overlay to other participants (signaled via a WebSocket presence event: the signaling server notifies all participants when a user's connection state changes). Audio is prioritized over video during degraded conditions: if bandwidth drops severely, the SFU sends only the audio layer and drops the video stream entirely. Audio-only mode consumes approximately 30–60kbps per participant (Opus at 48kHz) and can sustain a call on connections as poor as 100kbps with acceptable quality.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Screen Sharing</h3>
-        <p>Screen sharing uses the getDisplayMedia() API to capture the user's screen, window, or tab as a MediaStream. This stream is a separate video track sent to the SFU alongside (or instead of) the camera track. Screen share content benefits from different encoding parameters than camera video: screen content (slides, code, documents) has large uniform regions and sharp text, which compresses better with higher keyframe frequency and content-adaptive encoding. Chrome's getDisplayMedia() enables screen content hints (cursor: always, displaySurface: monitor/window/browser) that the browser uses to optimize encoding for the content type.</p>
-        <p>The SFU handles the screen share stream as a separate subscription: participants can subscribe to the screen share independently of the camera feeds. In screen share mode, the UI layout switches to a "presentation" layout: the screen share is displayed at full size, with participant video tiles arranged as small thumbnails along the side or bottom. The layout transition is triggered by the sharing participant sending a "screen share started" control event via the WebSocket channel; all participants' UIs switch to presentation layout simultaneously.</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/video-conferencing-frontend-qoe.svg"
-          alt="Video conferencing quality of experience showing simulcast layer switching (REMB feedback → SFU layer selection → keyframe-aligned switch), active speaker detection pipeline (WebRTC getStats audio level → smoothed threshold → layout switch with debounce), ICE reconnection flow (disconnected → 5s wait → ICE restart → new candidates), and bandwidth estimation via GCC feedback loop."
-          caption="Video conferencing QoE: simulcast adaptive quality, active speaker detection, ICE reconnection, and GCC bandwidth estimation"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">SFU versus MCU versus peer-to-peer mesh: a peer-to-peer mesh (each participant sends to every other participant directly) works well for 2–3 participants but upload bandwidth grows as O(N-1) per participant—a 10-person mesh requires each participant to upload 9 video streams, which is infeasible on most consumer connections. An MCU (Multipoint Control Unit) decodes all streams, mixes them into a single composite video, and sends one stream to each participant. This minimizes subscriber bandwidth (each participant receives only one composite stream) but requires server-side decoding and encoding (expensive, high latency) and loses individual video tiles (everyone sees the same composed view). An SFU is the correct choice for browser-based conferencing: it routes packets without decoding (low CPU cost per connection), allows each client to receive individual streams (flexible layout on the client), and scales to 50+ participants with per-subscriber simulcast layer selection.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Audio processing challenges: echo cancellation, noise suppression, and automatic gain control (AGC) are critical for call quality. WebRTC's built-in audio processing pipeline (WebRTC AEC, NS, AGC) handles these automatically when getUserMedia is called with audio: &#123; echoCancellation: true, noiseSuppression: true, autoGainControl: true &#125;. The built-in processing is adequate for most use cases; professional use cases (broadcast, music) may require disabling automatic processing and applying custom AudioWorklet-based processing. Background noise suppression models (running in a Web Worker via AudioWorklet) can significantly improve call quality in noisy environments and are worth the CPU cost for professional use cases.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">End-to-end encryption: standard WebRTC provides transport-level encryption (DTLS-SRTP encrypts all media in transit). However, the SFU can theoretically decrypt and inspect media (it processes RTP packets). True end-to-end encryption (where the SFU cannot decrypt) requires Insertable Streams (a newer WebRTC API that allows JavaScript to transform encoded frames before sending and after receiving, enabling custom encryption). Insertable Streams-based E2EE is used by Zoom (for E2EE calls), and is the technically correct approach for privacy-sensitive use cases, at the cost of added complexity and the inability to use server-side audio processing (which requires decryption).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A browser-based video conferencing frontend uses WebRTC with an SFU topology: each participant maintains one WebRTC connection to the SFU, which selectively forwards media to all other participants. ICE/STUN/TURN handle NAT traversal; TURN fallback serves corporate users behind restrictive firewalls. Simulcast (three quality layers encoded simultaneously) combined with per-subscriber bandwidth estimation (REMB/TWCC) enables the SFU to deliver appropriate quality to each subscriber independently. Active speaker detection uses RTCPeerConnection.getStats() audio levels with smoothing and debounce to drive layout transitions. Screen sharing uses getDisplayMedia() as a separate stream routed via the same SFU. Reconnection uses ICE restart (5-second timeout before explicit SFU renegotiation). Audio-only fallback preserves call continuity on very poor connections. Camera-off tiles unsubscribe from the SFU to avoid decoding inactive streams. The defining architectural choice—SFU over MCU or mesh—is driven by the need to scale to 50+ participants while maintaining flexible per-client layouts and avoiding server-side media decoding cost.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

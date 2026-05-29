@@ -1,1 +1,5 @@
-# Design an authentication system (OAuth, SSO, MFA flows) — Example 3
+# Authentication System - Example 3
+
+Concrete security privacy edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

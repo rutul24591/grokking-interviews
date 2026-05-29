@@ -7,88 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-account-security-dashboard",
-  title: "Design an Account Security Dashboard (Sessions, Devices)",
-  description:
-    "Architecture for an account security dashboard: active session listing with device fingerprint, IP geolocation, and last-active timestamp; session revocation with real-time WebSocket push to invalidate the revoked session; device trust management with remembered and untrusted device lists; login history with anomaly highlighting (new location, unusual time); two-factor authentication enrollment and backup codes; password change with breach check via HaveIBeenPwned k-anonymity API; security event timeline; and account recovery options management.",
+  title: "Design an Account Security Dashboard",
+  description: "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability.",
   category: "high-level-design",
   subcategory: "security-auth-privacy-systems",
   slug: "account-security-dashboard",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "security-dashboard", "session-management", "device-trust", "login-history", "mfa-enrollment", "breach-check", "revocation"],
-  relatedTopics: ["authentication-system", "secure-token-session-handling"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "security", "auth", "privacy", "policy", "audit"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design an Account Security Dashboard is a high-stakes product system because mistakes create account takeover, data exposure, compliance violations, or permanent loss of user trust. A principal-ready design treats an account security dashboard as a trust boundary, not as a form or settings page.",
+  "The design must cover identity proof, authorization, session lifecycle, consent or policy state, auditability, abuse resistance, operational controls, and user recovery. The visible UI is only one part of the system; the harder work is making sure every backend and derived surface obeys the same security decision.",
+  "A good answer starts by naming assets and attackers. Assets include accounts, tokens, permissions, private data, consent records, audit logs, recovery channels, and administrative power. Attackers include credential stuffers, malicious insiders, compromised devices, automation, phishing kits, and confused legitimate users.",
+  "Security systems also have product trade-offs. Strong controls reduce risk but can lock out real users, add friction, increase support cost, and create accessibility issues. Weak controls improve conversion but increase abuse and breach risk. Principal-level design explains where the system steps up friction and where it preserves usability.",
+  "The design should assume incidents happen. Tokens leak, permissions are misconfigured, consent pipelines lag, and users lose devices. The architecture must support revocation, rollback, audit reconstruction, customer support, and forensics without exposing more sensitive data."
+];
+const concepts = [
+  "The first concept is explicit trust boundary modeling. security posture, device list, and login history must define who can make a decision, what evidence they use, and how that decision is propagated to downstream systems.",
+  "The second concept is least privilege. Users, services, admin roles, tokens, and support tools should receive the minimum permission needed for the task, scoped by resource, tenant, action, device, time, and risk.",
+  "The third concept is lifecycle state. Credentials, sessions, roles, consent records, devices, recovery methods, and audit entries are not static. They are created, verified, rotated, expired, revoked, reviewed, and sometimes legally retained.",
+  "The fourth concept is consistency. Security decisions need stronger consistency than ordinary personalization. A revoked session, removed permission, deleted consent, or blocked account should stop taking effect quickly across API, UI, notification, search, export, and background job surfaces.",
+  "The fifth concept is abuse-aware UX. Attackers exploit error messages, retry behavior, recovery flows, and notification fatigue. The UI should help legitimate users recover while avoiding enumeration, social engineering, or repeated prompt attacks.",
+  "The sixth concept is privacy-safe observability. Security systems need detailed audit and telemetry, but logs must not contain passwords, raw tokens, full secrets, unnecessary personal data, or sensitive consent payloads."
+];
+const architecture = [
+  "The architecture has five major planes: security posture, device list, login history, alert center, recovery flow. The request path asks for a decision; the policy or risk plane evaluates context; the state plane persists durable records; the enforcement plane applies the decision consistently; and the audit plane records enough evidence for review and incident response.",
+  "Every sensitive action should carry actor, resource, tenant, device, session, risk score, policy version, and correlation ID. This context lets the system explain why a decision happened and lets operators find all affected records during an incident.",
+  "The frontend should avoid becoming the source of truth. It can explain choices, collect user intent, and show recovery state, but the backend must enforce authorization, consent, token validity, and session state. Hiding a button is not access control.",
+  "Security state should be versioned. Policy versions, consent versions, role graph versions, token key versions, and session risk versions help the system reason about stale decisions and roll back bad changes.",
+  "The system should support emergency controls: revoke all sessions for a user or tenant, disable a risky recovery method, roll back a bad permission template, pause a consent sync, or force step-up authentication for a suspicious cohort.",
+  "The diagrams for this article should be read as architecture, flow, and operations views: decision boundary, user journey, and incident/recovery control loop."
+];
+const tradeoffs = [
+  "Centralized policy evaluation gives consistent decisions and auditability, but it can become a latency or availability dependency. Distributed checks are faster locally but harder to audit and easier to make inconsistent. Mature systems centralize policy definitions while caching short-lived decisions safely at enforcement points.",
+  "Short-lived tokens limit replay damage but increase refresh traffic and can degrade UX during network or provider issues. Long-lived sessions improve usability but increase risk after device compromise. A defensible design uses short access tokens, rotated refresh tokens, device binding where appropriate, and risk-based step-up.",
+  "Strict security prompts reduce abuse but can train users to approve blindly. Step-up authentication should be risk-based and explain why it appears, not triggered on every sensitive action without context.",
+  "Fail-closed is safer for sensitive operations but can create outages for legitimate users if a policy service fails. Fail-open improves availability but can expose data. The answer should classify operations: viewing public content may degrade open; admin actions, private data, payment, and permission changes should fail closed or require cached proof.",
+  "Detailed audit logs improve forensics but create privacy and retention risks. Logs should be immutable enough for trust, minimized enough for privacy, and governed by access controls and retention policy.",
+  "Automation reduces support cost but can worsen lockout or consent mistakes at scale. Human review is slower but necessary for high-impact recovery, break-glass access, and disputed security events."
+];
+const practices = [
+  "Model every sensitive flow as a state machine with explicit transitions, expiry, revocation, and audit entries. Avoid ambiguous booleans such as active or verified without transition history.",
+  "Use defense in depth. UI gating, API authorization, database row filters, service-to-service authorization, and audit monitoring should all reinforce the same policy instead of relying on one layer.",
+  "Protect recovery flows as strongly as login flows. Email change, phone change, password reset, backup code regeneration, device removal, and account deletion are attacker targets.",
+  "Use idempotency and replay protection for security actions. Repeated clicks or retries should not create duplicate recovery tokens, conflicting consent records, or inconsistent role assignments.",
+  "Segment security telemetry by actor type, tenant, resource class, risk score, geography, device, and release. Watch for spikes in denial rate, challenge rate, recovery attempts, permission changes, token refresh failures, and consent sync lag.",
+  "Build support and forensic tooling from the start. Operators need safe views of decision history, policy versions, device history, token family state, consent lineage, and admin actions without exposing secrets.",
+  "Exercise incident playbooks. Test mass token revocation, compromised admin role rollback, consent propagation delay, policy misconfiguration, suspicious login spikes, and third-party identity provider outage."
+];
+const pitfalls = [
+  "alert fatigue is usually a sign that the design treats security as a single endpoint instead of a control loop with detection, throttling, challenge, and recovery.",
+  "false lockout often comes from UX that optimizes completion over risk explanation. Users need enough context to make safe decisions without exposing sensitive signals to attackers.",
+  "device spoofing can happen when error messages, policy caches, or derived surfaces reveal information that the primary API intended to hide.",
+  "recovery hijack requires explicit audit and rollback controls. Emergency access and recovery paths are necessary, but they are also high-risk and must be observable.",
+  "Another pitfall is logging secrets for debugging. Tokens, reset links, passwords, consent payloads, and private resource names should not appear in client logs, server logs, or analytics beacons.",
+  "Teams also underestimate eventual consistency. If a permission is revoked but search exports, notifications, cached pages, or background jobs still use old access, the system has a security bug even if the main API is correct."
+];
+const useCases = [
+  "user security center requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "admin risk console requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "suspicious login review requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "During a suspected account takeover, the system should revoke risky sessions, preserve forensic evidence, notify the user safely, require step-up authentication, and avoid leaking attacker-controlled details.",
+  "During a policy misconfiguration, operators should identify affected resources, roll back the policy version, invalidate cached decisions, and audit which actions occurred under the bad policy.",
+  "During a privacy request or consent change, downstream systems should receive durable events and report completion or exceptions. A settings UI update alone is not enough."
+];
+const questions = [
+  {
+    "question": "How would you design an account security dashboard end to end?",
+    "answer": "I would start with assets, actors, trust boundaries, and attacker capabilities. Then I would design the decision path around security posture, device list, login history, alert center, recovery flow. The frontend collects intent and shows safe recovery state, but backend enforcement owns policy. Durable state includes decision evidence, policy version, token or consent lineage, and audit logs. Operations require revocation, rollback, support visibility, anomaly detection, and incident playbooks."
+  },
+  {
+    "question": "Why this architecture over UI-only gating or scattered checks?",
+    "answer": "UI-only gating is not security, and scattered checks drift across teams. Central policy definitions with enforcement at APIs and data boundaries give consistency and auditability. The trade-off is latency and availability risk, so enforcement points may cache short-lived decisions with policy versions and fail-closed for sensitive actions."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are alert fatigue, false lockout, device spoofing, recovery hijack, plus policy cache drift, support overload, token refresh storms, audit-log volume, cross-tenant leaks, and delayed revocation. Prevention requires rate limits, lifecycle state, policy versioning, immutable audit, risk scoring, and operational controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Security and privacy decisions need stronger consistency than ordinary product preferences. Revocation, permission removal, account restriction, and consent withdrawal should propagate quickly to APIs, caches, exports, notifications, and background jobs. Some audit aggregation and risk scoring can be eventually consistent, but enforcement should not depend on stale derived summaries."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with safe default policy, cached proof where appropriate, step-up flows, support-visible state, and emergency revocation. Rollback uses policy version rollback, key rotation, token family invalidation, and cache invalidation. Abuse is controlled with rate limits, risk scoring, and recovery hardening. Privacy requires minimization in logs and telemetry. Cost is managed through sampling and tiered audit retention. Observability tracks decision rates, denial rates, challenge rates, revocation lag, and suspicious activity."
+  },
+  {
+    "question": "How do you defend the trade-offs under interviewer pressure?",
+    "answer": "I would classify operations by sensitivity and failure mode. Public or low-risk reads can degrade, but admin actions, private data, identity changes, permission changes, and token issuance need strong enforcement. I would defend extra complexity because the cost of a privacy or account-takeover incident is higher than the cost of central policy, audit, and rollback infrastructure."
+  }
+];
+const references = [
+  {
+    "label": "OWASP Authentication Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+  },
+  {
+    "label": "OWASP Session Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "NIST SP 800-63 Digital Identity Guidelines",
+    "href": "https://pages.nist.gov/800-63-3/"
+  },
+  {
+    "label": "OAuth 2.0 Security Best Current Practice",
+    "href": "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "GDPR text and guidance",
+    "href": "https://gdpr.eu/"
+  }
+];
 
 export default function AccountSecurityDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An account security dashboard gives users visibility into and control over their account's security posture. GitHub's security settings, Google's Security Checkup, and Apple ID's device management are canonical examples. The dashboard shows active sessions (what devices and browsers are currently logged in), recent login history (with anomaly detection for suspicious logins), enrolled MFA methods, and account recovery options. The primary user intent is detection and response: "Is there a session I don't recognize? Revoke it. Was there a login from an unusual location? Investigate."</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The critical security action — session revocation — must be immediate and reliable. If a user sees a compromised session and clicks "Sign out all other devices," every other session must be invalidated within seconds. This requires the session invalidation to propagate to the active sessions via real-time push (WebSocket or SSE), not just a database flag that is checked on the next request. A session that is not invalidated until the next API call could remain active for 15 minutes (the access token TTL) after revocation.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Session listing and revocation, device trust management, login history with anomaly flags, MFA enrollment UI, and password breach check. Not in scope: backend anomaly detection algorithms, push notification infrastructure, or identity verification for account recovery.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/account-security-dashboard.svg" alt="Design an Account Security Dashboard architecture" caption="Architecture view: trust boundary, policy decision, enforcement point, state store, and audit/control plane." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/account-security-dashboard-flow.svg" alt="Design an Account Security Dashboard flow" caption="Flow view: user intent, risk decision, policy enforcement, user recovery, and incident response." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/account-security-dashboard-operations.svg" alt="Design an Account Security Dashboard operations" caption="Operations view: revocation, rollback, suspicious activity, privacy propagation, and forensic auditability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Active session listing:</strong> Each active session is shown with: device type (desktop/mobile, inferred from user-agent), browser name and version, IP address with geolocation (city, country, flag emoji), last active timestamp (relative: "2 hours ago"), and a "This device" badge on the current session. Sessions are sorted by last-active descending. The current session cannot be revoked from this panel (to prevent accidental self-lockout); it shows a "Sign out" button that performs a normal logout.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Session revocation:</strong> Clicking "Revoke" on a session sends DELETE /api/sessions/&#123;sessionId&#125; to the backend. The backend: (1) marks the session as revoked in the session store (Redis: SET session:&#123;id&#125;:revoked 1 EX 86400); (2) publishes a REVOKE event to the session's WebSocket channel. The revoked client's WebSocket receives the REVOKE event, clears the in-memory access token, deletes the session cookie (client-side document.cookie manipulation, or a redirect to /auth/logout that clears the HttpOnly cookie), and redirects to the login page with a "Your session has been signed out" message.</HighlightBlock>
-          <li><strong>Login history:</strong> The last 90 days of login events are shown in a timeline: timestamp, IP, location, device, and success/failure status. Suspicious logins are flagged with an amber warning icon: new country (first login from this country), unusual time (3am local time), failed attempt followed by success (credential stuffing), or multiple failed attempts. Each suspicious event has a "This was me" / "This wasn't me" action — "This wasn't me" triggers an account lockdown flow (immediate session revocation + password reset email).</li>
-          <HighlightBlock as="li" tier="important"><strong>MFA enrollment:</strong> The MFA section shows enrolled methods (Authenticator app, security key, SMS backup). Adding a new TOTP authenticator: (1) server generates a TOTP secret and QR code URL; (2) UI renders the QR code via a canvas element (using qrcode.js); (3) user scans with their authenticator app; (4) user enters the 6-digit code to verify enrollment; (5) backup codes are generated and shown once (user must save them). The backup codes are shown in a modal with a "Copy all" button and a "Download as .txt" link.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Real-time revocation propagation:</strong> Session revocation must reach the active session within 3 seconds. This requires the revoked session's WebSocket connection to be maintained (so the REVOKE event can be delivered). If the WebSocket is disconnected at the time of revocation, the revoked session's next API request returns a 401 (the backend checks the revoked flag on every request) and the session is invalidated server-side within the access token TTL (15 minutes maximum).</HighlightBlock>
-          <li><strong>Password breach check:</strong> When the user changes their password, the new password is checked against the HaveIBeenPwned (HIBP) k-anonymity API before submission. The client computes SHA-1 hash of the password, sends the first 5 characters of the hash to the HIBP API (GET https://api.pwnedpasswords.com/range/&#123;5chars&#125;), and checks if the full hash appears in the response. This k-anonymity model ensures the full password hash is never sent to the external API. If found in the breach database, a warning is shown: "This password has appeared in a data breach. Choose a different one." The form is not submitted until the user chooses a non-breached password.</li>
-          <HighlightBlock as="li" tier="important"><strong>Confirmation for destructive actions:</strong> "Revoke all sessions," "Remove MFA method," and "Delete account" require a re-authentication step (enter current password or complete MFA) before proceeding. This prevents an attacker with temporary access to an unlocked computer from locking out the legitimate user.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The security dashboard is a read-heavy interface (mostly displaying state) with a few high-stakes write operations (revocation, MFA enrollment). The dashboard loads session data on mount (GET /api/sessions, GET /api/login-history, GET /api/security-settings — batched via BFF), renders the state, and subscribes to a WebSocket channel for real-time security events (new login, session revoked). Destructive operations follow a confirm-then-execute pattern with re-authentication gates. The current session's WebSocket connection listens for its own revocation event (in case it is revoked by another session) — on receiving REVOKE for its own sessionId, it executes logout immediately.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/account-security-dashboard.svg"
-          alt="Account security dashboard: session listing (GET /api/sessions → device type, browser, IP+geolocation, lastActive; sorted by lastActive DESC; current session badge; revoke button for others), session revocation (DELETE /api/sessions/{id}; backend: Redis SET revoked 1 EX 86400; WS REVOKE event to target session; target: clear token + delete cookie + redirect login 'Your session was signed out'), login history (90 days timeline; anomaly flags: new country, unusual time 3am, fail→success pattern; 'Wasn't me' → lockdown: revoke all + password reset email), MFA enrollment (TOTP: server generates secret+QR; canvas QR code; user scans; verify 6-digit; backup codes shown once + copy/download; WebAuthn: navigator.credentials.create → attestation → server stores pubkey), password breach check (new password → SHA-1 → first 5 chars → HIBP range API GET; check full hash in response; found → warning 'appeared in breach'; not found → allow submit; k-anonymity: full hash never sent), re-auth gate (revoke all + remove MFA + delete account → confirm dialog + enter password or MFA challenge before proceeding)."
-          caption="Session listing (device/browser/IP geolocation, lastActive sort), real-time revocation (DELETE → Redis revoked flag → WS REVOKE event → target clears cookie + redirects), login history anomaly flags (new country/unusual time/fail→success), TOTP enrollment QR canvas + backup codes, HIBP k-anonymity breach check (SHA-1 first 5 chars, full hash never leaves browser), re-auth gate for destructive actions"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Session Data Model and Fingerprinting</h3>
-        <HighlightBlock as="p" tier="important">Each session record (in Redis or a sessions table) stores: sessionId, userId, createdAt, lastActiveAt, ipAddress, userAgent, deviceFingerprint (a hash of: OS, browser, screen resolution, timezone, language — stable identifiers that distinguish devices), geoLocation &#123;city, country, countryCode&#125; (derived server-side from IP on session creation using MaxMind GeoLite2), isTrusted (boolean — set when user clicks "Trust this device"), and revokedAt (null if active). The frontend renders device type by parsing the user-agent string client-side using ua-parser-js — showing a laptop icon for desktop, phone icon for mobile, tablet icon for tablets.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The "This device" identification: the current session's ID is included in the auth context (returned as part of the /auth/me response). The session list compares each session's ID to the current session ID and adds the "This device" badge. The current session's "Revoke" button is replaced with "Sign out" (which performs a normal logout of the current session, not an admin revocation).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Login History Anomaly Detection UI</h3>
-        <HighlightBlock as="p" tier="important">Anomaly detection is performed server-side and stored with each login event — the frontend does not run anomaly logic, it renders server-generated anomaly flags. Each login event has an anomalyFlags array: ["NEW_COUNTRY", "UNUSUAL_HOUR", "CREDENTIAL_STUFFING_PATTERN"]. The UI renders these as colored badges: amber for individual anomalies, red for "CREDENTIAL_STUFFING_PATTERN" (high severity). The anomaly flag definitions: NEW_COUNTRY — first login from this country in the user's history; UNUSUAL_HOUR — login between midnight and 5am in the user's timezone; CREDENTIAL_STUFFING_PATTERN — 5+ failed attempts from different IPs followed by a successful login within 30 minutes.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The "Wasn't me" action flow: the user clicks "Wasn't me" on a suspicious login event. A modal confirms: "We'll sign out all other sessions and send you a password reset email. Continue?" On confirm: (1) POST /api/security/account-lockdown — revokes all sessions except the current one, invalidates all active MFA challenges, and sends a password reset email; (2) the modal closes, a success toast shows "All other sessions have been signed out. Check your email to reset your password."</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">TOTP Enrollment Flow</h3>
-        <HighlightBlock as="p" tier="important">The TOTP enrollment flow requires care to avoid showing the TOTP secret in an unsafe context. Flow: (1) User clicks "Add authenticator app"; (2) POST /api/mfa/totp/enroll — the server generates a random 20-byte TOTP secret (base32-encoded), stores it temporarily (not committed to the user's account yet — only committed after verification), and returns the QR code URL (otpauth://totp/AppName:user@email?secret=BASE32SECRET&issuer=AppName); (3) The client renders the QR code using qrcode.js on a canvas element — the secret is in the QR code URL displayed in the client but never stored anywhere beyond the temporary server record; (4) User scans with authenticator app; (5) User enters the current 6-digit TOTP code to verify; (6) POST /api/mfa/totp/verify &#123;code&#125; — server verifies and commits the TOTP secret to the user's MFA record; (7) Server generates 10 backup codes (8-character alphanumeric), stores hashed versions, returns plaintext versions once; (8) UI shows backup codes in a modal with "Copy all" (uses navigator.clipboard.writeText) and "Download as .txt" (creates a Blob and a temporary &lt;a&gt; download link).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Device Trust and Remembered Devices</h3>
-        <HighlightBlock as="p" tier="important">The "Trust this device for 30 days" option during MFA: when checked, the server sets a long-lived, device-specific cookie (trust-token) in addition to the session cookie. The trust token is a signed JWT containing: userId, deviceFingerprint, trustedUntil. On future logins from the same device (same fingerprint), the server checks the trust token — if valid and not expired, MFA is skipped. The trust token is stored as a separate HttpOnly cookie so it survives session logout (the session cookie is cleared on logout, but the trust token persists until its expiry). The security dashboard shows trusted devices and allows revoking trust tokens individually (DELETE /api/trusted-devices/&#123;tokenId&#125; — invalides the token without affecting the session).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Real-time revocation vs. polling: the WebSocket approach for revocation propagation adds complexity (maintaining WebSocket connections for every active session). An alternative: check the revoked flag in Redis on every API request (token introspection). This trades real-time propagation for simplicity — a revoked session may make up to one more API request before being blocked. For most use cases (the user saw a suspicious session and revoked it), the one-request delay is acceptable. For high-security scenarios (suspected account compromise), real-time WebSocket revocation is justified.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Backup code UX tradeoffs: showing backup codes only once (at enrollment time) is the standard pattern — it forces the user to save them immediately. However, many users lose their backup codes. Alternatives: allow re-generating backup codes (which invalidates the old ones); provide an account recovery email (the user receives a recovery link to their verified email if they lose all MFA methods); or allow "recovery via trusted contact" (another user vouches for identity — complex but zero-server-knowledge). The "show once" policy with a forced confirmation ("I have saved these codes") before closing is the right balance for most applications.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An account security dashboard covers: (1) session listing (device type from UA parser, IP geolocation, lastActive, current session badge, revoke others); (2) real-time revocation (DELETE → Redis revoked flag → WS REVOKE event → target clears cookie + redirects login); (3) login history with server-side anomaly flags (NEW_COUNTRY, UNUSUAL_HOUR, CREDENTIAL_STUFFING — rendered as colored badges, "Wasn't me" triggers account lockdown + password reset email); (4) TOTP enrollment (server temp secret → QR code URL → canvas render → verify 6-digit → commit + generate backup codes shown once, copy/download); (5) HIBP k-anonymity breach check (SHA-1 first 5 chars to range API, full hash check client-side, full hash never sent externally); and (6) re-auth gate for destructive actions (confirm + password/MFA challenge before revoke-all or delete). The core security principle: every destructive action on the security dashboard requires fresh authentication — temporary access to a logged-in browser should not allow an attacker to lock out the legitimate user.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

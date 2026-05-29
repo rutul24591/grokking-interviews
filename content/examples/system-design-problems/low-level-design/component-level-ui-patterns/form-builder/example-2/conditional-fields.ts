@@ -1,65 +1,89 @@
-/**
- * Conditional Fields — Dynamic show/hide based on other field values.
- *
- * Interview edge case: When a field's visibility depends on another field's value,
- * changing the dependency should immediately update visibility AND clear the hidden
- * field's value (to avoid submitting stale data).
- */
+export type formBuilderSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-import { useMemo, useCallback } from 'react';
+export type formBuilderEvent = {
+  id: string;
+  topic: "form-builder";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: formBuilderSignal;
+};
 
-export interface ConditionRule {
-  fieldId: string;
-  operator: 'eq' | 'neq' | 'in' | 'not-in' | 'gt' | 'lt';
-  value: unknown;
+export type formBuilderDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateFormBuilderEvent(event: formBuilderEvent): formBuilderDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: formBuilderDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Form Builder",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-export interface ConditionalField {
-  fieldId: string;
-  conditions: ConditionRule[];
-  logic: 'and' | 'or';
-  clearOnHide?: boolean;
-}
+export function runFormBuilderContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateFormBuilderEvent({
+    id: "form-builder-evt-1",
+    topic: "form-builder",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-/**
- * Evaluates a single condition against current field values.
- */
-function evaluateCondition(rule: ConditionRule, values: Record<string, unknown>): boolean {
-  const actual = values[rule.fieldId];
-  switch (rule.operator) {
-    case 'eq': return actual === rule.value;
-    case 'neq': return actual !== rule.value;
-    case 'in': return Array.isArray(rule.value) && rule.value.includes(actual);
-    case 'not-in': return Array.isArray(rule.value) && !rule.value.includes(actual);
-    case 'gt': return typeof actual === 'number' && actual > (rule.value as number);
-    case 'lt': return typeof actual === 'number' && actual < (rule.value as number);
-    default: return false;
-  }
-}
+  const guarded = evaluateFormBuilderEvent({
+    id: "form-builder-evt-late",
+    topic: "form-builder",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-/**
- * Hook that computes visible field IDs based on current values and conditional rules.
- * Returns hidden field IDs that should be cleared.
- */
-export function useConditionalFields(
-  values: Record<string, unknown>,
-  rules: ConditionalField[],
-) {
-  const visibleIds = useMemo(() => {
-    const visible = new Set<string>();
-    for (const rule of rules) {
-      const matches = rule.logic === 'and'
-        ? rule.conditions.every((c) => evaluateCondition(c, values))
-        : rule.conditions.some((c) => evaluateCondition(c, values));
-      if (matches) visible.add(rule.fieldId);
-    }
-    return visible;
-  }, [values, rules]);
-
-  const hiddenIds = useMemo(() => {
-    const allRuleIds = new Set(rules.map((r) => r.fieldId));
-    return [...allRuleIds].filter((id) => !visibleIds.has(id));
-  }, [visibleIds, rules]);
-
-  return { visibleIds, hiddenIds };
+  return { accepted, guarded };
 }

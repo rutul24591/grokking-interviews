@@ -1,1 +1,5 @@
-# Design a video player system (adaptive streaming, DRM) — Example 3
+# Video Player System - Example 3
+
+Concrete media content edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

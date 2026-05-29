@@ -1,1 +1,5 @@
-# Design a survey/form analytics system — Example 2
+# Survey Form Analytics System - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,81 +1,90 @@
-/**
- * Resizable Split Pane — Staff-Level Layout Persistence with Multi-User Sync.
- *
- * Staff differentiator: Layout state synchronization across multiple users
- * viewing the same content, with conflict resolution and layout history
- * for undo/redo.
- */
+export type resizableSplitPaneRuntimeState = {
+  topic: "resizable-split-pane";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-export interface LayoutSnapshot {
-  dividerPosition: number;
-  containerSize: number;
-  timestamp: number;
-  userId: string;
+export type resizableSplitPaneRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Manages layout state with multi-user synchronization and conflict resolution.
- */
-export class CollaborativeLayoutManager {
-  private currentLayout: LayoutSnapshot | null = null;
-  private history: LayoutSnapshot[] = [];
-  private maxHistory: number = 100;
+export function planResizableSplitPaneRecovery(
+  state: resizableSplitPaneRuntimeState,
+  nowMs: number,
+): resizableSplitPaneRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: resizableSplitPaneRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-  /**
-   * Applies a local layout change.
-   */
-  applyLocalChange(dividerPosition: number, containerSize: number, userId: string): LayoutSnapshot {
-    const snapshot: LayoutSnapshot = {
-      dividerPosition,
-      containerSize,
-      timestamp: Date.now(),
-      userId,
-    };
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-    this.currentLayout = snapshot;
-    this.history.push(snapshot);
-
-    if (this.history.length > this.maxHistory) {
-      this.history = this.history.slice(-this.maxHistory);
-    }
-
-    return snapshot;
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
 
-  /**
-   * Receives a remote layout change.
-   * Accepts if newer, rejects if older (last-write-wins).
-   */
-  receiveRemoteChange(remote: LayoutSnapshot): 'accepted' | 'rejected' {
-    if (!this.currentLayout) {
-      this.currentLayout = remote;
-      this.history.push(remote);
-      return 'accepted';
-    }
-
-    if (remote.timestamp > this.currentLayout.timestamp) {
-      this.currentLayout = remote;
-      this.history.push(remote);
-      return 'accepted';
-    }
-
-    return 'rejected';
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
   }
 
-  /**
-   * Undoes the last layout change.
-   */
-  undo(): LayoutSnapshot | null {
-    if (this.history.length < 2) return null;
-    this.history.pop();
-    this.currentLayout = this.history[this.history.length - 1];
-    return this.currentLayout;
-  }
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
 
-  /**
-   * Redoes a previously undone layout change.
-   */
-  getCurrentLayout(): LayoutSnapshot | null {
-    return this.currentLayout;
-  }
+export function runResizableSplitPaneEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planResizableSplitPaneRecovery(
+    {
+      topic: "resizable-split-pane",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planResizableSplitPaneRecovery(
+    {
+      topic: "resizable-split-pane",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Resizable Split Pane",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

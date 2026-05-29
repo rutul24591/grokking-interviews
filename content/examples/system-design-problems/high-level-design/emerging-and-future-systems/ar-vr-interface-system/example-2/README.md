@@ -1,1 +1,5 @@
-# Design an AR/VR interface system — Example 2
+# AR VR Interface System - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

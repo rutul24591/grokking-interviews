@@ -7,108 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-plugin-extension-marketplace-ui",
-  title: "Design a Plugin / Extension Marketplace UI",
-  description:
-    "Architecture for a plugin marketplace: plugin registry, trust and permissions model, installation workflow, sandboxed execution, versioning, and developer portal.",
+  title: "Design a Plugin and Extension Marketplace UI",
+  description: "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance.",
   category: "high-level-design",
   subcategory: "platform-sdk-infra-systems",
   slug: "plugin-extension-marketplace-ui",
-  wordCount: 5300,
-  readingTime: 32,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "plugin", "marketplace", "extension", "sandbox", "permissions"],
-  relatedTopics: ["frontend-sdk-for-third-party-developers", "frontend-architecture-for-an-internal-developer-platform"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "platform", "sdk", "infrastructure", "governance", "observability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Plugin and Extension Marketplace UI is a platform system, which means the product is not only the UI that users see but also the contract other teams, tenants, developers, plugins, SDKs, or automation depend on. A principal-ready design treats a plugin and extension marketplace UI as a versioned control plane with operational guarantees.",
+  "The design must define ownership boundaries, compatibility rules, tenant isolation, permission enforcement, rollout mechanics, observability, rollback, and support operations. Platform systems fail differently from normal product screens because a bad release can break many downstream teams or external customers at once.",
+  "The visible dashboard or SDK should be backed by durable state: configuration versions, release channels, manifests, audit logs, policy decisions, dependency graph, tenant scopes, and operational history. Derived views such as impact analysis, metrics, install status, and rollout health can lag if they are observable and repairable.",
+  "A staff/principal answer should make the platform contract explicit. Who can publish? Who can install? What is backward compatible? What happens when a plugin, SDK, flag, deployment, token, or tenant job misbehaves? How do teams roll back without corrupting customer state?",
+  "The design should also include governance. Platform features need approvals, blast-radius limits, staged rollout, auditability, and usage visibility because they frequently grant power to other teams or external developers."
+];
+const concepts = [
+  "The first concept is contract-first design. extension registry, permission manifest, and install workflow should expose stable schemas, versioned APIs, documented lifecycle states, and compatibility guarantees. Hidden contracts are what make platform migrations painful.",
+  "The second concept is isolation. Tenants, projects, plugins, SDK integrations, build jobs, and admin actions should be scoped so a mistake or malicious actor cannot affect unrelated users. Isolation applies to data, permissions, compute, rollout, and telemetry.",
+  "The third concept is versioning and rollout. Platform artifacts should support draft, approved, staged, active, deprecated, and rolled-back states. The UI should show which version is used where and who owns it.",
+  "The fourth concept is operational feedback. A platform UI should not only let users change state; it should show health, lag, adoption, errors, blast radius, and rollback readiness before and after the change.",
+  "The fifth concept is permission and audit. Admin actions, SDK configuration, plugin install, feature rollout, tenant bulk jobs, and deployment changes should be authorized, recorded, reviewable, and reversible where possible.",
+  "The sixth concept is developer experience. Good platform systems reduce cognitive load with safe defaults, schema validation, preview environments, dry runs, examples, error explanations, and migration guidance."
+];
+const architecture = [
+  "The architecture contains extension registry, permission manifest, install workflow, trust review, runtime sandbox. The control plane stores configuration, versions, ownership, approvals, and audit. The execution plane applies changes through SDKs, plugins, build systems, rollout engines, or tenant jobs. The observability plane measures impact and supports rollback.",
+  "Every change should have an identity: actor, target scope, version, policy decision, approval state, rollout percentage, dependency impact, and correlation ID. Without this metadata, support and incident response cannot reconstruct what happened.",
+  "The frontend should render lifecycle state explicitly: draft, validating, approved, staged, active, partially rolled out, blocked, deprecated, failed, or rolled back. Platform users need to understand whether a change is safe to proceed, not just whether a form submitted.",
+  "The system should support dry-run or preview. Before applying a flag, plugin install, tenant bulk job, deployment, SDK config, or component release, users should see affected projects, tenants, permissions, compatibility warnings, and estimated blast radius.",
+  "Rollback should be designed as a product path. Some state can be reverted directly; some requires compensating changes; some must be disabled at runtime while data cleanup happens asynchronously. The UI should make these differences visible.",
+  "Platform observability should connect user-visible changes to downstream symptoms: SDK errors, plugin crashes, build failures, tenant job failures, RUM regressions, permission denials, adoption metrics, and support tickets."
+];
+const tradeoffs = [
+  "Centralized platforms improve consistency, governance, and reuse, but they can become bottlenecks if every team waits for the platform team. Extensibility and self-service reduce bottlenecks but increase policy and compatibility risk.",
+  "Strict compatibility protects consumers but slows innovation. Fast-moving APIs or components let teams ship quickly but create migration debt. Mature platforms define support windows, deprecation workflows, and compatibility tests.",
+  "Runtime configuration gives fast rollback and experimentation, but it creates distributed state that can drift across SDK caches, edge nodes, tenants, and clients. Build-time configuration is simpler but slower to change during incidents.",
+  "Plugin and extension ecosystems increase platform value but introduce supply-chain, permission, performance, and trust risks. Sandboxing, manifest review, version pinning, and kill switches are not optional.",
+  "High-cardinality observability improves debugging but can become expensive and privacy-sensitive. Principal designs sample intelligently, aggregate by stable dimensions, and restrict raw event access.",
+  "Self-service bulk operations improve admin productivity but can create large blast radius. Dry runs, approvals, quotas, staged execution, pause/resume, and audit logs are the trade-off that makes self-service safe."
+];
+const practices = [
+  "Represent platform artifacts with explicit lifecycle state, owner, version, scope, dependencies, approval, rollout status, and audit history.",
+  "Build validation into authoring. Catch schema errors, permission violations, dependency breaks, accessibility regressions, privacy issues, and compatibility problems before publish or install.",
+  "Use staged rollout and blast-radius limits. Platform changes should support canary, tenant allowlists, percentage rollout, automatic stop on guardrail failures, and one-click disable where safe.",
+  "Keep execution idempotent. Deployments, plugin installs, SDK config updates, tenant bulk jobs, and flag changes should converge after retries rather than duplicate work.",
+  "Enforce least privilege. Extensions, support tools, admin dashboards, SDK keys, and workflow runners should receive narrow scoped permissions with audit trails.",
+  "Expose operational truth in the UI. Users should see queue state, rollout health, adoption, errors, stale clients, incompatible versions, and rollback options.",
+  "Design support tooling. Operators need to inspect which version, plugin, flag, token, deployment, or tenant job affected a customer without querying raw databases."
+];
+const pitfalls = [
+  "malicious plugin usually means the platform lacks compatibility gates, staged rollout, or blast-radius controls. Platform failures multiply because many teams depend on one surface.",
+  "permission creep often comes from treating permissions or integration boundaries as documentation instead of enforceable runtime policy.",
+  "install rollback is a state-distribution problem. SDK caches, build artifacts, edge nodes, tenants, and clients may observe different versions unless the design tracks propagation and freshness.",
+  "compatibility break requires rollback and audit. Platform users should know whether they can disable, revert, compensate, or escalate the issue.",
+  "Another pitfall is measuring adoption without measuring harm. A platform can be widely used and still create latency, privacy, accessibility, compatibility, or support problems.",
+  "Teams also forget deprecation. Old SDKs, plugins, components, flags, and deployment settings remain in production long after the happy-path migration guide is written."
+];
+const useCases = [
+  "IDE marketplace requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "SaaS integration marketplace requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "browser extension catalog requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "During a bad rollout, the system should identify affected tenants or projects, stop further rollout, disable the runtime path if possible, and preserve audit evidence.",
+  "During a compatibility break, owners should see consumers, version usage, failing checks, migration status, and deprecation deadlines.",
+  "During an abuse or supply-chain incident, the platform should revoke permissions, disable extensions or keys, notify affected owners, and support forensic review."
+];
+const questions = [
+  {
+    "question": "How would you design a plugin and extension marketplace UI end to end?",
+    "answer": "I would model it as a platform control plane plus execution plane. The control plane stores versions, ownership, permissions, approvals, rollout state, and audit history. The execution plane applies changes through SDKs, plugins, workflows, deployments, tenant jobs, or runtime config. The UI supports validation, preview, staged rollout, health monitoring, and rollback. Observability connects platform changes to downstream customer impact."
+  },
+  {
+    "question": "Why this architecture over a simple admin dashboard or SDK config page?",
+    "answer": "A simple dashboard can mutate state but cannot safely manage platform contracts, compatibility, blast radius, tenant isolation, approvals, or rollback. Platform systems need lifecycle and governance because one change can affect many downstream consumers. The additional control-plane complexity is justified by operational risk."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are malicious plugin, permission creep, install rollback, compatibility break, plus stale clients, incompatible versions, high-cardinality telemetry, queue backlogs, cross-tenant leakage, support overload, and uncontrolled blast radius. Prevention requires versioning, validation, staged rollout, idempotent execution, scoped permissions, and observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative configuration, permissions, ownership, approvals, and audit entries need strong server-controlled consistency. Runtime propagation to SDKs, edge nodes, build systems, dashboards, and tenants is often eventually consistent, but it must expose version and freshness. Rollback should target both control-plane state and distributed runtime state."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with dry runs, staged rollout, automatic guardrails, pause/resume, and rollback controls. Abuse is handled through least privilege, sandboxing, review, and key/plugin revocation. Privacy requires scoped telemetry and data minimization. Cost is controlled through sampling, quotas, batch execution, and cardinality limits. Observability tracks rollout health, adoption, error rates, stale versions, queue lag, and customer impact."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would argue that platform surfaces are leverage points, so governance is not bureaucracy; it is blast-radius control. I would defend self-service only when paired with validation, approvals for high-risk changes, staged rollout, and rollback. I would also distinguish authoritative control-plane consistency from eventually consistent runtime propagation."
+  }
+];
+const references = [
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "W3C Web Components",
+    "href": "https://www.w3.org/TR/components-intro/"
+  },
+  {
+    "label": "OWASP Third Party JavaScript Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Third_Party_Javascript_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  },
+  {
+    "label": "Cloudflare Workers platform docs",
+    "href": "https://developers.cloudflare.com/workers/"
+  }
+];
 
 export default function PluginExtensionMarketplaceUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A plugin marketplace allows third-party developers to extend a platform's functionality beyond what the platform team can build. Examples: Figma plugins (design tools and automation), VS Code extensions (editor features), Shopify apps (e-commerce integrations), Slack apps (workflow automation). The marketplace is the interface through which end users discover, install, and manage these extensions. The platform team cannot vet every plugin before installation (scale is too large), so the architecture must enforce a permission model that limits what a plugin can do and makes those limits clear to users before installation.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The trust problem is the defining challenge: a plugin is code written by a third-party developer who is not a platform employee. That code runs in the user's browser (or on the platform's servers) with access to the user's data. A malicious or buggy plugin can read the user's documents, exfiltrate data, inject deceptive UI, or degrade performance. The marketplace must make users aware of the risks (the permissions the plugin requests), enforce technical limits (sandbox the plugin code so it cannot exceed its declared permissions), and provide recourse (reporting, takedown mechanisms) when a plugin abuses its access.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The marketplace serves a design/productivity platform (Figma-like). Plugins are JavaScript/TypeScript bundles that run inside a sandboxed iframe in the platform. Plugins communicate with the platform via a typed postMessage API (the plugin API). Plugins can read and write to the active document (scoped to the platform's data model), make network requests to declared external domains, and display UI in a panel alongside the document. The marketplace has a developer portal for plugin submission, review, and distribution.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/plugin-extension-marketplace-ui-architecture.svg" alt="Design a Plugin and Extension Marketplace UI architecture" caption="Architecture view: control plane, execution plane, permissions, versioning, and observability boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/plugin-extension-marketplace-ui-install-workflow.svg" alt="Design a Plugin and Extension Marketplace UI flow" caption="Flow view: authoring, validation, rollout, execution, health checks, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/plugin-extension-marketplace-ui-trust-permissions.svg" alt="Design a Plugin and Extension Marketplace UI operations" caption="Operations view: blast radius, stale versions, abuse controls, cost, privacy, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Plugin discovery:</strong> Users can browse and search the marketplace by category, popularity, and rating. Each plugin listing shows its name, description, screenshots, permission requirements, and install count.</li>
-          <li><strong>Installation workflow:</strong> Installing a plugin shows the permissions it requires (read document, write document, network access to listed domains). The user explicitly approves the permissions before installation proceeds.</li>
-          <li><strong>Plugin management:</strong> Users can view their installed plugins, enable/disable them, update to new versions, and uninstall. Admins (for team/organization accounts) can control which plugins are available to team members.</li>
-          <li><strong>Plugin execution:</strong> Installed plugins run in a sandboxed iframe with access only to the declared API surface. Plugins can open a UI panel, run background tasks (while the platform is open), and execute on document events (e.g., on file save).</li>
-          <li><strong>Developer portal:</strong> Plugin developers can submit new plugins, upload new versions, manage their listing (screenshots, description, changelog), and view usage analytics (install counts, active users, error rates).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Sandbox enforcement:</strong> A plugin cannot access platform data or capabilities beyond its declared permissions, regardless of what code it contains.</li>
-          <li><strong>Plugin isolation:</strong> A plugin crash or infinite loop must not affect the platform's main UI or other plugins.</li>
-          <li><strong>Installation time:</strong> Plugin installation (after permission approval) completes in under 5 seconds.</li>
-          <li><strong>Marketplace search latency:</strong> Search results return within 500ms for queries against the full plugin catalog.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The marketplace has three components: the registry (database of plugin metadata, versions, permission manifests, and installation records), the distribution layer (CDN-hosted plugin bundles, served per-version), and the execution environment (the platform's plugin host that loads installed plugins into sandboxed iframes). The developer portal is a separate application for plugin authors to submit and manage plugins. The marketplace UI is part of the main platform UI, showing the plugin catalog and managing installation state.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/plugin-extension-marketplace-ui-architecture.svg"
-          alt="Plugin marketplace architecture showing registry (plugin metadata, versions, permission manifests, install records), distribution layer (CDN-hosted plugin bundles per version, content-addressed by hash), developer portal (plugin submission, review workflow, version management, usage analytics), execution environment (platform plugin host: iframe per plugin, postMessage API bridge, permission enforcement, timeout watchdog), and marketplace UI (search and browse, plugin listing with permissions, installation workflow with permission approval dialog)."
-          caption="Marketplace architecture: registry + CDN distribution + developer portal + sandboxed iframe execution with postMessage API bridge and permission enforcement"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Plugin Manifest and Permission Model</h3>
-        <HighlightBlock as="p" tier="important">Every plugin has a manifest file (plugin.json) that declares its identity and permission requirements. The manifest: name, description, version (semver), authorId, permissions (an array of permission strings), networkAccess (an array of allowed domain patterns), uiCapabilities (panel type, dimensions), and the entry point URL (the plugin's JavaScript bundle URL on the CDN). The permissions array is a declarative list of platform API capabilities the plugin uses: document.read, document.write, currentUser.read, fileSystem.read, clipboard.write. The platform enforces that the plugin can only call postMessage API methods that correspond to its declared permissions; calls to undeclared methods are silently rejected.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Permission granularity: the permission list is intentionally granular (document.read is separate from document.write; currentUser.read is separate from currentUser.write) so that users can make informed decisions. A plugin that only needs to read the document (e.g., an export tool) does not need write permissions, and the install dialog communicates this: "This plugin can read your document but cannot make changes." A plugin that requests document.write is more powerful and should be scrutinized more carefully. The install dialog groups permissions into user-readable categories with clear descriptions ("Can modify your document," "Can access your profile information") rather than showing raw permission strings.</HighlightBlock>
-        <p>Network access declaration: plugins that make external network requests must declare the target domains in their manifest (networkAccess: ["api.plugin-author.com"]). The sandbox enforces this by intercepting fetch/XHR calls inside the plugin iframe and blocking requests to undeclared domains. Users see the declared domains in the install dialog ("This plugin communicates with api.plugin-author.com"). Domain patterns support wildcards for subdomains (*.plugin-author.com) but not for TLDs (*.com is not allowed). This network declaration is both a user transparency mechanism and a technical enforcement point.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Plugin Review and Trust Levels</h3>
-        <p>The marketplace assigns trust levels to plugins: submitted (newly uploaded, not yet reviewed), verified (manually reviewed by the platform team), and featured (curated by the platform team as high-quality). Trust level affects discoverability (featured plugins appear at the top of search results) and the install warning displayed to users (submitted plugins show a "This plugin has not been reviewed by [Platform]" warning; verified plugins do not). The trust level does not affect sandbox enforcement—all plugins, regardless of trust level, are sandboxed identically.</p>
-        <HighlightBlock as="p" tier="important">The review process for verification: the platform team reviews the plugin's source code (required for submission: the bundle must be accompanied by a source map and a GitHub repository link), its manifest (permissions must be consistent with the stated functionality), its UI screenshots, and its privacy policy (required for plugins that request any user data). The review is manual but tool-assisted: automated checks flag manifest inconsistencies (a plugin that declares document.write but has no source code paths that call the document.write API), suspicious network domains, and known malicious code patterns (via a static analysis scan of the bundle).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Automated security scanning: each uploaded plugin bundle is scanned by a static analysis tool before it appears in the marketplace (even as "submitted" status). The scanner checks for: direct eval() calls (a signal that the plugin may be trying to evaluate user-provided code), obfuscated code (a signal of attempted detection evasion), known vulnerable library versions (matching the bundle's dependencies against a CVE database), and overly broad CSP bypasses. Plugins that fail the automated scan are rejected with a specific failure reason surfaced to the developer in the portal.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Installation Workflow and Permission Approval</h3>
-        <HighlightBlock as="p" tier="important">The installation workflow is a three-step modal. Step 1: show the plugin listing (name, author, description, screenshots, install count, average rating). Step 2: show the permission approval screen—a clear, plain-language list of what the plugin can do (organized by risk level: high-risk permissions like document.write are listed first). The user can see the full list of declared network domains. Step 3: installation confirmation—the plugin is registered in the user's install list, and the plugin bundle URL is recorded (pinned to the current version). Installation does not auto-update to new major versions (which may add new permissions); only patch and minor updates (which cannot add new permissions—enforced by the registry) are applied automatically.</HighlightBlock>
-        <p>Organization-level plugin control: organization admins can create an allowlist of permitted plugins (only allowlisted plugins can be installed by members), a denylist (specific plugins blocked for all members), and a "open marketplace" policy (any plugin can be installed). The default for new organizations is the open marketplace policy; security-conscious organizations switch to allowlist mode. When a member tries to install a non-allowlisted plugin, they see a message: "Your organization admin has restricted plugin installation. Contact your admin to request this plugin." The admin receives a notification of the request.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Sandboxed Plugin Execution</h3>
-        <p>Each installed plugin runs in its own sandboxed iframe. The iframe's src is a platform-controlled URL (plugin-sandbox.platform.com/&#123;pluginId&#125;) that serves a minimal HTML shell loading the plugin's JavaScript bundle. The iframe has strict CSP: default-src 'none'; script-src 'self'; connect-src [allowed domains from manifest]. This CSP blocks inline scripts, eval, and connections to undeclared domains. The iframe sandbox attribute: sandbox="allow-scripts" (Scripts are allowed, but no same-origin privileges, no form submission, no popups, no pointer lock). The plugin bundle runs in this sandboxed environment.</p>
-        <HighlightBlock as="p" tier="important">The postMessage API bridge: the plugin communicates with the platform via postMessage. The plugin calls methods on a platform API object (e.g., platform.document.getNodes()), which internally sends a postMessage to the platform's main window. The platform's plugin host receives the message, validates that the plugin has the required permission for the called method, executes the operation in the platform's context, and sends the result back via postMessage. The plugin's API object receives the result and resolves the corresponding Promise. All plugin API calls are asynchronous (Promise-based) because they cross the iframe boundary via postMessage.</HighlightBlock>
-        <p>Plugin lifecycle management: the plugin host manages each plugin's lifecycle. Plugin start: the iframe is created and the plugin bundle loads. Plugin stop: the iframe is removed from the DOM (destroying the plugin's JavaScript context). Timeout watchdog: if a plugin's postMessage call does not receive a response acknowledgment within 30 seconds, the plugin host assumes the plugin is stuck in an infinite loop and terminates the iframe. The termination is reported to the developer (in the developer portal's error logs) and surfaced to the user as "Plugin timed out and was stopped." The user can manually restart the plugin.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Plugin Versioning and Updates</h3>
-        <HighlightBlock as="p" tier="important">Plugins follow semantic versioning. The registry enforces the following update rules: patch updates (1.0.0 → 1.0.1) can only contain bug fixes—no new permissions, no new API surface. Minor updates (1.0.0 → 1.1.0) can add new optional functionality but cannot add new permission requirements. Major updates (1.0.0 → 2.0.0) can change permissions and require users to re-approve the new permission set (the next time the plugin runs, the user is prompted to review and approve the changed permissions before the plugin starts). This versioning enforcement is the platform's guarantee that auto-updates are safe: users never discover their plugin silently gained new permissions after an auto-update.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The registry validates version constraints at upload time: when a developer uploads v1.0.1, the registry diffs the new version's manifest against v1.0.0's manifest and rejects the upload if any permissions were added or removed (that would require a minor or major version bump). The developer receives a specific error: "Permission document.write was not present in v1.0.0. This change requires a minor version bump (1.1.0) or major version bump (2.0.0)." This automated enforcement eliminates the manual review step for version constraint compliance, reducing the review burden on the platform team while maintaining the permission guarantee.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/plugin-extension-marketplace-ui-trust-permissions.svg"
-          alt="Plugin trust and permission model showing trust levels (submitted: unreviewed warning shown; verified: platform-reviewed; featured: curated), install workflow (listing → permission approval screen grouped by risk → install confirmation → version pinned), sandbox enforcement (iframe CSP: default-src none, connect-src declared domains only; postMessage API bridge: permission check before executing each method), and version constraint enforcement (registry diffs manifests on upload: new permissions in patch/minor version rejected; major version requires user re-approval)."
-          caption="Trust model: review levels + installation permission approval dialog + postMessage permission enforcement + version manifest diff for auto-update safety"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Iframe sandbox versus Realm API versus Web Workers: iframes provide the strongest available sandbox for third-party JavaScript in browsers (combined with strict CSP, they prevent most common attack vectors). The Realm API (TC39 proposal for isolated JavaScript realms) is not yet widely available but would provide an even more granular sandbox (a separate JavaScript realm with a custom global object, within the same document). Web Workers provide a sandbox for computation but have no DOM access and limited postMessage-based communication overhead. For plugins that need to display UI, iframes are the only viable option in current browsers. The Realm API would be superior when available (no iframe overhead, easier inter-realm communication), and the plugin API bridge should be designed to support both backends transparently when the Realm API becomes available.</HighlightBlock>
-        <p>Plugin performance impact: each installed plugin adds an iframe to the page. An organization with 10 installed plugins active simultaneously has 10 additional iframes (each with their own JavaScript context, memory, and event loop). This overhead is manageable for typical plugin counts (under 5) but can degrade performance for power users with many plugins. Mitigation: only auto-start plugins that the user has enabled (not all installed plugins are started by default); plugins that have not been used in the last 7 days are marked as dormant and not auto-started on page load. The user can manually start dormant plugins from the plugin panel. This reduces the typical active plugin count to 1–3 for most users.</p>
-        <HighlightBlock as="p" tier="important">Marketplace spam and abuse: open plugin submission creates incentives for spam (low-quality plugins polluting search results) and abuse (malicious plugins that pass automated scanning by hiding malicious behavior). Mitigations: require developer account verification (GitHub OAuth or email verification with domain allowlist); limit initial publish rate (new accounts can publish 1 plugin per week); implement a user reporting mechanism (flag a plugin as spam or malicious); have a takedown process (platform can remove a plugin and revoke installations within 1 hour of a confirmed abuse report). The takedown mechanism must work end-to-end: removing a plugin from the registry prevents new installations, but also revokes existing installations by marking the plugin as revoked in all users' install records, causing the plugin host to refuse to load it on next startup.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A plugin marketplace has four components: a plugin registry (metadata, permission manifests, version history, install records), a CDN distribution layer (versioned plugin bundles, content-addressed), a sandboxed execution environment (iframe per plugin, strict CSP, postMessage API bridge with per-method permission validation), and a developer portal (submission, review, analytics). The permission model is declarative (plugin.json manifest) and enforced at two levels: the install dialog (user approves permissions before installation) and the API bridge (platform validates permissions before executing each postMessage call). Version constraint enforcement (registry diffs manifests on upload and rejects illegal permission changes) makes auto-updates safe. Trust levels (submitted/verified/featured) gate discoverability and show appropriate warnings. Automated static analysis (eval detection, obfuscation detection, CVE scanning) blocks obviously malicious plugins before they appear in the marketplace. Plugin lifecycle management (timeout watchdog at 30s, dormant plugin suppression after 7 days) prevents individual plugins from degrading platform performance. The foundational security guarantee is the iframe + CSP sandbox: a plugin cannot access platform data or external domains beyond its declared permissions, regardless of the code it contains.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

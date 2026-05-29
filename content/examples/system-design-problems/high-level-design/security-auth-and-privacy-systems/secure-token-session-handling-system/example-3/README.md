@@ -1,1 +1,5 @@
-# Design a secure token/session handling system — Example 3
+# Secure Token Session Handling System - Example 3
+
+Concrete security privacy edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

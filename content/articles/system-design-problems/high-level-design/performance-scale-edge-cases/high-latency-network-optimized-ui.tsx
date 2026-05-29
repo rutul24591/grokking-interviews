@@ -7,88 +7,232 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-high-latency-network-optimized-ui",
-  title: "Design a High-Latency Network Optimized UI",
-  description:
-    "Architecture for a UI optimized for high-latency networks (300–600ms RTT): optimistic UI for all user mutations, request coalescing to batch multiple calls into one, prefetching next-likely resources on idle, delta updates over full response payloads, connection keep-alive and HTTP/2 multiplexing, adaptive polling intervals via exponential backoff, speculative rendering of likely next pages, and perceived performance techniques (skeleton screens, progress indicators, instant local state updates).",
+  title: "Design a UI Optimized for High-Latency Networks",
+  description: "Principal-level UI architecture for high-latency networks covering request shaping, perceived performance, prefetching, batching, optimistic UX, timeout policy, and observability.",
   category: "high-level-design",
   subcategory: "performance-scale-edge-cases",
   slug: "high-latency-network-optimized-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "high-latency", "optimistic-ui", "prefetch", "request-coalescing", "delta-updates", "http2", "perceived-performance"],
-  relatedTopics: ["low-end-device-frontend", "offline-first-poor-network"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: [
+  "hld",
+  "frontend",
+  "latency",
+  "network",
+  "performance",
+  "ux"
+],
+  relatedTopics: [
+  "offline-first-poor-network",
+  "low-end-device-frontend"
+],
 };
+
+const definition = [
+  "Design a UI Optimized for High-Latency Networks is not a narrow rendering problem. It is a production system design problem where the frontend, edge, backend-for-frontend, platform APIs, observability, and product policy must work together for users sit behind 300 ms to 1000 ms round trips, congested mobile links, satellite access, VPN hairpins, or remote geography. A principal-ready answer starts by defining the user promise: what remains usable, what is allowed to be stale, what must be confirmed by the server, and what should be disabled before the product harms trust.",
+  "The main goal is to reduce user-visible round trips while preserving correctness for actions that cannot be guessed locally. The design should avoid the common trap of optimizing only average page load. Interviewers expect you to reason about p95 and p99 users, regional cohorts, low-end devices, dependency failures, and operational behavior during incident conditions.",
+  "This topic sits at the boundary between product experience and distributed systems. The browser is not a passive renderer; it caches, schedules, retries, batches, predicts, persists state, and emits telemetry. Those client decisions can either protect the backend or multiply load during an outage.",
+  "The scope should explicitly name what is in and out. In scope are route architecture, data loading, client scheduling, dependency handling, fallback behavior, observability, release guardrails, and user-facing recovery. Out of scope are rewriting every backend service or assuming unlimited network and device capability.",
+  "A principal-level answer should also define decision ownership. Product owns which experiences can degrade. Platform owns shared performance budgets and observability contracts. Feature teams own route-level regressions. Operations owns incident playbooks and rollback controls. Without ownership, performance systems become dashboards that nobody acts on."
+];
+const concepts = [
+  "The first core concept is an explicit user journey budget. For a high-latency network optimized UI, define budgets for startup, first useful content, first reliable interaction, bytes per route, request count, retry count, and background work. These budgets need route-level owners because a global average lets important cohorts fail quietly.",
+  "The second concept is criticality tiering. Not every request, widget, script, metric, or personalization call deserves the same priority. Critical path work supports navigation, authentication, visible content, and correctness-sensitive actions. Secondary work supports recommendations, analytics, decorations, previews, and speculative prefetch.",
+  "The third concept is client-side scheduling. The client should prioritize visible work, cancel obsolete requests, limit concurrency, pause nonessential background work, and avoid retry storms. Scheduling becomes especially important when request waterfalls multiply RTT.",
+  "The fourth concept is correctness classification. Some experiences can be optimistic or stale, while others require authoritative confirmation. Read views can use stale-while-revalidate when they are informational, but writes need idempotency keys, server-confirmed completion, and explicit pending states. Financial, permission-changing, or inventory-reserving actions should never be marked complete only because the client predicted success.",
+  "The fifth concept is operational observability. A production design needs RUM, synthetic checks, edge metrics, API metrics, client error reports, long-task data, cache hit ratio, and release correlation. Metrics should be segmented by route, region, device class, network class, browser, and experiment variant.",
+  "The sixth concept is progressive enhancement. The system should deliver a useful baseline first, then layer richer behavior when device, network, dependency, and permission state allow it. This is different from graceful failure after a rich app breaks; it is designing the baseline as a first-class product."
+];
+const architecture = [
+  "The recommended architecture contains five cooperating layers: edge cache and CDN, regional BFF, client request scheduler, local state and persistent cache, RUM and cohort analytics. The exact technology choices vary, but the responsibility boundaries should be clear. The edge handles cacheable and regional concerns, the BFF shapes route payloads, the client schedules work and preserves local state, and telemetry closes the feedback loop.",
+  "Requests should be grouped by route intent instead of by backend ownership. The browser should not make a sequence of dependent calls when a BFF or edge function can compose a page-specific response with stable latency and caching semantics. This reduces round trips and gives the platform one place to apply request budgets, timeouts, and fallback policy.",
+  "The client should maintain a small runtime policy engine. It reads device and network hints, route priority, user intent, feature flags, and dependency health. Based on that policy it chooses image quality, prefetch aggressiveness, hydration priority, polling interval, cache strategy, and which widgets to defer.",
+  "State should be split into durable server state, durable local intent, ephemeral UI state, and derived presentation state. Durable local intent matters when users act during degraded conditions. Ephemeral UI state should not be treated as truth after refresh or reconnect.",
+  "The observability flow should correlate route render, data load, user interaction, dependency calls, cache behavior, errors, and release version. When a regression appears, engineers should know whether it came from a bundle change, third-party tag, CDN miss, backend latency, hydration error, feature flag, or experiment.",
+  "The diagrams for this article should be read as architecture, flow, and operations views. The architecture diagram explains ownership boundaries. The flow diagram explains user-visible progression and fallback. The operations diagram explains how the system is observed, controlled, and recovered during abnormal conditions."
+];
+const tradeoffs = [
+  "The first major trade-off is client calls every backend directly versus regional BFF with route-level payload contracts. Direct client access can be simple for small teams, but it creates route waterfalls, exposes backend shape to the browser, and makes fallback behavior inconsistent. A route-focused BFF adds another service tier, but it centralizes payload shaping, cache policy, and dependency control.",
+  "edge-rendered HTML for every route can be attractive because it improves first paint and cacheability. The downside is that not all interactions become safe or fast just because the first HTML arrived quickly. You still need hydration or client logic, state reconciliation, and a plan for dynamic user-specific data.",
+  "Aggressive caching improves latency and availability but creates correctness risk. Public static assets and editorial content can be cached heavily. User-specific data, entitlement checks, privacy-sensitive responses, and mutable transaction state require careful cache keys, short TTLs, or server confirmation.",
+  "Optimistic UI improves perceived responsiveness but increases rollback complexity. It is appropriate for reversible actions such as toggling a view preference or drafting local text. It is unsafe for payment, permission, inventory, identity, deletion, and security-sensitive actions unless the UI clearly represents a pending state.",
+  "Prefetching improves next-step latency but consumes bandwidth, battery, memory, and backend capacity. The principal answer should recommend intent-based prefetch, cohort-aware limits, data-saver respect, and cancellation when intent changes.",
+  "Feature shedding protects the core journey but can damage product metrics or user trust if it is invisible. Degraded states should be explicit enough that users understand what happened, while avoiding noisy technical errors.",
+  "Cost deserves a first-class trade-off. Every extra script, beacon, retry, cache miss, and speculative request becomes meaningful at scale. A principal design should defend a cost budget, not only a latency target."
+];
+const practices = [
+  "Create route-level performance and resilience budgets. Budgets should include bytes, JavaScript execution, API calls, round trips, cache hit ratio, timeout rate, long tasks, and user interaction latency. Route owners should review budget changes during code review and release planning.",
+  "Define a dependency criticality matrix. For each dependency, document whether it blocks rendering, blocks interaction, can use cached data, can fail open, can fail closed, or can be bypassed. This turns outage behavior from improvisation into design.",
+  "Use idempotency and explicit pending states for writes. If the browser retries or the user refreshes, the backend should converge on one logical action. The UI should poll or subscribe to authoritative status rather than asking users to repeat dangerous actions.",
+  "Use progressive loading and bounded resource use. Virtualize large lists, lazy-load below-fold widgets, cap memory caches, reduce image quality for constrained cohorts, and pause nonessential work while the user is interacting.",
+  "Instrument the client as a production component. Track route timing, interaction timing, long tasks, hydration or render failures, cache state, retry count, timeout class, dependency health, and release version. Sample responsibly, but keep enough attribution to debug.",
+  "Build rollback controls. Feature flags, remote config, kill switches, CDN invalidation, third-party script disablement, and route-level fallback switches should be available before an incident. These controls need audit logging and blast-radius limits.",
+  "Exercise degraded modes continuously. Synthetic tests and game days should verify that fallback paths still work, because rarely used fallback code often rots faster than the primary path."
+];
+const pitfalls = [
+  "A common pitfall is optimizing a lab metric while real users continue to fail. Lab tools are useful, but principal interviews expect field measurement segmented by real cohorts.",
+  "Another pitfall is moving complexity to the client without operational controls. Client schedulers, local stores, and prefetchers can create backend load, stale data, or privacy issues if they are not governed.",
+  "prefetch can waste expensive bandwidth. This is not a reason to avoid the technique entirely; it is a reason to bound it, observe it, and disable it remotely when it harms the system.",
+  "optimistic updates can lie on irreversible actions. A strong design identifies which actions need rollback, which need confirmation, and which should be blocked during degraded conditions.",
+  "timeouts can create ambiguous writes. Ambiguity is especially dangerous because users may repeat an action, support may not see the same state, and backend teams may reconcile the wrong records.",
+  "Many designs forget support and operations. If a user reports a failed journey, support should see route, device, network cohort, dependency health, client state, server state, and recent release context without asking engineering to query raw logs."
+];
+const useCases = [
+  "Travel search opening trip details after results is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Marketplace product pages on mobile networks is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Collaboration apps where message send must outrank typing indicators is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "A principal interviewer may ask you to handle a regional outage, a third-party script regression, an API latency spike, a client memory leak, or a sudden traffic surge. In each case, answer with the control loop: detect, isolate, degrade, communicate, recover, and prevent recurrence.",
+  "For consumer products, the biggest risk is usually silent trust erosion: taps do nothing, pages jump, data appears stale, or users repeat actions. For enterprise products, auditability and support reconstruction often matter as much as the immediate UI behavior.",
+  "For regulated or financial workflows, the product should prefer truthful pending states over optimistic success. Users can tolerate a slower confirmed action better than a fast lie that later becomes a support incident."
+];
+const questions = [
+  {
+    "question": "How would you design a high-latency network optimized UI end to end?",
+    "answer": "I would start by defining the user journey and classifying each operation by criticality. Then I would place cacheable/static work at the CDN or edge, shape route payloads through a BFF, let the client scheduler prioritize visible and user-initiated work, and use local state only where correctness allows it. I would add RUM segmented by route, region, device, and network cohort, plus remote controls for feature shedding and rollback. The design is end to end because it covers request path, client runtime, backend dependencies, fallback behavior, observability, and operations."
+  },
+  {
+    "question": "Why choose this architecture over a simpler client-only design?",
+    "answer": "A client-only design is simpler initially, but it exposes every backend dependency to the browser, creates request waterfalls, and makes fallback policy inconsistent across teams. The proposed architecture adds a BFF or edge composition layer so the product can control payload shape, timeouts, cache behavior, and dependency degradation centrally. The trade-off is another operational tier, but that tier pays for itself when users sit behind 300 ms to 1000 ms round trips, congested mobile links, satellite access, VPN hairpins, or remote geography."
+  },
+  {
+    "question": "What breaks at scale and how do you prevent it?",
+    "answer": "The likely failures are request waterfalls multiply RTT; prefetch can waste expensive bandwidth; optimistic updates can lie on irreversible actions; timeouts can create ambiguous writes. Prevention requires budgets, backpressure, cancellation, bounded prefetch, idempotent writes, dependency health signals, route-level ownership, and remote kill switches. At scale, small client inefficiencies become infrastructure incidents, so the frontend must be treated as a traffic-shaping system."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Read views can use stale-while-revalidate when they are informational, but writes need idempotency keys, server-confirmed completion, and explicit pending states. Financial, permission-changing, or inventory-reserving actions should never be marked complete only because the client predicted success. The important interview move is to classify state rather than claim everything is strongly consistent or eventually consistent. Cached reads, derived widgets, analytics, and noncritical counters can usually be stale. Security, entitlement, financial, inventory, and destructive actions require authoritative confirmation and reconciliation."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "During poor network periods, the UI should prioritize visible reads and user-initiated writes, cancel obsolete requests, retry idempotent operations with jitter, and expose background completion for slow writes. The system should degrade to cached content, reduced image quality, and fewer speculative requests rather than blank screens. Rollback relies on flags, config, CDN invalidation, third-party disablement, and safe fallback routes. Privacy requires data minimization in cache keys, logs, telemetry, and local storage. Cost is controlled through request budgets, sampling, cache hit targets, payload limits, and disabled speculation for constrained cohorts. Observability must connect client symptoms to release, route, dependency, device, network, and region."
+  },
+  {
+    "question": "How would you defend the trade-offs under interviewer pressure?",
+    "answer": "I would explicitly separate correctness-critical paths from experience-enhancing paths. Then I would explain why the architecture spends complexity on the former and sheds or simplifies the latter during stress. If challenged on complexity, I would point to the failure modes: ambiguous writes, retry storms, privacy leaks, hidden regressions, and poor p99 cohorts. The design is justified when those risks are more expensive than the added platform layer."
+  }
+];
+const references = [
+  {
+    "label": "web.dev: Core Web Vitals",
+    "href": "https://web.dev/vitals/"
+  },
+  {
+    "label": "web.dev: Interaction to Next Paint",
+    "href": "https://web.dev/inp/"
+  },
+  {
+    "label": "MDN: Service Worker API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+  },
+  {
+    "label": "MDN: Network Information API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Cloudflare: CDN and edge learning center",
+    "href": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+  },
+  {
+    "label": "React documentation: server rendering APIs",
+    "href": "https://react.dev/reference/react-dom/server"
+  }
+];
 
 export default function HighLatencyNetworkOptimizedUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">High-latency network optimization targets the scenario where the network connection is stable and has adequate bandwidth, but the round-trip time (RTT) is high — 300–600ms, typical of satellite internet, 2G mobile with good signal, or corporate VPN tunnels through geographically distant proxies. At 400ms RTT, a sequential chain of 5 API requests (common in an unoptimized SPA: fetch user, fetch settings, fetch feed, fetch notifications, fetch ads) takes 400ms × 5 = 2 seconds of pure network wait time, before any processing. The solution is not to make the network faster — that is beyond the frontend's control — but to reduce the number of sequential round trips, make each round trip smaller, and hide latency behind perceived performance techniques that make the UI feel fast even when the network is slow.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The key insight for high-latency optimization: parallelism and prediction are more valuable than compression. Making a 100KB response 50KB (saving 50KB at 1Mbps = 400ms savings) has the same impact as eliminating one round trip (saving one RTT of 400ms). Eliminating round trips via batching, prefetching, and coalescing is often achievable through architectural changes alone, without changing network infrastructure.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Optimistic UI for mutations, request batching and coalescing, resource prefetching, delta update protocols, HTTP/2 multiplexing, and perceived performance techniques. Not in scope: network protocol design (QUIC/HTTP3), CDN topology, or backend caching strategies.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>
+        {definition.slice(1).map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Optimistic mutations:</strong> All user-initiated mutations (create, update, delete) must update the UI immediately without waiting for the server response. The local state update is applied synchronously; the server confirmation arrives asynchronously. If the server rejects the mutation, the optimistic update is rolled back with a user-visible notification.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Request batching:</strong> Multiple independent API requests that fire within a short time window (10–50ms) are batched into a single HTTP request (GraphQL or a custom batch endpoint). The batch is sent after the window expires or when the window reaches N requests. The server processes each sub-request independently and returns combined results.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Prefetching:</strong> Resources for likely-next user actions are fetched during idle time (requestIdleCallback or IntersectionObserver for below-fold content). When the user actually navigates to the prefetched resource, the data is already in the React Query cache — the transition appears instant despite the high-latency network.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Delta updates:</strong> For polling-based data (feeds, notification counts, live prices), instead of fetching the full payload each poll, the client sends the last-seen sequence number or ETag. The server returns only the changes since that sequence — typically 1–5% of the full payload, dramatically reducing the per-poll bandwidth and the meaningful data size (smaller responses complete faster on high-latency connections despite fixed RTT cost).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Perceived latency:</strong> User interactions must feel instantaneous (under 100ms response) even when the network RTT is 400ms. Achieved entirely through local state updates (optimistic UI) — the network confirmation is a background process.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Round trips:</strong> The initial page load must complete all critical data fetching in 2 round trips maximum: (1) HTML + critical CSS inline; (2) JS bundle + initial API data (prefetched in the same request via server-side data injection or a single batched API call). Sequential chains of API requests are eliminated through batching and server-side composition (BFF pattern — Backend For Frontend).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Polling efficiency:</strong> Polling intervals adapt to network RTT. On low-latency networks (&lt;50ms), polling every 5 seconds is acceptable. On high-latency networks (400ms+), polling every 30–60 seconds reduces the amortized network overhead while delta updates keep the per-poll payload small.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        {concepts.map((item, index) => index === 3 ? (
+          <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The architecture addresses high latency at three levels. The Request Level eliminates sequential round trips: a Backend For Frontend (BFF) server composes multiple microservice calls server-side and returns a single aggregated response to the client. The client makes one API call on page load (GET /api/page-data) instead of five sequential calls for user + settings + feed + notifications + ads. Request batching (for subsequent client-triggered fetches) merges parallel requests within a 20ms window into a single batch request. The Update Level minimizes per-request payload: delta updates (If-None-Match / ETag-based conditional GETs) return empty 304 responses when nothing has changed, and sparse JSON patches when only part of the data changed. The Perception Level makes latency invisible: optimistic UI for mutations, skeleton screens for initial loads, speculative prefetching for next-page navigation, and infinite scroll with a 1-page look-ahead.</HighlightBlock>
-      </section>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
 
-      <section>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/high-latency-network-optimized-ui.svg"
-          alt="High-latency network optimized UI: BFF aggregation (client makes 1 call GET /api/page-data; BFF fans out to user-svc + feed-svc + notif-svc in parallel; merges into 1 JSON response; eliminates 5 serial RTTs → 1 parallel RTT = 400ms saved at 400ms RTT); request batching (BatchLink collects requests fired within 20ms window; POST /api/batch [{query1},{query2}]; server processes in parallel; response [{data1},{data2}]; window size config 20ms or N=10); optimistic UI (user clicks Like; local state updated synchronously in 0ms; POST /api/like sent async; 400ms later: success → confirm; failure → rollback + toast notification); delta polling (client sends GET /api/feed?since=seq-1234&etag=abc; unchanged → 304 Not Modified 0 bytes; changed → 206 partial: only new items delta; polling interval adapts: RTT &lt;50ms → 5s; RTT &gt;300ms → 30s); prefetching (IntersectionObserver on article list items: last visible item → prefetch next page; hover on nav link → prefetch route chunk + data; requestIdleCallback: prefetch likely-next during idle; result: instant navigation despite 400ms RTT)."
-          caption="BFF aggregation (1 client call → parallel microservice fan-out, eliminates 5 serial RTTs), request batching (20ms window, POST /api/batch), optimistic UI (0ms local update, async confirm/rollback), delta polling (If-None-Match ETag, 304 on unchanged, adaptive interval 5s→30s by RTT), prefetching (IntersectionObserver last-item, hover route prefetch, requestIdleCallback idle prefetch)"
+          alt="Design a UI Optimized for High-Latency Networks architecture"
+          caption="Architecture view: ownership boundaries, control-plane decisions, and runtime paths for a high-latency network optimized UI."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/high-latency-network-optimized-ui-flow.svg"
+          alt="Design a UI Optimized for High-Latency Networks flow"
+          caption="Flow view: user-visible progression, fallback behavior, and degraded-state recovery."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/high-latency-network-optimized-ui-operations.svg"
+          alt="Design a UI Optimized for High-Latency Networks operations"
+          caption="Operations view: observability, rollback, cost controls, privacy boundaries, and incident response."
         />
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">BFF Pattern and Request Parallelism</h3>
-        <HighlightBlock as="p" tier="important">The Backend For Frontend (BFF) is a thin aggregation server (Node.js) that sits between the client and the microservices. On page load, the client makes one request to the BFF: GET /api/page-data?page=home&amp;userId=123. The BFF fans out to multiple microservices in parallel (using Promise.all): user-service, feed-service, notification-service, ad-service. The BFF waits for all responses (with a per-service timeout — if ad-service takes &gt;300ms, it is dropped and the response is returned without ads) and merges them into a single JSON response. This converts a sequential 5-request chain (5 × 400ms RTT = 2000ms) into a single parallel fan-out (max(service latency) + 400ms RTT ≈ 600ms).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">For subsequent fetches (triggered by user interactions), Apollo Client's BatchHttpLink or a custom batching middleware collects multiple GraphQL queries or REST requests fired within a 20ms debounce window and sends them as a single POST /api/batch. The batch request body is an array of sub-requests: [&#123;"id": "1", "method": "GET", "url": "/api/user/123"&#125;, &#123;"id": "2", "method": "GET", "url": "/api/feed"&#125;]. The server processes each sub-request independently (in parallel) and returns a combined response array. From the client's perspective, each sub-request is resolved individually — the batching is transparent to the calling code.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Optimistic UI for High Latency</h3>
-        <HighlightBlock as="p" tier="important">On a 400ms RTT network, a non-optimistic UI creates a painful interaction loop: user clicks Like → spinner appears → 400ms wait → Like count updates. At this latency, even a single interaction feels sluggish. Optimistic UI converts this to: user clicks Like → Like count immediately increments (no spinner) → 400ms later server confirms → nothing visible changes. The user experience is instantaneous.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">React Query's useMutation with onMutate / onError / onSettled callbacks implements optimistic updates cleanly: (1) onMutate: immediately update the React Query cache with the expected post-mutation state, save the previous state for rollback; (2) onError: restore the previous state from the snapshot taken in onMutate, show a toast explaining the failure; (3) onSettled: invalidate the query to trigger a background refetch of the authoritative server state. The triple-step ensures that the optimistic update is eventually replaced by the real server state, even if the mutation succeeds — preventing drift between local optimistic state and server truth.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Delta Updates and ETag-Based Polling</h3>
-        <HighlightBlock as="p" tier="important">For polling-based features (live price feeds, notification counts, activity feeds), the standard pattern of GET /api/feed every N seconds returns the full payload each time — wasteful when most of the feed has not changed. Delta updates reduce this to: on the first request, the server returns the full payload and an ETag (a hash of the current state, e.g., ETag: "abc123"). On subsequent requests, the client sends If-None-Match: "abc123". If nothing has changed, the server returns 304 Not Modified with no body — zero bandwidth usage despite an RTT. If the feed has new items, the server returns only the new items (a JSON array of additions) and a new ETag. The client merges the delta into its local feed cache.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Polling interval adaptation: the client measures the RTT of each poll request (time from request send to response received). If RTT &gt; 300ms (high latency detected), the polling interval is increased to reduce the proportion of time spent on network overhead. For a 5-second poll interval with 400ms RTT, the network overhead is 400/5000 = 8% — already reasonable. For a 1-second poll with 400ms RTT, the overhead is 40% — the server is barely responding before the next poll arrives. Adaptive polling uses exponential smoothing of recent RTT measurements to set the interval: interval = max(baseInterval, measuredRTT × multiplier).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Speculative Prefetching</h3>
-        <HighlightBlock as="p" tier="important">Prefetching predicts what the user will navigate to next and fetches that data during idle time, so the navigation appears instant. Three prefetch triggers: (1) IntersectionObserver on paginated list items — when the last visible item enters the viewport, prefetch the next page of data (infinite scroll look-ahead). The user never sees a loading state when scrolling because the next page is already in cache. (2) Pointer hover on navigation links — on pointerenter (50–100ms before a click is committed), prefetch the route's JavaScript chunk and data. This turns a 400ms navigation into a &lt;100ms rendered transition. (3) requestIdleCallback during initial page idle — after the critical render is complete and the browser is idle, prefetch the 3 most likely next-page resources (determined by analytics data on user navigation patterns). Each prefetch adds a link rel="prefetch" tag or a background React Query prefetchQuery call. Prefetched data is stored in React Query's cache with a long stale time (5 minutes) so it is available immediately on navigation.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        {tradeoffs.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Optimistic updates and data consistency: optimistic updates assume the mutation will succeed. If the server rejects the mutation (validation error, permission denied, concurrent edit conflict), the rollback is jarring — the user sees a count go up then come back down, or a message appear then disappear. This can be mitigated by client-side pre-validation (validate the mutation locally before sending it, and only apply the optimistic update if local validation passes) and by designing server APIs to accept optimistic mutations gracefully (e.g., return a soft error that allows the UI to show a warning without a full rollback). For financial transactions, optimistic updates are inappropriate — the user must wait for server confirmation before seeing a balance change.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Prefetching cost on metered connections: prefetching wastes bandwidth for users who do not navigate to the prefetched resource. On high-latency networks with metered data (mobile data in emerging markets), prefetching should be conditional: only prefetch when navigator.connection.saveData is false and navigator.connection.effectiveType is "4g" or better. On 2G/3G or when Save-Data is enabled, prefetching is disabled entirely, and the user accepts slower navigation in exchange for lower data usage. This ties directly into the adaptive serving strategy of the low-end device frontend architecture.</HighlightBlock>
+        <h2>Best practices</h2>
+        {practices.map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A UI optimized for high-latency networks (300–600ms RTT) eliminates round trips and hides unavoidable latency through five strategies: (1) BFF aggregation (one client request → parallel microservice fan-out, eliminating 5-RTT sequential chains into 1 parallel RTT); (2) request batching (BatchLink collects parallel requests in a 20ms window into a single POST /api/batch); (3) optimistic UI (React Query useMutation with onMutate snapshot + onError rollback, making mutations feel instantaneous); (4) delta polling (ETag + If-None-Match → 304 Not Modified on no change, sparse delta on change, adaptive interval by measured RTT); and (5) speculative prefetching (IntersectionObserver last-item look-ahead, hover-to-prefetch route + data, requestIdleCallback idle prefetch). The core principle: on high-latency networks, every round trip is expensive — the architecture must treat each RTT as a scarce resource to be spent deliberately, not consumed accidentally through sequential API chains.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        {pitfalls.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        {useCases.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        {questions.map((item) => (
+          <div key={item.question} className="mb-6">
+            <h3 className="mb-2 text-lg font-semibold">{item.question}</h3>
+            <p>{item.answer}</p>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          {references.map((item) => (
+            <li key={item.href}>
+              <a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
     </ArticleLayout>
   );

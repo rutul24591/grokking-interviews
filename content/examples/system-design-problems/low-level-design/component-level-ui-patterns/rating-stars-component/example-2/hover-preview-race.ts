@@ -1,48 +1,89 @@
-/**
- * Hover Preview Race — Prevents flicker from rapid hover across stars.
- *
- * Interview edge case: User moves mouse quickly across 5 stars. Each star
- * triggers a hover preview. Without debouncing, the preview flickers between
- * 1, 2, 3, 4, 5 stars rapidly. Solution: debounce hover state changes.
- */
+export type ratingStarsComponentSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+export type ratingStarsComponentEvent = {
+  id: string;
+  topic: "rating-stars-component";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: ratingStarsComponentSignal;
+};
 
-/**
- * Hook that debounces hover state changes to prevent flicker.
- */
-export function useHoverDebounce<T>(
-  delayMs: number = 50,
-) {
-  const [hoveredValue, setHoveredValue] = useState<T | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastValueRef = useRef<T | null>(null);
+export type ratingStarsComponentDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
 
-  /**
-   * Called on hover start. Debounces the value change.
-   */
-  const onHoverStart = useCallback((value: T) => {
-    lastValueRef.current = value;
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      setHoveredValue(value);
-    }, delayMs);
-  }, [delayMs]);
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
 
-  /**
-   * Called on hover end. Immediately clears if no new hover started.
-   */
-  const onHoverEnd = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setHoveredValue(null);
-  }, []);
+export function evaluateRatingStarsComponentEvent(event: ratingStarsComponentEvent): ratingStarsComponentDecision {
+  const reasons: string[] = [];
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, []);
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
 
-  return { hoveredValue, onHoverStart, onHoverEnd };
+  let action: ratingStarsComponentDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Rating Stars Component",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
+}
+
+export function runRatingStarsComponentContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateRatingStarsComponentEvent({
+    id: "rating-stars-component-evt-1",
+    topic: "rating-stars-component",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
+
+  const guarded = evaluateRatingStarsComponentEvent({
+    id: "rating-stars-component-evt-late",
+    topic: "rating-stars-component",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

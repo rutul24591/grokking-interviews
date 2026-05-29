@@ -1,47 +1,31 @@
-# Design a Web + React Native Shared System - example-1 Explanation
+# WEB React Native Shared System - Example 1 Explanation
 
-## Article context
-This example supports the article `high-level-design/cross-platform-and-mobile-systems/web-react-native-shared-system`. The article is about Architecture for a web and React Native code-sharing system: monorepo structure with shared business logic, API clients, and state management; platform-specific component implementations via .native.tsx and .web.tsx file extensions; design token system shared across platforms; navigation architecture differences (React Navigation vs React Router); shared form validation and error handling; deep link handling; push notification integration; and CI/CD pipeline for simultaneous web and mobile deployments.. The most relevant article sections for this example are: Problem Clarification; Requirements; Functional Requirements; Non-Functional Requirements; High-Level Architecture; Detailed Design; Enforcing the Platform Boundary; Navigation Architecture Differences; Handling Offline State Across Platforms; Shared API Client with Platform-Specific Fetch.
+## Article alignment
+
+This example supports `high-level-design/cross-platform-mobile-systems/web-react-native-shared-system`. It maps to the regenerated article sections:
+
+- Definition & Context
+- Core Concepts
+- Architecture & Flow
+- Trade offs & Comparison
+- Best practices
+- Common Pitfalls
+- Real-world use cases
+- Common interview question with detailed answer
 
 ## What this example demonstrates
-This example turns the article concept into a concrete implementation artifact. Read it as a small production-style slice rather than an isolated snippet: the files show the domain model, execution path, supporting configuration, tests or demo harness, and operational assumptions that make the article easier to apply in real systems.
 
-## How it supports the article
-The example reinforces the article by showing how the concept behaves when data moves through real boundaries: inputs are accepted, state or decisions are derived, outputs are returned, and failures are handled or surfaced. For interview preparation, connect each file back to the article sections above and explain why the implementation choices match the article's trade-offs.
+The example implements a runnable readiness gate for a cross-platform client system. It uses the same production concerns covered by the article: shared contract compatibility, offline queue replay, device capability fallback, native bridge safety, hydration consistency.
 
-## File-by-file walkthrough
-- `app.ts`: Runs the main scenario and connects the supporting modules into an end-to-end flow.
-- `lib/api.ts`: Models an API boundary, request handling path, or backend contract.
-- `lib/domain.ts`: Defines the domain entities and typed structures used across the example.
-- `lib/policies.ts`: Implements the main logic, including buildRequestKey, jitterBackoffMs, exp, jitter, applyRetryPolicy.
-- `lib/store.ts`: Models client or service state transitions and update behavior.
-- `README.md`: Documents how to run, inspect, or reason about the example.
+## Why this is not generic
 
-## Execution and data flow
-Start from the app, demo, server, route, or run file when present. That entrypoint wires together the supporting modules, executes the main scenario, and prints or renders the result. Domain or model files define the entities. API, route, client, store, policy, config, or utility files express the boundaries and rules. README or notes files explain how to run or inspect the example locally.
+The code carries topic-specific telemetry and failure modes:
 
-## Important implementation behavior
-- retry, backoff, or jitter behavior
-- cache freshness, staleness, or invalidation
-- pagination or cursor handling
-- rate limiting or throttling
-- idempotency or duplicate protection
-- authentication or authorization boundaries
-- error handling and fallback behavior
-- observability and operational signals
+- Telemetry: bundleKb, offlineAgeMs, bridgeErrorRate, deviceTier, syncConflictCount
+- Failure modes: native bridge timeout, stale offline mutation, platform capability gap, large bundle on low-end device, conflicting shared state
 
-## Edge cases and failure modes
-- Retries must avoid retry storms and should only repeat safe operations.
-- Cached data can become stale and needs invalidation or freshness checks.
-- Large result sets need stable pagination and empty-page behavior.
-- Burst traffic and abusive callers need fair throttling without blocking critical paths.
-- Duplicate submissions or replayed messages must not create duplicate side effects.
-- Unauthorized or expired sessions must fail safely without leaking protected data.
-- Fallback paths should preserve user trust and avoid hiding persistent failures.
-- Metrics, logs, traces, or alerts must explain production failures.
-
-## How to use this example
-Use the README if present, then inspect the entrypoint and supporting modules in order. While reading, ask: what invariant is being protected, what boundary can fail, what state can become stale or inconsistent, and what metric or assertion would prove the example works under load or failure?
+These are the exact kinds of concrete details expected in staff and principal system design interviews. The example is meant to help explain how the article's architecture behaves at runtime, under risk, and during recovery.
 
 ## Interview value
-This example is useful for mid-level, senior, staff, and principal interviews because it gives concrete language for implementation trade-offs. A strong answer should explain the happy path, the failure path, the operational signals, and the reason the design supports the article's core idea.
+
+Use this example to move from architecture narration to implementation reasoning. A strong answer should explain the invariant being protected, the data needed to make the decision, the fallback or rollback path, and the metrics that prove the system is healthy after the change.

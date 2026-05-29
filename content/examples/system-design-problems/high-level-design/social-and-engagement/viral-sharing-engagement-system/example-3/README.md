@@ -1,1 +1,5 @@
-# Design a viral sharing / engagement system — Example 3
+# Viral Sharing Engagement System - Example 3
+
+Concrete social engagement edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

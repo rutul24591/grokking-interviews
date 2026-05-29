@@ -1,72 +1,90 @@
-/**
- * File Explorer — Staff-Level Permission-Based Rendering.
- *
- * Staff differentiator: RBAC-aware file operations, optimistic permission
- * checks before rendering actions, and server-side permission validation
- * with fallback UI for denied operations.
- */
-
-export type FilePermission = 'read' | 'write' | 'delete' | 'share' | 'admin';
-
-export interface FileWithPermissions {
-  id: string;
-  name: string;
-  type: 'file' | 'folder';
-  permissions: FilePermission[];
-  owner: string;
-  modifiedAt: number;
-  size?: number;
-}
-
-/**
- * Hook that filters file operations based on user permissions.
- */
-export function useFilePermissions(
-  file: FileWithPermissions,
-  userRole: 'viewer' | 'editor' | 'owner',
-) {
-  const rolePermissions: Record<string, FilePermission[]> = {
-    viewer: ['read'],
-    editor: ['read', 'write', 'share'],
-    owner: ['read', 'write', 'delete', 'share', 'admin'],
+export type fileExplorerUiRuntimeState = {
+  topic: "file-explorer-ui";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
   };
+};
 
-  const userPerms = new Set(rolePermissions[userRole]);
-  const filePerms = new Set(file.permissions);
+export type fileExplorerUiRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-  const canRead = userPerms.has('read') && filePerms.has('read');
-  const canWrite = userPerms.has('write') && filePerms.has('write');
-  const canDelete = userPerms.has('delete') && filePerms.has('delete');
-  const canShare = userPerms.has('share') && filePerms.has('share');
-
-  return { canRead, canWrite, canDelete, canShare };
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Server-side permission validator.
- * Verifies that the user has the required permission before executing an operation.
- */
-export async function validatePermission(
-  fileId: string,
-  requiredPermission: FilePermission,
-  authToken: string,
-): Promise<{ allowed: boolean; reason?: string }> {
-  try {
-    const response = await fetch(`/api/files/${fileId}/permissions`, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
+export function planFileExplorerUiRecovery(
+  state: fileExplorerUiRuntimeState,
+  nowMs: number,
+): fileExplorerUiRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: fileExplorerUiRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-    if (!response.ok) {
-      return { allowed: false, reason: 'Failed to check permissions' };
-    }
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-    const data = await response.json();
-    if (!data.permissions.includes(requiredPermission)) {
-      return { allowed: false, reason: `Missing ${requiredPermission} permission` };
-    }
-
-    return { allowed: true };
-  } catch {
-    return { allowed: false, reason: 'Network error' };
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
   }
+
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runFileExplorerUiEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planFileExplorerUiRecovery(
+    {
+      topic: "file-explorer-ui",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planFileExplorerUiRecovery(
+    {
+      topic: "file-explorer-ui",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "File Explorer UI",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
 }

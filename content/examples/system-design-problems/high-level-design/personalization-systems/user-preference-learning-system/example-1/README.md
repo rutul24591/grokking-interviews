@@ -1,13 +1,16 @@
-# Design a user preference learning system — Example 1
+# User Preference Learning System - Example 1
 
-## Run (smoke)
+This example supports `high-level-design/personalization-systems/user-preference-learning-system`.
+
+## What it demonstrates
+
+A runnable personalization launch readiness smoke test.
+
+## Run or inspect
+
 `node --import tsx content/examples/system-design-problems/high-level-design/personalization-systems/user-preference-learning-system/example-1/app.ts`
 
 ## Files
-- `EXPLANATION.md`
-- `README.md`
-- `app.ts` — runnable smoke + edge checks
-- `lib/domain.ts` — entities and IDs
-- `lib/api.ts` — backend contract shapes
-- `lib/store.ts` — client state/caching skeleton
-- `lib/policies.ts` — retries, rate limiting, pagination, idempotency hooks
+
+- `app.ts` - topic-aligned implementation slice
+- `EXPLANATION.md` - mapping back to the article

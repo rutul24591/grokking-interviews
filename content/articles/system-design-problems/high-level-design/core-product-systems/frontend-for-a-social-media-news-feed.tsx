@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   category: "high-level-design",
   subcategory: "core-product-systems",
   slug: "frontend-for-a-social-media-news-feed",
-  wordCount: 5800,
-  readingTime: 35,
-  lastUpdated: "2026-05-10",
+  wordCount: 6200,
+  readingTime: 37,
+  lastUpdated: "2026-05-20",
   tags: ["hld", "news-feed", "social-media", "pagination", "real-time", "performance"],
   relatedTopics: ["personalized-homepage-feed-system", "activity-feed-system"],
 };
@@ -24,103 +24,382 @@ export default function SocialMediaNewsFeedArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A social media news feed is deceptively complex. The surface area—a scrollable list of posts—conceals a system that must solve ranking, real-time delivery, infinite pagination, optimistic interactions, media loading, and personalization simultaneously, all while maintaining 60 fps scroll performance across low-end Android devices. The feed is the product's primary engagement surface; every millisecond of latency and every layout shift directly translates to engagement loss.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The frontend is not a passive renderer of server data—it is an active participant in feed quality. It manages a local cache that must stay coherent as new posts arrive via WebSocket, as the user likes and comments (optimistic updates), and as the user scrolls past the bottom of the current page (pagination). It must gracefully handle the feed going stale (the user returns after 30 minutes and the feed has changed), handle poor network conditions, and degrade gracefully when the ranking service is slow.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> Scale is Facebook/Twitter-class (hundreds of millions of daily active users). The feed is algorithmically ranked (not strictly chronological), with a re-ranking service that runs server-side. The frontend fetches paginated feed pages (cursor-based, 20 posts per page). New posts can arrive in real-time via WebSocket for followed users. Media (images, videos) is separately CDN-hosted. The frontend must support web (React SPA), iOS, and Android—this article focuses on the web frontend architecture with notes on cross-platform considerations.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="crucial">
+          A social media news feed is a high-scale personalized product surface where ranking, pagination, realtime
+          events, media loading, optimistic interactions, ads, analytics, accessibility, and scroll performance all meet.
+          The visible UI is a list of posts, but the frontend is not a passive renderer. It owns the user's reading
+          context, maintains a coherent local cache, protects scroll position, batches telemetry, and decides when
+          realtime updates should be shown without disrupting the current session.
+        </HighlightBlock>
+        <p>
+          The design target is a Facebook, Instagram, LinkedIn, or X-style feed with hundreds of millions of daily
+          users. The server computes a personalized ranked order and returns cursor-based pages of posts. The client
+          renders text, images, videos, links, polls, ads, social proof, and interaction controls. New posts and
+          interaction updates can arrive through a realtime channel. The frontend must feel immediate on a median
+          mobile device over 4G, continue to show already-loaded content when the network drops, and avoid jarring
+          layout shifts as images, embeds, and videos load.
+        </p>
+        <p>
+          A strong interview answer should clarify that the frontend must preserve feed session consistency even when
+          the underlying ranking model changes. Pagination cannot be a naive offset because new posts, deleted posts,
+          ad insertions, and model updates can reorder the feed between requests. The cursor is an opaque server token
+          that represents ranking state and position. The client still deduplicates by post ID and handles stale or
+          invalid cursors, but it should not try to reconstruct ranking locally.
+        </p>
+        <p>
+          The primary non-functional goals are time to first post under roughly 1.5 seconds on common devices, smooth
+          scroll near 60 fps, low memory use during long sessions, accurate impression measurement, and graceful
+          degradation when realtime, media, analytics, or ranking services fail. At staff and principal level, the
+          discussion should include not only rendering performance but also product correctness: users should not lose
+          likes, see duplicate posts, be billed for invalid ad impressions, or have their scroll position hijacked by
+          incoming content.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Feed rendering:</strong> Display an algorithmically ranked list of posts (text, images, videos, links) with infinite scroll pagination.</li>
-          <li><strong>Real-time updates:</strong> New posts from followed users arrive via WebSocket and are presented as a "N new posts" banner (not auto-injected, to avoid layout disruption).</li>
-          <li><strong>Interactions:</strong> Like, comment, share, save, and follow. All interactions must be optimistic (instant UI update) with server confirmation and revert on failure.</li>
-          <li><strong>Feed refresh:</strong> Pull-to-refresh on mobile, a "Refresh" button on desktop, and automatic stale feed detection (if the user has been idle for 10+ minutes, show a banner).</li>
-          <li><strong>Stories/Reels carousel:</strong> A horizontally scrollable strip at the top of the feed showing stories from followed users.</li>
-          <li><strong>Ad insertion:</strong> Sponsored posts are inserted at server-defined positions in the feed response. The frontend must render ads in the correct position and fire impression events.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Time to first post:</strong> The first feed post should be visible within 1.5 seconds on a median mobile device on 4G.</li>
-          <li><strong>Scroll performance:</strong> 60 fps during scroll on mid-range Android devices. No layout shifts during image load.</li>
-          <li><strong>Memory efficiency:</strong> Long feed sessions (100+ posts loaded) must not degrade performance. DOM virtualization required beyond the initial viewport.</li>
-          <li><strong>Offline resilience:</strong> If the network drops during scroll, the user continues to browse already-loaded posts. The retry mechanism handles pagination failures silently.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Feed Session State</h3>
+        <p>
+          The feed should be modeled as a session, not just an array. A feed session contains the ordered list of post
+          IDs, a normalized post entity store, cursor metadata, page fetch status, stale state, unseen realtime count,
+          pending interaction mutations, impression timers, media playback state, and analytics sequence numbers. This
+          separation allows a WebSocket event to update one post without moving the list and allows pagination to add
+          new IDs without duplicating post bodies already present in cache.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Cursor Pagination and Ranking Snapshots</h3>
+        <p>
+          Feed pagination should use opaque cursors rather than offsets. A cursor may encode ranking snapshot, user
+          segment, ad budget placement, experiment assignment, freshness window, and the server's next position. The
+          client treats it as an unreadable token. If the server returns duplicate posts because ranking changed across
+          pages, the client deduplicates. If the cursor expires, the client should show a refresh affordance rather
+          than attempting to continue an inconsistent session.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Virtualization With Dynamic Heights</h3>
+        <p>
+          Feed items have variable heights because posts can include text, images, link previews, videos, ads, and
+          expanded comments. A virtualized list must estimate heights before render, measure actual heights after
+          render, cache measurements by post ID and layout variant, and keep the viewport anchored when height
+          corrections happen above the visible region. Without anchoring, users experience scroll jumps that feel like
+          the feed is fighting them.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Speculative Versus Confirmed State</h3>
+        <p>
+          Likes, saves, follows, hides, and comments should update immediately. The cache must distinguish confirmed
+          server state from speculative local mutations. A post can have a canonical like count plus pending local
+          deltas. This prevents double-tap races, out-of-order mutation responses, and server pushes from overwriting
+          user intent while a mutation is still in flight.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The feed frontend is structured around three concerns: data fetching and cache management, rendering and virtualization, and real-time synchronization. Each concern is independent; changes to the ranking algorithm or the WebSocket protocol do not require rewriting the virtualization layer.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The data layer uses a normalized cache (React Query or Apollo Client) where each post is stored by its postId, and the feed is a list of postIds with associated cursor metadata. Normalization means that when a WebSocket event updates a post's like count, the single entry in the cache is updated and all UI components rendering that post re-render automatically, without the feed needing to know anything about the update. The rendering layer uses a virtual list (react-virtual or a custom implementation) that only renders DOM nodes for posts within and near the viewport, discarding nodes for posts scrolled far out of view. Real-time synchronization is handled by a WebSocket connection manager that maintains the connection, handles reconnection with exponential backoff, and routes incoming events (new posts, interaction updates) to the appropriate cache entries.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/frontend-for-a-social-media-news-feed-architecture.svg"
-          alt="News feed frontend architecture showing normalized post cache, virtual list renderer, WebSocket event router, cursor-based pagination, CDN media loading, and optimistic interaction layer"
-          caption="News feed architecture: normalized cache at center, virtual list for scroll performance, WebSocket for real-time updates, cursor pagination for infinite scroll"
+          alt="News feed frontend architecture showing normalized cache, virtual list, cursor pagination, realtime event router, optimistic interactions, CDN media, and analytics batching"
+          caption="Architecture: feed session state combines normalized cache, cursor pagination, realtime reconciliation, virtualized rendering, media loading, and analytics."
         />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cursor-Based Pagination and Feed State</h3>
-        <p>The feed API returns a page of posts plus a nextCursor token. The cursor is an opaque server-generated value encoding the ranking state at the time of the request (not a simple timestamp or offset, because the ranking may change between requests). On infinite scroll trigger (user within 500px of the end), the frontend requests the next page using the stored cursor. The response merges into the existing post list; duplicate posts (from ranking changes between page fetches) are deduplicated by postId client-side.</p>
-        <HighlightBlock as="p" tier="important">The feed state model stores: an ordered array of postIds representing the current feed view, a map from postId to post data (the normalized store), the current nextCursor, whether a page fetch is in flight, and whether more pages are available (server signals exhaustion with nextCursor: null). This separation of the ordered list from the data store is critical: when a WebSocket event updates a post's data, only the post store entry changes—the ordered list is unaffected, and the virtual list's scroll position does not shift.</HighlightBlock>
-        <p>Feed freshness is tracked by recording the timestamp of the last fetch. A background timer checks this every 60 seconds. If the feed is more than 10 minutes old and the user has been idle (no scroll or interaction), a "Your feed may be out of date. Refresh?" banner appears at the top. Tapping it clears the current feed and fetches a fresh first page, resetting the cursor. This avoids the jarring experience of auto-refreshing a feed mid-scroll.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Virtual List and Scroll Performance</h3>
-        <p>A naive implementation renders all loaded posts as DOM nodes. At 100 posts with images, this creates thousands of DOM nodes, hundreds of media elements, and significant memory pressure. Virtual list rendering (windowing) maintains only the DOM nodes for posts within a buffer around the viewport—typically the viewport plus 1–2 screen heights above and below. Posts scrolled out of the buffer zone are unmounted from the DOM; their data remains in the normalized store.</p>
-        <HighlightBlock as="p" tier="important">The challenge with social feeds is variable post height: text-only posts are short, posts with images or embedded videos are tall, and height is not known until content is rendered. The virtual list must handle dynamic heights. The approach: measure each post's height after it renders and cache it; on subsequent renders of the same postId, use the cached height for layout calculations. For the initial render of unseen posts, use an estimated height (the average observed height, typically ~250px) and correct after measurement. Height correction causes a brief layout shift—mitigated by keeping the viewport anchor point on the post at the top of the visible area rather than at an absolute scroll position, so the visible content stays still while content above adjusts.</HighlightBlock>
-        <p>Images must have explicit width and height attributes (or aspect-ratio CSS) set before load. Without this, the browser does not know how much space to reserve, causing layout shifts as images load (CLS—Cumulative Layout Shift). For user-generated images with unknown dimensions, the server stores image dimensions in the post metadata; the frontend uses the stored aspect ratio to set a correct placeholder before the image loads.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimistic Interactions</h3>
-        <p>Likes, comments, and shares must feel instant. The user taps Like; the heart turns red immediately, the like count increments, and the mutation request fires in the background. If the server returns success, the optimistic state is confirmed. If the server returns an error, the optimistic state is reverted (heart back to unfilled, count decremented) and a toast notification appears: "Couldn't process your like. Try again." The user never waits for a network round trip to see their action reflected.</p>
-        <HighlightBlock as="p" tier="important">Optimistic updates require the UI to differentiate confirmed state from speculative state. The normalized post store includes a pendingInteractions field per post: a set of interaction types currently in flight. The UI renders the post as if the interactions have succeeded while they are pending. When the server confirms, the post's canonical interaction state (likes, likesCount) is updated and the pending flag is cleared. When the server rejects, the pending flag is cleared and the canonical state is not updated. This two-state model prevents the common bug where a user rapidly double-taps Like: the second tap would see the already-incremented speculative count, result in a confusing double increment, or, in simpler implementations, the first mutation's success callback overwrites the second mutation's optimistic state.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-Time Updates via WebSocket</h3>
-        <p>A WebSocket connection to the feed delivery service receives three event types: new-post (a new post from a followed user), interaction-update (like count, comment count changes on visible posts), and deletion (a post has been removed). The connection is established when the feed page mounts and maintained with ping/pong keepalives. On connection drop, the client reconnects with exponential backoff (1s, 2s, 4s, 8s, max 30s).</p>
-        <p>New posts received via WebSocket are not auto-injected into the feed scroll position, because injecting content at the top would push the user's current scroll position down, breaking context. Instead, the client increments a counter and shows a banner: "3 new posts." Tapping the banner scrolls the user to the top, triggers a fresh feed fetch, and replaces the current feed with the new content. This is the Twitter/X and Instagram approach—it respects the user's reading context while surfacing that fresh content exists.</p>
-        <HighlightBlock as="p" tier="important">Interaction updates (like counts changing on visible posts) are applied immediately to the normalized cache. Because many users may like the same viral post simultaneously, the server sends delta updates (likesCount delta: +47 in the last second) rather than absolute counts, to avoid count discrepancies from stale snapshots. The frontend applies the delta to the current local count.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Media Loading and Lazy Loading</h3>
-        <p>Every image in the feed uses native lazy loading (loading="lazy") or an IntersectionObserver-based custom implementation for browsers that need finer control. Images more than two screen heights below the viewport are not requested. As the user scrolls toward an image, it begins loading when it is one screen height away, so it is typically ready by the time it enters the viewport. This dramatically reduces initial page data transfer (a user who only reads the first 3 posts should not download images for posts 50–100).</p>
-        <p>Video in the feed uses a more aggressive strategy: autoplay is disabled for off-screen videos. When a video enters the viewport and the user has not opted out of autoplay, it begins playing muted. The IntersectionObserver fires when the video is &gt;50% visible. When the video exits the viewport, it pauses. Only one video plays at a time; entering a new video's viewport pauses any currently playing video. This matches the behavior of TikTok and Instagram Reels in the main feed. For the full-screen Reels view, a dedicated pre-loading strategy is used: the next reel begins buffering while the current one is playing, so the swipe transition is instant.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Impression Tracking and Analytics</h3>
-        <p>Advertising standards require that an impression is counted only when the ad has been at least 50% visible for at least one continuous second. The frontend uses an IntersectionObserver with threshold: 0.5 per ad unit. When the threshold is crossed, a timer starts; if the ad remains 50%+ visible for 1000ms, an impression event fires. If the user scrolls past quickly, the timer is cancelled and no impression is recorded. This logic runs for all ad posts in the feed; organic post view events follow a similar pattern (50% visible for 300ms counts as a feed item view for engagement analytics).</p>
-        <p>Impression events are batched and sent via navigator.sendBeacon() on a 5-second flush interval and on page unload. Beacon delivery is fire-and-forget but guaranteed to be sent even when the page is closing. The event payload includes postId, adId (for sponsored posts), userId, sessionId, viewport position, and timestamp. This telemetry drives the feed ranking model, the ad billing system, and the engagement metrics dashboards.</p>
-      </section>
-
-      <section>
+        <p>
+          The first page should be loaded through the fastest available path. On web, that often means server-rendering
+          or streaming the initial feed shell and first page so the first post appears quickly. Below-the-fold media,
+          secondary reaction details, comments, hover cards, and heavy video players should be lazy-loaded. The client
+          hydrates the feed session with server-provided page data, stores posts by ID, stores ordering separately, and
+          keeps the next cursor for infinite scroll.
+        </p>
+        <p>
+          The data layer can use React Query, Apollo, Relay, or a custom store, but the important property is
+          normalization. The feed order is not the post data. A post entity can be updated by pagination, realtime
+          events, optimistic mutations, detail views, or moderation actions. Components subscribe narrowly to the
+          entity data they render so a viral post's like count update does not force the entire feed to re-render.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/frontend-for-a-social-media-news-feed-workflow.svg"
-          alt="News feed data flow showing initial load sequence, cursor pagination trigger on scroll, WebSocket new-post event handling with banner notification, optimistic like interaction with server confirmation and revert path, and impression tracking event batching"
-          caption="Feed data flow: initial load → cursor pagination → real-time WebSocket updates → optimistic interactions → impression analytics pipeline"
+          alt="News feed workflow showing initial load, cursor pagination, realtime new-post banner, optimistic like path, failure rollback, and impression analytics batching"
+          caption="Workflow: initial load, pagination, realtime banner, optimistic mutation, rollback, and impression analytics are separate but coordinated paths."
         />
+        <p>
+          Infinite scroll is triggered before the user reaches the end, often when the sentinel is one or two viewport
+          heights away. The request uses the current cursor and a page size such as 20 posts. The client should prevent
+          duplicate fetches, cancel or ignore obsolete requests after refresh, and deduplicate post IDs before appending
+          to the order. Pagination failures should not collapse the already-loaded feed; they should show a retry row
+          or silently retry with backoff.
+        </p>
+        <p>
+          Realtime updates should respect reading context. New posts should usually increment a "new posts" banner
+          instead of being auto-inserted above the user. Interaction count updates for visible posts can update in
+          place, but they must reconcile with pending local mutations. Deletions, moderation removals, and blocked-user
+          changes should remove or tombstone affected posts without shifting the viewport unexpectedly. If the event
+          stream disconnects, the client should reconnect with backoff and fetch a catch-up delta or mark the feed as
+          stale.
+        </p>
+        <p>
+          Media delivery is mostly CDN-backed, but the frontend still controls user experience. Image aspect ratios
+          should be known before load so placeholders reserve space. Responsive image variants should match viewport
+          and device pixel ratio. Video should load metadata before full content, autoplay only when policy and user
+          preference allow it, pause when off-screen, and ensure that only one inline video plays at a time. Embedded
+          third-party content should be isolated because it can damage scroll performance and privacy.
+        </p>
       </section>
 
       <section>
-        <h2>Scaling Considerations</h2>
-        <HighlightBlock as="p" tier="important">At hundreds of millions of daily active users, the feed API is the highest-traffic endpoint in the system. Each user loads a fresh feed on app open (mobile app) or tab focus (web), and then paginates as they scroll. The frontend's contribution to scaling is minimizing unnecessary API calls: the stale feed detection (10-minute threshold) prevents re-fetching when the user briefly switches tabs; the cursor-based pagination avoids offset queries that degrade at high page numbers; and the normalized cache prevents re-fetching post data that was already received as part of a previous page.</HighlightBlock>
-        <p>The feed API should support conditional requests (ETag / If-None-Match). If the user's feed cursor and ranking state have not changed since the last fetch, the server returns 304 Not Modified and the client uses its cached data. This is particularly effective for users who refresh the feed frequently but whose social graph is small (not many new posts to show).</p>
-        <HighlightBlock as="p" tier="important">CDN caching for the feed API is limited because feeds are personalized—each user's feed is unique. However, the individual post data (text, metadata, interaction counts) can be cached at the CDN edge if the post endpoint is separate from the feed ordering endpoint. The feed ordering endpoint (which postIds to show, in which order) must be personalized and cannot be CDN-cached, but the post content endpoint (given these postIds, return their content) can use CDN caching with a short TTL, since many users may see the same viral post in their feeds simultaneously.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/core-product-systems/frontend-for-a-social-media-news-feed-scaling.svg"
+          alt="News feed scaling trade-off showing personalized ordering endpoint, cacheable post entity endpoint, CDN media, client normalized cache, and analytics batching"
+          caption="Scaling trade-off: personalized ordering is hard to cache, but post entities, media, and telemetry transport can be optimized separately."
+        />
+        <p>
+          Chronological feeds are simpler, predictable, and easier to paginate. Algorithmic feeds improve engagement
+          and relevance but require opaque cursors, ranking snapshots, experiment-aware rendering, and more complex
+          stale-session behavior. A principal answer should not assume one is universally better. Chronological feeds
+          may be right for messaging, incident timelines, or audit streams. Algorithmic feeds dominate consumer social
+          discovery surfaces because engagement and retention are primary business goals.
+        </p>
+        <p>
+          Virtualization improves memory and scroll performance, but it constrains component design. Feed item state
+          such as video playback position, expanded comments, translated text, poll selection, and inline composer
+          drafts should not live only inside a component that may unmount when scrolled away. That state belongs in the
+          feed session store or entity cache. The team must also handle accessibility because virtualized content can
+          confuse screen readers if focus, item counts, and keyboard navigation are not carefully implemented.
+        </p>
+        <p>
+          WebSockets provide low-latency updates but consume connection infrastructure and battery. Server-Sent Events
+          can be enough for one-way feed invalidations. Polling is simple and robust but less fresh. A practical design
+          may use WebSockets for active sessions, push notifications for background mobile updates, and stale banners
+          or periodic refresh for low-activity web sessions. Correctness should come from pull-based reconciliation,
+          not from assuming every realtime event arrives.
+        </p>
+        <p>
+          Optimistic updates are essential for perceived performance, but they complicate reconciliation. The client
+          needs mutation IDs, idempotent server APIs, rollback rules, and conflict handling for rapid interactions. A
+          failed like can be reverted with a toast. A failed comment needs stronger handling because user-generated
+          text should not vanish. It may remain as a failed local draft with retry. The right UX depends on the action's
+          user effort and business importance.
+        </p>
+        <p>
+          Separating feed ordering from post entity fetching can reduce repeated transfer of viral post bodies and
+          allow CDN or edge caching for public post data. The trade-off is more round trips and more complicated cache
+          invalidation. Many products return enough post data in the first page for fast rendering, then use entity
+          endpoints, edge caches, or background revalidation for updates and detail expansions.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Principal-level decision frame</h3>
+        <p>
+          A principal-level design should define separate correctness guarantees for organic content, ads, and safety
+          removals. Organic ranking can tolerate eventual consistency and refresh banners. Ad impressions and billing
+          need stricter visibility measurement, deduplication, and auditability. Safety removals, blocked-user updates,
+          and deleted posts need fast invalidation because showing forbidden content is a trust failure. Treating all
+          feed updates as the same consistency class either overbuilds the normal path or underprotects the critical
+          path.
+        </p>
+        <p>
+          The cost model should also be explicit. Personalized ordering is expensive and hard to cache, while post
+          entities, media, reactions, and creator metadata are more cacheable. A scalable design keeps ranking snapshots
+          small, aggressively caches immutable media and public post fields, and uses event-driven invalidation for
+          volatile counters or moderation changes. This is the difference between a feed that works in a demo and one
+          that survives celebrity traffic, breaking news, or coordinated abuse.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Chronological versus algorithmic feed: a chronological feed is trivial to implement (sort by createdAt) and trivially paginated. An algorithmic feed requires a ranking model, is expensive to compute, and has complex pagination semantics (the cursor must encode ranking state, not just position). The trade-off is engagement: algorithmic feeds consistently show higher session duration and content engagement because the ranking model surfaces content the user is likely to find interesting, while chronological feeds are fairer to all creators but show lower overall engagement. Most production social platforms have moved to algorithmic feeds for their primary surface.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Virtual list versus full DOM rendering: virtual lists dramatically improve performance for long sessions but add complexity: every component rendered in the list must be pure (same props → same output, no side effects that depend on DOM persistence), because list items are mounted and unmounted as the user scrolls. Stateful components (video players with playback position, expanded comment sections) must store their state externally (in the normalized cache or a separate React context) rather than in component-local useState, or their state is lost when the component unmounts during virtualization. This is a significant architectural constraint that must be established early.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">WebSocket versus polling: WebSocket provides true real-time delivery but requires maintaining a persistent TCP connection per client. At hundreds of millions of concurrent users, this represents an enormous number of long-lived connections. The Server-Sent Events (SSE) alternative is one-directional (server to client), which is sufficient for feed updates but requires the client to send interactions via separate HTTP requests. Long polling is the most server-friendly option but adds latency (typically 1–30 second delay depending on polling interval). Most large social platforms use a hybrid: WebSocket for very active users (those currently interacting) and SSE or push notifications for background updates.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Maintain stable item identity. Every rendered row should have a durable key based on post ID or a stable ad
+          slot ID, not array index. Duplicate posts should be removed before they enter the order list. Ads should be
+          represented as feed items with their own IDs and impression requirements, not as decorations inserted by the
+          renderer, because analytics and pagination need to understand their position.
+        </p>
+        <p>
+          Reserve layout space before media loads. The backend should provide image dimensions, video aspect ratio,
+          link-preview dimensions, and content warnings. The frontend should use aspect-ratio boxes and predictable
+          skeletons. This reduces cumulative layout shift and protects scroll anchors during media hydration.
+        </p>
+        <p>
+          Use narrow subscriptions and memoized item boundaries. A feed-level state update should not re-render 100
+          rows. Each item should subscribe to its own entity, pending mutations, visibility state, and media state.
+          Heavy components such as video players, embeds, comment previews, and reaction pickers should load only when
+          near interaction or viewport.
+        </p>
+        <p>
+          Treat analytics as a first-class pipeline. Impression events should follow business rules such as 50 percent
+          visible for one continuous second for ads. Organic views may use a different threshold. Events should be
+          deduplicated by session and item, batched, retried where appropriate, and flushed with `sendBeacon` on page
+          hide. Invalid impressions can directly affect ad billing and ranking training data.
+        </p>
+        <p>
+          Design stale and recovery states clearly. If realtime disconnects, show nothing unless freshness matters, but
+          mark the session stale internally and reconcile on foreground or reconnect. If pagination fails, keep loaded
+          posts and provide retry. If ranking returns an invalid cursor, show a refresh banner. If a post is deleted,
+          remove it or show a lightweight tombstone depending on whether the user is interacting with it.
+        </p>
+        <p>
+          Build feed observability around user-visible stability. Track scroll-jump rate, duplicate item rate,
+          impression invalidation, optimistic mutation rollback, media autoplay failures, ad viewability disputes, and
+          moderation removal latency. Principal-level feed systems fail as much through subtle UX and analytics
+          corruption as through obvious API errors.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A social media news feed frontend is built around four pillars: a normalized post cache with cursor-based pagination (enabling infinite scroll without offset query degradation), a virtual list renderer with dynamic height measurement (enabling 60fps scroll on low-end devices with hundreds of loaded posts), a WebSocket real-time layer with new-post banners rather than auto-injection (respecting user reading context), and optimistic interactions with confirmed-versus-speculative state modeling (instant UI with graceful failure handling). Impression tracking uses IntersectionObserver with minimum-visibility timers for ad compliance. The scaling strategy separates the personalized feed ordering endpoint (no CDN cache) from the post content endpoint (CDN-cacheable with short TTL). The defining performance constraint is that the first post must be visible within 1.5 seconds, which drives server-side rendering of the initial feed page and lazy loading of everything below the fold.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is auto-inserting new posts at the top while the user is reading. This shifts content and
+          breaks orientation. A banner preserves user control and lets the user decide when to refresh. The same rule
+          applies to moderation removals and ad refreshes: protect the viewport anchor before changing content above
+          the visible area.
+        </p>
+        <p>
+          Another pitfall is using array indexes as keys in a virtualized feed. When posts are inserted, removed, or
+          deduplicated, index keys cause React to reuse the wrong component instances. That can display the wrong media
+          playback state, wrong pending interaction, or wrong impression timer. Stable IDs are not optional in feeds.
+        </p>
+        <p>
+          Teams often under-handle variable heights. If the estimated height is far from actual height, scrollbars jump
+          and pagination sentinels fire too early or too late. Store measured heights by item type and post ID, update
+          estimates as the session learns, and use scroll anchoring to keep visible content stable when measurements
+          above the viewport change.
+        </p>
+        <p>
+          A deeper pitfall is mixing ranking, rendering, and analytics ownership. If the renderer inserts ads, removes
+          blocked posts, or deduplicates items without preserving ranking metadata, the backend cannot learn from
+          impressions correctly. The order list, rendered list, and analytics stream should share stable item and slot
+          identifiers.
+        </p>
+        <p>
+          Realtime count deltas can corrupt optimistic state if applied blindly. If the user likes a post locally and a
+          server event reports a new aggregate count based on an older snapshot, the local UI may flicker backward.
+          Reconciliation should account for pending local mutation IDs and server sequence numbers.
+        </p>
+        <p>
+          Finally, impression tracking is easy to get wrong. Counting on render over-bills ads and pollutes ranking
+          models. Counting on any intersection over-counts fast scrolls. The frontend should start a timer only when
+          visibility crosses the required threshold, cancel it when the item drops below the threshold, and deduplicate
+          successful impressions for the same item within the session.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Consumer social apps use algorithmic feeds to balance freshness, relevance, creator diversity, ads, and
+          safety. The frontend must support rapid experiments because ranking, ad placement, and interaction designs
+          change frequently. A well-structured feed session lets experiments alter ranking metadata or item rendering
+          without destabilizing scroll and cache behavior.
+        </p>
+        <p>
+          Professional networks and marketplaces use feed-like surfaces for job posts, creator updates, product
+          listings, recommendations, and sponsored content. These feeds may need stronger explainability, hide controls,
+          and "why am I seeing this?" metadata. The same architecture applies, but item types and compliance
+          requirements differ.
+        </p>
+        <p>
+          Internal enterprise products use activity feeds for audit timelines, incident updates, deployment events, and
+          collaboration streams. These are often chronological rather than algorithmic, but they still benefit from
+          normalized caches, virtualization, realtime reconciliation, and visibility-based analytics.
+        </p>
+        <p>
+          Media and short-video products extend the feed model with aggressive prefetching and playback management.
+          The feed has to decide how much to buffer ahead without wasting bandwidth, when to pause background players,
+          how to handle network downgrade, and how to preserve engagement analytics accurately across swipes and
+          autoplay sessions.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you model feed state on the client?
+        </h3>
+        <p>
+          I would separate feed order from post entities. The feed session stores ordered post IDs, cursor metadata,
+          fetch status, unseen realtime count, stale state, and impression bookkeeping. The entity store keeps post
+          bodies, counters, media metadata, and pending mutations by post ID. This allows pagination to append order,
+          realtime events to update entities, optimistic mutations to overlay local state, and virtualization to render
+          only visible rows without losing data.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          Why use cursor pagination instead of offset pagination?
+        </h3>
+        <p>
+          Offset pagination assumes a stable sorted list. A ranked social feed is not stable because new posts, deleted
+          posts, ranking experiments, ad insertion, and freshness adjustments can change order between requests. An
+          opaque cursor lets the server preserve ranking snapshot and next position. The client treats the cursor as a
+          token, deduplicates post IDs defensively, and refreshes when the cursor expires or becomes invalid.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you preserve smooth scrolling with variable-height posts?
+        </h3>
+        <p>
+          I would use virtualization with estimated heights, then measure actual item heights after render and cache
+          them by post ID and layout variant. Media placeholders reserve aspect-ratio space before load. When measured
+          heights change above the viewport, the list keeps the top visible item anchored so content does not jump.
+          Heavy components such as videos and embeds are loaded only near the viewport and unmounted or paused when far
+          away.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How would you handle realtime new posts?
+        </h3>
+        <p>
+          I would not auto-insert new posts above the user's current position. The realtime event increments a "new
+          posts" banner and optionally stores a lightweight pending summary. When the user taps the banner, the client
+          refreshes from the top using a new feed request. For interaction updates on visible posts, I would update the
+          normalized entity cache, but reconcile with local pending mutation IDs and server sequence numbers to avoid
+          flicker or count corruption.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How should optimistic likes and comments work?
+        </h3>
+        <p>
+          Likes can update instantly with a pending mutation ID, local delta, and rollback on failure. The server API
+          should be idempotent so retries do not double-count. Comments require more care because the user typed
+          content; a failed comment should remain visible as a failed local draft with retry rather than disappearing.
+          Server pushes must be merged with pending local state, not blindly overwrite it.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you measure impressions accurately?
+        </h3>
+        <p>
+          I would use IntersectionObserver with business-specific thresholds. For ads, a common rule is at least 50
+          percent visible for one continuous second. The client starts a timer when the threshold is crossed, cancels
+          it when visibility drops, deduplicates per session and item, batches events, and flushes on page hide with
+          `sendBeacon`. Accurate impression logic matters because it affects ad billing, ranking feedback, and creator
+          analytics.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://web.dev/articles/virtualize-long-lists-react-window" target="_blank" rel="noreferrer">
+              web.dev: Virtualize large lists with react-window
+            </a>
+            , list windowing and rendering performance.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">
+              MDN: Intersection Observer API
+            </a>
+            , visibility tracking for lazy loading and impressions.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon" target="_blank" rel="noreferrer">
+              MDN: Navigator.sendBeacon
+            </a>
+            , reliable analytics flushing on page lifecycle changes.
+          </li>
+          <li>
+            <a href="https://web.dev/articles/cls" target="_blank" rel="noreferrer">
+              web.dev: Cumulative Layout Shift
+            </a>
+            , layout stability guidance for media-heavy feeds.
+          </li>
+          <li>
+            <a href="https://relay.dev/docs/guided-tour/list-data/rendering-connections/" target="_blank" rel="noreferrer">
+              Relay documentation: Rendering connections
+            </a>
+            , cursor-style list data patterns.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

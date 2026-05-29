@@ -1,1 +1,5 @@
-# Design a feature usage analytics dashboard — Example 2
+# Feature Usage Analytics Dashboard - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

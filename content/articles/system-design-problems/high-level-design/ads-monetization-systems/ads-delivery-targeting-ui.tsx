@@ -7,84 +7,290 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-ads-delivery-targeting-ui",
-  title: "Design an Ads Delivery & Targeting UI (like Google Ads / Facebook Ads)",
-  description:
-    "Architecture for a real-time bidding ads delivery system: publisher ad slot request with userId and page context, user segment resolution from Redis under 2ms, OpenRTB bid request broadcast to 50 DSPs in parallel with 80ms hard deadline, second-price Vickrey auction with eCPM = bid × pCTR ranking, winning creative served via CDN in isolated iframe sandbox, impression and click beacons published to Kafka asynchronously, frequency capping with Redis INCR per user per day, click deduplication in 60-second window, conversion pixel for downstream purchase attribution, and invalid traffic (IVT) detection before billing.",
+  title: "Design an Ads Delivery & Targeting UI",
+  description: "Principal-level design for ads delivery and targeting covering campaign setup, audience targeting, auction inputs, pacing, privacy, policy review, frequency caps, attribution, and operational safeguards.",
   category: "high-level-design",
   subcategory: "ads-monetization-systems",
   slug: "ads-delivery-targeting-ui",
-  wordCount: 5100,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "ads", "rtb", "dsp", "targeting", "auction", "frequency-cap", "kafka", "openrtb"],
-  relatedTopics: ["ads-analytics-dashboard", "creator-monetization-dashboard"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-25",
+  tags: ["hld","ads","targeting","auction","privacy","pacing"],
+  relatedTopics: ["ads-analytics-dashboard","creator-monetization-dashboard"],
 };
 
 export default function AdsDeliveryTargetingUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">An ads delivery and targeting system matches advertisements to users in real time based on who the user is (demographics, interests, behavioral signals) and what context they are in (page content, device, location, time of day). The entire pipeline — from a publisher's ad slot appearing on a user's screen to an ad being selected and rendered — must complete in under 100ms to not degrade the page load experience. This is the most latency-sensitive distributed system in commercial internet infrastructure.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The core mechanism is Real-Time Bidding (RTB): instead of the ad platform selecting the ad directly, it broadcasts the ad opportunity to multiple demand-side platforms (DSPs) representing advertisers, each of whom submits a bid price within a tight deadline. The highest effective bidder wins and their ad is shown. This creates a market that maximizes revenue for publishers while giving advertisers precise control over which audiences they reach and how much they pay per impression.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Ad slot request and user targeting, RTB auction, creative delivery, impression/click tracking, frequency capping, and conversion attribution. Not in scope: advertiser campaign creation UI (budget setting, audience builder, creative upload), or the DSP-side bidding strategy logic.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A ads delivery and targeting UI is a monetization control surface used by advertisers, campaign managers, growth teams, policy reviewers, marketplace quality teams, privacy reviewers, ad-serving engineers, and SREs to let advertisers define audiences, budgets, bids, creatives, placements, schedules, and safety constraints while the platform protects privacy, auction quality, user experience, and revenue integrity. At principal level, this is not a CRUD dashboard for campaigns or payments. It is a money-moving, privacy-sensitive, policy-constrained system where incorrect data can harm users, advertisers, creators, finance, and platform trust.
+        </HighlightBlock>
+        <p>
+          Ads and monetization systems combine product UX, low-latency serving paths, finance-grade ledgers, marketplace incentives, privacy regulation, trust and safety, and experimentation. The hardest part is making revenue systems both fast enough for operators and correct enough for billing, payouts, and disputes.
+        </p>
+        <p>
+          The primary entities are campaigns, ad groups, creatives, audiences, targeting rules, placements, bids, budgets, pacing plans, frequency caps, policy states, auction eligibility, conversion events, and audit records. These entities should be modeled separately because serving state, reporting state, policy state, and financial state have different consistency and audit requirements.
+        </p>
+        <p>
+          Non-functional requirements include low dashboard latency, bounded query cost, accurate money reporting, privacy-safe dimensions, clear freshness watermarks, immutable audit, data retention controls, and incident playbooks for overdelivery, underdelivery, incorrect payouts, and policy mistakes.
+        </p>
+        <p>
+          Scope should be explicit. This design focuses on high-level product and platform architecture for monetization operations. It does not implement the full ad auction ranking model, payment processor internals, or tax law logic, but it must integrate with those systems through defensible contracts.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Ad slot request and user targeting:</strong> When a publisher's page loads, the publisher's ad SDK calls POST /ads/request with: slotId (which ad placement on the page), userId (hashed/pseudonymized), pageUrl (for content targeting), device type, geoIp (country, city, DMA), and contextual signals (IAB content categories detected on the page). The ad server resolves the user's targeting segment from Redis in under 2ms: GET seg:&#123;userId&#125; returns a compact binary blob encoding the user's interest categories (IAB taxonomy), income bracket, age bucket, household composition — derived from past behavioral data and updated nightly by the audience modeling pipeline. The resolved segment and page context are assembled into an OpenRTB 2.6 BidRequest JSON object, which is broadcast to all eligible DSPs.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>RTB auction with 80ms deadline:</strong> The ad server fans out the BidRequest to up to 50 DSPs simultaneously using parallel HTTP calls. Each DSP has 80ms to respond with a BidResponse containing: bid price in CPM (cost per 1,000 impressions), a reference to the ad creative, and any additional targeting constraints. DSPs that fail to respond within 80ms are dropped from this auction. The typical network round-trip to a co-located DSP is 5–20ms, leaving the DSP 60–75ms for its own internal bidding logic (user matching, campaign budget checks, ML bid prediction). The ad server collects all responses and passes them to the auction engine.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Second-price Vickrey auction:</strong> The auction engine ranks bids by effective CPM (eCPM = bid CPM × predicted CTR). eCPM adjusts the raw bid by the probability that the ad will be clicked — an ad with a 2% predicted CTR is worth twice as much as an ad with a 1% predicted CTR at the same bid price. The winner is the highest eCPM bid. The clearing price (what the winner pays) is the second-highest bid plus $0.01 — the second-price mechanism gives bidders an incentive to bid their true valuation (overbidding does not increase revenue). If all bids are below the publisher's floor price (set by the publisher in advance), no ad is shown and the slot falls back to a house ad or remains blank. The floor price is typically set to prevent the publisher's inventory from being devalued by very low bids.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Creative delivery and isolation:</strong> The winning creative is delivered to the publisher's page via the CDN (creativeUrl is a CDN-hosted asset — image, HTML5 banner, or video). Critically, the creative is rendered in a sandboxed iframe with no access to the parent page's DOM or cookies. This isolation prevents malicious ad code (malvertising) from stealing user data or hijacking the parent page. The iframe sandbox attribute disables: scripts from accessing parent, form submission, top-level navigation, and plugin loading. The ad server returns the creative URL and a beacon URL to the publisher's SDK; the SDK injects the iframe, which loads the creative from CDN and fires the impression beacon when fully loaded (using IntersectionObserver to confirm the ad is in the viewport — viewability tracking).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Frequency capping:</strong> Showing the same ad too many times to the same user degrades the user experience and wastes advertiser budget (the user has already seen and ignored the ad). Frequency capping limits: default cap is 3 impressions per day per ad per user (configurable by the advertiser). Implementation: Redis INCR freq:&#123;userId&#125;:&#123;adId&#125;:&#123;date&#125; before serving the ad. If the count exceeds the cap, the ad is excluded from the auction for this user. Redis key expires at midnight UTC (TTL set to end of day). The frequency cap check adds ~1ms to the auction path (Redis INCR is O(1)). For users who browse with multiple devices or clear cookies, frequency caps are enforced at the device level (cookie-based userId per device) — cross-device frequency capping requires probabilistic user matching which is a separate, more complex system.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Impression and click tracking pipeline:</strong> After the ad renders, the impression beacon fires: GET /ads/beacon?type=impression&amp;adId=X&amp;userId=Y&amp;slotId=Z. The beacon endpoint returns a 1×1 transparent GIF (HTTP 200) in under 5ms and publishes the event to Kafka asynchronously (the Kafka publish happens after the HTTP response is sent — it is non-blocking). The Kafka topic receives 1M–10M impression events per second at peak. Kafka is partitioned by campaignId — all events for the same campaign land on the same partition set, ensuring ordered processing and enabling efficient aggregation by campaign. Click tracking: when the user clicks the ad, the click goes through a redirect URL: GET /ads/click?adId=X&amp;userId=Y → 302 to the advertiser's landing page. The redirect is used to log the click (publish to Kafka) and check deduplication (Redis SETNX click:&#123;userId&#125;:&#123;adId&#125; with 60s TTL — duplicate clicks within 60 seconds are not counted). Click validation includes basic IVT detection: bots often click immediately after an impression (sub-second click latency is suspicious), click from the same IP as the impression server (internal traffic), or cookie-less requests (typical of scrapers).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Invalid traffic (IVT) detection:</strong> Ad fraud (fake impressions and clicks generated by bots to drain advertiser budgets) is a $100B+ annual problem. IVT detection layers: (1) pre-bid — the ad server checks each bid request against a blocklist of known bot IPs, datacenter IP ranges, and suspicious user agents; (2) post-impression — the Flink stream processor flags events with anomalous patterns (click rate &gt;50% of impressions from a single source, impression velocity far above typical for a publisher); (3) batch ML — a daily fraud model scores each impression/click event and marks likely fraudulent events as invalid; (4) advertiser-credit — detected invalid clicks are refunded to the advertiser's billing account at the end of the billing cycle. Invalid events are not deleted from the raw event log — they are marked with an ivt=true flag and excluded from billing aggregations but retained for analysis.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Conversion attribution:</strong> An advertiser wants to know if an ad impression or click led to a purchase. Conversion tracking: the advertiser places a conversion pixel (a JavaScript snippet or server-side API call) on their thank-you page. When a conversion fires, it sends POST /ads/conversion with: conversionType (purchase, signup), value (purchase amount), and the userId (from the advertiser's own session, if available). The conversion service looks up the user's recent ad exposures (last click within 7 days, last impression within 1 day — the standard attribution window) and attributes the conversion to the most recent qualifying ad interaction. The attribution model is last-click by default (the ad that was last clicked before conversion gets full credit). Multi-touch attribution models (linear — credit distributed equally across all touchpoints, position-based — 40% to first and last, 20% to middle) are computed by the analytics pipeline and available in the advertiser dashboard for comparison.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Audience segment pipeline:</strong> The user segment stored in Redis is computed nightly by the audience modeling pipeline. Input: the user's behavioral event log (pages visited, searches, purchases, video views — anonymized and aggregated). Processing: an offline batch job (Spark or Flink) classifies each user into IAB interest categories (Travel, Sports, Finance, etc.) using a combination of URL content classification (URL → IAB category via a trained classifier) and collaborative filtering (users who visit similar pages have similar interests). The resulting segment vector is a compact binary representation (bitset over 1,024 IAB categories + continuous features for age bracket, income, geo). Segments are written to Redis with a 25-hour TTL (refreshed daily). The Redis cluster holds segments for 500M daily active users — each segment is approximately 256 bytes, totaling ~128GB per Redis cluster, well within the capacity of a distributed Redis cluster.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is separating operational state from financial truth. Campaign configuration, dashboard aggregates, attribution results, and payout balances may all be derived from the same activity, but finance-grade ledgers and audit trails need stronger guarantees than exploratory charts.
+        </p>
+        <p>
+          The second concept is freshness with caveats. Monetization dashboards often mix real-time estimates, delayed conversions, fraud-filtered results, settled invoices, and payout ledger balances. The UI should label each value by freshness and confidence rather than pretending all numbers have the same reliability.
+        </p>
+        <p>
+          The third concept is privacy-preserving targeting and reporting. Sensitive cohorts, small audiences, user-level conversion paths, and location or demographic dimensions can leak personal information. The platform needs consent, thresholds, aggregation, regional rules, and data minimization.
+        </p>
+        <p>
+          The fourth concept is policy and trust review. Creatives, campaigns, sponsored content, creator eligibility, and external links can violate safety, legal, or brand requirements. Policy state must be part of the workflow, not a separate manual spreadsheet.
+        </p>
+        <p>
+          The fifth concept is pacing and budget correctness. Ads systems must spend smoothly, avoid overspend, respect frequency caps, and recover from serving or event lag. Pacing decisions should be observable and reversible because they directly affect advertiser outcomes.
+        </p>
+        <p>
+          The sixth concept is attribution ambiguity. A conversion can be delayed, duplicated, cross-device, privacy-limited, or claimed by multiple campaigns. The system needs explicit attribution windows, deduplication, model versions, and caveats in the dashboard.
+        </p>
+        <p>
+          The seventh concept is fraud and abuse resistance. Click fraud, impression laundering, fake creator activity, invalid traffic, review manipulation, and account takeovers can distort revenue. Detection should influence reporting and payout state with explainable holds.
+        </p>
+        <p>
+          The eighth concept is explainability. Advertisers and creators need to know why delivery changed, why spend stopped, why revenue was held, or why a metric differs from invoice totals. Support and finance need the same evidence without raw database access.
+        </p>
+        <p>
+          The ninth concept is immutable audit. Money-facing systems need to reconstruct who changed campaign targeting, which rules allocated revenue, which events were filtered, which payout batch included a creator, and which policy reviewer approved an exception.
+        </p>
+        <p>
+          Auction and serving eligibility deserve their own model. A campaign can be approved in the UI but still be ineligible at serve time because the user has hit a frequency cap, the budget is exhausted, the creative is incompatible with the placement, the privacy region blocks the audience, or a pacing controller has throttled delivery. Principal-level designs separate campaign approval from per-request eligibility so the UI can explain why a campaign is live but not spending.
+        </p>
+        <p>
+          Forecasting is also a core concept, not a decorative widget. Reach, spend, and conversion estimates are probabilistic outputs based on historical inventory, audience overlap, seasonality, bid landscape, policy filters, and pacing constraints. The dashboard should show confidence ranges and known exclusions because advertisers make budget commitments from these estimates.
+        </p>
+        <p>
+          Change management matters because ads configuration is revenue-sensitive. Large budget changes, sensitive-category targeting, political or regulated ads, and broad creative updates should use versioned approvals, previewable diffs, and rollback checkpoints. A single accidental publish can spend money quickly or violate policy at scale.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system has four planes: the real-time serving plane (ad server → segment lookup → RTB auction → creative delivery, all under 100ms), the event pipeline plane (Kafka impression/click/conversion events → Flink stream processing → ClickHouse for analytics and Redis for live budget tracking), the offline modeling plane (daily audience segmentation, pCTR model training, fraud model training), and the advertiser management plane (campaign CRUD, budget setting, targeting configuration — not latency-critical). The real-time serving plane is the critical path; the others are decoupled via Kafka and operate asynchronously.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A practical architecture includes campaign UI, targeting service, audience estimator, creative review pipeline, policy engine, budget and pacing service, ad-serving config publisher, auction eligibility index, attribution pipeline, and monitoring. The serving or revenue path should be optimized for scale, while policy, reporting, and finance paths preserve auditability and correctness.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/ads-monetization-systems/ads-delivery-targeting-ui.svg"
-          alt="Ads delivery pipeline: publisher sends ad slot request; ad server resolves user segment from Redis under 2ms; broadcasts OpenRTB BidRequest to 50 DSPs in parallel; 80ms deadline drops late bids; second-price auction ranks by eCPM = bid × pCTR; winner creative served via CDN in sandboxed iframe; impression beacon fires to Kafka asynchronously; click redirect logs click and deduplicates; conversion pixel attributes to last click within 7 days."
-          caption="Segment lookup Redis &lt;2ms; RTB 80ms deadline; 2nd-price Vickrey eCPM ranking; CDN iframe sandbox; freq cap Redis INCR; Kafka async events; IVT pre-bid blocklist + post-bid Flink; last-click attribution 7-day window"
+          alt="Design an Ads Delivery &amp; Targeting UI high-level architecture"
+          caption="Ads delivery setup connects campaign authoring, audience estimation, policy review, pacing, serving config, auction eligibility, and attribution feedback."
         />
+        <p>
+          An advertiser creates a campaign, selects targeting and placements, previews reach, uploads creatives, passes policy and privacy checks, configures bids and pacing, publishes an immutable version, and monitors delivery health.
+        </p>
+        <p>
+          Serving systems read approved campaign snapshots, evaluate targeting eligibility, enforce budget and frequency caps, pass auction candidates to ranking, log impressions and clicks, and feed attribution and pacing loops.
+        </p>
+        <p>
+          The ingestion side should normalize heterogeneous events. Impression, click, conversion, revenue, payout, policy, and eligibility events need idempotency keys, source lineage, timestamps, actor identity, and replay capability. Without this, finance reconciliation becomes guesswork.
+        </p>
+        <p>
+          The serving side should consume approved and versioned snapshots. Low-latency systems should not synchronously call dashboard databases or policy review tools. They should read compact, validated, cacheable snapshots and emit durable telemetry for reporting and control loops.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/ads-monetization-systems/ads-delivery-targeting-ui-flow.svg"
+          alt="Design an Ads Delivery &amp; Targeting UI publish and reporting flow"
+          caption="Campaign publish must validate privacy, policy, budget, pacing, and creative states before serving systems can use the snapshot."
+        />
+        <p>
+          The dashboard API should prefer pre-aggregated metrics for common slices and bounded warehouse queries for deep drilldowns. Query planners should enforce cardinality limits, privacy thresholds, and cost controls so one dashboard cannot overload the analytics platform.
+        </p>
+        <p>
+          Policy and privacy checks should be centralized enough to be consistent but configurable enough to handle regional rules and product-specific risk. The system should support blocked, pending, approved, limited, appealed, and takedown states with clear owner and deadline.
+        </p>
+        <p>
+          Financial integration should use ledger semantics. Money values should be append-only adjustments with reason codes, not mutable counters. Corrections should create new ledger entries, preserving previous state for audit, invoice dispute, payout reconciliation, and compliance.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/ads-monetization-systems/ads-delivery-targeting-ui-operations.svg"
+          alt="Design an Ads Delivery &amp; Targeting UI operational safeguards"
+          caption="Operational controls protect user experience, advertiser spend, auction integrity, and regional privacy compliance."
+        />
+        <p>
+          Multi-region design should keep money and privacy constraints explicit. Serving may run globally, but billing, conversion logs, and payout records may have regional retention or residency requirements. Cross-region replication must not bypass consent or legal rules.
+        </p>
+        <p>
+          Observability should track delivery, spend, attribution lag, policy backlog, fraud rate, dashboard freshness, ledger reconciliation, payout delay, query cost, and complaint volume. These metrics connect business trust to system health.
+        </p>
+        <p>
+          Campaign publishing should produce a serving manifest with campaign version, eligible placements, targeting predicates, budget ceilings, pacing parameters, creative IDs, policy labels, and privacy restrictions. The manifest is compact enough for ad-serving systems to cache, while the full authoring record remains in the campaign database for audit and review.
+        </p>
+        <p>
+          Budget enforcement should use multiple guards. A fast in-memory or regional counter protects low-latency serving, while an authoritative spend ledger reconciles truth. When counters diverge, the system should fail toward throttling high-risk campaigns and show the advertiser that delivery is limited due to spend protection rather than silently overspending.
+        </p>
+        <p>
+          Emergency operations need first-class controls. Operators should be able to pause one campaign, one advertiser, one creative family, one placement, or one region without disabling the whole ads stack. This geographic and entity-level blast-radius control is essential during policy incidents, privacy incidents, or auction bugs.
+        </p>
+        <p>
+          Auction integration should be observable from the advertiser UI without exposing proprietary ranking internals. The UI can show eligible inventory trends, lost-delivery reason categories, pacing throttle state, policy limitations, bid competitiveness bands, and frequency-cap pressure. This helps advertisers diagnose underdelivery while keeping marketplace algorithms protected and reducing support escalations.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">pCTR Model and eCPM Ranking</h3>
-        <HighlightBlock as="p" tier="crucial">The predicted click-through rate (pCTR) model is the most important ML model in the ads system — it determines how bids are ranked, which directly affects auction revenue and ad relevance. The pCTR model predicts the probability that a given user will click a given ad in a given context. Features: ad creative features (size, format, category), user features (age bucket, interest segments, device type), context features (page category, time of day, day of week, position on page — above-fold ads have higher CTR than below-fold), and historical interaction features (the user's past CTR with this advertiser's ads — strong signal if available). Model architecture: logistic regression or gradient boosted trees (GBT) for latency, with a neural network for feature embedding (the neural network is run offline to generate feature embeddings; the logistic regression uses the embeddings as input and runs in under 1ms). The pCTR model is retrained daily on the previous day's impression and click log. It is served in-process within the ad server (not a separate RPC call) to minimize auction latency. Model size: approximately 50MB per model version, loaded into memory on startup.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Budget Pacing</h3>
-        <HighlightBlock as="p" tier="important">Advertisers set a daily budget (e.g., $1,000/day). Without pacing, the budget could be exhausted in the first few hours (peak traffic is in the morning and evening), leaving no ads running for the rest of the day. Pacing strategies: (1) even pacing — distribute the budget evenly across 24 hours (target spend per hour = dailyBudget / 24); (2) accelerated pacing — spend as fast as possible until the budget is exhausted (used by advertisers who want maximum early exposure); (3) dayparting — concentrate spend in specific hours (e.g., only run ads 6pm–10pm). Even pacing implementation: a pacing controller runs every 5 minutes, checking Redis for the campaign's current spend (Redis HGET campaign:&#123;id&#125;:spend) and computing the current pace rate (spend / elapsed hours). If ahead of pace, the controller reduces the auction participation probability (throttle rate) — the ad server randomly skips some auctions for this campaign at the throttle rate. If behind pace, the throttle rate increases back toward 100%. This smooth pacing avoids the "budget cliff" where a campaign runs normally for half the day and then abruptly stops.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Creative Management and CDN</h3>
-        <HighlightBlock as="p" tier="crucial">Ad creatives (images, HTML5 banners, video) are uploaded by advertisers to the creative management system, which: validates creative dimensions and file size against the slot specification, runs creative review (automated content policy check using a classifier trained on policy violations — adult content, misleading claims, prohibited products; plus human review queue for flagged creatives), encodes video to multiple resolutions (using FFmpeg — 1080p source → 720p, 480p, 360p for adaptive bitrate), and distributes the creative to the CDN. Once approved, the creative's CDN URL is stored in the creative database and referenced in BidResponse objects. Creatives are cached at the CDN edge with a long TTL (7 days) — they rarely change after approval. Creative invalidation (when an advertiser updates a creative after approval) is handled via URL versioning: the updated creative is uploaded as a new URL, invalidating the old URL in the CDN simultaneously.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The central trade-off is advertiser control and revenue growth versus privacy, policy safety, and user experience. A principal-ready answer should explain how the system balances growth incentives with safety, correctness, and long-term marketplace trust.
+        </HighlightBlock>
+        <p>
+          Real-time metrics versus correctness is a key trade-off. Real-time estimates help operators react, but late conversions, fraud filtering, and finance reconciliation can change the final number. The dashboard should separate estimated, finalized, and reconciled metrics.
+        </p>
+        <p>
+          Granular targeting or reporting versus privacy risk needs careful treatment. Fine-grained dimensions improve advertiser control and analysis, but small cohorts can reveal user behavior. Thresholding, aggregation, suppression, and differential privacy techniques may be required.
+        </p>
+        <p>
+          Centralized policy versus advertiser or creator velocity is another trade-off. Strict review reduces harm but can slow campaigns and payouts. Risk-based review, automated pre-checks, and clear appeal paths keep the platform usable without removing governance.
+        </p>
+        <p>
+          Precomputed aggregates versus flexible drilldowns affects scalability. Precomputation makes common dashboards fast and predictable. Flexible warehouse queries are useful for investigation but need cost guards, sampling, and query shape limits.
+        </p>
+        <p>
+          Revenue optimization versus user experience matters. More ads, higher frequency, or aggressive targeting may lift short-term revenue while damaging retention or trust. Guardrail metrics should include latency, complaint rate, hide rate, churn, and policy incidents.
+        </p>
+        <p>
+          Fraud prevention versus creator or advertiser transparency is hard. Revealing every fraud signal helps explain holds but can teach attackers how to evade detection. The design should provide reason categories and appeal evidence without exposing detection internals.
+        </p>
+        <p>
+          Ledger immutability versus correction ergonomics is important. Mutable balances are easy but unsafe. Append-only adjustments are auditable but require better UI explanation. For money systems, auditability should win.
+        </p>
+        <p>
+          Build versus buy should be discussed. Managed ad servers, attribution vendors, and payout platforms reduce implementation scope, but they may not satisfy privacy, marketplace, latency, or explainability needs. The integration boundary should be explicit.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">RTB latency vs. DSP count: broadcasting to 50 DSPs in parallel with an 80ms deadline requires the ad server to wait 80ms on every auction, even if all DSPs respond in 20ms. The wait time is bounded by the deadline, not the actual response times. Reducing the deadline to 50ms increases the proportion of dropped responses (DSPs with slower infrastructure can't respond in time) but decreases auction latency. Increasing the deadline to 120ms allows more DSPs to respond but increases total auction latency, degrading page load time. The 80ms deadline is an industry standard (OpenRTB specification recommendation) that balances fill rate (auction revenue) against user experience (page latency). For mobile ads, the deadline is sometimes reduced to 60ms because mobile page loads are more latency-sensitive.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Privacy and tracking: third-party cookies (the traditional mechanism for linking user behavior across different publisher sites to build audience segments) are being deprecated by browsers (Chrome's Privacy Sandbox initiative, Safari's ITP). The replacement mechanisms include: Topics API (browser discloses the user's top 5 interests from the past 3 weeks without identifying the user), Protected Audience API (remarketing without cross-site tracking — the browser holds the audience membership and runs a local auction), and contextual targeting (targeting based on the current page content rather than the user's history — no cross-site tracking required). These changes require the ad server's audience segment pipeline to evolve from cookie-based user tracking to cohort-based and on-device approaches, with significant implications for targeting precision and pCTR model accuracy.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Label every metric by state: estimated, delayed, fraud-filtered, privacy-suppressed, finalized, invoiced, settled, held, or paid. This avoids false precision in money-facing dashboards.
+        </p>
+        <p>
+          Use idempotency and deduplication at every event boundary. Duplicate impressions, clicks, conversions, and revenue events are common in distributed systems and directly affect billing or payouts.
+        </p>
+        <p>
+          Preserve source lineage and model versions. Attribution logic, fraud filters, pacing algorithms, and revenue-share rules change over time. Historical reports must know which version produced the result.
+        </p>
+        <p>
+          Make policy state visible and actionable. Pending review, limited delivery, rejected creative, creator hold, appeal deadline, and takedown reason should be first-class states, not hidden support notes.
+        </p>
+        <p>
+          Design for explainable disputes. Advertisers dispute invoices; creators dispute payouts. Support needs event lineage, ledger entries, policy state, fraud categories, and freshness caveats in one safe interface.
+        </p>
+        <p>
+          Protect privacy before data reaches dashboards. Apply consent, aggregation, small-cohort suppression, retention limits, and regional policy checks in pipelines and APIs, not just in client rendering.
+        </p>
+        <p>
+          Use guardrails for monetization experiments. Revenue lift should be balanced against retention, complaint rate, latency, advertiser ROI, creator trust, and policy incident rate.
+        </p>
+        <p>
+          Separate serving availability from analytics availability. Ads can continue to serve from approved snapshots even if the dashboard warehouse is delayed. Conversely, dashboards should clearly show freshness lag.
+        </p>
+        <p>
+          Run reconciliation jobs continuously. Compare serving logs, billing ledgers, aggregate metrics, payout batches, and invoices. Reconciliation should produce explainable deltas and not only nightly alerts.
+        </p>
+        <p>
+          Practice incident drills for overspend, underdelivery, incorrect payout, corrupted attribution, policy bypass, and privacy leakage. These are the incidents monetization systems actually face.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An ads delivery and targeting system requires: (1) ad slot request: publisher sends userId, slotId, pageUrl, geoIp; (2) user segment resolution: Redis GET seg:&#123;userId&#125; under 2ms — bitset over IAB interest categories; (3) OpenRTB BidRequest broadcast to 50 DSPs in parallel, 80ms hard deadline; (4) second-price Vickrey auction: rank by eCPM = bidCpm × pCTR; winner pays 2nd-highest bid + $0.01; floor price check; (5) winning creative served via CDN in sandboxed iframe (no DOM access, no top-level navigation); (6) impression beacon: async Kafka publish after HTTP response — non-blocking; (7) click redirect: dedup Redis SETNX 60s; basic IVT check (sub-second clicks, datacenter IPs); Kafka publish; (8) frequency cap: Redis INCR freq:&#123;userId&#125;:&#123;adId&#125;:&#123;date&#125; — expire at midnight; max 3/day default; (9) conversion attribution: last-click within 7 days; conversion pixel calls /ads/conversion with conversionType and value; (10) IVT detection: pre-bid blocklist, post-bid Flink anomaly, daily ML fraud model — refund credits end-of-cycle; (11) budget pacing: 5-minute pacing controller adjusts throttle rate to smooth spend across 24 hours.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is treating a ads delivery and targeting UI as a reporting UI over a few tables. That misses over-targeting sensitive cohorts, creative policy bypass, budget overspend, under-delivery, frequency-cap drift, stale campaign snapshot, attribution inflation, auction eligibility bug, and regional privacy violation. Monetization systems need ledgers, policy state, privacy boundaries, and operational recovery.
+        </p>
+        <p>
+          Another pitfall is mixing estimated and finalized money values. If the UI does not distinguish them, users will treat every number as payable or billable and support will inherit the confusion.
+        </p>
+        <p>
+          Teams often ignore late-arriving and duplicate events. This creates drift between dashboards, invoices, and payouts. Event-time processing, deduplication, and reconciliation are required.
+        </p>
+        <p>
+          Privacy thresholds are frequently bolted on after drilldowns already exist. Small cohorts and rare conversions can leak sensitive behavior, especially with many dimensions.
+        </p>
+        <p>
+          Pacing and budget failures can be expensive. A stale cache, delayed spend event, or regional serving bug can overspend an advertiser budget before a dashboard catches up.
+        </p>
+        <p>
+          Fraud and policy holds are often unexplained. Creators and advertisers need enough clarity to understand the state and appeal, while the platform still protects detection logic.
+        </p>
+        <p>
+          High-cardinality analytics can overload warehouses. Creative, placement, location, audience, and time breakdowns need query limits, pre-aggregates, and async export paths.
+        </p>
+        <p>
+          Finally, many designs omit support and finance users. Principal-level systems include the tools needed to investigate disputes and close the books, not just the advertiser or creator view.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Real-world use cases for a ads delivery and targeting UI include self-serve campaign launch, retargeting suppression, regional placement targeting, brand-safety review, budget pacing recovery, frequency-cap enforcement, and emergency campaign takedown. Each use case has different expectations for freshness, privacy, auditability, and money accuracy.
+        </p>
+        <p>
+          A self-serve ads platform needs campaign velocity, audience estimation, policy review, budget controls, auction eligibility, and dashboard trust. Mistakes can spend customer money or expose sensitive targeting.
+        </p>
+        <p>
+          A creator platform needs transparent earnings, policy eligibility, fraud holds, tax compliance, payout scheduling, and dispute handling. Creator trust depends on explainable balances and predictable payout state.
+        </p>
+        <p>
+          A marketplace must protect multiple sides: users do not want abusive ads, advertisers want ROI, creators want fair payouts, and the platform needs compliant revenue. The architecture should make those tensions explicit.
+        </p>
+        <p>
+          Incident scenarios include corrupted attribution, delayed conversion stream, fraud model false positives, overdelivery, underdelivery, tax provider outage, payout batch failure, and accidental approval of prohibited creatives.
+        </p>
+        <p>
+          At principal level, the answer should connect product dashboards to serving systems, event pipelines, ledgers, privacy, policy, finance reconciliation, and incident operations.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>1. How would you design the high-level architecture for a ads delivery and targeting UI?</h3>
+        <p>
+          Separate the authoring or dashboard surface from serving, event ingestion, policy, privacy, ledger, and analytics systems. Serving paths should consume compact approved snapshots and emit durable telemetry. Reporting paths should deduplicate, attribute, filter fraud, aggregate, and reconcile with ledgers. Dashboard APIs should show freshness, privacy suppression, and caveats. Finance and support tooling should read immutable evidence rather than mutable counters. This architecture keeps low-latency operations separate from money correctness.
+        </p>
+        <h3>2. How do you make monetization metrics trustworthy?</h3>
+        <p>
+          Use durable event ingestion, idempotency keys, deduplication, event-time processing, attribution model versions, fraud labels, freshness watermarks, and reconciliation against billing or payout ledgers. Separate estimated, finalized, invoiced, settled, and paid states. Preserve source lineage so support can explain discrepancies. Trust comes from showing caveats and evidence, not from hiding pipeline complexity.
+        </p>
+        <h3>3. How do you handle privacy in ads and monetization systems?</h3>
+        <p>
+          Apply consent and regional policy before targeting, reporting, or attribution. Avoid exposing user-level paths in dashboards. Suppress small cohorts, aggregate sensitive dimensions, minimize retention, and separate raw event access from product analytics. Privacy rules must apply to exports, support tooling, experiments, and logs, not just visible charts.
+        </p>
+        <h3>4. What happens if events are delayed, duplicated, or corrupted?</h3>
+        <p>
+          The system should deduplicate by stable event keys, process by event time with allowed lateness, show freshness lag, quarantine suspicious batches, and support replay from durable streams. Derived aggregates can be rebuilt. Ledgers should receive append-only corrections rather than destructive updates. Operators need reconciliation dashboards to compare serving logs, aggregates, invoices, and payouts.
+        </p>
+        <h3>5. What trade-offs would you highlight in a principal interview?</h3>
+        <p>
+          I would highlight advertiser control and revenue growth versus privacy, policy safety, and user experience, real-time estimates versus reconciled truth, granular reporting versus privacy, fraud transparency versus evasion risk, precomputed aggregates versus drilldown flexibility, revenue optimization versus user trust, and immutable ledgers versus correction UX. The best answer ties each trade-off to advertiser, creator, user, finance, and regulatory impact.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          <li><a href="https://iabtechlab.com/standards/openrtb/" target="_blank" rel="noreferrer">IAB Tech Lab - OpenRTB standards</a></li>
+          <li><a href="https://iabtechlab.com/standards/ads-txt/" target="_blank" rel="noreferrer">IAB Tech Lab - ads.txt and supply-chain transparency</a></li>
+          <li><a href="https://developers.google.com/google-ads/api/docs/start" target="_blank" rel="noreferrer">Google Ads API documentation</a></li>
+          <li><a href="https://support.google.com/admanager/answer/82242" target="_blank" rel="noreferrer">Google Ad Manager - Forecasting and delivery concepts</a></li>
+          <li><a href="https://stripe.com/docs/treasury/moving-money/financial-accounts/ledger" target="_blank" rel="noreferrer">Stripe documentation - Ledger concepts for money movement</a></li>
+          <li><a href="https://sre.google/sre-book/monitoring-distributed-systems/" target="_blank" rel="noreferrer">Google SRE Book - Monitoring Distributed Systems</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

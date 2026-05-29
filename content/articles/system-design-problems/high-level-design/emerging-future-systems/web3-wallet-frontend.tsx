@@ -7,89 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-web3-wallet-frontend",
-  title: "Design a Web3 Wallet Frontend (like MetaMask)",
-  description:
-    "Architecture for a Web3 wallet frontend: HD wallet key derivation (BIP-39 mnemonic, BIP-44 derivation path), secure key storage in browser extension secure storage, transaction signing flow with EIP-712 typed data display, gas estimation and fee priority selection, dApp connection management (EIP-1193 provider injection), multi-chain support with network switching, token balance aggregation with real-time price feeds, phishing site detection, transaction history from block explorer APIs, and hardware wallet integration via WebHID.",
+  title: "Design a Web3 Wallet Frontend",
+  description: "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability.",
   category: "high-level-design",
   subcategory: "emerging-future-systems",
   slug: "web3-wallet-frontend",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "web3", "wallet", "metamask", "bip39", "eip1193", "transaction-signing", "hd-wallet"],
-  relatedTopics: ["ar-vr-interface-system", "voice-based-ui-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "emerging", "ai", "privacy", "safety", "fallback"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Web3 Wallet Frontend is an emerging product system where device capability, user trust, safety, privacy, and fallback behavior are as important as the primary interaction. A principal-ready design treats a Web3 wallet frontend as a risk-managed experience, not as a novelty interface.",
+  "The difficult part is uncertainty. Devices vary, sensors lie, networks disappear, models drift, chains fail, users misunderstand prompts, and irreversible actions can happen from ambiguous input. The architecture must make uncertainty visible and controllable.",
+  "The design should define the boundary between local computation, remote services, user intent, policy enforcement, and operational control. Emerging systems fail when teams hide this boundary behind a magical UI that cannot explain or recover from mistakes.",
+  "A strong interview answer should classify actions by reversibility and sensitivity. Browsing, previewing, suggesting, and drafting can be forgiving. Payments, wallet signatures, permission grants, identity changes, public posts, and physical-world actions need confirmation and auditability.",
+  "Operationally, these systems need feature flags, capability gating, cohort rollout, fallback routes, safety kill switches, privacy controls, and telemetry that measures quality without collecting more sensitive data than needed."
+];
+const concepts = [
+  "The first concept is capability detection. key custody boundary, transaction builder, and chain gateway should not assume every device, browser, sensor, model, or wallet provider behaves the same way. The UI needs graceful downgrade paths.",
+  "The second concept is intent confirmation. Emerging interfaces often infer intent from speech, gestures, camera input, model output, or wallet metadata. Inferred intent should not trigger irreversible actions without explicit confirmation.",
+  "The third concept is local versus remote execution. Local execution improves privacy and latency but has device, battery, model, and upgrade constraints. Remote execution improves consistency and observability but increases latency, cost, and data exposure.",
+  "The fourth concept is safety boundaries. Spatial boundaries, prompt boundaries, transaction boundaries, permission boundaries, and model output boundaries should be explicit in both UI and backend policy.",
+  "The fifth concept is fallback. A user should be able to continue through a simpler text, touch, web, cloud, or manual review path when the emerging interface is unavailable or low confidence.",
+  "The sixth concept is observability. Track capability failures, fallback rate, confirmation cancellation, model confidence, sensor drift, transaction simulation warnings, privacy control usage, latency, battery impact, and incident overrides."
+];
+const architecture = [
+  "The architecture contains key custody boundary, transaction builder, chain gateway, risk simulator, recovery flow. The client detects capability and collects user intent. The runtime or gateway evaluates confidence, policy, and safety. Sensitive actions pass through confirmation and audit. Fallback routing keeps the core journey available when the new interaction is not trustworthy.",
+  "State should be separated into user intent, inferred context, device/runtime state, remote policy state, and committed action state. Inferred context can be wrong; committed state should be durable and explainable.",
+  "The system should keep sensitive inputs local where possible and send minimized, purpose-bound data when remote services are required. Logs should store event class, confidence, policy decision, and correlation ID rather than raw voice, camera, seed, private prompt, or spatial map data unless explicitly necessary and consented.",
+  "Capability gating should run before rendering advanced controls. The UI should know whether it is in full mode, degraded mode, remote fallback, read-only mode, or blocked mode because of device, policy, provider, or safety constraints.",
+  "For high-risk actions, the design should include preflight simulation or validation. A wallet simulates transaction effects; voice confirms destructive intent; AR checks safe placement; on-device AI checks output confidence and policy.",
+  "Operations need remote disablement for risky model versions, wallet providers, voice intents, spatial features, or transaction types. Emerging systems should assume fast rollback is necessary because field failures can be hard to reproduce in lab testing."
+];
+const tradeoffs = [
+  "Local-first execution improves latency and privacy, but creates fragmentation across devices and model/runtime versions. Cloud execution improves control and quality consistency, but sends more data over the network and increases cost.",
+  "Rich immersive UI can improve understanding and engagement, but it increases accessibility, motion comfort, battery, and hardware constraints. A principal design keeps a non-immersive fallback for critical flows.",
+  "Low-friction confirmations improve speed, but high-risk actions need deliberate friction. The right design uses risk-based confirmation rather than one prompt style for every action.",
+  "Telemetry is necessary to improve quality, but emerging interfaces often observe sensitive context. Collecting raw audio, camera frames, private prompts, spatial maps, or wallet details can become a privacy incident. Use minimization and aggregation by default.",
+  "Aggressive rollout improves learning speed, but field failures can cause irreversible harm or public trust loss. Use staged rollout, holdouts, model/version attribution, and kill switches.",
+  "Fallbacks add product and engineering complexity, but they make the system usable when the novel interface is unavailable, unsafe, low confidence, or blocked by policy."
+];
+const practices = [
+  "Design confidence-aware UI states: ready, low confidence, needs confirmation, degraded, blocked, failed, and manual fallback. Do not represent uncertain inference as fact.",
+  "Use policy and risk classification before sensitive actions. The system should know which actions are reversible, destructive, financial, public, privacy-sensitive, or safety-sensitive.",
+  "Version every runtime decision: model version, wallet provider, device capability tier, intent schema, safety policy, and fallback route. Versioning makes rollback and incident analysis possible.",
+  "Use explicit consent and local data controls for voice, camera, spatial maps, private prompts, wallet metadata, and personalization history.",
+  "Build simulation or preview for irreversible actions. Users should see transaction effects, public posting consequences, physical placement, or destructive command summary before committing.",
+  "Instrument fallback and cancellation. High fallback rate or confirmation cancellation is a quality signal, not only a UX inconvenience.",
+  "Exercise incident playbooks for bad model rollout, wallet provider outage, false activation spike, sensor drift, privacy complaint, and unsafe action pattern."
+];
+const pitfalls = [
+  "phishing signature can turn a promising interface into a trust failure if the UI hides uncertainty or removes fallback paths.",
+  "nonce race is often caused by doing too much on-device or in realtime without resource budgets and user-visible degradation.",
+  "chain outage is the largest principal-level risk. Emerging interfaces often touch personal surroundings, private text, speech, biometrics, wallet metadata, or sensitive intent.",
+  "irreversible loss requires rollback, quality monitoring, and explicit user recovery. The system cannot rely on users understanding hidden model, sensor, chain, or provider behavior.",
+  "Another pitfall is demo-driven design. A prototype can assume perfect lighting, perfect speech, perfect network, perfect device, and harmless actions; production cannot.",
+  "Teams also underinvest in accessibility. Voice, AR/VR, wallets, and AI assistants must have alternative interaction modes for users who cannot or do not want to use the novel surface."
+];
+const useCases = [
+  "browser wallet needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "mobile wallet needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "dApp transaction approval needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "During a provider or model incident, the system should fall back to a simpler safe path, preserve user work, disable high-risk actions, and expose the reason without leaking sensitive internals.",
+  "During a privacy review, the system should prove what data was processed locally, what was sent remotely, what was logged, and how users can revoke or delete it.",
+  "During scale-up, cost and latency should be tracked per capability tier because local, edge, and cloud execution have very different operational economics."
+];
+const questions = [
+  {
+    "question": "How would you design a Web3 wallet frontend end to end?",
+    "answer": "I would start with capability detection, user intent capture, policy/risk classification, confidence-aware execution, confirmation for sensitive actions, and fallback routing. The architecture includes key custody boundary, transaction builder, chain gateway, risk simulator, recovery flow. Committed actions are durable and auditable; inferred context remains tentative. Operations need versioning, staged rollout, telemetry, and kill switches."
+  },
+  {
+    "question": "Why this architecture over a direct UI-to-provider integration?",
+    "answer": "Direct integration is fast for a demo but weak for policy, fallback, privacy, observability, and rollback. A principal architecture adds a control plane that understands capability, risk, consent, model/provider version, and action sensitivity. The trade-off is more complexity, but it prevents silent unsafe actions and makes incidents recoverable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are phishing signature, nonce race, chain outage, irreversible loss, plus provider outages, device fragmentation, quality drift, high cloud cost, privacy complaints, and low-confidence actions. Prevention requires versioning, cohort rollout, capability gating, fallback paths, telemetry, and remote disablement."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Inferred state can be probabilistic and temporary. Committed user actions, permissions, wallet transactions, account state, and privacy choices need authoritative confirmation and audit. Derived suggestions, previews, model outputs, and sensor interpretations can be stale or low confidence if the UI represents them honestly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with fallback modes, confirmation, retries where safe, and preserved user intent. Rollback uses version gates and feature kill switches. Abuse is handled through risk policy, rate limits, transaction simulation, and unsafe-intent blocking. Privacy uses local processing, minimization, consent, and redaction. Cost is managed by routing between local, edge, and cloud execution. Observability tracks confidence, fallback, cancellation, latency, battery, and incident controls."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would classify actions by reversibility and sensitivity. I would defend local execution for privacy-sensitive low-latency tasks, cloud fallback for quality or capability gaps, and explicit confirmation for irreversible actions. I would also emphasize that emerging interfaces need safe fallback more than perfect novelty."
+  }
+];
+const references = [
+  {
+    "label": "WebXR Device API",
+    "href": "https://www.w3.org/TR/webxr/"
+  },
+  {
+    "label": "MDN: Web Speech API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API"
+  },
+  {
+    "label": "W3C WebAuthn",
+    "href": "https://www.w3.org/TR/webauthn-3/"
+  },
+  {
+    "label": "OWASP Mobile Application Security",
+    "href": "https://mas.owasp.org/"
+  },
+  {
+    "label": "Ethereum JSON-RPC API",
+    "href": "https://ethereum.org/en/developers/docs/apis/json-rpc/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function Web3WalletFrontendArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A Web3 wallet is the most security-critical piece of software a user interacts with in the blockchain ecosystem. Unlike a regular app, a wallet holds cryptographic private keys that give complete, irrevocable control over user funds. A single exploit — a phishing site tricking the user into signing a malicious transaction, or a key extraction vulnerability in storage — results in permanent, unrecoverable financial loss. The design must treat security as the primary constraint, not an afterthought.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The wallet also serves as the identity and authentication layer for the decentralized web: dApps (decentralized applications) connect to the wallet via a standardized provider API (EIP-1193) to request signatures and transactions. The wallet is therefore both a key management system and a middleware layer between dApps and the blockchain. The UX must make complex cryptographic operations (gas estimation, typed data signing, multi-chain switching) understandable to non-technical users while never hiding the security implications of what is being signed.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> HD wallet key derivation, secure key storage, transaction signing UI, dApp connection (EIP-1193), gas estimation, multi-chain support, token balances, phishing detection, and hardware wallet integration. Not in scope: NFT minting, DeFi protocol integration, or cross-chain bridges.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/web3-wallet-frontend.svg" alt="Design a Web3 Wallet Frontend architecture" caption="Architecture view: capability, runtime/provider boundary, policy, confirmation, fallback, and telemetry." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/web3-wallet-frontend-flow.svg" alt="Design a Web3 Wallet Frontend flow" caption="Flow view: inferred intent, confidence, validation, confirmation, committed action, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/web3-wallet-frontend-operations.svg" alt="Design a Web3 Wallet Frontend operations" caption="Operations view: model/provider/device incidents, privacy controls, rollback, cost, and observability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>HD wallet key derivation (BIP-39/BIP-44):</strong> Wallet creation generates a 12 or 24-word BIP-39 mnemonic phrase (128 or 256 bits of entropy from a CSPRNG). The mnemonic is converted to a 512-bit seed via PBKDF2-HMAC-SHA512 with 2048 iterations and an optional passphrase. From the seed, a BIP-32 hierarchical deterministic (HD) wallet tree is derived. The default derivation path for Ethereum is m/44'/60'/0'/0/N where N is the account index. This allows generating unlimited accounts from a single mnemonic, and recovering all accounts from the mnemonic alone. The private key for each account is the leaf node of the derivation tree.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Secure key storage in browser extension:</strong> Private keys are never stored in plaintext. The storage model: the mnemonic (or individual private keys for imported accounts) is encrypted with AES-256-GCM using a key derived from the user's wallet password via PBKDF2-HMAC-SHA256 (600,000 iterations, per OWASP recommendation). The encrypted vault is stored in chrome.storage.local (not localStorage — extension storage is sandboxed from web pages). On wallet unlock, the user provides the password, the vault is decrypted in memory, and the decrypted keys are held in a locked memory buffer (zeroed on wallet lock or after 15 minutes of inactivity). Keys are never written to disk after decryption — only the encrypted vault persists.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Transaction signing flow with EIP-712 typed data:</strong> When a dApp requests a signature, the wallet popup shows: (1) the requesting dApp origin (highlighted in red if it's a known phishing site or if the domain doesn't match the connected site); (2) the transaction details decoded from the ABI — not raw hex; (3) for EIP-712 typed data signatures (used by Permit, Seaport, etc.), the structured data is decoded and displayed field-by-field with human-readable labels. The user sees "Approve USDC spending: 1,000 USDC to Uniswap Router" not "data: 0x095ea7b3...". The signing operation is performed in the extension background context (not the content script) to prevent dApps from intercepting the signed result before it's returned.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Gas estimation and EIP-1559 fee selection:</strong> For each transaction, the wallet fetches gas estimates from the connected RPC node (eth_estimateGas) and the current base fee + priority fee suggestions (eth_feeHistory). Three preset fee tiers are offered: Slow (&lt;10th percentile priority fee, lower cost), Standard (50th percentile), and Fast (&gt;90th percentile priority fee, higher cost but faster inclusion). The estimated confirmation time is shown per tier (derived from historical block data). Advanced users can set custom maxFeePerGas and maxPriorityFeePerGas. Gas limit is set to estimatedGas × 1.2 (safety buffer). If the estimated transaction cost exceeds the user's ETH balance, the "Confirm" button is disabled with an error: "Insufficient ETH for gas."</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>EIP-1193 dApp connection (provider injection):</strong> The wallet injects a window.ethereum provider object into every web page via a content script. The content script bridges postMessage communication between the page and the extension background. dApps call window.ethereum.request(&#123;method: 'eth_requestAccounts'&#125;) to connect — this triggers a popup asking the user to approve the connection. Once approved, the dApp can call read methods (eth_accounts, eth_chainId, eth_getBalance) without further prompts. Write methods (eth_sendTransaction, eth_sign, personal_sign) always require user approval in the popup. The approved connection list is stored in the vault and shown in the "Connected Sites" settings page, where users can revoke individual dApp connections.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Multi-chain support with network switching:</strong> The wallet maintains a list of supported networks (Ethereum mainnet, Arbitrum, Optimism, Base, Polygon, and user-added custom RPC networks). Each network has its own RPC URL, chainId, native token symbol, and block explorer URL. The active network is shown in the header. dApps can request a network switch via wallet_switchEthereumChain (EIP-3326) — the wallet prompts the user to confirm. Custom networks added by dApps via wallet_addEthereumChain are shown with a warning ("This is a custom network added by a dApp — verify the RPC URL before proceeding"). All RPC calls (balance fetches, gas estimates) use the active network's RPC endpoint.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Phishing site detection:</strong> Every time a dApp requests a connection or signature, the requesting origin is checked against a phishing blocklist (EthPhishing, MetaMask's phishing detector). The blocklist is fetched from a CDN-hosted JSON file at wallet startup and cached locally (refreshed every 30 minutes). If the origin matches the blocklist, the transaction popup shows a full-screen red warning: "This site has been reported as a phishing site. Do NOT proceed." The transaction cannot be approved — only dismissed. Additionally, homoglyph detection checks for visually similar domain names (e.g., "rnетamask.io" using Cyrillic characters) that impersonate trusted dApps.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Hardware wallet integration via WebHID:</strong> The wallet supports Ledger and Trezor hardware wallets via WebHID (Chrome) and WebUSB. Hardware wallet accounts are added by connecting the device, opening the Ethereum app on the device, and deriving addresses (the wallet reads the public keys from the device — private keys never leave the hardware wallet). Transaction signing: the unsigned transaction is sent to the hardware wallet device via HID, the user confirms on the device's physical screen (showing the recipient address and amount), and the device returns the signed transaction. The private key never touches the host computer.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">A browser extension wallet has three execution contexts: the background service worker (persistent, holds the decrypted key vault in memory when unlocked, processes signing requests), the content script (injected into every web page, bridges window.ethereum provider calls to the background via chrome.runtime.sendMessage), and the popup UI (the React app shown when the user clicks the extension icon or when a dApp triggers a signing request). These contexts communicate via Chrome extension message passing (chrome.runtime.sendMessage / chrome.runtime.onMessage).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The popup UI is a React app with Zustand for state management. It reads wallet state from the background via an init message on load and subscribes to state updates via chrome.runtime.onMessage. The UI never holds private keys — it only receives derived data (addresses, balances, pending transaction details for display). All cryptographic operations (signing, key derivation) happen exclusively in the background service worker.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/web3-wallet-frontend.svg"
-          alt="Web3 wallet frontend architecture: BIP-39 mnemonic → PBKDF2 seed → BIP-44 HD derivation (m/44'/60'/0'/0/N) → private key; AES-256-GCM encrypted vault in chrome.storage.local; content script injects window.ethereum EIP-1193 provider; background worker holds decrypted keys in memory (zeroed on lock/15min); dApp request → phishing blocklist check → popup shows decoded ABI + EIP-712 typed data → user approves → background signs → returns to dApp; gas estimation from eth_estimateGas + eth_feeHistory (Slow/Standard/Fast tiers); hardware wallet via WebHID."
-          caption="BIP-39/BIP-44 HD derivation, AES-256-GCM vault (PBKDF2 600K iterations), EIP-1193 provider injection, phishing blocklist check, EIP-712 decoded display, EIP-1559 fee tiers (Slow/Standard/Fast), WebHID hardware wallet (key never leaves device)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Key Vault Encryption and Memory Safety</h3>
-        <HighlightBlock as="p" tier="important">The vault encryption uses the Web Crypto API (not a third-party library) for AES-256-GCM. Key derivation: const key = await crypto.subtle.importKey('raw', passwordBytes, &#123;name: 'PBKDF2'&#125;, false, ['deriveKey']); const aesKey = await crypto.subtle.deriveKey(&#123;name: 'PBKDF2', salt, iterations: 600000, hash: 'SHA-256'&#125;, key, &#123;name: 'AES-GCM', length: 256&#125;, false, ['encrypt', 'decrypt']). The salt is a random 16-byte value stored alongside the encrypted vault. The AES-GCM IV (initialization vector) is a random 12-byte value, unique per encryption operation, also stored with the ciphertext.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Memory safety: JavaScript does not have a secure memory primitive (no equivalent of SecureString in C#). The decrypted keys are held as Uint8Array buffers. On lock, the buffer contents are overwritten: keyBuffer.fill(0). This is a best-effort zero — the JavaScript engine may have already copied the buffer during garbage collection. For production wallets, the background service worker should be restarted on lock to ensure the process memory is cleared. Chrome's Manifest V3 service workers terminate after inactivity, providing a natural memory clearing mechanism.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Transaction Simulation and Risk Scoring</h3>
-        <HighlightBlock as="p" tier="important">Before displaying a transaction for user approval, the wallet simulates the transaction (using eth_call with the transaction payload against the current state) to predict the outcome: token balance changes, contract interactions, and potential failure. The simulation result is shown as a preview: "+1,000 USDC, -0.5 ETH" (token in/out visualization). If the simulation shows the transaction will fail (reverted), a warning is shown: "This transaction is likely to fail — you will still pay gas." Risk scoring: unlimited token approvals (approve(spender, type(uint256).max)) are flagged as high-risk with a warning: "This grants unlimited spending access. Consider approving only the amount needed." Contract interactions with unverified code (no source on Etherscan) also trigger a warning.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Token Balance Aggregation</h3>
-        <HighlightBlock as="p" tier="important">The wallet fetches token balances using: (1) native ETH balance via eth_getBalance; (2) ERC-20 token balances via a multicall contract (Multicall3) — batching hundreds of balanceOf calls into a single RPC call to avoid rate limiting; (3) known token list from the active network's token registry (e.g., Uniswap token list). Token prices are fetched from a price feed API (CoinGecko, Chainlink price feeds) and used to compute USD balances. The balance list is cached in memory and refreshed every 60 seconds (or on each new block via an eth_subscribe newHeads WebSocket subscription, for near-real-time updates without polling).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Transaction History</h3>
-        <HighlightBlock as="p" tier="important">Transaction history is fetched from a block explorer API (Etherscan, Alchemy Enhanced APIs) rather than scanning the blockchain directly. The API provides: list of transactions by address, decoded function calls (method name, parameters), ERC-20 transfer events, and confirmation status. The history is paginated and cached locally. Pending transactions (submitted but not yet mined) are tracked in local storage with their nonce — if a transaction is pending for &gt;5 minutes, the wallet offers a "Speed Up" option (resubmit with a higher priority fee, same nonce — replaces the stuck transaction) or "Cancel" (send a 0-value self-transaction with the same nonce but higher fee, to replace with a no-op).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Extension vs. mobile app vs. web wallet: browser extensions have access to page context (content script injection), making them the most capable platform for dApp interaction. Mobile wallets use deep links (WalletConnect protocol) to connect to dApps running in a mobile browser — more friction but better security isolation (the wallet and dApp run in separate apps). Web wallets (iframe-based, like Coinbase Wallet SDK) eliminate the extension requirement but reduce security by running key operations in a browser tab that could be compromised by XSS on the host page. For a MetaMask-equivalent, the browser extension is the right architecture.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">RPC provider centralization: by default, wallets use a single RPC provider (Infura, Alchemy). This creates a privacy and availability risk — the RPC provider sees every address queried and every transaction submitted. Privacy-preserving alternatives: run a local Ethereum node (impractical for most users), use privacy-preserving RPC proxies (RPCh, which routes requests through a mixnet), or rotate between multiple RPC providers. The wallet should allow users to configure their own RPC URL for each network.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A Web3 wallet frontend requires: (1) HD wallet key derivation (BIP-39 mnemonic → PBKDF2 seed → BIP-44 path m/44'/60'/0'/0/N, unlimited accounts from one mnemonic); (2) AES-256-GCM encrypted vault in chrome.storage.local (PBKDF2-SHA256 600K iterations, random salt + IV, key zeroed on lock); (3) three-context extension architecture (background worker holds keys, content script bridges provider, popup UI for user interaction); (4) EIP-1193 provider injection (window.ethereum, connection approval, read-without-prompt / write-always-prompt); (5) EIP-712 typed data decoded display (ABI decoding, structured field labels, not raw hex); (6) EIP-1559 fee tiers (eth_feeHistory, Slow/Standard/Fast with confirmation time estimates); (7) transaction simulation (eth_call preview: token in/out visualization, unlimited approval warning, unverified contract warning); (8) phishing detection (blocklist CDN-cached 30min, homoglyph detection); (9) Multicall3 token balance aggregation (batch balanceOf, real-time via eth_subscribe newHeads); and (10) WebHID hardware wallet (Ledger/Trezor, unsigned tx to device, user confirms on device screen, signed tx returned, private key never leaves device). The core security invariant: private keys exist in decrypted form only in the background worker's memory, never in content scripts, popup UI, or persistent storage.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

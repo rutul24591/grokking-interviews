@@ -1,1 +1,5 @@
-# Design a plugin/extension marketplace UI — Example 3
+# Plugin Extension Marketplace UI - Example 3
+
+Concrete platform infrastructure edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,1 +1,5 @@
-# Design a cloud storage UI (like Google Drive) — Example 3
+# Cloud Storage UI - Example 3
+
+Concrete cloud file storage edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

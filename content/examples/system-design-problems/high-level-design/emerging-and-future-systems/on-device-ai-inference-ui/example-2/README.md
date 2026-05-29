@@ -1,1 +1,5 @@
-# Design a on-device AI inference UI — Example 2
+# ON Device AI Inference UI - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

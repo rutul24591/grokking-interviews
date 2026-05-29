@@ -7,89 +7,235 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-offline-first-poor-network",
-  title: "Design Offline-First System (Poor Network)",
-  description:
-    "Architecture for an offline-first web application that functions on poor or absent network connections: IndexedDB as the local source of truth, a service worker handling all fetch interception with cache-first and stale-while-revalidate strategies, a sync queue for write operations, conflict resolution via last-write-wins or CRDT merge, background sync via the Background Sync API, optimistic UI updates with rollback, and progressive enhancement fallbacks for unsupported browsers.",
+  title: "Design an Offline-First UI for Poor Networks",
+  description: "Principal-level offline-first design covering local-first reads, queued writes, conflict resolution, sync protocol, privacy, retry policy, and user trust.",
   category: "high-level-design",
   subcategory: "performance-scale-edge-cases",
   slug: "offline-first-poor-network",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "offline-first", "service-worker", "indexeddb", "background-sync", "conflict-resolution", "crdt", "poor-network"],
-  relatedTopics: ["low-end-device-frontend", "progressive-hydration-system"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: [
+  "hld",
+  "frontend",
+  "offline-first",
+  "sync",
+  "poor-network"
+],
+  relatedTopics: [
+  "cross-device-user-settings-sync",
+  "high-latency-network-optimized-ui"
+],
 };
+
+const definition = [
+  "Design an Offline-First UI for Poor Networks is not a narrow rendering problem. It is a production system design problem where the frontend, edge, backend-for-frontend, platform APIs, observability, and product policy must work together for users move between online, degraded, captive portal, and offline states while still expecting the product to preserve intent. A principal-ready answer starts by defining the user promise: what remains usable, what is allowed to be stale, what must be confirmed by the server, and what should be disabled before the product harms trust.",
+  "The main goal is to separate local responsiveness from eventual server reconciliation without losing user intent or hiding conflicts. The design should avoid the common trap of optimizing only average page load. Interviewers expect you to reason about p95 and p99 users, regional cohorts, low-end devices, dependency failures, and operational behavior during incident conditions.",
+  "This topic sits at the boundary between product experience and distributed systems. The browser is not a passive renderer; it caches, schedules, retries, batches, predicts, persists state, and emits telemetry. Those client decisions can either protect the backend or multiply load during an outage.",
+  "The scope should explicitly name what is in and out. In scope are route architecture, data loading, client scheduling, dependency handling, fallback behavior, observability, release guardrails, and user-facing recovery. Out of scope are rewriting every backend service or assuming unlimited network and device capability.",
+  "A principal-level answer should also define decision ownership. Product owns which experiences can degrade. Platform owns shared performance budgets and observability contracts. Feature teams own route-level regressions. Operations owns incident playbooks and rollback controls. Without ownership, performance systems become dashboards that nobody acts on."
+];
+const concepts = [
+  "The first core concept is an explicit user journey budget. For an offline-first UI for poor networks, define budgets for startup, first useful content, first reliable interaction, bytes per route, request count, retry count, and background work. These budgets need route-level owners because a global average lets important cohorts fail quietly.",
+  "The second concept is criticality tiering. Not every request, widget, script, metric, or personalization call deserves the same priority. Critical path work supports navigation, authentication, visible content, and correctness-sensitive actions. Secondary work supports recommendations, analytics, decorations, previews, and speculative prefetch.",
+  "The third concept is client-side scheduling. The client should prioritize visible work, cancel obsolete requests, limit concurrency, pause nonessential background work, and avoid retry storms. Scheduling becomes especially important when queued writes can replay in the wrong order.",
+  "The fourth concept is correctness classification. Some experiences can be optimistic or stale, while others require authoritative confirmation. Offline-first systems are intentionally eventually consistent for many user edits. The design must define which operations commute, which require server reservation, and which must be blocked offline because conflicts are unsafe.",
+  "The fifth concept is operational observability. A production design needs RUM, synthetic checks, edge metrics, API metrics, client error reports, long-task data, cache hit ratio, and release correlation. Metrics should be segmented by route, region, device class, network class, browser, and experiment variant.",
+  "The sixth concept is progressive enhancement. The system should deliver a useful baseline first, then layer richer behavior when device, network, dependency, and permission state allow it. This is different from graceful failure after a rich app breaks; it is designing the baseline as a first-class product."
+];
+const architecture = [
+  "The recommended architecture contains five cooperating layers: local durable store, operation log, sync engine, conflict resolver, connectivity and replay telemetry. The exact technology choices vary, but the responsibility boundaries should be clear. The edge handles cacheable and regional concerns, the BFF shapes route payloads, the client schedules work and preserves local state, and telemetry closes the feedback loop.",
+  "Requests should be grouped by route intent instead of by backend ownership. The browser should not make a sequence of dependent calls when a BFF or edge function can compose a page-specific response with stable latency and caching semantics. This reduces round trips and gives the platform one place to apply request budgets, timeouts, and fallback policy.",
+  "The client should maintain a small runtime policy engine. It reads device and network hints, route priority, user intent, feature flags, and dependency health. Based on that policy it chooses image quality, prefetch aggressiveness, hydration priority, polling interval, cache strategy, and which widgets to defer.",
+  "State should be split into durable server state, durable local intent, ephemeral UI state, and derived presentation state. Durable local intent matters when users act during degraded conditions. Ephemeral UI state should not be treated as truth after refresh or reconnect.",
+  "The observability flow should correlate route render, data load, user interaction, dependency calls, cache behavior, errors, and release version. When a regression appears, engineers should know whether it came from a bundle change, third-party tag, CDN miss, backend latency, hydration error, feature flag, or experiment.",
+  "The diagrams for this article should be read as architecture, flow, and operations views. The architecture diagram explains ownership boundaries. The flow diagram explains user-visible progression and fallback. The operations diagram explains how the system is observed, controlled, and recovered during abnormal conditions."
+];
+const tradeoffs = [
+  "The first major trade-off is read-only offline cache versus operation-based sync with conflict-aware server reconciliation. Direct client access can be simple for small teams, but it creates route waterfalls, exposes backend shape to the browser, and makes fallback behavior inconsistent. A route-focused BFF adds another service tier, but it centralizes payload shaping, cache policy, and dependency control.",
+  "optimistic write queue with simple retry can be attractive because it improves first paint and cacheability. The downside is that not all interactions become safe or fast just because the first HTML arrived quickly. You still need hydration or client logic, state reconciliation, and a plan for dynamic user-specific data.",
+  "Aggressive caching improves latency and availability but creates correctness risk. Public static assets and editorial content can be cached heavily. User-specific data, entitlement checks, privacy-sensitive responses, and mutable transaction state require careful cache keys, short TTLs, or server confirmation.",
+  "Optimistic UI improves perceived responsiveness but increases rollback complexity. It is appropriate for reversible actions such as toggling a view preference or drafting local text. It is unsafe for payment, permission, inventory, identity, deletion, and security-sensitive actions unless the UI clearly represents a pending state.",
+  "Prefetching improves next-step latency but consumes bandwidth, battery, memory, and backend capacity. The principal answer should recommend intent-based prefetch, cohort-aware limits, data-saver respect, and cancellation when intent changes.",
+  "Feature shedding protects the core journey but can damage product metrics or user trust if it is invisible. Degraded states should be explicit enough that users understand what happened, while avoiding noisy technical errors.",
+  "Cost deserves a first-class trade-off. Every extra script, beacon, retry, cache miss, and speculative request becomes meaningful at scale. A principal design should defend a cost budget, not only a latency target."
+];
+const practices = [
+  "Create route-level performance and resilience budgets. Budgets should include bytes, JavaScript execution, API calls, round trips, cache hit ratio, timeout rate, long tasks, and user interaction latency. Route owners should review budget changes during code review and release planning.",
+  "Define a dependency criticality matrix. For each dependency, document whether it blocks rendering, blocks interaction, can use cached data, can fail open, can fail closed, or can be bypassed. This turns outage behavior from improvisation into design.",
+  "Use idempotency and explicit pending states for writes. If the browser retries or the user refreshes, the backend should converge on one logical action. The UI should poll or subscribe to authoritative status rather than asking users to repeat dangerous actions.",
+  "Use progressive loading and bounded resource use. Virtualize large lists, lazy-load below-fold widgets, cap memory caches, reduce image quality for constrained cohorts, and pause nonessential work while the user is interacting.",
+  "Instrument the client as a production component. Track route timing, interaction timing, long tasks, hydration or render failures, cache state, retry count, timeout class, dependency health, and release version. Sample responsibly, but keep enough attribution to debug.",
+  "Build rollback controls. Feature flags, remote config, kill switches, CDN invalidation, third-party script disablement, and route-level fallback switches should be available before an incident. These controls need audit logging and blast-radius limits.",
+  "Exercise degraded modes continuously. Synthetic tests and game days should verify that fallback paths still work, because rarely used fallback code often rots faster than the primary path."
+];
+const pitfalls = [
+  "A common pitfall is optimizing a lab metric while real users continue to fail. Lab tools are useful, but principal interviews expect field measurement segmented by real cohorts.",
+  "Another pitfall is moving complexity to the client without operational controls. Client schedulers, local stores, and prefetchers can create backend load, stale data, or privacy issues if they are not governed.",
+  "local state can violate server constraints. This is not a reason to avoid the technique entirely; it is a reason to bound it, observe it, and disable it remotely when it harms the system.",
+  "conflicts can be invisible until much later. A strong design identifies which actions need rollback, which need confirmation, and which should be blocked during degraded conditions.",
+  "sensitive data can remain on shared devices. Ambiguity is especially dangerous because users may repeat an action, support may not see the same state, and backend teams may reconcile the wrong records.",
+  "Many designs forget support and operations. If a user reports a failed journey, support should see route, device, network cohort, dependency health, client state, server state, and recent release context without asking engineering to query raw logs."
+];
+const useCases = [
+  "Field service app recording inspections in dead zones is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Mobile docs editor preserving drafts on trains is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Sales CRM capturing notes before reconnecting is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "A principal interviewer may ask you to handle a regional outage, a third-party script regression, an API latency spike, a client memory leak, or a sudden traffic surge. In each case, answer with the control loop: detect, isolate, degrade, communicate, recover, and prevent recurrence.",
+  "For consumer products, the biggest risk is usually silent trust erosion: taps do nothing, pages jump, data appears stale, or users repeat actions. For enterprise products, auditability and support reconstruction often matter as much as the immediate UI behavior.",
+  "For regulated or financial workflows, the product should prefer truthful pending states over optimistic success. Users can tolerate a slower confirmed action better than a fast lie that later becomes a support incident."
+];
+const questions = [
+  {
+    "question": "How would you design an offline-first UI for poor networks end to end?",
+    "answer": "I would start by defining the user journey and classifying each operation by criticality. Then I would place cacheable/static work at the CDN or edge, shape route payloads through a BFF, let the client scheduler prioritize visible and user-initiated work, and use local state only where correctness allows it. I would add RUM segmented by route, region, device, and network cohort, plus remote controls for feature shedding and rollback. The design is end to end because it covers request path, client runtime, backend dependencies, fallback behavior, observability, and operations."
+  },
+  {
+    "question": "Why choose this architecture over a simpler client-only design?",
+    "answer": "A client-only design is simpler initially, but it exposes every backend dependency to the browser, creates request waterfalls, and makes fallback policy inconsistent across teams. The proposed architecture adds a BFF or edge composition layer so the product can control payload shape, timeouts, cache behavior, and dependency degradation centrally. The trade-off is another operational tier, but that tier pays for itself when users move between online, degraded, captive portal, and offline states while still expecting the product to preserve intent."
+  },
+  {
+    "question": "What breaks at scale and how do you prevent it?",
+    "answer": "The likely failures are queued writes can replay in the wrong order; local state can violate server constraints; conflicts can be invisible until much later; sensitive data can remain on shared devices. Prevention requires budgets, backpressure, cancellation, bounded prefetch, idempotent writes, dependency health signals, route-level ownership, and remote kill switches. At scale, small client inefficiencies become infrastructure incidents, so the frontend must be treated as a traffic-shaping system."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Offline-first systems are intentionally eventually consistent for many user edits. The design must define which operations commute, which require server reservation, and which must be blocked offline because conflicts are unsafe. The important interview move is to classify state rather than claim everything is strongly consistent or eventually consistent. Cached reads, derived widgets, analytics, and noncritical counters can usually be stale. Security, entitlement, financial, inventory, and destructive actions require authoritative confirmation and reconciliation."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "The sync engine should persist operations durably, retry with backoff, expose per-item sync state, stop on permanent validation errors, and let users resolve conflicts without losing their draft. Rollback relies on flags, config, CDN invalidation, third-party disablement, and safe fallback routes. Privacy requires data minimization in cache keys, logs, telemetry, and local storage. Cost is controlled through request budgets, sampling, cache hit targets, payload limits, and disabled speculation for constrained cohorts. Observability must connect client symptoms to release, route, dependency, device, network, and region."
+  },
+  {
+    "question": "How would you defend the trade-offs under interviewer pressure?",
+    "answer": "I would explicitly separate correctness-critical paths from experience-enhancing paths. Then I would explain why the architecture spends complexity on the former and sheds or simplifies the latter during stress. If challenged on complexity, I would point to the failure modes: ambiguous writes, retry storms, privacy leaks, hidden regressions, and poor p99 cohorts. The design is justified when those risks are more expensive than the added platform layer."
+  }
+];
+const references = [
+  {
+    "label": "web.dev: Core Web Vitals",
+    "href": "https://web.dev/vitals/"
+  },
+  {
+    "label": "web.dev: Interaction to Next Paint",
+    "href": "https://web.dev/inp/"
+  },
+  {
+    "label": "MDN: Service Worker API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+  },
+  {
+    "label": "MDN: Network Information API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Cloudflare: CDN and edge learning center",
+    "href": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+  },
+  {
+    "label": "React documentation: server rendering APIs",
+    "href": "https://react.dev/reference/react-dom/server"
+  },
+  {
+    "label": "Martin Kleppmann: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function OfflineFirstPoorNetworkArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An offline-first system treats network connectivity as an enhancement, not a requirement. The user must be able to read, create, edit, and delete data without any network connection. When connectivity returns, the system must synchronize local changes with the server, detect and resolve conflicts when the same data was modified both locally and remotely, and do all of this transparently without requiring user intervention in the common case.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Poor network conditions are a spectrum: complete offline (airplane mode), intermittent connectivity (subway tunnel, elevator), high latency with packet loss (2G on a moving train), and captive portal situations (hotel WiFi that blocks all traffic until login). An offline-first system handles all of these identically — it does not distinguish between "offline" and "network so slow it might as well be offline." The IndexedDB local store is the source of truth for reads; the server is the source of truth for authoritative state. The sync layer reconciles the two.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Service worker architecture, IndexedDB schema design, sync queue implementation, conflict resolution strategies, and optimistic UI updates. Not in scope: server-side CRDT implementation, real-time collaborative editing, or native mobile offline.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>
+        {definition.slice(1).map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Read offline:</strong> All data the user has previously viewed is available offline immediately, served from IndexedDB without a network request. The UI must not show spinners or loading states for cached data — it renders instantly from the local store, then optionally refreshes from the network in the background.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Write offline:</strong> Create, update, and delete operations are accepted offline. Mutations are written to IndexedDB immediately (the source of truth for local state), enqueued in a sync queue (also in IndexedDB), and displayed in the UI immediately as if they had succeeded (optimistic update). When connectivity returns, the sync queue is flushed to the server.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Conflict resolution:</strong> When a local mutation conflicts with a server-side change (the same record was modified by another user or device while this client was offline), the system detects the conflict, applies a resolution strategy (last-write-wins by timestamp for simple fields; CRDT merge for collaborative data structures), and surfaces unresolvable conflicts to the user.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Background sync:</strong> The Background Sync API (where supported) enables the service worker to attempt sync even when the browser tab is closed. On browsers without Background Sync support, sync is attempted when the tab regains network connectivity via the online event.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Latency:</strong> All read operations complete in under 50ms (IndexedDB read). All write operations complete in under 20ms (IndexedDB write — the server sync happens asynchronously). Zero network round trips for any operation when offline.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Consistency:</strong> Local data may be temporarily stale (last synced N hours ago), but the UI always shows the last-known state rather than a blank screen or error. Stale data is labeled with a "last updated X" timestamp. Optimistic writes are immediately visible and never lost — they persist in IndexedDB until confirmed by the server or explicitly discarded by the user after a conflict.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Storage limits:</strong> IndexedDB storage is evictable by the browser under storage pressure. The application must use StorageManager.persist() to request persistent storage, implement an eviction policy (evict oldest content first, never evict user-created drafts), and warn users when approaching storage limits.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        {concepts.map((item, index) => index === 3 ? (
+          <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The architecture has three layers. The Local Data Layer consists of IndexedDB (via Dexie.js) storing all application data in normalized tables, a sync queue table of pending mutations, and a metadata table (last sync timestamp, conflict log). The Service Worker Layer intercepts all fetch requests: GET requests are served from the Cache API (for static assets) or IndexedDB (for API responses serialized as JSON); POST/PUT/DELETE requests are intercepted offline and queued. The Server Sync Layer is the background process that flushes the sync queue, handles server responses (including conflict detection via HTTP 409 or ETag/If-Match), and merges server state into IndexedDB. The React UI layer reads exclusively from IndexedDB (via React Query with a custom IndexedDB fetcher) and dispatches mutations to the local store, which in turn feeds the sync queue.</HighlightBlock>
-      </section>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
 
-      <section>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/offline-first-poor-network.svg"
-          alt="Offline-first poor network architecture: service worker intercepts all fetch (Cache API for assets, IndexedDB JSON for API GET, queue for mutations offline), IndexedDB schema (data tables: normalized entities; syncQueue: {id, method, url, body, retries, timestamp}; metadata: {lastSync, conflictLog}), sync queue flush (online event or Background Sync API → dequeue one at a time → POST/PUT/DELETE to server → 200: mark done → 409 conflict: apply resolution strategy → 5xx: retry with exponential backoff), conflict resolution (last-write-wins: compare server.updatedAt vs local.updatedAt → keep newer; CRDT merge for arrays: union of add-set minus remove-set; unresolvable: add to conflictLog → surface UI), optimistic UI (write to IndexedDB immediately → render → queue sync → on server error: rollback local write → show conflict banner), storage (StorageManager.persist() on install → eviction policy: evict stale API cache first, never evict drafts → warn at 80% quota)."
-          caption="Service worker fetch interception (Cache API assets, IndexedDB API JSON, offline mutation queue), sync queue flush (online/Background Sync API, exponential backoff, 409 conflict detection), conflict resolution (last-write-wins timestamp, CRDT array merge, unresolvable surfaced to UI), optimistic UI with rollback on server error"
+          alt="Design an Offline-First UI for Poor Networks architecture"
+          caption="Architecture view: ownership boundaries, control-plane decisions, and runtime paths for an offline-first UI for poor networks."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/offline-first-poor-network-flow.svg"
+          alt="Design an Offline-First UI for Poor Networks flow"
+          caption="Flow view: user-visible progression, fallback behavior, and degraded-state recovery."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/offline-first-poor-network-operations.svg"
+          alt="Design an Offline-First UI for Poor Networks operations"
+          caption="Operations view: observability, rollback, cost controls, privacy boundaries, and incident response."
         />
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">IndexedDB Schema and Local Store</h3>
-        <HighlightBlock as="p" tier="important">Dexie.js provides a TypeScript-friendly wrapper over IndexedDB with migrations and compound indexes. The schema has four object stores: (1) entities — the application data, keyed by a composite (type, id) index for fast range queries; (2) syncQueue — pending mutations with fields: id (UUID), method (GET/POST/PUT/DELETE), url, body (serialized JSON), retries (integer), createdAt (timestamp), and status (pending/in-flight/failed); (3) apiCache — serialized API responses keyed by URL + query string hash, with a cachedAt timestamp for TTL enforcement; (4) metadata — key-value store for lastSyncAt, deviceId (a UUID generated on first install, used as the conflict tiebreaker), and quotaWarned (boolean).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">All reads from React components go through a custom React Query adapter that replaces the default fetch function with an IndexedDB read. For example, useQuery(&#123; queryKey: ["todos", userId], queryFn: () =&gt; db.entities.where(&#123; type: "todo", userId &#125;).toArray() &#125;). React Query's stale time is set to infinity for offline-first queries — the background sync updates IndexedDB directly, and the component re-renders via Dexie's live queries (useLiveQuery hook), not via React Query refetching.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Service Worker Fetch Interception</h3>
-        <HighlightBlock as="p" tier="important">The service worker intercepts every fetch request. Static assets (JS bundles, CSS, fonts, images) use Cache-first strategy: serve from Cache API if present, fall through to network and cache the response. API GET requests use stale-while-revalidate: check IndexedDB apiCache, serve the cached response immediately if present, then fetch from the network in the background and update the cache. If the network request fails (offline), the cached response is returned with no error. API mutating requests (POST/PUT/DELETE) — when online, pass through directly; when offline, intercept and return a synthetic 202 Accepted response to the page (so the UI's optimistic update is not rejected), while enqueuing the mutation in the syncQueue object store.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Network detection within the service worker uses navigator.onLine (a heuristic — it may report online when the network is actually unreachable). A more reliable check is to attempt a HEAD request to /api/health and treat any response (even 5xx) as "online" and a network error (TypeError: Failed to fetch) as "offline." This head-check is cached for 10 seconds to avoid spamming the server.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Sync Queue and Conflict Resolution</h3>
-        <HighlightBlock as="p" tier="important">The sync queue flusher runs when: (a) the browser tab fires the online event; (b) the Background Sync API fires the sync event (if supported — Chrome/Edge only as of 2024); (c) on page load if there are pending queue items. The flusher processes one item at a time (not in parallel) to preserve operation ordering: a DELETE that follows a POST to the same resource must not be reordered. Each mutation is sent to the server with an If-Match: "{`{localEntity.etag}`}" header (ETag of the version the client last saw). The server checks the ETag: if it matches the current server version, the mutation is applied and a new ETag is returned (200); if it does not match (another client modified the same record), the server returns 409 Conflict with the current server version in the response body.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">On 409 Conflict, the client applies a resolution strategy: (1) Last-write-wins: compare the local mutation's createdAt timestamp with the server version's updatedAt timestamp. If the local mutation is newer, PUT the local version to the server (overriding the server's change). If the server version is newer, discard the local mutation and update IndexedDB with the server version. This strategy is appropriate for non-collaborative data (a user's own settings, their own drafts). (2) CRDT merge for shared data structures: for arrays and sets, apply a two-phase set (2P-Set) — the union of the local additions-set and server additions-set, minus the union of both removal-sets. This ensures that concurrent deletions and additions are both preserved. (3) For unresolvable conflicts (structural incompatibility), the conflict is added to the metadata.conflictLog and a UI banner is shown: "Your changes conflict with recent updates from another device. Review and keep one version."</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Optimistic UI and Rollback</h3>
-        <HighlightBlock as="p" tier="crucial">Every write operation follows a three-step pattern: (1) Write to IndexedDB immediately (the mutation is applied locally in under 20ms, and the Dexie live query triggers a React re-render showing the new state); (2) Enqueue the mutation in the syncQueue; (3) Return success to the UI. From the user's perspective, the action is instantaneous — no waiting for a network round trip. If the sync queue flusher later receives an unrecoverable server error (400 Bad Request, 403 Forbidden — not transient 5xx or network errors), the optimistic update is rolled back: the original entity version is restored in IndexedDB from the syncQueue's stored pre-mutation snapshot, a toast notification explains what happened, and the failed mutation is moved to a failed-mutations log where the user can review and retry manually.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">For 5xx errors and network timeouts, the flusher retries with exponential backoff: 1s, 2s, 4s, 8s, 16s, up to a maximum of 30 minutes. After 10 failed retries (approximately 51 minutes of total backoff), the mutation is moved to the failed queue and the user is notified. This prevents indefinitely blocking the sync queue on a single stuck item — subsequent mutations for other resources proceed normally.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        {tradeoffs.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">IndexedDB vs. localStorage for the sync queue: localStorage is synchronous and has a 5MB limit — inadequate for storing large pending mutations or cached API responses. IndexedDB is asynchronous, has much larger quotas (typically 60% of available disk), and supports structured data. The trade-off: IndexedDB's async API adds complexity. Dexie.js mitigates this with promise-based queries, but the learning curve is steeper than localStorage. For applications where offline writes are rare (a read-heavy news app), localStorage for the queue and Cache API for assets may suffice.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Background Sync API availability: The Background Sync API is only available in Chromium-based browsers (Chrome, Edge, Samsung Internet). Firefox and Safari do not support it as of 2024. For non-Chromium browsers, sync must occur while the tab is open — relying on the online event and periodic polling (setInterval with a check for pending queue items). This means that on Safari, a user who goes offline, makes changes, and closes the browser tab before regaining connectivity will not have their changes synced until they open the app again. This is communicated to the user via a persistent "N changes pending sync" indicator in the app header.</HighlightBlock>
+        <h2>Best practices</h2>
+        {practices.map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">An offline-first system for poor networks is built on four foundations: (1) IndexedDB as the local source of truth (entities, syncQueue, apiCache, metadata stores via Dexie.js), with all React reads going through live queries that bypass network entirely; (2) service worker fetch interception (Cache-first for assets, stale-while-revalidate for API GETs, synthetic 202 + sync queue for offline mutations); (3) sync queue flusher (serial processing to preserve order, ETag-based conflict detection, last-write-wins or CRDT merge resolution, exponential backoff for transient errors, user-visible conflict log for unresolvable cases); and (4) optimistic UI with rollback (local IndexedDB write + re-render in &lt;20ms, rollback on permanent server error with user notification). The defining insight: the network is optional plumbing, not a required dependency — every read and write path must have a complete offline implementation before the network path is added on top.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        {pitfalls.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        {useCases.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        {questions.map((item) => (
+          <div key={item.question} className="mb-6">
+            <h3 className="mb-2 text-lg font-semibold">{item.question}</h3>
+            <p>{item.answer}</p>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          {references.map((item) => (
+            <li key={item.href}>
+              <a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
     </ArticleLayout>
   );

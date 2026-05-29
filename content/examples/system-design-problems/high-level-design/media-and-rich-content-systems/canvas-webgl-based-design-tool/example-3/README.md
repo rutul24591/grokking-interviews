@@ -1,1 +1,5 @@
-# Design a canvas/WebGL-based design tool — Example 3
+# Canvas Webgl Based Design Tool - Example 3
+
+Concrete media content edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

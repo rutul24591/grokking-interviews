@@ -7,88 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-google-calendar-system",
-  title: "Design a Calendar System (like Google Calendar)",
-  description:
-    "Architecture for a Google Calendar-like system: event data model with RRULE recurrence stored once and expanded on query, EXDATE exception handling for single-occurrence edits, iCalendar .ics format for interoperability, CalDAV sync with server-side syncToken for delta updates, timezone-aware storage and rendering, shared calendar ACL with viewer/editor/owner roles, reminder pipeline with timezone-correct alarm delivery, conflict detection for overlapping events, and real-time push via WebSocket for collaborative editing.",
+  title: "Design a Google Calendar-like System",
+  description: "Principal-level scheduling and calendar system design covering availability, recurrence, time zones, resource holds, conflict detection, reminders, external sync, privacy, and observability.",
   category: "high-level-design",
   subcategory: "scheduling-calendar-systems",
   slug: "google-calendar-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "calendar", "recurrence", "rrule", "caldav", "icalendar", "sync", "timezone", "reminders"],
-  relatedTopics: ["meeting-scheduling-system", "resource-booking-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "calendar", "scheduling", "availability", "recurrence", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Google Calendar-like System is a coordination system where correctness depends on time, people, resources, notifications, permissions, and external calendar state. A principal-ready design treats a calendar system as a reservation and availability system, not just a date-picker UI.",
+  "The hard problems are ambiguous time zones, recurrence, conflict detection, temporary holds, invitation state, external synchronization, reminder delivery, privacy, and operational repair. Users lose trust quickly when a system double-books them or sends incorrect reminders.",
+  "The design should define authoritative state: event or reservation record, participant response, resource hold, recurrence rule, availability projection, notification state, and external sync cursor. Derived availability views and reminders can lag, but booking decisions need stronger protection.",
+  "Calendar systems also have social and organizational semantics. A meeting can be tentative, accepted, declined, private, delegated, recurring, moved, canceled, or externally owned. A resource can require approval, capacity constraints, check-in, or cleanup time.",
+  "A staff/principal answer should cover end-to-end creation, conflict checking, external sync, reminder delivery, cancellation, rollback, auditability, and how the system behaves when clocks, time zones, or provider integrations disagree."
+];
+const concepts = [
+  "The first concept is time normalization. Store canonical instants in UTC, preserve the user's intended local time zone, and use a real time zone database for daylight-saving transitions. Recurring events need local-time semantics, not only UTC arithmetic.",
+  "The second concept is reservation consistency. recurrence engine and availability service need atomic conflict checks for scarce resources or participant slots. Availability projections are useful, but final booking must revalidate authoritative state.",
+  "The third concept is recurrence expansion. Recurrence rules should be stored compactly and expanded over bounded windows. Expanding unbounded recurring meetings into physical rows creates storage and update problems.",
+  "The fourth concept is invitation workflow. Participants, resources, external guests, and approvers can each have independent state. The UI should not treat sent, delivered, accepted, tentative, declined, canceled, and failed as one status.",
+  "The fifth concept is external sync. External calendar APIs are eventually consistent and can fail, rate limit, reorder, or replay changes. Sync needs cursors, idempotency, conflict policy, and user-visible stale states.",
+  "The sixth concept is observability. Track booking conflict rate, hold expiry, reminder lag, sync error rate, recurrence expansion cost, timezone conversion errors, external provider latency, and user-visible stale availability."
+];
+const architecture = [
+  "The architecture contains event store, recurrence engine, availability service, notification worker, external sync. The write path creates or updates authoritative event/reservation state. The availability path builds read-optimized projections. The reminder path schedules notifications. The sync path reconciles external providers. The operations path repairs conflicts and failed notifications.",
+  "Creation should begin with intent and validation: actor permission, participant/resource scope, requested time range, recurrence rule, buffer time, capacity, and policy constraints. Before committing, the system revalidates conflicts against authoritative records, not only cached availability.",
+  "Temporary holds protect scarce slots during multi-step booking. A hold needs owner, resource, time range, TTL, idempotency key, and release semantics. Holds should expire automatically and be visible enough that users understand why a slot disappeared.",
+  "Recurrence should store a rule, exceptions, cancellations, and moved instances. Query APIs can expand bounded windows for display. Edits should distinguish this instance, this and following, or all instances.",
+  "Reminders and notifications should be driven by durable schedules. If a worker fails, reminders should be replayable without duplicate sends. Notification preferences and quiet hours must be respected.",
+  "External sync should be asynchronous and conflict-aware. Provider events may arrive late or out of order. The system should store sync cursor, provider version, last successful sync, and conflict resolution decision."
+];
+const tradeoffs = [
+  "Strong conflict checks protect users from double booking but add write latency and reduce availability during datastore issues. Cached availability improves browse performance but cannot be the final source of truth for booking.",
+  "Pessimistic holds reduce conflicts but can make popular slots appear unavailable because users abandon flows. Optimistic booking improves utilization but creates more failed confirmations. TTL-based holds are usually the middle ground.",
+  "Pre-expanding recurrence makes reads fast but creates huge update and deletion problems. On-demand bounded expansion is more flexible but needs efficient query windows and caching.",
+  "External calendar sync improves adoption but adds rate limits, provider-specific semantics, privacy concerns, and eventual consistency. The UI should show sync uncertainty instead of pretending all providers are instantly consistent.",
+  "Detailed reminders reduce no-shows but can become noisy or leak private event details. Notification payloads should respect event privacy, participant visibility, and channel preferences.",
+  "Audit history helps support resolve disputes but stores sensitive calendar metadata. Retention, redaction, and access control are part of the design."
+];
+const practices = [
+  "Use a proven recurrence and timezone model. Do not implement daylight-saving rules by hand. Preserve local-time intent for recurring events.",
+  "Make final booking server-authoritative. Cached availability, client-side calendars, and external free/busy results are hints until revalidated.",
+  "Use idempotency for create, update, cancel, RSVP, hold, reminder, and sync operations. Calendars are retry-heavy because clients and providers reconnect frequently.",
+  "Separate event truth from projections: availability grids, notification schedules, search indexes, and external sync state should be rebuildable.",
+  "Design explicit lifecycle states: proposed, held, confirmed, tentative, declined, canceled, expired, failed sync, failed reminder, and requires approval.",
+  "Instrument provider-specific sync and reminder behavior. External API outages should not look like product bugs without context.",
+  "Build repair tools for conflicting bookings, stuck holds, failed reminders, bad recurrence edits, and provider sync divergence."
+];
+const pitfalls = [
+  "timezone bugs is the classic calendar failure. It happens when systems treat a local recurring meeting as fixed UTC or ignore daylight-saving transitions.",
+  "recurrence explosion occurs when recurrence is expanded without bounds or when edits to one instance mutate the wrong set of future events.",
+  "stale invitations undermines trust because participants act on stale invite state. The UI should distinguish local state from externally synced state.",
+  "sync loops shows that notifications are part of the product contract. Late, duplicate, or privacy-leaking reminders can be as damaging as a wrong booking.",
+  "Another pitfall is treating resource booking like ordinary CRUD. Scarce resources need conflict checks, holds, capacity rules, approvals, and operational repair.",
+  "Teams also forget privacy. Free/busy is not the same as full event detail, and private events should not leak through reminders, search, availability suggestions, or support tools."
+];
+const useCases = [
+  "personal calendar requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "team calendar requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "shared calendar with external guests requires reliable time semantics, conflict checking, participant/resource state, reminders, and sometimes external calendar reconciliation.",
+  "During external provider outage, the system should keep local bookings safe, mark external sync stale, retry with backoff, and avoid overwriting newer provider state blindly.",
+  "During a timezone rule change or daylight-saving bug, operators need to identify affected recurring events, replay expansion, notify impacted users, and preserve audit history.",
+  "During a high-demand booking window, the system should use holds, rate limits, queueing, and clear expiry messaging to avoid overselling scarce slots."
+];
+const questions = [
+  {
+    "question": "How would you design a calendar system end to end?",
+    "answer": "I would model authoritative event or reservation state, recurrence rules, participant/resource status, temporary holds, notification schedules, and external sync cursors. The UI reads availability projections but final booking revalidates against authoritative records. Workers handle reminders and external sync with idempotency and replay. Operations need repair tools for conflicts, stuck holds, failed reminders, and provider divergence."
+  },
+  {
+    "question": "Why this architecture over a simple events table?",
+    "answer": "A simple events table cannot model recurrence exceptions, temporary holds, RSVP state, resource conflicts, external sync, reminders, privacy, and repair workflows. The layered model adds complexity, but it separates authoritative booking from projections and asynchronous side effects."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are timezone bugs, recurrence explosion, stale invitations, sync loops, plus hot resource contention, provider rate limits, sync loops, reminder fanout, stale availability caches, and support disputes. Prevention requires server-authoritative conflict checks, bounded recurrence expansion, idempotency, sync cursors, and operational repair."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative bookings, holds, resource conflicts, cancellations, and permission changes need strong server-side consistency. Availability grids, search, reminders, and external sync can be eventually consistent if they expose freshness and reconcile safely. Cached free/busy should never be the final booking decision."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "Failures are handled through hold expiry, idempotent retries, reminder replay, sync backoff, and repair tools. Rollback uses event version history and provider reconciliation. Privacy requires free/busy controls and redacted notifications. Cost is controlled through bounded recurrence expansion, cached availability windows, and batched reminders. Observability tracks conflicts, sync lag, reminder lag, stale availability, and provider errors."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend server-authoritative final booking because double booking is worse than slight latency. I would defend cached availability for browsing because it improves UX, but only as a hint. I would use TTL holds to balance utilization and conflict prevention. I would also explain why recurrence and time zones require established standards rather than ad hoc logic."
+  }
+];
+const references = [
+  {
+    "label": "RFC 5545 iCalendar specification",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5545"
+  },
+  {
+    "label": "Google Calendar API concepts",
+    "href": "https://developers.google.com/calendar/api/concepts"
+  },
+  {
+    "label": "Microsoft Graph calendar API",
+    "href": "https://learn.microsoft.com/en-us/graph/api/resources/calendar"
+  },
+  {
+    "label": "IANA time zone database",
+    "href": "https://www.iana.org/time-zones"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function GoogleCalendarSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A calendar system must reliably store, query, and synchronize events across billions of users and their multiple devices. The two hardest problems are recurrence and timezones. Recurrence: a recurring event ("every Tuesday at 9am") should not require storing thousands of individual event rows — it should be stored once as a rule and expanded on demand. But users need to edit single occurrences ("move just this Tuesday's meeting"), which creates exceptions. Timezones: a "9am meeting" should appear at 9am in the user's current timezone, even when they travel — but the event must survive DST transitions without moving to a different wall-clock time.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Synchronization is the third major challenge. A calendar must stay consistent across a user's phone, tablet, laptop, and a shared calendar visible to colleagues — in real time. The system must handle offline edits (the user edits their calendar on a plane), merge conflicts (two users edit the same shared event simultaneously), and deletions (an event deleted on one device must disappear on all devices).</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Event CRUD with recurrence, range queries, CalDAV/iCal sync, shared calendars with ACL, reminders, and timezone handling. Not in scope: meeting scheduling (finding mutual free time — that is a separate article), resource booking, or video conferencing integration.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/google-calendar-system.svg" alt="Design a Google Calendar-like System architecture" caption="Architecture view: authoritative event or reservation state, availability projections, reminders, and external sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/google-calendar-system-flow.svg" alt="Design a Google Calendar-like System flow" caption="Flow view: proposal, hold, conflict check, confirmation, reminder, cancellation, and external reconciliation." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/google-calendar-system-operations.svg" alt="Design a Google Calendar-like System operations" caption="Operations view: timezone issues, stuck holds, recurrence repair, sync lag, reminder lag, and privacy controls." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Event data model and recurrence:</strong> Each event is stored as a master event row with fields: eventId, calendarId, title, description, location, startTime (UTC), endTime (UTC), startTimezone (IANA timezone string, e.g., "America/New_York"), rrule (RFC 5545 recurrence rule string, null for one-time events), exdates (array of excluded UTC datetimes for single-occurrence deletions), status (confirmed/tentative/cancelled), updated_at (for sync). The RRULE is stored as a string: "FREQ=WEEKLY;BYDAY=TU;COUNT=52" represents "every Tuesday for 52 weeks." Occurrences are never pre-materialized into the database — they are computed on read by expanding the RRULE within the requested date range. This keeps storage O(1) per recurring series regardless of how many occurrences it has.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Recurrence exception handling:</strong> When a user edits a single occurrence of a recurring event ("move just this Tuesday's meeting to 10am"), the system creates a new one-off event row with originalEventId pointing to the master, and overrideDate set to the specific occurrence date being replaced. The master event's exdates array gets the original occurrence's UTC datetime appended (so the master stops generating that occurrence). When querying a date range, the server: (1) expands the master RRULE within the range; (2) removes exdates from the expansion; (3) fetches override events in the range; (4) merges and returns. This three-step merge is performed in the API layer, not in SQL.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Range query and caching:</strong> The calendar UI requests events for a visible date range (e.g., the current week view: GET /events?calendarId=X&amp;start=2026-05-11&amp;end=2026-05-17). The query fetches: all one-time events within the range (simple date range SQL), all recurring master events whose RRULE might produce occurrences in the range (requires checking RRULE DTSTART and UNTIL/COUNT), and all override events in the range. RRULE expansion happens in the API server (not in the database). Results are cached in Redis per user per week: key = userId:calendarId:week:2026-W20, TTL = 5 minutes. Cache invalidation: any mutation to a calendar's events publishes an invalidation event to a Kafka topic, which the cache layer subscribes to and deletes the affected week keys.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Shared calendars and ACL:</strong> A calendar has an access control list (ACL) with entries: &#123;userId, role&#125; where role is one of viewer (can see events), editor (can create/edit/delete events), or owner (can manage ACL and delete the calendar). Free/busy visibility: a viewer who should not see event details can still see "busy" blocks without titles. ACL checks happen on every event mutation — the API verifies the requesting user has at minimum editor role on the target calendar. Shared calendar events are stored in the calendar owner's calendar namespace; the shared user subscribes to the calendar (stored in a calendar_subscriptions table: &#123;subscriberId, calendarId&#125;). The subscriber's query fetches events from all subscribed calendars and merges them.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>iCalendar / CalDAV synchronization:</strong> CalDAV is the standard protocol for calendar synchronization used by Apple Calendar, Outlook, and Thunderbird. The server implements: PROPFIND (list user's calendars with their properties), REPORT with a calendar-query filter (fetch events in a date range), and REPORT with sync-collection (delta sync: "give me everything changed since syncToken X"). The syncToken is a monotonically increasing counter per calendar (stored in the calendar row). When any event in the calendar is mutated, the calendar's syncToken increments. The sync-collection REPORT returns all events with updated_at greater than the timestamp corresponding to the provided syncToken, plus a new syncToken. The client stores the new syncToken and sends it on the next sync request.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Timezone correctness:</strong> Events are stored in UTC plus an IANA timezone string ("America/New_York"). The timezone string is stored separately from the UTC time because DST rules change (governments change DST rules), and the stored UTC time would become wrong if re-derived from a UTC offset. Storing the IANA identifier allows re-computing the correct UTC time if DST rules change for that timezone. All-day events are stored as date-only (no time component, no timezone). For recurring events, each occurrence's local time is computed by: (1) taking the DTSTART local time from the RRULE; (2) converting to UTC using the stored IANA timezone for that specific occurrence date (DST-aware). A weekly recurring meeting at 9am in "America/New_York" will have different UTC times for occurrences in winter (EST, UTC-5) vs. summer (EDT, UTC-4), which is correct — the user expects it at 9am local time regardless of DST.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Scale:</strong> Google Calendar serves ~500M users. Event table: sharded by calendarId (users own multiple calendars; each calendar's events are co-located). Secondary index on (calendarId, startTime) for range queries. The recurring RRULE expansion adds CPU cost at query time — mitigated by the per-week Redis cache and by limiting RRULE expansion to at most 1 year ahead (events beyond 1 year are not expanded until the query window reaches them). Write throughput: event mutations are low-frequency (a few per user per day) but must be globally consistent — Google Calendar uses Spanner for multi-region consistency with the recurring event master.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Conflict handling:</strong> Two users simultaneously editing the same shared event (e.g., two editors of a team calendar both try to update the same event's time) creates a conflict. Resolution: last-write-wins based on updated_at timestamp. The losing write is rejected with a 409 Conflict response containing the current server state. The client UI shows a conflict dialog: "Someone else updated this event while you were editing. Here is the latest version — your changes have been discarded." For high-contention shared calendars (a team calendar with many active editors), optimistic locking via ETag headers is used: the client sends an If-Match header with the event's current ETag (hash of the event content), and the server rejects the update with 412 if the ETag no longer matches.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Reminder delivery:</strong> Reminders are user-configurable per event (e.g., "notify me 15 minutes before" or "notify me 1 day before"). Reminders are stored as an array in the event row: &#123;method: "popup"/"email", minutes: 15&#125;. A reminder worker job runs every minute and queries: events starting within the next 16 minutes (a 1-minute buffer to account for job execution delay) that have a 15-minute reminder and have not yet been notified. The reminder worker is timezone-aware: it converts the event start time to the user's local timezone and checks that the alarm should fire now (accounting for DST). Reminders are delivered via push notification (for popup) or email. Duplicate protection: a reminder_sent flag is set on the reminder entry after delivery, preventing re-delivery on the next job run.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The calendar backend has three layers: the API layer (handles CRUD, RRULE expansion, ACL checks), the sync layer (CalDAV server, WebSocket push for real-time updates), and the storage layer (Spanner/PostgreSQL for events, Redis for expanded event cache and sync state). The API layer is stateless and horizontally scalable. The sync layer maintains WebSocket connections per user session — connection state is stored in Redis (which pod holds the connection for a given userId, used for targeted push when an event is mutated by another user or device).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Real-time push: when user A edits an event on the shared calendar, the mutation is written to the database. A Kafka consumer reads the mutation event, looks up all subscribers of that calendar in the calendar_subscriptions table, and pushes an invalidation notification to each subscriber's WebSocket connection (via the Redis connection registry). The subscriber's client re-fetches the affected week's events from the API (invalidating the Redis cache first). This gives near-real-time updates without polling.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/scheduling-calendar-systems/google-calendar-system.svg"
-          alt="Google Calendar system: Client POST event with RRULE stored once on master; GET range query expands RRULE in API layer, merges EXDATE exceptions and overrides, cached per-week in Redis; CalDAV REPORT with syncToken for delta sync; .ics invite email with RSVP link; reminder cron 15min before in user TZ."
-          caption="RRULE stored once, expanded on query (never materialized); 3-step merge: expand RRULE, remove EXDATE, overlay overrides; CalDAV syncToken delta sync; timezone stored as IANA string for DST-correctness; last-write-wins conflict with ETag"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">RRULE Expansion Algorithm</h3>
-        <HighlightBlock as="p" tier="important">The RFC 5545 RRULE format describes recurrence rules: FREQ (DAILY/WEEKLY/MONTHLY/YEARLY), INTERVAL (every N periods), BYDAY (days of week), BYMONTHDAY, COUNT (total occurrences), UNTIL (end date). Expanding an RRULE for a date range requires: (1) parse the RRULE string; (2) generate all occurrences from DTSTART forward; (3) stop when the occurrence falls outside the requested range end or COUNT/UNTIL is reached; (4) skip occurrences in the event's EXDATE list. Libraries like rrule.js (JavaScript) or python-dateutil handle this. The expansion must be timezone-aware — "every Monday at 9am America/New_York" generates different UTC timestamps for winter vs. summer Mondays. Cap: never expand more than 730 occurrences (2 years) in one request, to prevent RRULE expansion from becoming a denial-of-service vector for rules like FREQ=MINUTELY without a COUNT limit.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Editing "this and following" occurrences: when a user edits from occurrence N onward, the system adds UNTIL=N-1 to the master event's RRULE (truncating it before occurrence N) and creates a new master event starting at occurrence N with the new properties. This creates a natural series split. The new master has a dtStart = the specific occurrence N datetime and its own RRULE for the tail of the series. All override events for occurrences &gt;= N that referenced the old master must be re-parented to the new master — a O(k) operation where k is the number of exceptions in the tail.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">CalDAV Sync Protocol</h3>
-        <HighlightBlock as="p" tier="important">CalDAV sync uses the sync-collection REPORT defined in RFC 6578. The sync flow: client sends REPORT request with the last known syncToken (or empty for initial sync). Server responds with: the list of event URLs that changed since the syncToken (added/modified events with their iCalendar data, deleted events with just their URL), and the new syncToken. Client applies the delta: add/update the added/modified events in local storage, delete the removed events. Store the new syncToken. The syncToken is a monotonically increasing 64-bit integer stored per calendar. It increments on every write to that calendar (any event CRUD). Token rollover: the server retains event change history for at least 30 days. If the client's syncToken is older than 30 days, the server returns a 403 with a "sync token expired" error, forcing the client to do a full resync.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Free/Busy and Scheduling Assistant</h3>
-        <HighlightBlock as="p" tier="important">Free/busy information is needed for scheduling meetings (the scheduling assistant shows when all invitees are free). The free/busy API: POST /freeBusy with a list of calendarIds and a time range. For each calendar, return the list of busy intervals (start/end in UTC). The response omits event titles for calendars where the requestor has only free/busy visibility. The free/busy computation: query all events in the time range for the requested calendars (expanding recurrences), return the union of their time intervals as "busy." This is cache-friendly: the same free/busy data is requested by every scheduling assistant query for a given set of users, so it is cached per (calendarId, dateRange) in Redis with a 1-minute TTL.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">All-day events and multi-day events: all-day events are stored as dates (not datetimes) and span midnight-to-midnight in the event's timezone. They appear as "busy" for the entire day in free/busy queries but are rendered differently in the calendar grid (as full-day banners rather than time-block cards). Multi-day events (e.g., a vacation spanning 5 days) are stored as a single event with startDate and endDate (inclusive) and rendered as a spanning banner across multiple days in the calendar UI.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Materializing vs. expanding on query: pre-materializing all recurrence occurrences (storing each Tuesday's meeting as a separate row) would make range queries simple (a single date range SQL scan with no RRULE expansion). But it creates O(N×occurrences) rows — a "every day forever" event would require infinite rows. It also makes editing the master (e.g., changing a recurring event's title) an O(N) update across all occurrence rows. Expanding on query avoids both problems at the cost of CPU at query time, which the Redis week-level cache handles. The hybrid approach used by some systems: materialize the next 3 months of occurrences, and expand further occurrences on demand. This reduces cache misses for recent events but adds complexity in keeping the materialized rows consistent with master edits.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Timezone storage: storing events in UTC + IANA timezone is the correct approach but adds complexity. An alternative — storing events purely in local time with a UTC offset — is simple but breaks across DST transitions. A meeting stored as "2026-03-07 09:00 UTC-5" (winter EST) would appear at 8am after DST spring-forward (because UTC-5 is now EDT UTC-4 for New York), which is wrong. The IANA string approach handles this correctly because the timezone library knows that "America/New_York" in March 2026 is UTC-4, not UTC-5.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A Google Calendar-like system requires: (1) event model with RRULE stored once on master + EXDATE array for excluded occurrences + override events for single-occurrence edits; (2) RRULE expansion at query time in the API layer (not in SQL), capped at 730 occurrences, cached per user per week in Redis (5-minute TTL); (3) 3-step range query merge: expand RRULE, remove EXDATEs, overlay overrides; (4) timezone storage as IANA string (not UTC offset) for DST-correctness; (5) CalDAV REPORT sync-collection with monotonically-increasing syncToken, 30-day change history retention; (6) shared calendar ACL (viewer/editor/owner), free/busy visibility tier; (7) real-time push via WebSocket + Redis connection registry for collaborative edits; (8) conflict resolution: last-write-wins by updated_at with ETag optimistic locking for high-contention shared calendars; (9) reminder worker querying events starting in next 16 minutes, timezone-aware alarm time, reminder_sent flag for dedup; (10) "this and following" edit splits the RRULE series with UNTIL on the old master and a new master for the tail.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

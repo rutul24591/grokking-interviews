@@ -1,61 +1,90 @@
-/**
- * Button System — Staff-Level Polymorphic Component Design.
- *
- * Staff differentiator: Type-safe polymorphic "as" prop with proper ref forwarding,
- * intersection types for custom element props, and compile-time validation
- * of invalid prop combinations.
- */
+export type reusableButtonSystemRuntimeState = {
+  topic: "reusable-button-system";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
+};
 
-import { forwardRef, ElementType, ComponentPropsWithRef, useRef } from 'react';
+export type reusableButtonSystemRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-/**
- * Props for the polymorphic Button component.
- * Uses intersection types to combine button-specific props with the props
- * of the element specified by the "as" prop.
- */
-type ButtonProps<C extends ElementType> = {
-  as?: C;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'link';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  isLoading?: boolean;
-  loadingText?: string;
-} & Omit<ComponentPropsWithRef<C>, 'as' | 'variant' | 'size' | 'isLoading' | 'loadingText'>;
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
+}
 
-/**
- * Polymorphic Button component with type-safe "as" prop.
- *
- * Usage:
- *   <Button>Click</Button>                    // renders as <button>
- *   <Button as={Link} href="/about">About</Button>  // renders as <a>
- *   <Button as="div" role="button">Div button</Button>  // renders as <div>
- */
-export const Button = forwardRef(
-  <C extends ElementType = 'button'>(
-    { as, variant = 'primary', size = 'md', isLoading, loadingText, children, ...rest }: ButtonProps<C>,
-    ref: React.Ref<Element>,
-  ) => {
-    const Component = as || 'button';
-    const internalRef = useRef<HTMLElement>(null);
+export function planReusableButtonSystemRecovery(
+  state: reusableButtonSystemRuntimeState,
+  nowMs: number,
+): reusableButtonSystemRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: reusableButtonSystemRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
 
-    // Merge refs
-    const mergedRef = ref || internalRef;
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
 
-    return (
-      <Component
-        ref={mergedRef as any}
-        disabled={isLoading || (rest as any).disabled}
-        aria-busy={isLoading}
-        {...rest}
-      >
-        {isLoading ? (
-          <>
-            <span className="sr-only">{loadingText || 'Loading'}</span>
-            <span aria-hidden="true">{loadingText || 'Loading...'}</span>
-          </>
-        ) : (
-          children
-        )}
-      </Component>
-    );
-  },
-) as <C extends ElementType = 'button'>(props: ButtonProps<C> & { ref?: React.Ref<Element> }) => React.ReactElement;
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
+
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runReusableButtonSystemEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planReusableButtonSystemRecovery(
+    {
+      topic: "reusable-button-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planReusableButtonSystemRecovery(
+    {
+      topic: "reusable-button-system",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
+  return {
+    topic: "Reusable Button System",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
+  };
+}

@@ -1,73 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="CI and release readiness dashboard model showing entity pages, failing owners, flakiness, retries, and gated release decisions">
-  <title>CI and Release Readiness View</title>
-  <desc>Shows how CI outcomes are summarized into actions: owner routing, flakiness signals, safe retries, and auditable release gates.</desc>
-  <style>
-    .bg{fill:#ffffff}
-    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
-    .muted{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:14}
-    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
-    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
-    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
-    .bad{fill:#fef2f2;stroke:#dc2626;stroke-width:2;rx:14}
-    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
-    .dash{stroke-dasharray:7 6}
-    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
-    .small{font-size:14px;fill:#334155}
-    .bold{font-weight:700}
-    @media (prefers-color-scheme: dark){
-      .bg{fill:#0b1220}
-      .box{fill:#0f172a;stroke:#e5e7eb}
-      .muted{fill:#0b1220;stroke:#64748b}
-      .accent{fill:#0b1b3a;stroke:#60a5fa}
-      .good{fill:#052018;stroke:#34d399}
-      .warn{fill:#2a1606;stroke:#fb923c}
-      .bad{fill:#2a0f12;stroke:#f87171}
-      .arrow{stroke:#e5e7eb}
-      .label{fill:#e5e7eb}
-      .small{fill:#cbd5e1}
-    }
-  </style>
-  <rect class="bg" x="0" y="0" width="1200" height="640"/>
-
-  <text class="label bold" x="60" y="70">Turn CI data into decisions</text>
-
-  <rect class="accent" x="60" y="110" width="360" height="140"/>
-  <text class="label bold" x="90" y="150">Entity page</text>
-  <text class="label small" x="90" y="178">package or app</text>
-  <text class="label small" x="90" y="202">owners and criticality</text>
-  <text class="label small" x="90" y="226">latest change context</text>
-
-  <rect class="bad" x="450" y="110" width="330" height="140"/>
-  <text class="label bold" x="480" y="150">Failures</text>
-  <text class="label small" x="480" y="178">tests and builds failing</text>
-  <text class="label small" x="480" y="202">route to owner teams</text>
-  <text class="label small" x="480" y="226">error fingerprinting</text>
-
-  <rect class="warn" x="810" y="110" width="330" height="140"/>
-  <text class="label bold" x="840" y="150">Flakiness</text>
-  <text class="label small" x="840" y="178">retry history</text>
-  <text class="label small" x="840" y="202">quarantine signals</text>
-  <text class="label small" x="840" y="226">confidence score</text>
-
-  <rect class="good" x="60" y="290" width="520" height="150"/>
-  <text class="label bold" x="90" y="330">Safe actions</text>
-  <text class="label small" x="90" y="360">bounded retries with audit</text>
-  <text class="label small" x="90" y="385">rerun only impacted checks</text>
-  <text class="label small" x="90" y="410">link to failing owners</text>
-
-  <rect class="muted" x="620" y="290" width="520" height="150"/>
-  <text class="label bold" x="650" y="330">Release gate</text>
-  <text class="label small" x="650" y="360">policy checks and approvals</text>
-  <text class="label small" x="650" y="385">freshness and confidence required</text>
-  <text class="label small" x="650" y="410">override with audit trail</text>
-
-  <rect class="box" x="60" y="470" width="1080" height="140"/>
-  <text class="label bold" x="90" y="510">Trade-off</text>
-  <text class="label small" x="90" y="540">More gates reduce incidents but slow releases; make safe defaults easy and risky overrides explicit and auditable.</text>
-
-  <path class="arrow" d="M420 180 L450 180"/>
-  <path class="arrow" d="M780 180 L810 180"/>
-  <path class="arrow dash" d="M615 250 L615 290"/>
-  <path class="arrow dash" d="M900 250 L900 290"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Multi App Monorepo Management Dashboard Ci Release View: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Multi App Monorepo Management Dashboard Ci Release View: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">SDK</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">platform sdk infra systems</text>
+  <path d="M480 286 C524 315.4448637286709, 560 389.92304845413264, 595 399" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="595" cy="399" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="595" y="404" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">gateway</text><path d="M480 286 C436 315.4448637286709, 400 389.92304845413264, 348 414" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="348" cy="414" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="348" y="419" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">token</text><path d="M480 286 C392 286, 320 286, 250 286" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="250" cy="286" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="250" y="291" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">version</text><path d="M480 286 C435.99999999999994 256.5551362713291, 399.99999999999994 182.0769515458674, 348 173" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="348" cy="173" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="348" y="178" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">tenant</text><path d="M480 286 C524 256.5551362713291, 560 182.07695154586736, 595 158" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="595" cy="158" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="595" y="163" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">quota</text><path d="M480 286 C568 286, 640 285.99999999999994, 744 286" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="744" cy="286" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="744" y="291" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">trace</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>
-

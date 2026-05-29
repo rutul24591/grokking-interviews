@@ -1,49 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Personalized homepage feed system architecture">
-  <defs>
-    <style>
-      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
-      .muted { fill: #334155; }
-      .h { font-weight: 700; }
-      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
-      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
-      .arrow { fill: #64748b; }
-      @media (prefers-color-scheme: dark) {
-        .t { fill: #e5e7eb; }
-        .muted { fill: #cbd5e1; }
-        .box { fill: #0b1220; stroke: #334155; }
-        .line { stroke: #94a3b8; }
-        .arrow { fill: #94a3b8; }
-      }
-    </style>
-  </defs>
-  <text class="t h" x="40" y="54" font-size="22">Personalized Homepage: Module Plan + Ranked Candidates</text>
-  <text class="t muted" x="40" y="78" font-size="13">Progressive loading with fallbacks keeps latency predictable</text>
-
-  <rect class="box" x="40" y="150" width="280" height="300" rx="14"/>
-  <text class="t h" x="60" y="180" font-size="16">Client</text>
-  <text class="t muted" x="60" y="210" font-size="12">Module orchestrator</text>
-  <text class="t muted" x="60" y="232" font-size="12">Priority loading + caching</text>
-  <text class="t muted" x="60" y="254" font-size="12">Fallback modules on slow deps</text>
-
-  <rect class="box" x="360" y="150" width="260" height="140" rx="14"/>
-  <text class="t h" x="380" y="180" font-size="16">Personalization Orchestrator</text>
-  <text class="t muted" x="380" y="210" font-size="12">Module plan + snapshot token</text>
-
-  <rect class="box" x="360" y="310" width="260" height="140" rx="14"/>
-  <text class="t h" x="380" y="340" font-size="16">Module Services</text>
-  <text class="t muted" x="380" y="370" font-size="12">Recommendations, continue, trending</text>
-
-  <rect class="box" x="660" y="150" width="260" height="140" rx="14"/>
-  <text class="t h" x="680" y="180" font-size="16">Experiments</text>
-  <text class="t muted" x="680" y="210" font-size="12">Variant assignment + tagging</text>
-
-  <rect class="box" x="660" y="310" width="260" height="140" rx="14"/>
-  <text class="t h" x="680" y="340" font-size="16">Analytics</text>
-  <text class="t muted" x="680" y="370" font-size="12">Module latency + engagement</text>
-
-  <path class="line" d="M320 300 L350 300" />
-  <polygon class="arrow" points="350,300 342,296 342,304"/>
-  <path class="line" d="M620 220 L650 220" />
-  <polygon class="arrow" points="650,220 642,216 642,224"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Personalized Homepage Feed System Architecture: pressure surface</title>
+  <desc id="desc">Non-linear core product systems trade-off view.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Personalized Homepage Feed System Architecture: pressure surface</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Non-linear core product systems trade-off view.</text>
+  <rect x="68" y="122" width="824" height="332" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M120 370 C220 246, 338 414, 456 278 S666 168, 840 246" fill="none" stroke="#2563eb" stroke-width="4"/><path d="M120 420 C264 384, 360 318, 508 382 S710 444, 840 326" fill="none" stroke="#16a34a" stroke-width="4"/><path d="M120 304 C248 198, 386 232, 516 206 S724 156, 840 178" fill="none" stroke="#d97706" stroke-width="3" stroke-dasharray="8 8"/>
+  <rect x="126" y="150" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="190" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">client</text><rect x="310" y="150" width="128" height="30" rx="15" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.4"/><text x="374" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">state</text><rect x="494" y="150" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="558" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">service</text><rect x="678" y="150" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="742" y="170" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">cache</text>
+  <path d="M168 356 l25 -40 l25 40 l-25 40 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="193" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">risk</text><path d="M342 356 l25 -40 l25 40 l-25 40 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="367" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">SLO</text><path d="M516 356 l25 -40 l25 40 l-25 40 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="541" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">audit</text><path d="M690 356 l25 -40 l25 40 l-25 40 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="715" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">recover</text>
+  <text x="500" y="494" text-anchor="middle" fill="#be123c" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">optimized path, degraded path, and governance path are intentionally separate</text>
 </svg>
-

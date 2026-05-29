@@ -7,92 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-content-moderation-reporting-ui",
-  title: "Design a Content Moderation & Reporting UI",
-  description:
-    "Architecture for a content moderation and reporting UI: user-facing report flow (multi-step reason selection, context capture), moderator review queue with priority scoring, appeal flow for removed content, automated pre-moderation pipeline with confidence thresholds, shadow-ban and soft-delete patterns, content strike system with escalation, moderator dashboard with batch operations, real-time queue depth monitoring, and audit trail for all moderation decisions.",
+  title: "Design a Content Moderation and Reporting UI",
+  description: "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery.",
   category: "high-level-design",
   subcategory: "social-engagement",
   slug: "content-moderation-reporting-ui",
-  wordCount: 5100,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "moderation", "reporting", "trust-safety", "review-queue", "shadow-ban", "appeals", "audit"],
-  relatedTopics: ["user-profile-follower-system", "viral-sharing-engagement"],
+  wordCount: 3400,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "social", "feed", "graph", "moderation", "ranking"],
+  relatedTopics: [],
 };
 
-export default function ContentModerationReportingUIArticle() {
+const definition = [
+  "Design a Content Moderation and Reporting UI is a social-scale product system where the visible UI is only the last projection of graph state, ranking policy, media delivery, privacy rules, abuse controls, and user intent. A principal-ready design starts by separating durable social facts from derived surfaces.",
+  "Durable facts include posts, follows, blocks, reports, shares, reactions, preferences, and moderation decisions. Derived surfaces include feeds, counters, notification groups, recommendations, summaries, search snippets, and ranking features. Derived surfaces can lag or be rebuilt; privacy and safety decisions must propagate quickly.",
+  "The goal is to design a content moderation and reporting UI so users see relevant, fresh, and safe social content without exposing private actors, losing user actions, or amplifying abuse. The design must address graph scale, hot users, projection lag, mobile constraints, ranking changes, and trust-and-safety intervention.",
+  "Social systems are adversarial. Engagement can be gamed, reports can be brigaded, spam can spread faster than review queues, and summaries can leak data that the main page hides. These are core architecture concerns, not policy details after launch.",
+  "A staff/principal answer should name ownership boundaries: product owns ranking and user controls, integrity owns abuse detection, platform owns graph and fanout primitives, media owns asset safety and delivery, and operations owns incidents, takedowns, and review tooling."
+];
+const concepts = [
+  "The first concept is graph-aware visibility. Every surface should call the same visibility policy for follow state, block state, private accounts, age restrictions, takedown state, regional policy, and viewer permissions. Inconsistency across feed, profile, notification, search, and share preview is a common privacy failure.",
+  "The second concept is projection architecture. report intake, policy taxonomy, and review queue are optimized for different read patterns. The design should not force every UI to join raw social tables at request time.",
+  "The third concept is hybrid fanout. Fanout-on-write makes ordinary feed reads fast but struggles with hot accounts. Fanout-on-read is flexible for ranking but expensive for every viewer. Mature systems combine precomputed home timelines, hot-author handling, cache windows, and online ranking.",
+  "The fourth concept is stable pagination and dedupe. Feeds and notification lists should use opaque cursors tied to a ranking window or event sequence. Offset pagination fails when new content arrives, content is removed, or ranking changes mid-scroll.",
+  "The fifth concept is integrity-aware ranking. Ranking should not blindly optimize clicks or shares. It should incorporate spam scores, report velocity, account reputation, block feedback, freshness, diversity, and policy constraints.",
+  "The sixth concept is observability. Track fanout backlog, projection lag, ranking experiment health, duplicate rate, scroll restoration failures, moderation queue age, privacy invalidation delay, counter drift, and abuse escalation."
+];
+const architecture = [
+  "The architecture has five cooperating planes: report intake, policy taxonomy, review queue, evidence store, appeal flow. The write plane records durable social facts and emits events. Projection workers build feed, profile, notification, counter, search, and analytics views. The read API serves surface-optimized projections. Integrity and moderation systems can remove or demote content quickly. The frontend renders stable cursors, pending actions, and recovery states.",
+  "Writes should be idempotent and policy-checked. Follow, like, share, report, mute, block, and post actions need actor authorization, target visibility, rate limit, abuse score, and durable event emission. If the client retries, the backend should converge on one logical action.",
+  "Projection workers should record source event sequence and policy version. This makes it possible to detect stale views and run fast invalidation when a block, takedown, private-account change, or legal removal occurs.",
+  "Read APIs should be purpose-built. A home feed API needs ranked windows and dedupe. A profile API needs ownership, pinned content, privacy, counters, and media summaries. A notification API needs grouping and read state. A moderation UI needs evidence, queue priority, audit, and reviewer-safe presentation.",
+  "The frontend should treat social actions as pending until acknowledged, but can use optimistic presentation for reversible low-risk actions. High-risk actions such as report submission, block changes, privacy changes, and account restriction need explicit confirmation and auditability.",
+  "Operationally, social systems need kill switches and throttles for sharing, recommendations, notification fanout, media autoplay, comment creation, and report intake. Viral failures happen faster than normal deployments can respond."
+];
+const tradeoffs = [
+  "Strong consistency for every counter and feed item is too expensive. Likes, follower counts, view counts, and notification grouping can be eventually consistent. Blocks, takedowns, private account visibility, and safety removals require fast invalidation and much stronger enforcement.",
+  "Personalized ranking improves engagement but reduces explainability and can amplify harmful content. Chronological ranking is simpler and predictable but often less relevant. A principal design supports ranking guardrails, user controls, experiment holdouts, and integrity scoring.",
+  "Fanout-on-write gives fast feed reads for ordinary accounts but creates write amplification for celebrities and viral posts. Fanout-on-read avoids massive writes but can increase read latency and backend load. Hybrid fanout is usually the defensible answer.",
+  "Grouping notifications reduces fatigue but can hide important context or leak private actor information. Group summaries must be recomputed or redacted after privacy changes, blocks, deleted accounts, and moderation actions.",
+  "Aggressive virality and sharing increase growth but also increase spam, fraud, harassment, and policy risk. Rate limits, reputation, link scanning, attribution validation, and circuit breakers are product architecture.",
+  "Moderation before distribution reduces harm but increases latency and false positives. Moderation after distribution improves speed but can allow rapid amplification. Risk-based gating by account reputation, media type, virality, and policy class is more nuanced."
+];
+const practices = [
+  "Centralize visibility policy and use it for every derived surface: feed, profile, search, notification, recommendation, share preview, email, push, and moderation queue.",
+  "Use opaque cursors and dedupe sets for feeds. Cursor state should include enough ranking-window context to avoid duplicates, gaps, and scroll jumps after refresh or new content insertion.",
+  "Track projection lag and invalidation latency as product SLOs. Privacy or safety invalidation should have a different urgency class from ordinary feed freshness.",
+  "Use idempotency keys for social actions and report submissions. Duplicate taps, mobile retries, and offline replay should not create duplicate follows, reports, shares, or notifications.",
+  "Build integrity and moderation tooling into the design. Reviewers need evidence, policy taxonomy, actor history, virality context, appeal state, and audit logs.",
+  "Plan for hot objects. Celebrity posts, viral shares, live events, controversial content, and spam waves need cache isolation, rate limits, backpressure, and sometimes manual controls.",
+  "Segment observability by surface, region, app version, ranking experiment, account class, and integrity bucket. Averages hide social failures because abuse and virality are highly skewed."
+];
+const pitfalls = [
+  "queue overload is a scale failure that appears suddenly. The design should define hot-key handling, fanout backpressure, cache windows, and degraded behavior before traffic arrives.",
+  "reviewer harm is usually caused by inconsistent policy enforcement across derived surfaces. Fixing the main UI is not enough if notifications, search, emails, or previews still expose restricted information.",
+  "evidence loss undermines user trust because social products feel personal. Users notice missing posts, duplicate cards, incorrect counters, and unexplained ranking shifts quickly.",
+  "policy inconsistency requires abuse-aware product design. Rate limits and classifiers help, but the system also needs support tooling, appeals, audit trails, and emergency controls.",
+  "Another pitfall is treating moderation as a back-office queue only. At scale, moderation changes feed eligibility, ranking, notification delivery, profile visibility, and search indexing.",
+  "Teams also underinvest in support reconstruction. When a user asks why they saw or did not see content, the system should expose ranking inputs, policy decisions, projection freshness, and moderation state at a safe level."
+];
+const useCases = [
+  "user report flow requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "trust and safety console requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "appeal center requires graph visibility, ranking or grouping policy, projection freshness, and abuse controls to work together rather than as separate features.",
+  "During a viral event, the system may need to reduce fanout, demote suspicious shares, disable some notification types, or route content to review without taking the whole social surface offline.",
+  "During a privacy incident, the fastest path is not a UI patch. The system needs invalidation across projections, deletion from caches, search removal, notification redaction, and auditability.",
+  "During an experiment rollout, teams should compare engagement lift against integrity metrics, report rate, block rate, hide rate, diversity, and long-term retention rather than only clicks."
+];
+const questions = [
+  {
+    "question": "How would you design a content moderation and reporting UI end to end?",
+    "answer": "I would separate durable social facts from derived projections. Writes go through policy, rate limits, idempotency, and event emission. Projection workers build feed, profile, notification, counter, search, and moderation views with source sequence and policy version. Read APIs serve surface-specific projections, and the frontend renders stable cursors, pending states, privacy-safe summaries, and recovery states. Integrity, moderation, observability, and kill switches are part of the core design."
+  },
+  {
+    "question": "Why this architecture over direct reads from source tables?",
+    "answer": "Direct reads are simpler but fail at social scale because every surface needs different ranking, grouping, dedupe, privacy, and freshness behavior. Projection APIs let each surface optimize reads while still enforcing shared visibility and invalidation policy. The cost is projection lag and operational complexity, which must be measured and reconciled."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are queue overload, reviewer harm, evidence loss, policy inconsistency, plus hot users, viral content, counter drift, notification storms, moderation backlog, and cache stampedes. Prevention requires hybrid fanout, ranked windows, idempotent actions, integrity scoring, projection-lag monitoring, and emergency throttles."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Most engagement surfaces are eventually consistent: feeds, counters, ranking order, grouped notifications, and analytics. Privacy, blocks, takedowns, account restrictions, and safety removals need fast invalidation and strong enforcement. The design should explicitly classify each state instead of claiming one consistency model for the whole product."
+  },
+  {
+    "question": "How do you handle abuse, privacy, rollback, cost, and observability?",
+    "answer": "Abuse is handled through rate limits, reputation, classifiers, graph anomaly detection, link scanning, and review workflows. Privacy is enforced through shared visibility policy and projection invalidation. Rollback uses ranking flags, fanout throttles, notification kill switches, and moderation overrides. Cost is controlled through hybrid fanout, caching, batch projections, and approximate counters. Observability tracks fanout backlog, projection lag, duplicate rate, report velocity, and invalidation latency."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would explain which parts need strong enforcement and which can be eventual. I would defend hybrid fanout because it balances read latency and write amplification. I would defend projection APIs because social surfaces need ranking and privacy semantics that raw tables cannot provide efficiently. I would also acknowledge the cost: projection lag, more operations, and the need for reconciliation tooling."
+  }
+];
+const references = [
+  {
+    "label": "Meta Engineering: TAO social graph storage",
+    "href": "https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/"
+  },
+  {
+    "label": "Twitter/X Engineering archive",
+    "href": "https://blog.x.com/engineering/en_us"
+  },
+  {
+    "label": "W3C ActivityPub recommendation",
+    "href": "https://www.w3.org/TR/activitypub/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST online safety and platform governance resources",
+    "href": "https://www.nist.gov/"
+  }
+];
+
+export default function ContentModerationReportingUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Content moderation is the trust-and-safety layer that protects a platform's users from harmful content (harassment, hate speech, CSAM, spam) and protects the platform from legal liability. It involves two actors: users who report content they find violating, and moderators (human or automated) who review reports and make enforcement decisions. The UI design challenge is different for each actor. For the reporting user, the flow must be low-friction enough that legitimate reporters complete the report, but structured enough to capture the violation category and context needed for efficient review. For the moderator, the interface must support high-throughput review (a moderator might review 200–500 items per shift) with enough context to make accurate, consistent decisions quickly.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Automated pre-moderation (ML models that scan content at upload time) adds a third layer: content that exceeds a confidence threshold for severe violations (CSAM, graphic violence) is automatically removed or quarantined before the moderator queue, while content in the "gray zone" (lower confidence, more nuanced violations) is sent to the human review queue with the model's prediction as a signal. The UI must expose these automated decisions through the appeal flow: a user whose post was auto-removed must have a path to challenge the decision and have a human review it.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> User report flow, moderator review queue, automated pre-moderation pipeline, appeal flow, and shadow-ban pattern. Not in scope: ML model training, legal hold procedures, or advertiser safety tools.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/content-moderation-reporting-ui.svg" alt="Design a Content Moderation and Reporting UI architecture" caption="Architecture view: graph writes, projections, ranking, privacy, integrity, and surface-specific reads." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/content-moderation-reporting-ui-flow.svg" alt="Design a Content Moderation and Reporting UI flow" caption="Flow view: user action, fanout or projection, ranking, notification, moderation, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/social-engagement/content-moderation-reporting-ui-operations.svg" alt="Design a Content Moderation and Reporting UI operations" caption="Operations view: fanout backlog, projection lag, privacy invalidation, abuse signals, and moderation controls." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>User report flow:</strong> Three-tap report flow: (1) select violation category (spam, harassment, hate speech, misinformation, nudity, violence, other), (2) select specific sub-category, (3) optionally add context (screenshot, description). Report submitted without disrupting the user's current activity (sheet modal, not full-page navigation). Confirmation that report was received.</li>
-          <li><strong>Moderator review queue:</strong> Prioritized list of reported items. Each item shows: content (text/image/video), reporter's stated reason, ML model prediction and confidence score, reporter's history (serial reporter vs. first-time), reportee's account history (new account, prior violations, verified status). Moderator actions: approve (no action), remove (soft-delete), escalate, shadow-ban user, issue content strike.</li>
-          <li><strong>Automated pre-moderation:</strong> Content scanned on upload. High-confidence violations (&gt;0.95 confidence) auto-removed. Medium-confidence (0.5–0.95) queued for human review with priority boost. Low-confidence (&lt;0.5) published normally but flagged for periodic review.</li>
-          <li><strong>Appeals:</strong> User whose content was removed sees a "This content was removed" notice on the post. "Appeal this decision" button opens a structured form. Submitted appeal enters a separate, expedited review queue. Moderator reviews the appeal with the original context + the user's appeal statement. Three outcomes: overturn (content restored), uphold (removal stands), escalate to senior moderator.</li>
-          <li><strong>Audit trail:</strong> Every moderation action (report received, item reviewed, decision made, appeal submitted, appeal resolved) is logged with timestamp, moderator ID, and decision rationale. Audit log is immutable and queryable for compliance purposes.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Report flow completion rate:</strong> &gt;80% of started reports are submitted (not abandoned mid-flow). Three steps maximum for common violation categories.</li>
-          <li><strong>Moderator throughput:</strong> UI must support 300 reviews per hour per moderator without performance degradation. Pre-loads next item while current decision is being submitted.</li>
-          <li><strong>Auto-moderation latency:</strong> High-confidence violations removed within 30 seconds of upload, before the content is indexed or discoverable.</li>
-          <li><strong>Appeal SLA:</strong> Appeal reviewed and resolved within 48 hours. Queue depth dashboard shows SLA breach risk in real time.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system has three layers. The User-Facing Layer provides the report sheet modal (triggered from the post overflow menu) and the appeal form (triggered from the removed-content notice). Both submit to the Reports API, which writes to the reports database and publishes events to Kafka. The Triage Layer has two components: an ML classifier that scores all incoming content on upload (publishing ModerationSignal events to Kafka) and a Priority Scorer that combines report signals, ML signals, account signals, and content age to assign a priority score to each queue item. The Moderator Layer is a SPA dashboard that presents the prioritized queue, provides review context and action controls, and writes decisions to the decisions database with full audit logging.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/social-engagement/content-moderation-reporting-ui.svg"
-          alt="Content moderation and reporting system architecture showing user report flow (3-step sheet modal: category → sub-category → context; POST /api/reports {contentId type subType description}; confirmation toast; does not navigate away), automated pre-moderation pipeline (content upload → ML classifier: confidence score; &gt;0.95 auto-remove + shadow soft-delete; 0.5-0.95 → moderation queue with URGENT priority + model prediction badge; &lt;0.5 publish normal; latency: &lt;30s from upload), priority scoring queue (queue item score = ml_confidence*0.4 + reporter_history*0.2 + account_risk*0.2 + content_reach*0.2; sorted set Redis queue:moderation by score; moderator dashboard: GET /api/mod/queue?limit=1 O(1) from sorted set), moderator review UI (item: content render + metadata + reporter context + ML score badge + prior violations badge; actions: approve remove shadow-ban escalate strike; keyboard shortcuts: A/R/S/E; next item pre-fetched while submitting decision; batch select for obvious spam), decision recording (POST /api/mod/decisions {itemId action rationale moderatorId}; write decisions table; if remove: soft-delete content visibility=HIDDEN; PUBLISH content.removed Kafka; user notified; strike count incremented), shadow-ban pattern (SET shadow:{userId}=true TTL 30d; content visible to owner but excluded from: public feed search discovery followers; gradual enforcement detects evasion; logged in moderation_actions), appeals flow (removed content: show notice + Appeal button; POST /api/appeals {contentId reason statement}; URGENT queue separate from main; GET /api/mod/appeals?limit=1; overturn → visibility=PUBLIC + notify; uphold → notify; escalate → senior queue; 48h SLA), audit log (append-only moderation_log table: id timestamp action moderatorId contentId userId reason; read via compliance API never deleted; indexed on contentId userId timestamp)."
-          caption="User report 3-step sheet modal, ML pre-moderation (&gt;0.95 auto-remove, &lt;30s), Redis sorted-set priority queue (combined ml+reporter+account score), moderator review UI (keyboard shortcuts, next-item prefetch, batch ops), shadow-ban (SET shadow:{userId} TTL), appeals expedited queue (48h SLA), and immutable audit log"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">User Report Flow Design</h3>
-        <HighlightBlock as="p" tier="important">The report flow is triggered from the "..." (overflow) menu on any post or comment. It opens as a bottom sheet modal on mobile (not a full-page navigation) so the user doesn't lose their place in the feed. Step 1: select violation category. The categories are presented as a large-touch-target list with icons: Spam, Harassment or bullying, Hate speech, False information, Nudity or sexual content, Violence or dangerous content, Intellectual property, Something else. Step 2: select sub-category (e.g., for "Harassment or bullying": bullying, threats, unwanted contact, impersonation). Sub-categories are specific enough to route reports to the correct moderation team. Step 3 (optional): free-text context and ability to attach a screenshot. A "Submit Report" button completes the flow. On submission, the sheet closes and a toast confirmation appears: "Your report has been submitted. We'll review it shortly." The user is never told the outcome of specific reports (to prevent retaliation and tactical gaming of the system).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The three-step structure is carefully designed to maximize completion rates. Showing all options at once overwhelms users. Requiring too many steps increases abandonment. Testing across platforms consistently shows that three steps with progressive disclosure achieves the highest completion rate. The optional context step at the end filters out low-effort reporter spam (users unwilling to add context for frivolous reports) while not blocking legitimate reporters who have urgent information to add.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Priority Scoring and Queue Management</h3>
-        <HighlightBlock as="p" tier="important">The moderation queue is not first-in-first-out. Items are prioritized by a composite score: priority = (ml_confidence × 0.4) + (reporter_credibility × 0.2) + (account_risk_score × 0.2) + (content_reach × 0.2). ml_confidence is the ML classifier&apos;s confidence that the content violates policy (0–1). reporter_credibility is the historical accuracy rate of the reporter&apos;s past reports (first-time reporters get 0.5 as a neutral starting point). account_risk_score is the flagged account&apos;s risk tier (new accounts, accounts with prior violations, or accounts without phone verification get higher risk scores). content_reach is a normalized measure of how many users have seen the content (viral content that&apos;s actively spreading is prioritized over low-reach content). The priority score is computed when the report arrives and stored as the score in a Redis sorted set (ZADD queue:moderation {"{score}"} {"{itemId}"}). Moderators pull the next item with ZPOPMAX queue:moderation, always getting the highest-priority item in O(log N).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Moderator Review Dashboard</h3>
-        <HighlightBlock as="p" tier="important">The moderator dashboard is a SPA that presents one item at a time (single-item focus improves decision accuracy versus displaying a list). The item view shows: the reported content (rendered in a sandboxed iframe for HTML content, or as an image/video for media), the violation category and sub-category reported, the ML model's prediction and confidence score (e.g., "Hate speech: 0.82 confidence"), the reporter's history (accuracy rate, total reports submitted), the reportee's account metadata (account age, verification status, prior violations count), and related reports (other reports of the same content or same user). Actions are accessible via large buttons and keyboard shortcuts (A = approve/no action, R = remove, S = shadow-ban, E = escalate, T = content strike). After the moderator submits a decision, the current item transitions out and the next item (pre-fetched while the previous decision was being submitted) transitions in immediately, keeping the review loop tight.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Shadow-Ban Implementation</h3>
-        <HighlightBlock as="p" tier="important">A shadow-ban (also called &quot;stealth ban&quot; or &quot;ghost ban&quot;) makes a user&apos;s content invisible to others without informing the user they are banned. The user continues to post normally but their content is excluded from: the public feed, search results, discovery surfaces, and their followers&apos; feeds. This prevents the user from creating new accounts to evade the ban (they don&apos;t know they&apos;re banned). The implementation: SET shadow:{"{userId}"} 1 EX {"{TTL_seconds}"} in Redis. Every content delivery path checks this key: feed assembly (exclude posts from shadow-banned users), search indexing (skip indexing new content from shadow-banned users), and profile page (profile is private-like for non-followers, posts grid shows &quot;No posts&quot; to non-followers). The shadow-banned user sees their own content normally (their own requests bypass the shadow-ban check). Shadow bans are logged in the moderation_actions table for audit purposes and typically have a 30-day TTL, after which they are reviewed for lifting or converting to a full ban.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Appeals Flow and SLA Management</h3>
-        <HighlightBlock as="p" tier="important">Users whose content is removed see a "This content was removed because it violated our Community Guidelines" notice in place of their content. The notice includes: the violation category that was identified, a "Learn more" link to the relevant policy, and an "Appeal this decision" button (shown only if the user has not exhausted their appeal allowance — typically 3 appeals per 30 days). The appeal form captures: "Why do you believe this content was removed in error?" (free text, 500 character max) and an optional upload of additional context (e.g., a source link proving information is accurate). Submitted appeals enter a separate queue (queue:appeals) with a 48-hour SLA. The appeals queue shows SLA breach risk: items approaching 48 hours are highlighted in orange (&gt;36 hours) or red (&gt;44 hours), and alerts fire to the moderation team lead when the queue is at risk of missing SLA. The appeals dashboard has a real-time counter showing: total pending, count &gt;24h, count &gt;36h, count &gt;44h. This operational visibility is essential for staffing decisions.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Automated removal versus human-first review: auto-removing content above a confidence threshold reduces the time-to-removal for clearly violating content (CSAM, graphic violence) from hours (human review queue depth) to seconds. The risk is false positives: content incorrectly auto-removed damages user trust, especially for marginalized communities whose speech is statistically more likely to be incorrectly flagged by ML models. A conservative threshold (0.95+) limits false positives at the cost of missing violations in the 0.7–0.95 range, which go to the human queue. For the most severe violation categories (CSAM), the threshold is set low (0.7+) because the cost of a false negative is catastrophically higher than the cost of a false positive. Per-category threshold configuration allows tuning this trade-off independently for each violation type.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Single-item focus versus list-view for moderator queue: single-item focus reduces decision fatigue and cognitive load (the moderator is not anchoring to adjacent items) and produces more consistent decisions. List view enables higher throughput for obvious-spam cases (batch select and remove 20 spam accounts simultaneously). A hybrid approach — single-item view by default with a "batch mode" toggle for spam queues — serves both use cases without forcing moderators into a suboptimal workflow for either.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A content moderation and reporting UI serves three distinct user types with different UX requirements. For reporters: a 3-step bottom-sheet modal (category → sub-category → optional context) that achieves &gt;80% completion without full-page navigation. For moderators: a single-item focus dashboard with keyboard shortcuts, next-item prefetch (keeps review loop under 12 seconds per item), and ML signal badges. For users whose content is actioned: a clear removal notice with an appeals path (48h SLA, separate expedited queue). The automated pipeline removes high-confidence violations (&gt;0.95) in under 30 seconds via ML classifier before content is indexed; medium-confidence items enter the queue with priority boost. Shadow-ban (Redis SET TTL) enforces invisibility to others without notifying the user. The moderation queue uses a composite priority score (Redis ZADD/ZPOPMAX sorted set) weighted by ml_confidence, reporter credibility, account risk, and content reach. All decisions write to an append-only audit log for compliance. The key design challenge: moderation decisions are high-stakes and irreversible — the UI must surface enough context for accurate decisions while sustaining high throughput, which requires aggressive pre-fetching, keyboard shortcuts, and clear information hierarchy.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

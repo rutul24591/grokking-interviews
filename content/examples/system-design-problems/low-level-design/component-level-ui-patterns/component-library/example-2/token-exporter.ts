@@ -1,54 +1,89 @@
-/**
- * Design Token Exporter — Exports tokens in multiple formats for different platforms.
- *
- * Interview edge case: Design tokens need to be consumed by web (CSS variables),
- * iOS (Swift), and Android (XML). The exporter generates platform-specific files
- * from a single token definition source.
- */
+export type componentLibrarySignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-export interface DesignToken {
-  name: string;
-  value: string | number;
-  category: 'color' | 'spacing' | 'typography' | 'shadow' | 'radius';
-  description?: string;
+export type componentLibraryEvent = {
+  id: string;
+  topic: "component-library";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: componentLibrarySignal;
+};
+
+export type componentLibraryDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateComponentLibraryEvent(event: componentLibraryEvent): componentLibraryDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: componentLibraryDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Component Library",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Exports tokens as CSS custom properties in a :root block.
- */
-export function exportAsCSS(tokens: DesignToken[]): string {
-  const lines = [':root {'];
-  for (const token of tokens) {
-    const cssName = token.name.replace(/([A-Z])/g, '-$1').toLowerCase();
-    lines.push(`  --${cssName}: ${token.value};`);
-  }
-  lines.push('}');
-  return lines.join('\n');
-}
+export function runComponentLibraryContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateComponentLibraryEvent({
+    id: "component-library-evt-1",
+    topic: "component-library",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-/**
- * Exports tokens as a TypeScript object for programmatic access.
- */
-export function exportAsTypeScript(tokens: DesignToken[]): string {
-  const lines = ['export const tokens = {'];
-  for (const token of tokens) {
-    const value = typeof token.value === 'string' ? `'${token.value}'` : token.value;
-    lines.push(`  ${token.name}: ${value},`);
-  }
-  lines.push('} as const;');
-  return lines.join('\n');
-}
+  const guarded = evaluateComponentLibraryEvent({
+    id: "component-library-evt-late",
+    topic: "component-library",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-/**
- * Exports tokens as JSON for build tool consumption.
- */
-export function exportAsJSON(tokens: DesignToken[]): string {
-  return JSON.stringify(
-    tokens.reduce<Record<string, unknown>>((acc, token) => {
-      acc[token.name] = { value: token.value, category: token.category, description: token.description };
-      return acc;
-    }, {}),
-    null,
-    2,
-  );
+  return { accepted, guarded };
 }

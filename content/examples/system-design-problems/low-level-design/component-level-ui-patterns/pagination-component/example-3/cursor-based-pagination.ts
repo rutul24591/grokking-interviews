@@ -1,67 +1,90 @@
-/**
- * Pagination — Staff-Level Server-Side Pagination with Cursor-Based Navigation.
- *
- * Staff different traditional offset pagination has performance issues
- * at high page numbers. Staff differentiator: cursor-based pagination
- * with forward/backward navigation and stable ordering.
- */
-
-export interface CursorPage<T> {
-  items: T[];
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-  startCursor: string | null;
-  endCursor: string | null;
-}
-
-/**
- * Encodes a cursor from an item's sort key.
- */
-export function encodeCursor(sortKey: string | number): string {
-  return btoa(String(sortKey));
-}
-
-/**
- * Decodes a cursor back to the sort key.
- */
-export function decodeCursor(cursor: string): string {
-  return atob(cursor);
-}
-
-/**
- * Fetches a page of results using cursor-based pagination.
- * More efficient than offset pagination for large datasets.
- */
-export async function fetchCursorPage<T>(
-  fetchFn: (params: { cursor?: string; limit: number; direction: 'forward' | 'backward' }) => Promise<{ items: T[]; sortKeys: (string | number)[] }>,
-  cursor?: string,
-  limit: number = 25,
-  direction: 'forward' | 'backward' = 'forward',
-): Promise<CursorPage<T>> {
-  const result = await fetchFn({ cursor, limit, direction });
-
-  const startCursor = result.sortKeys.length > 0 ? encodeCursor(result.sortKeys[0]) : null;
-  const endCursor = result.sortKeys.length > 0 ? encodeCursor(result.sortKeys[result.sortKeys.length - 1]) : null;
-
-  return {
-    items: result.items,
-    hasPreviousPage: direction === 'backward',
-    hasNextPage: result.items.length >= limit,
-    startCursor,
-    endCursor,
+export type paginationComponentRuntimeState = {
+  topic: "pagination-component";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
   };
+};
+
+export type paginationComponentRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
+
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Hook that manages cursor-based pagination state.
- */
-export function useCursorPagination<T>(
-  fetchFn: (params: { cursor?: string; limit: number; direction: 'forward' | 'backward' }) => Promise<{ items: T[]; sortKeys: (string | number)[] }>,
-  pageSize: number = 25,
-) {
+export function planPaginationComponentRecovery(
+  state: paginationComponentRuntimeState,
+  nowMs: number,
+): paginationComponentRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: paginationComponentRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
+
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runPaginationComponentEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planPaginationComponentRecovery(
+    {
+      topic: "pagination-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planPaginationComponentRecovery(
+    {
+      topic: "pagination-component",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
+
   return {
-    fetchPage: (cursor?: string, direction: 'forward' | 'backward' = 'forward') =>
-      fetchCursorPage(fetchFn, cursor, pageSize, direction),
-    pageSize,
+    topic: "Pagination Component",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
   };
 }

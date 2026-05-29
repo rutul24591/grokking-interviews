@@ -1,68 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Install workflow for a plugin marketplace showing compatibility check, permission consent, approval and scanning gates, enablement, and rollback">
-  <title>Install and Enable Workflow</title>
-  <desc>Shows staged install with explicit gates and terminal states; includes a safe rollback path (disable or revert).</desc>
-  <style>
-    .bg{fill:#ffffff}
-    .box{fill:#ffffff;stroke:#1f2937;stroke-width:2;rx:14}
-    .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:14}
-    .good{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:14}
-    .warn{fill:#fff7ed;stroke:#ea580c;stroke-width:2;rx:14}
-    .bad{fill:#fef2f2;stroke:#dc2626;stroke-width:2;rx:14}
-    .arrow{stroke:#1f2937;stroke-width:2.5;fill:none}
-    .label{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a;font-size:18px}
-    .small{font-size:14px;fill:#334155}
-    .bold{font-weight:700}
-    @media (prefers-color-scheme: dark){
-      .bg{fill:#0b1220}
-      .box{fill:#0f172a;stroke:#e5e7eb}
-      .accent{fill:#0b1b3a;stroke:#60a5fa}
-      .good{fill:#052018;stroke:#34d399}
-      .warn{fill:#2a1606;stroke:#fb923c}
-      .bad{fill:#2a0f12;stroke:#f87171}
-      .arrow{stroke:#e5e7eb}
-      .label{fill:#e5e7eb}
-      .small{fill:#cbd5e1}
-    }
-  </style>
-  <rect class="bg" x="0" y="0" width="1200" height="640"/>
-
-  <text class="label bold" x="60" y="70">Installation must be staged and observable</text>
-
-  <rect class="accent" x="60" y="110" width="300" height="110"/>
-  <text class="label bold" x="90" y="150">Validate</text>
-  <text class="label small" x="90" y="175">host compatibility</text>
-  <text class="label small" x="90" y="198">required APIs</text>
-
-  <rect class="accent" x="390" y="110" width="300" height="110"/>
-  <text class="label bold" x="420" y="150">Consent</text>
-  <text class="label small" x="420" y="175">permissions</text>
-  <text class="label small" x="420" y="198">record audit</text>
-
-  <rect class="warn" x="720" y="110" width="300" height="110"/>
-  <text class="label bold" x="750" y="150">Gates</text>
-  <text class="label small" x="750" y="175">approval and policy</text>
-  <text class="label small" x="750" y="198">signature and scan</text>
-
-  <rect class="good" x="870" y="260" width="270" height="110"/>
-  <text class="label bold" x="900" y="300">Enable</text>
-  <text class="label small" x="900" y="325">sandboxed runtime</text>
-  <text class="label small" x="900" y="348">telemetry check</text>
-
-  <rect class="bad" x="540" y="260" width="300" height="110"/>
-  <text class="label bold" x="570" y="300">Rejected</text>
-  <text class="label small" x="570" y="325">policy or scan failed</text>
-  <text class="label small" x="570" y="348">explain why</text>
-
-  <rect class="box" x="60" y="430" width="1080" height="170"/>
-  <text class="label bold" x="90" y="470">Failure handling</text>
-  <text class="label small" x="90" y="500">Install is a job with idempotency and safe retries</text>
-  <text class="label small" x="90" y="525">If runtime health degrades, UI offers disable or version revert</text>
-  <text class="label small" x="90" y="550">Every terminal state produces an audit record and a clear operator action</text>
-
-  <path class="arrow" d="M360 165 L390 165"/>
-  <path class="arrow" d="M690 165 L720 165"/>
-  <path class="arrow" d="M870 220 L870 260"/>
-  <path class="arrow" d="M870 165 L870 260"/>
-  <path class="arrow" d="M720 220 L690 260"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Plugin Extension Marketplace Ui Install Workflow: topology map</title>
+  <desc id="desc">Curved topology for platform sdk infra systems runtime states.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Plugin Extension Marketplace Ui Install Workflow: topology map</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Curved topology for platform sdk infra systems runtime states.</text>
+  <rect x="66" y="122" width="828" height="332" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M116 380 C180 220, 260 183, 338 236" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><circle cx="154" cy="356" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="154" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">SDK</text><path d="M270 310 C300 250, 360 183, 440 288" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/><circle cx="306" cy="274" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="306" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">gateway</text><path d="M424 380 C420 280, 460 183, 542 236" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><circle cx="458" cy="356" r="30" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="458" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">token</text><path d="M578 310 C540 220, 560 183, 644 288" fill="none" stroke="#9333ea" stroke-width="4" stroke-linecap="round"/><circle cx="610" cy="274" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="610" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">version</text><path d="M732 380 C660 250, 660 183, 746 236" fill="none" stroke="#b91c1c" stroke-width="4" stroke-linecap="round"/><circle cx="762" cy="356" r="30" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="762" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">tenant</text>
+  <rect x="210" y="138" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="274" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">quota</text><rect x="390" y="138" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">trace</text><rect x="570" y="138" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="634" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">compat</text>
+  <path d="M118 456 C270 500, 420 426, 568 468 S760 496, 846 444" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/><text x="520" y="494" text-anchor="middle" fill="#be123c" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">state convergence requires explicit observability and fallback routes</text>
 </svg>
-

@@ -1,1 +1,5 @@
-# Design a bulk data import system (CSV/Excel uploads) — Example 3
+# Bulk Data Import System - Example 3
+
+Concrete data movement edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

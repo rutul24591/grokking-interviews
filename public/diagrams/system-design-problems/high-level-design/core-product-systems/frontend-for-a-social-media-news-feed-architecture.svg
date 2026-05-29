@@ -1,73 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Social media news feed frontend architecture">
-  <defs>
-    <style>
-      .t { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; fill: #0f172a; }
-      .muted { fill: #334155; }
-      .h { font-weight: 700; }
-      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; rx: 14; }
-      .chip { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.2; rx: 10; }
-      .line { stroke: #64748b; stroke-width: 1.6; fill: none; }
-      .arrow { fill: #64748b; }
-      @media (prefers-color-scheme: dark) {
-        .t { fill: #e5e7eb; }
-        .muted { fill: #cbd5e1; }
-        .box { fill: #0b1220; stroke: #334155; }
-        .chip { fill: #111827; stroke: #334155; }
-        .line { stroke: #94a3b8; }
-        .arrow { fill: #94a3b8; }
-      }
-    </style>
-  </defs>
-
-  <text class="t h" x="40" y="54" font-size="22">News Feed Frontend: Request, Cache, and Media</text>
-  <text class="t muted" x="40" y="78" font-size="13">Goal: smooth infinite scroll without load amplification</text>
-
-  <rect class="box" x="40" y="110" width="300" height="360" rx="14"/>
-  <text class="t h" x="60" y="140" font-size="16">Client (Web / Mobile Web)</text>
-  <rect class="chip" x="60" y="160" width="260" height="58" rx="10"/>
-  <text class="t" x="74" y="185" font-size="13">UI renderer</text>
-  <text class="t muted" x="74" y="205" font-size="12">Virtualized list, media lazy-load</text>
-
-  <rect class="chip" x="60" y="232" width="260" height="70" rx="10"/>
-  <text class="t" x="74" y="257" font-size="13">Policy fetch layer</text>
-  <text class="t muted" x="74" y="277" font-size="12">Dedupe, backoff+jitter, budgets</text>
-  <text class="t muted" x="74" y="295" font-size="12">Cursor pagination, refresh semantics</text>
-
-  <rect class="chip" x="60" y="316" width="260" height="70" rx="10"/>
-  <text class="t" x="74" y="341" font-size="13">Client cache</text>
-  <text class="t muted" x="74" y="361" font-size="12">In-memory + persisted window</text>
-  <text class="t muted" x="74" y="379" font-size="12">Eviction + TTL; offline read-only</text>
-
-  <rect class="chip" x="60" y="400" width="260" height="50" rx="10"/>
-  <text class="t" x="74" y="428" font-size="13">RUM + error telemetry</text>
-
-  <rect class="box" x="390" y="140" width="240" height="140" rx="14"/>
-  <text class="t h" x="410" y="170" font-size="15">API Gateway</text>
-  <text class="t muted" x="410" y="194" font-size="12">Auth, rate limits, routing</text>
-  <text class="t muted" x="410" y="214" font-size="12">Request IDs for correlation</text>
-  <text class="t muted" x="410" y="234" font-size="12">Canary / feature flags</text>
-
-  <rect class="box" x="680" y="110" width="240" height="180" rx="14"/>
-  <text class="t h" x="700" y="140" font-size="15">Feed + Ranking</text>
-  <text class="t muted" x="700" y="164" font-size="12">Returns: item cards + cursor</text>
-  <text class="t muted" x="700" y="184" font-size="12">Stable cursor snapshot token</text>
-  <text class="t muted" x="700" y="204" font-size="12">Safety filters applied server-side</text>
-  <text class="t muted" x="700" y="224" font-size="12">Hydration endpoints for details</text>
-
-  <rect class="box" x="680" y="318" width="240" height="152" rx="14"/>
-  <text class="t h" x="700" y="348" font-size="15">Media CDN</text>
-  <text class="t muted" x="700" y="372" font-size="12">Images, video segments</text>
-  <text class="t muted" x="700" y="392" font-size="12">Progressive loading</text>
-  <text class="t muted" x="700" y="412" font-size="12">Backpressure via client budgets</text>
-
-  <path class="line" d="M340 250 L380 250" />
-  <polygon class="arrow" points="380,250 372,246 372,254"/>
-
-  <path class="line" d="M630 210 L670 210" />
-  <polygon class="arrow" points="670,210 662,206 662,214"/>
-
-  <path class="line" d="M340 360 L660 360" />
-  <polygon class="arrow" points="660,360 652,356 652,364"/>
-  <text class="t muted" x="390" y="348" font-size="12">Media requests (lazy, prioritized)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Frontend For A Social Media News Feed Architecture: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Frontend For A Social Media News Feed Architecture: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">client</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">core product systems</text>
+  <path d="M480 286 C530.474726398892 313.85116950582574, 571.7722298161674 384.29824531467904, 612 392" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="612" cy="392" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="612" y="397" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">state</text><path d="M480 286 C442.80959296681846 316.8144647592461, 412.3810781214881 394.756934444398, 368 420" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="368" cy="420" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="368" y="425" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">service</text><path d="M480 286 C392.3348665679264 288.96329525342037, 320.60884830532075 296.45868912971906, 251 300" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="251" cy="300" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="251" y="305" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text><path d="M480 286 C429.5252736011079 258.14883049417426, 388.2277701838326 187.70175468532102, 329 180" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="329" cy="180" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="329" y="185" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">risk</text><path d="M480 286 C517.1904070331816 255.1855352407539, 547.618921878512 177.24306555560202, 577 152" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="577" cy="152" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="577" y="157" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">SLO</text><path d="M480 286 C567.6651334320736 283.03670474657963, 639.3911516946793 275.541310870281, 743 272" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="743" cy="272" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="743" y="277" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">audit</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>
-

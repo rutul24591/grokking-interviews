@@ -9,13 +9,13 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-time-series-visualization",
   title: "Design a Time-Series Visualization System",
   description:
-    "Architecture for a time-series visualization system: multi-resolution storage (raw + pre-aggregated rollups), adaptive query routing to the appropriate resolution, synchronized multi-panel layouts with shared time cursor, annotation overlays for deployments and incidents, comparison mode (current vs prior period), query language (PromQL/InfluxQL) editor with auto-complete, alert threshold lines on charts, and export to PNG/CSV.",
+    "Principal-level design of a Grafana-like time-series visualization system with multi-resolution rollups, adaptive query routing, synchronized panels, annotations, comparison mode, query editor, and production safeguards.",
   category: "high-level-design",
   subcategory: "data-heavy-systems",
   slug: "time-series-visualization",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
   tags: ["hld", "time-series", "visualization", "prometheus", "grafana", "rollups", "multi-panel", "annotations"],
   relatedTopics: ["realtime-analytics-10k-datapoints", "alerting-anomaly-detection-dashboard"],
 };
@@ -24,74 +24,239 @@ export default function TimeSeriesVisualizationArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A time-series visualization system like Grafana serves a very specific engineering workflow: correlating metrics across multiple services to diagnose performance degradations. The core workflow is: (1) notice an alert or user complaint, (2) open a dashboard showing request latency, error rate, and throughput for the affected service, (3) zoom in on the anomalous time window, (4) compare the current period against the same period last week to distinguish regression from normal pattern, and (5) overlay deployment events to correlate a metric change with a specific code deployment. Every feature of the system should make this workflow faster.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The multi-resolution challenge is specific to time-series: a query for the last 30 days of data at 10-second resolution would return 259,200 data points — far more than any chart can display (a 1,200px-wide chart would have 216 points per pixel, making individual point detail invisible). Querying raw 10-second data for a 30-day window is also slow (the database must scan millions of rows). The solution is multi-resolution storage: raw 10-second data for the last 48 hours, 1-minute rollups for the last 90 days, 1-hour rollups for the last 2 years. The query layer automatically selects the appropriate resolution based on the requested time range and the chart's pixel width — this is adaptive query routing.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Multi-panel dashboard layout, query editor, resolution routing, annotations, comparison mode, and chart export. Not in scope: time-series data ingestion, Prometheus scraping configuration, or alerting rule management.</p>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          A time-series visualization system helps users inspect metrics over time, correlate changes across panels, and diagnose incidents or business shifts. A Grafana-like product supports dashboards with many panels, shared time ranges, query editors, annotations, threshold overlays, comparison mode, and exports. The hard problem is returning visually useful data quickly across time windows ranging from minutes to years.
+        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The principal-level design hinges on multi-resolution data access. A 30-day dashboard should not scan raw 10-second samples when the panel is only 1,200 pixels wide. The query layer must choose the right rollup resolution based on time range, panel width, query semantics, and acceptable fidelity.
+        </HighlightBlock>
+        <p>
+          This system is used by SRE teams, platform teams, product analytics teams, finance operations, IoT teams, and business intelligence groups that need trend visibility. Users rely on it during incidents and reviews, so the UI must make freshness, gaps, rollup level, and query errors explicit.
+        </p>
+        <p>
+          Time-series dashboards differ from general BI dashboards because time is the primary coordination axis. Panels share time range, hover cursor, zoom state, annotations, and comparison offsets. A good system helps users correlate latency, traffic, errors, deployments, incidents, and resource saturation without manually aligning charts.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Dashboard panels:</strong> A dashboard is a grid of panels. Each panel contains one chart (line, bar, heatmap, stat/single-value, gauge, table). Panels share a time range picker (top-right: Last 6h, Last 24h, Last 7d, custom absolute range). Panels can be arranged in a 24-column responsive grid, resizable and draggable by dashboard editors.</li>
-          <li><strong>Query editor:</strong> Each panel has one or more queries. Queries are written in the data source's query language (PromQL for Prometheus, InfluxQL/Flux for InfluxDB, SQL for PostgreSQL). A query builder mode (dropdown-based) is available for users unfamiliar with the query language. Auto-complete suggestions for metric names, labels, and functions (populated from the data source's metric catalog API).</li>
-          <li><strong>Time synchronization:</strong> All panels on a dashboard share the same time range. When the time range changes (via the time picker or by zooming on one panel), all panels re-query and update simultaneously. A shared time cursor: hovering on one panel shows a vertical cursor line synced across all panels at the same timestamp.</li>
-          <li><strong>Annotations:</strong> Vertical markers on all panels for events: deployments (git commit SHA, service name, timestamp — fetched from the CI/CD system), incidents (PagerDuty alert open/close), and manual annotations (added by engineers). Annotations are stored in a separate database and overlaid on charts client-side after the chart data renders.</li>
-          <li><strong>Comparison mode:</strong> "Compare to previous period" toggle overlays a second time series (offset by 1 week or 1 day) as a dashed line on each panel. The Y-axis is shared between current and comparison, allowing direct visual comparison. Percentage difference is computed and shown in the tooltip ("+12% vs last week").</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Dashboard load time:</strong> All panels show data within 3 seconds of opening (parallel panel queries). Rollup resolution queries return within 500ms from the time-series database.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Query concurrency:</strong> A dashboard with 20 panels opening simultaneously generates 20 parallel queries. The Query Gateway limits concurrent queries per data source to prevent overloading Prometheus or InfluxDB (configurable concurrency cap per data source).</HighlightBlock>
-          <li><strong>Zoom responsiveness:</strong> Zooming into a narrower time window triggers a re-query at a finer resolution. The chart should show the new data within 1 second of the zoom gesture completing.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Multi-resolution storage keeps raw samples for short windows and rollups for longer windows. Raw data preserves fidelity for recent incident diagnosis. One-minute, five-minute, and one-hour rollups make long-range dashboards fast. Rollups should store min, max, avg, count, and sometimes percentiles because average alone can hide spikes.
+        </p>
+        <p>
+          Adaptive query routing chooses a step and storage resolution. The query gateway estimates target points from panel width and time range, then chooses raw or rollup data that produces roughly one point every one or two pixels. This avoids over-fetching and keeps chart rendering responsive.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          The query gateway is both a performance layer and a safety layer. It normalizes PromQL, Flux, SQL, or vendor APIs, enforces concurrency limits, applies tenant context, caches results, caps time ranges, and protects data sources from dashboard fanout.
+        </HighlightBlock>
+        <p>
+          Synchronized panels share a global time range and hover timestamp. A zoom gesture in one panel updates the dashboard time range and re-queries all panels. Hovering on one panel shows a cursor line at the same timestamp across related panels. This should be client-side and throttled so cursor movement does not cause full React re-renders.
+        </p>
+        <p>
+          Annotations add context on top of metrics. Deployments, feature flags, incidents, maintenance windows, data-quality events, and manual notes appear as vertical lines or shaded ranges. They let users connect a metric change to a real-world event quickly.
+        </p>
+        <p>
+          Comparison mode offsets the same query by a previous period, such as yesterday, last week, or last month. It helps users distinguish regression from seasonality. The system should clearly label comparison data and compute deltas in tooltips using metric-specific directionality where possible.
+        </p>
+        <p>
+          Principal-level designs also model metric semantics. A counter, gauge, histogram, percentile, and event count need different rollup behavior. Averaging percentiles across intervals is often misleading. Rate conversion for counters must handle resets. Histograms may need bucket-preserving rollups. The query gateway should understand metric type and choose safe aggregation defaults instead of treating every series as a generic line.
+        </p>
+        <p>
+          Time alignment is another core issue. Different sources can have different sampling intervals, ingestion lag, and timestamp skew. A dashboard correlating deploys, errors, latency, and CPU should show whether each panel is aligned to event time or ingestion time and whether late points have arrived. Otherwise users can infer false causality from charts that are visually aligned but semantically offset.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The system consists of a Dashboard Service (stores dashboard JSON schemas — panel layouts, query configs, annotation configs), a Query Gateway (routes queries to the appropriate data source, selects resolution, enforces concurrency limits, caches results), and the time-series databases themselves (Prometheus for short-term raw metrics, Thanos or Cortex for long-term multi-resolution storage). The frontend is a React SPA that loads the dashboard schema from the Dashboard Service, constructs queries for each panel, sends them through the Query Gateway, and renders the results using a chart library (a custom Canvas renderer for performance, or a library like uPlot which is optimized for time-series data). All panels share a global time range state (Zustand) that triggers coordinated re-queries when the time range changes.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has four planes. The dashboard plane stores panel layouts, query definitions, thresholds, variables, and annotation sources. The query gateway plane handles resolution selection, data source routing, caching, and concurrency. The data plane includes short-retention raw stores and long-retention rollup stores. The visualization plane renders panels, synchronized cursors, annotations, and comparison overlays.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/time-series-visualization.svg"
-          alt="Time-series visualization architecture showing dashboard schema (Dashboard Service: GET /api/dashboards/{id} → JSON schema {panels:[{id,query,chartType,thresholds}], timeRange, annotations}; 24-column grid layout; panel types: line bar heatmap stat gauge table), query routing (time range → select resolution: last 48h=10s raw; last 90d=1min rollup; last 2y=1h rollup; adaptive: target_points=pixelWidth/2 → step=timeRange/target_points → round to nearest rollup; Query Gateway: concurrency limiter per datasource max 10 concurrent; route: Prometheus=PromQL API; InfluxDB=Flux API; cache: SHA256(query+step+timeRange) TTL=step×2), PromQL execution (prometheus: instant vector OR range vector; evaluate at step intervals; response: {metric labels, values:[t,v]...}; Thanos: multi-tenant, long-term, downsampled blocks: 5min/1h rollups; rate(http_requests_total[5m]) OR avg_over_time(latency[1m])), chart rendering (uPlot: high-performance canvas; shared x-axis domain (time range); per-panel y-axis scale; multi-series: one line per metric label set {color, legend label}; hover: vertical cursor sync via global mousemove event → broadcast to all panels; threshold lines: horizontal dashed lines at alert values; zoom: mouse drag selection → update global timeRange → re-query all panels), annotations (GET /api/annotations?from&to → deployments from CI/CD + incidents from PagerDuty + manual; render as vertical lines overlaid on all panels; click → tooltip: {type:deploy, sha:abc123, service:auth, author}; color: deploy=green incident=red manual=blue), comparison mode (toggle: offset queries by -7d; render dashed line same color lower opacity; shared y-axis; tooltip: current={v} prior={v} delta={+12%}; difference chart mode: show delta as filled area around zero baseline)."
-          caption="Dashboard schema load (JSON panel layout), adaptive resolution routing (48h raw / 90d 1min rollup / 2y 1h rollup, SHA256 cached Query Gateway), PromQL/InfluxQL execution with concurrency limiter, uPlot canvas rendering (shared time cursor sync, zoom→re-query all panels), annotation overlays (deploy/incident/manual vertical markers), comparison mode (offset −7d dashed line, +/−% delta tooltip), and alert threshold lines"
+          alt="Time-series visualization architecture with dashboard schema, query gateway, adaptive resolution routing, data sources, chart rendering, annotations, and comparison mode."
+          caption="A time-series dashboard coordinates panels through shared time state while the query gateway chooses safe, efficient resolution for each panel."
         />
+        <p>
+          On dashboard load, the frontend fetches the dashboard schema and global variables. It then sends panel queries through the query gateway in parallel. The gateway selects the query step from the time range and panel width, checks cache, enforces per-source concurrency limits, and routes to the correct backend. Panels render independently so one slow query does not block the whole dashboard.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/time-series-resolution-routing.svg"
+          alt="Adaptive time-series resolution routing from panel width and time range to raw, one-minute, five-minute, and one-hour rollups."
+          caption="Resolution routing converts time range and panel width into a step, then selects raw or rollup data to avoid scanning unnecessary samples."
+        />
+        <p>
+          Interactions update shared dashboard state. A time picker change, zoom gesture, or relative range refresh changes the global time range and invalidates panel query results. Hover state is separate: it updates a shared timestamp and each panel draws a cursor at that timestamp without network requests. Variable changes, such as selecting service or region, create new query parameter values and re-run affected panels.
+        </p>
+        <p>
+          The gateway should deduplicate identical panel queries across viewers and dashboards. If a popular incident dashboard is opened by hundreds of engineers, the backend should execute one query per distinct time window and variable set, then share the cached result while respecting tenant and permission boundaries. This protects metrics stores during exactly the moments when users are most likely to stampede them.
+        </p>
+        <p>
+          Dashboard variables should be resolved deliberately. A variable such as service, cluster, customer tier, or region can expand into many concrete series and accidentally multiply query cost. The gateway should cap variable expansion, provide search-backed variable pickers, cache variable values, and warn when a selection expands into too many series for an interactive panel.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-heavy-systems/time-series-panel-sync.svg"
+          alt="Multi-panel synchronization showing shared time range, hover timestamp, annotations, comparison offset, and independent panel query lifecycle."
+          caption="Panel synchronization keeps diagnosis fast: shared time range, cursor, annotations, and comparison overlays align metrics without coupling every panel render."
+        />
+        <p>
+          Principal-level designs also need a dashboard publication and ownership flow. A user can create a personal exploratory dashboard with broad query freedom, but a shared incident or executive dashboard should have an owner, query budget, variable limits, data-source dependencies, and review status. Published dashboards should be checked for expensive queries, deprecated metrics, missing rollups, high-cardinality labels, and panels without useful empty-state behavior. This prevents critical dashboards from failing during the incident when everyone opens them.
+        </p>
+        <p>
+          Long-term retention should be visible in the query plan. A dashboard may stitch recent raw data, mid-term rollups, and archived downsampled data in one time range. The gateway should return metadata that lets the UI draw boundaries or tooltips explaining where resolution changes. Without that, users may compare a recent spike-rich window against an older smoothed window and draw the wrong conclusion.
+        </p>
+        <p>
+          Metric cardinality governance belongs in the design. A single dashboard variable that expands across customer id, pod id, endpoint, and status code can create millions of series. The query gateway should understand series cardinality, cap expensive label combinations, and show owners which dashboards are driving cardinality pressure. This is a principal-level concern because visualization products often become the visible symptom of telemetry-model mistakes.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Adaptive Resolution Query Routing</h3>
-        <HighlightBlock as="p" tier="important">The Query Gateway determines the appropriate data resolution for each query based on two inputs: the requested time range and the panel's pixel width. The target point count is set to pixelWidth / 2 (half the pixel width, since each point needs at least 2 pixels to be visually distinguishable). The required step (the time interval between returned data points) is: step = timeRange / targetPoints. For a 1,200px panel querying the last 24 hours: targetPoints = 600, step = 86,400s / 600 = 144s ≈ 2.5 minutes. The Query Gateway rounds this to the nearest available rollup resolution: since 2.5 minutes is between 1-minute and 5-minute rollups, it selects the 1-minute rollup.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The routing rules: if the computed step is &lt;30 seconds, query raw data (no rollup); if the step is between 30 seconds and 5 minutes, use the 1-minute rollup; if between 5 minutes and 1 hour, use the 5-minute rollup; if over 1 hour, use the 1-hour rollup. The rollups store pre-computed min, max, and avg values per bucket. The chart can display all three (avg as the main line, min-max as a shaded band) or just the avg. This adaptive routing ensures that queries always return the appropriate resolution without over-fetching data or hitting raw high-cardinality data for wide time windows.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Query caching: the Query Gateway caches query results in Redis keyed by SHA256(query + step + from + to + datasource). The TTL is set to 2 × step — a 2-minute step query is cached for 4 minutes. Since the time range picker rounds to "last 6h" or specific absolute timestamps, the same query is often repeated by multiple dashboard viewers, making cache hits frequent. Cache invalidation is time-based (TTL), so stale data is bounded by the cache TTL.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Synchronized Multi-Panel Time Cursor</h3>
-        <HighlightBlock as="p" tier="important">The shared time cursor is implemented via a global Zustand store with a hoverTimestamp field. When the user moves the mouse over any panel's chart, the chart component updates hoverTimestamp with the current mouse x-position translated to a timestamp (using the inverse of the x-axis scale: timestamp = xScale.invert(mouseX)). All other panels subscribe to hoverTimestamp and render their cursor line at the corresponding x-position. This is purely client-side — no network requests — so cursor movement is instantaneous across all panels regardless of how many panels are on the dashboard.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Performance concern: updating hoverTimestamp on every mousemove event (60 times per second) would cause all panels to re-render at 60fps, which for 20 panels could be expensive. The optimization: hoverTimestamp updates are throttled to 30fps using requestAnimationFrame (only update if an animation frame has not already been scheduled). Additionally, each panel uses a ref instead of state for the cursor line position — the cursor line is drawn directly on the canvas (or moved via a CSS transform on a DOM element) without triggering a React re-render. Only the tooltip (which shows formatted values for the hovered timestamp) re-renders, and it uses a debounce of 16ms.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Annotation System</h3>
-        <HighlightBlock as="p" tier="important">Annotations are event markers overlaid on all panels at specific timestamps. They are fetched from the Annotation Service (GET /api/annotations?from=start&amp;to=end) in parallel with the panel data queries, and rendered client-side as vertical SVG lines above the chart canvas. Annotation sources: the CI/CD system provides deployment events (timestamp, commit SHA, service name, deployer); PagerDuty provides incident open/close events; engineers can add manual annotations via a right-click on any chart position. Each annotation type has a distinct color (deployments: green, incidents: red, manual: blue) and renders as a dashed vertical line spanning the full height of the panel. Clicking the annotation line shows a tooltip card with the event details.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Annotations are stored in a PostgreSQL table (annotation: id, type, timestamp, end_timestamp (for range annotations), text, tags, orgId). Range annotations (incidents with a duration) are rendered as a colored rectangle spanning the incident duration — a semi-transparent red band for the incident duration makes it immediately visible when a metric degraded during an incident window. The annotation query is tenant-scoped by orgId and time-range-filtered with an index on timestamp.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Comparison Mode and Period-over-Period</h3>
-        <HighlightBlock as="p" tier="important">Comparison mode overlays the same metrics from a previous period (configurable: same time yesterday, same time last week, same time last month) on top of the current data. Implementation: when comparison mode is enabled, each panel's query is duplicated with the time range shifted backward by the comparison offset (e.g., from - 7 days, to - 7 days). The resulting data series is rendered as a dashed line with lower opacity (0.4) using the same color as the current series. The Y-axis scale is shared between the current and comparison series (the axis domain is the min/max across both series).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The tooltip in comparison mode shows three values for the hovered timestamp: the current value, the comparison period value, and the percentage difference (formatted as "+12%" in green for improvement or "-8%" in red for degradation, based on whether the metric should be "higher is better" or "lower is better" — configurable per panel). The comparison data is fetched and cached separately from the current data, using the same Query Gateway with the shifted time parameters. The comparison cache hit rate is high because the comparison period is a fixed offset into historical data that doesn't change.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Raw data provides maximum fidelity but becomes expensive and visually wasteful over long ranges. Rollups are fast and cheap but lose detail. The system should use raw data for recent narrow windows, rollups for wide windows, and clearly show when the chart is rendering aggregated data.
+        </p>
+        <p>
+          Canvas-based libraries such as uPlot are excellent for dense time-series panels because they avoid SVG DOM overhead. SVG-heavy libraries are easier for custom shapes and direct element interactivity but struggle with many points and many panels. A time-series system should favor a performance-focused charting layer and implement overlays separately.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Query concurrency is a hidden scaling limit. A dashboard with 20 panels viewed by 100 people can create 2,000 queries on refresh. The query gateway needs deduplication, caching, per-source concurrency caps, and graceful queued states.
+        </HighlightBlock>
+        <p>
+          Fixed-step queries are predictable but can over-fetch on small panels or under-fetch on large panels. Adaptive step selection improves performance and visual fidelity, but it can make query results change when a panel is resized. The UI should label step size and make exports explicit about the resolution used.
+        </p>
+        <p>
+          Comparison mode adds diagnostic value but doubles query load for enabled panels. It should reuse cache aggressively and may need limits on dashboard-wide comparison for expensive sources. The product should let users enable comparison selectively rather than forcing it on every panel.
+        </p>
+        <p>
+          Annotation overlays make correlation faster but can clutter charts. The design should support source filtering, severity, grouping, and collapse. Incident ranges and deployment markers should be visually distinct from threshold lines.
+        </p>
+        <p>
+          Push-based refresh can improve live dashboards, but it can also make historical investigation unstable. Pull-based refresh is predictable and cache-friendly. A practical design uses scheduled pull refresh for most panels, live push for active incident views or narrow recent windows, and a frozen mode for post-incident analysis where charts do not mutate while the user is reviewing evidence.
+        </p>
+        <p>
+          Alert overlays have a consistency trade-off. Showing alert firing ranges on the same chart improves diagnosis, but alert state may come from a different system with different evaluation step, label grouping, and lag. The UI should show alert rule identity, evaluation window, and label match rather than implying that the visual threshold line and alert state are computed identically.
+        </p>
+        <p>
+          Dashboard variables trade usability for query risk. A variable picker that allows all services, all regions, or all customers is convenient but can expand into thousands of series. Restricting variables protects the backend but frustrates exploration. Mature systems use autocomplete, cardinality previews, query-cost estimates, and role-based limits so users understand the cost before refreshing the dashboard.
+        </p>
+        <p>
+          Cross-source correlation is useful but dangerous. Combining metrics, deployment annotations, warehouse business metrics, and incident records on one timeline helps diagnosis, but each source has different lag and retention. The UI should show source freshness and timestamp semantics per panel. Otherwise a principal interviewer can challenge the design on false causality.
+        </p>
+        <p>
+          Query caching trades freshness against source protection. Incident dashboards need current data, but hundreds of engineers refreshing the same board can overload the metrics backend. Short TTL caches, request coalescing, and stale-while-revalidate behavior protect sources while keeping users close to real time. The UI should label when a panel is serving cached data so users do not mistake protection behavior for exact freshness.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">uPlot versus D3.js for time-series rendering: D3.js is the most powerful data visualization library for the web but uses SVG by default, which degrades beyond 1,000 data points due to DOM overhead. uPlot is a Canvas-based time-series library specifically designed for Grafana-style dashboards — it renders 10,000+ points at 60fps, has built-in time axis formatting (UTC, local timezone, configurable tick density), and supports synchronized multi-series rendering. uPlot is 50KB minified versus D3's 500KB, making it preferable for performance-critical dashboards. The trade-off: uPlot has a much smaller API surface than D3 and cannot render the arbitrary chart types (treemaps, force layouts, geographic maps) that D3 supports. For a specialized time-series dashboard, uPlot's constraints are acceptable; for a general BI dashboard with diverse chart types, D3 or a higher-level library (Recharts, Nivo) is more appropriate.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Instant queries versus range queries in Prometheus: Prometheus supports two query modes. Range queries (matrix result) return a sequence of {`{value, timestamp}`} pairs for the full time range — appropriate for line charts. Instant queries (vector result) return a single value per metric at a specific timestamp — appropriate for stat panels and gauges. Dashboard panels must use the correct query type for their visualization type; the query editor should enforce this (disable range functions like rate() in instant query mode for stat panels). Mixed query modes on a single dashboard add API complexity — the Query Gateway must fan out to both the /query (instant) and /query_range (range) Prometheus endpoints and normalize the response format.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Store rollups with extrema and counts, not only averages. Min-max bands, counts, and percentiles help preserve spikes, gaps, and sampling quality across long time ranges.
+        </p>
+        <p>
+          Make query step, data freshness, and rollup level visible. Users diagnosing incidents should know whether a panel shows raw ten-second samples, one-minute rollups, or one-hour rollups.
+        </p>
+        <p>
+          Separate hover synchronization from data fetching. Cursor movement should be client-side, throttled, and drawn through refs or canvas overlays. It should not trigger React re-render storms across all panels.
+        </p>
+        <p>
+          Put concurrency limits and query budgets in the gateway. Do not let every browser tab query Prometheus, InfluxDB, or warehouse sources directly. The gateway should deduplicate identical requests and enforce per-tenant and per-source budgets.
+        </p>
+        <p>
+          Treat annotations as data with permissions and source lineage. Deployment, incident, and manual annotations should be tenant-scoped, searchable, filterable, and auditable.
+        </p>
+        <p>
+          Support graceful degradation. If one panel times out, the dashboard should still render other panels. If rollup data is unavailable, the system should explain fallback behavior rather than silently returning partial charts.
+        </p>
+        <p>
+          Make dashboard links reproducible. Shared links should capture time range, variables, comparison mode, selected annotations, and panel focus. Relative ranges are useful for operational dashboards, but incident evidence often needs absolute timestamps so another engineer sees the same data later.
+        </p>
+        <p>
+          Provide owner-facing query hygiene. Dashboards that repeatedly time out, query too many series, use deprecated metrics, or depend on missing rollups should be flagged before an incident. This turns the visualization system into an operationally sustainable platform rather than a collection of expensive charts.
+        </p>
+        <p>
+          Design for incident evidence preservation. During postmortems, teams need absolute time ranges, annotation sets, alert states, and query resolution as they existed during the incident. A saved incident view should freeze those inputs and record dashboard version, variable values, and data freshness. This is different from a live dashboard link, which may shift as relative time ranges and annotations change.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A time-series visualization system like Grafana is built around adaptive resolution query routing (step = timeRange / (pixelWidth / 2) → route to raw / 1min / 5min / 1h rollup), a Query Gateway with per-datasource concurrency limiting and SHA256-keyed Redis caching (TTL = 2 × step), and uPlot canvas rendering with shared Zustand hoverTimestamp for cross-panel cursor synchronization (requestAnimationFrame throttled, ref-based cursor updates to avoid React re-renders). Annotations are fetched in parallel with panel queries (deployment events from CI/CD, incident ranges from PagerDuty, manual annotations) and overlaid as vertical SVG lines or colored bands. Comparison mode duplicates queries with time-shifted offsets (−7d), rendering dashed lower-opacity series with tooltip percentage delta. The dashboard grid uses a 24-column responsive layout; zoom gestures update the global time range state (Zustand), triggering coordinated re-queries across all panels. The defining insight: multi-resolution storage (rollups) is the foundation that makes 30-day dashboards load in &lt;500ms — without rollups, every wide time range query would scan millions of raw data points.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is querying raw data for every time range. This works for short demos and fails for 30-day or one-year dashboards. Multi-resolution rollups are foundational, not an optimization to add later.
+        </p>
+        <p>
+          Another pitfall is hiding rollup semantics. If a user sees a smoothed average without knowing it, they may miss spikes or gaps. The chart should show aggregation level and preserve extrema where possible.
+        </p>
+        <p>
+          Teams often trigger React state updates on every mousemove for synchronized cursors. With many panels this creates expensive re-renders. Cursor drawing should be imperatively updated or handled in canvas overlays.
+        </p>
+        <p>
+          Dashboards can overload data sources when many users open them at once. Without cache, dedupe, and concurrency caps, one popular dashboard can become a denial-of-service event against the metrics backend.
+        </p>
+        <p>
+          Annotation systems become noisy if every deployment, incident, and manual note is shown by default. The UI needs filtering and severity rules so context helps rather than obscures the signal.
+        </p>
+        <p>
+          Teams also ignore dashboard lifecycle. Critical dashboards accumulate stale panels, orphaned owners, deprecated metrics, and hidden expensive queries. A principal-level platform should surface dashboard health and ownership debt instead of waiting for broken panels during an outage.
+        </p>
+        <p>
+          Another failure is hiding gaps as flat lines. Missing samples, delayed ingestion, downsampled nulls, and true zero values have different meanings. A chart that visually connects missing points can hide telemetry outages or sensor failures. Gap rendering should be explicit and tied to source metadata.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          SRE dashboards correlate request rate, latency, error rate, saturation, deployments, and incidents during production debugging. Shared cursors and annotations reduce time to identify a regression.
+        </p>
+        <p>
+          Business operations dashboards track revenue, orders, inventory, conversion, refunds, and support volume. Comparison mode helps separate seasonality from actual anomalies.
+        </p>
+        <p>
+          IoT dashboards visualize device telemetry across fleets, regions, and sensor types. Rollups and gap handling are critical because long-range views can hide intermittent device outages.
+        </p>
+        <p>
+          Data platform dashboards monitor pipeline throughput, freshness, lag, error rates, and cost. Annotation overlays for deploys and incident windows help explain metric changes.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you make 30-day time-series dashboards load quickly?</h3>
+        <p>
+          I would use multi-resolution storage and adaptive query routing. Raw data is used for short recent windows. Longer windows route to one-minute, five-minute, or one-hour rollups based on panel width and time range. The query gateway chooses the step, caches results, and returns only the number of points the chart can use.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">2. How do synchronized cursors work across many panels?</h3>
+        <p>
+          Hovering over one panel converts mouse x-position to a timestamp and writes it to shared client state. Other panels draw a cursor at that timestamp using their own x-scale. The update should be throttled and drawn through refs or canvas overlays so the dashboard does not re-render every panel on every mousemove.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">3. What does the query gateway do?</h3>
+        <p>
+          It normalizes query requests, selects resolution, enforces tenant context, limits concurrency, checks cache, routes to the right data source, and normalizes responses. It protects Prometheus, InfluxDB, warehouses, or long-term stores from direct dashboard fanout.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">4. How would you support annotations?</h3>
+        <p>
+          I would store annotations separately with tenant, type, timestamp, optional end timestamp, tags, source, and payload. The frontend fetches annotations for the dashboard range and overlays them as vertical markers or bands. Deployment and incident integrations can create annotations automatically, while manual annotations should be audited and permissioned.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">5. How does comparison mode affect the system?</h3>
+        <p>
+          Comparison mode duplicates panel queries with a shifted time range, such as one week earlier. It renders the comparison as a dashed or lower-opacity series and computes deltas in tooltips. It roughly doubles query load for enabled panels, so the gateway should cache comparison ranges and the UI should allow selective enablement.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">6. What would you monitor?</h3>
+        <p>
+          I would monitor dashboard load time, per-panel query latency, cache hit rate, gateway queue time, source concurrency, timeout rate, selected resolution, rollup fallback rate, cursor render cost, annotation query latency, comparison query load, and errors segmented by tenant, dashboard, data source, panel count, and time range.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li><a href="https://grafana.com/docs/grafana/latest/" target="_blank" rel="noreferrer">Grafana Documentation</a></li>
+          <li><a href="https://prometheus.io/docs/prometheus/latest/querying/basics/" target="_blank" rel="noreferrer">Prometheus: Querying Basics</a></li>
+          <li><a href="https://prometheus.io/docs/prometheus/latest/querying/api/" target="_blank" rel="noreferrer">Prometheus HTTP API</a></li>
+          <li><a href="https://thanos.io/tip/components/query.md/" target="_blank" rel="noreferrer">Thanos Query and Downsampling Concepts</a></li>
+          <li><a href="https://leeoniya.github.io/uPlot/" target="_blank" rel="noreferrer">uPlot: High-Performance Time-Series Charts</a></li>
+          <li><a href="https://docs.influxdata.com/influxdb/" target="_blank" rel="noreferrer">InfluxDB Documentation</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -7,91 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-semantic-search-ui",
-  title: "Design a Semantic Search UI (AI-Powered)",
-  description:
-    "Architecture for an AI-powered semantic search UI: query embedding generation, vector similarity search with approximate nearest neighbors, hybrid search (keyword + vector blend), result explanations showing why each result matched, query expansion and reformulation suggestions, conversational search with follow-up questions, semantic snippet highlighting, confidence scores and result diversity, streaming search results, and fallback to keyword search for precision queries.",
+  title: "Design a Semantic Search UI",
+  description: "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability.",
   category: "high-level-design",
   subcategory: "search-discovery-systems",
   slug: "semantic-search-ui",
-  wordCount: 5000,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "semantic-search", "ai", "vector-search", "embeddings", "hybrid-search", "conversational"],
-  relatedTopics: ["faceted-search-large-datasets", "search-ranking-experimentation-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "search", "ranking", "discovery", "indexing", "experimentation"],
+  relatedTopics: [],
 };
 
-export default function SemanticSearchUIArticle() {
+const definition = [
+  "Design a Semantic Search UI is a discovery system where user intent, index freshness, ranking quality, result presentation, and feedback loops all shape whether users find the right thing. A principal-ready answer treats a semantic search UI as a full search product, not as a text box backed by an index.",
+  "The visible UI is only the final step in a larger pipeline: content ingestion, indexing, query understanding, retrieval, ranking, filtering, presentation, analytics, and continuous quality improvement. If any part drifts, users see irrelevant results, stale content, empty states, or unsafe recommendations.",
+  "Search and discovery systems are also adversarial. Sellers, creators, spammers, and internal teams may try to game ranking signals. The architecture should include spam controls, policy filters, quality metrics, and explainability for operators.",
+  "The design should define which state is authoritative. Indexed documents, ranking features, facet counts, suggestions, recommendations, and analytics are projections. Permissions, takedowns, privacy policy, inventory availability, and safety decisions need stronger enforcement.",
+  "A staff/principal answer should be able to defend latency, relevance, freshness, privacy, cost, and experimentation trade-offs under pressure. Search is not only about returning results quickly; it is about returning the right results safely and measurably."
+];
+const concepts = [
+  "The first concept is query understanding. The system should handle spelling, synonyms, entity detection, intent classification, natural language, filters, personalization, and query rewriting without hiding how much confidence it has.",
+  "The second concept is retrieval strategy. hybrid retriever, reranker, and citation panel may use lexical retrieval, vector retrieval, structured filters, popularity priors, freshness boosts, or hybrid retrieval depending on the product.",
+  "The third concept is ranking. Ranking combines relevance, quality, freshness, personalization, safety, diversity, availability, and business constraints. A principal design avoids optimizing only clicks because clicks can reward spam, clickbait, or shallow results.",
+  "The fourth concept is freshness and consistency. Search indexes, suggestions, facet counts, embeddings, analytics, and recommendations can lag. Takedowns, permissions, private data, inventory state, and safety blocks need fast invalidation or query-time enforcement.",
+  "The fifth concept is feedback. Explicit feedback, clicks, dwell time, reformulations, no-click sessions, hides, reports, purchases, completions, and abandonment all provide quality signals. These signals must be protected from fraud and bias.",
+  "The sixth concept is observability. Track query latency, suggestion latency, zero-result rate, reformulation rate, click position, long-click rate, facet usage, index lag, permission-filter drops, freshness distribution, and ranking experiment guardrails."
+];
+const architecture = [
+  "The architecture contains embedding service, hybrid retriever, reranker, citation panel, feedback capture. The ingestion path normalizes documents or items and builds indexes. The query path parses user intent, retrieves candidates, ranks them, applies policy and permissions, and renders results. The feedback path records behavior for analytics, quality review, and controlled ranking updates.",
+  "Indexing should be version-aware. A document, video, product, or answer should know which content version produced its search document, embedding, snippet, thumbnail, and facet values. This is essential for rollback, takedown propagation, and explaining stale results.",
+  "The query serving path should be layered. A fast suggestion path handles prefix and recent queries. A retrieval path returns candidate IDs. A ranking path scores candidates. A policy path enforces permissions, safety, consent, inventory, and regional restrictions. A rendering path builds snippets, highlights, facets, and empty-state guidance.",
+  "The frontend should preserve query state in URLs or route state where appropriate, but the backend should own interpretation. Filters, facets, sort order, pagination cursor, personalization mode, and experiment assignment should be explicit and reproducible for support and debugging.",
+  "Result presentation matters. The UI should show why results match when possible, make filters reversible, avoid hiding zero-result recovery options, and handle partial failures such as missing facets or delayed recommendations without losing the primary result list.",
+  "Operations need controls for index rebuild, ranking rollback, synonym rollback, suggestion blacklist, spam demotion, model rollback, experiment stop, cache purge, and privacy takedown verification."
+];
+const tradeoffs = [
+  "Lexical search is predictable and strong for exact terms, IDs, error codes, and names. Semantic search handles intent and paraphrase better, but can return surprising matches and is harder to explain. Hybrid retrieval is often the most defensible production choice.",
+  "Query-time permission filtering is safer but can be expensive and may reduce candidate quality after ranking. Index-time filtering is faster but risks stale permissions. Sensitive systems usually combine indexed permission fields with query-time enforcement for high-risk data.",
+  "Fresh indexes improve trust but cost more in ingestion, indexing throughput, and cache churn. Batch indexing is cheaper and simpler but creates visible lag. The right answer depends on whether users expect real-time discovery.",
+  "Personalization improves relevance but creates privacy and filter-bubble concerns. Anonymous or generic ranking is more explainable but can be less useful. A strong design supports user controls, privacy modes, and unbiased evaluation sets.",
+  "Facet counts and aggregations improve exploration but can be expensive over large datasets and misleading under approximate counts. The UI should distinguish exact, approximate, delayed, or unavailable aggregations when it matters.",
+  "Experimentation improves ranking quality but can harm users if guardrails are weak. Search experiments need relevance metrics, latency, zero-result rate, complaint/report rate, revenue or conversion, diversity, and fairness guardrails."
+];
+const practices = [
+  "Define relevance and quality metrics before choosing infrastructure. A fast search system with poor relevance is not successful; a relevant search system with unacceptable latency is also not successful.",
+  "Keep search documents and ranking features versioned. Store source ID, source version, index version, embedding version, policy version, and freshness timestamp where possible.",
+  "Use stable pagination cursors. Offset pagination becomes incorrect when ranking changes, new content arrives, or policy filters remove results between pages.",
+  "Protect sensitive queries and logs. Query text can contain names, secrets, health data, customer IDs, or legal terms. Redact, sample, aggregate, and restrict access to raw logs.",
+  "Build quality review tools. Search teams need query replay, side-by-side ranking comparison, bad-result labeling, zero-result review, synonym management, and rollback controls.",
+  "Handle empty and low-confidence states intentionally. Suggest spelling fixes, broader filters, related categories, popular results, saved searches, or escalation depending on product context.",
+  "Separate online serving from offline training and evaluation. Production ranking should be reproducible and rollback-safe even if model training or analytics pipelines are delayed."
+];
+const pitfalls = [
+  "irrelevant semantic matches is usually caused by optimizing one path while ignoring the full discovery loop. Suggestions, results, facets, and recommendations must share policy and freshness assumptions.",
+  "tenant leakage becomes a trust issue when ranking rewards behavior without integrity checks. Search systems need spam, abuse, and business-rule guardrails.",
+  "explainability gap happens when indexes and derived projections are treated as secondary. Users experience stale search as product incorrectness, not infrastructure lag.",
+  "embedding drift is dangerous because search can expose private or unsafe content through snippets, suggestions, facets, caches, and analytics dashboards.",
+  "Another pitfall is measuring only click-through rate. Clicks can increase when results are ambiguous, sensational, or low quality. Use long-clicks, reformulation, task completion, reports, and satisfaction signals.",
+  "Teams also forget supportability. Operators should be able to answer why a result appeared, why it ranked where it did, what filters applied, and which experiment or model was active."
+];
+const useCases = [
+  "enterprise knowledge search requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "legal document discovery requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "support answer search requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "During an indexing incident, the product should continue serving existing results, show freshness where appropriate, pause risky ranking changes, and provide index lag dashboards and rebuild controls.",
+  "During a spam or abuse incident, the system should demote suspicious documents, blacklist harmful suggestions, throttle abusive actors, and preserve review evidence.",
+  "During a ranking experiment regression, teams should stop the experiment, replay affected queries, compare side-by-side results, and roll back the ranking or feature version safely."
+];
+const questions = [
+  {
+    "question": "How would you design a semantic search UI end to end?",
+    "answer": "I would design ingestion, indexing, query understanding, retrieval, ranking, policy enforcement, result rendering, and feedback loops as separate but observable stages. The frontend owns query state and presentation, while the backend owns interpretation, candidate retrieval, ranking, and permission enforcement. Operations need index rebuilds, ranking rollback, query replay, spam controls, and quality dashboards."
+  },
+  {
+    "question": "Why this architecture over a simple indexed keyword search?",
+    "answer": "Keyword search alone is predictable but insufficient for intent, personalization, facets, semantic matching, ranking experiments, policy enforcement, and quality learning. The layered architecture adds complexity, but it lets the system tune relevance, freshness, safety, and latency independently."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are irrelevant semantic matches, tenant leakage, explainability gap, embedding drift, plus cache stampedes, index lag, high-cardinality facets, hot queries, ranking drift, spam manipulation, privacy leaks in logs, and experiment regressions. Prevention requires versioned indexes, stable cursors, guardrail metrics, query sampling, cache strategy, and operational rollback."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Search indexes, suggestions, embeddings, facet counts, recommendations, and analytics can be eventually consistent if freshness is tracked. Permissions, takedowns, private data, safety filters, inventory availability, and paid access need strong query-time enforcement or fast invalidation. The design should classify each projection explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through stale-but-safe results, index rebuild, ranking rollback, degraded facets, and query replay. Abuse is controlled through spam scoring, suggestion blacklists, rate limits, and moderation. Privacy requires query log minimization and permission-safe snippets. Cost is controlled through caching, tiered indexes, approximate aggregations, and sampling. Observability tracks latency, freshness, zero-result rate, reformulation, guardrails, and quality labels."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate exact retrieval, semantic intent, ranking, policy, and presentation. I would defend hybrid retrieval because it handles both exact and fuzzy intent. I would defend eventual index consistency for normal discovery, but not for privacy or takedown enforcement. I would also explain how guardrails prevent ranking optimizations from harming trust."
+  }
+];
+const references = [
+  {
+    "label": "Elasticsearch relevance and query guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "Lucene scoring documentation",
+    "href": "https://lucene.apache.org/core/"
+  },
+  {
+    "label": "Google Search quality documentation",
+    "href": "https://developers.google.com/search/docs"
+  },
+  {
+    "label": "Nielsen Norman Group: search usability",
+    "href": "https://www.nngroup.com/topic/search/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST privacy framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  }
+];
+
+export default function SemanticSearchUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Semantic search understands the meaning of a query rather than matching exact keywords. A keyword search for "how to fix memory issues in JavaScript" retrieves documents containing those exact words. A semantic search retrieves documents about JavaScript garbage collection, memory leaks, heap profiling, and WeakRef — topics that are semantically related even if they don't contain the exact query words. This is achieved by encoding both queries and documents as dense vector embeddings (typically 768–1536 dimensional float arrays), where semantically similar content produces vectors that are geometrically close in the embedding space. Similarity search (approximate nearest neighbor) over these vectors retrieves the most semantically relevant documents.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The UI challenge is different from keyword search: semantic search results may not visibly contain the query terms, making it harder for users to understand why a result was returned ("I searched for 'memory issues' but this result talks about 'garbage collection' — why is it here?"). The result explanation problem requires the UI to surface semantic context: "This result was matched because it discusses JavaScript memory management." Additionally, the search mode selection (keyword versus semantic) is a new UX concept that users must understand and control. Conversational search (where the user asks a follow-up question that builds on the previous query context) introduces a chat-like paradigm that must be integrated with a traditional search result presentation.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Semantic search result presentation, result explanations, hybrid search mode toggle, query expansion suggestions, and conversational search UI. Not in scope: the embedding model training, vector database infrastructure, or fine-tuning on domain-specific data.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/semantic-search-ui.svg" alt="Design a Semantic Search UI architecture" caption="Architecture view: ingestion, query understanding, retrieval, ranking, policy, rendering, and feedback loops." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/semantic-search-ui-flow.svg" alt="Design a Semantic Search UI flow" caption="Flow view: query lifecycle, candidate retrieval, ranking, filtering, result presentation, and quality feedback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/semantic-search-ui-operations.svg" alt="Design a Semantic Search UI operations" caption="Operations view: index freshness, ranking rollback, spam controls, privacy-safe logs, and search quality observability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Semantic search mode:</strong> A toggle or mode selector allows users to switch between "Keyword" (exact match, BM25 ranking) and "Semantic" (embedding similarity) search modes. A "Hybrid" mode blends both signals (configurable weight: 70% semantic + 30% keyword by default). The selected mode is preserved in localStorage and reflected in the URL (?mode=semantic).</li>
-          <HighlightBlock as="li" tier="important"><strong>Result explanations:</strong> Each semantic result shows a "Why this result?" expandable section revealing the matched semantic concepts: "Matched: JavaScript memory management, heap profiling, garbage collection." Confidence score badge (High / Medium / Low) based on cosine similarity threshold. Visual similarity bar showing how close the result is to the query embedding.</HighlightBlock>
-          <li><strong>Query expansion:</strong> Below the search box, a "Related searches" row shows semantically related queries generated by expanding the embedding neighborhood: for "memory issues JavaScript," suggestions include "JavaScript garbage collection tutorial," "WeakRef JavaScript," "heap memory profiling Chrome DevTools." Each suggestion is clickable and can be added to the search.</li>
-          <li><strong>Conversational search:</strong> A "Continue this search" panel allows follow-up questions that inherit the previous query context. User types "What tools can I use for this?" after a semantic search for "JavaScript memory management," and the system returns results for memory profiling tools because the follow-up is interpreted in the context of the previous query.</li>
-          <HighlightBlock as="li" tier="important"><strong>Streaming results:</strong> Semantic search results stream in progressively — the highest-confidence results appear first as they are retrieved from the vector database, with lower-confidence results appending below as the ANN (approximate nearest neighbor) search completes across all shards.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Query embedding latency:</strong> The query embedding is computed on the server within 50ms (using a lightweight encoder model, not the full 768-dim model used for indexing). The total semantic search latency target is 500ms (50ms embedding + 200ms ANN search + 250ms result hydration).</HighlightBlock>
-          <li><strong>Result diversity:</strong> The top 10 results should not all be from the same source document or author — a diversity re-ranking step ensures representation from at least 5 distinct sources in the top 10.</li>
-          <li><strong>Fallback behavior:</strong> If the vector database returns fewer than 3 results above the confidence threshold, the system automatically falls back to keyword search and displays a "Showing keyword results — no strong semantic matches found" banner.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The semantic search system has a query path and a result rendering path. In the query path: the user's query string is sent to the Search API, which runs the query through a lightweight embedding encoder (ONNX Runtime inference on the server, 50ms latency), produces a 768-dimensional float vector, and issues an ANN search against the vector database (Pinecone, Weaviate, or pgvector). The ANN search returns the top-K most similar document IDs with their cosine similarity scores. These IDs are hydrated (metadata fetched from PostgreSQL/Elasticsearch) and the results are ranked by a blend of semantic score + freshness + authority. In hybrid mode, a BM25 keyword search runs concurrently, and the two result sets are merged using Reciprocal Rank Fusion (RRF). Results stream back to the client as they become available. The conversational context is maintained client-side in a session context object (previous queries and their embedding vectors) and sent with each new query for context-aware embedding.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/semantic-search-ui.svg"
-          alt="Semantic search UI architecture showing query pipeline (user query → Search API; embedding encoder: ONNX Runtime → 768-dim vector 50ms; ANN search: Pinecone/pgvector → top-K doc IDs + cosine similarity scores; hybrid: BM25 keyword search concurrent → Reciprocal Rank Fusion merge; result hydration: GET doc metadata from ES; diversity re-rank: max 2 per source; stream to client SSE), result presentation (each card: title + URL + snippet; semantic snippet: highlight matched concept phrases not just query words; confidence badge: High &gt;0.85 Medium 0.7-0.85 Low &lt;0.7; similarity bar: CSS width = cosine_score*100%; 'Why this result?': expandable section: matched concepts list; mode toggle: Keyword / Hybrid / Semantic → URL ?mode= → re-query; streaming: first results appear at 300ms as ANN shards return), query expansion (GET /api/suggest/semantic?q={query}&mode=expand → nearest neighbor queries in embedding space; show as chip row 'Related: JavaScript GC tutorial | heap profiling Chrome | WeakRef JS'; click chip → append to query OR replace query; query reformulation: 'Try: {broader query}' when &lt;3 high-confidence results), conversational search (session context: [{query, embedding, timestamp}] in sessionStorage; follow-up input 'Continue this search'; POST /api/search {query, context_embeddings:[prev_embeddings]} → server: weighted average of current + previous embeddings → ANN search in blended context; show context breadcrumb: 'Based on: JavaScript memory management → What tools can I use?'; reset context: X button), fallback logic (cosine threshold check: if top result &lt; 0.65 similarity → trigger keyword fallback; banner: 'Showing keyword results — no strong semantic matches'; auto-switch mode indicator; zero results: show query expansion + broad category suggestions), search mode state (localStorage mode=semantic|hybrid|keyword; URL ?mode=semantic; mode toggle: 3-way switch component; hybrid weight slider: 0-100% semantic vs keyword; advanced: model selector embedding-model dropdown)."
-          caption="ONNX query embedding (50ms), ANN vector search (Pinecone/pgvector), parallel BM25 + RRF hybrid merge, SSE streaming results, confidence badges (cosine threshold), semantic snippet concept highlighting, 'Why this result?' expandable explanations, embedding-space query expansion chips, conversational context (weighted embedding average), and automatic keyword fallback (&lt;0.65 similarity threshold)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Hybrid Search and Reciprocal Rank Fusion</h3>
-        <HighlightBlock as="p" tier="important">Pure semantic search excels at conceptual matching but can miss precision queries where the user needs an exact term ("RFC 7230", a specific function name, an error code). Pure keyword search misses conceptual synonyms and paraphrases. Hybrid search blends both by running the queries in parallel and merging the result sets. The standard merging algorithm is Reciprocal Rank Fusion (RRF): for each document, the RRF score is 1/(k + rank_semantic) + 1/(k + rank_keyword), where k=60 is a smoothing constant and rank is the document's position in each result list. Documents that rank highly in both lists get the highest combined score, while documents that only appear in one list get a lower score. RRF is robust: it doesn't require normalizing the score values from semantic and keyword search (which use different score scales), only the rank positions matter.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The hybrid weight slider in the UI allows advanced users to adjust the blend. At 100% semantic, only the ANN search runs. At 100% keyword, only BM25 runs. At intermediate values, RRF is applied with a weight modifier: the RRF contribution from each source is multiplied by the mode weight. Most users should use the default hybrid mode (70% semantic, 30% keyword), which provides both semantic understanding and keyword precision.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Result Explanations</h3>
-        <HighlightBlock as="p" tier="important">A common complaint with semantic search is that users don't understand why a result was returned. "I searched for 'authentication bug' and this article about 'JWT expiry handling' appeared — why?" The result explanation system surfaces the matched semantic concepts by computing the most similar words/phrases in the result to the query embedding. Implementation: for each returned document, the server runs an inverted similarity check — it identifies the top-5 phrases from the document that have the highest cosine similarity to the query embedding (using a phrase-level embedding index stored alongside the document). These phrases are the "matched concepts" displayed in the "Why this result?" section.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The confidence score is a direct mapping of the cosine similarity to a human-readable label: similarity &gt;0.85 = "High confidence," 0.70–0.85 = "Medium confidence," &lt;0.70 = "Low confidence." The similarity bar is a CSS-width div showing the relative score visually. These explanations are collapsed by default (to maintain a clean SERP) and expand on click. They are particularly important for building user trust in semantic search — users who understand why a result was returned are more likely to trust the system and explore semantically related results.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Conversational Search Context</h3>
-        <HighlightBlock as="p" tier="important">Conversational search allows follow-up queries that inherit the context of previous queries. The session context is maintained client-side as an array of {`{query, embedding}`} pairs stored in sessionStorage. When a follow-up query is submitted, the client sends both the new query text and the session's previous embeddings to the Search API. The server computes a blended context embedding: a weighted average of the current query embedding (weight 0.7) and the most recent previous embedding (weight 0.3). This blended vector is used for the ANN search, biasing results toward the overall topic of the conversation while still responding to the new query direction.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The conversational context is displayed as a breadcrumb above the search results: "Based on: JavaScript memory management" for the first follow-up, "Based on: JavaScript memory management → profiling tools" for the second. An "X" button on the breadcrumb resets the context (clears sessionStorage context and issues a fresh query without context blending). The context has a maximum depth of 3 previous queries — beyond this, the blended embedding becomes too diluted to be useful, and older context is dropped. The UI shows a "Context depth" indicator so users know how far back the context extends.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Streaming Search Results</h3>
-        <HighlightBlock as="p" tier="important">Semantic search over a sharded vector database produces results asynchronously — different shards return their top-K candidates at different times, and the global top-K is determined only after all shards respond. Instead of waiting for all shards (which would increase latency), the UI streams results progressively. The Search API uses SSE (Server-Sent Events) to stream results: as each shard returns candidates above the confidence threshold, those results are hydrated and pushed to the client. The client appends results to the result list in real time — the user sees the first results within 300ms and the full result set within 500ms.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The streaming UI shows a subtle "Loading more results..." indicator at the bottom of the result list while the search is in progress. When the search completes, the indicator is replaced by the total result count ("Found 47 relevant results"). The streaming approach requires the client to handle out-of-order result cards: a result that arrives later may have a higher confidence score than an already-displayed result, requiring re-sorting. The implementation: results are inserted into a sorted array (by confidence score) and the React list re-renders with the updated sorted order. The result cards animate smoothly into their positions using CSS transitions (transform: translateY, opacity) to avoid jarring visual jumps.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Vector database cost versus PostgreSQL with pgvector: dedicated vector databases (Pinecone, Weaviate, Qdrant) are optimized for ANN search and can handle billions of vectors with millisecond latency. However, they are expensive and add operational complexity. PostgreSQL with the pgvector extension is a simpler alternative for smaller datasets (under 10 million vectors): it performs exact nearest-neighbor search (not approximate) with an IVFFlat or HNSW index, achieving good latency for datasets under 1 million vectors. For a new product without massive scale, pgvector in the existing PostgreSQL cluster reduces operational overhead significantly. The migration path to a dedicated vector database is straightforward when the dataset grows.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Semantic search model selection: the embedding model's quality and size directly affect both search relevance and latency. Larger models (e.g., text-embedding-3-large with 3072 dimensions) produce higher-quality embeddings but require more compute and storage. Smaller models (e.g., all-MiniLM-L6-v2 with 384 dimensions) are 10× faster and cheaper but less accurate. The query path uses the same model as the indexing path — using different models would produce incompatible embedding spaces. Model updates are expensive: changing the embedding model requires re-embedding the entire document corpus, which can take days for a large dataset.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A semantic search UI bridges conceptual search (vector similarity) and keyword search (BM25) with a hybrid mode using Reciprocal Rank Fusion. The query path: ONNX encoder (50ms) → ANN search (Pinecone/pgvector) → RRF merge with BM25 → diversity re-rank → SSE streaming to client. Result cards show confidence badges (cosine similarity thresholds: &gt;0.85 High, 0.70–0.85 Medium, &lt;0.70 Low), similarity bars, and expandable "Why this result?" sections showing matched semantic concept phrases. Query expansion chips surface related queries from the embedding neighborhood. Conversational search maintains a sessionStorage context array (max depth 3) of previous embeddings, blended with the current query at 0.7/0.3 weight for context-biased ANN search. Results stream progressively via SSE as vector shards return, with smooth CSS-animated insertion. Automatic fallback to keyword search when confidence &lt;0.65. The core design insight: the UI's job is to make semantic search's non-obvious matching understandable — result explanations (matched concepts), confidence scores, and query expansion suggestions are not optional decorations but essential trust-building mechanisms that determine whether users accept and explore semantic results.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

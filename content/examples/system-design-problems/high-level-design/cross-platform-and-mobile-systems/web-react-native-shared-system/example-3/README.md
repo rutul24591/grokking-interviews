@@ -1,1 +1,5 @@
-# Design a web + React Native shared system — Example 3
+# WEB React Native Shared System - Example 3
+
+Concrete cross-platform client edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

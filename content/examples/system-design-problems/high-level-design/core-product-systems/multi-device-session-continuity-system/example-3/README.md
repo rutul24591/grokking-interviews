@@ -1,1 +1,5 @@
-# Design a multi-device session continuity system — Example 3
+# Multi Device Session Continuity System - Example 3
+
+Concrete core product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

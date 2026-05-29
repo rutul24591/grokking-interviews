@@ -7,88 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-whatsapp-slack-frontend",
-  title: "Design WhatsApp Web / Slack Frontend",
-  description:
-    "Architecture for a real-time chat frontend like WhatsApp Web or Slack: WebSocket connection management with exponential backoff reconnection, message ordering via Lamport timestamps and sequence numbers, optimistic message sending with local IDs, read receipt and delivery status tracking, channel and DM sidebar with unread counts, message search with Elasticsearch, file upload with resumable multipart, end-to-end encryption key management, presence and typing indicators, and offline queue replay on reconnection.",
+  title: "Design a WhatsApp/Slack-like Frontend",
+  description: "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability.",
   category: "high-level-design",
   subcategory: "messaging-communication",
   slug: "whatsapp-slack-frontend",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "chat", "websocket", "real-time", "message-ordering", "read-receipts", "presence", "e2e-encryption"],
-  relatedTopics: ["threaded-messaging-system", "notification-inbox-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "messaging", "realtime", "notifications", "privacy", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a WhatsApp/Slack-like Frontend is a communication system where correctness is user-visible: people notice missing messages, wrong unread counts, late notifications, broken drafts, and privacy leaks immediately. A principal-ready design treats a real-time chat frontend as a distributed event and state synchronization problem, not simply a list of messages.",
+  "The design must define message identity, ordering, delivery acknowledgement, read state, presence, offline behavior, notification policy, abuse controls, and recovery after reconnect. Different surfaces can be eventually consistent, but user intent and privacy-sensitive state need stronger guarantees.",
+  "Communication systems also sit at the boundary between realtime UX and durable history. The UI should feel live, but messages, edits, deletes, receipts, and moderation decisions must survive refresh, device changes, network loss, and replay.",
+  "A staff/principal answer should name what is authoritative: message append log, conversation membership, consent or preference policy, delivery receipt, read state, and moderation state. Derived views such as inbox rows, snippets, unread counts, search results, and push notifications can lag if they are observable and repairable.",
+  "The system must be abuse-aware. Spam, phishing, harassment, notification bombing, large-room fanout, and provider outages are expected operating conditions, not rare edge cases."
+];
+const concepts = [
+  "The first concept is message identity and ordering. Every message or communication event needs a stable ID, conversation or recipient scope, sender, timestamp, sequence or logical clock, edit/delete state, and idempotency key.",
+  "The second concept is delivery semantics. Sent, accepted, delivered, read, failed, suppressed, and moderated are different states. Collapsing them into delivered creates incorrect UI and support confusion.",
+  "The third concept is multi-device synchronization. message store, realtime gateway, and local cache must converge after offline use, app restart, token refresh, and reconnect.",
+  "The fourth concept is privacy and membership. Conversation membership, blocks, consent, retention, legal hold, and channel policy must be enforced across message history, notifications, search, exports, and previews.",
+  "The fifth concept is fanout and backpressure. Large rooms, high-volume channels, notification storms, and provider retries can overload clients and backend queues unless traffic is shaped by priority and recipient state.",
+  "The sixth concept is observability. Track send success, delivery lag, unread drift, websocket reconnects, push receipt latency, provider failures, moderation actions, search indexing lag, and duplicate suppression."
+];
+const architecture = [
+  "The architecture has message store, realtime gateway, presence service, local cache, notification bridge. The write path accepts user intent and appends durable events. The realtime path streams events to online clients. Projection workers build inboxes, unread counts, snippets, search documents, notifications, and analytics. Policy services enforce membership, consent, mute state, and moderation.",
+  "Clients should maintain a local event cache and pending operation queue. This allows instant local rendering for pending sends while preserving authoritative reconciliation when the server accepts, rejects, edits, redacts, or reorders events.",
+  "Ordering should be scoped. A global total order is unnecessary and expensive. Conversations or channels need stable ordering semantics, and cross-channel inbox projections can use per-conversation latest-event time plus tie-breakers.",
+  "Read state and delivery receipts should be modeled separately. Read state is often per-user per-conversation and may be eventually consistent across devices. Delivery receipt may depend on device connectivity, provider acknowledgement, or policy suppression.",
+  "The frontend should show truthful states: sending, sent, delivered, read, failed retryable, failed permanent, hidden by policy, deleted, edited, or blocked. These states reduce support issues and prevent dangerous duplicate user actions.",
+  "Operations need controls to disable a provider, mute a noisy event type, replay a projection, rebuild search, quarantine spam, revoke a compromised sender, and inspect a message timeline with privacy-safe audit trails."
+];
+const tradeoffs = [
+  "WebSockets or persistent connections give low-latency delivery but require connection management, backpressure, auth refresh, and fallback to polling. Polling is simpler but increases latency and cost at scale.",
+  "Server-authoritative ordering prevents inconsistent history but can make local sends appear to move after acknowledgement. Local optimistic ordering feels responsive but needs reconciliation and visible pending states.",
+  "Push notifications improve re-engagement but can leak private content on locked screens, violate user preferences, or amplify spam. Notification payloads should be minimized and policy-checked.",
+  "Storing full local history improves offline UX but creates privacy, storage, and deletion challenges. A principal design caches only what is needed, encrypts where appropriate, and clears data on logout or device distrust.",
+  "End-to-end encryption protects content privacy but limits server-side search, moderation, and support visibility. Systems must decide where encryption applies and how metadata, abuse reports, and recovery work.",
+  "Strongly consistent unread counts are expensive and often unnecessary. Users tolerate slight unread drift if it converges quickly, but message loss, privacy leaks, and duplicate sends are not acceptable."
+];
+const practices = [
+  "Use idempotency for send, edit, delete, mark-read, and notification creation. Retries from mobile devices and provider callbacks should converge on one logical event.",
+  "Model conversation membership and consent as policy inputs for every surface: message fetch, push, email, search, preview, export, and support view.",
+  "Keep pending local state visibly distinct from accepted server state. Users should know when a message or notification action is not yet durable.",
+  "Use backpressure for realtime streams. Drop or coalesce low-value typing, presence, and read events before dropping durable messages.",
+  "Build projection repair paths. Inbox rows, unread counts, search indexes, and digest summaries should be rebuildable from the authoritative event log.",
+  "Create abuse controls for spam senders, phishing links, notification floods, and toxic threads. Moderation state should propagate to clients and notifications quickly.",
+  "Instrument device cohorts separately. Messaging bugs often appear only on reconnect, app backgrounding, low battery, stale tokens, or older clients."
+];
+const pitfalls = [
+  "ordering gaps is usually caused by unclear ordering or reconciliation semantics. The design needs scoped sequence, idempotency, and client reconciliation.",
+  "ghost unread badges undermines user trust because communication UIs become task lists. Unread/read state should be observable, repairable, and separated from delivery.",
+  "presence drift happens when privacy policy is enforced in the main view but not in notifications, previews, search, or exports.",
+  "large-room fanout should be expected for large rooms, provider retries, or viral notifications. Backpressure and throttling must be first-class.",
+  "Another pitfall is treating push, email, websocket, and inbox as independent products. Users perceive them as one communication system, so policy and state must converge.",
+  "Teams also forget retention and legal hold. Delete for user, delete for everyone, archive, export, and legal retention require explicit semantics."
+];
+const useCases = [
+  "direct messages requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "team channels requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "mobile offline chat requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "During provider outage, the hub should fail over channels where allowed, queue retryable messages, suppress duplicates, and show delivery uncertainty clearly.",
+  "During abuse spike, the system should throttle senders, reduce notification fanout, scan links, quarantine suspicious threads, and preserve review evidence.",
+  "During reconnect, the client should fetch missed events from a cursor, reconcile local pending operations, update read state, and avoid replaying already accepted actions."
+];
+const questions = [
+  {
+    "question": "How would you design a real-time chat frontend end to end?",
+    "answer": "I would design an authoritative event log for durable communication events, realtime gateways for online delivery, projection workers for inboxes and unread counts, policy services for membership and consent, and client local state for pending operations and offline recovery. The frontend shows truthful delivery states while the backend owns ordering, idempotency, and enforcement."
+  },
+  {
+    "question": "Why this architecture over direct client-to-client messaging or a simple notifications table?",
+    "answer": "Direct client-to-client messaging cannot provide durable history, moderation, multi-device sync, search, retention, or support reconstruction. A simple notifications table cannot represent delivery, read state, retries, provider acknowledgements, and policy suppression. The event-log plus projection model adds complexity but makes the system repairable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are ordering gaps, ghost unread badges, presence drift, large-room fanout, plus reconnect storms, websocket fanout, unread drift, provider rate limits, spam waves, and projection lag. Prevention requires scoped ordering, backpressure, idempotency, projection repair, provider abstraction, and abuse controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Message append, membership, deletion/redaction, and consent policy need strong server control. Inbox rows, unread counts, search indexes, push delivery receipts, and presence can be eventually consistent if they converge and expose uncertainty. Read state usually accepts eventual consistency across devices."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with reconnect cursors, retry queues, provider failover, local pending state, and projection rebuilds. Rollback uses feature flags, provider disablement, and event replay. Abuse is controlled through rate limits, link scanning, reputation, and moderation. Privacy requires minimizing notification payloads and enforcing membership everywhere. Cost is controlled by coalescing presence/read events, batching, and sampling telemetry. Observability tracks send lag, delivery lag, reconnects, unread drift, provider errors, and moderation actions."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate durable message truth from derived communication surfaces. I would defend eventual unread counts but not eventual privacy enforcement. I would defend websocket complexity for realtime UX while keeping polling fallback. I would also acknowledge that E2EE, search, moderation, and support visibility create real trade-offs that must be product-specific."
+  }
+];
+const references = [
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Slack engineering blog",
+    "href": "https://slack.engineering/"
+  },
+  {
+    "label": "RFC 5322 Internet Message Format",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5322"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  }
+];
 
 export default function WhatsappSlackFrontendArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Designing a chat frontend like WhatsApp Web or Slack involves solving the hardest category of real-time UI problems: messages must arrive in order despite out-of-order delivery, the UI must remain snappy while persisting messages to the server, users must see accurate delivery and read receipts, and the connection must recover transparently from network interruptions. Slack serves 20 million+ daily active users across 750,000+ organizations, with channels containing hundreds of thousands of messages. WhatsApp Web mirrors the mobile client state via a phone relay (distinct from Slack's direct server architecture). Both products share the same core challenge: building a UI that feels like a local application despite being entirely dependent on network connectivity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The key constraints: messages must appear in the sender's UI immediately (optimistic), arrive at recipients in the correct order (sequenced), be acknowledged by the server (delivered), and confirmed as seen (read). Any of these steps can fail independently — the server can accept a message but fail to fan it out to recipients, or a recipient can receive but not acknowledge. The UI must model all these states correctly without confusing the user.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> WebSocket connection management, message ordering and deduplication, optimistic send with status tracking, presence and typing indicators, and offline queue replay. Not in scope: backend message routing, push notification infrastructure, or server-side E2E encryption implementation.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/whatsapp-slack-frontend.svg" alt="Design a WhatsApp/Slack-like Frontend architecture" caption="Architecture view: durable event log, realtime gateway, projections, policy, and client sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/whatsapp-slack-frontend-flow.svg" alt="Design a WhatsApp/Slack-like Frontend flow" caption="Flow view: send, acknowledge, deliver, read, moderate, notify, and recover." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/whatsapp-slack-frontend-operations.svg" alt="Design a WhatsApp/Slack-like Frontend operations" caption="Operations view: fanout, reconnect, provider health, abuse controls, privacy, and projection repair." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Real-time messaging:</strong> Messages sent by the user appear immediately in the conversation (optimistic, before server confirmation). Messages from others arrive with sub-200ms latency on a stable connection. The WebSocket connection is maintained persistently; the client reconnects automatically with exponential backoff (1s, 2s, 4s, 8s, max 30s) on disconnection.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Message ordering:</strong> Messages within a channel are displayed in send order, not arrival order. Client-assigned Lamport timestamps (logical clocks, incremented on each send and adjusted on each receive if server timestamp is higher) establish a partial order. The server assigns a monotonic sequence number per channel — the client re-sorts on sequence number when it arrives. Gaps in sequence numbers trigger a backfill fetch.</HighlightBlock>
-          <li><strong>Delivery status:</strong> Each message shows one of four states: Sending (optimistic, clock icon), Sent (server acknowledged, single check), Delivered (recipient device received, double check), Read (recipient opened conversation, filled double check). Status updates arrive as WebSocket events and update the message state in the React store.</li>
-          <HighlightBlock as="li" tier="important"><strong>Presence and typing:</strong> Online/offline/away presence for each contact is shown in the sidebar and conversation header. Typing indicators are shown when another user is actively typing (server broadcasts a typing event, suppressed if no keypress for 3s). Presence is updated via WebSocket heartbeat events.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Message store:</strong> All received messages are persisted in IndexedDB (via Dexie.js) — the last 10,000 messages per channel, pruned by a background worker. On page load, recent messages are loaded from IndexedDB instantly (no network wait), then the WebSocket connection syncs any messages missed while offline.</HighlightBlock>
-          <li><strong>Performance:</strong> The message list virtualizes rendering (TanStack Virtual) — only visible messages are in the DOM regardless of channel history length. Smooth scrolling to unread messages on channel switch. New messages appearing at the bottom do not cause layout shift for users scrolled up (scroll-anchor CSS).</li>
-          <HighlightBlock as="li" tier="important"><strong>Offline queue:</strong> Messages composed while offline are held in an IndexedDB sync queue. On reconnection, queued messages are sent in order. If the server rejects a queued message (e.g., user was removed from channel while offline), the message is moved to a failed state with a retry/dismiss option.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture has four data layers. The WebSocket Layer manages the persistent connection (one socket per client session), handles heartbeat pings (every 30s, disconnect after 2 missed pongs), and routes incoming events to the appropriate handlers. The Message Store (Zustand + IndexedDB) is the single source of truth for all message state — the WebSocket delivers raw events, a middleware normalizes them into the store, and React components read from the store reactively. The Optimistic Layer assigns client-side temporary IDs (cuid()) to outgoing messages, inserts them into the store immediately, and replaces them with server-assigned IDs when the server acknowledgement arrives. The Sync Engine handles reconnection gap-fill: on reconnect, it fetches messages since the last received sequence number for each channel the user has open, then replays the offline queue.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/messaging-communication/whatsapp-slack-frontend.svg"
-          alt="WhatsApp Web / Slack frontend architecture: WebSocket lifecycle (connect on mount; heartbeat ping every 30s; missed pong × 2 → reconnect; exponential backoff 1s 2s 4s 8s max 30s; on reconnect: fetch since lastSeq per channel → gap-fill backfill), optimistic send (user sends message; assign clientId=cuid(); insert into Zustand store status=sending; POST or WS send; server ack: swap clientId→serverId, status=sent; fan-out event to recipient: status=delivered; recipient opens conversation: status=read), message ordering (Lamport clock: local_time = max(local, server_ts) + 1 on receive; server assigns monotonic seqNum per channel; client sort by seqNum; gap in seqNum → backfill GET /messages?channel=X&after=seqN), message rendering (TanStack Virtual: only visible rows in DOM; scroll-anchor: new messages don't shift scroll position for users scrolled up; channel switch: restore last scroll position from IndexedDB; unread jump button: count unread, click → scrollToIndex), presence and typing (presence events via WS: user:{id}:online/away/offline; typing: keypress → debounce 1s → TYPING_START event; no keypress 3s → TYPING_STOP; UI: 'User is typing...' with animated dots), offline queue (messages composed offline → IndexedDB syncQueue; on reconnect: flush queue in order; server 403 'not in channel' → failed state, show retry/dismiss)."
-          caption="WebSocket lifecycle (30s heartbeat, exponential backoff reconnect, gap-fill on reconnect), optimistic send (cuid clientId → server swap, Sending→Sent→Delivered→Read), Lamport clock + server seqNum ordering, TanStack Virtual message list, presence WebSocket events, typing debounce 1s/3s, offline IndexedDB sync queue"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">WebSocket Connection Management</h3>
-        <HighlightBlock as="p" tier="crucial">The WebSocket connection is initialized on application mount and maintained for the session lifetime. The client sends a ping frame every 30 seconds. If 2 consecutive pong responses are missing (60+ seconds of silence), the client assumes the connection is dead and begins reconnection with exponential backoff. The WebSocket URL includes an authentication token: wss://chat.example.com/ws?token=&#123;JWT&#125;. On each reconnect, the token is refreshed if the previous token is near expiry. The connection state (connecting, connected, disconnected, reconnecting) is stored in Zustand and shown in the UI header — a thin amber banner "Reconnecting..." appears during reconnection, turning green briefly on success, then disappearing.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">All incoming WebSocket frames are routed by event type: MESSAGE_RECEIVED, MESSAGE_STATUS_UPDATE, TYPING_START, TYPING_STOP, PRESENCE_UPDATE, CHANNEL_UPDATED. Each type has a dedicated handler that updates the Zustand store. Incoming message events include the server-assigned sequence number (seqNum) per channel. The client tracks the highest received seqNum per channel — gaps trigger a REST API backfill: GET /api/channels/&#123;channelId&#125;/messages?after=&#123;lastSeqNum&#125;.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Optimistic Message Sending</h3>
-        <HighlightBlock as="p" tier="important">When the user presses Enter to send a message: (1) a client-side ID is generated (cuid() — a collision-resistant, ordered identifier); (2) the message is immediately inserted into the Zustand messages store with status: "sending" and the client ID as the key; (3) the message is dispatched to the server via WebSocket (or POST /api/messages as fallback if WebSocket is disconnected); (4) the server processes the message, assigns a monotonic sequence number and a permanent server ID, persists it, and sends back an acknowledgement event: &#123;type: "MESSAGE_ACK", clientId: "cid_xxx", serverId: "msg_yyy", seqNum: 42351, timestamp: "..."&#125;; (5) the client receives the ACK, replaces the clientId key with serverId in the store, and updates status to "sent". The user never sees a spinner — the message appears immediately and the status icon updates from clock → single check → double check → filled double check as confirmations arrive.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Message Ordering and Deduplication</h3>
-        <HighlightBlock as="p" tier="important">Network conditions can cause messages to arrive out of order (a message sent 2nd arrives before a message sent 1st). The server's monotonic sequence number per channel is the authoritative ordering key. The client maintains messages in an ordered array sorted by seqNum, inserting new messages into the correct position using binary search (O(log N)). For messages not yet assigned a seqNum (optimistically sent messages awaiting ACK), they are appended at the tail with the local Lamport timestamp as a provisional sort key and moved to the correct position when the ACK with seqNum arrives.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Deduplication prevents the same message from appearing twice (which can happen if the WebSocket delivers a message and the backfill REST call also returns it). The Zustand store uses a Map keyed by serverId — inserting a message with an existing serverId is a no-op. For optimistic messages, the client ID serves as the temporary key until the ACK arrives and the key is swapped to the serverId.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Virtualized Message List</h3>
-        <HighlightBlock as="p" tier="important">TanStack Virtual (react-virtual) renders only the visible message rows plus a configurable overscan buffer (10 rows above and below the viewport). For a channel with 50,000 messages, only ~30 DOM nodes are ever present. The virtualizer requires knowing the height of each item — messages have variable heights (short text, long paragraph, images, file attachments). The virtualizer uses a dynamic measurement mode: it renders each item in a hidden measurement pass, caches the height, and uses the cached value for subsequent renders. New messages arriving at the bottom trigger a scroll-to-bottom only if the user is already at the bottom (within 100px of the end) — if they are scrolled up reading history, the new message arrives silently and a "1 new message" button appears at the bottom.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">WebSocket vs. SSE for receiving messages: SSE is simpler (HTTP/1.1, no upgrade handshake, automatic browser reconnect) and sufficient for unidirectional message delivery. However, chat requires bidirectional communication — sending messages also needs a low-latency path. With SSE, sends go via POST (adding one RTT per message) while receives arrive via SSE. With WebSocket, both sends and receives share the same persistent connection, reducing send latency. For chat applications where message send latency matters (real-time conversation feel), WebSocket is preferred despite higher complexity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">End-to-end encryption complexity: WhatsApp uses the Signal Protocol — each message is encrypted with a per-message key derived from a ratcheting key exchange. The client holds private keys locally (localStorage, never sent to the server). The server receives only ciphertext. Implementing E2E encryption in the browser requires the Web Crypto API (SubtleCrypto) for key generation and en/decryption. The complexity is significant: key backup and restore (if the user clears localStorage), multi-device key distribution (linking a new device), and group key management (each group member receives an encrypted copy of the group key). For a staff interview, the key insight is that E2E encryption moves key management entirely to the client — the server is a dumb relay for ciphertext.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A WhatsApp Web / Slack frontend is built on four pillars: (1) WebSocket connection management (30s heartbeat, exponential backoff reconnect, gap-fill backfill on reconnect via GET /messages?after=lastSeqNum); (2) optimistic send (cuid clientId → immediate insert status=sending → ACK swap to serverId + seqNum → Sending/Sent/Delivered/Read status icons); (3) message ordering (server monotonic seqNum per channel as authoritative sort key, binary search insert, dedup by serverId Map, Lamport clock for provisional ordering of in-flight messages); and (4) virtualized rendering (TanStack Virtual ~30 DOM nodes regardless of history, dynamic height measurement, scroll-to-bottom only if already at bottom, "N new messages" button for users scrolled up). IndexedDB persists the last 10,000 messages per channel for instant load on page open. The fundamental constraint: at real-time chat latency, every architectural decision must be evaluated in terms of round trips — one extra RTT per message is imperceptible at 50ms but catastrophic at 400ms.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

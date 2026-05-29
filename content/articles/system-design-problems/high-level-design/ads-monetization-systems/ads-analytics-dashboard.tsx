@@ -7,80 +7,293 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-ads-analytics-dashboard",
-  title: "Design an Ads Analytics Dashboard (like Google Ads Manager)",
-  description:
-    "Architecture for an ads analytics dashboard: impression and click beacon deduplication via Redis SETNX 60-second window, Kafka event stream partitioned by campaignId, Flink 1-minute tumbling window aggregation into ClickHouse columnar store, pre-aggregated hourly and daily rollup tables for sub-second dashboard queries, Redis 60-second cache for live last-hour data, multi-dimensional breakdowns by creative and geo and device, anomaly detection for CTR spikes and budget exhaustion alerts via webhook, and Redis INCRBYFLOAT budget pacing with hourly throttle-rate controller.",
+  title: "Design an Ads Analytics Dashboard",
+  description: "Principal-level design for ads analytics covering event ingestion, attribution, aggregation freshness, spend accuracy, privacy thresholds, fraud filtering, drilldowns, and reconciliation.",
   category: "high-level-design",
   subcategory: "ads-monetization-systems",
   slug: "ads-analytics-dashboard",
-  wordCount: 4900,
-  readingTime: 28,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "analytics", "clickhouse", "flink", "kafka", "olap", "ads", "dashboard"],
-  relatedTopics: ["ads-delivery-targeting-ui", "creator-monetization-dashboard"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-25",
+  tags: ["hld","ads","analytics","attribution","metrics","fraud"],
+  relatedTopics: ["ads-delivery-targeting-ui","creator-monetization-dashboard"],
 };
 
 export default function AdsAnalyticsDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An ads analytics dashboard gives advertisers visibility into how their campaigns are performing — how many impressions their ads received, how many users clicked, what the click-through rate was, how much they spent, and which creatives, audience segments, and geographic markets performed best. The dashboard must handle two conflicting requirements: (1) near-real-time data — advertisers need to see the effect of campaign changes (new creative, adjusted bid) within minutes, not hours; (2) historical analysis — advertisers query arbitrary date ranges (last 30 days, last quarter, year-over-year) with multi-dimensional breakdowns, which requires efficient aggregation over billions of event records.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The challenge is that raw impression events arrive at 1M–10M per second globally, making real-time analytics over raw events computationally infeasible for interactive queries. The solution is a lambda architecture (or kappa architecture with tiered aggregation): a stream processing layer computes rolling aggregates in near-real-time, and a batch layer computes precise historical rollups that replace the stream estimates as data matures.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Event ingestion and deduplication, stream aggregation, OLAP query serving, multi-dimensional dashboard, budget tracking, and anomaly alerts. Not in scope: the RTB auction pipeline (separate article), fraud detection model training, or the advertiser campaign management UI.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A ads analytics dashboard is a monetization control surface used by advertisers, campaign analysts, finance teams, fraud reviewers, customer support, data platform engineers, and executives to show trustworthy campaign performance, spend, conversions, attribution, pacing, and revenue metrics while handling late events, fraud filtering, privacy thresholds, and finance reconciliation. At principal level, this is not a CRUD dashboard for campaigns or payments. It is a money-moving, privacy-sensitive, policy-constrained system where incorrect data can harm users, advertisers, creators, finance, and platform trust.
+        </HighlightBlock>
+        <p>
+          Ads and monetization systems combine product UX, low-latency serving paths, finance-grade ledgers, marketplace incentives, privacy regulation, trust and safety, and experimentation. The hardest part is making revenue systems both fast enough for operators and correct enough for billing, payouts, and disputes.
+        </p>
+        <p>
+          The primary entities are impressions, clicks, conversions, spend ledger entries, attribution windows, campaigns, creatives, placements, dimensions, aggregates, freshness watermarks, fraud labels, invoices, and reconciliation records. These entities should be modeled separately because serving state, reporting state, policy state, and financial state have different consistency and audit requirements.
+        </p>
+        <p>
+          Non-functional requirements include low dashboard latency, bounded query cost, accurate money reporting, privacy-safe dimensions, clear freshness watermarks, immutable audit, data retention controls, and incident playbooks for overdelivery, underdelivery, incorrect payouts, and policy mistakes.
+        </p>
+        <p>
+          Scope should be explicit. This design focuses on high-level product and platform architecture for monetization operations. It does not implement the full ad auction ranking model, payment processor internals, or tax law logic, but it must integrate with those systems through defensible contracts.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Event ingestion and deduplication:</strong> Impression and click beacons arrive at the ingestor service from multiple sources: the publisher's ad SDK (browser-side beacon), the ad server (server-side impression logging for server-rendered pages), and the DSP (win notifications). The same impression may be reported by both the browser and the server — the ingestor must deduplicate. Deduplication: each event carries a globally unique eventId (UUID v4 generated by the ad server at auction time and included in all downstream references). On arrival, the ingestor checks Redis SETNX eventId:&#123;eventId&#125; with 60-second TTL — if the key already exists (duplicate), the event is dropped. After deduplication, valid events are published to the Kafka topic ad-events, partitioned by campaignId. Partitioning by campaignId ensures that all events for a given campaign land on the same partition set, enabling efficient per-campaign aggregation in the downstream Flink job without cross-partition shuffle.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Flink stream aggregation:</strong> A Flink job consumes the ad-events Kafka topic and computes per-campaign metrics in 1-minute tumbling windows. For each 1-minute window, Flink computes: total impressions, total clicks, CTR = clicks / impressions, total spend (sum of clearing prices), CPM = spend / (impressions / 1000), and breakdowns by: creative (adId), geography (country, city), device type (mobile/desktop/tablet), and audience segment. The window output is an INSERT into ClickHouse: a row per (campaignId, minute, dimension, dimensionValue, impressions, clicks, spend). The minute-level rows are the finest granularity in ClickHouse. In addition, Flink writes the last-5-minutes live aggregate to Redis (HSET campaign:&#123;campaignId&#125;:live imps clicks spend) with a 5-second TTL for the real-time "last N minutes" widgets in the dashboard.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>ClickHouse OLAP queries:</strong> ClickHouse is a columnar database optimized for analytical queries over large datasets. Key properties: columnar storage means queries that touch only 3–4 columns (e.g., impressions, clicks, spend, date) read only those columns from disk, skipping the rest; merge-tree table engine sorts and indexes data by the primary key (campaignId, date), enabling efficient range scans; and vectorized query execution processes data in 1,024-row batches using SIMD instructions, achieving 1–10 billion rows/second throughput. A typical dashboard query: SELECT date, sum(impressions), sum(clicks), sum(spend), sum(clicks)/sum(impressions) AS ctr FROM ad_metrics WHERE campaignId = 123 AND date BETWEEN '2026-04-01' AND '2026-04-30' GROUP BY date ORDER BY date — returns in under 100ms for a 30-day range over billions of rows. Multi-dimensional breakdowns (by geo, creative, device) require separate rollup tables pre-aggregated at the (campaignId, date, dimension) level.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Pre-aggregated rollup tables:</strong> Querying minute-level data for 12-month historical analysis would scan billions of rows. Pre-aggregated rollup tables dramatically reduce query time: (1) hourly rollup — one row per (campaignId, hour, dimension, dimensionValue), computed by a nightly Flink or ClickHouse Materialized View from the minute-level table; (2) daily rollup — one row per (campaignId, date, dimension, dimensionValue); (3) monthly rollup — one row per (campaignId, month, dimension). The dashboard query router selects the finest granularity rollup that covers the requested date range without scanning unnecessary data: last 24 hours → minute-level; last 7 days → hourly rollup; last 90 days → daily rollup; last 2 years → monthly rollup. This tiered approach keeps all queries under 1 second regardless of the requested date range.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Dashboard caching strategy:</strong> Advertiser dashboard queries for the same campaign and date range are repeated frequently (the user refreshes the page, the dashboard auto-refreshes every 60 seconds). Caching: the Analytics API maintains a Redis cache keyed by (campaignId, dateRange, dimensions, granularity). For historical date ranges (&gt;1 day ago), the cache TTL is 15 minutes — data for past days is immutable after the nightly batch reconciliation. For the current day (data is still arriving), the cache TTL is 60 seconds. Cache invalidation: when a campaign's data is backfilled or corrected (e.g., invalid traffic credits are applied), the affected cache keys are explicitly deleted. The cache hit rate for historical queries is typically 80%+, since most advertisers focus their attention on recent campaigns and check the same date ranges repeatedly.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Budget exhaustion tracking:</strong> Advertisers set a daily budget for each campaign. The analytics system tracks spend in real time to enforce budget limits (separate from the serving-side budget pacing). Real-time spend tracking: each ad event that results in a charge (a winning auction) publishes a spend event to Kafka with the clearing price. Flink aggregates spend per campaign in 10-second windows and writes to Redis: INCRBYFLOAT budget:&#123;campaignId&#125;:spent &#123;clearingPrice&#125;. The serving-side pacing controller reads this value every 5 minutes to compute the current pace rate. Budget exhaustion alert: when Redis budget:&#123;campaignId&#125;:spent exceeds 90% of the campaign's dailyBudget, an alert is triggered — a Slack/email notification to the advertiser and a webhook call to the campaign management system which can optionally pause the campaign. At midnight UTC, budget counters are reset (the Redis keys are set to 0 via a scheduled job).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Anomaly detection:</strong> Advertisers need to be alerted when their campaigns behave unexpectedly — a sudden CTR spike may indicate click fraud; a sudden CTR drop may indicate a broken creative or a policy enforcement action. Anomaly detection: a Flink job computes a rolling 24-hour baseline CTR per campaign (mean and standard deviation over the past 24 one-hour windows). If the current hour's CTR deviates by more than 3 standard deviations from the baseline (3-sigma rule), an anomaly event is published. Anomaly events are routed to: (1) a notification queue — sends a dashboard alert and optionally an email/Slack message to the advertiser; (2) the fraud review queue — high CTR spikes are flagged for manual fraud review; (3) the campaign pacing system — a CTR collapse (creative broken) may trigger a campaign pause to prevent burning budget on non-functioning ads. The 3-sigma threshold generates approximately 0.3% false positive rate — few enough to avoid alert fatigue but sensitive enough to catch real anomalies within 1–2 hours of onset.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Data retention and archival:</strong> Minute-level raw aggregates are retained for 90 days in ClickHouse (sufficient for the "last 3 months" reports most advertisers need). Older data is archived to S3 in Parquet format and can be queried via Athena for historical analysis. Daily rollups are retained for 3 years (long enough for year-over-year comparison and tax/audit purposes). The raw Kafka event log is retained for 7 days (Kafka's default retention) — this window allows replaying events if a Flink job failure requires backfilling. For compliance and billing disputes, the raw event log is also archived to S3 in WORM (Object Lock) format for 7 years (typical financial record retention requirement). The ClickHouse cold/warm tiering: data older than 30 days is moved from SSD storage to HDD (10× cheaper, acceptable for infrequent historical queries), and data older than 90 days is deleted from ClickHouse after archival to S3.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is separating operational state from financial truth. Campaign configuration, dashboard aggregates, attribution results, and payout balances may all be derived from the same activity, but finance-grade ledgers and audit trails need stronger guarantees than exploratory charts.
+        </p>
+        <p>
+          The second concept is freshness with caveats. Monetization dashboards often mix real-time estimates, delayed conversions, fraud-filtered results, settled invoices, and payout ledger balances. The UI should label each value by freshness and confidence rather than pretending all numbers have the same reliability.
+        </p>
+        <p>
+          The third concept is privacy-preserving targeting and reporting. Sensitive cohorts, small audiences, user-level conversion paths, and location or demographic dimensions can leak personal information. The platform needs consent, thresholds, aggregation, regional rules, and data minimization.
+        </p>
+        <p>
+          The fourth concept is policy and trust review. Creatives, campaigns, sponsored content, creator eligibility, and external links can violate safety, legal, or brand requirements. Policy state must be part of the workflow, not a separate manual spreadsheet.
+        </p>
+        <p>
+          The fifth concept is pacing and budget correctness. Ads systems must spend smoothly, avoid overspend, respect frequency caps, and recover from serving or event lag. Pacing decisions should be observable and reversible because they directly affect advertiser outcomes.
+        </p>
+        <p>
+          The sixth concept is attribution ambiguity. A conversion can be delayed, duplicated, cross-device, privacy-limited, or claimed by multiple campaigns. The system needs explicit attribution windows, deduplication, model versions, and caveats in the dashboard.
+        </p>
+        <p>
+          The seventh concept is fraud and abuse resistance. Click fraud, impression laundering, fake creator activity, invalid traffic, review manipulation, and account takeovers can distort revenue. Detection should influence reporting and payout state with explainable holds.
+        </p>
+        <p>
+          The eighth concept is explainability. Advertisers and creators need to know why delivery changed, why spend stopped, why revenue was held, or why a metric differs from invoice totals. Support and finance need the same evidence without raw database access.
+        </p>
+        <p>
+          The ninth concept is immutable audit. Money-facing systems need to reconstruct who changed campaign targeting, which rules allocated revenue, which events were filtered, which payout batch included a creator, and which policy reviewer approved an exception.
+        </p>
+        <p>
+          Metric contracts are a core concept. Spend, impressions, clicks, conversions, reach, frequency, ROAS, and revenue should have owners, definitions, freshness expectations, and allowed dimensions. Without metric contracts, different dashboards will disagree and teams will spend interview time explaining chart drift rather than system design.
+        </p>
+        <p>
+          Attribution should be treated as a model with versioned assumptions. Last-click, view-through, multi-touch, conversion windows, deduplication rules, and cross-device joins can all change campaign performance. The dashboard should show the attribution model and window used for each number so advertisers do not confuse model output with raw truth.
+        </p>
+        <p>
+          Finance reconciliation is separate from analytics exploration. Analytics can answer why performance changed; finance needs to close invoices and refunds. The design should support both by reconciling aggregate metrics with immutable spend ledger entries and by surfacing explainable differences when late or invalid events are adjusted.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The analytics system has three layers: the ingestion layer (beacon endpoints → dedup in Redis → Kafka), the processing layer (Flink stream aggregation → ClickHouse minute-level rows + Redis live cache), and the query layer (Analytics API → rollup tier selection → ClickHouse or Redis → response cache). The three layers are decoupled — Kafka acts as the buffer between ingestion and processing (Flink can fall behind ingestion during traffic spikes and catch up without losing events, since Kafka retains events for 7 days). The query layer is read-only against ClickHouse and Redis and scales independently from the processing layer.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A practical architecture includes event collectors, stream processor, attribution service, fraud filter, metrics warehouse, real-time aggregate store, dashboard API, privacy threshold service, finance ledger, and anomaly monitors. The serving or revenue path should be optimized for scale, while policy, reporting, and finance paths preserve auditability and correctness.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/ads-monetization-systems/ads-analytics-dashboard.svg"
-          alt="Ads analytics dashboard: impression and click beacons arrive at event ingestor; Redis SETNX dedup 60s; publish to Kafka partitioned by campaignId; Flink 1-minute tumbling window computes impressions/clicks/CTR/spend; INSERT into ClickHouse minute table; Redis live cache 5s TTL; advertiser dashboard queries Analytics API; cache hit Redis 60s; cache miss ClickHouse rollup tier selection; budget INCRBYFLOAT in Redis; anomaly 3-sigma alert via webhook."
-          caption="Redis SETNX dedup 60s; Kafka partitioned by campaignId; Flink 1-min tumbling windows; ClickHouse columnar OLAP; rollup tiers (min/hr/day/month); Redis 60s query cache; INCRBYFLOAT budget; 3-sigma CTR anomaly alerts"
+          alt="Design an Ads Analytics Dashboard high-level architecture"
+          caption="Ads analytics depends on event ingestion, attribution, fraud filtering, aggregate serving, privacy thresholds, and finance reconciliation."
         />
+        <p>
+          Impression, click, conversion, and billing events enter durable streams, are deduplicated, filtered for fraud, attributed to campaigns, aggregated by dimensions, reconciled with spend ledgers, and exposed with freshness metadata.
+        </p>
+        <p>
+          The dashboard queries pre-aggregated metrics for common slices, falls back to bounded warehouse queries for drilldowns, applies privacy thresholds, shows freshness and reconciliation status, and explains metric caveats.
+        </p>
+        <p>
+          The ingestion side should normalize heterogeneous events. Impression, click, conversion, revenue, payout, policy, and eligibility events need idempotency keys, source lineage, timestamps, actor identity, and replay capability. Without this, finance reconciliation becomes guesswork.
+        </p>
+        <p>
+          The serving side should consume approved and versioned snapshots. Low-latency systems should not synchronously call dashboard databases or policy review tools. They should read compact, validated, cacheable snapshots and emit durable telemetry for reporting and control loops.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/ads-monetization-systems/ads-analytics-dashboard-flow.svg"
+          alt="Design an Ads Analytics Dashboard publish and reporting flow"
+          caption="Metric reads should include freshness, caveats, privacy suppression, and drilldown limits rather than only chart values."
+        />
+        <p>
+          The dashboard API should prefer pre-aggregated metrics for common slices and bounded warehouse queries for deep drilldowns. Query planners should enforce cardinality limits, privacy thresholds, and cost controls so one dashboard cannot overload the analytics platform.
+        </p>
+        <p>
+          Policy and privacy checks should be centralized enough to be consistent but configurable enough to handle regional rules and product-specific risk. The system should support blocked, pending, approved, limited, appealed, and takedown states with clear owner and deadline.
+        </p>
+        <p>
+          Financial integration should use ledger semantics. Money values should be append-only adjustments with reason codes, not mutable counters. Corrections should create new ledger entries, preserving previous state for audit, invoice dispute, payout reconciliation, and compliance.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/ads-monetization-systems/ads-analytics-dashboard-operations.svg"
+          alt="Design an Ads Analytics Dashboard operational safeguards"
+          caption="Operational controls catch duplicate events, delayed conversions, spend drift, query overload, and reconciliation gaps."
+        />
+        <p>
+          Multi-region design should keep money and privacy constraints explicit. Serving may run globally, but billing, conversion logs, and payout records may have regional retention or residency requirements. Cross-region replication must not bypass consent or legal rules.
+        </p>
+        <p>
+          Observability should track delivery, spend, attribution lag, policy backlog, fraud rate, dashboard freshness, ledger reconciliation, payout delay, query cost, and complaint volume. These metrics connect business trust to system health.
+        </p>
+        <p>
+          The dashboard should expose freshness and completeness at query time. A campaign chart can include the latest processed event timestamp, late-event percentage, fraud-filtering status, attribution backfill status, and reconciliation status. These details let advertisers distinguish a real performance drop from a delayed pipeline.
+        </p>
+        <p>
+          Drilldowns should be planned around bounded dimensions. Campaign, creative, placement, region, device, audience, and time are valuable, but arbitrary combinations create high-cardinality query explosions and privacy leaks. The dashboard API should enforce approved dimension sets and route large investigations to asynchronous export jobs.
+        </p>
+        <p>
+          Support and finance need a parallel investigation surface. It should show event lineage, deduplication decisions, attribution matches, fraud labels, ledger entries, invoice references, and privacy suppression reasons. This keeps dispute handling consistent and avoids one-off database queries during customer escalations.
+        </p>
+        <p>
+          Backfill and replay should be part of the normal architecture. When an attribution model changes, a fraud provider corrects labels, or a delayed conversion feed arrives, the platform should recompute affected aggregates with versioned jobs and mark impacted dashboard ranges. Silent backfills are dangerous because advertisers may have already exported or acted on previous numbers.
+        </p>
+        <p>
+          Dashboard exports should follow the same rules as interactive charts. CSV, scheduled reports, and API exports must include freshness, privacy suppression, attribution model, timezone, currency, and reconciliation status. Otherwise an export becomes an unofficial source of truth that can disagree with the product and finance ledger.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">ClickHouse Schema Design</h3>
-        <HighlightBlock as="p" tier="important">The ClickHouse minute-level table uses a ReplacingMergeTree (or SummingMergeTree) engine. SummingMergeTree automatically merges rows with the same primary key by summing the numeric columns — this is ideal for incremental aggregations. Table definition: PRIMARY KEY (campaignId, toStartOfMinute(ts)) with columns (campaignId, minute, adId, country, device, impressions, clicks, spend). The ORDER BY clause matches the primary key — ClickHouse sorts and indexes by this key, enabling efficient range scans and GROUP BY without full table scans. For multi-dimensional breakdowns, separate materialized views per dimension (campaign × creative, campaign × geo, campaign × device) pre-aggregate the data so that each dimension query touches only its relevant materialized view, not the full minute-level table. ClickHouse Materialized Views execute as a Flink-like trigger on every INSERT — when a row is inserted into the base table, ClickHouse automatically updates the materialized views. This keeps the rollup tables in sync without a separate batch job.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Late Event Handling</h3>
-        <HighlightBlock as="p" tier="crucial">Events can arrive late: a mobile device that was offline for 30 minutes fires its beacons when it reconnects, resulting in events with a timestamp 30 minutes in the past. The Flink stream processor uses an allowed lateness of 30 minutes — events that arrive within 30 minutes of their event timestamp are included in their correct window. Events arriving more than 30 minutes late are included in the current window (with their original timestamp as metadata for correctness analysis). Late events that fall into already-written ClickHouse rows cause a conflict: SummingMergeTree will eventually merge the late data into the correct minute bucket, but the merge is asynchronous and may not be reflected immediately in queries. The dashboard shows a disclaimer on real-time data: "Data may be up to 1 hour delayed for events from mobile devices in low-connectivity areas." For billing-critical data, a daily reconciliation batch job re-aggregates the full day's events (after all late events have arrived) and overwrites the minute-level data with corrected values, ensuring billing accuracy at the cost of a 24-hour correction window.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The central trade-off is near-real-time campaign visibility versus metric correctness, privacy, and finance-grade reconciliation. A principal-ready answer should explain how the system balances growth incentives with safety, correctness, and long-term marketplace trust.
+        </HighlightBlock>
+        <p>
+          Real-time metrics versus correctness is a key trade-off. Real-time estimates help operators react, but late conversions, fraud filtering, and finance reconciliation can change the final number. The dashboard should separate estimated, finalized, and reconciled metrics.
+        </p>
+        <p>
+          Granular targeting or reporting versus privacy risk needs careful treatment. Fine-grained dimensions improve advertiser control and analysis, but small cohorts can reveal user behavior. Thresholding, aggregation, suppression, and differential privacy techniques may be required.
+        </p>
+        <p>
+          Centralized policy versus advertiser or creator velocity is another trade-off. Strict review reduces harm but can slow campaigns and payouts. Risk-based review, automated pre-checks, and clear appeal paths keep the platform usable without removing governance.
+        </p>
+        <p>
+          Precomputed aggregates versus flexible drilldowns affects scalability. Precomputation makes common dashboards fast and predictable. Flexible warehouse queries are useful for investigation but need cost guards, sampling, and query shape limits.
+        </p>
+        <p>
+          Revenue optimization versus user experience matters. More ads, higher frequency, or aggressive targeting may lift short-term revenue while damaging retention or trust. Guardrail metrics should include latency, complaint rate, hide rate, churn, and policy incidents.
+        </p>
+        <p>
+          Fraud prevention versus creator or advertiser transparency is hard. Revealing every fraud signal helps explain holds but can teach attackers how to evade detection. The design should provide reason categories and appeal evidence without exposing detection internals.
+        </p>
+        <p>
+          Ledger immutability versus correction ergonomics is important. Mutable balances are easy but unsafe. Append-only adjustments are auditable but require better UI explanation. For money systems, auditability should win.
+        </p>
+        <p>
+          Build versus buy should be discussed. Managed ad servers, attribution vendors, and payout platforms reduce implementation scope, but they may not satisfy privacy, marketplace, latency, or explainability needs. The integration boundary should be explicit.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Lambda architecture vs. Kappa: the lambda architecture uses two separate processing paths — a batch layer (precise, slow, runs nightly) and a speed layer (approximate, fast, near-real-time). The advertiser's dashboard merges results from both. Kappa architecture uses only the stream layer but with replayable Kafka events — historical data can be recomputed by replaying Kafka from the beginning. For ads analytics, the lambda approach is common because: (1) the batch layer produces billing-accurate numbers (after fraud credits are applied) while the stream layer provides fast approximate numbers for optimization; (2) the batch reconciliation job is simple (just re-aggregate the day's events from S3 or Kafka replay); (3) the two data freshness levels (near-real-time for optimization, daily-final for billing) map naturally to the lambda architecture's speed and batch layers. The Kappa architecture is preferable for organizations that want to minimize infrastructure complexity and have strong Kafka replay capabilities.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">ClickHouse vs. Druid for ads analytics: both are excellent OLAP databases for time-series analytics. ClickHouse is better for: arbitrary SQL queries, simpler operational model (no separate ingestion nodes), and higher compression ratios. Druid is better for: sub-second query latency with pre-computed rollups, native Kafka ingestion (no Flink needed), and automatic data tiering. The choice depends on team expertise and query patterns — if the dominant query pattern is fixed (impressions/clicks/spend over time by campaign), Druid's pre-aggregation is more efficient. If advertisers need ad-hoc dimensional analysis (arbitrary GROUP BY combinations), ClickHouse's SQL flexibility is preferable.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Label every metric by state: estimated, delayed, fraud-filtered, privacy-suppressed, finalized, invoiced, settled, held, or paid. This avoids false precision in money-facing dashboards.
+        </p>
+        <p>
+          Use idempotency and deduplication at every event boundary. Duplicate impressions, clicks, conversions, and revenue events are common in distributed systems and directly affect billing or payouts.
+        </p>
+        <p>
+          Preserve source lineage and model versions. Attribution logic, fraud filters, pacing algorithms, and revenue-share rules change over time. Historical reports must know which version produced the result.
+        </p>
+        <p>
+          Make policy state visible and actionable. Pending review, limited delivery, rejected creative, creator hold, appeal deadline, and takedown reason should be first-class states, not hidden support notes.
+        </p>
+        <p>
+          Design for explainable disputes. Advertisers dispute invoices; creators dispute payouts. Support needs event lineage, ledger entries, policy state, fraud categories, and freshness caveats in one safe interface.
+        </p>
+        <p>
+          Protect privacy before data reaches dashboards. Apply consent, aggregation, small-cohort suppression, retention limits, and regional policy checks in pipelines and APIs, not just in client rendering.
+        </p>
+        <p>
+          Use guardrails for monetization experiments. Revenue lift should be balanced against retention, complaint rate, latency, advertiser ROI, creator trust, and policy incident rate.
+        </p>
+        <p>
+          Separate serving availability from analytics availability. Ads can continue to serve from approved snapshots even if the dashboard warehouse is delayed. Conversely, dashboards should clearly show freshness lag.
+        </p>
+        <p>
+          Run reconciliation jobs continuously. Compare serving logs, billing ledgers, aggregate metrics, payout batches, and invoices. Reconciliation should produce explainable deltas and not only nightly alerts.
+        </p>
+        <p>
+          Practice incident drills for overspend, underdelivery, incorrect payout, corrupted attribution, policy bypass, and privacy leakage. These are the incidents monetization systems actually face.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">An ads analytics dashboard requires: (1) event deduplication: Redis SETNX eventId:&#123;eventId&#125; 60s TTL — drop duplicate beacons from browser + server; (2) Kafka ingestion: partitioned by campaignId for co-located processing; 7-day retention for replay; (3) Flink 1-minute tumbling windows: compute impressions, clicks, CTR, spend, CPM per (campaignId, minute, dimension); INSERT into ClickHouse; (4) ClickHouse SummingMergeTree: columnar, ORDER BY (campaignId, minute); vectorized query execution; (5) rollup tiers: minute (90 days) → hourly → daily → monthly; query router selects finest covering granularity; (6) Redis query cache: 60s TTL for current day, 15 min for historical — cache hit rate 80%+; (7) live Redis cache: Flink writes HSET campaign:&#123;id&#125;:live every 1 min for real-time dashboard widgets; (8) budget tracking: INCRBYFLOAT budget:&#123;id&#125;:spent on every spend event; 90% threshold alert via webhook; midnight reset; (9) anomaly detection: 3-sigma CTR deviation from 24-hour rolling baseline → alert + fraud review queue; (10) data retention: ClickHouse 90 days (SSD 30d → HDD 30–90d); S3 Parquet archive forever; WORM 7 years for billing compliance; (11) late events: 30-minute allowed lateness in Flink; daily reconciliation batch for billing accuracy.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is treating a ads analytics dashboard as a reporting UI over a few tables. That misses duplicate clicks, delayed conversions, attribution window mismatch, spend-report drift, fraud false positives, privacy threshold leak, high-cardinality query overload, stale aggregate, and broken invoice reconciliation. Monetization systems need ledgers, policy state, privacy boundaries, and operational recovery.
+        </p>
+        <p>
+          Another pitfall is mixing estimated and finalized money values. If the UI does not distinguish them, users will treat every number as payable or billable and support will inherit the confusion.
+        </p>
+        <p>
+          Teams often ignore late-arriving and duplicate events. This creates drift between dashboards, invoices, and payouts. Event-time processing, deduplication, and reconciliation are required.
+        </p>
+        <p>
+          Privacy thresholds are frequently bolted on after drilldowns already exist. Small cohorts and rare conversions can leak sensitive behavior, especially with many dimensions.
+        </p>
+        <p>
+          Pacing and budget failures can be expensive. A stale cache, delayed spend event, or regional serving bug can overspend an advertiser budget before a dashboard catches up.
+        </p>
+        <p>
+          Fraud and policy holds are often unexplained. Creators and advertisers need enough clarity to understand the state and appeal, while the platform still protects detection logic.
+        </p>
+        <p>
+          High-cardinality analytics can overload warehouses. Creative, placement, location, audience, and time breakdowns need query limits, pre-aggregates, and async export paths.
+        </p>
+        <p>
+          Finally, many designs omit support and finance users. Principal-level systems include the tools needed to investigate disputes and close the books, not just the advertiser or creator view.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Real-world use cases for a ads analytics dashboard include campaign performance review, budget pacing diagnosis, creative A/B comparison, placement breakdown, conversion attribution, fraud investigation, invoice dispute support, and executive revenue reporting. Each use case has different expectations for freshness, privacy, auditability, and money accuracy.
+        </p>
+        <p>
+          A self-serve ads platform needs campaign velocity, audience estimation, policy review, budget controls, auction eligibility, and dashboard trust. Mistakes can spend customer money or expose sensitive targeting.
+        </p>
+        <p>
+          A creator platform needs transparent earnings, policy eligibility, fraud holds, tax compliance, payout scheduling, and dispute handling. Creator trust depends on explainable balances and predictable payout state.
+        </p>
+        <p>
+          A marketplace must protect multiple sides: users do not want abusive ads, advertisers want ROI, creators want fair payouts, and the platform needs compliant revenue. The architecture should make those tensions explicit.
+        </p>
+        <p>
+          Incident scenarios include corrupted attribution, delayed conversion stream, fraud model false positives, overdelivery, underdelivery, tax provider outage, payout batch failure, and accidental approval of prohibited creatives.
+        </p>
+        <p>
+          At principal level, the answer should connect product dashboards to serving systems, event pipelines, ledgers, privacy, policy, finance reconciliation, and incident operations.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>1. How would you design the high-level architecture for a ads analytics dashboard?</h3>
+        <p>
+          Separate the authoring or dashboard surface from serving, event ingestion, policy, privacy, ledger, and analytics systems. Serving paths should consume compact approved snapshots and emit durable telemetry. Reporting paths should deduplicate, attribute, filter fraud, aggregate, and reconcile with ledgers. Dashboard APIs should show freshness, privacy suppression, and caveats. Finance and support tooling should read immutable evidence rather than mutable counters. This architecture keeps low-latency operations separate from money correctness.
+        </p>
+        <h3>2. How do you make monetization metrics trustworthy?</h3>
+        <p>
+          Use durable event ingestion, idempotency keys, deduplication, event-time processing, attribution model versions, fraud labels, freshness watermarks, and reconciliation against billing or payout ledgers. Separate estimated, finalized, invoiced, settled, and paid states. Preserve source lineage so support can explain discrepancies. Trust comes from showing caveats and evidence, not from hiding pipeline complexity.
+        </p>
+        <h3>3. How do you handle privacy in ads and monetization systems?</h3>
+        <p>
+          Apply consent and regional policy before targeting, reporting, or attribution. Avoid exposing user-level paths in dashboards. Suppress small cohorts, aggregate sensitive dimensions, minimize retention, and separate raw event access from product analytics. Privacy rules must apply to exports, support tooling, experiments, and logs, not just visible charts.
+        </p>
+        <h3>4. What happens if events are delayed, duplicated, or corrupted?</h3>
+        <p>
+          The system should deduplicate by stable event keys, process by event time with allowed lateness, show freshness lag, quarantine suspicious batches, and support replay from durable streams. Derived aggregates can be rebuilt. Ledgers should receive append-only corrections rather than destructive updates. Operators need reconciliation dashboards to compare serving logs, aggregates, invoices, and payouts.
+        </p>
+        <h3>5. What trade-offs would you highlight in a principal interview?</h3>
+        <p>
+          I would highlight near-real-time campaign visibility versus metric correctness, privacy, and finance-grade reconciliation, real-time estimates versus reconciled truth, granular reporting versus privacy, fraud transparency versus evasion risk, precomputed aggregates versus drilldown flexibility, revenue optimization versus user trust, and immutable ledgers versus correction UX. The best answer ties each trade-off to advertiser, creator, user, finance, and regulatory impact.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          <li><a href="https://iabtechlab.com/standards/openrtb/" target="_blank" rel="noreferrer">IAB Tech Lab - OpenRTB standards</a></li>
+          <li><a href="https://iabtechlab.com/standards/ads-txt/" target="_blank" rel="noreferrer">IAB Tech Lab - ads.txt and supply-chain transparency</a></li>
+          <li><a href="https://developers.google.com/google-ads/api/docs/start" target="_blank" rel="noreferrer">Google Ads API documentation</a></li>
+          <li><a href="https://support.google.com/admanager/answer/82242" target="_blank" rel="noreferrer">Google Ad Manager - Forecasting and delivery concepts</a></li>
+          <li><a href="https://stripe.com/docs/treasury/moving-money/financial-accounts/ledger" target="_blank" rel="noreferrer">Stripe documentation - Ledger concepts for money movement</a></li>
+          <li><a href="https://sre.google/sre-book/monitoring-distributed-systems/" target="_blank" rel="noreferrer">Google SRE Book - Monitoring Distributed Systems</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -7,89 +7,271 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-project-management-tool",
-  title: "Design a Project Management Tool (Jira/Asana)",
-  description:
-    "Architecture for a project management tool: issue tracker with hierarchical tasks (epic > story > task > subtask), multiple view modes (board, list, timeline/Gantt), real-time collaborative editing of issue descriptions, sprint planning with capacity tracking, drag-and-drop prioritization, assignee workload visualization, dependency tracking with cycle detection, @mention and comment threading, webhook integrations for CI/CD status, and offline-capable task updates.",
+  title: "Design a Project Management Tool",
+  description: "Principal-level design for project management systems covering tasks, boards, dependencies, permissions, collaboration, activity history, notifications, and enterprise reporting.",
   category: "high-level-design",
   subcategory: "enterprise-saas-systems",
   slug: "project-management-tool",
-  wordCount: 5000,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "project-management", "jira", "asana", "kanban", "gantt", "sprint", "collaboration"],
-  relatedTopics: ["crm-dashboard", "workflow-automation-system"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
+  tags: ["hld","project-management","collaboration","enterprise-saas"],
+  relatedTopics: ["rbac-dashboard", "admin-audit-logs", "reporting-analytics-dashboard"],
 };
 
 export default function ProjectManagementToolArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A project management tool is a collaborative workspace where teams plan, track, and complete work. Unlike a CRM (where data is primarily read-heavy with occasional updates), a project management tool is continuously written to by multiple concurrent users: team members update issue statuses, add comments, reassign tasks, and adjust priorities simultaneously throughout the workday. The real-time consistency challenge is more acute than in a CRM — when Alice moves a task from "In Progress" to "Done" in the kanban board, Bob (who has the same board open) must see the change immediately without refreshing.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The multi-view challenge is central to the product: the same underlying task data must be presented coherently across at least three different views — board view (kanban grouped by status), list view (flat or grouped table), and timeline view (Gantt chart with dependencies and date ranges). State changes made in one view (e.g., changing a task's due date in the timeline) must be immediately reflected in all other views. This cross-view consistency with real-time updates is the defining engineering challenge of project management tooling.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Issue hierarchy, board/list/timeline views, real-time updates, sprint planning, and dependency tracking. Not in scope: time tracking, billing integration, or AI-assisted backlog prioritization.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A task, board, and roadmap collaboration workspace is an enterprise SaaS system for project managers, engineers, designers, executives, contractors, and cross-functional stakeholders. It is not just a CRUD surface. It has to support tenant isolation, permissioned collaboration, auditability, lifecycle governance, reliable exports, and operational recovery when integrations or background jobs fail.
+        </HighlightBlock>
+        <p>
+          For staff and principal interviews, the important signal is recognizing that Project management becomes part of the customer&apos;s operating model. The design should explain how data is modeled, how changes are authorized, how views stay trustworthy, how large tenants are isolated, and how administrators prove what happened after an incident.
+        </p>
+        <p>
+          The scope includes the end-user UI, core backend services, read models, search or reporting paths, administrative controls, audit events, and reliability behavior. It does not require designing every unrelated SaaS feature, but it must show how this system behaves under enterprise scale, compliance review, and partial failure.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Issue hierarchy:</strong> Four-level hierarchy: Epic &gt; Story &gt; Task &gt; Subtask. Each level has: title, description (rich text), status, assignee, priority, labels, due date, estimate (story points or hours), and custom fields. Parent-child relationships shown as breadcrumb in issue detail.</li>
-          <li><strong>Views:</strong> Board view (kanban by status), List view (table with sortable columns, inline edit), Timeline view (Gantt chart showing tasks on a date axis with dependency arrows). View state (filters, grouping, sort) persisted per user per project.</li>
-          <li><strong>Real-time collaboration:</strong> Board and list updates from any user visible to all viewers within 2 seconds. Issue detail page shows "X is editing" when another user is typing in the description. Comment threads with @mentions, emoji reactions, and threaded replies.</li>
-          <li><strong>Sprint planning:</strong> Create sprint (name, start/end date, goal). Drag unplanned backlog items into sprint. Sprint capacity shows total estimate vs. team member capacity (hours available). Start sprint moves all items to the active sprint board.</li>
-          <li><strong>Dependencies:</strong> Link tasks with dependency types: blocks, is blocked by, relates to. Cycle detection prevents A blocks B, B blocks A. Timeline view renders dependency arrows. Blocked items highlighted when their blocker is overdue.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Board update latency:</strong> Status changes visible to all board viewers within 2 seconds via WebSocket or SSE push.</li>
-          <li><strong>Timeline render:</strong> Gantt chart with 500 tasks renders within 1 second. Horizontal scroll is smooth at 60 fps.</li>
-          <li><strong>Offline tolerance:</strong> Task status updates and comment additions work offline and sync when connectivity is restored (using service worker + IndexedDB queue).</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The core entities are projects, tasks, boards, statuses, dependencies, comments, attachments, custom fields, automations, notifications, and reports. These entities need stable identifiers, tenant scope, ownership, lifecycle state, and audit metadata. A design that stores only the current UI shape will fail when customers ask for history, export, access review, or rollback.
+        </p>
+        <p>
+          Enterprise systems usually need both transactional state and projected read state. The transactional model protects correctness, while read models serve dashboards, search, timelines, and exports. Those projections can be eventually consistent, but the product must expose freshness when users make decisions from them.
+        </p>
+        <p>
+          Authorization is not a small middleware detail. Project management often includes field-level visibility, scoped administration, external sharing, delegated ownership, support access, and break-glass operations. The UI should reflect effective access and the backend must enforce the same policy for reads, writes, exports, and background jobs.
+        </p>
+        <p>
+          Versioning is central. Configuration, schemas, workflow rules, dashboard definitions, roles, and policy decisions can change while older records or runs remain active. Principal-ready designs record which version produced a decision so support teams can reconstruct behavior later.
+        </p>
+        <p>
+          Observability should be designed around business invariants, not only service uptime. Track stale projections, failed background jobs, permission denials, export volume, policy overrides, integration lag, and customer-visible errors. These signals tell operators whether the system is trustworthy.
+        </p>
+        <p>
+          The product should separate user convenience from control-plane safety. Fast UI interactions can be optimistic, but permission changes, publication, export, destructive actions, and compliance-affecting changes should wait for committed server state and produce audit evidence.
+        </p>
       </section>
+        <p>
+          A principal-level model should define the lifecycle of each task. Draft, active, archived, deleted, restored, and retained states often have different permissions and downstream behavior. Without a lifecycle model, administrators cannot explain why a record appeared in a report, why a workflow still ran, or why an old export contains data that no longer appears in the UI.
+        </p>
+        <p>
+          The system should keep user-facing descriptions separate from machine-facing decisions. Names, labels, and presentation can change frequently, while policy, identity, and historical evidence need stable identifiers. This matters when board projection is reviewed months later during an audit or incident investigation and the current UI no longer matches the historical state.
+        </p>
+        <p>
+          Enterprise customers also expect tenant-specific configuration without tenant-specific code. The platform should express configuration as validated data with schema versions, defaults, limits, and migration rules. Support teams need to know which configuration version controlled a dependency when a customer reports unexpected behavior.
+        </p>
+        <p>
+          The architecture should include explicit reconciliation jobs. Enterprise SaaS systems accumulate state through user actions, imports, integrations, scheduled jobs, and support interventions. Reconciliation compares source-of-truth records with projections, search indexes, reporting aggregates, and external integration state. When drift is detected, the system should expose affected tenants, repair options, and audit records instead of relying on manual database fixes.
+        </p>
+        <p>
+          Multi-region behavior should be documented even if the first deployment is single region. Tenant residency, failover, background jobs, search indexes, and exports can all behave differently during regional degradation. Principal-level answers should explain which data is region-bound, which control-plane actions can fail over, and which operations pause until the primary region recovers.
+        </p>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The project management frontend is a React SPA. All project data for the current view is loaded on route entry and cached in a Zustand store. Real-time updates from other users arrive via WebSocket and are merged into the Zustand store — all views read from the same store, so a status change received via WebSocket is immediately reflected in the board, list, and timeline without any view-specific fetching. The Issue Service is the authoritative data source with a CQRS pattern: writes go through the Command Handler (which validates, applies, and publishes IssueUpdated events to Kafka), and reads come from the Query Handler (which reads from the read-optimized PostgreSQL replica with denormalized view models). The real-time push layer subscribes to Kafka events and pushes relevant updates to connected WebSocket clients filtered by project membership.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A strong architecture uses a thin interactive client, a domain API, a policy service, a write store, an event stream, projected read models, search or analytics stores, and a governance plane. The client should not assemble authority from scattered endpoints; it should receive server-validated state and clear action eligibility.
+        </p>
+        <p>
+          The write path validates tenant, actor, resource scope, version, and idempotency before committing. After commit, the system emits durable events for projections, notifications, audit logs, exports, and integrations. This makes downstream work replayable and lets projections be rebuilt if they drift.
+        </p>
+        <p>
+          The read path should be optimized for the access pattern. Recent operational views may use low-latency read models, search-heavy views may use an index, and historical exports may use object storage or a warehouse. Each store needs cache keys that include tenant and permission context.
+        </p>
+        <p>
+          Administrative actions deserve a separate control path. Publishing a schema, changing a role, exporting sensitive data, modifying a workflow, or overriding a policy should require stronger authorization, reason capture, and audit. Treating these actions like ordinary edits creates enterprise risk.
+        </p>
+        <p>
+          The UI should degrade with honesty. If projections lag, exports queue, integrations fail, or background processing is delayed, users should see the state and recovery path. Enterprise customers prefer visible degraded behavior over a polished UI that silently hides missing work.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/enterprise-saas-systems/project-management-tool.svg"
-          alt="Project management tool architecture showing issue data model and hierarchy (Epic > Story > Task > Subtask; each: id title description status assignee priority dueDate estimate; parent_id foreign key; path-based breadcrumb), multi-view shared Zustand store (single issues Map store; board view: filter by status group; list view: sortable table; timeline view: Gantt bars; all views read same store → WebSocket update to store → all views re-render automatically), real-time update flow (WebSocket /ws/projects/{id}; on status change: POST /api/issues/{id} {status:done}; Command Handler: validate → write DB → publish Kafka issue.updated; WS push server: subscribe project:{id} → fanout to all connected clients; Zustand store update → all views), sprint planning UI (create sprint {name start end goal}; drag backlog item to sprint → PATCH issue sprintId; capacity bar: sum estimates vs team availability hours; start sprint: POST /api/sprints/{id}/start → all sprint items visible on active board; sprint velocity chart from completed sprints), dependency tracking (POST /api/dependencies {fromId toId type:blocks}; cycle detection: BFS from toId checking if fromId reachable; reject if cycle; timeline: draw arrows between task bars; blocked badge: task.blockedBy any overdue → highlight red), Gantt timeline rendering (horizontal scroll container; date axis top; task bars: x=startDate width=duration; group by assignee or epic; dependency arrows SVG lines between bars; expand/collapse epic rows; today line vertical; resize handles: drag right edge to extend dueDate; drag bar to move date range), offline support (service worker: cache assets; IndexedDB outbox: queue mutations when offline; on reconnect: replay outbox in order; conflict: server last-write-wins with notification), CI/CD webhook integration (GitHub PR status → POST /api/webhooks/github; auto-link PR to issue via branch name; issue shows CI status badge: failing passing; click → GitHub PR link)."
-          caption="Shared Zustand store across board/list/timeline views (WebSocket update → all views re-render), CQRS Command Handler (validate → DB → Kafka → WS fanout), sprint planning with capacity bars, dependency BFS cycle detection, SVG Gantt timeline (resize/drag handles), offline IndexedDB outbox with reconnect replay, and GitHub CI status badge integration"
+          alt="Design a Project Management Tool architecture"
+          caption="Architecture view for task, board, and roadmap collaboration workspace: domain API, policy, source of truth, event projections, governance, and admin UI."
+        />
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/enterprise-saas-systems/project-management-tool-governance.svg"
+          alt="Design a Project Management Tool governance flow"
+          caption="Governance view showing versioning, policy checks, audit evidence, approval, and retention controls."
+        />
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/enterprise-saas-systems/project-management-tool-scaling.svg"
+          alt="Design a Project Management Tool scaling and reliability flow"
+          caption="Scaling view showing tenant isolation, read models, queues, exports, and degradation controls."
         />
       </section>
+        <p>
+          Projection rebuilds should be a planned operation. Search indexes, dashboards, timelines, and analytics stores can drift because of bugs, schema changes, or missed events. A reliable architecture can replay source events into a new projection, compare old and new counts, and switch traffic only after validation. This is a key principal-level recovery mechanism.
+        </p>
+        <p>
+          The system should include a customer-safe diagnostics layer. Tenant admins and support engineers may need evidence about custom field, but they should not need raw database access. Diagnostics should expose policy decisions, event ids, version numbers, job state, integration status, and redacted payload summaries through governed tools.
+        </p>
+        <p>
+          Backpressure should be explicit across queues and integrations. Large tenants can generate bursts of activity event activity that overwhelm projections, notifications, exports, or connector calls. Queue isolation, tenant quotas, retry budgets, and dead-letter review keep one customer&apos;s workload from degrading the whole platform.
+        </p>
+        <p>
+          Synchronous validation catches mistakes early but can slow high-volume workflows. Asynchronous validation improves responsiveness but creates pending states that users must understand. A mature design uses synchronous checks for security and irreversible decisions, then asynchronous checks for expensive enrichment, analytics, exports, and integration side effects.
+        </p>
+        <p>
+          A single shared service is simpler to operate, but enterprise workloads often need workload isolation. Large tenants, compliance exports, bulk operations, and integration retries should have separate queues, rate limits, and observability so one noisy customer does not affect everyone else. Isolation increases infrastructure complexity, but it is usually required once enterprise scale is real.
+        </p>
 
       <section>
-        <h2>Detailed Design</h2>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Project tools need low-latency collaboration without pretending every view is strongly consistent. A board can update optimistically, but dependency, permission, and audit changes need committed server state.
+        </p>
+        <p>
+          Strong consistency for every view simplifies reasoning but raises latency and coupling. Eventual consistency improves scale and resilience, but the UI must show freshness, pending state, and reconciliation paths. The best design reserves strong consistency for decisions and uses projections for exploration.
+        </p>
+        <p>
+          Generic configuration increases product flexibility, but it expands the test matrix and support burden. Hardcoded flows are safer at first but cannot serve enterprise variance. A mature design uses versioned configuration, validation, previews, and staged rollout rather than unrestricted free-form behavior.
+        </p>
+        <p>
+          Caching is essential for large tenants, but cached data can leak or mislead if it ignores permissions, freshness, or tenant scope. Cache keys should include actor scope where needed, and sensitive actions should recheck authorization before returning files or executing mutations.
+        </p>
+        <p>
+          Exports and integrations are convenient but high-risk. They move data outside the primary UI and often bypass ordinary guardrails. Sensitive exports should have quotas, masking, expiration, approval, audit, and delivery policy. Integrations should use scoped credentials and rate limits.
+        </p>
+        <p>
+          Operational simplicity competes with customer customization. Principal candidates should explain what is tenant-configurable, what is globally governed, and what requires support or approval. Without that boundary, enterprise features become an unbounded policy engine.
+        </p>
+      </section>
+        <p>
+          Per-tenant customization improves sales and retention, but it creates support and correctness risk. Every custom field, policy, workflow, or dashboard variant increases the number of possible states. The architecture should constrain customization through typed schemas, preview, validation, and explicit limits rather than relying on ad hoc customer-specific behavior.
+        </p>
+        <p>
+          Real-time updates improve perceived quality, but they can hide projection lag or failed background processing. For project management tool, it is better to show committed state plus visible pending work than to optimistically display a final outcome that later rolls back. Principal interviews often probe this difference.
+        </p>
+        <p>
+          Archival storage lowers cost, but it changes product behavior. Historical notification data may be slower to query, harder to redact, and subject to legal hold. The UI should distinguish hot, warm, and archived ranges so admins do not expect a seven-year compliance query to behave like a recent dashboard search.
+        </p>
+        <p>
+          Add customer-facing and internal audit views. Customer admins need understandable evidence and filters, while internal operators need correlation ids, job state, policy decisions, and projection health. Serving both views from governed data keeps support effective without exposing implementation details or sensitive cross-tenant information.
+        </p>
+        <p>
+          Define rollback and repair before launch. Enterprise features often create durable side effects: notifications sent, exports downloaded, external systems updated, or permissions changed. The design should distinguish reversible UI state, compensating actions, support-mediated repair, and changes that can only be corrected through a new audited event.
+        </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Multi-View Shared State Architecture</h3>
-        <HighlightBlock as="p" tier="important">The key insight for cross-view consistency is that all views (board, list, timeline) are different presentations of the same underlying data — the issues Map in the Zustand store. When the app loads a project, it fetches all issues for the current project context (GET /api/projects/&#123;id&#125;/issues returns all issues with fields needed by all views). These are stored in a Zustand store as a Map&lt;issueId, Issue&gt;. Each view is a pure function of this store: the board view groups issues by status, the list view sorts by priority, the timeline view renders issues as Gantt bars based on dueDate and estimate. When a WebSocket event arrives (e.g., issue X status changed from "In Progress" to "Done"), the Zustand store is updated in place: issues.set(x.id, &#123; ...issues.get(x.id), status: "done" &#125;). All three views re-render automatically via their Zustand subscriptions — no view-specific refresh logic needed.</HighlightBlock>
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Design every stored object with tenant id, owner, lifecycle state, created-by, updated-by, and audit correlation. These fields look mundane but they power support, compliance, migration, and incident response.
+        </p>
+        <p>
+          Use event-driven projections for timelines, search, analytics, and notifications. Keep the source of truth compact and rebuildable, then make projection freshness visible to users and operators.
+        </p>
+        <p>
+          Centralize policy evaluation. The same authorization result should protect UI actions, API endpoints, exports, scheduled jobs, and integration callbacks. Duplicated permission logic is one of the fastest ways to create enterprise security gaps.
+        </p>
+        <p>
+          Make administrative changes reviewable. Preview impact, show affected users or records, require confirmation for high-blast-radius changes, and write audit events with actor, reason, before and after state, and correlation id.
+        </p>
+        <p>
+          Plan migrations as product workflows. Schema changes, role changes, dashboard changes, and workflow changes should support draft, validation, staged rollout, rollback, and historical interpretation.
+        </p>
+        <p>
+          Build support diagnostics from day one. Operators should see policy decisions, projection lag, failed background jobs, integration status, and relevant audit events without raw database access.
+        </p>
+      </section>
+        <p>
+          Define invariants and monitor them. Examples include no cross-tenant reads, no unowned high-risk changes, no export without audit, no background action without idempotency, and no stale policy cache beyond its allowed window. These invariants are more useful than generic uptime metrics because they represent the customer&apos;s trust assumptions.
+        </p>
+        <p>
+          Create impact previews for high-blast-radius actions. Before publishing a dependency, changing a policy, launching an automation, or exporting sensitive data, the UI should show affected users, records, workflows, integrations, and scheduled jobs. This turns dangerous admin power into an informed decision.
+        </p>
+        <p>
+          Keep customer communication paths ready. Enterprise incidents often require explaining whether data was delayed, hidden, exported, changed, or incorrectly permissioned. The system should preserve timeline evidence and provide support-facing summaries that can be shared without exposing internal implementation details.
+        </p>
+        <p>
+          A final pitfall is treating principal readiness as feature breadth. Interviewers care less about listing many screens and more about explaining invariants, failure modes, migration, ownership, and evidence. The article should help a candidate defend why the system remains trustworthy when scale, compliance, and partial failure appear together. That defense needs concrete operational language, not generic SaaS terminology.
+        </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Gantt Timeline Rendering</h3>
-        <HighlightBlock as="p" tier="important">The Gantt chart renders 500 task bars on a scrollable date axis. A naive DOM-based approach (one div per task bar) creates 500 DOM elements for the bars alone, plus the date axis, dependency arrows, and labels. This is manageable but becomes slow for scroll and zoom operations. The timeline uses a hybrid approach: task rows are virtually windowed (only visible rows are in the DOM), but each visible row&apos;s bar is a positioned div element (not canvas). The date axis (day/week/month headers) is a fixed-position element that scrolls horizontally with the content. Dependency arrows are rendered as SVG &lt;line&gt; or &lt;path&gt; elements overlaid on the task area, SVG handles the arrows cleanly without requiring canvas, and only arrows for visible tasks are rendered. Drag handles on bar edges allow resizing (changing dueDate) and the bar itself is draggable (changing startDate). These interactions use mouse event handlers that compute the new date from the pixel delta and column width (pixels per day), then fire PATCH /api/issues/&#123;id&#125; &#123; dueDate, startDate &#125; optimistically.</HighlightBlock>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The common mistake is modeling the board as the source of truth. The source of truth is task state with ordered projections; boards, lists, calendars, and roadmaps are views over that state.
+        </p>
+        <p>
+          Another pitfall is exposing a powerful UI while treating exports, scheduled jobs, and integration callbacks as afterthoughts. Attackers and accidental misuse often happen through these secondary paths.
+        </p>
+        <p>
+          Teams also under-model deletion, archive, and retention. Enterprise customers care about legal hold, data residency, restoration, and evidence. A delete button that removes current UI rows is not a complete lifecycle model.
+        </p>
+        <p>
+          A common product failure is hiding permission complexity from admins. Simpler UI is good, but admins still need to understand why a user can or cannot see something, especially during access reviews and incidents.
+        </p>
+        <p>
+          Finally, many systems lack replayability. If a projection, notification, export, or integration output is wrong, the team needs source events and versioned decisions to reconstruct the correct state.
+        </p>
+      </section>
+        <p>
+          A subtle pitfall is mixing current truth with historical truth. The current owner, name, permission, or schema may differ from the one that existed when the task was created. Historical views, exports, and audit pages should label which version they use rather than silently reinterpreting old events through current metadata.
+        </p>
+        <p>
+          Another failure is treating background jobs as invisible implementation details. If a projection rebuild, export, notification, connector sync, or retention job fails, customers experience missing or stale product behavior. Admin UIs need job state, retry paths, and support escalation for these workflows.
+        </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Sprint Planning with Capacity Tracking</h3>
-        <HighlightBlock as="p" tier="important">Sprint planning involves two tasks: selecting which issues go into the sprint, and verifying the team has enough capacity to complete them. The sprint planning view shows: a backlog panel (unplanned issues) on the left, the sprint backlog on the right, and a capacity bar per team member at the top. Dragging an issue from backlog to sprint fires PATCH /api/issues/&#123;id&#125; &#123; sprintId: currentSprintId &#125; optimistically. The capacity bar recalculates: for each team member, their total sprint estimate (sum of estimates for issues assigned to them in the sprint) is shown against their sprint capacity (working days × hours per day × velocity factor). The capacity bar colors: green (below 80%), yellow (80–100%), red (over 100%). Over-capacity is a warning, not a hard block, sprint planning decisions are the team&apos;s responsibility. Sprint velocity data (from previous completed sprints) is shown as a reference chart: &quot;Last 5 sprints: 42, 38, 45, 40, 43 story points.&quot; This guides the team&apos;s planning without being prescriptive.</HighlightBlock>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Agile sprint planning requires trustworthy historical state, clear ownership, and exportable evidence. The design should preserve who changed what and which policy or version was active at the time.
+        </p>
+        <p>
+          Executive roadmap reporting needs fast operational views for large tenants without leaking data across teams, regions, or roles. This depends on tenant-aware caching and policy-aware read models.
+        </p>
+        <p>
+          Cross-team dependency tracking pushes the system into incident or compliance mode, where correctness and audit evidence matter more than visual polish.
+        </p>
+        <p>
+          External contractor collaboration shows why enterprise SaaS features need lifecycle, migration, and support tooling rather than only a happy-path workflow.
+        </p>
+      </section>
+        <p>
+          In principal interviews, use this system to demonstrate how enterprise SaaS differs from consumer CRUD. The hard parts are not only screens and tables; they are versioned policy, tenant isolation, compliance evidence, migration, safe customization, and operability under partial failure.
+        </p>
+        <p>
+          Tie every recommendation back to measurable tenant trust.
+        </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Dependency Tracking with Cycle Detection</h3>
-        <HighlightBlock as="p" tier="important">Dependencies between tasks create a directed graph. Cycle detection is required to prevent invalid dependency chains (A blocks B, B blocks C, C blocks A — which would mean nothing can be done). When a user creates a dependency (POST /api/dependencies &#123; fromId: A, toId: B, type: "blocks" &#125;), the server performs a BFS traversal from B's node in the dependency graph, checking if A is reachable. If A is reachable from B through existing dependencies, adding A blocks B would create a cycle, and the request is rejected with a 422 error explaining the cycle path. The client shows the error: "Cannot add dependency: A → B → C → A would create a circular dependency." The dependency graph is stored in a PostgreSQL adjacency list table (from_id, to_id, type). For BFS performance, the adjacency list is cached in Redis (HSET deps:&#123;issueId&#125; field:toId for each outgoing dependency) and invalidated when dependencies change.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Offline Support with IndexedDB Outbox</h3>
-        <HighlightBlock as="p" tier="important">Field workers (construction project management, event management) often work in areas with intermittent connectivity. The service worker caches the app shell and last-fetched project data in the Cache API. When the user is offline, mutations (status updates, new comments, time logs) are written to an IndexedDB outbox queue: &#123; mutationId, endpoint, method, body, timestamp &#125;. A useNetworkStatus hook monitors navigator.onLine and the service worker's sync events. On reconnect, the outbox is drained in chronological order: each mutation is retried with its original idempotency key. Conflicts (another user changed the same field while offline) are resolved with last-write-wins with a notification: "Bob updated this task's status while you were offline. Your change has been applied." This is acceptable for project management tools because the data is not financial and conflict rates are low.</HighlightBlock>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model task, board, and roadmap collaboration workspace for enterprise scale?</h3>
+        <p>
+          I would start with tenant-scoped domain entities, versioned configuration, explicit ownership, and audit metadata. Writes go through a domain API and policy service, then emit events for projections, search, notifications, audit, and exports. The transactional store remains the source of truth, while read models optimize dashboards and investigation paths. I would avoid putting business authority in the client because exports, background jobs, and integrations must enforce the same policy.
+        </p>
+        <h3>Where would you use strong consistency versus eventual consistency?</h3>
+        <p>
+          I would use strong consistency for permission changes, destructive actions, publication, approval, and final business decisions. I would use eventual consistency for timelines, search, analytics, dashboards, and notifications, as long as the UI exposes freshness and pending state. This gives users responsive views without weakening correctness for high-risk decisions.
+        </p>
+        <h3>How do you keep the system safe for large enterprise tenants?</h3>
+        <p>
+          I would enforce tenant isolation in storage, cache keys, search indexes, queues, exports, and observability. I would add quotas for expensive operations, background job isolation, policy-aware caches, and admin audit trails. For Project management, I would also expose operational signals such as projection lag, failed jobs, permission denials, and export volume so tenant-specific problems do not become global outages.
+        </p>
+        <h3>How would you design exports and compliance evidence?</h3>
+        <p>
+          Exports should be asynchronous, permission-checked at request and download time, scoped by tenant and actor, and written to encrypted object storage with short-lived delivery links. Sensitive exports need masking, approval, audit events, retention policy, and sometimes immutable signatures. The export should include enough metadata to explain filters, data freshness, schema version, and actor context.
+        </p>
+        <h3>What are the most important trade-offs?</h3>
+        <p>
+          The main trade-offs are flexibility versus governance, freshness versus cost, strong consistency versus scalability, and admin power versus blast radius. For task, board, and roadmap collaboration workspace, I would make high-risk actions slower and auditable, keep everyday reads fast through projections, and make configuration versioned so customization does not destroy supportability.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">WebSocket versus SSE for real-time updates: project management tools need bidirectional communication (the client must send subscription requests — "subscribe me to updates for project X") as well as receive updates. SSE is strictly server-to-client, which means subscriptions would need to be managed via HTTP (POST /api/subscribe &#123; projectId &#125;) separately from the SSE stream. WebSocket handles both in one connection. For this use case, WebSocket is the more natural choice. However, if the product uses HTTP/2, SSE multiplexes efficiently over a single connection, while WebSocket requires a separate TCP connection per tab.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Real-time granularity: pushing every keystroke to all collaborators (as Google Docs does for collaborative editing) requires operational transformation (OT) or CRDT algorithms to maintain consistency. For issue descriptions in a project management tool, the standard approach is a simpler "typing indicator" (show "Alice is editing" while Alice is typing, without sharing keystrokes) combined with a conflict detection mechanism (if Alice and Bob both edit the same field and their edits conflict, show a merge dialog). Full real-time collaborative editing of issue descriptions (OT/CRDT) is a significant engineering investment — most project management tools implement it for the description field only, not for all fields.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A project management tool (Jira/Asana-like) is built around a shared Zustand store that all views (board, list, timeline) read from — WebSocket updates to the store are automatically reflected in all views without view-specific refresh logic. The CQRS backend validates and publishes IssueUpdated events to Kafka; the WS push server fans these out to connected clients filtered by project membership. The Gantt timeline uses virtual row windowing with positioned div bars and SVG dependency arrows, supporting drag-resize for date changes. Sprint planning shows per-assignee capacity bars (sum of estimates vs. availability) with velocity charts from historical sprints. Dependency creation runs BFS cycle detection on the server (Redis-cached adjacency list) before accepting. Offline support uses service worker + IndexedDB outbox for queued mutations, replayed on reconnect with idempotency keys. The core design principle: all views are projections of a single shared data model — this normalizes cross-view consistency from a hard real-time synchronization problem into a simple Zustand store subscription.</HighlightBlock>
+        <h2>References</h2>
+        <ul>
+          <li>Atlassian Jira concepts.</li>
+          <li>Asana developer documentation.</li>
+          <li>Linear issue workflow concepts.</li>
+          <li>CRDT and event sourcing literature.</li>
+          <li>OWASP access control guidance.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

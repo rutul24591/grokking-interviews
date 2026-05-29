@@ -8,90 +8,144 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-subscription-billing-frontend",
   title: "Design a Subscription Billing Frontend",
-  description:
-    "Architecture for a subscription billing frontend: plan selection UI with feature comparison, trial-to-paid conversion flow, payment method management with PCI DSS compliance, subscription state machine (active/paused/cancelled/past_due), proration calculation for plan upgrades, dunning management for failed payments, invoice history, usage-based billing meter UI, and webhook-driven UI state sync.",
+  description: "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery.",
   category: "high-level-design",
   subcategory: "ecommerce-marketplace",
   slug: "subscription-billing-frontend",
-  wordCount: 4900,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "billing", "subscription", "pci-dss", "dunning", "proration", "payment", "stripe"],
-  relatedTopics: ["cart-checkout-concurrency", "dynamic-pricing-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "ecommerce", "marketplace", "checkout", "inventory", "payments"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Subscription Billing Frontend is a commerce correctness system wrapped in a shopping experience. A principal-ready design treats a subscription billing frontend as a coordinated set of catalog, pricing, inventory, payment, order, fulfillment, fraud, and support workflows rather than a collection of product cards.",
+  "The hardest part is that the user-facing promise is assembled from many independently changing facts: product availability, seller status, delivery promise, promotion eligibility, payment authorization, tax, shipping, subscription entitlement, and return/refund policy.",
+  "The design must define which state is authoritative and which state is a projection. Catalog pages, recommendations, facet counts, delivery estimates, and tracking views can lag. Payment, order creation, inventory reservation, subscription entitlement, and refund/return decisions require stronger server-side consistency and auditability.",
+  "Marketplaces are adversarial. Sellers can manipulate listings, buyers can abuse returns, bots can attack flash sales, promotion rules can be exploited, and recommendation systems can amplify low-quality inventory. Abuse controls are part of the architecture.",
+  "A staff/principal answer should explain how the system handles scale events, provider failures, stale inventory, duplicate checkout attempts, fraud/risk review, customer support reconstruction, and rollback after bad pricing, promotion, or recommendation changes."
+];
+const concepts = [
+  "The first concept is promise integrity. plan catalog, entitlement service, and invoice service produce the promise shown to the customer, but final purchase or refund decisions must revalidate authoritative state.",
+  "The second concept is idempotent commerce intent. Add-to-cart, quote, reserve, pay, place order, cancel, return, refund, and subscription change should converge under retries, double-clicks, browser refresh, provider callbacks, and mobile reconnect.",
+  "The third concept is inventory and price freshness. Read surfaces can use cached or eventually consistent data, but checkout and refunds need fresh validation with explicit handling when the promise changes.",
+  "The fourth concept is lifecycle state. Cart, quote, hold, payment intent, order, shipment, return, refund, subscription, and entitlement each need explicit states, expiry, transition history, and support visibility.",
+  "The fifth concept is risk and policy. Fraud scoring, seller trust, return abuse, promotion eligibility, payment risk, regulatory constraints, and marketplace policy should influence flows without making the UI opaque.",
+  "The sixth concept is observability. Track conversion, quote mismatch, inventory hold failure, payment pending duration, refund latency, recommendation quality, pricing rollback, carrier lag, and support contact rate."
+];
+const architecture = [
+  "The architecture contains plan catalog, entitlement service, invoice service, payment retry, dunning workflow. Read APIs serve fast browse and discovery views. Transaction APIs own authoritative quote, reservation, payment, order, entitlement, and refund transitions. Event streams drive search, recommendations, notifications, analytics, and support timelines.",
+  "Every transaction should start from a durable intent: cart snapshot, pricing quote, inventory hold, payment intent, subscription change request, or return authorization. The UI renders that intent and its current state rather than inventing completion locally.",
+  "The system should use versioned source facts. Catalog version, price quote version, promotion version, inventory hold ID, payment provider ID, tax/shipping quote, return policy version, and entitlement version allow support and reconciliation to explain outcomes.",
+  "Browse surfaces can degrade gracefully. If recommendations fail, show popular or editorial products. If facets lag, show primary results. If delivery estimate is stale, mark it as estimate and revalidate before checkout.",
+  "Transactional surfaces should fail safely. Checkout should not double-charge. Dynamic pricing should not show one price and capture another without explanation. Subscription changes should not grant or remove entitlement without durable billing state.",
+  "Operations need controls for promotion rollback, pricing kill switch, recommendation demotion, inventory hold release, payment provider failover, refund retry, return fraud review, and customer-visible incident messaging."
+];
+const tradeoffs = [
+  "Caching catalog and listing data improves latency and cost, but stale data can mislead users. The defensible design caches browse state while revalidating price, stock, eligibility, and delivery at transaction boundaries.",
+  "Early inventory holds reduce customer disappointment but can reduce inventory utilization and enable hoarding. Late holds improve utilization but increase checkout failure. TTL-based holds at review/payment are usually the compromise.",
+  "Personalized recommendations improve conversion but can conflict with business constraints such as inventory health, fairness, ads, seller quality, and safety. Ranking needs guardrails beyond click-through rate.",
+  "Dynamic pricing can improve marketplace efficiency but can reduce trust if explanations, quote TTLs, and audit trails are weak. Users should understand whether a price is locked, estimated, personalized, or expired.",
+  "Synchronous payment/order completion gives simple UX but breaks when payment providers and banks are asynchronous. Pending states and webhook-driven completion are more reliable, with a more complex UI.",
+  "Strict fraud controls reduce loss but create false positives and conversion loss. Risk-based step-up, review queues, and appeal/support flows are better than a single hard threshold."
+];
+const practices = [
+  "Represent commerce workflows as state machines: quote, reserve, authorize, confirm, fulfill, return, refund, renew, cancel, dispute, and reconcile.",
+  "Use deterministic idempotency keys for cart mutations, payment attempts, order finalization, subscription changes, refund requests, and return authorizations.",
+  "Keep payment and sensitive data out of product JavaScript where possible. Use hosted fields, tokenization, webhook verification, and redacted logs.",
+  "Expose truthful UI states: estimate, locked quote, pending payment, inventory hold expired, under review, refund processing, return approved, carrier delayed, or entitlement pending.",
+  "Build support reconstruction views. Operators need cart snapshot, quote, hold, payment, order, shipment, return, refund, entitlement, provider callback, and customer notification history.",
+  "Design rollback and kill switches for prices, promotions, recommendations, inventory reservations, payment providers, subscription entitlement rules, and return workflows.",
+  "Instrument by seller, item, category, payment rail, region, delivery method, promotion, risk bucket, and app version. Commerce incidents are rarely evenly distributed."
+];
+const pitfalls = [
+  "double billing is a product trust failure. It should be handled through authoritative validation, explicit state, and support-visible history instead of silent UI correction.",
+  "entitlement drift often appears when browse projections are used as transaction truth. The system should treat cached results as hints, not final commitments.",
+  "proration error requires user-facing recovery. The UI should explain what changed and offer safe next actions rather than forcing a generic retry.",
+  "cancellation dispute needs operational tooling. Manual database repair is not an acceptable support workflow for money, inventory, entitlement, or returns.",
+  "Another pitfall is optimizing only conversion. Commerce designs also need fraud loss, refund rate, return abuse, support contacts, seller fairness, accessibility, and long-term trust metrics.",
+  "Teams also forget regional and regulatory differences. Tax, payment methods, return windows, data retention, invoice rules, and consumer protection obligations vary by market."
+];
+const useCases = [
+  "SaaS billing portal requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "plan upgrade flow requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "trial conversion page requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "During a flash sale, the system should throttle bots, use inventory holds, show truthful scarcity, protect checkout idempotency, and degrade nonessential widgets.",
+  "During a bad price or promotion rollout, operators should stop the rule, identify affected quotes and orders, decide honor/cancel policy, notify customers, and preserve audit evidence.",
+  "During a provider outage, the UI should show pending or alternate payment options where safe, avoid duplicate captures, and reconcile late callbacks."
+];
+const questions = [
+  {
+    "question": "How would you design a subscription billing frontend end to end?",
+    "answer": "I would separate fast browse projections from authoritative transaction workflows. Browse uses catalog, search, recommendations, and cached availability. Transaction boundaries create durable intents for quote, inventory hold, payment, order, entitlement, return, or refund. The backend owns validation, idempotency, risk, ledger/order state, and support history. The UI renders truthful states and safe recovery actions."
+  },
+  {
+    "question": "Why this architecture over directly using catalog/search data for checkout or returns?",
+    "answer": "Catalog and search projections are optimized for discovery, not correctness. They can be stale or policy-filtered differently. Checkout, subscription, and returns require fresh authoritative validation and durable transition history. The trade-off is more backend complexity, but it prevents oversell, double charge, bad entitlement, and refund disputes."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are double billing, entitlement drift, proration error, cancellation dispute, plus flash-sale bot traffic, hot SKUs, provider outages, promotion bugs, fraud rings, recommendation drift, and support overload. Prevention requires cache strategy, authoritative revalidation, idempotency, holds, risk controls, staged rollout, and operational kill switches."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Browse, search, recommendations, facet counts, tracking projections, and analytics can be eventually consistent with freshness indicators. Price capture, inventory hold, payment, order creation, subscription entitlement, refund approval, and return authorization need strong server-owned state and audit. The answer should classify each commerce state explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with pending states, idempotent retries, provider callbacks, reconciliation, and support timelines. Rollback uses price/promotion kill switches, recommendation demotion, entitlement correction, refund/reversal, or compensating transactions. Abuse controls include bot defense, risk scoring, rate limits, and return fraud review. Privacy requires redacted payment and customer data. Cost is controlled through caching, async projections, and telemetry sampling. Observability tracks conversion, mismatch, pending, refund, risk, and support metrics."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend eventual consistency for browse because it improves latency and cost, but not for money, entitlement, inventory reservation, or refund decisions. I would defend TTL holds because they balance utilization and correctness. I would defend pending payment states because external rails are asynchronous and duplicate charges are worse than waiting."
+  }
+];
+const references = [
+  {
+    "label": "Stripe PaymentIntents documentation",
+    "href": "https://docs.stripe.com/payments/payment-intents"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Elasticsearch guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "PCI Security Standards Council",
+    "href": "https://www.pcisecuritystandards.org/"
+  },
+  {
+    "label": "Shopify engineering blog",
+    "href": "https://shopify.engineering/"
+  },
+  {
+    "label": "AWS architecture blog",
+    "href": "https://aws.amazon.com/blogs/architecture/"
+  }
+];
 
 export default function SubscriptionBillingFrontendArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A subscription billing frontend is more complex than a one-time checkout because the financial relationship is ongoing: the user's payment method is charged repeatedly, the plan can change (upgrade, downgrade, pause, cancel), and failed charges trigger a recovery flow (dunning) that the user must interact with to restore service. The frontend must faithfully represent this ongoing relationship — showing the user their current plan, next billing date, what they will be charged, and what happens if they cancel.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">PCI DSS compliance is the first major constraint. The frontend must never handle raw card numbers — if a card number is ever passed through the application server, the server becomes PCI DSS in-scope, which triggers a massive compliance burden. The solution is to use a payment provider's hosted JavaScript SDK (Stripe Elements, Braintree Hosted Fields) where the card input field is an iframe served from the payment provider's domain. The card data flows directly from the user's browser to the payment provider; the application server receives only a token (a short-lived, single-use identifier for the saved payment method). The application server never sees the card number.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Plan selection, trial flow, payment method management, subscription lifecycle (upgrade/downgrade/pause/cancel), dunning, invoice history, and usage-based billing meter. Not in scope: the billing engine itself (Stripe/Chargebee are treated as external services), tax calculation, or multi-currency conversion.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/subscription-billing-frontend.svg" alt="Design a Subscription Billing Frontend architecture" caption="Architecture view: browse projections, transaction state, risk controls, support history, and operational boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/subscription-billing-frontend-flow.svg" alt="Design a Subscription Billing Frontend flow" caption="Flow view: user intent, validation, hold or quote, payment/order/refund state, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/subscription-billing-frontend-operations.svg" alt="Design a Subscription Billing Frontend operations" caption="Operations view: stale data, provider failure, fraud, rollback, reconciliation, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Plan selection:</strong> Feature comparison table across plans (Free, Pro, Enterprise). Dynamic pricing display (monthly/annual toggle with annual discount). CTA leading to checkout or free trial activation.</li>
-          <li><strong>Trial flow:</strong> Free trial activation (no credit card required or card required based on plan). Trial expiry countdown in the app header ("7 days left in your trial"). Upgrade prompt at trial end.</li>
-          <li><strong>Subscription management:</strong> Current plan display with next billing date and amount. Plan upgrade (immediate, prorated) and downgrade (effective at next billing cycle). Pause subscription (suspend billing for 1–3 months). Cancel (immediate or end-of-period). Reactivation after cancel or expiry.</li>
-          <li><strong>Payment methods:</strong> Add new card (Stripe Elements iframe). Set default payment method. Remove payment method (with validation that at least one valid method remains for active subscriptions). Update billing address.</li>
-          <li><strong>Dunning:</strong> When a charge fails (expired card, insufficient funds), display a banner in the app UI ("Your subscription is past due — update your payment method to restore access"). Countdown to service suspension. Allow updating payment method and retrying charge inline.</li>
-          <li><strong>Invoices:</strong> List of past invoices with date, amount, status (paid/void/uncollectible). Download PDF. View line items (base plan, usage charges, credits, taxes).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>PCI DSS:</strong> Card data must never touch the application server. All card collection via provider-hosted iframe (Stripe Elements).</li>
-          <li><strong>Subscription state freshness:</strong> The UI must reflect subscription state changes (upgrade confirmed, payment failed, trial expired) within 30 seconds of the event. State driven by webhooks from the billing provider, not by polling.</li>
-          <li><strong>Idempotency:</strong> Duplicate upgrade/cancel requests (network retry, double submit) must not result in double charges or double cancellations.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The billing frontend communicates with a Billing API layer (application-owned) that wraps the payment provider (Stripe/Chargebee) API. The application never calls Stripe directly from the frontend (doing so would require exposing secret API keys in JavaScript). Instead, the frontend calls the application's Billing API, which calls Stripe server-side. Subscription state is stored in the application database and kept in sync with Stripe via webhooks: when Stripe fires a subscription.updated, invoice.payment_failed, or customer.subscription.deleted webhook, the application updates its local subscription record and publishes a SubscriptionStateChanged event that triggers a WebSocket/SSE push to connected clients. This webhook-driven synchronization ensures the UI reflects billing provider state within seconds, not minutes.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/subscription-billing-frontend.svg"
-          alt="Subscription billing frontend architecture showing PCI DSS compliant payment collection (Stripe Elements iframe card input direct to Stripe card data never touches app server; app receives payment_method_id token only; Billing API wraps Stripe server-side API never exposes secret keys to frontend), subscription state machine (TRIALING → ACTIVE on payment → PAST_DUE on charge failure 3 retries dunning → CANCELED on explicit cancel or non-payment → PAUSED on pause request 1-3 months → UNPAID suspension; each state transition webhook-driven Stripe webhook → app webhook handler → update DB → WebSocket push to frontend within 30s), plan management UI (plan comparison table monthly/annual toggle; upgrade: immediate + proration calculation days_remaining/billing_period * (new_price - old_price); downgrade: scheduled for next cycle; upgrade confirmation dialog shows exact proration amount; idempotency key prevents double upgrade), dunning flow (invoice.payment_failed webhook → set past_due status → send email + in-app banner countdown to suspension date; user clicks Update Payment Method → Stripe Elements card input → new payment_method_id → POST /billing/retry-charge → success restores ACTIVE; max 3 auto-retries on days 1 3 7 then dunning), invoice history (Stripe invoices API: list invoices pagination cursor; PDF download via Stripe hosted invoice URL signed; line items: base plan + usage charges + credits + taxes; status paid/void/uncollectible), usage-based billing meter (per-cycle usage counter Redis INCRBY on each metered action; batch sync to Stripe Usage Records API every hour; metered UI: progress bar current vs plan limit; overage price display; upgrade prompt at 80% usage), trial expiry (countdown banner days_left = trial_end - now; CTA upgrade prompt; at T=0 webhook customer.subscription.trial_will_end → show paywall; no card on file → require payment method to continue)."
-          caption="PCI DSS compliant payment collection (Stripe Elements iframe, token-only to app server), subscription state machine (webhook-driven transitions within 30s), proration calculation for upgrades, dunning flow (3 retry attempts, in-app banner, inline card update), usage-based billing meter, invoice history, and trial expiry countdown"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">PCI DSS Compliant Card Collection</h3>
-        <HighlightBlock as="p" tier="important">Stripe Elements renders card input fields in iframes served from Stripe&apos;s domain (js.stripe.com). From the browser&apos;s security model perspective, the iframe&apos;s content is isolated from the parent page, the application&apos;s JavaScript cannot read the card number typed into the iframe. When the user submits the payment form, the application calls stripe.confirmSetup() (for saving a card without immediate charge) or stripe.confirmPayment() (for immediate charge). Stripe&apos;s SDK communicates directly with Stripe&apos;s servers to tokenize the card. The result is a PaymentMethod ID (pm_xxxx) returned to the application&apos;s JavaScript. The application sends only this token to its Billing API server: POST /billing/payment-methods {"{ paymentMethodId: \"pm_xxxx\" }"}. The Billing API attaches the payment method to the Stripe customer and saves the Stripe payment method ID in the application database. The application never handles, stores, or transmits the card PAN (Primary Account Number).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Subscription State Machine</h3>
-        <HighlightBlock as="p" tier="important">The application maintains its own subscription state table (not relying solely on Stripe's state) because the application needs to make authorization decisions (is this user allowed to access feature X?) in milliseconds, and calling Stripe's API on every request would add 100–200ms of latency. The local state table is a shadow of Stripe's state, synchronized via webhooks. Relevant Stripe webhooks: customer.subscription.created (new subscription), customer.subscription.updated (plan change, status change), customer.subscription.deleted (cancellation), invoice.payment_failed (charge failure), invoice.payment_succeeded (renewal success), customer.subscription.trial_will_end (3 days before trial ends). Each webhook handler: (1) validates the webhook signature (Stripe-Signature header), (2) updates the local subscription record (status, current_period_end, plan_id, payment_status), (3) publishes a SubscriptionStateChanged event to a Redis Pub/Sub channel, (4) the real-time service (WebSocket/SSE) pushes the update to the connected client within seconds. This ensures the UI reflects billing events promptly — a failed renewal payment triggers the dunning banner within 30 seconds, not on the user's next page load.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Proration for Plan Changes</h3>
-        <HighlightBlock as="p" tier="important">When a user upgrades mid-cycle (e.g., upgrades from $10/month to $30/month on day 15 of a 30-day cycle), the user owes the prorated difference for the remaining 15 days plus the full price for the next cycle. Proration calculation: prorated_amount = (new_price - old_price) × (days_remaining / days_in_period). In this example: ($30 - $10) × (15/30) = $10 immediate charge, then $30/month going forward. Stripe handles proration automatically when proration_behavior=&apos;create_prorations&apos; is set on the subscription update call. The frontend shows the user the exact proration amount before they confirm the upgrade: a &quot;Preview upgrade&quot; API call (POST /billing/preview-upgrade {"{ newPlanId }"}) calls Stripe&apos;s upcoming invoice API and returns the itemized charges. The user sees &quot;You&apos;ll be charged $10 now for the remainder of this period, then $30/month starting on [date]&quot; before clicking Confirm. Idempotency: the upgrade request includes an idempotency key (userId + newPlanId + timestamp_bucket, where timestamp_bucket rounds to the nearest 30 seconds), retrying the same upgrade within 30 seconds returns the cached result, preventing double upgrades.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Dunning Flow</h3>
-        <HighlightBlock as="p" tier="important">When a charge fails (invoice.payment_failed webhook), the subscription enters PAST_DUE state. Stripe automatically retries the charge on a configurable schedule (typically day 1, 3, 7 after first failure — "smart retries" that target times when payment networks report lower decline rates). The application's dunning UI: (1) A full-width warning banner appears in the app header: "Your subscription is past due. Update your payment method to avoid losing access. [Update now]" (2) A countdown shows days until service suspension (configurable, typically 14 days after first failure). (3) Clicking "Update now" opens an inline card update modal (Stripe Elements, same PCI-compliant pattern). On saving a new card, the application calls POST /billing/retry-charge, which calls Stripe's invoice.pay() API. If the retry succeeds, the subscription returns to ACTIVE and the banner disappears (driven by the invoice.payment_succeeded webhook). If all retries fail and the suspension deadline passes, the subscription moves to UNPAID/CANCELED and a paywall is shown instead of the application content.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Usage-Based Billing Meter</h3>
-        <HighlightBlock as="p" tier="important">For plans with metered usage (e.g., $0.10 per API call after 1000 included calls), the frontend must show the user their current usage to avoid surprise charges. Usage tracking: each metered action (API call, file upload, AI generation) increments a Redis counter (INCRBY usage:{"{userId}"}:{"{month}"} 1). A background job syncs the Redis counter to Stripe&apos;s Usage Records API every hour (POST /v1/subscription_items/{"{id}"}/usage_records {"{ quantity: delta, action: 'increment' }"}). The billing page shows: a progress bar (current_usage / included_quota), an overage calculator (how much the overage will cost based on current trajectory), and the expected invoice total for the current period. An upgrade prompt is shown proactively at 80% usage (&quot;You&apos;ve used 800 of 1,000 included API calls. Upgrade to Pro for 10,000 calls/month at no overage&quot;). This reduces bill shock by surfacing usage information before the cycle ends, at the moment the user is most motivated to upgrade.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Local subscription state versus Stripe as source of truth: maintaining a local subscription state table (synchronized via webhooks) adds complexity (webhook delivery failures, retry handling, duplicate webhook processing) but enables fast authorization checks without Stripe API calls on every request. The alternative — calling Stripe's API on every request to check subscription status — adds 100–200ms per request and creates a hard dependency on Stripe's availability (if Stripe's API is slow, every page load in the application is slow). The webhook-driven local shadow is the standard industry practice; the key is handling webhook delivery failures by implementing idempotent webhook handlers and periodically reconciling local state against Stripe's API for any missed events.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Trial with versus without credit card: requiring a credit card at trial signup reduces spam/abuse (low-intent users don't bother entering card details) and improves trial-to-paid conversion (the payment method is already saved, making the upgrade frictionless). However, it significantly reduces trial signup volume — many users bounce at the card entry step. The industry data shows opposite effects depending on the product: B2B SaaS typically benefits from requiring a card (higher-quality leads, better conversion), while consumer products see significant signup loss. The decision should be A/B tested; the architecture must support both modes (the trial activation API accepts an optional paymentMethodId parameter).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A subscription billing frontend is built around three non-negotiable constraints: PCI DSS compliance (Stripe Elements iframe — card data never touches the app server, app receives payment_method_id token only), webhook-driven state synchronization (Stripe webhooks → app DB → Redis Pub/Sub → WebSocket push, subscription state reflected in UI within 30 seconds), and idempotency (all billing operations include idempotency keys to prevent double-charges on network retry). The subscription state machine (TRIALING → ACTIVE → PAST_DUE → CANCELED/UNPAID) is maintained locally for low-latency authorization checks. Plan upgrades show exact proration via Stripe's upcoming invoice preview API before confirmation. Dunning uses a progressive in-app banner with countdown-to-suspension and inline card update. Usage-based billing exposes a real-time meter (Redis counter → hourly Stripe sync) with an upgrade prompt at 80% quota. The defining architectural pattern: never trust the frontend for billing state — all mutations go through the Billing API to Stripe, and UI state is driven entirely by webhook-triggered pushes from the server.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

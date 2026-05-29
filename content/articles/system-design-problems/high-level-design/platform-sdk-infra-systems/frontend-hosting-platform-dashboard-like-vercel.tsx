@@ -7,109 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-frontend-hosting-platform-dashboard-like-vercel",
-  title: "Design a Frontend Hosting Platform Dashboard (Like Vercel)",
-  description:
-    "Architecture for a hosting platform dashboard: deployment pipeline visualization, preview environments, rollback, domain management, analytics, and team collaboration.",
+  title: "Design a Frontend Hosting Platform Dashboard like Vercel",
+  description: "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance.",
   category: "high-level-design",
   subcategory: "platform-sdk-infra-systems",
   slug: "frontend-hosting-platform-dashboard-like-vercel",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "hosting", "vercel", "deployment", "preview-environments", "rollback"],
-  relatedTopics: ["frontend-architecture-for-an-internal-developer-platform", "frontend-observability-dashboard-rum-like-datadog"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "platform", "sdk", "infrastructure", "governance", "observability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Frontend Hosting Platform Dashboard like Vercel is a platform system, which means the product is not only the UI that users see but also the contract other teams, tenants, developers, plugins, SDKs, or automation depend on. A principal-ready design treats a hosting platform dashboard as a versioned control plane with operational guarantees.",
+  "The design must define ownership boundaries, compatibility rules, tenant isolation, permission enforcement, rollout mechanics, observability, rollback, and support operations. Platform systems fail differently from normal product screens because a bad release can break many downstream teams or external customers at once.",
+  "The visible dashboard or SDK should be backed by durable state: configuration versions, release channels, manifests, audit logs, policy decisions, dependency graph, tenant scopes, and operational history. Derived views such as impact analysis, metrics, install status, and rollout health can lag if they are observable and repairable.",
+  "A staff/principal answer should make the platform contract explicit. Who can publish? Who can install? What is backward compatible? What happens when a plugin, SDK, flag, deployment, token, or tenant job misbehaves? How do teams roll back without corrupting customer state?",
+  "The design should also include governance. Platform features need approvals, blast-radius limits, staged rollout, auditability, and usage visibility because they frequently grant power to other teams or external developers."
+];
+const concepts = [
+  "The first concept is contract-first design. project registry, deployment pipeline, and build logs should expose stable schemas, versioned APIs, documented lifecycle states, and compatibility guarantees. Hidden contracts are what make platform migrations painful.",
+  "The second concept is isolation. Tenants, projects, plugins, SDK integrations, build jobs, and admin actions should be scoped so a mistake or malicious actor cannot affect unrelated users. Isolation applies to data, permissions, compute, rollout, and telemetry.",
+  "The third concept is versioning and rollout. Platform artifacts should support draft, approved, staged, active, deprecated, and rolled-back states. The UI should show which version is used where and who owns it.",
+  "The fourth concept is operational feedback. A platform UI should not only let users change state; it should show health, lag, adoption, errors, blast radius, and rollback readiness before and after the change.",
+  "The fifth concept is permission and audit. Admin actions, SDK configuration, plugin install, feature rollout, tenant bulk jobs, and deployment changes should be authorized, recorded, reviewable, and reversible where possible.",
+  "The sixth concept is developer experience. Good platform systems reduce cognitive load with safe defaults, schema validation, preview environments, dry runs, examples, error explanations, and migration guidance."
+];
+const architecture = [
+  "The architecture contains project registry, deployment pipeline, build logs, traffic router, rollback control. The control plane stores configuration, versions, ownership, approvals, and audit. The execution plane applies changes through SDKs, plugins, build systems, rollout engines, or tenant jobs. The observability plane measures impact and supports rollback.",
+  "Every change should have an identity: actor, target scope, version, policy decision, approval state, rollout percentage, dependency impact, and correlation ID. Without this metadata, support and incident response cannot reconstruct what happened.",
+  "The frontend should render lifecycle state explicitly: draft, validating, approved, staged, active, partially rolled out, blocked, deprecated, failed, or rolled back. Platform users need to understand whether a change is safe to proceed, not just whether a form submitted.",
+  "The system should support dry-run or preview. Before applying a flag, plugin install, tenant bulk job, deployment, SDK config, or component release, users should see affected projects, tenants, permissions, compatibility warnings, and estimated blast radius.",
+  "Rollback should be designed as a product path. Some state can be reverted directly; some requires compensating changes; some must be disabled at runtime while data cleanup happens asynchronously. The UI should make these differences visible.",
+  "Platform observability should connect user-visible changes to downstream symptoms: SDK errors, plugin crashes, build failures, tenant job failures, RUM regressions, permission denials, adoption metrics, and support tickets."
+];
+const tradeoffs = [
+  "Centralized platforms improve consistency, governance, and reuse, but they can become bottlenecks if every team waits for the platform team. Extensibility and self-service reduce bottlenecks but increase policy and compatibility risk.",
+  "Strict compatibility protects consumers but slows innovation. Fast-moving APIs or components let teams ship quickly but create migration debt. Mature platforms define support windows, deprecation workflows, and compatibility tests.",
+  "Runtime configuration gives fast rollback and experimentation, but it creates distributed state that can drift across SDK caches, edge nodes, tenants, and clients. Build-time configuration is simpler but slower to change during incidents.",
+  "Plugin and extension ecosystems increase platform value but introduce supply-chain, permission, performance, and trust risks. Sandboxing, manifest review, version pinning, and kill switches are not optional.",
+  "High-cardinality observability improves debugging but can become expensive and privacy-sensitive. Principal designs sample intelligently, aggregate by stable dimensions, and restrict raw event access.",
+  "Self-service bulk operations improve admin productivity but can create large blast radius. Dry runs, approvals, quotas, staged execution, pause/resume, and audit logs are the trade-off that makes self-service safe."
+];
+const practices = [
+  "Represent platform artifacts with explicit lifecycle state, owner, version, scope, dependencies, approval, rollout status, and audit history.",
+  "Build validation into authoring. Catch schema errors, permission violations, dependency breaks, accessibility regressions, privacy issues, and compatibility problems before publish or install.",
+  "Use staged rollout and blast-radius limits. Platform changes should support canary, tenant allowlists, percentage rollout, automatic stop on guardrail failures, and one-click disable where safe.",
+  "Keep execution idempotent. Deployments, plugin installs, SDK config updates, tenant bulk jobs, and flag changes should converge after retries rather than duplicate work.",
+  "Enforce least privilege. Extensions, support tools, admin dashboards, SDK keys, and workflow runners should receive narrow scoped permissions with audit trails.",
+  "Expose operational truth in the UI. Users should see queue state, rollout health, adoption, errors, stale clients, incompatible versions, and rollback options.",
+  "Design support tooling. Operators need to inspect which version, plugin, flag, token, deployment, or tenant job affected a customer without querying raw databases."
+];
+const pitfalls = [
+  "bad deployment usually means the platform lacks compatibility gates, staged rollout, or blast-radius controls. Platform failures multiply because many teams depend on one surface.",
+  "build queue spike often comes from treating permissions or integration boundaries as documentation instead of enforceable runtime policy.",
+  "domain misroute is a state-distribution problem. SDK caches, build artifacts, edge nodes, tenants, and clients may observe different versions unless the design tracks propagation and freshness.",
+  "rollback failure requires rollback and audit. Platform users should know whether they can disable, revert, compensate, or escalate the issue.",
+  "Another pitfall is measuring adoption without measuring harm. A platform can be widely used and still create latency, privacy, accessibility, compatibility, or support problems.",
+  "Teams also forget deprecation. Old SDKs, plugins, components, flags, and deployment settings remain in production long after the happy-path migration guide is written."
+];
+const useCases = [
+  "preview deployment dashboard requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "production release console requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "edge config management requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "During a bad rollout, the system should identify affected tenants or projects, stop further rollout, disable the runtime path if possible, and preserve audit evidence.",
+  "During a compatibility break, owners should see consumers, version usage, failing checks, migration status, and deprecation deadlines.",
+  "During an abuse or supply-chain incident, the platform should revoke permissions, disable extensions or keys, notify affected owners, and support forensic review."
+];
+const questions = [
+  {
+    "question": "How would you design a hosting platform dashboard end to end?",
+    "answer": "I would model it as a platform control plane plus execution plane. The control plane stores versions, ownership, permissions, approvals, rollout state, and audit history. The execution plane applies changes through SDKs, plugins, workflows, deployments, tenant jobs, or runtime config. The UI supports validation, preview, staged rollout, health monitoring, and rollback. Observability connects platform changes to downstream customer impact."
+  },
+  {
+    "question": "Why this architecture over a simple admin dashboard or SDK config page?",
+    "answer": "A simple dashboard can mutate state but cannot safely manage platform contracts, compatibility, blast radius, tenant isolation, approvals, or rollback. Platform systems need lifecycle and governance because one change can affect many downstream consumers. The additional control-plane complexity is justified by operational risk."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are bad deployment, build queue spike, domain misroute, rollback failure, plus stale clients, incompatible versions, high-cardinality telemetry, queue backlogs, cross-tenant leakage, support overload, and uncontrolled blast radius. Prevention requires versioning, validation, staged rollout, idempotent execution, scoped permissions, and observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative configuration, permissions, ownership, approvals, and audit entries need strong server-controlled consistency. Runtime propagation to SDKs, edge nodes, build systems, dashboards, and tenants is often eventually consistent, but it must expose version and freshness. Rollback should target both control-plane state and distributed runtime state."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with dry runs, staged rollout, automatic guardrails, pause/resume, and rollback controls. Abuse is handled through least privilege, sandboxing, review, and key/plugin revocation. Privacy requires scoped telemetry and data minimization. Cost is controlled through sampling, quotas, batch execution, and cardinality limits. Observability tracks rollout health, adoption, error rates, stale versions, queue lag, and customer impact."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would argue that platform surfaces are leverage points, so governance is not bureaucracy; it is blast-radius control. I would defend self-service only when paired with validation, approvals for high-risk changes, staged rollout, and rollback. I would also distinguish authoritative control-plane consistency from eventually consistent runtime propagation."
+  }
+];
+const references = [
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "W3C Web Components",
+    "href": "https://www.w3.org/TR/components-intro/"
+  },
+  {
+    "label": "OWASP Third Party JavaScript Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Third_Party_Javascript_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  },
+  {
+    "label": "Cloudflare Workers platform docs",
+    "href": "https://developers.cloudflare.com/workers/"
+  }
+];
 
 export default function FrontendHostingPlatformDashboardLikeVercelArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <p>A frontend hosting platform dashboard (like Vercel, Netlify, or Render) gives developers a web UI to deploy, monitor, and manage their web applications. Each push to a Git branch triggers a build-and-deploy pipeline; the dashboard shows the pipeline's progress in real-time, the resulting preview URL, build logs, and deployment metadata. The dashboard is the primary interface through which developers understand their application's deployment history, diagnose build failures, manage custom domains, and configure the platform's behavior (environment variables, build commands, routing rules).</p>
-        <HighlightBlock as="p" tier="crucial">The design challenge is that the dashboard must provide real-time visibility into asynchronous, distributed processes (builds running on a fleet of build servers, deployment propagation across a global CDN). The user clicks "Deploy" and expects to see a live progress indicator as the build compiles, tests run, assets are uploaded, and the CDN propagates. Each stage runs in a different system; the dashboard aggregates their status into a coherent timeline. When a deployment fails, the dashboard must surface the exact cause quickly—showing the relevant log lines, the failing test, or the build error—to minimize the developer's debugging time.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The platform is a Git-integrated hosting service for static sites and serverless function applications (not containerized applications). Deployments are triggered by Git pushes (GitHub, GitLab, Bitbucket integrations) or by the platform's CLI. Each deployment creates an immutable, URL-addressable snapshot (the preview URL). Production deployments promote a specific deployment to the production URL. The dashboard serves individual developers and teams (with role-based access: owner, member, viewer).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-hosting-platform-dashboard-like-vercel-architecture.svg" alt="Design a Frontend Hosting Platform Dashboard like Vercel architecture" caption="Architecture view: control plane, execution plane, permissions, versioning, and observability boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-hosting-platform-dashboard-like-vercel-deploy-lifecycle.svg" alt="Design a Frontend Hosting Platform Dashboard like Vercel flow" caption="Flow view: authoring, validation, rollout, execution, health checks, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-hosting-platform-dashboard-like-vercel-rollback-safe-release.svg" alt="Design a Frontend Hosting Platform Dashboard like Vercel operations" caption="Operations view: blast radius, stale versions, abuse controls, cost, privacy, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Deployment list:</strong> Each project shows a chronological list of all deployments with their status (building, ready, failed, cancelled), the triggering branch and commit, the deployer (user or bot), and the deployment URL.</li>
-          <li><strong>Real-time build logs:</strong> While a deployment is building, the dashboard streams live build log output to the user. The user can see the current build step, output from the build command, and any errors in real-time.</li>
-          <li><strong>Preview environments:</strong> Every branch deployment generates a unique preview URL (a subdomain of the platform's URL namespace). The preview URL is stable for the branch—subsequent pushes to the same branch update the same preview URL.</li>
-          <li><strong>Rollback:</strong> Users can promote any past deployment to production (instant rollback to a previous state). A rollback does not rebuild—it re-aliases the CDN to an existing immutable deployment.</li>
-          <li><strong>Domain management:</strong> Users can configure custom domains (add a CNAME or A record), view DNS propagation status, and manage SSL certificate provisioning (Let's Encrypt).</li>
-          <li><strong>Environment variables:</strong> Users manage environment variables per project, with values scoped to all environments, production only, or preview only.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Build log latency:</strong> Build log lines appear in the dashboard within 1 second of being emitted by the build server.</li>
-          <li><strong>Deployment status accuracy:</strong> The dashboard's deployment status is accurate to within 5 seconds of the actual build/deployment state change.</li>
-          <li><strong>Rollback speed:</strong> A rollback operation (CDN alias change) completes within 10 seconds.</li>
-          <li><strong>Dashboard performance:</strong> Project pages with 1,000+ deployments load within 2 seconds.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The dashboard frontend is a React SPA that communicates with a REST/GraphQL API. The API aggregates data from the build system (which runs builds on ephemeral workers), the CDN management layer (which manages deployment aliases and CDN propagation), the domain service (which handles DNS and SSL), and the analytics service (which aggregates build metrics, error rates, and performance data). Real-time build log streaming uses Server-Sent Events (SSE): the dashboard opens an SSE connection to the log streaming endpoint for the active deployment, and the build server appends log lines to a shared log buffer that the streaming endpoint forwards to connected clients.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-hosting-platform-dashboard-like-vercel-architecture.svg"
-          alt="Hosting platform dashboard architecture showing React SPA, REST/GraphQL API (aggregating build system status, CDN management layer, domain service, analytics service), real-time build log streaming via SSE (build server → log buffer Redis Streams → SSE endpoint → dashboard), deployment lifecycle (Git push webhook → build trigger → build worker → asset upload → CDN deployment → alias update → status event), and Git integration (GitHub webhook on push → deployment creation → build trigger)."
-          caption="Dashboard architecture: REST API aggregating build/CDN/domain/analytics systems, SSE build log streaming via Redis Streams, Git webhook deployment trigger"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Deployment Lifecycle and Status Model</h3>
-        <HighlightBlock as="p" tier="important">A deployment transitions through a defined sequence of states: queued (build job created, waiting for a build worker), building (a worker is executing the build command), uploading (build artifacts are being uploaded to the CDN storage), ready (the deployment is accessible at its preview URL), and terminal states: failed (build or upload error), cancelled (user or system cancelled). Each state transition is recorded as an event in an append-only deployment event log (Kafka-backed, consumed to PostgreSQL for querying and Redis for real-time status cache).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The dashboard polls the deployment status every 5 seconds during an active deployment, using a short-poll rather than WebSocket because deployments are relatively infrequent events and short-poll is simpler to implement correctly with reconnection and backoff. The poll response includes the current state, the timestamp of the last state transition, and the current build step (a higher-granularity status string like "Running build command: npm run build" for the building state). The 5-second poll interval satisfies the 5-second accuracy requirement while keeping the polling overhead negligible (each poll is a lightweight API call returning a small JSON payload).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Deployment immutability: each deployment is content-addressed—its URL is derived from a hash of its contents. Two deployments with identical build outputs have the same URL (they are de-duplicated: the second deployment succeeds instantly without re-uploading). This immutability enables instant rollback: "promote to production" is purely an alias change in the CDN (pointing the production domain to a different deployment's URL), not a rebuild. The alias change propagates to all CDN edge nodes within 10 seconds via the CDN's control plane API.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-Time Build Log Streaming</h3>
-        <HighlightBlock as="p" tier="important">Build logs are streamed from the build worker to the dashboard in real-time. The build worker writes log lines to a Redis Stream (XADD) keyed by deploymentId. Each log entry has a sequential ID (Redis Stream auto-generated), a timestamp, a log level (info, warning, error), and the log message. The streaming endpoint (an API server) reads from the Redis Stream (XREAD with blocking, starting from the last read entry ID) and forwards new entries to connected SSE clients as they arrive. The SSE connection is kept alive for the duration of the build; the server sends a "deployment:complete" event when the deployment reaches a terminal state, signaling the client to close the SSE connection.</HighlightBlock>
-        <p>Log UI: the log viewer renders build log lines in a virtualized list (only rendering visible lines, crucial for long builds that produce thousands of log lines). The viewer auto-scrolls to the bottom as new lines arrive (following the latest output), with a "scroll to bottom" button that appears if the user scrolls up (to pause auto-scroll and read a specific section). Log lines are syntax-highlighted by log level (info: white, warning: yellow, error: red). The user can search within the log (client-side filtering of the in-memory log buffer) and download the full log as a text file.</p>
-        <HighlightBlock as="p" tier="important">Log persistence: after the build completes, log lines are persisted to object storage (S3) for long-term retention. The SSE stream endpoint serves live logs from Redis during the build and archived logs from S3 for completed deployments. The client requests logs the same way for both cases (the same API endpoint); the server determines whether to stream from Redis (active deployment) or fetch from S3 (completed deployment). S3 log retrieval is paginated: the client fetches the log in 1,000-line chunks, loading more on scroll, rather than downloading the entire log file upfront.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Preview Environment Management</h3>
-        <p>Each branch in the connected Git repository gets a stable preview URL: preview-branch-name.project.platform.app. The "branch name" portion is sanitized (lowercased, special characters replaced with hyphens, truncated to 63 characters to fit DNS label limits). Subsequent pushes to the same branch create new deployments but maintain the same preview URL by updating the branch alias (a CDN alias from the branch preview URL to the latest deployment's URL). The preview URL always points to the latest successful deployment on that branch.</p>
-        <HighlightBlock as="p" tier="important">Preview-specific environment variables: environment variables scoped to "preview" are injected into builds triggered from non-production branches. This allows preview deployments to use a staging database rather than the production database, a sandbox payment gateway rather than live payments, or a feature-flagged backend. Environment variable values are encrypted at rest (AES-256 with per-project keys) and are never included in build logs or API responses (they are injected into the build worker's environment directly, not returned to the dashboard UI). The UI shows the variable name and a masked value (first 2 chars + asterisks) to confirm the variable exists without revealing its value.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Domain Management and SSL</h3>
-        <HighlightBlock as="p" tier="important">Custom domain configuration requires two steps: adding the domain in the dashboard (which registers the domain in the platform's CDN edge configuration) and updating DNS records at the registrar (which the user does manually, guided by the platform's DNS instructions). The platform supports both CNAME records (pointing to a platform-provided domain) and A records (pointing to a platform-provided IP, for apex domains that cannot use CNAME). After the user adds the domain, the dashboard shows the required DNS configuration and polls the domain's DNS record every 60 seconds to detect propagation.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">DNS propagation detection: the platform's backend performs DNS resolution for the custom domain and compares the resolved IP/CNAME with the expected value. Propagation is considered complete when at least 3 of 5 geographically distributed DNS resolvers return the correct value. The dashboard shows propagation status per resolver region ("US East: ✓, EU West: ✓, Asia Pacific: pending"). Full propagation typically takes 5–30 minutes for TTL-compliant DNS providers; the UI communicates this expected range to prevent users from thinking something is wrong during the propagation window.</HighlightBlock>
-        <p>SSL certificate: once DNS propagates, the platform provisions an SSL certificate via Let's Encrypt using the HTTP-01 ACME challenge (the platform serves a challenge file at the well-known URL to prove domain control). Certificate provisioning takes approximately 30 seconds after DNS propagation. The certificate is renewed automatically 30 days before expiry. The dashboard shows the certificate's status, expiry date, and last renewal date. If a certificate renewal fails (typically due to DNS changes or rate limits), the dashboard shows a warning and allows the user to manually trigger re-provisioning.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Safe Release and Rollback</h3>
-        <p>Production deployments are protected by a deployment safety workflow. Before a deployment is aliased to production, the platform runs configurable checks: HTTP health check (the deployment's health endpoint returns 200), Lighthouse performance score above a configured threshold, and custom check functions (the user can configure a check that calls their own API). Only if all checks pass does the alias update proceed. If a check fails, the deployment enters the "check failed" state and the previous production alias remains active—the failed deployment is never exposed to production traffic.</p>
-        <p>Rollback is a first-class operation available from the deployment list. Selecting any past "ready" deployment and clicking "Promote to production" triggers an alias update without any rebuild. The rollback completes in under 10 seconds (CDN alias propagation time). The dashboard shows which deployment is the current production deployment (highlighted with a "Production" badge) and the history of production promotions. A deployment that was manually rolled back to is labeled "Restored" to distinguish it from a normal deployment promotion. Rollback actions are audit-logged (actor, timestamp, from/to deployment IDs).</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-hosting-platform-dashboard-like-vercel-rollback-safe-release.svg"
-          alt="Safe release and rollback showing deployment safety workflow (HTTP health check + Lighthouse score + custom checks → all pass → CDN alias update to new deployment; any fail → deployment stays at 'check failed', previous production alias unchanged), rollback flow (select past ready deployment → alias update only, no rebuild, completes in under 10s), deployment immutability (content-addressed URL, de-duplication of identical builds), branch preview alias (branch name → latest successful deployment on branch)."
-          caption="Safe release: pre-promotion checks gate alias update; rollback is alias-only (under 10s), no rebuild; content-addressed deployments enable instant de-duplication"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">SSE versus WebSocket for log streaming: SSE is unidirectional (server to client) and sufficient for log streaming—the client does not send data to the server during log streaming. SSE uses regular HTTP (no connection upgrade), works through HTTP/2 multiplexing (reducing connection overhead), and is automatically reconnected by the browser on connection drop. WebSocket is bidirectional, which is unnecessary overhead for a read-only log stream. The one advantage of WebSocket over SSE is binary message support (SSE is text-only); build log lines are text, so SSE is the correct choice. The client should implement reconnection logic for SSE (the browser does this automatically for EventSource, but if using fetch-based SSE, reconnection must be manual): on disconnect, resume from the last received log line's Redis Stream ID to avoid duplicate or missing log lines.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Deployment list pagination: a project with 1,000+ deployments requires cursor-based pagination (not offset pagination—offset pagination degrades as the cursor moves deeper into the list). The deployments are fetched in pages of 20, with a cursor derived from the last deployment's (createdAt, deploymentId). The user can load more deployments by scrolling (infinite scroll) or clicking "load more." The initial page load (first 20 deployments) is served from Redis cache (active project's recent deployments, cached for 30 seconds) for sub-200ms response times. Older deployments are fetched from PostgreSQL with a composite index on (projectId, createdAt DESC, deploymentId) for efficient cursor-based traversal.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Environment variable security: storing environment variable values in the dashboard database requires encryption at rest and careful access control. The platform should never log environment variable values (even in error logs or build logs), never include them in API responses (only return the variable name and masked value), and provide an audit log of who viewed or changed environment variable values. For high-security use cases, consider integrating with external secret management systems (HashiCorp Vault, AWS Secrets Manager) where the platform stores only a reference to the secret (not the value itself) and retrieves the value at build time using a service account credential. This approach ensures that even if the platform's database is compromised, secret values are not exposed.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A hosting platform dashboard provides real-time visibility into Git-triggered build-and-deploy pipelines. Deployment status is tracked via an append-only event log (Kafka → PostgreSQL + Redis), polled every 5 seconds by the dashboard UI. Build log streaming uses SSE backed by Redis Streams (build worker XADD → streaming endpoint XREAD → SSE → virtualized log viewer with auto-scroll and client-side search). Deployments are content-addressed (URL derived from build hash), enabling instant rollback via CDN alias update (no rebuild, under 10 seconds). Preview environments use stable branch-aliased URLs (updated to the latest successful deployment on the branch). Production deployments are gated by a safety workflow (health check + Lighthouse + custom checks) before the alias update proceeds. Domain management polls DNS propagation across 5 geographically distributed resolvers; SSL is provisioned via Let's Encrypt HTTP-01 challenge after propagation. Environment variables are encrypted at rest, never logged, and shown as masked values in the UI. The fundamental performance insight is deployment immutability: by content-addressing deployments, both de-duplication (identical builds resolve instantly) and rollback (alias change, not rebuild) become O(1) operations regardless of build complexity.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

@@ -7,89 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-permission-access-control-ui",
-  title: "Design a Permission & Access Control System UI",
-  description:
-    "Architecture for a permission and access control system UI: role-based access control (RBAC) with role inheritance, resource-level permission matrix, UI-level permission enforcement (hide vs. disable), permission evaluation at the edge using JWT claims, real-time permission propagation when roles change, attribute-based access control (ABAC) for context-aware permissions, team and workspace membership management, and audit log for permission changes.",
+  title: "Design a Permission and Access Control UI",
+  description: "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability.",
   category: "high-level-design",
   subcategory: "security-auth-privacy-systems",
   slug: "permission-access-control-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "rbac", "abac", "permissions", "access-control", "roles", "jwt-claims", "ui-authorization", "audit-log"],
-  relatedTopics: ["authentication-system", "secure-token-session-handling"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "security", "auth", "privacy", "policy", "audit"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Permission and Access Control UI is a high-stakes product system because mistakes create account takeover, data exposure, compliance violations, or permanent loss of user trust. A principal-ready design treats a permission and access control UI as a trust boundary, not as a form or settings page.",
+  "The design must cover identity proof, authorization, session lifecycle, consent or policy state, auditability, abuse resistance, operational controls, and user recovery. The visible UI is only one part of the system; the harder work is making sure every backend and derived surface obeys the same security decision.",
+  "A good answer starts by naming assets and attackers. Assets include accounts, tokens, permissions, private data, consent records, audit logs, recovery channels, and administrative power. Attackers include credential stuffers, malicious insiders, compromised devices, automation, phishing kits, and confused legitimate users.",
+  "Security systems also have product trade-offs. Strong controls reduce risk but can lock out real users, add friction, increase support cost, and create accessibility issues. Weak controls improve conversion but increase abuse and breach risk. Principal-level design explains where the system steps up friction and where it preserves usability.",
+  "The design should assume incidents happen. Tokens leak, permissions are misconfigured, consent pipelines lag, and users lose devices. The architecture must support revocation, rollback, audit reconstruction, customer support, and forensics without exposing more sensitive data."
+];
+const concepts = [
+  "The first concept is explicit trust boundary modeling. policy engine, role graph, and resource scope must define who can make a decision, what evidence they use, and how that decision is propagated to downstream systems.",
+  "The second concept is least privilege. Users, services, admin roles, tokens, and support tools should receive the minimum permission needed for the task, scoped by resource, tenant, action, device, time, and risk.",
+  "The third concept is lifecycle state. Credentials, sessions, roles, consent records, devices, recovery methods, and audit entries are not static. They are created, verified, rotated, expired, revoked, reviewed, and sometimes legally retained.",
+  "The fourth concept is consistency. Security decisions need stronger consistency than ordinary personalization. A revoked session, removed permission, deleted consent, or blocked account should stop taking effect quickly across API, UI, notification, search, export, and background job surfaces.",
+  "The fifth concept is abuse-aware UX. Attackers exploit error messages, retry behavior, recovery flows, and notification fatigue. The UI should help legitimate users recover while avoiding enumeration, social engineering, or repeated prompt attacks.",
+  "The sixth concept is privacy-safe observability. Security systems need detailed audit and telemetry, but logs must not contain passwords, raw tokens, full secrets, unnecessary personal data, or sensitive consent payloads."
+];
+const architecture = [
+  "The architecture has five major planes: policy engine, role graph, resource scope, approval workflow, audit log. The request path asks for a decision; the policy or risk plane evaluates context; the state plane persists durable records; the enforcement plane applies the decision consistently; and the audit plane records enough evidence for review and incident response.",
+  "Every sensitive action should carry actor, resource, tenant, device, session, risk score, policy version, and correlation ID. This context lets the system explain why a decision happened and lets operators find all affected records during an incident.",
+  "The frontend should avoid becoming the source of truth. It can explain choices, collect user intent, and show recovery state, but the backend must enforce authorization, consent, token validity, and session state. Hiding a button is not access control.",
+  "Security state should be versioned. Policy versions, consent versions, role graph versions, token key versions, and session risk versions help the system reason about stale decisions and roll back bad changes.",
+  "The system should support emergency controls: revoke all sessions for a user or tenant, disable a risky recovery method, roll back a bad permission template, pause a consent sync, or force step-up authentication for a suspicious cohort.",
+  "The diagrams for this article should be read as architecture, flow, and operations views: decision boundary, user journey, and incident/recovery control loop."
+];
+const tradeoffs = [
+  "Centralized policy evaluation gives consistent decisions and auditability, but it can become a latency or availability dependency. Distributed checks are faster locally but harder to audit and easier to make inconsistent. Mature systems centralize policy definitions while caching short-lived decisions safely at enforcement points.",
+  "Short-lived tokens limit replay damage but increase refresh traffic and can degrade UX during network or provider issues. Long-lived sessions improve usability but increase risk after device compromise. A defensible design uses short access tokens, rotated refresh tokens, device binding where appropriate, and risk-based step-up.",
+  "Strict security prompts reduce abuse but can train users to approve blindly. Step-up authentication should be risk-based and explain why it appears, not triggered on every sensitive action without context.",
+  "Fail-closed is safer for sensitive operations but can create outages for legitimate users if a policy service fails. Fail-open improves availability but can expose data. The answer should classify operations: viewing public content may degrade open; admin actions, private data, payment, and permission changes should fail closed or require cached proof.",
+  "Detailed audit logs improve forensics but create privacy and retention risks. Logs should be immutable enough for trust, minimized enough for privacy, and governed by access controls and retention policy.",
+  "Automation reduces support cost but can worsen lockout or consent mistakes at scale. Human review is slower but necessary for high-impact recovery, break-glass access, and disputed security events."
+];
+const practices = [
+  "Model every sensitive flow as a state machine with explicit transitions, expiry, revocation, and audit entries. Avoid ambiguous booleans such as active or verified without transition history.",
+  "Use defense in depth. UI gating, API authorization, database row filters, service-to-service authorization, and audit monitoring should all reinforce the same policy instead of relying on one layer.",
+  "Protect recovery flows as strongly as login flows. Email change, phone change, password reset, backup code regeneration, device removal, and account deletion are attacker targets.",
+  "Use idempotency and replay protection for security actions. Repeated clicks or retries should not create duplicate recovery tokens, conflicting consent records, or inconsistent role assignments.",
+  "Segment security telemetry by actor type, tenant, resource class, risk score, geography, device, and release. Watch for spikes in denial rate, challenge rate, recovery attempts, permission changes, token refresh failures, and consent sync lag.",
+  "Build support and forensic tooling from the start. Operators need safe views of decision history, policy versions, device history, token family state, consent lineage, and admin actions without exposing secrets.",
+  "Exercise incident playbooks. Test mass token revocation, compromised admin role rollback, consent propagation delay, policy misconfiguration, suspicious login spikes, and third-party identity provider outage."
+];
+const pitfalls = [
+  "privilege creep is usually a sign that the design treats security as a single endpoint instead of a control loop with detection, throttling, challenge, and recovery.",
+  "stale entitlement often comes from UX that optimizes completion over risk explanation. Users need enough context to make safe decisions without exposing sensitive signals to attackers.",
+  "confused deputy can happen when error messages, policy caches, or derived surfaces reveal information that the primary API intended to hide.",
+  "break-glass abuse requires explicit audit and rollback controls. Emergency access and recovery paths are necessary, but they are also high-risk and must be observable.",
+  "Another pitfall is logging secrets for debugging. Tokens, reset links, passwords, consent payloads, and private resource names should not appear in client logs, server logs, or analytics beacons.",
+  "Teams also underestimate eventual consistency. If a permission is revoked but search exports, notifications, cached pages, or background jobs still use old access, the system has a security bug even if the main API is correct."
+];
+const useCases = [
+  "admin RBAC requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "document sharing requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "enterprise app permissions requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "During a suspected account takeover, the system should revoke risky sessions, preserve forensic evidence, notify the user safely, require step-up authentication, and avoid leaking attacker-controlled details.",
+  "During a policy misconfiguration, operators should identify affected resources, roll back the policy version, invalidate cached decisions, and audit which actions occurred under the bad policy.",
+  "During a privacy request or consent change, downstream systems should receive durable events and report completion or exceptions. A settings UI update alone is not enough."
+];
+const questions = [
+  {
+    "question": "How would you design a permission and access control UI end to end?",
+    "answer": "I would start with assets, actors, trust boundaries, and attacker capabilities. Then I would design the decision path around policy engine, role graph, resource scope, approval workflow, audit log. The frontend collects intent and shows safe recovery state, but backend enforcement owns policy. Durable state includes decision evidence, policy version, token or consent lineage, and audit logs. Operations require revocation, rollback, support visibility, anomaly detection, and incident playbooks."
+  },
+  {
+    "question": "Why this architecture over UI-only gating or scattered checks?",
+    "answer": "UI-only gating is not security, and scattered checks drift across teams. Central policy definitions with enforcement at APIs and data boundaries give consistency and auditability. The trade-off is latency and availability risk, so enforcement points may cache short-lived decisions with policy versions and fail-closed for sensitive actions."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are privilege creep, stale entitlement, confused deputy, break-glass abuse, plus policy cache drift, support overload, token refresh storms, audit-log volume, cross-tenant leaks, and delayed revocation. Prevention requires rate limits, lifecycle state, policy versioning, immutable audit, risk scoring, and operational controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Security and privacy decisions need stronger consistency than ordinary product preferences. Revocation, permission removal, account restriction, and consent withdrawal should propagate quickly to APIs, caches, exports, notifications, and background jobs. Some audit aggregation and risk scoring can be eventually consistent, but enforcement should not depend on stale derived summaries."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with safe default policy, cached proof where appropriate, step-up flows, support-visible state, and emergency revocation. Rollback uses policy version rollback, key rotation, token family invalidation, and cache invalidation. Abuse is controlled with rate limits, risk scoring, and recovery hardening. Privacy requires minimization in logs and telemetry. Cost is managed through sampling and tiered audit retention. Observability tracks decision rates, denial rates, challenge rates, revocation lag, and suspicious activity."
+  },
+  {
+    "question": "How do you defend the trade-offs under interviewer pressure?",
+    "answer": "I would classify operations by sensitivity and failure mode. Public or low-risk reads can degrade, but admin actions, private data, identity changes, permission changes, and token issuance need strong enforcement. I would defend extra complexity because the cost of a privacy or account-takeover incident is higher than the cost of central policy, audit, and rollback infrastructure."
+  }
+];
+const references = [
+  {
+    "label": "OWASP Authentication Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+  },
+  {
+    "label": "OWASP Session Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "NIST SP 800-63 Digital Identity Guidelines",
+    "href": "https://pages.nist.gov/800-63-3/"
+  },
+  {
+    "label": "OAuth 2.0 Security Best Current Practice",
+    "href": "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "GDPR text and guidance",
+    "href": "https://gdpr.eu/"
+  }
+];
 
 export default function PermissionAccessControlUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A permission and access control system governs what actions each user can perform in a multi-tenant or multi-role application. GitHub's organization permissions, Linear's workspace roles, and Notion's page sharing all implement variations of this pattern. The frontend has two distinct responsibilities: enforcing permissions in the UI (hide/disable features the user cannot access) and providing an admin interface for managing roles and permissions. Both require a clear mental model of the permission data structure and a consistent enforcement mechanism.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The critical insight for frontend permission enforcement: UI enforcement is cosmetic, not security. Hiding a button does not prevent an API call — a user can always call the API directly. All permission enforcement must happen server-side. The UI hides or disables features for UX reasons (reducing confusion), not for security. The server must check permissions on every request regardless of whether the UI hides the triggering button. The frontend permission system answers: "Should I show this button?" The server permission system answers: "Should I execute this action?"</HighlightBlock>
-        <p><strong>Explicit scope:</strong> RBAC role model, UI permission enforcement patterns (hide vs. disable), JWT claim-based permission evaluation, permission propagation on role change, and the permissions management UI. Not in scope: ABAC policy engine implementation, OAuth scopes, or database row-level security.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/permission-access-control-ui.svg" alt="Design a Permission and Access Control UI architecture" caption="Architecture view: trust boundary, policy decision, enforcement point, state store, and audit/control plane." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/permission-access-control-ui-flow.svg" alt="Design a Permission and Access Control UI flow" caption="Flow view: user intent, risk decision, policy enforcement, user recovery, and incident response." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/permission-access-control-ui-operations.svg" alt="Design a Permission and Access Control UI operations" caption="Operations view: revocation, rollback, suspicious activity, privacy propagation, and forensic auditability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>RBAC with inheritance:</strong> Roles are hierarchical: Admin &gt; Manager &gt; Member &gt; Viewer. Each role inherits all permissions of lower roles. A custom role can extend any built-in role and add or remove specific permissions. Permission is modeled as a tuple: (action, resource, scope) — e.g., (update, project, own) means "can update projects they own." Roles have a set of allowed permissions; custom roles can explicitly deny inherited permissions.</li>
-          <li><strong>UI permission enforcement:</strong> The frontend receives the user's permission set as JWT claims (permissions: ["project:create", "project:update:own", "user:invite"]) after authentication. A usePermission(permission: string) React hook evaluates whether the current user has a specific permission by checking the JWT claims in the auth context. Components use this hook to conditionally render: &#123;canCreate &amp;&amp; &lt;CreateButton /&gt;&#125; (hide) or &lt;Button disabled=&#123;!canEdit&#125; /&gt; (disable). The convention: hide for features the user role never has access to; disable (with a tooltip explaining why) for features the user could access with a higher role or different context.</li>
-          <HighlightBlock as="li" tier="important"><strong>Permissions management UI:</strong> The admin panel shows a matrix of (roles × permissions) with checkboxes. Admins can create custom roles, assign them to users, and configure which permissions each role has. Changes take effect immediately for new sessions; existing sessions pick up permission changes on their next token refresh (within 15 minutes). Critical permission revocations (removing admin access) are propagated immediately via WebSocket to all active sessions for the affected user.</HighlightBlock>
-          <li><strong>Resource-level permissions:</strong> Some permissions are resource-scoped: a user may be able to edit specific projects but not others (project collaborator vs. project admin). Resource-level permissions are not stored in the JWT (too many potential resources — would make the token enormous). Instead, the frontend shows a generic "Edit" button (based on the user's role permission for "edit project"), and the server validates the specific resource permission on the API call. For resource-level permission errors (403 for a specific project), the UI shows "You don't have permission to edit this project" inline.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Permission evaluation performance:</strong> Permission checks in the UI must be synchronous and under 1ms (no async, no server round trips). The permission set is loaded once from the JWT claims on authentication and cached in the auth context (React context or Zustand). The usePermission hook is a simple Set.has() lookup — O(1).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Permission propagation:</strong> When an admin changes a user's role, the affected user's permissions must update within 15 minutes (next token refresh) for non-critical changes, or immediately (WebSocket push) for critical changes (role downgrade, access revocation). The WebSocket PERMISSION_UPDATED event contains the new permission set, which the client stores in the auth context, triggering re-renders of permission-guarded components.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Audit logging:</strong> Every permission change (role assignment, custom permission override) is logged with: actorId, targetUserId, action, oldValue, newValue, timestamp, ipAddress. The audit log is shown in the admin panel as an append-only list, filterable by actor, target, and date range. Permission audit logs are immutable — they cannot be deleted or edited (enforced server-side).</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The permission system has three layers. The Data Layer: the permission set is embedded in the JWT as claims (for role-level permissions) and fetched from the API on demand (for resource-level permissions). The Evaluation Layer: the usePermission hook and a PermissionGate component evaluate permissions synchronously from the in-memory permission set. The Management Layer: the admin permissions UI reads from and writes to the permissions API, which immediately updates the database and queues a permission propagation event for affected users' active sessions. React context provides the current user's permission set to all components, with a stable reference (Zustand with shallow equality) to prevent unnecessary re-renders when unrelated state changes.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/permission-access-control-ui.svg"
-          alt="Permission and access control system UI: RBAC model (Admin &gt; Manager &gt; Member &gt; Viewer hierarchy; role inherits lower perms; custom role: extend + add/deny; permission tuple: action+resource+scope e.g. project:update:own), JWT claims (permissions:['project:create','user:invite'] in access token; loaded to AuthContext on login; usePermission('project:create') → Set.has() O(1); PermissionGate component wraps UI), UI enforcement (hide: canCreate &amp;&amp; &lt;CreateButton/&gt;; disable: &lt;Button disabled={!canEdit} title='Requires editor role'/&gt;; hide=user role never has access; disable=context-specific or upgradeable), permission propagation (admin changes role → DB update → WS PERMISSION_UPDATED to affected user's sessions; client: update AuthContext permissions → re-render guarded components; non-critical: next token refresh 15min; critical downgrade: immediate WS push), resource-level 403 (user has project:update in JWT → UI shows Edit button; API returns 403 for specific resource → inline error 'No permission to edit this project'; server is authoritative), admin matrix UI (roles × permissions checkboxes; custom role builder: extend base + toggle permissions; assign role to users; audit log: immutable append-only actorId+targetId+change+timestamp)."
-          caption="RBAC hierarchy (Admin&gt;Manager&gt;Member&gt;Viewer, permission tuple action+resource+scope), JWT claims permission Set (O(1) usePermission hook, loaded to AuthContext), UI enforcement (hide never-accessible, disable with tooltip for upgradeable), WS PERMISSION_UPDATED for immediate propagation on critical downgrade, resource-level 403 inline error, admin matrix UI with immutable audit log"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Permission Data Model and JWT Claims</h3>
-        <HighlightBlock as="p" tier="important">The permission set in the JWT is a flat array of permission strings using the format action:resource:scope. Examples: "project:create" (create any project), "project:update:own" (update only own projects), "user:invite:team" (invite users to own team), "billing:manage" (manage billing — no scope modifier means global). The JWT is kept small by using abbreviated permission strings and only including non-default permissions (the base Viewer permissions are implicit and not listed). A typical user JWT contains 5–15 permission strings, keeping the token under 1KB.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The PermissionGate component wraps the usePermission hook: &lt;PermissionGate permission="project:create"&gt;&lt;CreateProjectButton /&gt;&lt;/PermissionGate&gt; renders its children only if the user has the permission. For the disable pattern: &lt;Button disabled=&#123;!usePermission("project:update:own")&#125; title=&#123;!canEdit ? "You need Editor access to edit projects" : undefined&#125;&gt;. The tooltip on the disabled state explains what access level is required, giving the user a path to request access rather than simply experiencing a dead button.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Permission Matrix Admin UI</h3>
-        <HighlightBlock as="p" tier="important">The permissions matrix renders a two-dimensional grid: roles on columns (Admin, Manager, Member, Viewer, custom roles) and permission categories on rows (Project, User Management, Billing, API Access). Each cell shows a checkbox. Inherited permissions from lower roles are shown as checked but read-only (with a visual indicator — a lock icon or different background color). Custom role permissions can be checked or unchecked for individual cells. The matrix is rendered with React's useMemo to avoid recalculating inherited permissions on every render — the effective permission set per role (including inherited) is computed once from the role hierarchy and memoized.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Saving changes: the matrix edit is batched — the user can change multiple permissions and roles, and a single "Save changes" button submits a diff of the changes (only the delta, not the full matrix). The diff is computed by comparing the current state to the initial state (shallow object comparison). The save request: PATCH /api/roles/&#123;roleId&#125;/permissions &#123;add: ["billing:manage"], remove: ["project:delete"]&#125;. On save, the server: updates the role's permission set, identifies all users with that role, queues PERMISSION_UPDATED events for each affected user's active sessions.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Real-Time Permission Propagation</h3>
-        <HighlightBlock as="p" tier="crucial">Permission propagation via WebSocket: when the server processes a role permission change, it publishes events to all active sessions of affected users. The client-side auth middleware subscribes to PERMISSION_UPDATED WebSocket events. On receiving a PERMISSION_UPDATED event: (1) validate the event's signature (it includes a server-signed token to prevent permission injection attacks — a malicious WebSocket message cannot grant elevated permissions); (2) update the auth context's permissions Set with the new permission array; (3) React re-renders all components using usePermission or PermissionGate that depend on the changed permissions. Components that previously showed a "Create" button will hide it; components that previously disabled "Delete" will enable it — all without page reload.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The signed permission event: the server signs the PERMISSION_UPDATED event with a short-lived HMAC key. The client verifies the signature before applying the new permissions. This prevents an attacker who injects WebSocket frames (e.g., through XSS) from granting themselves elevated permissions via a fake PERMISSION_UPDATED event.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Handling 403 for Resource-Level Permissions</h3>
-        <HighlightBlock as="p" tier="important">Role-level permissions (in the JWT) are coarse-grained. Resource-level permissions (is this user a collaborator on project X?) are checked server-side on every API call. The UI cannot know resource-level permissions in advance without querying for each resource — too expensive at scale. Instead, the UI makes an optimistic render (shows Edit button based on role permission) and handles 403 responses gracefully: the API interceptor catches 403 responses and dispatches a PERMISSION_DENIED action to the UI state. The affected component renders an inline error message: "You don't have permission to perform this action. Contact your workspace admin to request access." For common 403 patterns (a user consistently gets 403 on all projects), the UI may proactively fetch the user's resource-level permissions for the current view (GET /api/projects/&#123;id&#125;/permissions) and hide/disable actions accordingly.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Hide vs. disable for unauthorized UI elements: hiding unauthorized UI prevents users from knowing features exist (which can be confusing if they previously had access or see them documented). Disabling with a tooltip showing why (and how to gain access) is more transparent and provides a path to resolution. The choice depends on the feature and user type: for features that no user of the current role tier will ever have (a Viewer seeing "Manage Billing"), hiding is appropriate. For features the user could unlock by requesting a role change or upgrading their plan, disabling with a clear explanation is better UX.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Permissions in JWT vs. permissions API: embedding permissions in the JWT makes them available immediately without an API call (fast, stateless). But JWT permissions can be stale — if an admin revokes access, the user's JWT still contains the old permissions until the next refresh (up to 15 minutes). The WebSocket propagation addresses this for active sessions. An alternative is to not include permissions in the JWT and instead check permissions via an API call on each page load (always current, but slower). For most applications, the 15-minute JWT staleness window (with immediate WS propagation for critical changes) is the right balance between performance and freshness.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A permission and access control system UI is built on: (1) RBAC model (hierarchical roles, permission tuples action:resource:scope, JWT claims as flat array, Set.has() O(1) evaluation); (2) UI enforcement (PermissionGate hides never-accessible features, disabled+tooltip for upgradeable features, usePermission hook from AuthContext); (3) admin matrix UI (roles × permissions grid, inherited perms locked, delta-save PATCH, custom role builder); (4) real-time propagation (HMAC-signed PERMISSION_UPDATED WS event → update AuthContext Set → React re-render of guarded components, immediate for critical downgrades); (5) resource-level 403 handling (optimistic UI show then handle 403 with inline error message); and (6) immutable audit log (actorId + targetId + old/new value + timestamp, append-only). The core principle: UI permission enforcement is for UX, not security — every permission decision must be validated server-side on every API call regardless of what the UI shows.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

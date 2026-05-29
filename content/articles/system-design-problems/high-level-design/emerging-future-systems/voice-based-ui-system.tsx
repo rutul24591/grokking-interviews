@@ -8,85 +8,144 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-voice-based-ui-system",
   title: "Design a Voice-Based UI System",
-  description:
-    "Architecture for a voice-based UI system: wake word detection running on-device for privacy (Porcupine/Picovoice), streaming speech-to-text pipeline (WebSpeech API vs. Whisper streaming API), intent classification and slot filling for command parsing, text-to-speech response with prosody and SSML markup, conversation state machine for multi-turn dialogue, voice activity detection (VAD) with noise cancellation, voice persona management, accessibility compliance for deaf/hard-of-hearing users, and latency budget breakdown for sub-500ms response time.",
+  description: "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability.",
   category: "high-level-design",
   subcategory: "emerging-future-systems",
   slug: "voice-based-ui-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "voice-ui", "speech-to-text", "wake-word", "intent-classification", "tts", "vad", "conversation-state"],
-  relatedTopics: ["ar-vr-interface-system", "on-device-ai-inference-ui"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "emerging", "ai", "privacy", "safety", "fallback"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Voice-Based UI System is an emerging product system where device capability, user trust, safety, privacy, and fallback behavior are as important as the primary interaction. A principal-ready design treats a voice-based UI system as a risk-managed experience, not as a novelty interface.",
+  "The difficult part is uncertainty. Devices vary, sensors lie, networks disappear, models drift, chains fail, users misunderstand prompts, and irreversible actions can happen from ambiguous input. The architecture must make uncertainty visible and controllable.",
+  "The design should define the boundary between local computation, remote services, user intent, policy enforcement, and operational control. Emerging systems fail when teams hide this boundary behind a magical UI that cannot explain or recover from mistakes.",
+  "A strong interview answer should classify actions by reversibility and sensitivity. Browsing, previewing, suggesting, and drafting can be forgiving. Payments, wallet signatures, permission grants, identity changes, public posts, and physical-world actions need confirmation and auditability.",
+  "Operationally, these systems need feature flags, capability gating, cohort rollout, fallback routes, safety kill switches, privacy controls, and telemetry that measures quality without collecting more sensitive data than needed."
+];
+const concepts = [
+  "The first concept is capability detection. wake-word listener, ASR/NLU pipeline, and dialog state should not assume every device, browser, sensor, model, or wallet provider behaves the same way. The UI needs graceful downgrade paths.",
+  "The second concept is intent confirmation. Emerging interfaces often infer intent from speech, gestures, camera input, model output, or wallet metadata. Inferred intent should not trigger irreversible actions without explicit confirmation.",
+  "The third concept is local versus remote execution. Local execution improves privacy and latency but has device, battery, model, and upgrade constraints. Remote execution improves consistency and observability but increases latency, cost, and data exposure.",
+  "The fourth concept is safety boundaries. Spatial boundaries, prompt boundaries, transaction boundaries, permission boundaries, and model output boundaries should be explicit in both UI and backend policy.",
+  "The fifth concept is fallback. A user should be able to continue through a simpler text, touch, web, cloud, or manual review path when the emerging interface is unavailable or low confidence.",
+  "The sixth concept is observability. Track capability failures, fallback rate, confirmation cancellation, model confidence, sensor drift, transaction simulation warnings, privacy control usage, latency, battery impact, and incident overrides."
+];
+const architecture = [
+  "The architecture contains wake-word listener, ASR/NLU pipeline, dialog state, confirmation policy, privacy control. The client detects capability and collects user intent. The runtime or gateway evaluates confidence, policy, and safety. Sensitive actions pass through confirmation and audit. Fallback routing keeps the core journey available when the new interaction is not trustworthy.",
+  "State should be separated into user intent, inferred context, device/runtime state, remote policy state, and committed action state. Inferred context can be wrong; committed state should be durable and explainable.",
+  "The system should keep sensitive inputs local where possible and send minimized, purpose-bound data when remote services are required. Logs should store event class, confidence, policy decision, and correlation ID rather than raw voice, camera, seed, private prompt, or spatial map data unless explicitly necessary and consented.",
+  "Capability gating should run before rendering advanced controls. The UI should know whether it is in full mode, degraded mode, remote fallback, read-only mode, or blocked mode because of device, policy, provider, or safety constraints.",
+  "For high-risk actions, the design should include preflight simulation or validation. A wallet simulates transaction effects; voice confirms destructive intent; AR checks safe placement; on-device AI checks output confidence and policy.",
+  "Operations need remote disablement for risky model versions, wallet providers, voice intents, spatial features, or transaction types. Emerging systems should assume fast rollback is necessary because field failures can be hard to reproduce in lab testing."
+];
+const tradeoffs = [
+  "Local-first execution improves latency and privacy, but creates fragmentation across devices and model/runtime versions. Cloud execution improves control and quality consistency, but sends more data over the network and increases cost.",
+  "Rich immersive UI can improve understanding and engagement, but it increases accessibility, motion comfort, battery, and hardware constraints. A principal design keeps a non-immersive fallback for critical flows.",
+  "Low-friction confirmations improve speed, but high-risk actions need deliberate friction. The right design uses risk-based confirmation rather than one prompt style for every action.",
+  "Telemetry is necessary to improve quality, but emerging interfaces often observe sensitive context. Collecting raw audio, camera frames, private prompts, spatial maps, or wallet details can become a privacy incident. Use minimization and aggregation by default.",
+  "Aggressive rollout improves learning speed, but field failures can cause irreversible harm or public trust loss. Use staged rollout, holdouts, model/version attribution, and kill switches.",
+  "Fallbacks add product and engineering complexity, but they make the system usable when the novel interface is unavailable, unsafe, low confidence, or blocked by policy."
+];
+const practices = [
+  "Design confidence-aware UI states: ready, low confidence, needs confirmation, degraded, blocked, failed, and manual fallback. Do not represent uncertain inference as fact.",
+  "Use policy and risk classification before sensitive actions. The system should know which actions are reversible, destructive, financial, public, privacy-sensitive, or safety-sensitive.",
+  "Version every runtime decision: model version, wallet provider, device capability tier, intent schema, safety policy, and fallback route. Versioning makes rollback and incident analysis possible.",
+  "Use explicit consent and local data controls for voice, camera, spatial maps, private prompts, wallet metadata, and personalization history.",
+  "Build simulation or preview for irreversible actions. Users should see transaction effects, public posting consequences, physical placement, or destructive command summary before committing.",
+  "Instrument fallback and cancellation. High fallback rate or confirmation cancellation is a quality signal, not only a UX inconvenience.",
+  "Exercise incident playbooks for bad model rollout, wallet provider outage, false activation spike, sensor drift, privacy complaint, and unsafe action pattern."
+];
+const pitfalls = [
+  "false activation can turn a promising interface into a trust failure if the UI hides uncertainty or removes fallback paths.",
+  "intent ambiguity is often caused by doing too much on-device or in realtime without resource budgets and user-visible degradation.",
+  "background noise is the largest principal-level risk. Emerging interfaces often touch personal surroundings, private text, speech, biometrics, wallet metadata, or sensitive intent.",
+  "unsafe action requires rollback, quality monitoring, and explicit user recovery. The system cannot rely on users understanding hidden model, sensor, chain, or provider behavior.",
+  "Another pitfall is demo-driven design. A prototype can assume perfect lighting, perfect speech, perfect network, perfect device, and harmless actions; production cannot.",
+  "Teams also underinvest in accessibility. Voice, AR/VR, wallets, and AI assistants must have alternative interaction modes for users who cannot or do not want to use the novel surface."
+];
+const useCases = [
+  "smart assistant needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "hands-free commerce needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "accessibility voice navigation needs capability gating, confidence-aware UI, privacy controls, fallback, and operational rollback to be production-ready.",
+  "During a provider or model incident, the system should fall back to a simpler safe path, preserve user work, disable high-risk actions, and expose the reason without leaking sensitive internals.",
+  "During a privacy review, the system should prove what data was processed locally, what was sent remotely, what was logged, and how users can revoke or delete it.",
+  "During scale-up, cost and latency should be tracked per capability tier because local, edge, and cloud execution have very different operational economics."
+];
+const questions = [
+  {
+    "question": "How would you design a voice-based UI system end to end?",
+    "answer": "I would start with capability detection, user intent capture, policy/risk classification, confidence-aware execution, confirmation for sensitive actions, and fallback routing. The architecture includes wake-word listener, ASR/NLU pipeline, dialog state, confirmation policy, privacy control. Committed actions are durable and auditable; inferred context remains tentative. Operations need versioning, staged rollout, telemetry, and kill switches."
+  },
+  {
+    "question": "Why this architecture over a direct UI-to-provider integration?",
+    "answer": "Direct integration is fast for a demo but weak for policy, fallback, privacy, observability, and rollback. A principal architecture adds a control plane that understands capability, risk, consent, model/provider version, and action sensitivity. The trade-off is more complexity, but it prevents silent unsafe actions and makes incidents recoverable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are false activation, intent ambiguity, background noise, unsafe action, plus provider outages, device fragmentation, quality drift, high cloud cost, privacy complaints, and low-confidence actions. Prevention requires versioning, cohort rollout, capability gating, fallback paths, telemetry, and remote disablement."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Inferred state can be probabilistic and temporary. Committed user actions, permissions, wallet transactions, account state, and privacy choices need authoritative confirmation and audit. Derived suggestions, previews, model outputs, and sensor interpretations can be stale or low confidence if the UI represents them honestly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with fallback modes, confirmation, retries where safe, and preserved user intent. Rollback uses version gates and feature kill switches. Abuse is handled through risk policy, rate limits, transaction simulation, and unsafe-intent blocking. Privacy uses local processing, minimization, consent, and redaction. Cost is managed by routing between local, edge, and cloud execution. Observability tracks confidence, fallback, cancellation, latency, battery, and incident controls."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would classify actions by reversibility and sensitivity. I would defend local execution for privacy-sensitive low-latency tasks, cloud fallback for quality or capability gaps, and explicit confirmation for irreversible actions. I would also emphasize that emerging interfaces need safe fallback more than perfect novelty."
+  }
+];
+const references = [
+  {
+    "label": "WebXR Device API",
+    "href": "https://www.w3.org/TR/webxr/"
+  },
+  {
+    "label": "MDN: Web Speech API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API"
+  },
+  {
+    "label": "W3C WebAuthn",
+    "href": "https://www.w3.org/TR/webauthn-3/"
+  },
+  {
+    "label": "OWASP Mobile Application Security",
+    "href": "https://mas.owasp.org/"
+  },
+  {
+    "label": "Ethereum JSON-RPC API",
+    "href": "https://ethereum.org/en/developers/docs/apis/json-rpc/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function VoiceBasedUiSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A voice-based UI system replaces or augments traditional touch/mouse interaction with spoken commands. The core challenge is the latency-accuracy tradeoff: users expect a response within 500ms of finishing speaking (the natural conversational pause), but high-accuracy speech recognition (especially for domain-specific vocabulary) requires either a large model that runs slowly on-device or a round-trip to a cloud API. The system must deliver accurate intent recognition within the latency budget.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Privacy is a secondary constraint: a system that continuously records audio and sends it to a cloud server is unacceptable for many use cases (healthcare, legal, enterprise). Wake word detection must run entirely on-device, streaming to the cloud only after the wake word is detected. The system must also be designed for accessibility: users who prefer voice interaction may rely on it exclusively (motor disabilities making touch difficult), so the voice UI must provide complete coverage of all app functionality, not just a subset of popular features.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Wake word detection, streaming STT pipeline, intent classification and slot filling, TTS response, conversation state machine, VAD, and accessibility compliance. Not in scope: voice biometric authentication, real-time translation, or telephony (PSTN) integration.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/voice-based-ui-system.svg" alt="Design a Voice-Based UI System architecture" caption="Architecture view: capability, runtime/provider boundary, policy, confirmation, fallback, and telemetry." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/voice-based-ui-system-flow.svg" alt="Design a Voice-Based UI System flow" caption="Flow view: inferred intent, confidence, validation, confirmation, committed action, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/voice-based-ui-system-operations.svg" alt="Design a Voice-Based UI System operations" caption="Operations view: model/provider/device incidents, privacy controls, rollback, cost, and observability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Wake word detection (on-device):</strong> The system continuously listens for a configured wake word ("Hey App", "OK Assistant") using an on-device keyword spotting model. The model runs on the audio input stream at very low CPU cost (&lt;5% CPU, &lt;1MB memory) using a compressed neural network (depthwise separable CNN or RNN-T quantized to INT8). Popular implementations: Porcupine (Picovoice), OpenWakeWord. The wake word model runs entirely locally — no audio is sent to any server until the wake word is detected. On detection, the system emits a wake event, plays a chime (audio feedback), and opens the microphone for command capture. False positive rate target: &lt;1 per hour of passive listening.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Streaming speech-to-text pipeline:</strong> After wake word detection, the audio stream is processed for speech recognition. Two options based on latency/accuracy tradeoffs: (1) WebSpeech API (SpeechRecognition): browser-native, zero setup, but offloads processing to the browser vendor's servers (Google in Chrome, Apple in Safari) — latency ~200ms, no control over the model; (2) Whisper streaming API: open-source Whisper model served as a WebSocket streaming endpoint — audio chunks (100ms frames) are sent as the user speaks, partial transcriptions are returned in real-time, final transcription is emitted on voice activity end. Whisper is preferred for domain-specific vocabulary (medical, legal, code) where the generic WebSpeech model performs poorly. The audio stream is encoded as 16-bit PCM mono at 16kHz before transmission.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Intent classification and slot filling:</strong> The transcribed text is parsed into an intent (what the user wants to do) and slots (the parameters of the action). Example: "Set a timer for 5 minutes" → intent: SET_TIMER, slots: &#123;duration: "5 minutes"&#125;. The classification runs a two-stage pipeline: (1) intent detection — a fine-tuned BERT-tiny model (or GPT-4o via API for complex intents) classifies the transcription into one of the registered intent classes; (2) slot extraction — named entity recognition (NER) extracts structured slots from the transcription. For simple command grammars, a rule-based parser (regex + keyword matching) is faster and more predictable than a neural model. The intent + slots are passed to the action dispatcher, which calls the appropriate app function.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Text-to-speech response with SSML:</strong> The system's spoken responses are generated by a TTS engine. The response text includes SSML (Speech Synthesis Markup Language) markup for prosody control: &lt;speak&gt;&lt;prosody rate="fast"&gt;Timer set for 5 minutes.&lt;/prosody&gt;&lt;break time="500ms"/&gt;&lt;emphasis level="strong"&gt;Starting now.&lt;/emphasis&gt;&lt;/speak&gt;. Browser-native TTS: Web Speech API SpeechSynthesis — no latency, but robotic voice quality and no SSML support in most browsers. Cloud TTS: ElevenLabs, Google TTS, or Azure Neural TTS — high-quality neural voices, full SSML, 100–300ms latency to first audio chunk. The audio is streamed (not buffered to completion) using AudioContext decodeAudioData on arriving chunks for minimal TTFA (time to first audio).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Voice activity detection (VAD) and noise cancellation:</strong> VAD determines when the user has finished speaking (end of utterance detection). Simple energy-based VAD: if the audio RMS energy falls below a threshold for &gt;800ms, the utterance is considered complete. Neural VAD (Silero VAD): a small neural model (&lt;1MB) classifies 30ms audio frames as speech or silence, with much better performance in noisy environments. The end-of-utterance is declared when 5 consecutive frames (150ms) are classified as silence. Noise cancellation preprocessing: apply a noise suppression filter (RNNoise, a 100KB neural noise suppressor) to the audio stream before sending to the STT pipeline — this significantly improves STT accuracy in environments with background music, HVAC noise, or crowd noise.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Multi-turn conversation state machine:</strong> Some commands require multiple exchanges: "Book a flight" → "Where to?" → "New York" → "When?" → "Next Friday" → "Confirming: NYC flight next Friday. Confirm or cancel?" The conversation state machine manages this: states are (Idle, Listening, Processing, Speaking, AwaitingSlot). Transitions: Idle → Listening on wake word; Listening → Processing on utterance end; Processing → Speaking when TTS starts; Speaking → AwaitingSlot if the response asks a follow-up question (NLU detects a question in the response); AwaitingSlot → Listening after TTS ends (automatically reopen mic for the follow-up answer). The conversation context is a stack of &#123;intent, filledSlots&#125; — maintained across turns to allow slot accumulation and correction ("No, I said Monday, not Friday").</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Latency budget for sub-500ms response:</strong> The 500ms total latency budget (from end of user utterance to first audio byte of response) is allocated: VAD end detection 150ms + STT final transcription 150ms + intent classification 50ms + action dispatch &amp; response generation 50ms + TTS first chunk 100ms = 500ms total. The critical path: STT is the largest budget item. To minimize STT latency, streaming partial results are shown as visual text on screen during recognition (the user sees their words appear as they speak), so the final result is already partially displayed before the TTS starts playing. The visual transcript also serves as a fallback for users in noisy environments where audio playback isn't useful.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Accessibility for deaf and hard-of-hearing users:</strong> Voice input is designed as an enhancement, not a replacement for touch. Every voice command has an equivalent touch/keyboard path. Visual captions: all spoken responses are simultaneously displayed as text (closed captions). For deaf users, the system operates in "voice input, visual output" mode: they speak commands, read responses — no audio output required. For non-speaking users with motor disabilities, the system supports switch access (scanning through available voice commands shown on screen, selecting with a switch device). The wake word can be replaced with a button tap for users who cannot speak consistently.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The voice pipeline has four stages in the audio processing chain: (1) Wake word detector (always on, on-device): raw audio → 16kHz PCM → compressed CNN model → wake event; (2) STT pipeline (on wake): audio stream → RNNoise noise suppression → VAD framing → WebSocket streaming to Whisper server (or local WebSpeech) → partial + final transcripts; (3) NLU (on final transcript): text → intent classifier + slot extractor → &#123;intent, slots&#125; → action dispatcher; (4) TTS (on action result): response text with SSML → cloud TTS API → streaming audio chunks → AudioContext playback + simultaneous caption display.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The conversation state machine runs client-side (no server state required for single-user conversations). Multi-device conversations (the user starts on phone, continues on laptop) require a server-side session store with the conversation context serialized to Redis (keyed by userId, TTL 5 minutes of inactivity). The action dispatcher is a registered function table: intent names map to handler functions that execute app logic and return a response string. This makes the voice system an overlay on the existing app logic — voice is a new input modality, not a separate code path.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/emerging-future-systems/voice-based-ui-system.svg"
-          alt="Voice-based UI system: always-on on-device wake word detection (Porcupine CNN, &lt;5% CPU, no audio sent to server); on-wake: RNNoise noise suppression + Silero VAD + Whisper streaming WebSocket STT (100ms frames, partial results displayed); Whisper final transcript → BERT-tiny intent classifier + NER slot extractor; action dispatcher calls app function; response text + SSML → cloud TTS streaming → AudioContext + closed captions; conversation state machine (Idle→Listening→Processing→Speaking→AwaitingSlot); latency budget: 150ms VAD + 150ms STT + 50ms NLU + 50ms dispatch + 100ms TTS = 500ms total."
-          caption="Wake word on-device (Porcupine, &lt;5% CPU), RNNoise + Silero VAD, Whisper streaming STT (100ms frames), BERT-tiny intent + NER slots, SSML TTS streaming (AudioContext), conversation state machine, 500ms total latency budget"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Wake Word Model and Privacy</h3>
-        <HighlightBlock as="p" tier="important">The wake word model processes the microphone stream continuously using the AudioWorklet API (runs in a dedicated audio thread, not the main thread, preventing UI jank from audio processing). The AudioWorklet receives 128-sample frames from the Web Audio API (at 44.1kHz default, downsampled to 16kHz for the model). The keyword spotting model runs inference on each 10ms frame using WebAssembly (WASM) — the model is compiled from C/C++ to WASM for near-native performance in the browser. The model output is a confidence score for the wake word; a threshold of 0.85 is used to declare detection, balancing false positive and false negative rates.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Privacy assurance: the wake word WASM model and all audio processing before wake word detection run entirely in the browser. The microphone stream bytes never leave the device before wake word detection. After the wake event, the user is clearly informed that audio is being sent to the server (a visual indicator: a pulsing microphone icon with "Listening..." text). The STT session ends on utterance completion — audio is not retained by the server after transcription.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Partial Results and Speculative Execution</h3>
-        <HighlightBlock as="p" tier="important">Whisper streaming returns partial transcripts as the user speaks. The system uses partial results for speculative execution: if a partial transcript already unambiguously identifies an intent and has all required slots ("set timer 5"), the system begins intent processing immediately — before the user has finished speaking or the final transcript has arrived. The action execution is gated behind a confidence threshold: if the partial result's intent classification confidence is &gt;0.95, dispatch the action; otherwise wait for the final transcript. Speculative results that turn out to be wrong (the partial was "timer 5" but the final is "timer 5 minutes repeat") are corrected by re-running intent classification on the final transcript and undoing any optimistic UI changes.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Voice Persona and SSML Design</h3>
-        <HighlightBlock as="p" tier="crucial">The voice persona is the personality of the voice assistant — its name, speaking style, and response patterns. Response design principles: (1) brevity — voice responses should be &lt;2 sentences for most commands (users don't want to listen to long explanations); (2) confirmation — for irreversible actions (deleting a file, sending a payment), always repeat the key details: "Sending $50 to John. Say confirm or cancel."; (3) progressive disclosure — offer more detail on request: "Timer set. Say more info for details."; (4) error recovery — when intent is unclear, ask for the most important missing slot rather than restarting: "I can set a timer — for how long?". SSML prosody is used to convey urgency (faster rate for errors), warmth (slightly slower, higher pitch for confirmations), and questions (rising intonation for follow-up questions).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">On-device STT vs. cloud STT: on-device STT (running Whisper locally via WASM or WebGPU) eliminates the cloud round-trip latency and the privacy concern of sending audio to a server, but requires significant device resources (Whisper small.en is ~500MB, runs at ~10× real-time on a modern laptop but only ~2× on a mobile device — too slow for real-time streaming). The practical split: use on-device STT for privacy-sensitive applications (healthcare, legal) running on laptops; use cloud STT for consumer mobile apps where latency and model size are prohibitive constraints. As on-device ML hardware (Apple Neural Engine, Qualcomm Hexagon) becomes more powerful, the crossover point shifts toward on-device.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Grammar-based vs. neural NLU: for a small, well-defined command set (&lt;50 intents), a grammar-based parser (regex + keyword matching, compiled to a deterministic finite automaton) is more predictable, debuggable, and faster than a neural NLU model. It doesn't hallucinate intents, and the developer has full control over what is and isn't recognized. Neural NLU (BERT, GPT) is necessary for open-ended commands where the vocabulary is unbounded ("Write an email to John saying I'll be late") — but this crosses into AI assistant territory (a different design problem). For a command-based voice UI, start with grammar-based parsing and add neural NLU for the subset of intents that require natural language understanding.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A voice-based UI system requires: (1) wake word detection (on-device WASM model, AudioWorklet audio thread, 16kHz PCM, confidence &gt;0.85, &lt;5% CPU, no audio sent before wake); (2) streaming STT (WebSocket Whisper, 100ms frames, partial results displayed real-time, RNNoise noise suppression, Silero VAD 150ms silence for end-of-utterance); (3) intent classification + slot filling (BERT-tiny intent classifier, NER slot extractor; grammar-based for &lt;50 intents, neural for open-ended commands); (4) speculative execution (dispatch on partial &gt;0.95 confidence, undo on final transcript mismatch); (5) SSML TTS (cloud neural TTS, streaming AudioContext, TTFA target &lt;100ms, simultaneous caption display); (6) conversation state machine (Idle→Listening→Processing→Speaking→AwaitingSlot, context stack for multi-turn slot accumulation); (7) 500ms latency budget (150ms VAD + 150ms STT + 50ms NLU + 50ms dispatch + 100ms TTS); and (8) accessibility (every command has touch equivalent, closed captions for all TTS output, switch access for non-speaking users, wake-word-less mode). The governing principle: voice is an input modality, not a product — every voice command must have a non-voice alternative, and the voice system must degrade gracefully when audio is unavailable or the user is in a quiet environment.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

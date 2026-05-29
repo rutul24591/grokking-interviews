@@ -7,92 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-dynamic-pricing-ui",
-  title: "Design a Dynamic Pricing System UI",
-  description:
-    "Architecture for a dynamic pricing system UI: real-time price feeds via WebSocket, price history sparklines, urgency signals (demand indicators, limited stock), flash sale countdown timers, personalized price display, A/B price experiment tracking, price staleness detection, competitor price comparison widgets, and client-side price update diffing to minimize re-renders.",
+  title: "Design a Dynamic Pricing UI",
+  description: "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery.",
   category: "high-level-design",
   subcategory: "ecommerce-marketplace",
   slug: "dynamic-pricing-ui",
-  wordCount: 4800,
-  readingTime: 29,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "ecommerce", "dynamic-pricing", "websocket", "real-time", "flash-sale", "price-history"],
-  relatedTopics: ["inventory-aware-ui", "cart-checkout-concurrency"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "ecommerce", "marketplace", "checkout", "inventory", "payments"],
+  relatedTopics: [],
 };
 
-export default function DynamicPricingUIArticle() {
+const definition = [
+  "Design a Dynamic Pricing UI is a commerce correctness system wrapped in a shopping experience. A principal-ready design treats a dynamic pricing UI as a coordinated set of catalog, pricing, inventory, payment, order, fulfillment, fraud, and support workflows rather than a collection of product cards.",
+  "The hardest part is that the user-facing promise is assembled from many independently changing facts: product availability, seller status, delivery promise, promotion eligibility, payment authorization, tax, shipping, subscription entitlement, and return/refund policy.",
+  "The design must define which state is authoritative and which state is a projection. Catalog pages, recommendations, facet counts, delivery estimates, and tracking views can lag. Payment, order creation, inventory reservation, subscription entitlement, and refund/return decisions require stronger server-side consistency and auditability.",
+  "Marketplaces are adversarial. Sellers can manipulate listings, buyers can abuse returns, bots can attack flash sales, promotion rules can be exploited, and recommendation systems can amplify low-quality inventory. Abuse controls are part of the architecture.",
+  "A staff/principal answer should explain how the system handles scale events, provider failures, stale inventory, duplicate checkout attempts, fraud/risk review, customer support reconstruction, and rollback after bad pricing, promotion, or recommendation changes."
+];
+const concepts = [
+  "The first concept is promise integrity. pricing engine, quote service, and eligibility policy produce the promise shown to the customer, but final purchase or refund decisions must revalidate authoritative state.",
+  "The second concept is idempotent commerce intent. Add-to-cart, quote, reserve, pay, place order, cancel, return, refund, and subscription change should converge under retries, double-clicks, browser refresh, provider callbacks, and mobile reconnect.",
+  "The third concept is inventory and price freshness. Read surfaces can use cached or eventually consistent data, but checkout and refunds need fresh validation with explicit handling when the promise changes.",
+  "The fourth concept is lifecycle state. Cart, quote, hold, payment intent, order, shipment, return, refund, subscription, and entitlement each need explicit states, expiry, transition history, and support visibility.",
+  "The fifth concept is risk and policy. Fraud scoring, seller trust, return abuse, promotion eligibility, payment risk, regulatory constraints, and marketplace policy should influence flows without making the UI opaque.",
+  "The sixth concept is observability. Track conversion, quote mismatch, inventory hold failure, payment pending duration, refund latency, recommendation quality, pricing rollback, carrier lag, and support contact rate."
+];
+const architecture = [
+  "The architecture contains pricing engine, quote service, eligibility policy, explanation layer, audit trail. Read APIs serve fast browse and discovery views. Transaction APIs own authoritative quote, reservation, payment, order, entitlement, and refund transitions. Event streams drive search, recommendations, notifications, analytics, and support timelines.",
+  "Every transaction should start from a durable intent: cart snapshot, pricing quote, inventory hold, payment intent, subscription change request, or return authorization. The UI renders that intent and its current state rather than inventing completion locally.",
+  "The system should use versioned source facts. Catalog version, price quote version, promotion version, inventory hold ID, payment provider ID, tax/shipping quote, return policy version, and entitlement version allow support and reconciliation to explain outcomes.",
+  "Browse surfaces can degrade gracefully. If recommendations fail, show popular or editorial products. If facets lag, show primary results. If delivery estimate is stale, mark it as estimate and revalidate before checkout.",
+  "Transactional surfaces should fail safely. Checkout should not double-charge. Dynamic pricing should not show one price and capture another without explanation. Subscription changes should not grant or remove entitlement without durable billing state.",
+  "Operations need controls for promotion rollback, pricing kill switch, recommendation demotion, inventory hold release, payment provider failover, refund retry, return fraud review, and customer-visible incident messaging."
+];
+const tradeoffs = [
+  "Caching catalog and listing data improves latency and cost, but stale data can mislead users. The defensible design caches browse state while revalidating price, stock, eligibility, and delivery at transaction boundaries.",
+  "Early inventory holds reduce customer disappointment but can reduce inventory utilization and enable hoarding. Late holds improve utilization but increase checkout failure. TTL-based holds at review/payment are usually the compromise.",
+  "Personalized recommendations improve conversion but can conflict with business constraints such as inventory health, fairness, ads, seller quality, and safety. Ranking needs guardrails beyond click-through rate.",
+  "Dynamic pricing can improve marketplace efficiency but can reduce trust if explanations, quote TTLs, and audit trails are weak. Users should understand whether a price is locked, estimated, personalized, or expired.",
+  "Synchronous payment/order completion gives simple UX but breaks when payment providers and banks are asynchronous. Pending states and webhook-driven completion are more reliable, with a more complex UI.",
+  "Strict fraud controls reduce loss but create false positives and conversion loss. Risk-based step-up, review queues, and appeal/support flows are better than a single hard threshold."
+];
+const practices = [
+  "Represent commerce workflows as state machines: quote, reserve, authorize, confirm, fulfill, return, refund, renew, cancel, dispute, and reconcile.",
+  "Use deterministic idempotency keys for cart mutations, payment attempts, order finalization, subscription changes, refund requests, and return authorizations.",
+  "Keep payment and sensitive data out of product JavaScript where possible. Use hosted fields, tokenization, webhook verification, and redacted logs.",
+  "Expose truthful UI states: estimate, locked quote, pending payment, inventory hold expired, under review, refund processing, return approved, carrier delayed, or entitlement pending.",
+  "Build support reconstruction views. Operators need cart snapshot, quote, hold, payment, order, shipment, return, refund, entitlement, provider callback, and customer notification history.",
+  "Design rollback and kill switches for prices, promotions, recommendations, inventory reservations, payment providers, subscription entitlement rules, and return workflows.",
+  "Instrument by seller, item, category, payment rail, region, delivery method, promotion, risk bucket, and app version. Commerce incidents are rarely evenly distributed."
+];
+const pitfalls = [
+  "price shock is a product trust failure. It should be handled through authoritative validation, explicit state, and support-visible history instead of silent UI correction.",
+  "stale quote often appears when browse projections are used as transaction truth. The system should treat cached results as hints, not final commitments.",
+  "segment unfairness requires user-facing recovery. The UI should explain what changed and offer safe next actions rather than forcing a generic retry.",
+  "rollback confusion needs operational tooling. Manual database repair is not an acceptable support workflow for money, inventory, entitlement, or returns.",
+  "Another pitfall is optimizing only conversion. Commerce designs also need fraud loss, refund rate, return abuse, support contacts, seller fairness, accessibility, and long-term trust metrics.",
+  "Teams also forget regional and regulatory differences. Tax, payment methods, return windows, data retention, invoice rules, and consumer protection obligations vary by market."
+];
+const useCases = [
+  "surge pricing requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "merchant discount tool requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "personalized offer display requires browse speed, transactional correctness, risk controls, and support reconstruction to work together.",
+  "During a flash sale, the system should throttle bots, use inventory holds, show truthful scarcity, protect checkout idempotency, and degrade nonessential widgets.",
+  "During a bad price or promotion rollout, operators should stop the rule, identify affected quotes and orders, decide honor/cancel policy, notify customers, and preserve audit evidence.",
+  "During a provider outage, the UI should show pending or alternate payment options where safe, avoid duplicate captures, and reconcile late callbacks."
+];
+const questions = [
+  {
+    "question": "How would you design a dynamic pricing UI end to end?",
+    "answer": "I would separate fast browse projections from authoritative transaction workflows. Browse uses catalog, search, recommendations, and cached availability. Transaction boundaries create durable intents for quote, inventory hold, payment, order, entitlement, return, or refund. The backend owns validation, idempotency, risk, ledger/order state, and support history. The UI renders truthful states and safe recovery actions."
+  },
+  {
+    "question": "Why this architecture over directly using catalog/search data for checkout or returns?",
+    "answer": "Catalog and search projections are optimized for discovery, not correctness. They can be stale or policy-filtered differently. Checkout, subscription, and returns require fresh authoritative validation and durable transition history. The trade-off is more backend complexity, but it prevents oversell, double charge, bad entitlement, and refund disputes."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are price shock, stale quote, segment unfairness, rollback confusion, plus flash-sale bot traffic, hot SKUs, provider outages, promotion bugs, fraud rings, recommendation drift, and support overload. Prevention requires cache strategy, authoritative revalidation, idempotency, holds, risk controls, staged rollout, and operational kill switches."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Browse, search, recommendations, facet counts, tracking projections, and analytics can be eventually consistent with freshness indicators. Price capture, inventory hold, payment, order creation, subscription entitlement, refund approval, and return authorization need strong server-owned state and audit. The answer should classify each commerce state explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with pending states, idempotent retries, provider callbacks, reconciliation, and support timelines. Rollback uses price/promotion kill switches, recommendation demotion, entitlement correction, refund/reversal, or compensating transactions. Abuse controls include bot defense, risk scoring, rate limits, and return fraud review. Privacy requires redacted payment and customer data. Cost is controlled through caching, async projections, and telemetry sampling. Observability tracks conversion, mismatch, pending, refund, risk, and support metrics."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend eventual consistency for browse because it improves latency and cost, but not for money, entitlement, inventory reservation, or refund decisions. I would defend TTL holds because they balance utilization and correctness. I would defend pending payment states because external rails are asynchronous and duplicate charges are worse than waiting."
+  }
+];
+const references = [
+  {
+    "label": "Stripe PaymentIntents documentation",
+    "href": "https://docs.stripe.com/payments/payment-intents"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Elasticsearch guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "PCI Security Standards Council",
+    "href": "https://www.pcisecuritystandards.org/"
+  },
+  {
+    "label": "Shopify engineering blog",
+    "href": "https://shopify.engineering/"
+  },
+  {
+    "label": "AWS architecture blog",
+    "href": "https://aws.amazon.com/blogs/architecture/"
+  }
+];
+
+export default function DynamicPricingUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Dynamic pricing — adjusting prices in real time based on demand, inventory, competitor prices, time of day, and user segment — is standard in airlines, hotels, ride-sharing, and increasingly in e-commerce. The frontend challenge is twofold. First, delivering price updates to users already on the page without a full reload: a user browsing a product for 5 minutes should see the current price, not the price at page load time (which may have changed). Second, presenting dynamic pricing without creating a feeling of manipulation: a price that visibly ticks up while the user is watching ("hurry up and buy!") is legally problematic in some jurisdictions and damages trust in others. The UI must present relevant pricing signals (history, demand context, time-limited offers) transparently and accurately.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The technical challenge is fan-out at scale. During a flash sale, a price drop for a popular product may need to be pushed to 500K+ users who currently have the product page or listing page open. Pushing 500K WebSocket messages simultaneously is a significant infrastructure challenge. The solution is a publish-subscribe architecture where the price update is published once and a fan-out layer (Redis Pub/Sub, Kafka) distributes it to all subscribed WebSocket connections.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Price display components, real-time price update delivery, price history, flash sale countdowns, and personalized price display. Not in scope: the pricing engine itself (algorithms, competitor scraping), or A/B testing infrastructure (addressed at the component level only).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/dynamic-pricing-ui.svg" alt="Design a Dynamic Pricing UI architecture" caption="Architecture view: browse projections, transaction state, risk controls, support history, and operational boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/dynamic-pricing-ui-flow.svg" alt="Design a Dynamic Pricing UI flow" caption="Flow view: user intent, validation, hold or quote, payment/order/refund state, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/dynamic-pricing-ui-operations.svg" alt="Design a Dynamic Pricing UI operations" caption="Operations view: stale data, provider failure, fraud, rollback, reconciliation, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Real-time price updates:</strong> When a product's price changes while a user is on the page, the displayed price updates within 5 seconds without a page reload. The transition is animated (old price fades out, new price fades in) to draw attention without being jarring.</li>
-          <li><strong>Price history:</strong> A sparkline showing the product's price over the past 30 days, with the current price highlighted. Users can see if today's price is historically low or high.</li>
-          <li><strong>Flash sale countdown:</strong> When a product is in a flash sale, a countdown timer shows time remaining for the discounted price. At expiry, the timer disappears and the price reverts to the standard price (animated transition).</li>
-          <li><strong>Demand signals:</strong> "X people are viewing this right now" and "Bought Y times in the last hour" badges that update periodically. These are approximate (for performance) and decay gracefully when the data is stale.</li>
-          <li><strong>Personalized pricing:</strong> Logged-in users may see different prices based on their loyalty tier, coupon codes, or negotiated rates. The personalized price is fetched client-side after page load (not in the ISR shell) to prevent it from being cached and shown to the wrong user.</li>
-          <li><strong>Price staleness guard:</strong> If the displayed price is more than 10 minutes old (e.g., the user has been on the page a long time), show a "Prices may have changed" notice and re-fetch the current price before allowing add-to-cart.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Fan-out scale:</strong> A single price change event must reach 500K+ connected WebSocket clients within 5 seconds.</li>
-          <li><strong>Price accuracy at add-to-cart:</strong> The price shown in the cart and at checkout must match the price the user saw within a 5-minute window. Cart load re-validates the price.</li>
-          <li><strong>Countdown timer accuracy:</strong> Flash sale countdown timers must be synchronized to the server's clock (not the client's) to prevent users from exploiting client-side clock manipulation. Server-sent countdown target timestamps; client computes time remaining locally.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The pricing system has three layers. The Pricing Engine (not in scope) computes prices and publishes PriceChanged events to Kafka. The Delivery Layer consumes PriceChanged events and fans them out to subscribed WebSocket connections via a Redis Pub/Sub intermediary. The Display Layer in the browser subscribes to price updates for the products currently visible on screen and updates the React component state, triggering animated re-renders only for changed prices. The architecture is designed so the Pricing Engine is decoupled from the delivery infrastructure — it publishes events without knowing how many clients are subscribed or how the updates are delivered.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/ecommerce-marketplace/dynamic-pricing-ui.svg"
-          alt="Dynamic pricing UI architecture showing price update fan-out pipeline (pricing engine publishes PriceChanged event Kafka; price-update consumer → Redis Pub/Sub channel price:{skuId}; WebSocket server subscribes per-product channels fan-out to all subscribed clients; 500K+ clients updated within 5s), client WebSocket subscription manager (on product visible IntersectionObserver → subscribe price:{skuId} via WebSocket; on product scroll out → unsubscribe; subscribe only visible products limits server load; reconnect with exponential backoff on disconnect), price display component (animated transition: old price fade-out 300ms new price fade-in 300ms; green flash for price drop red flash for price increase; staleness timer: if lastUpdated > 10min show 'prices may have changed' + re-fetch before add-to-cart; personalized price: fetch POST /api/prices userIds=[skuId] after mount not in ISR shell), flash sale countdown (server sends sale_end_timestamp UTC; client calculates remaining = sale_end_timestamp - Date.now() every second; expires → timer disappears price reverts animated; server-authoritative timestamp prevents client clock manipulation), price history sparkline (30-day hourly OHLC from price_history table ClickHouse; SVG sparkline inline in page; current price highlighted; tooltip on hover shows date and price; low/high markers; lazy-loaded below fold), demand signals (viewing_count from Redis PFADD hyperloglog approximate; sold_last_hour from ClickHouse count with 1h TTL cache; displayed with intentional rounding: 47 → shown as '40+ people viewing'; update interval 30s polling not WebSocket; degrade gracefully on stale: hide if data > 5min old), personalized pricing (logged-in user POST /api/prices/personalized skuIds[] returns segment-specific price; coupon code applied inline; loyalty tier discount; result stored in Zustand not URL to prevent cross-user cache poisoning)."
-          caption="Price change fan-out (Kafka → Redis Pub/Sub → WebSocket to 500K+ clients within 5s), client-side subscription manager (subscribe only visible products via IntersectionObserver), animated price transitions, server-authoritative flash sale countdown, price history sparkline (ClickHouse), demand signals (HyperLogLog approximate), and personalized price fetched client-side post-mount"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">WebSocket Fan-out Architecture</h3>
-        <HighlightBlock as="p" tier="important">The price update delivery system uses a Redis Pub/Sub intermediary between Kafka consumers and WebSocket servers. Each product has a Redis channel: price:{"{skuId}"}. When a PriceChanged event arrives in Kafka, a consumer publishes the new price to the corresponding Redis channel: PUBLISH price:{"{skuId}"} {"{ newPrice: 49.99, effectiveAt: 1715000000 }"}. Every WebSocket server subscribes to the channels corresponding to the products any of its connected clients are watching. When a WebSocket server receives a message from Redis, it fans it out to all its clients that are subscribed to that channel. This architecture scales horizontally: adding more WebSocket servers increases the total number of connected clients without requiring any change to the Pricing Engine or Kafka consumer.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Client-side subscription management: the browser subscribes only to prices for products currently visible in the viewport (tracked by IntersectionObserver). When a product card scrolls out of view, the subscription is removed. This prevents a user with 200 products loaded via infinite scroll from holding 200 active subscriptions — only the 10–15 products visible at any time are subscribed. On WebSocket reconnect (after a disconnect), the client re-subscribes and fetches the latest prices for all currently-visible products (the reconnection may have missed price changes during the disconnect window).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Price History Sparkline</h3>
-        <HighlightBlock as="p" tier="important">The 30-day price history is stored in ClickHouse (price_history table: sku_id, timestamp, price, event_type). The sparkline is generated from hourly OHLC (open/high/low/close) aggregations: SELECT toStartOfHour(timestamp) AS hour, min(price), max(price), argMin(price, timestamp), argMax(price, timestamp) FROM price_history WHERE sku_id = X AND timestamp &gt; now() - INTERVAL 30 DAY GROUP BY hour ORDER BY hour. This query runs in under 50ms for most products (ClickHouse&apos;s columnar storage makes this scan fast). The sparkline data (720 hourly data points) is included in the product page&apos;s ISR response (not lazily loaded) for above-the-fold products, since it is static for the ISR period. The SVG sparkline is a simple polyline SVG element rendered inline, no canvas, no JavaScript charting library, reducing JavaScript bundle size. Interactive tooltips (price on hover) are progressively enhanced with a small JavaScript event listener added at hydration time.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Flash Sale Countdown Timer</h3>
-        <HighlightBlock as="p" tier="important">Flash sale countdowns use server-authoritative timestamps to prevent manipulation. The sale configuration (sale_end_timestamp, discounted_price, original_price, eligible_skus) is stored in Redis with a TTL matching the sale duration. When a product is in a flash sale, the product API response includes {"{ saleEndTimestamp: \"2026-05-11T15:00:00Z\", discountedPrice: 29.99, originalPrice: 59.99 }"}. The client renders a countdown component that computes remaining = new Date(saleEndTimestamp) - new Date() and decrements by 1 second via setInterval. When remaining reaches zero: the countdown component unmounts, the displayed price transitions from the discounted price back to the original price (animated), and a re-fetch of the product price is triggered to confirm the server-side price change. Using the server-sent timestamp (not a client-computed countdown duration) means that if two users load the page at different times, they both count down to the same absolute moment, the sale ends correctly for both rather than ending 30 seconds later for the user who loaded the page 30 seconds after the other.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Price Staleness Detection</h3>
-        <HighlightBlock as="p" tier="important">Each price display carries a lastFetchedAt timestamp (set when the price was last received from the server, either via ISR, CSR hydration, or WebSocket push). A useEffect hook checks every 60 seconds whether any visible product&apos;s lastFetchedAt is older than 10 minutes. If so, a &quot;Prices may have changed, refresh&quot; notice is shown. Additionally, the add-to-cart handler includes a stale price guard: if the current displayed price&apos;s lastFetchedAt is older than 5 minutes, add-to-cart first triggers a GET /api/prices/{"{skuId}"} call, compares the returned price to the displayed price, and if different, shows a price-changed dialog (&quot;The price has changed from $49 to $55. Do you still want to add to cart?&quot;) before proceeding. This prevents the user from adding to cart at a price that no longer reflects the current price, which would cause a price mismatch when the cart re-validates at checkout.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Personalized Price Rendering</h3>
-        <HighlightBlock as="p" tier="important">Personalized prices (loyalty tier discounts, negotiated B2B rates, coupon codes) must not be cached in the ISR shell or CDN, if a cached page shows a discounted price to an unauthenticated user, the discount is applied to anyone who loads that URL. The pattern: the ISR shell shows the base (non-personalized) price as a placeholder. On hydration, a useEffect fetches the personalized price: POST /api/prices/personalized {"{ skuIds: [visible_skus], userId }"}. If the personalized price differs from the base price, the component re-renders with the personalized price (a strike-through of the base price and the discounted price highlighted). The personalized price is stored in the Zustand client store (not in the URL or localStorage) so it is not shared across browser tabs or persisted across sessions, preventing cross-user cache poisoning.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">WebSocket versus polling for price updates: WebSocket delivers price changes within seconds and uses a persistent connection (low latency). SSE (Server-Sent Events) is a simpler alternative (HTTP-based, auto-reconnect, works through HTTP/2 multiplexing without requiring WebSocket upgrade). For price updates where the communication is always server-to-client (no client messages needed), SSE is architecturally simpler and handles HTTP/2 multiplexing better. WebSocket is more appropriate when bidirectional communication is needed (e.g., the client needs to send explicit subscription/unsubscription messages). For a high-scale price update system with millions of concurrent connections, SSE's per-connection overhead (one HTTP/2 stream rather than a WebSocket connection) may be lower. The design above uses WebSocket for flexibility; SSE is a viable alternative if the subscription protocol is moved server-side (subscribe all products matching the user's current view server-side, based on browsing context).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Approximate versus exact demand signals: exact "X people viewing this" counts would require a central counter updated on every page view, with fan-out to all viewers — extremely expensive at scale. HyperLogLog approximate counting (Redis PFADD/PFCOUNT) provides accurate estimates within 0.81% error using only 12KB of memory per counter, regardless of cardinality. The 0.81% error is imperceptible to users ("47 people viewing" vs "47.4 people viewing"). The intentional rounding in the display ("40+ people") further masks the approximation, making the approximation approach both efficient and UX-appropriate.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A dynamic pricing UI requires three technical capabilities: real-time price push (Kafka → Redis Pub/Sub → WebSocket, 500K+ clients within 5s), transparent price presentation (history sparkline from ClickHouse OHLC data, server-authoritative countdown timestamps, demand signals from HyperLogLog), and correctness guards (add-to-cart staleness check re-fetches if price &gt;5 min old, personalized prices fetched client-side post-mount to prevent CDN cache leakage). The client-side subscription manager (IntersectionObserver-driven, subscribe/unsubscribe as products enter/leave viewport) bounds server load — each user holds ~10-15 active price subscriptions at any time regardless of scroll depth. Flash sale countdowns use server-sent absolute timestamps, not client-computed durations, ensuring all viewers count down to the same moment. The key design tension: dynamic pricing infrastructure is expensive (fan-out infrastructure, WebSocket connections, ClickHouse queries) — scope its use to products and pages where real-time pricing meaningfully affects purchasing behavior, not to every product in the catalog.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

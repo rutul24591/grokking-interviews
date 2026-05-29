@@ -1,1 +1,5 @@
-# Design a multi-app monorepo management dashboard — Example 3
+# Multi APP Monorepo Management Dashboard - Example 3
+
+Concrete platform infrastructure edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

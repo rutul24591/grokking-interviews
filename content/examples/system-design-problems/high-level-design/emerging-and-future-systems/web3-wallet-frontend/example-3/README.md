@@ -1,1 +1,5 @@
-# Design a Web3 wallet frontend (like MetaMask) — Example 3
+# Web3 Wallet Frontend - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

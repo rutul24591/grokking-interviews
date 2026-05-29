@@ -6,124 +6,146 @@ import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-hld-offline-realtime-sync-reconciliation",
-  title: "Design an Offline + Realtime Sync Reconciliation System",
-  description:
-    "Architecture for offline-first sync: local operation queues, change logs with logical timestamps, conflict detection and resolution, reconnect protocols, and sync status UX.",
+  id: "article-hld-offline-realtime-sync-reconciliation-system",
+  title: "Design Offline Realtime Sync and Reconciliation",
+  description: "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability.",
   category: "high-level-design",
   subcategory: "realtime-collaboration-systems",
   slug: "offline-realtime-sync-reconciliation-system",
-  wordCount: 5500,
-  readingTime: 33,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "offline-first", "sync", "conflict-resolution", "CRDT", "reconciliation"],
-  relatedTopics: ["collaborative-editor", "cross-device-user-settings-sync"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "realtime", "collaboration", "crdt", "websocket", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design Offline Realtime Sync and Reconciliation is a realtime distributed product system where multiple clients observe, edit, or coordinate around shared state with low perceived latency. A principal-ready design treats offline realtime sync and reconciliation as shared-state replication with product semantics, not just a websocket channel.",
+  "The design must define what is durable, what is ephemeral, what can be approximate, what must be ordered, and what can be dropped. Durable edits, messages, lobby state, or meeting joins have different guarantees from cursors, typing indicators, heartbeats, viewport hints, and transient QoE signals.",
+  "The visible frontend is responsible for responsiveness and local recovery, but the backend must own sequencing, authorization, fanout, replay, abuse controls, and observability. If every client invents its own truth, collaboration becomes inconsistent the moment users reconnect or edit concurrently.",
+  "Realtime systems fail in user-visible ways: duplicated operations, lost updates, stale presence, delayed media, bad conflict resolution, and confusing pending states. The architecture should make these states explicit rather than hiding them behind generic loading spinners.",
+  "A staff/principal answer should compare CRDT, OT, server-authoritative sequencing, locks, and eventual reconciliation. The right model depends on the data type, collaboration intensity, offline needs, auditability, and conflict cost."
+];
+const concepts = [
+  "The first concept is state classification. local op log, sync protocol, and server sequencer should be classified as durable, derived, or ephemeral. Durable state needs replay and audit; ephemeral state needs freshness and expiry; derived state should be rebuildable.",
+  "The second concept is ordering scope. Global total order is usually unnecessary and expensive. A document, room, board, lobby, or meeting can have its own sequence, while presence and cursor updates can use last-writer-wins with expiry.",
+  "The third concept is conflict resolution. Text and structured document edits may use OT or CRDT. Object graphs may use operation transforms and snapshots. Lobbies may use server-authoritative state machines. Video conferencing uses signaling plus media adaptation rather than shared document merge.",
+  "The fourth concept is local responsiveness. Clients should render local intent immediately where safe, mark it pending, then reconcile with server acknowledgement, transformed operations, or conflict decisions.",
+  "The fifth concept is fanout and backpressure. Realtime systems can overload gateways and clients with low-value updates. Cursor, presence, typing, viewport, and QoE events should be sampled, coalesced, or dropped before durable edits are affected.",
+  "The sixth concept is observability. Track operation ack latency, reconnect rate, missed-event replay, conflict rate, fanout pressure, stale presence, media QoE, dropped transient updates, and client/server version skew."
+];
+const architecture = [
+  "The architecture contains local op log, sync protocol, server sequencer, conflict policy, repair queue. Clients keep local state and pending operations. Gateways authenticate connections and route room traffic. Sequencers or collaboration services assign order or merge operations. Snapshot stores compact history. Projections serve read-optimized views and replay.",
+  "Every durable operation should include actor, target scope, client operation ID, base version or vector, schema version, authorization context, and idempotency key. This lets the system dedupe retries and explain why an operation was accepted, transformed, rejected, or replayed.",
+  "Ephemeral events should have TTLs and rate limits. Presence, cursor, typing, viewport, and media quality hints should expire naturally because a missed disconnect or network loss should not leave a permanent artifact.",
+  "Snapshots are essential at scale. Replaying an entire document, board, lobby, or room history from the beginning becomes too expensive. The system should periodically compact into snapshots while preserving enough operation history for audit, undo, and conflict repair.",
+  "Authorization must be enforced on connect, read, write, replay, export, search, and notification surfaces. Collaboration state often leaks through presence, cursors, thumbnails, comments, and invitations even when the main document appears protected.",
+  "Operations need controls for disabling a noisy ephemeral channel, rolling back a bad client version, replaying a room from snapshot, draining a gateway, isolating a hot room, and investigating missing or duplicated operations."
+];
+const tradeoffs = [
+  "CRDTs support offline and peer-like convergence, but they can increase metadata size, make intent hard to express, and complicate authorization or undo. OT can preserve editing intent for text but is harder to generalize across arbitrary object graphs. Server-authoritative sequencing is simpler to reason about but weakens offline editing.",
+  "WebSockets give low-latency bidirectional updates but require connection lifecycle, auth refresh, backpressure, and regional routing. Polling is simpler and robust but produces higher latency and more repeated work.",
+  "Optimistic local updates improve responsiveness but can create visible rollbacks. For reversible, low-risk edits this is acceptable. For payments, permission changes, lobby readiness, or destructive actions, server confirmation should drive final UI.",
+  "Strong consistency across all collaborators is expensive and often unnecessary. Durable document operations need convergence and replay. Presence, cursors, and typing can be approximate. Moderation, permission revocation, and room removal need fast enforcement.",
+  "Coalescing transient events protects scale and battery but lowers fidelity. Sending every cursor pixel movement is wasteful; sending no cursor updates makes collaboration feel dead. Principal designs set per-event budgets.",
+  "Regional routing improves latency but can split rooms or complicate sequencing. Room affinity, regional leaders, or global sequencers should be chosen based on collaboration intensity and correctness needs."
+];
+const practices = [
+  "Design an explicit operation schema. Include actor, room/document ID, client op ID, base version, timestamp, schema version, and idempotency key.",
+  "Keep durable and ephemeral channels separate. Durable edits need replay and acknowledgement; ephemeral presence and cursors need expiry, rate limits, and drop tolerance.",
+  "Use snapshots and compaction. Bound replay cost while preserving audit history and enough operation log for recovery.",
+  "Expose pending, synced, conflict, offline, reconnecting, and read-only states in the UI. Collaboration systems should not pretend every user sees the same state instantly.",
+  "Enforce permissions on every surface: connection, read, write, replay, cursor/presence, comments, export, thumbnails, notifications, and support tools.",
+  "Build abuse controls. Shared spaces need spam throttles, moderation, participant removal, report flows, and emergency room-level controls.",
+  "Instrument from both client and server. Server ack latency alone does not reveal blocked main thread, dropped media frames, websocket reconnect loops, or client memory pressure."
+];
+const pitfalls = [
+  "divergent state usually means the system lacks clear operation identity, sequencing, or replay semantics. The fix is not more retries; it is a defined operation model.",
+  "duplicate replay is often caused by treating ephemeral state as durable truth. Presence, cursor, and QoE hints need expiry and freshness rules.",
+  "conflict loss shows that conflict policy must be product-specific. A game lobby, text editor, whiteboard, and video call do not share one merge strategy.",
+  "schema migration appears during reconnect and offline replay. The client should not blindly resend operations without idempotency and base-version context.",
+  "Another pitfall is ignoring old clients. Realtime protocols need version negotiation and compatibility windows because users can keep stale browser tabs or mobile apps open for days.",
+  "Teams also underestimate support needs. Operators should be able to inspect room membership, operation history, gateway region, client versions, replay gaps, and permission decisions without reading raw private content unnecessarily."
+];
+const useCases = [
+  "offline doc edits needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "field app sync needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "mobile whiteboard recovery needs low-latency local feedback while preserving convergence, authorization, replay, and operational recovery.",
+  "During a gateway outage, clients should reconnect with cursors, fetch missed durable events, discard expired ephemeral state, and avoid replaying already accepted operations.",
+  "During a bad client rollout, operators should disable the affected feature, reject incompatible operation versions, and keep older rooms recoverable from snapshots.",
+  "During abuse or spam, the system should throttle noisy actors, suppress low-value events, preserve evidence, and allow room owners or moderators to intervene safely."
+];
+const questions = [
+  {
+    "question": "How would you design offline realtime sync and reconciliation end to end?",
+    "answer": "I would classify state into durable operations, derived projections, and ephemeral realtime signals. Clients maintain local pending state and connect to authenticated gateways. Durable operations flow through a sequencer or merge service, are persisted in an operation log, compacted into snapshots, and replayed to reconnecting clients. Ephemeral channels use TTL and rate limits. Authorization, observability, rollback, and abuse controls are built into the protocol."
+  },
+  {
+    "question": "Why this architecture over just broadcasting websocket messages?",
+    "answer": "Broadcasting websocket messages is enough for a demo but not for recovery, replay, multi-device sync, authorization, conflict resolution, or support debugging. The operation-log plus snapshot model adds complexity, but it makes missed events recoverable and lets clients converge after reconnect or offline use."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are divergent state, duplicate replay, conflict loss, schema migration, plus hot rooms, reconnect storms, gateway overload, operation-log growth, stale clients, permission drift, and noisy ephemeral events. Prevention requires room affinity, backpressure, snapshots, protocol versioning, idempotency, replay cursors, and event priority tiers."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Durable shared edits need convergence and replayable ordering within a room or document. Presence, cursor, typing, and QoE events are ephemeral and eventually consistent with expiry. Permission revocation, moderation, room deletion, and destructive actions need fast server enforcement. The answer should classify state instead of claiming one model for everything."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failure handling uses reconnect cursors, missed-event replay, snapshots, idempotency, and visible pending/offline states. Rollback uses protocol flags, client-version blocking, snapshot restore, and feature disablement. Abuse controls throttle noisy users and allow moderation. Privacy requires enforcing access on presence, cursors, exports, and notifications. Cost is controlled through coalescing ephemeral events and compacting logs. Observability tracks ack latency, reconnects, conflicts, fanout, and client QoE."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend separating durable operations from ephemeral signals because they need different guarantees. I would choose CRDT, OT, or server sequencing based on data shape and offline requirements. I would accept approximate presence but not approximate authorization. I would also explain why snapshots and replay are worth the operational complexity."
+  }
+];
+const references = [
+  {
+    "label": "Automerge documentation",
+    "href": "https://automerge.org/"
+  },
+  {
+    "label": "Yjs documentation",
+    "href": "https://docs.yjs.dev/"
+  },
+  {
+    "label": "WebRTC specification",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function OfflineRealtimeSyncReconciliationSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An offline + realtime sync reconciliation system allows users to continue working without network connectivity and have their changes automatically merged with changes from other users or devices when connectivity is restored. The defining challenge is conflict reconciliation: if user A edits a document field offline for two hours while user B edits the same field online, the system must decide which value wins (or present both for manual resolution) when A reconnects. The wrong decision loses user work; the right decision requires understanding what each user intended, which is fundamentally ambiguous from the system's perspective.</HighlightBlock>
-        <p>The problem is significantly harder than it appears from the happy path. The system must handle: partial connectivity (some requests succeed, others fail, leaving data in an indeterminate state), concurrent device edits (the user was editing on both their phone and laptop simultaneously while offline), edits to entities that were deleted by another user (editing a document that someone else deleted while you were offline), and long offline periods (hours or days) during which the server's state may have changed radically. Each of these cases requires a deliberate design decision.</p>
-        <p><strong>Explicit assumptions:</strong> The system serves a document-like application where each document has multiple fields (structured data, not free-form text). Offline edits are field-level (not character-level—that is the collaborative editor's CRDT domain). The system serves up to 10,000 concurrent active sessions. A "conflict" arises when two edits target the same field of the same entity and originated from diverged states. The conflict resolution policy is configurable per field type: last-write-wins, field-level merge, or flag for manual resolution. Sync status (syncing, synced, conflict, offline) is visible to the user.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/offline-realtime-sync-reconciliation-system-architecture.svg" alt="Design Offline Realtime Sync and Reconciliation architecture" caption="Architecture view: clients, gateways, operation log, merge/sequencing, snapshots, authorization, and replay." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/offline-realtime-sync-reconciliation-system-workflow.svg" alt="Design Offline Realtime Sync and Reconciliation flow" caption="Flow view: local intent, acknowledgement, fanout, replay, conflict handling, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/offline-realtime-sync-reconciliation-system-conflicts.svg" alt="Design Offline Realtime Sync and Reconciliation operations" caption="Operations view: fanout pressure, conflict rate, reconnects, stale clients, abuse controls, and rollback." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Offline operation:</strong> Users can create, read, update, and delete entities without network connectivity. All operations are queued locally and applied optimistically to the local state.</li>
-          <li><strong>Automatic sync on reconnect:</strong> When connectivity is restored, queued operations are sent to the server. Server changes that occurred during the offline period are fetched and merged into local state.</li>
-          <li><strong>Conflict detection:</strong> When a local offline edit conflicts with a server change to the same field, the system detects the conflict and applies the configured resolution policy (last-write-wins, merge, or manual).</li>
-          <li><strong>Conflict presentation:</strong> For fields configured with manual resolution, the user is shown both values (local and server) and can choose which to keep or combine them manually.</li>
-          <li><strong>Sync status indicator:</strong> The UI shows the current sync state: offline (no connectivity), syncing (uploading/downloading changes), synced (all changes confirmed), or conflict (unresolved manual conflicts).</li>
-          <li><strong>Real-time updates when online:</strong> When connected, changes from other users are received via WebSocket and applied to local state in real-time, with the same conflict resolution logic as reconnect sync.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Durability:</strong> No offline operation is ever silently lost. Queued operations persist across app restarts (stored in IndexedDB).</li>
-          <li><strong>Convergence:</strong> All clients converge to the same state after sync, regardless of the order in which operations were received by the server.</li>
-          <li><strong>Sync throughput:</strong> A client reconnecting after 24 hours offline with 500 queued operations completes sync in under 10 seconds on a broadband connection.</li>
-          <li><strong>Partial sync resilience:</strong> If sync is interrupted mid-way (connectivity lost again), the system resumes from where it left off without duplicating already-synced operations.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The system has three layers. The local layer: an IndexedDB-backed operation queue and entity store that provides the offline experience. All reads and writes go through the local store first; the application never reads directly from the server while online. The sync layer: a Sync Engine that manages bidirectional synchronization—sending queued local operations to the server and fetching server changes since the last sync. The server layer: a Sync Service that receives operation batches from clients, applies them to the authoritative database, detects conflicts against the current server state, and returns the merge result and any server-side changes the client missed.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The key architectural decision is that the local store is always the source of truth for the application UI. The Sync Engine runs in the background, reconciling the local store with the server asynchronously. This means the application is always responsive (reads never block on network), but it also means the application must tolerate displaying optimistic state that may be later corrected by a conflict resolution.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/offline-realtime-sync-reconciliation-system-architecture.svg"
-          alt="Offline sync architecture showing three-layer model: local layer (IndexedDB entity store + operation queue, application reads all from local), sync engine (online/offline detector, operation sender, change fetcher, conflict resolver), server layer (Sync Service with operation log, conflict detection, authoritative state). WebSocket path for real-time updates when online. Sync status state machine."
-          caption="Three-layer offline sync: local-first entity store, background Sync Engine, and server Sync Service with conflict detection and authoritative merge"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Local Operation Queue and Change Log</h3>
-        <p>Every mutation the user makes (create, update, delete) is recorded as an operation in the local operation queue before being applied to the local entity store. The operation record: operationId (UUID, client-generated), entityType, entityId, operationType (CREATE/UPDATE/DELETE), fieldChanges (for UPDATE: a map of field name to new value), baseVersion (the entityVersion at the time the operation was created—crucial for conflict detection), clientTimestamp (Hybrid Logical Clock value for ordering), and syncStatus (pending/syncing/synced/failed).</p>
-        <HighlightBlock as="p" tier="important">The baseVersion is the critical field for conflict detection. When the user edits entity E at version V, the operation records baseVersion: V. If the server's entity E has advanced to version V+3 by the time the operation arrives (because other users edited it while this client was offline), the server knows to check whether any of those intervening edits conflict with this operation's fieldChanges. Without the baseVersion, the server cannot distinguish between "this is a new edit on top of the latest state" and "this edit was made against older state and may conflict."</HighlightBlock>
-        <p>The operation queue is persisted in IndexedDB so that queued operations survive app restarts, browser refreshes, and device reboots. On app startup, the Sync Engine reads all operations with syncStatus: pending and resumes sending them. This persistence is what guarantees durability: the user's work is safe even if they edit offline and close the browser before connectivity is restored.</p>
-        <p>Logical timestamps: each operation is stamped with a Hybrid Logical Clock (HLC) value—a 64-bit integer combining the physical wall-clock time (upper 48 bits) and a logical counter (lower 16 bits). The HLC advances monotonically: when a new operation is created, the HLC is max(currentHLC, wallClock) with the counter incremented if the physical time did not advance. This ensures that even if the system clock jumps backward (NTP correction, timezone change), operation timestamps remain monotonically increasing and meaningful for ordering. HLC values from different devices can be compared directly to determine causal order—an operation with a higher HLC occurred later in wall-clock time (corrected for logical causality).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Reconnect Sync Protocol</h3>
-        <p>When connectivity is restored, the Sync Engine executes the reconnect protocol in three phases. Phase 1 (upload): the engine takes all pending operations from the queue (in HLC order) and sends them to the server in a batch. The batch includes the operations array and the client's lastSyncedServerTimestamp (the server-side timestamp of the last change the client successfully received). The server uses this timestamp to know which server-side changes to include in its response.</p>
-        <HighlightBlock as="p" tier="important">Phase 2 (server merge): the Sync Service receives the operation batch, applies each operation against the authoritative database, and records the result. For each operation, the service checks: is the entity's current server version equal to the operation's baseVersion? If yes (no concurrent edits), apply the operation directly. If no (concurrent edits occurred), run conflict resolution for each changed field. The service records the merge results and generates a response containing: (a) the merge result for each operation (accepted, conflict-resolved with server-wins, conflict-resolved with client-wins, conflict-manual-required), and (b) all server-side changes that occurred since the client's lastSyncedServerTimestamp, formatted as a changeSet.</HighlightBlock>
-        <p>Phase 3 (local reconciliation): the client receives the server's response and applies it to the local state. For operations that were accepted or auto-resolved, the local entity is updated to the server's canonical state (replacing the optimistic local value). For operations flagged as manual-conflict, the local state is updated to show both values in the conflict UI. The changeSet of server-side changes (changes from other users) is applied to local entities that were not involved in conflicts. The lastSyncedServerTimestamp is updated to the value returned by the server.</p>
-        <p>Idempotency for partial sync: if the sync is interrupted after Phase 1 (operations sent to server) but before Phase 3 (client receives confirmation), the client retries Phase 1 with the same operations. The server uses operationId as an idempotency key: if an operation with the same operationId has already been applied, the server returns the cached result without re-applying. This ensures that retried syncs do not create duplicate edits.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Conflict Detection and Resolution</h3>
-        <p>A conflict exists when two operations target the same field of the same entity and both originated from the same base version (or the server's edit is newer than the client's baseVersion). The conflict detection is field-granular: if the client edited fields &#123;title, description&#125; and the server edit (from another user) changed &#123;description, dueDate&#125;, then title is not in conflict (only the client changed it), dueDate is not in conflict (only the server changed it), and description is in conflict (both changed it from the same base version).</p>
-        <HighlightBlock as="p" tier="important">Three resolution strategies are configurable per field type. Last-Write-Wins (LWW): the operation with the higher HLC timestamp wins. This is the simplest policy and appropriate for fields where recency is the correct semantics (status fields, boolean toggles, single-select enums). The risk: if two users simultaneously update a status field, one user's edit is silently discarded—acceptable for low-stakes fields, unacceptable for high-stakes ones. Field-level merge: for numeric accumulator fields (e.g., view count, vote count), the merge applies both deltas additively rather than choosing one. For set-valued fields (e.g., tags, assignees), the merge takes the union of both sets. This produces a result that incorporates both users' intents. Manual resolution: the conflict is flagged, both values are stored (localValue and serverValue alongside a conflictState: true flag on the entity), and the UI presents the conflict for user resolution. No data is lost; the user sees exactly what changed and can choose which value to keep or combine them manually.</HighlightBlock>
-        <p>Tombstone conflicts: if the client edits an entity that another user deleted on the server (the entity no longer exists in the server's authoritative state), the conflict is always flagged for manual resolution—the system cannot automatically decide whether the edit or the delete should win. The entity is restored locally with a "restored from conflict" state indicator, showing the user both their pending edits and the fact that someone deleted this entity. The user can confirm the deletion (discarding their edit) or restore the entity (recreating it on the server with their edits applied).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Server-Side Operation Log</h3>
-        <p>The server maintains an append-only operation log alongside the authoritative entity store. Each accepted operation is recorded in the log with a monotonically increasing server-side sequence number (a global counter, or a per-entity-type counter for sharded systems). This log is the basis for the changeSet computation: when a client syncs with lastSyncedServerTimestamp T, the server queries the operation log for all entries with sequenceNumber &gt; T (or timestamp &gt; T for time-based logs) and returns them as the changeSet.</p>
-        <p>The operation log also enables the server to detect conflicts with high precision. Rather than comparing only the entity's current version, the server can query all operations that affected a specific field since the client's baseVersion, providing a precise list of conflicting edits with their authors and timestamps. This richer conflict context can be shown in the conflict resolution UI: "Bob changed this field from 'Draft' to 'In Review' at 2:15 PM while you were offline."</p>
-        <p>Log retention and compaction: the operation log can grow unboundedly for long-lived documents. Compaction is performed periodically: operations older than the retention period (e.g., 30 days) are removed from the log. Clients that have been offline longer than the retention period cannot use delta sync—they must perform a full snapshot sync (download the entire current entity state) rather than a delta of operations. The client detects this case when the server returns a "snapshot required" response to a sync request with a lastSyncedServerTimestamp that is older than the log's retention horizon.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-Time Sync When Online</h3>
-        <HighlightBlock as="p" tier="important">When the client is online, the Sync Engine maintains a WebSocket connection to the Sync Service. Server-side changes (from other users) are pushed to the client via WebSocket as they are committed to the authoritative database. The client receives these changes as operation log entries and applies them to the local entity store using the same conflict resolution logic as the reconnect sync protocol. This ensures that the offline and online code paths are unified: the conflict resolution logic runs in both cases, and the local store is always the source of truth regardless of whether the update came from a WebSocket push or a reconnect sync batch.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Optimistic local mutations when online: when the user edits an entity while online, the operation is applied to the local store immediately (optimistic update) and sent to the server in real-time (not queued—it is sent immediately rather than batched). The server responds with the merge result. If the edit succeeds (no conflict), the local optimistic state is confirmed. If a conflict is detected (another user edited the same field in the milliseconds between the client's read and the server's write), the conflict resolution logic runs and the local state is corrected. This real-time conflict detection path handles the "edit collision" case that occurs even when both users are online simultaneously.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Sync Status UI</h3>
-        <p>The sync status indicator communicates the current state of the local-to-server synchronization. Four states: Offline (no network connectivity—detected via navigator.onLine and a failed background health-check request), Syncing (operations are being uploaded or server changes are being downloaded—shown as a spinning indicator with a count of pending operations), Synced (all local operations have been confirmed by the server and all server changes have been applied locally—shown as a checkmark with a "last synced N minutes ago" timestamp), and Conflict (one or more entities have unresolved manual conflicts—shown as a warning icon with a count of conflicted entities and a link to the conflict resolution panel).</p>
-        <p>The "last synced" timestamp is important for users who work offline regularly—it tells them how stale their local data may be. If the timestamp is hours old, the user knows that other collaborators may have made significant changes they have not yet seen. The timestamp is derived from the lastSyncedServerTimestamp stored locally and updated on every successful sync cycle.</p>
-        <p>The conflict resolution panel shows each conflicted entity with a side-by-side view: the local value (what the user edited offline) and the server value (what another user changed to while this client was offline), with the author and timestamp of the server change. The user can choose "Keep mine," "Use theirs," or (for text fields) "Edit manually" to open a merge editor. Resolved conflicts are cleared from the panel and the entity's conflictState is reset to false.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Exponential Backoff and Retry</h3>
-        <HighlightBlock as="p" tier="important">Sync failures (network errors during the upload phase, server errors during the merge phase) trigger exponential backoff retry: the Sync Engine waits 1s, then 2s, then 4s, then 8s, then 30s, then 5-minute intervals for continued failures. The maximum retry interval is capped at 5 minutes to ensure the system recovers promptly when connectivity is restored after a long outage. The navigator.online event listener triggers an immediate retry attempt when the browser detects connectivity restored, bypassing the backoff timer.</HighlightBlock>
-        <p>Per-operation failure handling: if the server rejects a specific operation (not a network error, but a semantic error—e.g., a validation failure or a permission error), the operation is marked as failed in the local queue rather than retried indefinitely. Failed operations are surfaced in the sync status UI with an error message. The user can discard a failed operation (reverting the local state to the pre-edit value) or attempt to edit the entity again with corrected values.</p>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/realtime-collaboration-systems/offline-realtime-sync-reconciliation-system-conflicts.svg"
-          alt="Conflict resolution showing field-level conflict detection (baseVersion comparison, per-field diff), three resolution strategies (LWW by HLC timestamp, field-level merge for accumulators and sets, manual flag with both values preserved), tombstone conflict (edited entity was deleted — always manual), and conflict resolution UI (side-by-side local vs server values with author and timestamp, keep mine / use theirs / edit manually actions)."
-          caption="Conflict resolution: field-level detection via baseVersion, LWW/merge/manual strategies per field type, tombstone conflicts always manual, side-by-side resolution UI"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Operation-based sync versus state-based sync: operation-based sync (send the list of mutations: "user set title to 'X', then set status to 'Y'") preserves the user's intent and enables precise conflict detection (the server knows exactly which fields changed and from which base state). State-based sync (send the current state: "entity E is now &#123;title: 'X', status: 'Y'&#125;") is simpler to implement but loses intent—the server cannot distinguish between "user changed title to 'X'" and "entity arrived at state &#123;title: 'X'&#125; through some sequence of changes." For conflict detection, operation-based sync is required: the baseVersion on each operation is what enables field-level conflict detection. State-based sync can only detect conflicts at the entity level (the entity changed, but which fields?), leading to false-positive conflicts (treating a non-overlapping field change as a conflict).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Last-write-wins as default: LWW is attractive because it is simple (no conflict UI, always converges automatically) and correct for many field types. The risk is silent data loss: when two users update the same field simultaneously, one user's edit is discarded without notification. For a project management tool where a status transition represents significant work, this is unacceptable. The resolution: make LWW opt-in per field type (with reasonable defaults: booleans and enums default to LWW, text fields and structured content default to manual). The configuration should be documented clearly so product and engineering teams understand the trade-off when choosing a field's resolution policy.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">IndexedDB storage limits and garbage collection: IndexedDB has no fixed storage limit (browsers use heuristics based on available disk space), but the operation queue can grow large if the user is offline for an extended period with many edits. Bounded queue size: the Sync Engine enforces a maximum operation queue size (e.g., 10,000 operations) and alerts the user if the limit is approached. Confirmed operations (syncStatus: synced) are deleted from the queue immediately after confirmation to keep the queue small. The entity store (local cache) should evict least-recently-used entities for workspaces with large data sets, keeping only the user's recently accessed entities in IndexedDB to avoid unbounded growth.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Security considerations: offline operations are created client-side and sent to the server on reconnect. The server must re-validate all operations against the current authorization state: if the user's permissions changed while they were offline (they were removed from a project), their pending operations against that project's entities must be rejected. The server's operation processing pipeline applies authorization checks as the first step before conflict detection or merge, using the user's current permissions (not their permissions at the time the operation was created client-side). This prevents a scenario where a user edits a document they have been removed from, reconnects, and the server applies the edit because it was "pre-authorized" client-side.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">An offline + realtime sync reconciliation system is built on a local-first architecture: all reads and writes go through an IndexedDB-backed local entity store, and the Sync Engine reconciles the local state with the server in the background. Every mutation is recorded as an operation in a persistent queue with three critical fields: operationId (idempotency key for retry safety), baseVersion (the entity version at the time of the edit, enabling field-level conflict detection), and clientTimestamp (Hybrid Logical Clock for causal ordering). The reconnect protocol executes in three phases: upload pending operations in HLC order, receive server merge results and missed changeSet, and apply both to local state. Conflict detection is field-granular (comparing which fields changed against the baseVersion), with three configurable resolution strategies per field: last-write-wins by HLC (for enums and booleans), field-level merge (for accumulators and sets), and manual resolution with side-by-side UI (for high-stakes text fields). Tombstone conflicts (editing a deleted entity) always require manual resolution. The same conflict resolution logic runs for real-time WebSocket updates when online, unifying the offline and online code paths. The sync status indicator surfaces the current state (offline/syncing/synced/conflict) with a "last synced" timestamp for context. The defining challenge is the conflict resolution policy: LWW is simple but silently discards work; manual resolution is safe but requires UI investment; the correct answer is a per-field policy configured to the semantics of each field type.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

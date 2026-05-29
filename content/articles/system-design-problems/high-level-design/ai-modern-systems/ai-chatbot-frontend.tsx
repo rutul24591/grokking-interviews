@@ -41,7 +41,7 @@ export default function AiChatbotFrontendArticle() {
         caption="Chatbot architecture: three-layer design (UI / state+transport / backend), rAF token buffering, AbortController stop, and multimodal input pipeline"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h2>Definition &amp; Context</h2>
       <p>
         The architecture varies significantly based on scope questions:
       </p>
@@ -73,7 +73,11 @@ export default function AiChatbotFrontendArticle() {
         forward (summarize conversation, start new thread, or prune old messages).
       </HighlightBlock>
 
-      <h2>High-Level Architecture</h2>
+      <h2>Core Concepts</h2>
+      <p>The core concepts are streaming token delivery, durable conversation state, provider abstraction, abort handling, tool-call rendering, context-window management, safety boundaries, and accessibility during incremental output. These concepts define the production contract for AI chatbot frontend: what the UI can promise, what the backend must enforce, and what operators need to observe when the feature behaves unexpectedly.</p>
+      <p>For principal-level interviews, frame this as a product system rather than a model demo. The answer should cover ownership, permissions, safety, rollback, quality measurement, degraded behavior, and cost control in addition to the visible interaction.</p>
+
+      <h2>Architecture &amp; Flow</h2>
       <p>
         The chatbot frontend has three layers: the UI layer (message list renderer, input
         composer, streaming indicator, tool call cards), the state and transport layer
@@ -91,7 +95,7 @@ export default function AiChatbotFrontendArticle() {
         latency between server and LLM provider, which directly reduces time to first token.
       </p>
 
-      <h2>Token Streaming Pipeline</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Token Streaming Pipeline</h3>
       <p>
         The browser initiates a streaming POST via fetch with no Content-Length on the
         response. The response body is a ReadableStream. The client reads it in a loop
@@ -128,7 +132,13 @@ export default function AiChatbotFrontendArticle() {
         complete on the "[DONE]" sentinel or the finish_reason event.
       </p>
 
-      <h2>Stop Generation and AbortController</h2>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-chatbot-frontend-streaming-flow.svg"
+        alt="Streaming flow from user submission through backend proxy, provider stream normalization, token buffer, animation-frame rendering, abort handling, and durable conversation storage"
+        caption="Streaming flow: normalize provider events, batch tokens before React rendering, preserve abort semantics, and persist partial responses"
+      />
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Stop Generation and AbortController</h3>
       <p>
         A stop button is essential for chatbots — long generations are common, and users
         frequently want to stop a response that has clearly gone off-track without waiting
@@ -147,7 +157,7 @@ export default function AiChatbotFrontendArticle() {
         share the rAF loop, causing token interleaving.
       </p>
 
-      <h2>Optimistic UI and Message Ordering</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Optimistic UI and Message Ordering</h3>
       <p>
         When the user submits a message, the UI immediately appends the user's message
         bubble to the conversation without waiting for server confirmation. This optimistic
@@ -164,7 +174,7 @@ export default function AiChatbotFrontendArticle() {
         appears below it, then transitions smoothly to streaming text.
       </p>
 
-      <h2>Conversation History and Context Window Management</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Conversation History and Context Window Management</h3>
       <p>
         Conversation history is stored in IndexedDB for persistence across page reloads
         without requiring server-side storage. Each conversation is a record containing
@@ -202,7 +212,7 @@ export default function AiChatbotFrontendArticle() {
         the user was already at the bottom before the new content appeared.
       </p>
 
-      <h2>Multimodal Input Handling</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Multimodal Input Handling</h3>
       <p>
         Multimodal input requires preprocessing pipelines that run before the message
         is sent.
@@ -233,7 +243,7 @@ export default function AiChatbotFrontendArticle() {
         populates the composer.
       </p>
 
-      <h2>Tool Call Visualization</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Tool Call Visualization</h3>
       <p>
         Tool-using models interleave generation with structured tool call events. When
         the model requests a tool, the stream delivers a tool_use event containing the
@@ -260,7 +270,7 @@ export default function AiChatbotFrontendArticle() {
         conversation view.
       </HighlightBlock>
 
-      <h2>Markdown Rendering During Streaming</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Markdown Rendering During Streaming</h3>
       <p>
         Streaming markdown rendering is harder than rendering complete markdown because
         the partial string may be syntactically incomplete. An unclosed code fence
@@ -279,7 +289,7 @@ export default function AiChatbotFrontendArticle() {
         code blocks consuming all subsequent text) while allowing prose to stream naturally.
       </p>
 
-      <h2>Error Taxonomy and Recovery</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Error Taxonomy and Recovery</h3>
       <p>
         The LLM error space is different from typical API errors and requires error-specific
         UX treatment:
@@ -313,7 +323,7 @@ export default function AiChatbotFrontendArticle() {
         not require the user to manually identify and delete old messages.
       </HighlightBlock>
 
-      <h2>Backend Proxy Design</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Backend Proxy Design</h3>
       <p>
         The backend API route is a thin proxy with three responsibilities: prompt
         construction, stream relay, and tool execution. Prompt construction assembles
@@ -335,8 +345,265 @@ export default function AiChatbotFrontendArticle() {
         the proxy to the regions where users are, co-located with the LLM provider's
         endpoint where possible.
       </p>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-chatbot-frontend-provider-routing.svg"
+        alt="Provider routing diagram showing model gateway policy, primary and fallback model providers, circuit breakers, quota enforcement, region-aware routing, and normalized event output back to the browser"
+        caption="Provider routing: keep the browser insulated from provider-specific formats, rate limits, outages, and model fallback policy"
+      />
 
-      <h2>Interview Q&A</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Principal-Level Operating Model</h3>
+      <p>
+        A principal-ready chatbot design needs an operating model, not just a component
+        diagram. The owner must define service-level objectives around time to first
+        token, stream completion rate, cancellation rate, provider error rate, tool
+        failure rate, and answer quality. TTFT should be tracked separately from total
+        generation time because users perceive the first visible token as responsiveness,
+        while total generation time mostly affects patience once the conversation is
+        already moving. Track TTFT by model, provider, region, prompt length bucket,
+        attachment type, and whether retrieval or tools were invoked.
+      </p>
+      <p>
+        Cost is an architecture constraint. Every turn has input tokens, output tokens,
+        retrieval cost, tool execution cost, and storage cost. A high-traffic chatbot
+        should enforce per-user and per-tenant budgets before the request reaches the
+        provider. The budget service should estimate cost from selected model, context
+        size, expected output cap, and enabled tools, then either allow the request,
+        downgrade to a cheaper model, trim context through summarization, or ask the
+        user to confirm a high-cost operation. Without this guardrail, an accidentally
+        large context window or a runaway agent loop can create a production incident
+        that looks like normal traffic until the invoice arrives.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Provider fallback must be product-aware. Blindly failing over from one model to
+        another can change output quality, safety behavior, citation style, tool-call
+        schema, latency, and cost. The model gateway should make fallback decisions from
+        policy: which use cases allow degraded models, which require exact tool schemas,
+        which require data residency, and which should fail closed rather than return a
+        lower-confidence answer. The UI should surface degraded mode when the fallback
+        materially affects user expectations.
+      </HighlightBlock>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Safety, Privacy, and Abuse Controls</h3>
+      <p>
+        Chatbot frontends are a boundary where untrusted user input, model output, files,
+        tool calls, and rendered HTML-like markdown meet. Treat every model response as
+        untrusted content. Markdown rendering must sanitize HTML, block script execution,
+        validate links, and isolate rich previews. Tool-call output must be rendered as
+        data, not trusted markup. If the assistant can return tables, code snippets,
+        citations, or file previews, each renderer needs its own escaping and content
+        security posture.
+      </p>
+      <p>
+        Prompt injection is a cross-layer problem. The frontend should not promise that
+        client-side filtering alone can stop it, but it can reduce impact by making tool
+        permissions explicit, showing which external documents were used, requiring user
+        confirmation before destructive tools, and making cited sources inspectable.
+        The backend should classify tools by risk, enforce least privilege per tool,
+        redact secrets before tool output reaches the model, and log tool invocations
+        with request IDs so suspicious behavior can be audited after the fact.
+      </p>
+      <p>
+        Multimodal attachments expand the privacy surface. Images may contain faces,
+        documents may contain customer data, and audio may contain sensitive speech.
+        The upload pipeline should show retention policy before upload, attach tenant
+        and purpose metadata to every object, avoid placing raw files in analytics logs,
+        and delete temporary uploads after the conversation retention window expires.
+        Enterprise deployments need controls for disabling provider-side training,
+        regional storage, audit exports, and legal hold.
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Capacity Planning, Rollout, and Migration</h3>
+      <p>
+        Capacity planning for a chatbot frontend starts with concurrency, not page views.
+        A user can hold a stream open for 30 seconds, and each stream consumes browser
+        memory, an HTTP connection, backend worker time, provider-side generation
+        capacity, and token budget. A product with 100,000 daily active users can still
+        overwhelm the model gateway if a launch event causes 5,000 simultaneous long
+        generations. The capacity model should estimate active streams, average stream
+        duration, P95 output tokens, attachments per request, and tool invocations per
+        turn. The bottleneck is often not the React UI; it is the provider quota, gateway
+        connection pool, retrieval dependency, or tool execution queue.
+      </p>
+      <p>
+        The gateway should expose backpressure to the UI explicitly. If the request is
+        queued because provider concurrency is exhausted, the assistant placeholder
+        should show a queued state rather than pretending the model is thinking. If the
+        queue exceeds a product-defined threshold, the gateway can offer a cheaper model,
+        shorter answer mode, or delayed notification. Principal-level design includes
+        the user promise: users should know whether they are waiting for computation,
+        retrieval, queue capacity, a tool, or a degraded fallback. Ambiguous loading
+        states turn operational incidents into user mistrust.
+      </p>
+      <p>
+        Rollout should be staged by capability, tenant, model, and traffic percentage.
+        Start with text-only chat and no tools, then enable file upload, then retrieval,
+        then low-risk tools, then high-risk tools requiring confirmation. Each capability
+        adds new failure modes and observability dimensions. For example, enabling file
+        upload adds parsing failures, virus scanning latency, storage retention policy,
+        and context explosion. Enabling tools adds permission checks, tool timeout
+        handling, replay protection, and audit logs. A feature flag matrix should allow
+        the team to disable only the failing capability without taking down the entire
+        chatbot.
+      </p>
+      <p>
+        Migration between model providers or API versions must be treated as a behavior
+        migration, not just an SDK upgrade. Run shadow traffic for representative prompts,
+        compare tool-call schemas, citation density, refusal behavior, latency, output
+        length, and user feedback rates. Store the provider, model, prompt template
+        version, retrieval version, and tool schema version on every assistant message.
+        Without that metadata, debugging a bad answer becomes guesswork: the team cannot
+        tell whether the regression came from a model change, prompt change, retrieval
+        change, or frontend renderer bug.
+      </p>
+      <p>
+        Release gates should combine automated checks with human review for high-risk
+        surfaces. Automated gates can compare TTFT, stream completion rate, context
+        overflow rate, tool timeout rate, citation coverage, and safety intervention
+        rate against the previous model or prompt version. Human review is still needed
+        for qualitative changes: tone, helpfulness, refusal clarity, and whether tool
+        output is explained in a way users can trust. For enterprise chatbots, run
+        tenant-specific canaries because one tenant may rely heavily on PDFs, another on
+        code snippets, and another on retrieval from regulated documents. A global
+        average can hide a severe regression in one important tenant segment.
+        Rollback must restore the model, prompt template, tool schema, and renderer
+        behavior together; rolling back only the provider can leave stored conversations
+        in a state the older renderer or parser no longer understands.
+        Treat these version links as part of the incident response surface, not as
+        optional analytics metadata during urgent production debugging.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        A mature chatbot design has kill switches for model provider, retrieval, file
+        upload, multimodal input, tool execution, memory injection, and markdown-rich
+        rendering. These switches should degrade independently. If the markdown renderer
+        has a sanitization issue, the system should fall back to plain text. If retrieval
+        is down, the UI should show an ungrounded-answer warning or block grounded-only
+        workflows. If a tool begins timing out, tool cards should fail visibly while
+        pure chat continues. Independent degradation is the difference between a contained
+        incident and a full product outage.
+      </HighlightBlock>
+      <p>
+        Multi-region and provider failover should be designed around conversation
+        continuity, not only request retry. If a provider or region fails mid-stream,
+        blindly retrying against another provider can duplicate tool calls, change model
+        tone, or produce a second answer that conflicts with the partial answer already
+        shown. A safer design records a stream checkpoint, marks the partial assistant
+        message as interrupted, and lets the user explicitly resume or regenerate with
+        a visible provider change. For enterprise tenants, failover policy may be tenant
+        specific: one tenant may allow cross-region failover for availability, while
+        another requires in-region processing and should fail closed with a clear message.
+      </p>
+      <p>
+        Provider portability requires a normalized internal contract. Streaming deltas,
+        tool calls, safety refusals, citations, usage metrics, and finish reasons should
+        be converted into product-owned event types before they reach the React state
+        layer. That contract prevents every UI component from learning provider-specific
+        quirks and makes incident rollback possible. When a provider changes its tool
+        schema or finish reason semantics, the gateway adapter absorbs the change and
+        the UI continues rendering the same internal stream events.
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Conversation Branch Exploration</h3>
+      <p>
+        A linear conversation thread is the simplest mental model, but it is a poor fit
+        for exploratory use cases — research, brainstorming, drafting — where the user
+        wants to try multiple directions from a common starting point. Branch exploration
+        allows the user to fork the conversation at any message and pursue an alternative
+        direction without losing their current thread. The result is a conversation tree
+        rather than a linear history.
+      </p>
+      <p>
+        Branch creation: the user right-clicks (or long-presses) any message in the
+        conversation and selects "Explore alternate direction." This creates a new branch
+        rooted at the parent of the selected message — a sibling conversation starting
+        from the same context state. The branch appears as a new tab in the conversation
+        view, labeled with the first few words of the user's next message in that branch.
+        The parent conversation (the trunk) and all branches remain accessible as tabs.
+        The branch is not a full copy of the conversation — it shares the message history
+        up to the fork point by reference, so it doesn't double the storage. Only the
+        branch-specific messages are stored uniquely.
+      </p>
+      <HighlightBlock as="p" tier="important">
+        Branch comparison is the feature that makes conversation branching genuinely useful
+        rather than just a navigation curiosity. After exploring two branches from the
+        same fork point, the user should be able to view the two branches side by side
+        — the same question asked with two different phrasings, the same topic explored
+        with two different scopes. The branch comparison view shows the shared context
+        above a horizontal split, with each branch below its respective column. Users
+        can copy the best elements from each branch into a final "synthesis" conversation
+        that becomes the canonical thread for further exploration.
+      </HighlightBlock>
+      <p>
+        Persistence for branches: each branch is stored as a child conversation record
+        with a parentConversationId and a forkMessageId (the message where the branch
+        diverged). The conversation index (the sidebar list of conversations) groups
+        branches under their parent, collapsible by default. A branch that the user
+        abandons (never revisited after the initial exploration) can be pruned after 30
+        days. A branch that the user explicitly keeps or exports is retained indefinitely.
+      </p>
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Memory and Long-Term Context</h3>
+      <p>
+        Standard chatbot conversations are amnesiac — each new conversation starts with
+        no knowledge of prior interactions. Users who use a chatbot regularly to assist
+        with ongoing work must re-explain their context in every session: their role,
+        their preferences, the project they're working on. Long-term memory addresses
+        this by persisting relevant facts, preferences, and project context across sessions,
+        injecting them into new conversations as compressed context.
+      </p>
+      <p>
+        Memory extraction: at the end of each session, or asynchronously after the
+        conversation reaches a certain length, a lightweight LLM call processes the
+        conversation and extracts memory-worthy facts: user preferences ("the user
+        prefers concise responses and bullet point format"), ongoing projects ("the user
+        is building a React-based dashboard for inventory management"), and explicit
+        corrections ("the user noted they use pnpm, not npm"). These extracted facts
+        are stored as structured memory records with a timestamp and a source conversation
+        ID.
+      </p>
+      <p>
+        Memory injection at session start: when a new conversation begins, retrieve
+        the user's most relevant memory records (most recent and highest relevance to
+        the session's initial query) and inject them into the system prompt as a compact
+        "User context" section. The memory section is labeled clearly so the user knows
+        the assistant is using prior context. A memory management UI allows users to
+        view, edit, and delete specific memory records — essential for privacy and
+        accuracy. Users must be able to correct a wrong memory ("I no longer use React,
+        I switched to SolidJS") without the wrong preference persisting indefinitely.
+      </p>
+      <HighlightBlock as="p" tier="crucial">
+        Long-term memory creates a significant privacy obligation. Stored memories are
+        a persistent profile of the user's work habits, preferences, knowledge gaps,
+        and ongoing projects. Users must have complete visibility and control: a memory
+        panel showing all stored facts with delete capability, a clear disclosure
+        that memory is being collected at the first session and in the settings, and
+        a "delete all memories" action that permanently removes all records. Memory
+        records should never include the raw conversation text — only extracted facts
+        — to minimize the PII surface area. Do not build long-term memory without explicit
+        user opt-in; users who do not opt in should receive the standard amnesiac behavior.
+      </HighlightBlock>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-chatbot-frontend-memory-safety.svg"
+        alt="Memory and safety diagram showing conversation events, memory extraction, user-visible memory controls, retrieval into future prompts, deletion path, audit logs, and policy enforcement"
+        caption="Long-term memory safety: extract only durable facts, keep user controls visible, and make deletion and audit paths first-class"
+      />
+
+      <h2>Trade offs &amp; Comparison</h2>
+      <p>The core trade-off is capability versus control. Rich AI experiences improve user productivity, but they add uncertainty, cost, latency, data-access risk, and operational complexity. A principal-ready design explains which paths are authoritative, which paths are best-effort, and how the system degrades when retrieval, model execution, policy checks, or tool calls fail.</p>
+      <p>The design should also compare build-versus-buy boundaries. Provider APIs, vector stores, evaluation tools, moderation classifiers, and orchestration frameworks can accelerate delivery, but the product still owns permission enforcement, user trust, auditability, rollback, and quality measurement.</p>
+
+      <h2>Best practices</h2>
+      <p>Use explicit contracts between UI, orchestration, model, retrieval, policy, and tool layers. Persist durable state, keep correlation IDs across model and tool calls, separate user-visible confidence from internal scores, and make failed or degraded states visible. Treat prompts, policies, retrieval settings, and model versions as production configuration with owners and rollback.</p>
+      <p>Measure quality continuously with offline evaluation sets, production feedback, latency and cost telemetry, safety outcomes, and incident reviews. Principal-level systems do not rely on subjective demos to decide whether an AI feature is working.</p>
+
+      <h2>Common Pitfalls</h2>
+      <p>Common pitfalls include letting the model decide authorization, hiding uncertainty, storing sensitive context unnecessarily, treating provider streaming formats as frontend contracts, and shipping without replayable traces. Another frequent issue is optimizing for impressive answers while neglecting source evidence, policy enforcement, and operator visibility.</p>
+      <p>Teams also underestimate lifecycle problems: model behavior changes, documents are deleted, prompts drift, evaluation sets go stale, and users discover adversarial inputs. The architecture needs ongoing governance, not only launch-time safeguards.</p>
+
+      <h2>Real-world use cases</h2>
+      <p>These patterns apply to enterprise copilots, knowledge assistants, developer tools, moderation systems, model-evaluation platforms, support automation, document Q&A, search products, and workflow automation. In each case, the AI surface becomes a governance and reliability surface as soon as users depend on it for real decisions.</p>
+      <p>For staff and principal interviews, connect the design to rollout safety, tenant isolation, incident response, data access, cost controls, and measurable quality improvement. That is what separates a feature explanation from a system design answer.</p>
+
+      <h2>Common interview question with detailed answer</h2>
 
       <h3>Q: How do you handle the race condition where the user sends a new message while the previous response is still streaming?</h3>
       <p>
@@ -392,86 +659,6 @@ export default function AiChatbotFrontendArticle() {
         label: aria-label="Stop generating response" rather than just an icon.
       </p>
 
-      <h2>Conversation Branch Exploration</h2>
-      <p>
-        A linear conversation thread is the simplest mental model, but it is a poor fit
-        for exploratory use cases — research, brainstorming, drafting — where the user
-        wants to try multiple directions from a common starting point. Branch exploration
-        allows the user to fork the conversation at any message and pursue an alternative
-        direction without losing their current thread. The result is a conversation tree
-        rather than a linear history.
-      </p>
-      <p>
-        Branch creation: the user right-clicks (or long-presses) any message in the
-        conversation and selects "Explore alternate direction." This creates a new branch
-        rooted at the parent of the selected message — a sibling conversation starting
-        from the same context state. The branch appears as a new tab in the conversation
-        view, labeled with the first few words of the user's next message in that branch.
-        The parent conversation (the trunk) and all branches remain accessible as tabs.
-        The branch is not a full copy of the conversation — it shares the message history
-        up to the fork point by reference, so it doesn't double the storage. Only the
-        branch-specific messages are stored uniquely.
-      </p>
-      <HighlightBlock as="p" tier="important">
-        Branch comparison is the feature that makes conversation branching genuinely useful
-        rather than just a navigation curiosity. After exploring two branches from the
-        same fork point, the user should be able to view the two branches side by side
-        — the same question asked with two different phrasings, the same topic explored
-        with two different scopes. The branch comparison view shows the shared context
-        above a horizontal split, with each branch below its respective column. Users
-        can copy the best elements from each branch into a final "synthesis" conversation
-        that becomes the canonical thread for further exploration.
-      </HighlightBlock>
-      <p>
-        Persistence for branches: each branch is stored as a child conversation record
-        with a parentConversationId and a forkMessageId (the message where the branch
-        diverged). The conversation index (the sidebar list of conversations) groups
-        branches under their parent, collapsible by default. A branch that the user
-        abandons (never revisited after the initial exploration) can be pruned after 30
-        days. A branch that the user explicitly keeps or exports is retained indefinitely.
-      </p>
-
-      <h2>Memory and Long-Term Context</h2>
-      <p>
-        Standard chatbot conversations are amnesiac — each new conversation starts with
-        no knowledge of prior interactions. Users who use a chatbot regularly to assist
-        with ongoing work must re-explain their context in every session: their role,
-        their preferences, the project they're working on. Long-term memory addresses
-        this by persisting relevant facts, preferences, and project context across sessions,
-        injecting them into new conversations as compressed context.
-      </p>
-      <p>
-        Memory extraction: at the end of each session, or asynchronously after the
-        conversation reaches a certain length, a lightweight LLM call processes the
-        conversation and extracts memory-worthy facts: user preferences ("the user
-        prefers concise responses and bullet point format"), ongoing projects ("the user
-        is building a React-based dashboard for inventory management"), and explicit
-        corrections ("the user noted they use pnpm, not npm"). These extracted facts
-        are stored as structured memory records with a timestamp and a source conversation
-        ID.
-      </p>
-      <p>
-        Memory injection at session start: when a new conversation begins, retrieve
-        the user's most relevant memory records (most recent and highest relevance to
-        the session's initial query) and inject them into the system prompt as a compact
-        "User context" section. The memory section is labeled clearly so the user knows
-        the assistant is using prior context. A memory management UI allows users to
-        view, edit, and delete specific memory records — essential for privacy and
-        accuracy. Users must be able to correct a wrong memory ("I no longer use React,
-        I switched to SolidJS") without the wrong preference persisting indefinitely.
-      </p>
-      <HighlightBlock as="p" tier="crucial">
-        Long-term memory creates a significant privacy obligation. Stored memories are
-        a persistent profile of the user's work habits, preferences, knowledge gaps,
-        and ongoing projects. Users must have complete visibility and control: a memory
-        panel showing all stored facts with delete capability, a clear disclosure
-        that memory is being collected at the first session and in the settings, and
-        a "delete all memories" action that permanently removes all records. Memory
-        records should never include the raw conversation text — only extracted facts
-        — to minimize the PII surface area. Do not build long-term memory without explicit
-        user opt-in; users who do not opt in should receive the standard amnesiac behavior.
-      </HighlightBlock>
-
       <h3>Q: How do you implement autosave and crash recovery for a streaming response that was interrupted mid-generation?</h3>
       <p>
         The conversation store in IndexedDB is the primary durability mechanism. Every
@@ -503,6 +690,41 @@ export default function AiChatbotFrontendArticle() {
         boundaries visually in the conversation view with a "Chapter N — summary" divider
         that the user can expand to read the compressed summary.
       </p>
+
+      <h2>References</h2>
+      <ul>
+        <li>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream">
+            MDN: ReadableStream
+          </a>{" "}
+          — browser stream primitives used for token consumption and cancellation.
+        </li>
+        <li>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController">
+            MDN: AbortController
+          </a>{" "}
+          — cancellation semantics for stopping in-flight streaming requests.
+        </li>
+        <li>
+          <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">
+            WHATWG HTML: Server-sent events
+          </a>{" "}
+          — event stream framing behavior relevant to provider stream parsing.
+        </li>
+        <li>
+          <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html">
+            OWASP HTML5 Security Cheat Sheet
+          </a>{" "}
+          — browser-side storage, messaging, and rendering security considerations.
+        </li>
+        <li>
+          <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">
+            OWASP Top 10 for LLM Applications
+          </a>{" "}
+          — prompt injection, insecure output handling, sensitive information disclosure,
+          and excessive agency risks for LLM-backed products.
+        </li>
+      </ul>
     </ArticleLayout>
   );
 }

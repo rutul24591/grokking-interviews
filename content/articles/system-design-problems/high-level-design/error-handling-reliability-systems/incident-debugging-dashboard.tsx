@@ -7,513 +7,280 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-incident-debugging-dashboard",
-  title: "Design an Incident / Debugging Dashboard for Users",
-  description:
-    "Architecture for a production incident and debugging dashboard: multi-signal ingestion (errors, metrics, logs) via Kafka, error grouping by stack fingerprint, correlation with deployments and feature flags via traceId, static and ML anomaly alerting with 3-sigma detection, session replay drill-down, distributed trace waterfall, PagerDuty routing, status page publishing, and auto-drafted postmortem on resolution.",
+  title: "Design an Incident Debugging Dashboard",
+  description: "Principal-level design for an incident debugging dashboard covering signal correlation, timelines, logs, metrics, traces, deploys, ownership, and post-incident evidence.",
   category: "high-level-design",
   subcategory: "error-handling-reliability-systems",
   slug: "incident-debugging-dashboard",
-  wordCount: 5000,
-  readingTime: 29,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "incident-management", "observability", "debugging", "sentry", "grafana", "pagerduty", "postmortem"],
-  relatedTopics: ["global-error-handling-fallback-ui", "retry-failure-recovery-ux"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
+  tags: ["hld","incident","observability","debugging","reliability"],
+  relatedTopics: ["global-error-handling-fallback-ui", "incident-debugging-dashboard", "retry-failure-recovery-ux"],
 };
 
 export default function IncidentDebuggingDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
+        <h2>Definition &amp; Context</h2>
         <HighlightBlock as="p" tier="important">
-          When a production system degrades, time-to-detection (TTD) and
-          time-to-resolution (TTR) are the two metrics that matter most. The
-          challenge is not just collecting signals—modern systems already emit
-          thousands of metrics, log lines, and error events per second—but
-          correlating those signals into a coherent picture of what broke, when,
-          why, and how to fix it. An incident and debugging dashboard is the
-          operator&rsquo;s primary interface during an incident. Poor design (disconnected
-          panels, too many false alerts, no drill-down path) turns a recoverable
-          situation into a prolonged outage.
+          A incident investigation and correlation dashboard is the reliability layer that helps on-call engineers, incident commanders, service owners, support teams, executives, and postmortem reviewers survive partial failures without losing trust or evidence. It is not just a modal, toast, or dashboard. It is a system for classifying failure, containing blast radius, guiding recovery, and creating enough signal for engineering teams to fix the cause.
         </HighlightBlock>
-        <p>Key questions to clarify:</p>
-        <ul>
-          <li>
-            <strong>Audience:</strong> Is this dashboard for internal engineers
-            (on-call SREs) or for external customers (a &ldquo;Is the service down?&rdquo;
-            status page)?
-          </li>
-          <li>
-            <strong>Signal types:</strong> Errors only, or also metrics (latency,
-            throughput) and logs?
-          </li>
-          <li>
-            <strong>Correlation scope:</strong> Can we correlate across services
-            using distributed traces (traceId)?
-          </li>
-          <li>
-            <strong>Alert channels:</strong> PagerDuty, Slack, email, SMS?
-          </li>
-          <li>
-            <strong>Postmortem process:</strong> Manual or assisted by the system?
-          </li>
-        </ul>
         <p>
-          For this design: internal engineering dashboard plus an external status
-          page; multi-signal (errors + metrics + logs + traces); cross-service
-          correlation via traceId; PagerDuty + Slack alerting; and auto-assisted
-          postmortem generation.
+          For staff and principal interviews, incident debugging should be discussed as part of the product architecture. Users do not care whether the failure came from a frontend render crash, an API timeout, a stale projection, or a dependency outage. They care whether the system is truthful, recoverable, and safe.
+        </p>
+        <p>
+          The scope includes the user-facing failure state, domain operation state, telemetry, support diagnostics, alerting, and release correlation. The design must handle transient failures, hard failures, privacy-sensitive evidence, and degraded dependencies without creating duplicate side effects or hiding incidents.
         </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3>Functional</h3>
-        <ul>
-          <HighlightBlock as="li" tier="important">
-            All signals (errors, metrics, logs) are ingested into a central pipeline
-            with a consistent schema and correlated by <code>traceId</code>.
-          </HighlightBlock>
-          <li>
-            Errors are grouped by stack fingerprint; each group shows affected user
-            count, first/last seen, deployment that introduced it, and a link to
-            session replay.
-          </li>
-          <li>
-            Alerts fire within 60 seconds of a threshold breach; on-call is paged
-            for critical incidents with severity, affected scope, and runbook link.
-          </li>
-          <li>
-            Operators can drill from an alert into a distributed trace waterfall and
-            correlated log timeline for root cause analysis.
-          </li>
-          <li>
-            An external status page reflects incident state in real time; users
-            can subscribe to updates.
-          </li>
-          <li>
-            On incident resolution, the system auto-drafts a postmortem with
-            timeline, affected metrics, and contributing factors.
-          </li>
-        </ul>
-        <h3>Non-functional</h3>
-        <ul>
-          <li>
-            <strong>Ingestion throughput:</strong> 100K events/second per service;
-            Kafka provides horizontal scale.
-          </li>
-          <li>
-            <strong>Query latency:</strong> Dashboard queries return in &lt;2 seconds
-            for 7-day windows; &lt;500ms for 1-hour windows.
-          </li>
-          <li>
-            <strong>Retention:</strong> Raw events 30 days; hourly rollups 1 year;
-            incident records indefinitely.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Availability:</strong> The monitoring system must remain
-            available during the incidents it monitors—it must not share
-            infrastructure with the services it monitors.
-          </HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The core entities are incidents, alerts, timelines, services, owners, traces, logs, metrics, deploys, feature flags, customer impact, and remediation actions. Each entity needs ownership, lifecycle state, correlation identifiers, severity, privacy classification, and a relationship to release or operation context. Without those fields, the system cannot answer whether a failure is isolated, repeated, customer-specific, or caused by a deployment.
+        </p>
+        <p>
+          Failure classification is central. Network timeouts, authorization failures, validation conflicts, chunk loading failures, dependency saturation, stale data, and render crashes require different recovery paths. A generic error page is easier to build but usually wrong for production reliability.
+        </p>
+        <p>
+          Scope controls blast radius. A widget-level failure should not take down the whole page. A route-level failure should preserve global navigation when possible. An app-level failure should provide safe reload, support contact, and incident correlation. The architecture should make scope explicit rather than accidental.
+        </p>
+        <p>
+          Recovery safety depends on idempotency and operation state. Retrying a read is different from retrying a payment, permission change, export, or workflow action. The system should know whether an operation is safe to repeat, safe to resume, requires conflict resolution, or requires support.
+        </p>
+        <p>
+          User messaging should be honest and action-oriented. Users should know whether the system is retrying, whether data is stale, whether their input was saved, whether an action may still complete, and what they can do next. Reliability UX fails when it hides uncertainty behind cheerful but vague messages.
+        </p>
+        <p>
+          Telemetry is part of the product. Error events should include release version, route, tenant, actor scope, feature flags, dependency state, operation id, and privacy-safe breadcrumbs. This evidence reduces time to detection and time to diagnosis.
+        </p>
+        <p>
+          Support diagnostics should be designed separately from user messaging. Users need clear recovery. Support teams need correlation ids, recent attempts, failure class, policy decisions, and redacted context. Engineers need aggregate patterns and release correlation. Mixing those views creates either too much exposure or too little diagnostic value.
+        </p>
+        <p>
+          Principal-level systems also model degradation. A dependency can be slow, partially unavailable, stale, or serving a reduced capability. The UI should explain degraded modes explicitly and avoid pretending that cached, partial, or delayed data is fresh and complete.
+        </p>
       </section>
+        <p>
+          Reliability design should define a trust contract for the incident timeline. The contract says what the user is allowed to assume during failure: whether data is fresh, whether an action is pending, whether local input was preserved, whether a retry is safe, and whether support can reconstruct the event later. Without that contract, teams build isolated fallbacks that look polished but do not protect the user from a delayed mitigation, wrong owner, or incomplete blast-radius estimate.
+        </p>
+        <p>
+          The design also needs an ownership model. A incident timeline can be caused by frontend code, backend dependencies, authorization policy, release configuration, browser compatibility, or customer-specific data. The incident commander should not have to manually triage every incident from scratch. Error events and recovery states should route to service owners with enough release, dependency, tenant, and user journey context to make ownership clear.
+        </p>
+        <p>
+          A principal-level answer should include reliability budgets. Not every failure deserves a page, but every important user journey deserves a tolerated failure rate, fallback exposure budget, retry budget, and recovery success target. These budgets help teams decide whether a degraded mode is acceptable or whether a release must be rolled back.
+        </p>
 
       <section>
-        <h2>High-Level Design</h2>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A strong architecture has a capture layer, classification layer, recovery policy layer, telemetry pipeline, correlation store, support view, and alerting path. The capture layer receives user-visible failures and backend operation outcomes. The classifier decides failure type, severity, retry safety, and scope. The policy layer selects fallback, retry, queue, reload, or support escalation.
+        </p>
+        <p>
+          The client should preserve recoverable local state before risky transitions. Drafts, filters, scroll position, selected records, and operation ids can let users resume after a failure. Sensitive data should not be stored casually; recovery storage must follow privacy and retention rules.
+        </p>
+        <p>
+          The backend should maintain operation or incident state for workflows that can outlive the browser. A user may close the tab after a timeout while the server action later succeeds. The UI should reconnect to the authoritative operation state instead of asking the user to repeat a dangerous action blindly.
+        </p>
+        <p>
+          Telemetry should be asynchronous and resilient. Reporting must not block user recovery, but it should buffer briefly during network loss and drop safely under pressure. Sampling policies should keep high-severity and low-frequency evidence while controlling high-volume noise.
+        </p>
+        <p>
+          The support path should be tied to correlation ids shown in the UI or recoverable through account context. This lets support connect user reports to traces, logs, error events, operation attempts, and release versions without asking users for screenshots of technical details.
+        </p>
+        <p>
+          Alerting should be based on user impact and regression signal, not raw event count alone. A spike in a new release, a high-value tenant failure, a route-level white screen, or a failed recovery loop should page faster than low-impact repeated validation errors.
+        </p>
+        <p>
+          The system needs replayable evidence. Incidents and debugging sessions should preserve time range, release version, feature flags, user journey stage, relevant logs, metrics, traces, and recovery decisions. This avoids postmortems based on memory or screenshots.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/error-handling-reliability-systems/incident-debugging-dashboard.svg"
-          alt="Incident and debugging dashboard sequence diagram"
-          caption="Multi-signal ingestion → correlation by traceId → ML anomaly alerting → PagerDuty → session replay drill-down → auto-postmortem"
+          alt="Design an Incident Debugging Dashboard architecture"
+          caption="Architecture view: capture, classify, contain, report, correlate, and recover."
         />
-        <p>The system has four layers:</p>
-        <ol>
-          <li>
-            <strong>Ingest:</strong> Errors, metrics, and logs flow into Kafka.
-            Each event is enriched with <code>traceId</code>, <code>buildSha</code>,
-            <code>region</code>, and <code>userId</code>.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Store &amp; correlate:</strong> A stream processor writes to a
-            TSDB (metrics), search index (errors/logs), and incident store. Events
-            are joined by <code>traceId</code>.
-          </HighlightBlock>
-          <li>
-            <strong>Alert:</strong> An alert engine evaluates PromQL rules and an
-            ML anomaly model every 30 seconds. Firing alerts route to PagerDuty and
-            update the status page.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Resolve &amp; learn:</strong> Operators drill into session
-            replays and trace waterfalls. On resolution, the system publishes the
-            status page update and generates a postmortem draft.
-          </HighlightBlock>
-        </ol>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/error-handling-reliability-systems/incident-debugging-dashboard-flow.svg"
+          alt="Design an Incident Debugging Dashboard failure flow"
+          caption="Failure flow showing the path from user-visible failure to evidence and mitigation."
+        />
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/error-handling-reliability-systems/incident-debugging-dashboard-recovery.svg"
+          alt="Design an Incident Debugging Dashboard recovery model"
+          caption="Recovery model showing safe retry, degraded mode, support handoff, and rollback options."
+        />
+      </section>
+        <p>
+          The architecture should support evidence layering. The first layer is user-visible state: what the user saw and which recovery options were offered. The second layer is operation state: what the system attempted, retried, queued, or abandoned. The third layer is engineering evidence: traces, logs, release versions, feature flags, dependency health, and correlation ids. Keeping these layers linked but access-controlled makes debugging faster without exposing sensitive internals to users.
+        </p>
+        <p>
+          Degraded mode should be represented as an explicit state, not as a missing feature. A system can be live, stale, partially available, read-only, queued, offline, conflict-blocked, or support-required. Each state should have an owner, metric, user message, and exit condition. This avoids vague fallback messaging and lets incident teams know when recovery is complete.
+        </p>
+        <p>
+          The system should include feedback from support and incidents back into product reliability work. If users repeatedly contact support after seeing a fallback, the fallback probably lacks a useful recovery path. If incidents repeatedly lack correlation ids, telemetry is insufficient. If retries repeatedly fail after several attempts, the policy may be hiding a persistent dependency failure.
+        </p>
+
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          The dashboard must reduce time to diagnosis without becoming another noisy observability tool. It should prioritize correlation, ownership, and blast radius over showing every raw signal at once.
+        </p>
+        <p>
+          Specific fallback UI improves recovery but increases design and testing cost. Generic fallbacks are cheap and consistent but often fail to explain whether a user can retry, wait, reload, or contact support. High-value flows deserve domain-specific recovery states.
+        </p>
+        <p>
+          Automatic retry improves success rate for transient failures, but it can worsen overload and duplicate unsafe operations. Retry policy should use backoff, jitter, deadlines, idempotency, and retry budgets. The UI should expose pending state when the outcome is not yet known.
+        </p>
+        <p>
+          Detailed telemetry improves debugging, but it increases privacy risk and event volume. Capture structured metadata, scrub sensitive values, and sample low-value noise. High-severity failures should preserve enough evidence for incident response.
+        </p>
+        <p>
+          Fail-open and fail-closed choices depend on domain risk. A stale read-only dashboard can fail open with a clear freshness warning. Permission checks, payments, destructive actions, and exports should fail closed or require explicit recovery through a trusted backend state.
+        </p>
+        <p>
+          Client-side containment is fast, but backend truth is authoritative for critical operations. The frontend can keep the experience responsive, but final recovery decisions should come from durable operation state when side effects matter.
+        </p>
+        <p>
+          Incident dashboards and error tools can become noisy if every signal is treated equally. Principal-level design prioritizes user impact, ownership, release correlation, and actionability over visual density.
+        </p>
+      </section>
+        <p>
+          There is a trade-off between containment and continuity. Isolating a failed widget protects the rest of the page, but some flows require global consistency. For example, a checkout confirmation, admin permission update, or incident mitigation cannot safely proceed if core operation state is unknown. Principal-level design should identify which surfaces can degrade independently and which must stop until trusted state returns.
+        </p>
+        <p>
+          There is also a trade-off between user transparency and cognitive load. Users need honest failure states, but they should not have to understand distributed systems. Good copy explains practical consequences: saved, queued, retrying, stale, blocked, or contact support. Internal diagnostics can carry the deeper dependency and release details.
+        </p>
+        <p>
+          Evidence retention has cost and privacy trade-offs. Keeping detailed session context helps debugging, but retaining it too long or capturing too much increases risk. The design should separate high-cardinality operational metrics, short-lived diagnostic events, and longer-lived audit or incident evidence with different retention policies.
+        </p>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Define failure taxonomies before building UI. The taxonomy should cover transient, recoverable, stale, unauthorized, conflict, dependency, render, release, and fatal states. This gives product, support, and engineering a shared language.
+        </p>
+        <p>
+          Make every recovery action explicit about safety. Retry, reload, resume, undo, restore draft, queue offline, and contact support should not be interchangeable buttons. Each action has different correctness and user trust implications.
+        </p>
+        <p>
+          Design fallbacks as stable dependencies. Fallback components and recovery paths should be simple, statically available, accessible, localized, and tested independently. A fallback that depends on the failing subsystem is not a fallback.
+        </p>
+        <p>
+          Preserve evidence with privacy controls. Store correlation ids, release versions, operation ids, failure classes, and redacted breadcrumbs. Avoid raw payloads, tokens, personal data, and sensitive form contents in client telemetry.
+        </p>
+        <p>
+          Connect errors to release management. Error spikes should show deploy version, feature flag cohort, browser, route, dependency, and tenant segment. This allows rollback, flag disablement, or targeted mitigation instead of broad guessing.
+        </p>
+        <p>
+          Test degraded modes deliberately. Use chaos testing, dependency fault injection, slow network tests, failed import tests, stale cache tests, and replay of incident traces. Reliability UX should be verified before a real incident.
+        </p>
+        <p>
+          Create support-facing workflows. A support agent should be able to find the user journey, operation state, failure reason, last retry, and recommended action without raw production access. This shortens resolution while preserving security.
+        </p>
+        <p>
+          Track recovery quality. Measure retry success rate, fallback exposure, draft restore success, rage click after failure, support contact rate, and repeated failure loops. These signals show whether the UX is actually helping users recover.
+        </p>
+      </section>
+        <p>
+          Create a reliability review checklist for new critical flows. The checklist should ask what happens on timeout, duplicate submission, browser refresh, dependency outage, permission change, stale cache, offline transition, and release rollback. This moves recovery design before launch instead of after the first major incident.
+        </p>
+        <p>
+          Expose reliability state in admin and support tooling. Users may see a simple message, but internal operators should see failure class, attempt count, last successful state, owner, related incident, release version, and recommended next action. This keeps support grounded in evidence rather than guesswork.
+        </p>
+        <p>
+          Use synthetic and replay tests for failure paths. Happy-path tests rarely prove recovery. Replay past incidents, inject dependency failures, simulate stale caches, force browser reloads mid-operation, and verify that user state, telemetry, and support diagnostics remain coherent.
+        </p>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The common failure is creating a wall of charts with no decision model. Incident response needs a timeline, suspected causes, owners, mitigations, and evidence, not only dashboards.
+        </p>
+        <p>
+          Another pitfall is showing an optimistic success state before the backend commits. If the user sees success and the operation later fails, trust is worse than if the UI had shown a pending or uncertain state.
+        </p>
+        <p>
+          Teams often hide stale data. A cached dashboard, stale search result, or delayed operation can be useful, but only if the user knows its freshness. Silent staleness creates bad decisions.
+        </p>
+        <p>
+          Retry storms are a major reliability risk. Many clients retrying at once can turn a small outage into a larger one. Backoff, jitter, server hints, and retry budgets should be part of the design.
+        </p>
+        <p>
+          Telemetry can itself become a liability. Capturing full payloads, session replays, or form values without scrubbing can expose sensitive data. Privacy and security review are core requirements, not later polish.
+        </p>
+        <p>
+          A subtle failure is losing the user&apos;s work during recovery. If a form, draft, or multi-step flow crashes, the system should preserve safe local state or clearly explain what was lost and why.
+        </p>
+        <p>
+          Finally, incident tools can become passive dashboards. A principal-ready reliability system should guide action: owner, blast radius, latest change, mitigation options, and evidence for post-incident review.
+        </p>
+      </section>
+        <p>
+          A subtle pitfall is optimizing for lower error volume instead of better recovery. Sampling, suppressing, or hiding errors can make dashboards look healthier while users still fail. Principal-level reliability work measures successful recovery, not just fewer reports.
+        </p>
+        <p>
+          Another pitfall is failing to align release ownership with failure ownership. If a feature flag, dependency upgrade, or UI release causes failures, the dashboard should make that causal chain visible. Otherwise teams burn time assigning blame instead of mitigating impact.
+        </p>
+        <p>
+          Teams also forget that fallback UI itself needs accessibility, localization, and performance discipline. During failure, users may be stressed, on poor networks, or using assistive technology. A heavy or inaccessible fallback deepens the outage from the user&apos;s perspective.
+        </p>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          incident investigation and correlation dashboard is critical for critical user journeys such as checkout, admin changes, exports, collaboration, and workflow execution. The failure state often determines whether the user retries safely or creates duplicate side effects.
+        </p>
+        <p>
+          Support teams use this system to answer customer reports with evidence. They need correlation ids, user journey context, redacted event details, and current operation state, not vague timestamps.
+        </p>
+        <p>
+          Release managers use it during rollouts. If failures cluster by build, route, browser, feature flag, tenant, or geography, the system should support targeted rollback or flag disablement.
+        </p>
+        <p>
+          Platform teams use aggregate recovery metrics to find systemic reliability gaps: repeated retry loops, fallbacks that users abandon, noisy dependencies, stale projections, and operations with ambiguous outcomes.
+        </p>
+      </section>
+        <p>
+          This topic is a strong principal interview vehicle because it forces cross-layer reasoning. A candidate must connect UX, backend operation semantics, observability, privacy, release engineering, and incident response. A narrow component-level answer is not enough.
+        </p>
+        <p>
+          A good interview answer should name the invariant being protected. For incident timeline, the invariant may be no lost user work, no duplicate side effects, no silent stale data, no unowned critical incident, or no sensitive telemetry leakage. Once the invariant is clear, architecture choices become easier to defend.
+        </p>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model incident investigation and correlation dashboard at production scale?</h3>
+        <p>
+          I would model failures as first-class domain events with scope, classification, user impact, retry safety, release context, and correlation identifiers. The UI should separate transient, recoverable, permission, data-conflict, and fatal states. The backend should preserve operation or incident state so support and engineering can reconstruct what happened after the user leaves the page.
+        </p>
+        <h3>Where do you draw the line between automatic recovery and user-driven recovery?</h3>
+        <p>
+          Automatic recovery is appropriate for safe, idempotent, low-blast-radius operations such as refetching a dashboard panel or retrying a read request. User-driven recovery is safer when the operation changes money, permissions, inventory, identity, or external systems. The UI should explain whether the system is retrying, waiting, queued offline, partially complete, or blocked by a conflict.
+        </p>
+        <h3>What should be observable?</h3>
+        <p>
+          I would track error rate by release, tenant, route, browser, dependency, and operation type. For incident debugging, I would also track fallback render rate, retry success, dropped reports, stale UI exposure, correlation coverage, and time from user-visible failure to actionable engineering signal. These metrics prove whether the recovery system actually improves reliability.
+        </p>
+        <h3>How do you protect privacy while collecting debugging evidence?</h3>
+        <p>
+          Capture structured context rather than raw payloads. Scrub personal data, secrets, tokens, request bodies, and sensitive form fields before sending telemetry. Session replay should mask sensitive inputs and be sampled according to policy. Support views should show redacted evidence and correlation ids, while privileged raw access requires explicit approval and audit.
+        </p>
+        <h3>What trade-offs would you call out in a principal interview?</h3>
+        <p>
+          The dashboard must reduce time to diagnosis without becoming another noisy observability tool. It should prioritize correlation, ownership, and blast radius over showing every raw signal at once. I would also discuss consistency versus responsiveness, evidence depth versus privacy, automatic retry versus duplicate side effects, and generic fallback simplicity versus domain-specific recovery. The best answer ties each trade-off to user trust and operational proof.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3>Signal Ingestion Pipeline</h3>
-        <p>
-          Each signal type flows into its own Kafka topic with a defined schema:
-        </p>
+        <h2>References</h2>
         <ul>
-          <HighlightBlock as="li" tier="important">
-            <strong><code>errors</code> topic:</strong> Emitted by the Sentry SDK
-            or a custom error collector. Schema: <code>&#123;errorId, traceId, fingerprint,
-            message, stackFrames[], buildSha, userId, region, featureFlags,
-            sessionReplayUrl, timestamp&#125;</code>.
-          </HighlightBlock>
-          <li>
-            <strong><code>metrics</code> topic:</strong> Emitted by Prometheus
-            remote-write or a custom metrics SDK. Schema: <code>&#123;metricName, labels,
-            value, traceId, timestamp&#125;</code>.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong><code>logs</code> topic:</strong> Emitted by Fluent Bit from
-            pod stdout/stderr. Schema: <code>&#123;level, message, traceId, spanId,
-            service, podName, timestamp&#125;</code>.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong><code>deployments</code> topic:</strong> Emitted by the CI/CD
-            pipeline on each deploy. Schema: <code>&#123;buildSha, service, environment,
-            deployedAt, deployer&#125;</code>. This is the correlation anchor for
-            &ldquo;did this error spike after the deploy?&rdquo;
-          </HighlightBlock>
+          <li>Google SRE book on incident response.</li>
+          <li>OpenTelemetry documentation.</li>
+          <li>PagerDuty incident response guide.</li>
+          <li>Grafana incident concepts.</li>
+          <li>CNCF observability guidance.</li>
         </ul>
-        <p>
-          A stream processor (Flink or Kafka Streams) reads from all four topics.
-          It enriches errors with the most recent deploy event matching the
-          <code>buildSha</code>, enabling &ldquo;first seen 3 minutes after deploy by
-          @alice&rdquo; annotations in the UI.
-        </p>
-
-        <h3>Storage Architecture</h3>
-        <p>
-          Three purpose-built stores handle the different query patterns:
-        </p>
-        <ul>
-          <li>
-            <strong>Time-series DB (Prometheus / VictoriaMetrics):</strong> Stores
-            metrics with efficient range queries and aggregation. Used for latency
-            percentiles, error rate trends, and SLA % calculations. Retention:
-            30 days at 15s resolution; 1 year at 1-hour rollups.
-          </li>
-          <li>
-            <strong>Search index (Elasticsearch / OpenSearch):</strong> Stores
-            error events and log lines. Supports full-text search, fingerprint
-            aggregation, and faceted filtering (by <code>buildSha</code>, region,
-            userId). Used for error group lists and log timeline queries.
-          </li>
-          <li>
-            <strong>Trace store (Jaeger / Tempo):</strong> Stores distributed
-            traces with parent-child span relationships. Queryable by
-            <code>traceId</code>. Used for the waterfall drill-down view. Retention:
-            7 days at full resolution.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Incident store (PostgreSQL):</strong> Stores incident records
-            (opened, resolved, severity, affected services, responsible deployment,
-            MTTR). Used for postmortem generation and historical SLA reporting.
-          </HighlightBlock>
-        </ul>
-
-        <h3>Error Grouping by Stack Fingerprint</h3>
-        <p>
-          Raw error events are grouped into issues by a fingerprinting algorithm:
-        </p>
-        <ol>
-          <li>
-            Strip dynamic content from the error message using regex patterns:{" "}
-            UUIDs, numeric IDs, timestamps, URLs with query strings.
-          </li>
-          <li>
-            Normalise stack frames: remove chunk hash suffixes from filenames (
-            <code>chunk.a1b2c3.js</code> → <code>chunk.js</code>), strip line
-            numbers from minified files (use source maps to recover original
-            file+line).
-          </li>
-          <li>
-            Concatenate: <code>&#123;errorType&#125;:&#123;normalised_message&#125;:&#123;top_3_frames&#125;</code>.
-          </li>
-          <li>Hash with xxHash64 for a stable 64-bit fingerprint.</li>
-        </ol>
-        <p>
-          Each unique fingerprint maps to an &ldquo;issue&rdquo; in the search index. Issues
-          accumulate: <code>event_count</code>, <code>affected_users</code> (HyperLogLog
-          cardinality estimate), <code>first_seen</code>, <code>last_seen</code>,
-          <code>introducing_build_sha</code>. The UI shows issues sorted by affected
-          user count descending (impact-first triage).
-        </p>
-
-        <h3>Alert Engine</h3>
-        <p>
-          Two complementary alerting approaches operate in parallel:
-        </p>
-        <h4>Static Threshold Alerts (PromQL)</h4>
-        <ul>
-          <li>
-            <code>rate(http_requests_total&#123;status=~&quot;5..&quot;&#125;[5m]) / rate(http_requests_total[5m]) &gt; 0.01</code>
-            → warning (1% error rate).
-          </li>
-          <li>
-            <code>histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m])) &gt; 2</code>
-            → warning (p99 latency &gt;2s).
-          </li>
-          <li>
-            <code>increase(error_events_total[5m]) &gt; 500 AND on() hour() &gt;= 9 AND hour() &lt;= 17</code>
-            → critical during business hours.
-          </li>
-        </ul>
-        <h4>ML Anomaly Detection</h4>
-        <p>
-          Static thresholds miss anomalies during unusual traffic patterns (traffic
-          spikes at 3 AM naturally increase absolute error counts without indicating
-          a problem if the error rate is stable). An ML model trained on 7 days of
-          historical metric data provides a dynamic baseline:
-        </p>
-        <ul>
-          <li>
-            Model: seasonal decomposition (time-of-day and day-of-week components)
-            + rolling mean/variance. Implemented as a lightweight Prophet or ARIMA
-            model updated daily.
-          </li>
-          <li>
-            Alert: actual value &gt; mean + 3σ above the seasonal baseline for 2
-            consecutive evaluation periods (60 seconds total).
-          </li>
-          <li>
-            False positive reduction: require the anomaly to persist for 2 periods
-            and to exceed a minimum absolute threshold (avoids alerting on 0→1 error
-            counts at 3 AM).
-          </li>
-        </ul>
-
-        <h3>Alert Routing and Escalation</h3>
-        <p>
-          Alert Manager routes firing alerts based on severity and time:
-        </p>
-        <ul>
-          <li>
-            <strong>Warning:</strong> Slack message to <code>#incidents</code>
-            channel with alert name, current value, threshold, and a direct link to
-            the relevant Grafana panel.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Critical:</strong> PagerDuty page to the on-call rotation with:
-            severity level, affected service, current error rate, introducing deploy
-            (if identifiable), runbook URL, and a pre-populated incident Slack
-            channel name.
-          </HighlightBlock>
-          <li>
-            <strong>Escalation:</strong> If the incident is not acknowledged within
-            5 minutes, escalate to the secondary on-call. If not resolved within 30
-            minutes, notify the engineering manager.
-          </li>
-        </ul>
-
-        <h3>Drill-Down Workflow</h3>
-        <p>
-          The dashboard is designed around the following operator workflow:
-        </p>
-        <ol>
-          <HighlightBlock as="li" tier="important">
-            <strong>Alert fired:</strong> Operator opens the PagerDuty link → lands
-            on the incident detail page showing: alert metadata, error rate chart,
-            affected endpoint, and top error groups by user impact.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Error group inspection:</strong> Clicks the top error group →
-            sees: fingerprint, event count over time (was it sudden spike or slow
-            creep?), introducing deploy, sample stack traces, and a session replay
-            link for a recently affected user.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Session replay:</strong> Clicks session replay → LogRocket /
-            FullStory shows the user&rsquo;s interaction up to the moment of the error,
-            with network request log and console output. Identifies if the error
-            occurs on a specific user action or data combination.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Distributed trace:</strong> Clicks the <code>traceId</code> in
-            the session replay network log → Jaeger shows the full request waterfall:
-            API gateway → auth service → data service → DB query. Identifies which
-            span is slow or failing (e.g., DB query taking 8s instead of 20ms).
-          </HighlightBlock>
-          <li>
-            <strong>Log correlation:</strong> Queries Elasticsearch for logs with
-            the same <code>traceId</code> → sees structured log lines from all
-            services in chronological order. Finds the root cause log line:{" "}
-            <em>&ldquo;Connection pool exhausted: 50/50 connections active&quot;</em>.
-          </li>
-        </ol>
-        <p>
-          This five-step drill-down path should be traversable in under 10 minutes
-          by a competent on-call engineer. Dashboard design must ensure each step
-          links directly to the next without requiring manual search.
-        </p>
-
-        <h3>Status Page</h3>
-        <HighlightBlock as="p" tier="important">
-          The external status page is decoupled from the internal dashboard and
-          hosted on a CDN with zero dependency on the services it describes (it must
-          remain accessible when the main app is down):
-        </HighlightBlock>
-        <ul>
-          <li>
-            Status is pushed to the status page via a webhook from the incident
-            store; the status page does not poll the monitored services.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            Status values: <code>Operational</code>, <code>Degraded Performance</code>,
-            <code>Partial Outage</code>, <code>Major Outage</code>,{" "}
-            <code>Under Maintenance</code>.
-          </HighlightBlock>
-          <li>
-            Users can subscribe to email/SMS/webhook updates per component. Updates
-            are delivered within 30 seconds of status change via a dedicated
-            notification worker (separate from the main notification pipeline to
-            avoid circular dependency).
-          </li>
-          <li>
-            Historical uptime data (30 days) is displayed as a green/yellow/red
-            bar chart, providing transparency into reliability track record.
-          </li>
-        </ul>
-
-        <h3>Auto-Drafted Postmortem</h3>
-        <p>
-          On incident resolution, the system generates a postmortem draft populated
-          from the incident store data:
-        </p>
-        <ul>
-          <li>
-            <strong>Timeline:</strong> All alert events, acknowledgements, status
-            page updates, and resolution actions with timestamps.
-          </li>
-          <li>
-            <strong>Impact:</strong> Affected user count (from error group
-            HyperLogLog estimates), affected services, duration.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Contributing factors:</strong> Introducing deploy (from
-            fingerprint → buildSha correlation), feature flags active during the
-            incident, anomalous metrics in the 30 minutes before the first alert.
-          </HighlightBlock>
-          <li>
-            <strong>MTTR:</strong> Time from first alert to resolution.
-          </li>
-          <li>
-            <strong>Action items template:</strong> Five blank sections for the
-            team to fill in: root cause, immediate fix, permanent fix, detection
-            improvement, and prevention.
-          </li>
-        </ul>
-        <p>
-          The auto-draft is stored in the incident record and shared as a Google
-          Doc or Notion page via an integration. The team edits and publishes it;
-          the system does not publish postmortems automatically.
-        </p>
-
-        <h3>Monitoring the Monitor</h3>
-        <p>
-          The monitoring system must be independently monitored. Failure modes to
-          alert on:
-        </p>
-        <ul>
-          <li>
-            Kafka consumer lag &gt;60 seconds → ingestion pipeline falling behind;
-            signals may be delayed.
-          </li>
-          <li>
-            Elasticsearch indexing errors &gt;0 → events being dropped; fingerprint
-            grouping incomplete.
-          </li>
-          <li>
-            Alert engine heartbeat missing &gt;90 seconds → alerting system down;
-            send a dead-man&rsquo;s-switch alert to a secondary channel.
-          </li>
-          <li>
-            Status page webhook delivery failure → page is showing stale status;
-            send to a backup delivery channel.
-          </li>
-        </ul>
-        <HighlightBlock as="p" tier="important">
-          These meta-alerts route to a dedicated <code>#monitoring-health</code>
-          Slack channel and to a separate on-call rotation from the application
-          on-call, preventing the monitoring team from being paged during an
-          application incident they are already working on.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Alternatives</h2>
-        <h3>All-in-One (Datadog) vs. Best-of-Breed</h3>
-        <HighlightBlock as="p" tier="important">
-          Platforms like Datadog, New Relic, and Dynatrace provide metrics, logs,
-          traces, error tracking, and alerting in a single product with tight
-          cross-signal linking. The advantages: fast setup, unified query language,
-          out-of-the-box correlation. The disadvantages: high cost at scale (Datadog
-          pricing is per-host and per-GB), vendor lock-in, and reduced control over
-          data retention and processing. Best-of-breed (Prometheus + Elasticsearch +
-          Jaeger + Sentry) is more complex to operate but cheaper at scale and more
-          flexible. The correct choice depends on team size: &lt;20 engineers → all-in-
-          one; &gt;50 engineers with dedicated platform team → best-of-breed.
-        </HighlightBlock>
-
-        <h3>Real-Time Alerting vs. Batch Anomaly Detection</h3>
-        <p>
-          Real-time PromQL rule evaluation (every 30 seconds) provides low latency
-          but requires manual threshold tuning. ML anomaly detection adapts to
-          seasonality automatically but introduces model training complexity and
-          false positive risk during unusual traffic events (product launches,
-          marketing campaigns). The two approaches are complementary: static
-          thresholds catch obvious regressions fast, ML detects subtle drift that
-          static thresholds would miss or that would require impractically low
-          thresholds to catch.
-        </p>
-
-        <h3>Session Replay Privacy Implications</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Session replay tools (LogRocket, FullStory, Hotjar) record user
-          interactions and DOM state. This is enormously useful for debugging but
-          creates privacy and regulatory risks: GDPR requires a lawful basis for
-          this processing; HIPAA prohibits capturing PHI. Mitigations: mask all
-          input fields by default (opt-in masking rather than opt-in recording);
-          exclude specific URL patterns containing sensitive data; provide a user
-          opt-out mechanism; process recordings in a region that matches the user&rsquo;s
-          data residency requirement.
-        </HighlightBlock>
-
-        <h3>Source Maps and Production Debugging</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Minified JavaScript in production produces stack traces that are
-          unreadable without source maps. Source maps should be uploaded to the
-          error tracking service (Sentry) at deploy time, never served publicly
-          (which would expose business logic). The pipeline: CI/CD builds →
-          generates source maps → uploads to Sentry → source maps are not included
-          in the CDN deployment. Sentry applies source maps server-side when
-          displaying error stacks, exposing original file names and line numbers
-          only to authenticated engineers.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">
-          An effective incident and debugging dashboard converts a flood of raw
-          signals into an actionable narrative: what broke, when, for whom, and
-          why. The key design decisions are: unified ingestion via Kafka with
-          <code>traceId</code> as the cross-signal correlation key; error grouping
-          by normalised stack fingerprint for impact-first triage; dual alerting
-          (static thresholds for fast detection, ML anomaly for subtle drift);
-          a five-step drill-down path from alert to root cause in under 10 minutes;
-          an independent status page that survives the incidents it describes; and
-          auto-drafted postmortems to accelerate learning. At staff level, the
-          insight is that observability is not the same as monitoring: monitoring
-          tells you something is wrong, observability tells you <em>why</em>—and
-          the difference is the quality of the correlation between signals.
-        </HighlightBlock>
       </section>
     </ArticleLayout>
   );

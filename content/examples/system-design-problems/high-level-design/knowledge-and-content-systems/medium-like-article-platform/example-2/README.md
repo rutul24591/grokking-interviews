@@ -1,1 +1,5 @@
-# Design a Medium-like article platform — Example 2
+# Medium Like Article Platform - Example 2
+
+Concrete operational product production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

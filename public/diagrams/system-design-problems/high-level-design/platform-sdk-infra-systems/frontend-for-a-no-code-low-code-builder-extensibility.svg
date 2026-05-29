@@ -1,58 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Extensibility model for a no-code builder with plugin boundary and capabilities">
-  <title>Builder Extensibility Model</title>
-  <desc>Shows plugins contributing components and actions through a stable API, with capability permissions, sandboxing, and failure isolation.</desc>
-  <style>
-    .bg { fill: #ffffff; }
-    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
-    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
-    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
-    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
-    .good { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 14; }
-    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
-    .dash { stroke-dasharray: 7 6; }
-    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
-    .small { font-size: 14px; fill: #334155; }
-    .bold { font-weight: 700; }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #0b1220; }
-      .box { fill: #0f172a; stroke: #e5e7eb; }
-      .muted { fill: #0b1220; stroke: #64748b; }
-      .accent { fill: #06232a; stroke: #22d3ee; }
-      .warn { fill: #2a140a; stroke: #fb923c; }
-      .good { fill: #052018; stroke: #34d399; }
-      .arrow { stroke: #e5e7eb; }
-      .label { fill: #e5e7eb; }
-      .small { fill: #cbd5e1; }
-    }
-  </style>
-  <rect class="bg" width="1200" height="560" />
-
-  <rect class="box" x="60" y="90" width="380" height="170" />
-  <text class="label bold" x="90" y="135">Core editor</text>
-  <text class="label small" x="90" y="165">schema + operations</text>
-  <text class="label small" x="90" y="190">render pipeline</text>
-  <text class="label small" x="90" y="215">security defaults</text>
-
-  <rect class="accent" x="480" y="70" width="320" height="210" />
-  <text class="label bold" x="510" y="115">Plugin API</text>
-  <text class="label small" x="510" y="145">stable contracts</text>
-  <text class="label small" x="510" y="170">component registry</text>
-  <text class="label small" x="510" y="195">action hooks</text>
-  <text class="label small" x="510" y="220">versioning</text>
-
-  <rect class="good" x="840" y="90" width="300" height="170" />
-  <text class="label bold" x="870" y="135">Plugins</text>
-  <text class="label small" x="870" y="165">new components</text>
-  <text class="label small" x="870" y="190">integrations</text>
-  <text class="label small" x="870" y="215">custom workflows</text>
-
-  <path class="arrow" d="M440 175 L480 175" />
-  <path class="arrow" d="M800 175 L840 175" />
-
-  <rect class="warn" x="60" y="320" width="1080" height="170" />
-  <text class="label bold" x="90" y="365">Guardrails</text>
-  <text class="label small" x="90" y="395">capabilities and permissions (data access, network)</text>
-  <text class="label small" x="90" y="420">sandbox where possible and isolate failures</text>
-  <text class="label small" x="90" y="445">performance budgets and monitoring per plugin</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Frontend For A No Code Low Code Builder Extensibility: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Frontend For A No Code Low Code Builder Extensibility: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">SDK</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">platform sdk infra systems</text>
+  <path d="M480 286 C568 286, 640 286, 710 286" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="710" cy="286" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="710" y="291" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">gateway</text><path d="M480 286 C524 315.4448637286709, 560 389.92304845413264, 612 414" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="612" cy="414" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="612" y="419" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">token</text><path d="M480 286 C436 315.4448637286709, 400 389.92304845413264, 365 430" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="365" cy="430" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="365" y="435" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">version</text><path d="M480 286 C392 286, 320 286, 216 286" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="216" cy="286" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="216" y="291" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">tenant</text><path d="M480 286 C435.99999999999994 256.5551362713291, 399.99999999999994 182.0769515458674, 365 158" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="365" cy="158" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="365" y="163" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">quota</text><path d="M480 286 C524 256.5551362713291, 560 182.07695154586736, 612 142" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="612" cy="142" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="612" y="147" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">trace</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>
-

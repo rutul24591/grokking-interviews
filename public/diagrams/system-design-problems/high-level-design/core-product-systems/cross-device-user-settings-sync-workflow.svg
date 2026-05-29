@@ -1,63 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Workflow for settings sync: local update, server merge, propagation hint, pull updated document">
-  <title>Settings Sync Workflow</title>
-  <desc>Shows idempotent operation writes, server merge with per-field policies, event emission of version hints, and other devices pulling updated settings.</desc>
-  <style>
-    .bg { fill: #ffffff; }
-    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
-    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
-    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
-    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
-    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
-    .small { font-size: 14px; fill: #334155; }
-    .bold { font-weight: 700; }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #0b1220; }
-      .box { fill: #0f172a; stroke: #e5e7eb; }
-      .muted { fill: #0b1220; stroke: #64748b; }
-      .accent { fill: #06232a; stroke: #22d3ee; }
-      .arrow { stroke: #e5e7eb; }
-      .label { fill: #e5e7eb; }
-      .small { fill: #cbd5e1; }
-    }
-  </style>
-
-  <rect class="bg" x="0" y="0" width="1200" height="560" />
-
-  <rect class="box" x="60" y="70" width="330" height="150" />
-  <text class="label bold" x="90" y="115">User changes setting</text>
-  <text class="label small" x="90" y="145">update local store</text>
-  <text class="label small" x="90" y="170">record op id</text>
-  <text class="label small" x="90" y="195">queue if offline</text>
-
-  <rect class="accent" x="440" y="70" width="350" height="150" />
-  <text class="label bold" x="470" y="115">Write operation</text>
-  <text class="label small" x="470" y="145">includes doc revision</text>
-  <text class="label small" x="470" y="170">server validates + merges</text>
-  <text class="label small" x="470" y="195">new revision produced</text>
-
-  <rect class="box" x="840" y="70" width="300" height="150" />
-  <text class="label bold" x="870" y="115">Propagation hint</text>
-  <text class="label small" x="870" y="145">push: “rev changed”</text>
-  <text class="label small" x="870" y="170">no payload pushed</text>
-  <text class="label small" x="870" y="195">devices pull document</text>
-
-  <path class="arrow" d="M390 145 L440 145" />
-  <path class="arrow" d="M790 145 L840 145" />
-
-  <rect class="muted" x="120" y="300" width="420" height="190" />
-  <text class="label bold" x="150" y="345">Other device (active)</text>
-  <text class="label small" x="150" y="375">receives version hint</text>
-  <text class="label small" x="150" y="400">pull updated doc</text>
-  <text class="label small" x="150" y="425">apply non-disruptively</text>
-  <text class="label small" x="150" y="450">avoid focus shifts</text>
-
-  <rect class="muted" x="600" y="300" width="480" height="190" />
-  <text class="label bold" x="630" y="345">Offline reconciliation</text>
-  <text class="label small" x="630" y="375">on reconnect: fetch latest</text>
-  <text class="label small" x="630" y="400">replay queued ops</text>
-  <text class="label small" x="630" y="425">server returns merged doc</text>
-  <text class="label small" x="630" y="450">conflict metadata if needed</text>
-
-  <path class="arrow" d="M990 220 C990 270 820 270 820 300" />
-  <path class="arrow" d="M540 395 L600 395" />
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Cross Device User Settings Sync Workflow: risk matrix</title>
+  <desc id="desc">Failure and ownership matrix for core product systems.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Cross Device User Settings Sync Workflow: risk matrix</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Failure and ownership matrix for core product systems.</text>
+  <rect x="70" y="118" width="820" height="354" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="136" cy="194" r="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><circle cx="136" cy="342" r="50" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="136" y="190" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">normal</text><text x="136" y="338" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">incident</text>
+  <path d="M188 206 C212 180, 222 174, 246 170" fill="none" stroke="#2563eb" stroke-width="3"/><path d="M188 330 C212 360, 222 372, 246 382" fill="none" stroke="#b91c1c" stroke-width="3" stroke-dasharray="8 7"/>
+  <path d="M226 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><text x="274" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">client</text><path d="M358 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><text x="406" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">state</text><path d="M490 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="538" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">service</text><path d="M622 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="670" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text><path d="M226 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="274" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">risk</text><path d="M358 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="406" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">SLO</text><path d="M490 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><text x="538" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">audit</text><path d="M622 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><text x="670" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">recover</text><path d="M226 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="274" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">client</text><path d="M358 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="406" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">state</text><path d="M490 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="538" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">service</text><path d="M622 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="670" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text>
+  <path d="M258 450 C410 416, 586 472, 820 426" fill="none" stroke="#0f766e" stroke-width="4"/><text x="548" y="486" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="12">decision surface for blast radius, policy, and recovery ownership</text>
 </svg>

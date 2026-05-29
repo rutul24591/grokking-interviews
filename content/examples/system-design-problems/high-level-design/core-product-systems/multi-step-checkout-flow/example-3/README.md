@@ -1,1 +1,5 @@
-# Design a multi-step checkout flow — Example 3
+# Multi Step Checkout Flow - Example 3
+
+Concrete core product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

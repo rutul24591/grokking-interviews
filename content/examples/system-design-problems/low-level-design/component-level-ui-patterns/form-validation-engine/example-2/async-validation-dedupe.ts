@@ -1,67 +1,89 @@
-/**
- * Async Validation Deduplication — Prevents redundant API calls for the same validation.
- *
- * Interview edge case: User types "john" → API call to check username availability.
- * User deletes to "joh" → types "n" again → "john" → should NOT make a second API call.
- * Solution: cache validation results with TTL.
- */
+export type formValidationEngineSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-interface CacheEntry {
-  result: string | null; // error message or null if valid
-  timestamp: number;
+export type formValidationEngineEvent = {
+  id: string;
+  topic: "form-validation-engine";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: formValidationEngineSignal;
+};
+
+export type formValidationEngineDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateFormValidationEngineEvent(event: formValidationEngineEvent): formValidationEngineDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: formValidationEngineDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Form Validation Engine",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Debounced async validator with result caching and TTL.
- */
-export function createAsyncValidator<T = unknown>(
-  validateFn: (value: T) => Promise<string | null>,
-  options: { debounceMs?: number; cacheTTL?: number } = {},
-) {
-  const { debounceMs = 300, cacheTTL = 60000 } = options;
-  const cache = new Map<string, CacheEntry>();
-  const pendingRequests = new Map<string, Promise<string | null>>();
-  let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+export function runFormValidationEngineContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateFormValidationEngineEvent({
+    id: "form-validation-engine-evt-1",
+    topic: "form-validation-engine",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  /**
-   * Returns cached result if available and not expired, otherwise validates.
-   */
-  async function validate(value: T): Promise<string | null> {
-    const key = JSON.stringify(value);
-    const cached = cache.get(key);
+  const guarded = evaluateFormValidationEngineEvent({
+    id: "form-validation-engine-evt-late",
+    topic: "form-validation-engine",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-    if (cached && Date.now() - cached.timestamp < cacheTTL) {
-      return cached.result;
-    }
-
-    // Return pending request if already in flight
-    const pending = pendingRequests.get(key);
-    if (pending) return pending;
-
-    const promise = validateFn(value);
-    pendingRequests.set(key, promise);
-
-    try {
-      const result = await promise;
-      cache.set(key, { result, timestamp: Date.now() });
-      return result;
-    } finally {
-      pendingRequests.delete(key);
-    }
-  }
-
-  /**
-   * Debounced version — delays validation until user stops typing.
-   */
-  function debouncedValidate(value: T): Promise<string | null> {
-    return new Promise((resolve) => {
-      if (debounceTimer) clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(async () => {
-        const result = await validate(value);
-        resolve(result);
-      }, debounceMs);
-    });
-  }
-
-  return { validate, debouncedValidate, clearCache: () => cache.clear() };
+  return { accepted, guarded };
 }

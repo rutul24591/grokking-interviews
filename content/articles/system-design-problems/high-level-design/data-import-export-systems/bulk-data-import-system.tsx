@@ -8,14 +8,14 @@ const metadata = {
   id: "article-hld-bulk-data-import-system",
   title: "Design a Bulk Data Import System (CSV/Excel Uploads)",
   description:
-    "End-to-end design of a production-grade bulk import pipeline: presigned S3 uploads, async worker validation, streaming batch ingestion, idempotency, error reporting, and retry semantics for millions of rows.",
+    "Principal-level design of a production bulk import pipeline with presigned uploads, async validation, streaming ingestion, idempotency, checkpoints, error reports, and tenant-safe progress tracking.",
   category: "high-level-design",
   subcategory: "data-import-export-systems",
   slug: "bulk-data-import-system",
-  wordCount: 5000,
-  readingTime: 18,
-  lastUpdated: "2026-05-14",
-  readTime: "18 min read",
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
+  readTime: "32 min read",
   difficulty: "Advanced",
   tags: ["ETL", "S3", "Async Jobs", "Idempotency", "Bulk Import"],
 };
@@ -24,491 +24,251 @@ export default function BulkDataImportSystem() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">
-          Bulk data import sits at the intersection of file handling, distributed
-          job processing, database write amplification, and user experience. The
-          naive approach—receiving a file in a synchronous HTTP request and
-          inserting rows inline—fails at scale: timeouts kill large uploads,
-          parsing blocks the API thread, and a single bad row may abort an
-          otherwise valid million-row file. A production-grade system must handle
-          each concern independently.
+        <h2>Definition &amp; Context</h2>
+        <p>
+          A bulk data import system lets users upload large CSV, Excel, JSONL, or similar files and ingest rows into product databases safely. It is used for customer onboarding, catalog migration, CRM contact upload, marketplace inventory sync, financial reconciliation, and admin backfills. The system must handle large files, bad rows, retries, partial success, duplicate detection, tenant isolation, and clear user feedback.
+        </p>
+        <HighlightBlock as="p" tier="crucial">
+          The principal-level design constraint is that upload, parsing, validation, transformation, and database writes must be decoupled. A synchronous request that accepts a file and writes rows inline will fail under timeout, memory, retry, and error-reporting pressure.
         </HighlightBlock>
         <p>
-          Before diving into design, clarify scope with the interviewer:
+          A strong import system treats every import as a durable job. The job has metadata, upload state, validation state, processing checkpoints, progress events, error summaries, audit records, and recovery semantics. Users should be able to leave the page, return later, download an error report, retry fixed rows, or cancel a job that is still queued.
         </p>
-        <ul>
-          <li>
-            <strong>File types and size:</strong> CSV, Excel (.xlsx), JSON lines,
-            or Parquet? Typical enterprise ceiling is 200 MB / 1 M rows. Larger
-            files need a different chunked-upload protocol.
-          </li>
-          <li>
-            <strong>Latency expectations:</strong> Is near-real-time ingestion
-            required, or is a best-effort async job (minutes) acceptable?
-          </li>
-          <li>
-            <strong>Conflict handling:</strong> Insert-only, upsert (update
-            existing records), or de-duplicate?
-          </li>
-          <li>
-            <strong>Error policy:</strong> Abort on the first error, collect
-            errors and continue, or abort once an error-rate threshold is
-            exceeded?
-          </li>
-          <li>
-            <strong>Column mapping:</strong> Does the client supply field mappings
-            at request time, or are columns inferred from the header row?
-          </li>
-          <li>
-            <strong>Tenancy:</strong> Single-tenant SaaS vs. multi-tenant with
-            per-tenant quotas and isolation?
-          </li>
-        </ul>
         <p>
-          For this design we assume: CSV and Excel, up to 200 MB / 1 M rows,
-          async job with &lt; 5-minute SLA for 100 K rows, upsert semantics,
-          collect-and-report error policy with a 5% abort threshold, client-supplied
-          column mappings, and multi-tenant with per-tenant row quotas.
+          Interviewers usually probe idempotency, partial failure, validation strategy, database write amplification, progress accuracy, and security. The design must explain how a worker can restart without duplicating rows and how a tenant cannot import data into another tenant&apos;s scope.
         </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3>Functional</h3>
-        <ul>
-          <li>
-            Client uploads a file (CSV or Excel) and receives a{" "}
-            <code>jobId</code> immediately; the actual processing happens
-            asynchronously.
-          </li>
-          <li>
-            Client can poll or receive SSE push for job progress (% rows
-            validated, % rows inserted, error count).
-          </li>
-          <li>
-            Rows are validated against a schema derived from client-supplied
-            column mappings (required fields, type constraints, value ranges).
-          </li>
-          <li>
-            Valid rows are bulk-upserted into the target table; invalid rows are
-            collected in an error report downloadable as a CSV.
-          </li>
-          <li>
-            If the error rate exceeds 5% the job aborts; otherwise, it continues
-            and reaches a &ldquo;partial&rdquo; completion state.
-          </li>
-          <li>
-            The operation is idempotent: re-submitting the same file produces the
-            same outcome without duplicating rows.
-          </li>
-          <li>
-            Failed jobs can be retried from the last committed checkpoint without
-            re-uploading the file.
-          </li>
-        </ul>
-        <h3>Non-functional</h3>
-        <ul>
-          <li>
-            <strong>Throughput:</strong> 100 K rows / minute per worker; 10 K
-            rows / minute end-to-end for a 1 M-row file under a 10-minute SLA.
-          </li>
-          <li>
-            <strong>Reliability:</strong> At-least-once delivery with idempotent
-            writes; no row is silently dropped.
-          </li>
-          <li>
-            <strong>Isolation:</strong> One tenant&rsquo;s large job must not
-            starve other tenants; dedicated worker pools or fair-share scheduling.
-          </li>
-          <li>
-            <strong>Scalability:</strong> Horizontally scalable worker pool; each
-            worker is stateless beyond a local streaming buffer.
-          </li>
-          <li>
-            <strong>File retention:</strong> S3 source file kept for 7 days after
-            job completion; error CSV kept 30 days.
-          </li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Presigned object-storage upload keeps API servers out of the file data path. The API creates an import job and returns an upload URL. The browser uploads directly to object storage. After upload completion, the client asks the import service to start processing. This avoids API memory pressure and supports large files more reliably.
+        </p>
+        <p>
+          The worker processes the file as a stream. It reads rows in chunks, parses format-specific records, normalizes headers, validates each row, transforms values, and writes valid rows in batches. It should not load the full file into memory. Excel imports may need more careful handling because some parsers are not truly streaming for all workbook features.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Idempotency is the difference between a reliable import and a dangerous one. Each row needs a stable natural key or deterministic import key, and each batch commit must be checkpointed. Retrying the job should resume from a known committed boundary and should not create duplicate business records.
+        </HighlightBlock>
+        <p>
+          Validation should have two layers. File-level validation checks format, encoding, headers, required columns, size, and tenant ownership. Row-level validation checks types, required fields, enums, ranges, foreign-key existence, deduplication, and business rules. Validation errors should be collected into an error report with row number, column, value summary, rule, and message.
+        </p>
+        <p>
+          Conflict policy must be explicit. Some imports insert only new rows. Some skip duplicates. Some update existing rows. Some merge fields selectively. The import job should record the selected conflict policy because it changes idempotency, audit, and rollback semantics.
+        </p>
+        <p>
+          Progress is approximate but should be useful. For CSV, bytes read can estimate percent. For known row counts, processed rows are better. For Excel, progress can be less precise. The UI should distinguish parsing, validating, writing, finalizing, and error-report generation stages.
+        </p>
+        <p>
+          A principal-level design treats import as a data-contract and trust-boundary problem, not simply a file-upload feature. Every row crossing the import boundary can violate schema constraints, business rules, permission rules, uniqueness constraints, downstream invariants, or compliance policy. The system should separate syntactic validation, semantic validation, authorization validation, and commit-time conflict detection because each layer has different cost and failure behavior.
+        </p>
+        <p>
+          Import UX must reflect those phases. Users need an early preview of detected columns and sample rows, a dry-run result before irreversible writes, a progress model that explains whether the job is parsing, validating, waiting for quota, committing, or rolling back, and an error report that can be corrected and re-uploaded. Without those distinctions, users see a spinner for a long-running operation and cannot tell whether the system is slow, broken, or intentionally blocked.
+        </p>
+        <p>
+          Schema evolution is a principal-level concern. Import templates should be versioned separately from product database schemas because customers may keep old CSV templates for months. The system should define how old templates map to new fields, which defaults are safe, which columns are deprecated, and which migrations require users to download a new template. Otherwise a routine product schema change can silently corrupt future imports or reject files that were valid last quarter.
+        </p>
+        <p>
+          Sensitive data handling must be part of the core model. Uploaded files may contain personal data, payroll fields, financial identifiers, credentials accidentally pasted into notes, or customer-specific secrets. The import job should classify the target entity and file contents where possible, apply encryption and retention policy, restrict raw file access, and make data-deletion obligations explicit. Bulk import is often the easiest way for sensitive data to enter the system at scale.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Design</h2>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has five planes. The upload plane creates jobs and stores files in object storage. The queue plane dispatches work to import workers. The processing plane parses, validates, transforms, and writes rows. The progress plane emits status updates to the UI. The governance plane enforces tenant scope, permissions, quotas, audit, and data-retention policies.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/data-import-export-systems/bulk-data-import-system.svg"
-          alt="Bulk Data Import System sequence diagram"
-          caption="Upload → Validate → Ingest pipeline with async workers, S3 streaming, and error reporting"
+          alt="Bulk data import system architecture with presigned upload, job service, queue, workers, validation, database writes, progress, and error report."
+          caption="Bulk import is an asynchronous job pipeline: upload directly to object storage, enqueue processing, stream rows through validation and batch writes, then publish progress and error reports."
         />
         <p>
-          The pipeline has four distinct stages, each independently scalable:
+          The user creates an import with file metadata, target entity, tenant, schema version, and conflict policy. The API validates permission and quota, creates a job in awaiting-upload state, and returns a scoped upload URL. When the upload completes, the client starts the job. A queue message points workers to the job and object-storage key.
         </p>
-        <ol>
-          <HighlightBlock as="li" tier="important">
-            <strong>Upload:</strong> Client obtains a presigned S3 PUT URL and
-            streams bytes directly to S3, bypassing the API server entirely. The
-            API creates an import job record in the database and returns a{" "}
-            <code>jobId</code> with HTTP 202 before the upload even begins.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Validate:</strong> A worker dequeues the job, streams the S3
-            file in 10 MB chunks, validates each row&rsquo;s schema and types,
-            and records errors with row numbers. It aborts early if the error rate
-            exceeds 5%.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Ingest:</strong> Valid rows are batched in 1,000-row chunks
-            and bulk-upserted using <code>INSERT … ON CONFLICT DO UPDATE</code>.
-            Each batch is committed transactionally. Progress is published via SSE
-            after each commit.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Completion:</strong> Job record is updated to{" "}
-            <code>completed</code> or <code>partial</code>. An error-report CSV
-            is written to S3 and a notification is sent via email or webhook with
-            a presigned download link.
-          </HighlightBlock>
-        </ol>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-import-export-systems/bulk-import-validation-flow.svg"
+          alt="Bulk import validation flow with file checks, header mapping, row validation, staging table, batch commit, error report, and partial success."
+          caption="Validation separates file-level rejection from row-level errors so a mostly valid million-row file can still import safely with a useful error report."
+        />
+        <p>
+          Workers stream the file and commit in batches. Each batch writes valid rows to staging or directly to target tables depending on safety requirements. Staging gives better validation, deduplication, and rollback control. Direct batch upsert is faster but requires stronger idempotency and careful transaction boundaries.
+        </p>
+        <p>
+          Progress events are written to durable job state and optionally pushed through Server-Sent Events or WebSocket. The UI should survive reconnect by reading job status from the API. When processing ends, the system marks the job completed, partially completed, failed, cancelled, or failed validation. If errors exist, it writes an error report to object storage and exposes a short-lived download link.
+        </p>
+        <p>
+          The architecture should make partial failure explicit. Some imports are all-or-nothing, such as accounting journal entries where every row must balance. Others are best-effort, such as a marketing contact upload where invalid rows can be rejected while valid rows commit. The job definition should carry this policy from the beginning because it changes staging schema, commit strategy, rollback requirements, user messaging, and audit semantics.
+        </p>
+        <p>
+          Header mapping deserves its own flow in mature products. The first pass should detect encoding, delimiter, header row, duplicate columns, empty columns, and likely target fields. The UI can then ask the user to confirm mappings before full processing. For recurring imports, saved mappings should be versioned by template and tenant because a new product schema or renamed customer column can otherwise turn a previously safe mapping into a silent data corruption path.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-import-export-systems/bulk-import-retry-idempotency.svg"
+          alt="Bulk import retry and idempotency flow with checkpoints, stable row keys, batch commits, restart, dedupe, and dead-letter state."
+          caption="Retry safety depends on stable row identity and durable checkpoints; worker restarts should resume without duplicating committed rows."
+        />
+        <p>
+          A mature implementation separates dry-run, staged commit, and finalization. Dry-run validates headers, sample rows, permissions, and estimated impact without mutating target tables. Staged commit writes normalized rows to tenant-scoped staging tables and computes conflicts, warnings, and expected downstream effects. Finalization applies the selected policy to target tables, records import provenance, emits compact downstream events, and transitions the job to a terminal state. This structure makes large imports reviewable before they become irreversible.
+        </p>
+        <p>
+          Error reports should support a retry-fixed-rows workflow rather than forcing users to start over blindly. The report can include the original row number, normalized column name, failed rule, sanitized value, and a stable row identifier. When the user uploads a corrected file, the system can link it to the previous job, skip already successful rows when appropriate, and preserve lineage across attempts. That is much more useful than a generic failed rows CSV disconnected from the original import.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3>Upload: Presigned S3 PUT</h3>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Direct upload through the API is simpler for small files but puts file bytes, timeouts, and memory pressure on API servers. Presigned object-storage upload is more complex but scales better, supports retries, and decouples file transfer from processing.
+        </p>
+        <p>
+          Staging tables add storage and cleanup work but make validation, deduplication, preview, rollback, and audit much safer. Direct writes are faster for trusted internal imports but are risky for user-provided files with unknown quality.
+        </p>
         <HighlightBlock as="p" tier="important">
-          The client calls <code>POST /imports</code> with metadata: file name,
-          estimated row count, column mappings (source column → target field name
-          and type), and conflict resolution policy (<code>upsert</code> or{" "}
-          <code>skip</code>). The API server:
-        </HighlightBlock>
-        <ol>
-          <li>
-            Checks the tenant&rsquo;s per-month row quota against a counter in
-            Redis (<code>INCRBY</code> with a <code>GET</code> check first).
-            Rejects with HTTP 429 if exceeded.
-          </li>
-          <li>
-            Creates an import job row with <code>status=awaiting_upload</code>,
-            stores column mappings as JSONB.
-          </li>
-          <li>
-            Calls S3 <code>CreatePresignedUrl</code> for a PUT with a 60-minute
-            expiry and a max-content-length policy (200 MB).
-          </li>
-          <li>
-            Returns HTTP 202 <code>&#123;jobId, uploadUrl&#125;</code>.
-          </li>
-        </ol>
-        <HighlightBlock as="p" tier="important">
-          The client uploads directly to S3. On completion it calls{" "}
-          <code>POST /imports/&#123;jobId&#125;/start</code>, which transitions
-          the job to <code>status=queued</code> and enqueues a message to the
-          worker queue containing the S3 key and jobId. This two-step handshake
-          (upload first, then start) ensures the file is fully written before the
-          worker begins.
+          Partial success is a product decision. Failing the whole file is simpler and transactional, but frustrating when only a few rows are bad. Partial success improves user productivity but requires clear reporting, retry-fixed-rows workflows, and careful consistency semantics.
         </HighlightBlock>
         <p>
-          For very large files (&gt;100 MB) the client may use S3 multipart upload
-          with the presigned URL set accordingly. The API does not need to change;
-          S3 handles reassembly before the worker streams it.
-        </p>
-
-        <h3>Job Queue and Worker Architecture</h3>
-        <HighlightBlock as="p" tier="important">
-          Jobs are placed on an SQS FIFO queue partitioned by tenant. Each tenant
-          gets a MessageGroupId, ensuring tenant-level ordering while allowing
-          parallel execution across tenants. A fleet of stateless worker pods
-          (Kubernetes Deployments) long-poll the queue. Workers are autoscaled
-          based on queue depth (target: &lt; 2-minute queue wait).
-        </HighlightBlock>
-        <p>
-          To avoid one large job blocking a tenant&rsquo;s subsequent smaller
-          jobs, the orchestrator maintains a per-tenant in-flight limit (default:
-          2 concurrent jobs). Overflow jobs stay queued without blocking other
-          tenants.
-        </p>
-
-        <h3>Streaming File Parse</h3>
-        <HighlightBlock as="p" tier="important">
-          Workers stream the S3 object using a range-request or streaming SDK
-          (e.g., <code>S3.GetObject</code> → Node.js stream). Files are never
-          fully buffered in memory. The parse pipeline:
-        </HighlightBlock>
-        <ul>
-          <li>
-            <strong>CSV:</strong> Pipe through a streaming CSV parser (papaparse
-            in streaming mode, or fast-csv). Each row is emitted as a JavaScript
-            object.
-          </li>
-          <li>
-            <strong>Excel (.xlsx):</strong> ExcelJS streaming reader reads one row
-            at a time. Streaming Excel parsing uses the SAX-based approach under
-            the hood; the full sheet is never materialised.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            Memory buffer: at most two 10 MB chunks in flight simultaneously
-            (current chunk being parsed + next chunk being fetched). Total worker
-            heap consumption: &lt; 50 MB regardless of file size.
-          </HighlightBlock>
-        </ul>
-
-        <h3>Validation Engine</h3>
-        <HighlightBlock as="p" tier="important">
-          For each row the worker evaluates a validation pipeline derived from the
-          column mappings supplied at job creation:
-        </HighlightBlock>
-        <ul>
-          <li>
-            <strong>Required fields:</strong> Reject if the mapped column is
-            empty or null when the target field has NOT NULL constraint.
-          </li>
-          <li>
-            <strong>Type coercion:</strong> Attempt to parse strings to the target
-            type (integer, float, date ISO-8601, boolean). Record a type error if
-            coercion fails.
-          </li>
-          <li>
-            <strong>Value constraints:</strong> Enum membership, max-length, range
-            checks defined in the mapping schema.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Referential integrity hints:</strong> Optional foreign-key
-            lookup cache (loaded at job start) to flag dangling references without
-            a DB round-trip per row.
-          </HighlightBlock>
-        </ul>
-        <p>
-          Valid rows flow to the ingest buffer. Invalid rows are appended to an
-          in-memory error accumulator (row number, column name, error message).
-          After every 10,000 rows, the error accumulator is flushed to a
-          staging table; the error count is compared to total rows processed. If
-          the ratio exceeds 5%, the job transitions to{" "}
-          <code>status=failed</code> and the worker stops. Otherwise it continues
-          until EOF.
-        </p>
-
-        <h3>Bulk Upsert with Idempotency</h3>
-        <p>
-          Validated rows are assembled into batches of 1,000. Each batch is
-          inserted using a single parameterised{" "}
-          <code>INSERT … ON CONFLICT (natural_key) DO UPDATE SET …</code>{" "}
-          statement. This provides:
-        </p>
-        <ul>
-          <li>
-            <strong>Throughput:</strong> A single DB round-trip per 1,000 rows
-            rather than 1,000 individual inserts.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Idempotency:</strong> If the worker crashes mid-batch and
-            re-processes from the last committed checkpoint, re-inserting already-
-            upserted rows produces no duplicates (the ON CONFLICT clause updates
-            to the same value).
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Checkpoint tracking:</strong> After each commit the worker
-            updates <code>jobs.last_committed_row_index</code> in the same
-            transaction. On retry, the worker seeks to{" "}
-            <code>last_committed_row_index + 1</code> in the S3 object via a
-            byte-offset map built during parsing.
-          </HighlightBlock>
-        </ul>
-        <p>
-          For Postgres the idempotency key is the composite natural key (e.g.,{" "}
-          <code>(tenant_id, external_id)</code>). If no natural key exists, a
-          deterministic key is derived from <code>(jobId, rowIndex)</code> to
-          guarantee stable upsert targets across retries.
+          Row-by-row writes provide precise error isolation but create high database write amplification. Batch writes are efficient but make per-row error attribution harder. A common compromise validates rows individually, writes valid rows in batches, and stores per-row errors separately.
         </p>
         <p>
-          When using PostgreSQL COPY for maximum throughput (typically 3–5×
-          faster than parameterised INSERT), idempotency requires a staging
-          table:
-        </p>
-        <ol>
-          <li>
-            COPY 1,000 rows into a temp table{" "}
-            <code>import_staging_&#123;jobId&#125;</code>.
-          </li>
-          <li>
-            Execute <code>INSERT … SELECT FROM staging ON CONFLICT DO UPDATE</code>.
-          </li>
-          <li>Truncate staging table; commit.</li>
-        </ol>
-        <p>
-          This staging pattern also enables pre-commit validation hooks (e.g., FK
-          checks against live data) before rows touch the target table.
-        </p>
-
-        <h3>Progress Reporting via SSE</h3>
-        <p>
-          Clients connect to <code>GET /imports/&#123;jobId&#125;/events</code>{" "}
-          which opens a Server-Sent Events stream. The API server maintains a
-          Redis pub/sub channel keyed by <code>jobId</code>. After each 1,000-row
-          batch commit, the worker publishes:
-        </p>
-        <ul>
-          <li>
-            <code>&#123;"event":"progress","insertedRows":5000,"totalRows":100000,"errorCount":12&#125;</code>
-          </li>
-        </ul>
-        <p>
-          The API server is subscribed and forwards the message to any active SSE
-          connections for that job. This decouples the worker from the HTTP layer.
-          If no SSE client is connected, messages are buffered in Redis for 60
-          seconds to handle reconnects with the <code>Last-Event-ID</code> header.
+          Synchronous preview gives users immediate feedback about headers and sample rows, but full validation can take minutes. The design should provide quick preflight checks before upload or before processing, then run full validation asynchronously.
         </p>
         <p>
-          For polling clients, <code>GET /imports/&#123;jobId&#125;</code> returns
-          the current job snapshot from the database: status, insertedRows,
-          errorCount, duration.
+          Allowing users to map arbitrary columns is flexible but error-prone. Strong templates and schema versions reduce mistakes. Enterprise systems often support both: guided templates for common imports and advanced mapping for power users.
         </p>
-
-        <h3>Error Report Generation</h3>
         <p>
-          The error accumulator staged to the DB during processing is materialised
-          into a CSV error report at job completion. The worker executes:
+          There is also a consistency trade-off around uniqueness checks. Checking every row against the live primary database before commit gives better user feedback but can be expensive and stale under concurrent writes. Enforcing uniqueness only at commit time is correct but may fail late. The pragmatic approach is to pre-check likely conflicts during validation for helpful feedback, then rely on database constraints or compare-and-swap writes during commit for final correctness.
         </p>
-        <ol>
-          <li>
-            <code>SELECT row_num, column_name, error_message FROM import_errors WHERE job_id = $1 ORDER BY row_num</code>
-          </li>
-          <li>
-            Streams the result into an S3 object at{" "}
-            <code>imports/errors/&#123;jobId&#125;.csv</code> using multipart
-            upload.
-          </li>
-          <li>
-            Stores the S3 key in <code>jobs.error_report_s3_key</code>.
-          </li>
-        </ol>
         <p>
-          Client downloads via <code>GET /imports/&#123;jobId&#125;/errors</code>,
-          which returns a presigned S3 URL with a 24-hour TTL. The presigned URL
-          avoids routing large download traffic through the API server.
+          Staging adds storage cost and a second copy of sensitive data, but it enables dry runs, deterministic commit, row-level error reports, and reconciliation. For enterprise-grade imports, staging is usually worth the cost, with strict retention and encryption controls so rejected or expired imports do not become long-lived shadow datasets.
         </p>
-
-        <h3>Retry and Checkpoint Resume</h3>
-        <HighlightBlock as="p" tier="important">
-          The worker maintains a byte-offset index: for every 10,000th row it
-          records the byte offset in the S3 stream. On retry, the worker:
-        </HighlightBlock>
-        <ol>
-          <li>
-            Reads <code>jobs.last_committed_row_index</code> from the DB.
-          </li>
-          <li>
-            Looks up the nearest recorded byte offset at or before that row.
-          </li>
-          <li>
-            Issues an S3 range-request (<code>Range: bytes=&#123;offset&#125;-</code>)
-            to skip already-processed data.
-          </li>
-          <li>
-            Skips rows until reaching <code>last_committed_row_index + 1</code>.
-          </li>
-        </ol>
         <p>
-          This ensures O(1) retry cost relative to remaining work, not total file
-          size.
+          Rollback is not always possible and should not be promised casually. If an import updates existing customer records, triggers emails, creates downstream search index updates, or starts fulfillment workflows, a "delete imported rows" rollback may be incomplete or harmful. Safer designs record import provenance on every created or updated row, provide compensating actions where possible, and require preview or dry-run confirmation for high-impact update modes.
         </p>
-
-        <h3>Notification and Webhooks</h3>
-        <HighlightBlock as="p" tier="important">
-          On job terminal state (completed, partial, failed) the worker enqueues a
-          notification event. The notification service reads from this queue and:
-        </HighlightBlock>
-        <ul>
-          <li>
-            Sends an email with a summary table (rows inserted, rows failed, error
-            report link) if the tenant has email configured.
-          </li>
-          <li>
-            POSTs a webhook payload to the tenant&rsquo;s configured endpoint with
-            an HMAC-SHA256 signature. Retries with exponential backoff up to 24
-            hours.
-          </li>
-        </ul>
+        <p>
+          Upsert policy is another important trade-off. Full replacement is easy to reason about for small scoped datasets, but it can remove data that another workflow created after the file was exported. Merge-by-field preserves more user edits but creates complex conflict semantics. Insert-only is safest but can frustrate migration users. A principal-ready answer should tie the policy to domain invariants rather than presenting one generic import behavior for every entity.
+        </p>
+        <p>
+          Validation timing creates a user-experience and correctness trade-off. Early validation gives fast feedback but can be stale by commit time if related records or uniqueness constraints change. Commit-time validation is authoritative but may surprise users after a long wait. Strong systems do both: preflight for user guidance and commit-time enforcement for correctness, with clear messaging when late conflicts appear.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Alternatives</h2>
-        <h3>Synchronous Inline Processing vs. Async Job</h3>
-        <HighlightBlock as="p" tier="important">
-          Synchronous processing is simpler to implement and easier for clients to
-          handle (wait for HTTP 200). However, it fails for files &gt;10 K rows
-          due to HTTP timeouts (load balancer default: 60 s), memory pressure on
-          the API pod, and the inability to retry partially-completed imports. The
-          async job model is strictly superior for any bulk use case.
-        </HighlightBlock>
-
-        <h3>Direct-to-API Upload vs. Presigned S3 URL</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Direct-to-API upload (multipart form POST) keeps the server in the
-          data path, which allows instant validation feedback but caps throughput
-          at the API server&rsquo;s network bandwidth and memory. Presigned S3 PUT
-          offloads all bandwidth to S3 (which handles 5 GB/s per prefix), removes
-          memory pressure from API pods, and enables client-side resumable upload
-          libraries (AWS S3 Resumable Upload). The main downside: the API cannot
-          inspect the file before it reaches S3—content-type and size validation
-          must be enforced via S3 pre-signed URL policy conditions.
-        </HighlightBlock>
-
-        <h3>ON CONFLICT Upsert vs. COPY for Throughput</h3>
-        <HighlightBlock as="p" tier="crucial">
-          PostgreSQL COPY is 3–5× faster than parameterised INSERT for bulk loads
-          because it bypasses the query planner. The trade-off is that COPY does
-          not support ON CONFLICT natively; you need the staging-table pattern
-          (add latency, extra storage). For write-once imports (no upsert) COPY is
-          the clear winner. For upsert-heavy workloads the staging pattern adds
-          ~15% overhead but preserves idempotency.
-        </HighlightBlock>
-
-        <h3>Error Threshold Policy</h3>
+        <h2>Best practices</h2>
         <p>
-          A fixed 5% threshold is easy to reason about but may be wrong for
-          specific use cases: a 1 M-row file might tolerate 50 K errors, while a
-          100-row file should abort on the first error. Consider making the
-          threshold configurable per import job, or using an absolute-count cap
-          (e.g., abort after 5,000 errors regardless of total rows).
+          Create the job before upload and persist every state transition. This lets the system recover abandoned uploads, enforce quotas, and give users a stable job page.
         </p>
-
-        <h3>Quota Enforcement</h3>
-        <HighlightBlock as="p" tier="important">
-          Enforcing row quotas at job creation time (based on the estimated row
-          count) is simple but inaccurate—the estimate may differ from the actual
-          count. Alternatively, enforce quota atomically during ingestion using a
-          Redis INCRBY per committed batch, and roll back partial quota if the job
-          fails. The ingest-time approach is more accurate but adds a Redis
-          round-trip per batch.
-        </HighlightBlock>
-
-        <h3>Spark / Flink for Very Large Files</h3>
-        <HighlightBlock as="p" tier="important">
-          For files in the GB range (tens of millions of rows), a single-worker
-          streaming approach may be too slow. Apache Spark or Flink can split S3
-          files across many executors for parallel processing. The trade-off is
-          significant operational complexity, higher infrastructure cost, and a
-          much longer startup time per job. For files under 200 MB the single-
-          worker approach with 10 MB streaming chunks is faster end-to-end due to
-          zero orchestration overhead.
-        </HighlightBlock>
+        <p>
+          Stream files and batch writes. Avoid loading full files into memory, avoid one transaction for a million rows, and avoid one database round trip per row.
+        </p>
+        <p>
+          Build for replay and support. Support engineers should be able to view job metadata, schema mapping, validation summary, commit policy, actor, tenant, and artifact retention status without seeing raw sensitive file contents by default. When raw-file access is necessary, it should be time-bounded, audited, and permissioned. This preserves debuggability without turning imports into uncontrolled data exposure.
+        </p>
+        <p>
+          Use deterministic row identity. Prefer tenant-scoped natural keys. If none exist, derive a stable import key from job, row position, and source identity so retries can be deduplicated.
+        </p>
+        <p>
+          Keep validation errors user-actionable. Error reports should identify row, column, failed rule, sanitized value, and remediation guidance. Avoid dumping raw stack traces or sensitive field values.
+        </p>
+        <p>
+          Separate progress from UI connection state. Persist progress in the job record and use push events only as an optimization. Polling should still work after a browser refresh.
+        </p>
+        <p>
+          Audit imports. Record actor, tenant, source file metadata, schema version, conflict policy, row counts, target entity, error report location, and completion status.
+        </p>
+        <p>
+          Protect downstream systems with write shaping. A million valid rows can still overload search indexing, webhooks, analytics events, or cache invalidation. Import workers should use batch sizes, tenant-level throughput limits, and event compaction so one import does not create a thundering herd of downstream side effects. This is often the difference between an import feature that works in isolation and one that behaves safely inside a real product ecosystem.
+        </p>
+        <p>
+          Preserve row-level lineage. Target records created or changed by an import should carry import job id, source row identity, actor, conflict policy, and timestamp where the domain allows it. This lets support answer why a record exists, lets administrators filter by import batch, and enables partial remediation when a customer imported the wrong file. Without lineage, every cleanup becomes a custom database investigation.
+        </p>
+        <p>
+          Make import templates product-owned. Templates should include required fields, optional fields, allowed values, examples, locale expectations, date formats, and schema version. They should be generated from the same validation rules used by the worker, not maintained as static files by a separate team. This keeps the user-facing contract aligned with the actual ingestion behavior.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">
-          A production bulk import system separates four concerns—upload, validate,
-          ingest, notify—into independent stages connected by a job queue. Key
-          design decisions are: presigned S3 upload to remove bandwidth pressure
-          from the API tier; streaming parse with bounded memory buffers; 1,000-
-          row transactional batches with natural-key upsert for idempotency; byte-
-          offset checkpointing for O(remaining work) retries; and SSE progress
-          events via Redis pub/sub. The error-threshold policy (abort at &gt;5%)
-          balances user experience (some bad rows are tolerable) against data
-          integrity (a file that is mostly garbage should fail fast). At staff
-          level, the key insight is that every stage must be independently
-          restartable without duplicating already-committed work—idempotency is not
-          a feature, it is the correctness invariant the entire system rests on.
-        </HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is parsing the entire file in the API request. This causes timeouts, memory pressure, and poor retry behavior. Large imports should be asynchronous.
+        </p>
+        <p>
+          Another pitfall is retrying failed workers without idempotency. A crash after committing half a batch can duplicate rows unless checkpoints and stable row keys exist.
+        </p>
+        <p>
+          Teams often underinvest in error reports. If users cannot understand why rows failed, they open support tickets or repeatedly upload broken files.
+        </p>
+        <p>
+          Import paths can bypass normal validation and permission checks. The import worker must enforce the same business rules and tenant scope as normal write APIs, plus any import-specific restrictions.
+        </p>
+        <p>
+          Quotas are often added too late. Without per-tenant limits on file size, row count, concurrent jobs, and write rate, one customer can overload the system.
+        </p>
+        <p>
+          Another pitfall is assuming locale and encoding are minor details. CSV files may contain BOM markers, mixed encodings, localized decimal separators, date formats, quoted newlines, or spreadsheet-generated formulas. If the system silently guesses wrong, it can import plausible but incorrect values. The preview and validation phases should make parsing assumptions visible before commit.
+        </p>
+        <p>
+          Teams also forget that imports can create downstream side effects. A contact import might trigger segmentation, emails, deduplication jobs, audit events, or billing changes. If those effects are not shaped and tied to the import job, a single customer upload can look like organic product activity and overwhelm unrelated systems.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          CRM and marketing tools import contacts, accounts, opportunities, campaign members, and suppression lists. These flows need deduplication, conflict policies, and row-level error reports.
+        </p>
+        <p>
+          Marketplaces import catalogs, pricing, inventory, and fulfillment metadata. These imports often require upsert semantics and strict tenant ownership.
+        </p>
+        <p>
+          Fintech and accounting systems import transactions, statements, reconciliation files, and vendor data. These require auditability, masking, and conservative partial-success policies.
+        </p>
+        <p>
+          Enterprise admin systems import users, permissions, locations, devices, and organizational hierarchies. Schema templates and preflight validation reduce costly mistakes.
+        </p>
+        <p>
+          B2B SaaS onboarding teams use bulk import to migrate customers from competitors. These migrations often need dry-run validation, saved mappings, support-assisted review, and staged go-live because the imported data becomes the initial source of truth for a large tenant. The architecture should support that operational workflow instead of assuming every upload is self-serve and low risk.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you handle a million-row CSV upload?</h3>
+        <p>
+          I would create a durable import job, upload the file directly to object storage using a scoped upload URL, enqueue processing, and stream the file in a worker. The worker validates rows, writes valid data in batches, records checkpoints, publishes progress, and produces an error report for failed rows.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">2. How do you make imports retry-safe?</h3>
+        <p>
+          Use stable row identity, idempotent upserts or staging commits, and durable checkpoints after successful batch commits. On restart, the worker reads the last committed boundary and resumes from there. Duplicate rows are detected by tenant-scoped natural keys or deterministic import keys.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">3. Would you fail the whole file or allow partial success?</h3>
+        <p>
+          It depends on business semantics. For independent records like contacts or products, partial success with a detailed error report is usually better. For transactional or hierarchical data where consistency matters, fail-fast or staged all-or-nothing commit may be safer. The policy should be explicit per import type.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">4. How do you show progress accurately?</h3>
+        <p>
+          Persist stage, rows processed, bytes read, errors, and estimated total in the job state. Push events can update the UI in real time, but the API must also return current status after refresh. Progress should be stage-aware because parsing, validation, writing, and error-report generation have different durations.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">5. How do you protect the system from abusive imports?</h3>
+        <p>
+          Enforce file size, row count, schema, tenant, permission, concurrent job, and write-rate quotas before processing. Workers should use bounded memory and batch sizes. Jobs that repeatedly fail or exceed limits should move to a failed or dead-letter state with a clear reason.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">6. What would you monitor?</h3>
+        <p>
+          Monitor upload completion rate, queue age, processing duration, rows per second, validation failure rate, database write latency, checkpoint lag, worker restarts, retry count, error-report generation failures, and tenant-level quota usage.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/PresignedUrlUploadObject.html" target="_blank" rel="noreferrer">AWS S3: Uploading Objects with Presigned URLs</a></li>
+          <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html" target="_blank" rel="noreferrer">AWS S3: Multipart Upload Overview</a></li>
+          <li><a href="https://www.postgresql.org/docs/current/sql-insert.html" target="_blank" rel="noreferrer">PostgreSQL: Insert and Conflict Handling</a></li>
+          <li><a href="https://docs.celeryq.dev/en/stable/userguide/tasks.html" target="_blank" rel="noreferrer">Celery: Task Reliability Concepts</a></li>
+          <li><a href="https://docs.nestjs.com/techniques/queues" target="_blank" rel="noreferrer">NestJS: Queues</a></li>
+          <li><a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noreferrer">OWASP Top 10: Access Control and Injection Risks</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

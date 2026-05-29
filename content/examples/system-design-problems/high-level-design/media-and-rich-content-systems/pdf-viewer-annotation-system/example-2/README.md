@@ -1,1 +1,5 @@
-# Design a PDF viewer + annotation system — Example 2
+# PDF Viewer Annotation System - Example 2
+
+Concrete media content production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

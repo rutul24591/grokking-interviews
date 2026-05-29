@@ -7,87 +7,269 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-cloud-storage-ui",
-  title: "Design a Cloud Storage UI (like Google Drive)",
-  description:
-    "Architecture for a Google Drive-like cloud storage system: client-side chunked upload (5MB parts) with SHA-256 deduplication via server-side copy, S3 multipart upload with resumable state, virus scanning and thumbnail generation as async Kafka consumers, adjacency-list folder tree with materialised path for subtree queries, cursor-paginated file listing, CDN-served presigned download URLs with 15-minute TTL, quota enforcement with storage accounting, full-text and metadata search via Elasticsearch, and real-time sync across devices via WebSocket delta events.",
+  title: "Design a Cloud Storage UI",
+  description: "Principal-level design for a cloud storage UI covering resumable uploads, object storage, metadata consistency, sync, search, quota, previews, security scanning, and operational recovery.",
   category: "high-level-design",
   subcategory: "file-storage-cloud-drive-systems",
   slug: "cloud-storage-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "cloud-storage", "google-drive", "s3", "chunked-upload", "dedup", "presigned-url", "cdn", "search"],
-  relatedTopics: ["file-sharing-permission-system", "file-version-history-restore"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-25",
+  tags: ["hld","cloud-storage","object-storage","sync","metadata","quota"],
+  relatedTopics: ["file-sharing-permission-system","file-version-history-restore"],
 };
 
 export default function CloudStorageUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A cloud storage system (like Google Drive, Dropbox, or OneDrive) must store and retrieve files of arbitrary size reliably, serve them quickly to users anywhere in the world, and keep multiple devices in sync. The core challenges are upload reliability (large files fail partway through on unreliable connections), storage efficiency (many users upload the same popular files — deduplication avoids storing duplicates), and access speed (users expect instant file browsing and fast downloads). The metadata system (which user owns which file, in which folder, with what permissions) must be highly available and support rich queries (search by name, filter by type, sort by date).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Unlike a database, files are opaque blobs — the system does not need to understand their contents (with the exception of thumbnail generation and virus scanning). This simplifies the storage layer: files are stored in an object store (S3, GCS) which is optimized for large binary objects, and only the metadata (name, size, type, owner, folder location) is stored in a relational database. This separation of concerns — blob storage for file bytes, relational DB for metadata — is the foundational architectural decision.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Upload pipeline (chunked, resumable, deduplicated), folder tree management, download with CDN, quota enforcement, search, and real-time sync. Not in scope: collaborative editing (that is a separate system — Google Docs runs on top of Google Drive), version history (separate article), or sharing/permissions (separate article).</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A cloud storage UI is a core storage product surface used by individual users, enterprise admins, mobile clients, desktop sync clients, support teams, storage platform engineers, security reviewers, and SREs to let users upload, organize, preview, download, search, and synchronize files reliably across devices while protecting access, quota, metadata correctness, and storage cost. At principal level this is not a static folder table with an object-store bucket. The design must explain durability, metadata consistency, access control, user-visible recovery, background processing, abuse handling, cost, and incident behavior.
+        </HighlightBlock>
+        <p>
+          The product sits between UX, storage infrastructure, identity, security, compliance, and distributed systems. File systems look simple to users because the interface hides object storage, indexing, virus scanning, previews, synchronization, and policy enforcement. A strong interview answer makes those hidden systems explicit without losing sight of user workflows.
+        </p>
+        <p>
+          The core entities are files, folders, object blobs, chunks, upload sessions, metadata rows, parent-child relationships, thumbnails, search documents, sync cursors, quota ledgers, virus-scan states, and device delta checkpoints. These should be modeled as separate concepts because each has a different consistency, latency, and retention requirement. For example, object bytes need high durability, metadata needs transactional correctness, search can lag slightly, and audit records need immutability.
+        </p>
+        <p>
+          The hardest requirements are usually non-functional. Users expect uploads to resume after a network drop, folder listings to feel immediate, downloads to be fast globally, permissions to revoke quickly, search to be fresh enough, and restore operations to be understandable. Enterprises additionally expect admin policy, legal holds, data residency, audit export, and support tooling.
+        </p>
+        <p>
+          Scope should be explicit in an interview. This article focuses on high-level design for the storage product system, not collaborative document editing internals. Real-time co-editing, conflict-free document models, and office-suite rendering can integrate with the platform, but they are separate systems with their own design depth.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Chunked resumable upload:</strong> Files are split into 5MB chunks on the client before upload begins. The client computes SHA-256 of each chunk and sends the array of chunk hashes to the upload initiation endpoint. The server checks if any of these chunks already exist in the object store (deduplication check). For chunks that already exist (another user previously uploaded the same data), the server marks them as "already have" — the client skips uploading those chunks and they are linked via server-side copy. For new chunks, the server creates an S3 multipart upload and returns presigned URLs for each part (one per new chunk). The client uploads chunks directly to S3 using these presigned URLs (bypassing the application server, which would otherwise be the bandwidth bottleneck). When all chunks are uploaded, the client calls the complete endpoint, which calls S3 CompleteMultipartUpload, assembles the parts into a single object, writes the file metadata to PostgreSQL, and returns the fileId.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Resumable upload state:</strong> Large file uploads can fail partway through (connection drop, browser close). Resumability: on upload initiation, the server stores the upload state (uploadId, list of which chunks have been uploaded, which parts are still pending) in PostgreSQL with a status of 'in_progress'. If the client reconnects, it calls GET /uploads/&#123;uploadId&#125; to retrieve the current state and resume from where it left off (re-uploading only the pending chunks). S3 multipart uploads remain valid for 7 days. After 7 days, incomplete multipart uploads are automatically cleaned up by an S3 lifecycle rule. The upload state row is deleted on successful completion.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Folder tree and metadata:</strong> Folders are stored in the same files table with a mimeType of 'application/vnd.drive.folder'. Each file/folder has a parentId pointing to its parent folder (or null for root). The adjacency list model is simple for single-level queries (list contents of a folder) but expensive for recursive queries (size of a subtree, move a folder with all its children). The materialised path pattern augments the adjacency list: each row also stores a path string like "/root/projects/2026/" — a prefix scan on path enables fast subtree queries. When a folder is moved, a single UPDATE sets the new parentId and updates the path prefix for all descendants. This is an O(N) operation for N files in the subtree — acceptable for typical folder sizes.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Download and CDN:</strong> Files are served via CDN-cached presigned S3 URLs. The flow: client requests GET /files/&#123;id&#125;/download with a session cookie. The API verifies the user has at least viewer access to the file (ACL check), then generates an S3 presigned GET URL with a 15-minute expiry and returns a 302 redirect to that URL. The CDN (CloudFront, Fastly) caches the file bytes at the edge; the presigned URL query parameters are stripped for caching (the CDN is configured to cache based on the S3 key only, not the signature). Range requests (for streaming video or seeking in audio files) are supported by the S3 presigned URL and passed through by the CDN. The presigned URL is cached per (fileId, userId) in Redis for 10 minutes to avoid re-generating signatures on every browser tab refresh.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Quota enforcement:</strong> Each user has a storage quota (e.g., 15GB free). Quota accounting: a user_storage table stores (userId, usedBytes). On successful file upload, an atomic SQL UPDATE increments usedBytes by the file size (UPDATE user_storage SET usedBytes = usedBytes + ? WHERE userId = ? AND usedBytes + ? &lt;= quotaBytes). If the WHERE clause fails (would exceed quota), the upload is rejected with 507 Insufficient Storage before the file bytes are written to S3. This atomic check-and-increment prevents quota overruns from concurrent uploads. On file deletion, usedBytes is decremented. The quota check is also performed at upload initiation (before the client uploads any bytes) to fail fast.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Search:</strong> File metadata is indexed in Elasticsearch on upload completion (via a Kafka consumer). Indexed fields: fileName (full-text, tokenized), mimeType, owner, createdAt, size, tags, and OCR text for images (extracted by an async OCR worker). Search queries: GET /search?q=quarterly+report&amp;type=pdf returns files matching the query with the user's accessible files (filtered by ACL at query time — Elasticsearch results are post-filtered by the API to remove files the user cannot access). Autocomplete suggestions: a separate index stores unique file names per user, queried with a prefix match for the search-as-you-type experience.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Real-time sync:</strong> Multiple devices (phone, tablet, laptop) must stay in sync. Sync mechanism: each device maintains a WebSocket connection to the sync service. When a file is created, modified, or deleted, the mutation is written to PostgreSQL and a change event is published to a Kafka topic. A sync consumer reads the change and pushes a delta notification to all of the user's active WebSocket connections (via a Redis-backed connection registry: device → sync server pod). The delta notification contains the minimal change (fileId, changeType, newMetadata) so the client can update its local cache without re-fetching the entire folder listing. The sync service uses a logical clock (a per-user monotonically increasing sequence number) to order changes; clients that reconnect after being offline request all changes with sequence &gt; their last-seen sequence number.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Virus scanning and thumbnail generation:</strong> After a file is uploaded to S3, a Kafka event triggers two async workers: (1) ClamAV virus scanner — downloads the file from S3, scans it, and updates the file's scan_status field (clean/infected/scanning). If infected, the file is quarantined (moved to a quarantine S3 bucket), access is blocked, and the user is notified. (2) Thumbnail generator — for images (JPEG, PNG, WebP), videos (first frame), and PDFs (first page), generates a 200×200 and a 400×400 thumbnail using ImageMagick or FFmpeg, uploads them to S3, and updates the file's thumbnailKey field. Thumbnails are served via the CDN without presigned URLs (they are not sensitive — the access check was already performed when the original file was uploaded).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Storage tiering:</strong> Frequently accessed files stay in S3 Standard (low latency, higher cost). Files not accessed for 90 days are automatically transitioned to S3 Infrequent Access (IA) by an S3 lifecycle rule (30–40% cost reduction). Files not accessed for 365 days are transitioned to S3 Glacier Instant Retrieval (90% cost reduction, same millisecond retrieval latency). This tiering is transparent to the user — all download flows go through the same presigned URL API regardless of which storage tier the object is in. The storage tier for each file is tracked in the metadata DB for billing and analytics.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is separation of blob data from metadata. Object storage is optimized for large immutable bytes and high durability. Metadata stores are optimized for listing, lookup, ownership, parent relationships, policy, and transactions. Coupling them too tightly makes uploads slow and makes metadata repairs dangerous.
+        </p>
+        <p>
+          The second concept is idempotent state transitions. Uploads, shares, restores, deletes, and permission changes are frequently retried by browsers, mobile clients, desktop agents, and background jobs. Each operation should have an idempotency key, a visible state machine, and a recovery path after partial failure.
+        </p>
+        <p>
+          The third concept is effective state. Users care whether a file is visible, downloadable, shared, restorable, infected, over quota, searchable, or synced. Internally those states may come from different services. The UI and APIs need an effective-state model that can explain what is happening without exposing every subsystem detail.
+        </p>
+        <p>
+          The fourth concept is immutable history where possible. Blob objects, version records, access audit events, and restore evidence should be append-oriented. Mutable current pointers can provide fast reads, while immutable history provides recovery and investigation. This pattern is common across storage, permissions, and version history.
+        </p>
+        <p>
+          The fifth concept is asynchronous work with explicit user state. Virus scanning, thumbnail generation, full-text indexing, DLP checks, retention evaluation, and integrity verification should not block every foreground request. However, the system must show pending, quarantined, failed, and retryable states so users and support teams are not confused.
+        </p>
+        <p>
+          The sixth concept is cursor-based synchronization. Desktop and mobile clients need ordered deltas rather than full-folder polling. A sync cursor should represent a stable sequence of metadata changes. Clients should be able to resume, detect gaps, and fall back to snapshot reconciliation when their cursor is too old.
+        </p>
+        <p>
+          The seventh concept is policy composition. Storage products combine user intent with enterprise policy, security findings, legal holds, quota, retention, external sharing rules, and regional requirements. The architecture should avoid scattering policy checks across many handlers in inconsistent ways.
+        </p>
+        <p>
+          The eighth concept is cost as an architectural constraint. Storage tiering, deduplication, thumbnail formats, delta chains, search indexing, audit retention, CDN egress, and garbage collection all affect unit economics. Principal-level answers discuss cost without compromising safety or durability.
+        </p>
+        <p>
+          The ninth concept is explainability. Users and admins need to understand why a file is missing, why access is denied, why a restore created a new version, why a link stopped working, or why a file is quarantined. Explainability reduces support load and makes security controls usable.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The storage system has four planes: the upload plane (chunked upload API, S3 multipart, dedup check), the metadata plane (PostgreSQL for files/folders, Elasticsearch for search), the delivery plane (download API, CDN, presigned URLs), and the async processing plane (Kafka consumers for virus scan, thumbnail generation, search indexing, sync events). All planes are horizontally scalable and stateless (state lives in PostgreSQL, Redis, S3, and Kafka).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The upload flow bypasses the application server for file bytes: the client uploads directly to S3 via presigned part URLs. This is critical for performance and cost — routing gigabytes of file data through the application server would require massive ingress bandwidth and waste compute. The application server only handles the control plane (initiate, track progress, complete, write metadata). For large organizations with high upload concurrency, the presigned URL approach scales linearly — S3 handles millions of concurrent multipart uploads natively.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          A practical architecture contains web and mobile clients, upload session service, presigned object-store upload path, metadata service, folder index, async processing pipeline, preview service, search indexer, sync gateway, quota service, CDN, and audit stream. The client-facing product should remain responsive while expensive file operations move through durable background pipelines. The control plane owns metadata and policy, while the data plane moves bytes through object storage and CDN wherever possible.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/file-storage-cloud-drive-systems/cloud-storage-ui.svg"
-          alt="Cloud storage system: client splits file into 5MB chunks, sends SHA-256 hashes to Upload API which checks dedup and returns presigned S3 part URLs; client uploads chunks directly to S3; POST complete triggers S3 CompleteMultipartUpload, metadata write to DB, Kafka event for async virus scan and thumbnail; GET download returns 302 to CDN presigned URL (15min TTL); folder tree uses adjacency list with materialised path."
-          caption="5MB chunks uploaded directly to S3 via presigned URLs (server bypassed for bytes); SHA-256 dedup via server-side copy; S3 multipart resumable for 7 days; async ClamAV + thumbnail via Kafka; CDN presigned download URL 15min TTL; adjacency list + materialised path for folder subtree queries"
+          alt="Design a Cloud Storage UI high-level architecture"
+          caption="Cloud storage separates heavy blob transfer from metadata, scan, preview, search, quota, and sync control planes."
         />
+        <p>
+          The client creates an upload session, splits large files into chunks, uploads directly to object storage through presigned URLs, completes the multipart upload, commits metadata transactionally, emits scan and preview events, updates quota, and notifies other devices through a delta stream.
+        </p>
+        <p>
+          Folder listings read metadata through cursor pagination, previews use generated thumbnails and safe viewers, downloads use short-lived signed URLs through CDN, and sync clients consume ordered deltas from the last acknowledged cursor.
+        </p>
+        <p>
+          The API layer should use stateful records for long operations. Upload sessions, permission grants, restore jobs, scan tasks, indexing tasks, and garbage-collection candidates should be queryable. This helps clients resume and gives operators a way to repair stuck work without hand-editing databases.
+        </p>
+        <p>
+          The metadata store should own transactional invariants. Parent pointers, current versions, quota ledger updates, ACL writes, and delete markers need careful consistency. Object-store operations are durable but not the right place to express product invariants such as folder hierarchy, effective permissions, or retention policy.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/file-storage-cloud-drive-systems/cloud-storage-ui-flow.svg"
+          alt="Design a Cloud Storage UI flow and recovery"
+          caption="Large-file upload requires resumable sessions, direct object-store transfer, metadata commit, async processing, and cleanup for abandoned parts."
+        />
+        <p>
+          Background workers should consume durable events and be safe to retry. A worker that creates thumbnails, indexes content, scans for malware, computes deltas, or deletes old objects should tolerate duplicate messages and should write progress checkpoints. Poison messages need quarantine rather than infinite retry loops.
+        </p>
+        <p>
+          Security boundaries should be explicit. Browser and mobile clients should not receive permanent object-store credentials. Download and upload URLs should be short-lived and scoped. Sensitive operations such as external sharing, admin export, legal hold removal, and purge should require stronger authorization and immutable audit.
+        </p>
+        <p>
+          The system should expose repair and reconciliation jobs. Metadata can commit while a worker fails, object deletion can fail after metadata deletion, and search indexing can lag behind. Reconciliation compares metadata, object manifests, audit events, and derived indexes to identify missing objects, orphaned objects, and stale derived state.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/file-storage-cloud-drive-systems/cloud-storage-ui-operations.svg"
+          alt="Design a Cloud Storage UI operational controls"
+          caption="The operational design must surface quota, scan state, sync lag, object integrity, and regional recovery rather than only folder CRUD."
+        />
+        <p>
+          Multi-region design should separate read optimization from write correctness. Object storage and CDN can serve globally, but metadata writes often need region affinity or a strongly governed primary region. Enterprise products may need data residency, so tenant placement and cross-region replication policy should be part of the model.
+        </p>
+        <p>
+          Observability should include user-facing and operator-facing signals: upload completion rate, average resume count, object-store error rate, metadata transaction latency, search indexing lag, sync cursor lag, permission decision cache hit rate, virus-scan backlog, quota ledger mismatches, restore success rate, and GC backlog.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Deduplication Strategy</h3>
-        <HighlightBlock as="p" tier="important">Content-addressed deduplication uses SHA-256 of each chunk as a globally unique identifier for that chunk's content. Two users uploading the same 5MB chunk of data (e.g., a popular PDF, or the unchanged beginning of a large file being re-uploaded) produce the same SHA-256 hash. The dedup check on upload initiation: SELECT s3Key FROM chunk_store WHERE sha256 IN (list of chunk hashes). For matching chunks, the server performs an S3 server-side copy (CopyObject API) from the existing location to the new multipart upload's part — no bytes travel over the network. For non-matching chunks, presigned PUT URLs are returned for direct upload.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Dedup is applied at the chunk level (not the file level) to maximize dedup opportunities. A large file with a small edit (e.g., a 100MB video with a new thumbnail) will have ~99% of its chunks deduped, uploading only the changed chunks. The chunk_store table maps SHA-256 to an S3 key and a reference count. When a file is deleted and its chunks are no longer referenced by any file, the reference count reaches zero and the chunk is eligible for garbage collection (a nightly GC job deletes S3 objects with zero references).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Folder Tree Implementation</h3>
-        <HighlightBlock as="p" tier="important">The materialised path for each folder is computed on write: when a file is created in folder /A/B/C/, its path field is set to "/rootId/AId/BId/CId/". Subtree queries: SELECT * FROM files WHERE path LIKE '/rootId/AId/%' retrieves all descendants of folder A. This uses a btree index on the path column and is fast for typical depths. Path updates on move: when folder B is moved from /A/B/ to /X/B/, the API runs UPDATE files SET path = REPLACE(path, '/rootId/AId/BId/', '/rootId/XId/BId/') WHERE path LIKE '/rootId/AId/BId/%'. This is an O(N) operation (one UPDATE per descendant file) but PostgreSQL can execute this efficiently with a single UPDATE statement using string functions.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Shared drives: a shared drive is a root folder owned by a team (not a user). Files in a shared drive belong to the drive, not to individual users — if a user leaves the organization, their files in the shared drive are retained. Shared drives require a separate ACL model (membership at the drive level grants access to all files within) distinct from the per-file ACL used for personal drives. The shared drive membership is stored in a drive_members table, and the access check for files in a shared drive first checks drive membership, then checks for file-level overrides.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">CDN Presigned URL Caching</h3>
-        <HighlightBlock as="p" tier="important">Regenerating presigned URLs on every file preview request (e.g., the thumbnail grid in a folder view loads 50 thumbnails per page refresh) would be expensive. The optimization: cache the presigned URL in the API response (via HTTP Cache-Control: max-age=600) and in Redis (per fileId, TTL = 10 minutes). When the API returns the file listing for a folder, each file entry includes a presignedThumbnailUrl that is valid for 15 minutes. The client caches this URL in memory and reuses it for the session. Only when the TTL is about to expire (or when the file is modified and the URL is invalidated) does the client re-request the URL. This approach reduces presigned URL generation from O(N×page_views) to O(N×sessions/hour).</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <HighlightBlock as="p" tier="crucial">
+          The central trade-off is blob durability and global download speed versus metadata correctness and user-perceived consistency. A principal-ready answer should show which paths need strong correctness, which paths can be asynchronous, and how users are protected when derived state lags behind source-of-truth metadata.
+        </HighlightBlock>
+        <p>
+          Direct-to-object-store transfer versus server-mediated upload is a major decision. Direct transfer reduces application bandwidth cost and improves scalability, but it requires presigned URLs, upload sessions, client retry logic, and cleanup for abandoned parts. Server-mediated upload is easier to reason about but becomes an expensive bottleneck for large files.
+        </p>
+        <p>
+          Synchronous processing versus asynchronous processing affects perceived correctness. Synchronous virus scanning, indexing, and preview generation can give immediate confidence but slows the foreground path. Asynchronous processing keeps the product fast but requires clear pending states and policy on whether unscanned files can be shared or downloaded.
+        </p>
+        <p>
+          Strong metadata consistency versus global availability is another trade-off. Users dislike stale folder listings and broken restore pointers, so key metadata transitions should be transactional. At the same time, global users need fast browsing. Read replicas, cache invalidation, and sync deltas can improve reads while keeping writes governed.
+        </p>
+        <p>
+          Deduplication and delta storage reduce cost but increase privacy and integrity concerns. Cross-user deduplication can leak whether another user has uploaded the same file if exposed incorrectly. Delta chains save space but create restore dependency. The design should decide where savings are worth the risk.
+        </p>
+        <p>
+          Caching improves folder listing, thumbnails, permission decisions, and signed URL generation, but stale cache can expose deleted, revoked, or quarantined content. Cache keys should include version, permission, scan state, and tenant where needed. High-risk revocation should trigger active invalidation rather than waiting for TTL.
+        </p>
+        <p>
+          Soft delete versus hard delete is a product and compliance decision. Soft delete helps users recover mistakes and protects against ransomware, but it conflicts with right-to-delete expectations and storage cost. The design should support trash windows, enterprise retention, legal holds, and verified purge workflows.
+        </p>
+        <p>
+          Folder tree modeling has trade-offs. Adjacency lists are simple for direct children. Materialized paths or closure tables help subtree queries and moves but add update cost. Large enterprise drives with deep folder trees need explicit constraints and background repair for path or ancestry indexes.
+        </p>
+        <p>
+          Search freshness versus write latency should be called out. Search indexes are derived data and can lag by seconds, but recent files should still appear in the current folder through metadata reads. The UI can merge source-of-truth recent items with asynchronous search results to avoid confusing users.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Client-side chunking vs. server-side streaming: having the client split files into chunks (client-side chunking) reduces server memory usage (the server never holds the full file in memory) and enables direct-to-S3 upload. The alternative — the client streams the entire file to the server, which then streams it to S3 — is simpler to implement but requires the server to handle large file uploads (memory, connection timeout, bandwidth). For a consumer product with many users uploading large files, client-side chunking with direct-to-S3 upload is the correct approach. The JavaScript File API makes this straightforward: file.slice(start, end) returns a Blob that can be uploaded with fetch().</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Search latency vs. freshness: indexing in Elasticsearch via a Kafka consumer introduces a lag (typically 1–5 seconds) between file upload and the file appearing in search results. For most use cases, this is acceptable — a user who just uploaded a file and immediately searches for it will find it within seconds. If near-instant search visibility is required (e.g., for a real-time collaborative team drive), the Kafka consumer can be replaced with a synchronous Elasticsearch write in the upload complete handler, at the cost of upload latency (Elasticsearch writes are slower than Kafka publishes). The asynchronous approach is preferred for high-throughput upload scenarios.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Make source-of-truth ownership clear. Metadata, objects, search documents, thumbnails, audit records, and client caches should each have an owner and reconciliation strategy. Without ownership, repair work during incidents becomes guesswork.
+        </p>
+        <p>
+          Use state machines for operations that cross systems. Uploading, scanning, sharing, restoring, deleting, and garbage collecting should have explicit states, retry policy, timeout behavior, and operator visibility.
+        </p>
+        <p>
+          Design for resumability. Mobile networks, browser tabs, desktop agents, and large enterprise folders all fail mid-operation. Resumable upload, cursor-based sync, idempotent share writes, and restartable restore jobs materially improve user trust.
+        </p>
+        <p>
+          Guard security-sensitive actions with policy and audit. External sharing, public link creation, download of sensitive files, permanent delete, legal hold removal, ownership transfer, and admin export should produce durable evidence and support alerting.
+        </p>
+        <p>
+          Keep derived data disposable. Search indexes, thumbnails, previews, and denormalized counters should be rebuildable from source metadata and objects. This makes incidents recoverable without treating every derived store as a permanent source of truth.
+        </p>
+        <p>
+          Expose effective state in the UI and API. A file that is uploaded but unscanned should not look identical to a clean file. A permission inherited from a team folder should be explainable. A restored file should show which version it came from.
+        </p>
+        <p>
+          Separate user deletion from physical purge. Trash, retention, legal hold, object lock, backup, and right-to-delete all interact. A robust design uses clear markers and background purge workflows instead of deleting bytes in the foreground request.
+        </p>
+        <p>
+          Plan for abuse. Public links, bulk downloads, malware uploads, credential stuffing, exfiltration through sync clients, and storage quota abuse should have rate limits, anomaly detection, and emergency controls.
+        </p>
+        <p>
+          Use checksums and integrity verification. Object ETags are not always enough for multipart or encrypted objects. Store content hashes, verify after upload, verify after restore, and run background integrity checks for high-value files.
+        </p>
+        <p>
+          Design support tools deliberately. Support teams need safe ways to inspect metadata, explain access, view restore history, see scan state, and trigger repair jobs. They should not need direct database access to help users.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A Google Drive-like cloud storage system requires: (1) client-side chunking (5MB parts), SHA-256 chunk hashes sent to server for dedup check before upload; (2) S3 multipart upload with presigned part URLs for direct client-to-S3 upload (server handles control plane only); (3) server-side copy for dedup hits (zero-byte upload for matching chunks); (4) resumable uploads: state persisted in PostgreSQL, valid for 7 days; (5) async Kafka consumers: ClamAV virus scan (quarantine on detection) + thumbnail generation (200×200 and 400×400); (6) adjacency list + materialised path folder tree for O(1) parent lookup and O(N) subtree queries via LIKE prefix scan; (7) CDN presigned download URLs (15-minute TTL, cached in Redis 10 minutes); (8) atomic quota check-and-increment (UPDATE WHERE usedBytes + size &lt;= quotaBytes) returning 507 on overflow; (9) Elasticsearch search index fed by Kafka consumer (1–5s lag); (10) real-time device sync via WebSocket delta events (logical sequence number for offline reconnect); (11) S3 storage tiering: Standard → IA at 90 days → Glacier Instant Retrieval at 365 days.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is treating a cloud storage UI as a simple UI over object storage. That misses orphaned chunks, incomplete multipart uploads, metadata-object mismatch, stale folder listing, quota double charging, delayed virus scan, search index lag, sync cursor gaps, CDN cache leakage, and regional object-store outage. The production system is mostly about safely coordinating metadata, policy, derived data, and recovery.
+        </p>
+        <p>
+          Another pitfall is assuming object storage transactions and metadata transactions happen atomically together. They do not. The design needs sagas, reconciliation, and cleanup for partially completed work.
+        </p>
+        <p>
+          Teams often forget stale derived state. A file can be renamed but search still shows the old name. A revoked file can still have a cached thumbnail. A restored version can be missing from a sync client. Derived state must be invalidated or repaired.
+        </p>
+        <p>
+          Permission and retention semantics are frequently under-specified. Enterprise admins will ask who had access at a point in time, why a file was retained, whether a public link was used, and whether a purge actually completed. The model must preserve evidence.
+        </p>
+        <p>
+          Large-folder performance is another common miss. Designs that work for a folder with one hundred files can collapse with one million files, deeply nested trees, or a desktop client reconciling months of offline changes.
+        </p>
+        <p>
+          Overusing synchronous operations can make the product feel reliable in small tests but fail at scale. The better pattern is fast foreground commitment plus clear background state, retry, and repair mechanisms.
+        </p>
+        <p>
+          Ignoring client diversity creates reliability gaps. Web, mobile, desktop sync, API clients, and offline clients have different retry, cache, and conflict behavior. The server contract should account for all of them.
+        </p>
+        <p>
+          Finally, many designs lack an incident story. A principal answer should explain what happens when object storage is degraded, metadata replication lags, search is down, a malware scanner backlog grows, or a bad permission change must be mass-reverted.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Real-world use cases for a cloud storage UI include personal file backup, enterprise shared drives, mobile photo upload, desktop folder sync, large video upload, legal hold exports, malware quarantine, and support-assisted restore after accidental deletion. Each case has a different balance of latency, durability, policy, and user explanation requirements.
+        </p>
+        <p>
+          Consumer products optimize for frictionless upload, preview, search, and sharing. Enterprise products add admin controls, retention, DLP, audit exports, group-based access, device policy, and regional placement. The same architecture should support both through policy and tenant configuration.
+        </p>
+        <p>
+          A media-heavy team drive stresses upload throughput, preview generation, CDN egress, and storage tiering. A legal workspace stresses immutable audit, retention holds, point-in-time access evidence, and controlled export. A developer workspace stresses sync correctness and version restore.
+        </p>
+        <p>
+          Ransomware recovery is a strong interview scenario. The system must preserve historical versions, detect unusual mass rewrite patterns, let admins restore a folder or tenant to a previous point, and avoid garbage collecting the very versions needed for recovery.
+        </p>
+        <p>
+          Data residency and regulated customers change the design. Metadata, objects, audit logs, and derived indexes may need to stay in a region. Cross-region disaster recovery must be compatible with contractual and legal constraints.
+        </p>
+        <p>
+          At principal level, the answer should connect storage UX to platform concerns: object durability, metadata invariants, identity, policy, cost controls, background processing, support tools, and incident recovery. That is the difference between a feature design and a production system design.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>1. How would you design the high-level architecture for a cloud storage UI?</h3>
+        <p>
+          I would separate clients, control-plane metadata, blob transfer, background processing, and derived read models. Clients interact with APIs for metadata and operation state, but large bytes move directly to object storage or CDN through scoped signed URLs. Metadata services own folder, version, permission, quota, and lifecycle invariants. Background workers process scans, previews, indexing, retention, and cleanup from durable events. Observability and audit are first-class because storage systems need repair and evidence. This structure keeps foreground UX fast while preserving correctness where it matters.
+        </p>
+        <h3>2. Which data should be strongly consistent and which data can be eventually consistent?</h3>
+        <p>
+          Metadata transitions that affect correctness should be strongly controlled: current version pointers, parent-child relationships, permission grants and revokes, quota ledger changes, delete markers, and retention or legal-hold state. Derived data can usually be eventually consistent: search indexes, thumbnails, preview caches, denormalized counters, and analytics. The UI should avoid confusing users by merging source-of-truth recent metadata with derived results and by showing pending states for scans or indexing. The key interview point is choosing consistency by user and security impact, not applying one consistency model everywhere.
+        </p>
+        <h3>3. How do you handle partial failures across object storage, metadata, and workers?</h3>
+        <p>
+          Use state machines, idempotency, durable events, and reconciliation. An upload may successfully write object parts but fail before metadata commit; cleanup should find abandoned parts. Metadata may commit but thumbnail or search workers may fail; derived state should retry and be rebuildable. A delete may mark metadata first and physically purge later; pending-delete records allow retry. Operators need dashboards for stuck sessions, failed workers, orphaned objects, and stale indexes. This is more realistic than claiming one distributed transaction spans every storage subsystem.
+        </p>
+        <h3>4. How would you design security and compliance for this system?</h3>
+        <p>
+          Use least-privilege service identities, short-lived signed URLs, scoped tokens, strong authorization on every metadata operation, immutable audit for sensitive actions, policy checks for external sharing or deletion, malware and DLP scanning, anomaly detection for bulk access, and admin-visible effective access. Compliance requires retention policy, legal hold, audit export, and verified purge workflows. The design should also minimize data exposure in logs and caches, because file names, paths, thumbnails, and access events can all be sensitive.
+        </p>
+        <h3>5. What trade-offs would you emphasize in a staff or principal interview?</h3>
+        <p>
+          I would emphasize blob durability and global download speed versus metadata correctness and user-perceived consistency, direct object upload versus server-mediated upload, synchronous safety checks versus asynchronous processing, strong metadata consistency versus global read latency, cache performance versus revocation freshness, dedup or delta efficiency versus privacy and integrity, and soft delete versus verified purge. For each trade-off I would state the default choice and the reason, then describe when enterprise, compliance, or scale requirements would change that choice.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html" target="_blank" rel="noreferrer">AWS S3 documentation - Multipart upload overview</a></li>
+          <li><a href="https://cloud.google.com/storage/docs" target="_blank" rel="noreferrer">Google Cloud Storage documentation</a></li>
+          <li><a href="https://developers.google.com/drive/api/guides/about-files" target="_blank" rel="noreferrer">Google Drive API documentation - Files and folders</a></li>
+          <li><a href="https://developers.google.com/drive/api/guides/manage-sharing" target="_blank" rel="noreferrer">Google Drive API documentation - Manage sharing</a></li>
+          <li><a href="https://dropbox.tech/infrastructure/rewriting-the-heart-of-our-sync-engine" target="_blank" rel="noreferrer">Dropbox Engineering - Rewriting the heart of our sync engine</a></li>
+          <li><a href="https://sre.google/sre-book/data-integrity/" target="_blank" rel="noreferrer">Google SRE Book - Data Integrity</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

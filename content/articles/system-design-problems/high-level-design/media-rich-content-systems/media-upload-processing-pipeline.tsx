@@ -7,103 +7,146 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-media-upload-processing-pipeline",
-  title: "Design a Media Upload + Processing UI Pipeline",
-  description:
-    "Architecture for a media upload and processing pipeline: multipart S3 upload with resumability, client-side validation, per-type processing jobs (image resize/WebP/blurhash, video transcode/HLS, document text extraction/search indexing), SSE progress tracking, and CDN delivery.",
+  title: "Design a Media Upload Processing Pipeline",
+  description: "Principal-level media-rich system design covering resumable upload, virus scanning, transcoding, metadata extraction, moderation, CDN publication, and retries.",
   category: "high-level-design",
   subcategory: "media-rich-content-systems",
   slug: "media-upload-processing-pipeline",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "upload", "s3", "multipart", "transcoding", "image", "video", "processing", "cdn"],
-  relatedTopics: ["video-player-system", "content-creation-studio"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "media", "frontend", "performance", "reliability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Media Upload Processing Pipeline is a media-rich product system, not just a visual component. It must coordinate browser capabilities, large binary assets, local editing state, background jobs, CDN or storage behavior, permissions, abuse policy, and user-facing recovery. The main challenge is that media work is expensive: bytes are large, decoding is CPU-intensive, rendering can block interaction, and failures are often visible immediately.",
+  "The goal is to design a media upload processing pipeline around resumable upload, virus scanning, transcoding, metadata extraction, moderation, CDN publication, and retries. A principal-ready answer should explain the client runtime, backend control plane, asynchronous processing, storage and CDN strategy, consistency model, failure handling, cost controls, and observability.",
+  "Media systems differ from ordinary CRUD systems because derived artifacts are first-class. Thumbnails, transcripts, waveforms, previews, tiles, manifests, captions, encodes, annotations, and exports are projections. They can lag or be regenerated, while original assets, permissions, and user edits need stronger durability.",
+  "The product should define which state must survive refresh, which can be recomputed, which is private, which can be cached publicly, and which requires moderation or entitlement checks. Without this classification, media systems leak private assets, lose drafts, overrun device memory, or create inconsistent playback and editing experiences.",
+  "A staff/principal answer should also cover operational ownership. Playback teams own QoE and buffer behavior; creation teams own draft recovery and export correctness; platform teams own storage, CDN, transcoding, and abuse controls; product teams decide when to degrade rich media to simpler experiences."
+];
+const concepts = [
+  "The first concept is asset lifecycle. Raw uploads, derived previews, published artifacts, and deleted or redacted versions have different durability, cacheability, and privacy rules. upload session and scan queue should never be treated as one generic blob path.",
+  "The second concept is bounded client resources. Media-rich pages must manage memory, GPU, CPU, and network budgets. Large canvases, long documents, video buffers, waveforms, and image grids need virtualization, eviction, and adaptive quality.",
+  "The third concept is asynchronous processing. Many operations cannot complete during the request: transcoding, scanning, rendering, exporting, OCR, waveform generation, and moderation. The UI needs job state, retry, cancellation where safe, and clear user messaging.",
+  "The fourth concept is consistency. Original assets and permissions are authoritative. Derived media and previews can be eventually consistent, but must carry version identifiers so stale thumbnails, captions, annotations, or manifests do not appear as current truth.",
+  "The fifth concept is abuse and safety. Media can contain malware, copyrighted material, unsafe content, personal data, or policy-violating streams. Scanning, moderation, rate limits, reporting, and takedown propagation are part of the system design, not add-ons.",
+  "The sixth concept is observability. Track startup time, decode time, render frame drops, upload retry rate, processing queue age, export success, CDN hit ratio, moderation delay, permission-denied rate, and client memory pressure."
+];
+const architecture = [
+  "The recommended architecture has five surfaces: upload session, scan queue, transcode farm, metadata index, CDN publisher. The client owns responsive interaction and local recovery. The API layer owns permissions, idempotency, and job creation. The processing plane owns expensive asynchronous work. Storage and CDN own asset distribution. Observability ties user symptoms to asset version, job ID, route, release, and device cohort.",
+  "A user action should create durable intent before expensive processing begins. Uploads create sessions and chunk manifests. Edits update a draft log or document model. Playback records manifest and entitlement state. Exports create jobs with immutable input versions. This lets the system retry safely after browser refresh, worker failure, or regional outage.",
+  "Derived artifacts should be keyed by source version and transformation parameters. If a video is re-encoded, a PDF is redacted, or a design file changes, old previews must not be confused with new ones. CDN invalidation should be precise and, where possible, replaced by versioned URLs.",
+  "The client should render progressive states: placeholder, partial preview, processing, ready, failed, retryable, permission blocked, or policy blocked. These states are product semantics, not generic spinners. They tell users whether to wait, retry, change input, or contact support.",
+  "The system should separate interactive paths from batch-heavy paths. Playback controls, editing cursor, annotation placement, and draft typing need low latency. Transcoding, full export, OCR, deep scanning, and global indexing can run asynchronously with backpressure.",
+  "The diagrams show architecture, flow, and operations: the architecture view explains ownership boundaries, the flow view explains user intent through processing and delivery, and the operations view explains queue pressure, recovery, moderation, and QoE control loops."
+];
+const tradeoffs = [
+  "Client-heavy processing can feel instant and reduce server cost, but it is limited by device capability, browser support, battery, and memory. Server-heavy processing is more predictable and easier to moderate, but adds queue latency and infrastructure cost. Mature systems usually use a hybrid.",
+  "Eagerly generating every derivative gives fast later reads but wastes compute for assets that are never viewed. Lazy generation saves cost but can make first access slow. Principal designs choose by product criticality: thumbnails and safety scans are often eager; rare export formats can be lazy.",
+  "Public CDN caching is excellent for published media but dangerous for private, permissioned, or recently revoked assets. Permissioned media needs signed URLs, short TTLs, versioned keys, and takedown propagation. The cache key is a security boundary.",
+  "Optimistic editing improves flow, but edits need durable logs, conflict resolution, and recovery. For collaborative or offline editing, the design must choose OT, CRDT, server-authoritative locking, or merge-on-save based on the shape of the document and expected collaboration intensity.",
+  "High visual fidelity competes with performance. A player can drop quality to avoid rebuffering; an editor can lower preview resolution while keeping export fidelity; a PDF viewer can render visible pages first. The product should make these trade-offs intentionally.",
+  "Moderation before publication reduces user harm but slows creator workflows. Moderation after publication improves speed but can amplify abuse. Risk-based gating is usually better than one rule for every asset.",
+  "Observability itself has cost and privacy risk. Capture event class, performance timings, asset IDs, and job IDs, but avoid logging raw document content, private annotations, media URLs with secrets, or user-entered text."
+];
+const practices = [
+  "Model media as a lifecycle with immutable source versions, derived artifact versions, processing jobs, permission state, and deletion or redaction state. Make every derived object traceable to the source version that produced it.",
+  "Use resumable upload and idempotent job creation. Browser crashes, mobile backgrounding, network loss, and worker retries should converge on one upload or processing job rather than duplicate assets.",
+  "Keep interactive paths small. Use virtualization, bounded buffers, progressive decoding, idle work, worker threads where appropriate, and adaptive quality for constrained devices.",
+  "Design explicit states for processing and failure. Users should know whether an asset is uploading, scanning, processing, ready, blocked, expired, or failed permanently. Support should see the same state with job history.",
+  "Protect permissions at every derived surface: original file, thumbnail, transcript, annotation, search result, share preview, CDN URL, export, and notification. Derived media is often where privacy leaks happen.",
+  "Build operational dashboards around user symptoms: playback startup, rebuffer, export queue age, upload resume success, annotation conflict rate, frame drops, failed processing jobs, and moderation SLA.",
+  "Provide rollback controls for codecs, rendering engines, export workers, feature flags, and CDN publication. Media regressions can be severe because old clients and assets remain in circulation."
+];
+const pitfalls = [
+  "A common pitfall is treating media as static files. In production, media has permissions, versions, processing state, cache state, moderation state, and support history.",
+  "partial files becomes visible quickly because media UX has little tolerance for pauses, jumps, or lost work. The design needs either prevention or honest recovery.",
+  "retry storms is often caused by mixing interactive and batch work in one path. Expensive jobs should not block low-latency controls unless the product absolutely requires it.",
+  "codec failures needs explicit ownership and retry semantics. If a job can fail after the user leaves, there must be notification, retry, support visibility, or compensating state.",
+  "unsafe media should be considered during design, not after launch. Media products are natural abuse targets because images, video, documents, and streams can carry harmful or sensitive content.",
+  "Another pitfall is missing cost governance. Transcoding, rendering, OCR, storage replication, CDN egress, and telemetry can dominate cost if the system eagerly processes every variant without demand signals."
+];
+const useCases = [
+  "User video upload exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Enterprise file ingestion exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Creator asset pipeline exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "An interviewer may push on device constraints. A strong answer explains how the UI adapts quality, bounds memory, uses background work carefully, and preserves the primary task when CPU or GPU is constrained.",
+  "An interviewer may push on privacy. The answer should explain signed URLs, derived artifact permissions, local cache clearing, redaction propagation, and avoiding sensitive telemetry.",
+  "An interviewer may push on incidents. The answer should cover queue backlog, worker rollback, CDN purge or versioning, disabled formats, degraded preview, and support-visible job history."
+];
+const questions = [
+  {
+    "question": "How would you design a media upload processing pipeline end to end?",
+    "answer": "I would model the media lifecycle first: source asset or document state, derived artifacts, permissions, processing jobs, client presentation, and operational telemetry. The client handles responsive interaction and local recovery, APIs enforce permission and idempotency, workers perform expensive processing, storage and CDN serve versioned artifacts, and observability links user symptoms back to asset version and job ID."
+  },
+  {
+    "question": "Why choose this architecture over a simpler upload-and-display design?",
+    "answer": "A simple upload-and-display design ignores derived artifacts, processing failures, permissions, moderation, cache invalidation, and device limits. It works for prototypes but fails when assets are large, private, collaborative, or safety-sensitive. The layered architecture adds complexity, but it isolates expensive work, makes retries safe, and gives operators control during incidents."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are partial files, retry storms, codec failures, unsafe media. Scale also exposes CDN egress cost, processing queue backlog, hot assets, cache stampedes, memory pressure, long-tail device issues, and moderation delay. The prevention strategy is versioned artifacts, backpressure, adaptive quality, bounded client memory, queue observability, and remote rollback controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Original assets, permissions, and durable user edits need strong ownership and versioning. Derived media such as thumbnails, transcripts, previews, indexes, and exports can be eventually consistent, but must carry source version IDs and visible processing state. Collaborative editing may require CRDT, OT, or server-authoritative conflict resolution depending on the data model."
+  },
+  {
+    "question": "How do you handle failure, privacy, cost, and observability?",
+    "answer": "Failures are handled through resumable uploads, idempotent jobs, retryable processing, clear user states, and support-visible job history. Privacy requires permission checks on every derived surface, signed URLs, redaction propagation, and careful local storage. Cost is controlled through demand-aware derivative generation, cache hit targets, storage lifecycle policy, and telemetry sampling. Observability tracks QoE, queue age, job failures, cache behavior, and client resource pressure."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate interactive latency from batch processing, original truth from derived artifacts, and public assets from permissioned assets. Then I would explain which parts are optimized for immediacy, which are optimized for correctness, and which degrade during load or device pressure. That makes the trade-off defensible rather than generic."
+  }
+];
+const references = [
+  {
+    "label": "MDN: Media Source Extensions",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+  },
+  {
+    "label": "MDN: WebCodecs API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API"
+  },
+  {
+    "label": "W3C: Media Source Extensions",
+    "href": "https://www.w3.org/TR/media-source-2/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WebRTC specifications",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
 
 export default function MediaUploadProcessingPipelineArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A media upload pipeline is the infrastructure between a user selecting a file and that file being available for consumption by other users. For a single small image, this could be a direct PUT to an API. For a large video file, a PDF with hundreds of pages, or a batch of photos, the pipeline must handle: chunked upload with resumability (network failures mid-upload should not require restarting), asynchronous processing (transcoding a 2-hour video takes minutes—the user cannot wait synchronously), multiple output variants (a video needs multiple bitrate renditions; an image needs thumbnails at multiple sizes in modern formats), and progress visibility (the user must be able to see processing status and know when the media is ready to use).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The three media types have distinct processing requirements. Images need resizing to multiple dimensions, format conversion (WebP and AVIF for modern browsers), EXIF metadata stripping (to protect location privacy), perceptual hashing (for deduplication and CSAM detection), and blurhash generation (a compact color preview string that renders before the image loads). Videos need transcoding to multiple bitrate renditions, HLS segmentation, thumbnail sprite sheet generation, and optional DRM encryption. Documents (PDFs, DOCX) need text extraction for search indexing, page thumbnail rendering, virus scanning, and optionally embedding into a vector index for RAG search.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> Files are uploaded directly to S3 using multipart upload (the application server issues presigned URLs; it never proxies the file bytes). Processing jobs run on worker instances (Lambda for short jobs, EC2 for long video transcoding). Status is communicated to the browser via SSE. Final processed assets are served from a CDN.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/media-upload-processing-pipeline-architecture.svg" alt="Design a Media Upload Processing Pipeline architecture" caption="Architecture view: media lifecycle, client runtime, processing plane, storage, CDN, and control boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/media-upload-processing-pipeline-ui.svg" alt="Design a Media Upload Processing Pipeline flow" caption="Flow view: user intent, rendering or processing progression, fallback, and recovery states." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/media-upload-processing-pipeline-operations.svg" alt="Design a Media Upload Processing Pipeline operations" caption="Operations view: queue pressure, permission enforcement, moderation, QoE, rollback, and support visibility." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>File selection:</strong> Users can select files via drag-and-drop, paste (for images), or file picker. Multiple files can be queued simultaneously.</li>
-          <li><strong>Client-side validation:</strong> File type (MIME type check using magic bytes, not just file extension), file size (enforced against configured maximums per media type), and count limits are validated before upload begins.</li>
-          <li><strong>Resumable multipart upload:</strong> Large files are split into 5 MB parts and uploaded in parallel to S3. If the upload is interrupted (network failure, browser close), it resumes from the last successfully uploaded part on retry.</li>
-          <li><strong>Processing progress:</strong> The UI shows per-file processing status (queued, uploading with percentage, processing with stage label, ready) via SSE events from the processing pipeline.</li>
-          <li><strong>Processed variant delivery:</strong> Processed assets (image thumbnails, video renditions, document page thumbnails) are served from the CDN with appropriate caching headers.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Upload throughput:</strong> Upload speed should be limited only by the user's network bandwidth (client-to-S3 direct upload, no server bottleneck).</li>
-          <li><strong>Image processing latency:</strong> A 10 MB JPEG should produce all variants (thumbnails, WebP, blurhash) within 10 seconds of upload completion.</li>
-          <li><strong>Video processing time:</strong> A 10-minute 1080p video should complete transcoding and HLS segmentation within 5 minutes (parallelized per rendition).</li>
-          <li><strong>Virus scan:</strong> All document uploads must be virus-scanned before being made available for download by other users.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The pipeline has two phases. Upload phase (client-initiated): the client requests presigned S3 URLs from the API server (one per multipart part), uploads parts in parallel directly to S3, and signals completion to the API server. The API server calls S3's CompleteMultipartUpload, which assembles the parts into the final object, and then publishes a processing job to SQS. Processing phase (server-side, asynchronous): workers consume SQS messages, execute the appropriate processing jobs for the file type, upload processed variants to the CDN origin, and emit status events via SSE to any clients watching the upload ID.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/media-upload-processing-pipeline-architecture.svg"
-          alt="Media upload and processing pipeline showing upload pipeline (file picker drag-drop paste input → client validate type size MIME magic bytes → multipart upload 5MB chunks presigned URLs → S3 origin raw storage bucket → S3 event SQS triggers processing queue → processing workers async job queue), and processing jobs in 3 columns: image processing (resize to variants thumb 150px med 800px orig, format convert JPEG PNG to WebP AVIF, strip metadata EXIF GPS device info, perceptual hash pHash dedup CSAM, blurhash placeholder compact colour preview string, CDN publish immutable URL edge cache), video processing (probe and validate ffprobe duration codec res, transcode renditions 360p 720p 1080p H264, HLS segmentation 2s chunks m3u8 manifests, thumbnail sprite 1 frame per 10s seek preview, status events SSE queued processing ready, CDN publish segs 365d manifest 5s), document processing (text extraction PDF text DOCX HTML, page thumbnails Puppeteer render PNG pages, search indexing extracted text Elasticsearch, virus scan ClamAV quarantine if infected, embedding index chunk embed RAG search, metadata DB status variants dimensions)."
-          caption="Upload pipeline (client → presigned S3 multipart → SQS → workers) + per-type processing jobs: image (resize/WebP/blurhash), video (transcode/HLS/sprite), document (extract/scan/index)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Client-Side Validation</h3>
-        <HighlightBlock as="p" tier="important">Validation runs before the upload starts, providing instant feedback. File type validation uses the magic bytes approach: the first 4–16 bytes of the file are read using FileReader and compared against known magic byte signatures (JPEG: FF D8 FF; PNG: 89 50 4E 47; PDF: 25 50 44 46; MP4: 66 74 79 70). This is more reliable than checking the file extension or the Content-Type header (both can be spoofed). File size validation applies per-media-type limits (images: 50 MB; videos: 5 GB; documents: 100 MB). Count validation limits the number of simultaneously queued uploads (default: 10 files). Validation errors are shown inline on the drop zone, per file, before any network request is made.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Multipart Upload Flow</h3>
-        <HighlightBlock as="p" tier="important">For files larger than 5 MB, the client initiates a multipart upload. The flow: (1) client calls the API to initiate the upload, receiving an upload ID. (2) The client splits the file into 5 MB parts (last part may be smaller). (3) For each part, the client requests a presigned S3 PUT URL valid for 15 minutes. (4) Parts are uploaded in parallel to S3 (up to 3 concurrent PUT requests—more concurrency provides diminishing returns and can saturate the user's network). (5) Each successful PUT returns an ETag. (6) When all parts are uploaded, the client calls the API with the upload ID and the list of part ETags. The API calls S3's CompleteMultipartUpload, assembling the final object.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Resumability: the upload ID and the list of successfully completed part numbers are persisted in localStorage under the key upload:&#123;fileHash&#125;. If the upload is interrupted (network failure, browser reload), the client checks localStorage on retry, identifies which parts are already complete, and resumes uploading only the remaining parts. The fileHash is computed as the SHA-256 of the first 1 MB + last 1 MB + file size (a fast proxy for the full file hash that avoids hashing the entire file before upload starts). Incomplete multipart uploads are purged after 7 days by an S3 lifecycle rule.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Processing Jobs and Queue Architecture</h3>
-        <HighlightBlock as="p" tier="important">When S3 receives the completed multipart upload, it emits an S3 ObjectCreated event to an SQS queue. Workers poll SQS and process jobs. Job routing is based on the object key prefix: images go to the image worker pool (Lambda, scales to 0), videos go to the video worker pool (EC2 Auto Scaling Group—video transcoding requires persistent CPU for minutes), and documents go to the document worker pool (Lambda with extended timeout). Each worker updates the job status in a DynamoDB table and emits SSE events to the browser via an SSE endpoint backed by Redis pub/sub (the worker publishes to Redis; the SSE server subscribes and forwards to connected clients watching the upload ID).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Image Processing Details</h3>
-        <HighlightBlock as="p" tier="important">Image processing runs Sharp (a Node.js bindings library for libvips) for all transform operations. For each uploaded image: (1) Read and decode the source file. (2) Strip EXIF metadata (GPS coordinates, device serial numbers, timestamps) using Sharp's withMetadata(&#123;exif: &#123;&#125;&#125;) to produce a clean output. (3) Resize to three variants: thumbnail (150×150 crop), medium (800px wide, height proportional), and original resolution. (4) Encode each variant in WebP (primary format, supported by all modern browsers) and AVIF (best compression, for browsers that support it—Chrome 85+, Firefox 93+). (5) Compute the perceptual hash (pHash) of the original image—a hash that is similar for visually similar images, even if the file bytes differ. The pHash is used for deduplication (if the same image is uploaded multiple times) and for CSAM detection (comparing against known-bad image hash databases). (6) Generate the blurhash string (a compact Base83-encoded color representation of the image, typically 30–40 characters) to use as a progressive loading placeholder before the full image loads.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Video Processing Details</h3>
-        <HighlightBlock as="p" tier="important">Video transcoding uses FFmpeg. For each uploaded video: (1) ffprobe extracts metadata (duration, codec, resolution, framerate, audio tracks) and validates the file is a playable video. (2) FFmpeg transcodes in parallel to three renditions (360p/800kbps, 720p/2.5Mbps, 1080p/5Mbps), each in a separate subprocess. Parallelizing rendition transcoding cuts wall-clock processing time by up to 3x compared to sequential transcoding. (3) Each rendition is segmented into 2-second HLS chunks. (4) FFmpeg extracts one frame per 10 seconds and assembles them into a seek preview sprite sheet. (5) HLS master manifest and per-rendition playlists are generated and written alongside the segments. (6) All outputs are uploaded to S3 (CDN origin) and status events are emitted at each stage completion.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Upload UI States</h3>
-        <HighlightBlock as="p" tier="important">The upload UI shows five states per file. Idle: a drop zone with instructions. Validating: instant feedback (under 100ms) on file type, size, and MIME magic bytes—shown as a checklist before upload starts. Uploading: a progress bar showing the percentage of bytes uploaded (computed from part count × part size), transfer speed, and estimated time remaining. Processing: a status label showing the current processing stage (e.g., "Transcoding 720p…"), updated via SSE events. Ready: a preview of the processed result (image thumbnail, video poster frame, document page thumbnail) with an "Insert" button to embed the asset in the current context.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/media-upload-processing-pipeline-ui.svg"
-          alt="Upload UI states showing 5 states: idle drop zone (drag files or click to browse), validating (type size MIME checklist), uploading with progress bar Part 3/8 38% 14.2 MB/s 2.1s remaining, processing (transcoding 720p SSE progress), ready with preview. Multipart upload flow showing client splits file → API issues presigned URLs → S3 receives parts → S3 assembled; part details: min 5MB, 3 parallel parts, ETag per part for CompleteMultipartUpload, retry resumes from part boundary, upload ID expires 7 days. Resumable upload and error handling: upload ID and completed parts in localStorage keyed by fileHash, on retry skip uploaded parts resume from failed, validation errors client-side instant."
-          caption="Upload UI states (idle → validating → uploading → processing → ready), multipart S3 flow with parallel parts, and resumable upload via localStorage part tracking"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Direct-to-S3 upload versus server-proxied upload: direct-to-S3 (the client puts bytes directly to S3 using presigned URLs) scales infinitely—the API server never touches file bytes, so upload throughput is not limited by API server capacity. The downside: CORS must be configured on the S3 bucket (to allow PUT requests from the browser's origin), and server-side processing (virus scanning, rate limiting) cannot happen synchronously with the upload—it must run as a post-upload job. Server-proxied upload (the API server receives the file and uploads to S3) is simpler to implement but creates a throughput bottleneck at the API layer. For any platform where large files are common, direct-to-S3 is strongly preferred.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Processing failure handling: if a processing job fails (transcoding error, corrupted input file), the SQS message should be retried with exponential backoff (SQS's default retry policy). After 3 retries, the message is moved to a dead-letter queue (DLQ) and the upload record is marked as processing-failed. The browser's SSE stream receives a "status:failed, reason:transcoding_error" event and shows a retry option to the user. The retry re-queues the original S3 object for processing without requiring the user to re-upload the file.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A media upload pipeline uses direct-to-S3 multipart upload (5 MB parts, up to 3 parallel, presigned URLs from the API server) with resumability via localStorage tracking of completed parts. Client-side validation (magic bytes, size, count) runs before upload starts. Upload completion triggers an S3 ObjectCreated event to SQS; per-type workers consume the queue: image workers (Sharp on Lambda: resize variants, WebP/AVIF encode, EXIF strip, pHash, blurhash), video workers (FFmpeg on EC2: parallel rendition transcode, HLS segmentation, thumbnail sprite), and document workers (Lambda: text extraction, page thumbnail render via Puppeteer, Elasticsearch indexing, ClamAV virus scan). Status is pushed to the browser via SSE events backed by Redis pub/sub (worker publishes → SSE server subscribes → browser receives). The UI progresses through five states: idle → validating → uploading (with progress bar) → processing (with stage label) → ready (with preview). Processed assets are served from CDN with immutable segment caching (365-day TTL) and short manifest TTL (5 seconds). The defining design constraint is that the API server never proxies file bytes—upload throughput scales with the CDN and S3's capacity, not the API layer's.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

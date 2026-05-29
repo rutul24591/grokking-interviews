@@ -1,61 +1,89 @@
-/**
- * Accordion Nested Keyboard Navigation — Arrow keys navigate between headers, Home/End jump.
- *
- * Interview edge case: Multiple accordions on the same page. ArrowDown on the last
- * header of accordion A should NOT move focus to accordion B's first header.
- * Each accordion must manage keyboard focus within its own group.
- */
+export type accordionCollapsibleSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-import { useRef, useCallback, useEffect } from 'react';
+export type accordionCollapsibleEvent = {
+  id: string;
+  topic: "accordion-collapsible";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: accordionCollapsibleSignal;
+};
 
-/**
- * Hook that manages keyboard navigation within an accordion group.
- * ArrowUp/Down move between headers, Home/End jump to first/last.
- * Scope is limited to the accordion container to prevent cross-accordion navigation.
- */
-export function useAccordionKeyboard(
-  containerRef: React.RefObject<HTMLElement | null>,
-  itemCount: number,
-) {
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+export type accordionCollapsibleDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
 
-  /**
-   * Registers a header ref at the given index.
-   */
-  const registerItem = useCallback((index: number, el: HTMLButtonElement | null) => {
-    itemRefs.current[index] = el;
-  }, []);
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
 
-  /**
-   * Handles keyboard navigation within the accordion.
-   */
-  const onKeyDown = useCallback((e: React.KeyboardEvent, currentIndex: number) => {
-    let targetIndex = currentIndex;
+export function evaluateAccordionCollapsibleEvent(event: accordionCollapsibleEvent): accordionCollapsibleDecision {
+  const reasons: string[] = [];
 
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        targetIndex = (currentIndex + 1) % itemCount;
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        targetIndex = (currentIndex - 1 + itemCount) % itemCount;
-        break;
-      case 'Home':
-        e.preventDefault();
-        targetIndex = 0;
-        break;
-      case 'End':
-        e.preventDefault();
-        targetIndex = itemCount - 1;
-        break;
-      default:
-        return;
-    }
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
 
-    // Focus the target item
-    itemRefs.current[targetIndex]?.focus();
-  }, [itemCount]);
+  let action: accordionCollapsibleDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
 
-  return { registerItem, onKeyDown };
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Accordion Collapsible",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
+}
+
+export function runAccordionCollapsibleContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateAccordionCollapsibleEvent({
+    id: "accordion-collapsible-evt-1",
+    topic: "accordion-collapsible",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
+
+  const guarded = evaluateAccordionCollapsibleEvent({
+    id: "accordion-collapsible-evt-late",
+    topic: "accordion-collapsible",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

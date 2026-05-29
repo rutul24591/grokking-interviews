@@ -8,114 +8,145 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-live-streaming-platform-ui",
   title: "Design a Live Streaming Platform UI",
-  description:
-    "Architecture for a live streaming platform UI: RTMP/WebRTC ingest, Low-Latency HLS (LL-HLS) with 200ms partial segments and blocking playlist reload, ABR quality selection, chat overlay with Redis pub/sub fan-out to 100k viewers, virtual list chat rendering, viewer count via HyperLogLog, floating emoji reactions, broadcaster dashboard with real-time health signals, DVR time-shifted playback, and multi-CDN failover.",
+  description: "Principal-level media-rich system design covering low-latency playback, chat fanout, creator controls, moderation, stream health, and regional failover.",
   category: "high-level-design",
   subcategory: "media-rich-content-systems",
   slug: "live-streaming-platform-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "live-streaming", "hls", "ll-hls", "webrtc", "chat", "websocket", "cdn", "abr"],
-  relatedTopics: ["video-player-system", "chat-messaging-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "media", "frontend", "performance", "reliability"],
+  relatedTopics: [],
 };
 
-export default function LiveStreamingPlatformUIArticle() {
+const definition = [
+  "Design a Live Streaming Platform UI is a media-rich product system, not just a visual component. It must coordinate browser capabilities, large binary assets, local editing state, background jobs, CDN or storage behavior, permissions, abuse policy, and user-facing recovery. The main challenge is that media work is expensive: bytes are large, decoding is CPU-intensive, rendering can block interaction, and failures are often visible immediately.",
+  "The goal is to design a live streaming platform UI around low-latency playback, chat fanout, creator controls, moderation, stream health, and regional failover. A principal-ready answer should explain the client runtime, backend control plane, asynchronous processing, storage and CDN strategy, consistency model, failure handling, cost controls, and observability.",
+  "Media systems differ from ordinary CRUD systems because derived artifacts are first-class. Thumbnails, transcripts, waveforms, previews, tiles, manifests, captions, encodes, annotations, and exports are projections. They can lag or be regenerated, while original assets, permissions, and user edits need stronger durability.",
+  "The product should define which state must survive refresh, which can be recomputed, which is private, which can be cached publicly, and which requires moderation or entitlement checks. Without this classification, media systems leak private assets, lose drafts, overrun device memory, or create inconsistent playback and editing experiences.",
+  "A staff/principal answer should also cover operational ownership. Playback teams own QoE and buffer behavior; creation teams own draft recovery and export correctness; platform teams own storage, CDN, transcoding, and abuse controls; product teams decide when to degrade rich media to simpler experiences."
+];
+const concepts = [
+  "The first concept is asset lifecycle. Raw uploads, derived previews, published artifacts, and deleted or redacted versions have different durability, cacheability, and privacy rules. encoder status and low-latency player should never be treated as one generic blob path.",
+  "The second concept is bounded client resources. Media-rich pages must manage memory, GPU, CPU, and network budgets. Large canvases, long documents, video buffers, waveforms, and image grids need virtualization, eviction, and adaptive quality.",
+  "The third concept is asynchronous processing. Many operations cannot complete during the request: transcoding, scanning, rendering, exporting, OCR, waveform generation, and moderation. The UI needs job state, retry, cancellation where safe, and clear user messaging.",
+  "The fourth concept is consistency. Original assets and permissions are authoritative. Derived media and previews can be eventually consistent, but must carry version identifiers so stale thumbnails, captions, annotations, or manifests do not appear as current truth.",
+  "The fifth concept is abuse and safety. Media can contain malware, copyrighted material, unsafe content, personal data, or policy-violating streams. Scanning, moderation, rate limits, reporting, and takedown propagation are part of the system design, not add-ons.",
+  "The sixth concept is observability. Track startup time, decode time, render frame drops, upload retry rate, processing queue age, export success, CDN hit ratio, moderation delay, permission-denied rate, and client memory pressure."
+];
+const architecture = [
+  "The recommended architecture has five surfaces: encoder status, low-latency player, chat shard, moderation queue, stream health. The client owns responsive interaction and local recovery. The API layer owns permissions, idempotency, and job creation. The processing plane owns expensive asynchronous work. Storage and CDN own asset distribution. Observability ties user symptoms to asset version, job ID, route, release, and device cohort.",
+  "A user action should create durable intent before expensive processing begins. Uploads create sessions and chunk manifests. Edits update a draft log or document model. Playback records manifest and entitlement state. Exports create jobs with immutable input versions. This lets the system retry safely after browser refresh, worker failure, or regional outage.",
+  "Derived artifacts should be keyed by source version and transformation parameters. If a video is re-encoded, a PDF is redacted, or a design file changes, old previews must not be confused with new ones. CDN invalidation should be precise and, where possible, replaced by versioned URLs.",
+  "The client should render progressive states: placeholder, partial preview, processing, ready, failed, retryable, permission blocked, or policy blocked. These states are product semantics, not generic spinners. They tell users whether to wait, retry, change input, or contact support.",
+  "The system should separate interactive paths from batch-heavy paths. Playback controls, editing cursor, annotation placement, and draft typing need low latency. Transcoding, full export, OCR, deep scanning, and global indexing can run asynchronously with backpressure.",
+  "The diagrams show architecture, flow, and operations: the architecture view explains ownership boundaries, the flow view explains user intent through processing and delivery, and the operations view explains queue pressure, recovery, moderation, and QoE control loops."
+];
+const tradeoffs = [
+  "Client-heavy processing can feel instant and reduce server cost, but it is limited by device capability, browser support, battery, and memory. Server-heavy processing is more predictable and easier to moderate, but adds queue latency and infrastructure cost. Mature systems usually use a hybrid.",
+  "Eagerly generating every derivative gives fast later reads but wastes compute for assets that are never viewed. Lazy generation saves cost but can make first access slow. Principal designs choose by product criticality: thumbnails and safety scans are often eager; rare export formats can be lazy.",
+  "Public CDN caching is excellent for published media but dangerous for private, permissioned, or recently revoked assets. Permissioned media needs signed URLs, short TTLs, versioned keys, and takedown propagation. The cache key is a security boundary.",
+  "Optimistic editing improves flow, but edits need durable logs, conflict resolution, and recovery. For collaborative or offline editing, the design must choose OT, CRDT, server-authoritative locking, or merge-on-save based on the shape of the document and expected collaboration intensity.",
+  "High visual fidelity competes with performance. A player can drop quality to avoid rebuffering; an editor can lower preview resolution while keeping export fidelity; a PDF viewer can render visible pages first. The product should make these trade-offs intentionally.",
+  "Moderation before publication reduces user harm but slows creator workflows. Moderation after publication improves speed but can amplify abuse. Risk-based gating is usually better than one rule for every asset.",
+  "Observability itself has cost and privacy risk. Capture event class, performance timings, asset IDs, and job IDs, but avoid logging raw document content, private annotations, media URLs with secrets, or user-entered text."
+];
+const practices = [
+  "Model media as a lifecycle with immutable source versions, derived artifact versions, processing jobs, permission state, and deletion or redaction state. Make every derived object traceable to the source version that produced it.",
+  "Use resumable upload and idempotent job creation. Browser crashes, mobile backgrounding, network loss, and worker retries should converge on one upload or processing job rather than duplicate assets.",
+  "Keep interactive paths small. Use virtualization, bounded buffers, progressive decoding, idle work, worker threads where appropriate, and adaptive quality for constrained devices.",
+  "Design explicit states for processing and failure. Users should know whether an asset is uploading, scanning, processing, ready, blocked, expired, or failed permanently. Support should see the same state with job history.",
+  "Protect permissions at every derived surface: original file, thumbnail, transcript, annotation, search result, share preview, CDN URL, export, and notification. Derived media is often where privacy leaks happen.",
+  "Build operational dashboards around user symptoms: playback startup, rebuffer, export queue age, upload resume success, annotation conflict rate, frame drops, failed processing jobs, and moderation SLA.",
+  "Provide rollback controls for codecs, rendering engines, export workers, feature flags, and CDN publication. Media regressions can be severe because old clients and assets remain in circulation."
+];
+const pitfalls = [
+  "A common pitfall is treating media as static files. In production, media has permissions, versions, processing state, cache state, moderation state, and support history.",
+  "chat floods becomes visible quickly because media UX has little tolerance for pauses, jumps, or lost work. The design needs either prevention or honest recovery.",
+  "buffer cliffs is often caused by mixing interactive and batch work in one path. Expensive jobs should not block low-latency controls unless the product absolutely requires it.",
+  "unsafe content needs explicit ownership and retry semantics. If a job can fail after the user leaves, there must be notification, retry, support visibility, or compensating state.",
+  "region failover should be considered during design, not after launch. Media products are natural abuse targets because images, video, documents, and streams can carry harmful or sensitive content.",
+  "Another pitfall is missing cost governance. Transcoding, rendering, OCR, storage replication, CDN egress, and telemetry can dominate cost if the system eagerly processes every variant without demand signals."
+];
+const useCases = [
+  "Creator live event exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Interactive shopping stream exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Town-hall broadcast exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "An interviewer may push on device constraints. A strong answer explains how the UI adapts quality, bounds memory, uses background work carefully, and preserves the primary task when CPU or GPU is constrained.",
+  "An interviewer may push on privacy. The answer should explain signed URLs, derived artifact permissions, local cache clearing, redaction propagation, and avoiding sensitive telemetry.",
+  "An interviewer may push on incidents. The answer should cover queue backlog, worker rollback, CDN purge or versioning, disabled formats, degraded preview, and support-visible job history."
+];
+const questions = [
+  {
+    "question": "How would you design a live streaming platform UI end to end?",
+    "answer": "I would model the media lifecycle first: source asset or document state, derived artifacts, permissions, processing jobs, client presentation, and operational telemetry. The client handles responsive interaction and local recovery, APIs enforce permission and idempotency, workers perform expensive processing, storage and CDN serve versioned artifacts, and observability links user symptoms back to asset version and job ID."
+  },
+  {
+    "question": "Why choose this architecture over a simpler upload-and-display design?",
+    "answer": "A simple upload-and-display design ignores derived artifacts, processing failures, permissions, moderation, cache invalidation, and device limits. It works for prototypes but fails when assets are large, private, collaborative, or safety-sensitive. The layered architecture adds complexity, but it isolates expensive work, makes retries safe, and gives operators control during incidents."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are chat floods, buffer cliffs, unsafe content, region failover. Scale also exposes CDN egress cost, processing queue backlog, hot assets, cache stampedes, memory pressure, long-tail device issues, and moderation delay. The prevention strategy is versioned artifacts, backpressure, adaptive quality, bounded client memory, queue observability, and remote rollback controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Original assets, permissions, and durable user edits need strong ownership and versioning. Derived media such as thumbnails, transcripts, previews, indexes, and exports can be eventually consistent, but must carry source version IDs and visible processing state. Collaborative editing may require CRDT, OT, or server-authoritative conflict resolution depending on the data model."
+  },
+  {
+    "question": "How do you handle failure, privacy, cost, and observability?",
+    "answer": "Failures are handled through resumable uploads, idempotent jobs, retryable processing, clear user states, and support-visible job history. Privacy requires permission checks on every derived surface, signed URLs, redaction propagation, and careful local storage. Cost is controlled through demand-aware derivative generation, cache hit targets, storage lifecycle policy, and telemetry sampling. Observability tracks QoE, queue age, job failures, cache behavior, and client resource pressure."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate interactive latency from batch processing, original truth from derived artifacts, and public assets from permissioned assets. Then I would explain which parts are optimized for immediacy, which are optimized for correctness, and which degrade during load or device pressure. That makes the trade-off defensible rather than generic."
+  }
+];
+const references = [
+  {
+    "label": "MDN: Media Source Extensions",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+  },
+  {
+    "label": "MDN: WebCodecs API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API"
+  },
+  {
+    "label": "W3C: Media Source Extensions",
+    "href": "https://www.w3.org/TR/media-source-2/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WebRTC specifications",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
+
+export default function LiveStreamingPlatformUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A live streaming platform (Twitch, YouTube Live, Kick) must solve two fundamentally different scaling problems simultaneously. The ingest path (broadcaster → server) is a single high-bandwidth, low-latency stream: one RTMP connection at 5–10 Mbps that must be received, transcoded into multiple quality renditions, packaged into HLS segments, and pushed to CDN edges within 1–2 seconds. The delivery path (server → viewers) is a massive fan-out: a single stream may have 100,000 concurrent viewers, each consuming a different quality rendition from the nearest CDN edge, with no direct connection to the ingest server.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Live streaming introduces latency constraints that do not exist in on-demand video. For broadcast streaming (sports, news), 5–30 seconds of latency is acceptable—viewers don't interact with the content. For interactive streaming (gaming, live Q&amp;A), the latency between the broadcaster speaking and the viewer hearing the response to their chat message must be under 3 seconds, or the interaction feels disconnected. For ultra-interactive use cases (live auctions, gambling, co-watching), latency must be under 500ms, requiring a fundamentally different transport (WebRTC SFU) rather than HLS.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The platform supports RTMP ingest (from OBS, streaming software) and WebRTC ingest (from browser). Delivery uses Low-Latency HLS (LL-HLS) for the primary interactive use case (1–2 second latency), with a fallback to standard HLS for viewers on slow networks. Chat uses WebSocket connections per viewer, fan-out via Redis pub/sub across chat server pods. Viewer count uses Redis HyperLogLog (approximate distinct count, ~1% error, memory-efficient at 12 KB regardless of viewer count).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/live-streaming-platform-ui-architecture.svg" alt="Design a Live Streaming Platform UI architecture" caption="Architecture view: media lifecycle, client runtime, processing plane, storage, CDN, and control boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/live-streaming-platform-ui-latency.svg" alt="Design a Live Streaming Platform UI flow" caption="Flow view: user intent, rendering or processing progression, fallback, and recovery states." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/live-streaming-platform-ui-operations.svg" alt="Design a Live Streaming Platform UI operations" caption="Operations view: queue pressure, permission enforcement, moderation, QoE, rollback, and support visibility." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Stream ingest:</strong> Broadcasters stream via RTMP (from OBS/streaming software) or WebRTC (from browser). The platform transcodes the ingest to multiple quality renditions (160p, 360p, 720p, 1080p) and packages them as LL-HLS.</li>
-          <li><strong>Video playback:</strong> Viewers watch via an HLS.js-based player with ABR (automatic quality selection based on bandwidth) and manual quality override. The player supports LL-HLS partial segments for 1–2 second latency.</li>
-          <li><strong>Chat overlay:</strong> Real-time chat visible to all viewers simultaneously. Chat supports emotes (custom images inline with text), Bits/Channel Points integration, and moderator ban/timeout controls.</li>
-          <li><strong>Reactions:</strong> Viewers can send emoji reactions that float upward over the video surface and are visible to all viewers for 1.5 seconds.</li>
-          <li><strong>Broadcaster dashboard:</strong> The broadcaster sees real-time metrics (viewer count, bitrate, dropped frames, chat rate) and stream health indicators. Moderation controls (ban user, slow mode, subscribers-only mode).</li>
-          <li><strong>DVR (time-shift):</strong> Viewers can pause and rewind up to 4 hours into the stream's history. The stream is archived to S3 as segments seal, and the HLS manifest extends backward in time.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Latency (LL-HLS):</strong> End-to-end latency from broadcaster's microphone to viewer's speaker must be under 2 seconds at P95 with LL-HLS.</li>
-          <li><strong>Chat fan-out:</strong> A chat message must reach all 100,000 concurrent viewers within 500ms of being sent.</li>
-          <li><strong>TTFF (Time to First Frame):</strong> A viewer joining an active stream must see the first video frame within 2 seconds.</li>
-          <li><strong>Rebuffer ratio:</strong> Less than 0.5% of watch time should be spent rebuffering.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The platform has three planes. The ingest plane: the broadcaster's RTMP stream arrives at an ingest edge server (closest to the broadcaster's geographic location). The edge server transcodes the single ingest stream into multiple quality renditions in parallel using FFmpeg, packages each rendition as LL-HLS (producing 2-second full segments and 200ms partial segments), and pushes the segments and manifest updates to the CDN origin. The delivery plane: CDN edge PoPs (Points of Presence) pull manifests and segments from the CDN origin as viewers request them. Viewer players poll the manifest with a blocking reload (the CDN holds the response until a new partial segment is available), achieving the lowest possible latency without continuous segment polling. The interactive plane: a separate WebSocket cluster handles chat, reactions, and presence for all viewers. This is intentionally separate from the video delivery path—chat messages are small, frequent, and need server-side processing (rate limiting, moderation) that CDN caching cannot provide.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/live-streaming-platform-ui-architecture.svg"
-          alt="Live streaming platform architecture showing ingest pipeline (broadcaster OBS browser mobile → RTMP → ingest server RTMP to HLS transcode → LL-HLS packager 2s segments plus partial segs → CDN edge PoPs push-to-edge manifest → player HLS.js ABR MSE SourceBuffer → viewer browser video plus chat plus reactions; WebRTC path ultra-low latency &lt;500ms for interactive streams), video player and ABR (LL-HLS specifics: full segments 2s duration, partial segments 200ms parts in manifest, blocking playlist reload server holds response until new part; latency ladder WebRTC &lt;500ms LL-HLS ~1-2s standard HLS 6-30s trade-off LL-HLS=scale WebRTC=interactivity; ABR rendition ladder 160p 200kbps 360p 800kbps 720p 2.5Mbps 1080p 5Mbps), chat overlay system (architecture client WebSocket persistent connection per viewer, server fan-out broadcast to all connections in stream room, backend Redis pub/sub for multi-pod chat delivery; rate limiting per-user 1 message/500ms sliding window Redis token bucket slow mode streamer sets min interval 1s-30s for all viewers toxic filter ML classifier async &lt;100ms; chat rendering virtual list only DOM nodes for visible messages auto-scroll pauses when user scrolls up resumes at bottom), real-time systems (viewer count increment client heartbeat 30s WS ping decrement WebSocket disconnect removes viewer count stored in Redis HLL HyperLogLog ~1% error; reactions emoji reactions broadcast via WebSocket client batches 50ms window render burst animation CSS keyframe float upward fade out 1.5s; polls predictions live polls votes aggregated in Redis results pushed every 500ms streamer UI create poll WS broadcast to all viewers), broadcaster dashboard stream manager UI (stream key unique RTMP ingest key per channel rotate on security event; live metrics realtime WS viewer count bitrate dropped frames percent buffer health chat rate per min; stream health indicators green all good amber &lt;80% keyframes red stream broken or bitrate &lt;500kbps), buffer strategy CDN DVR playback (live edge 1-3 segments behind live LL-HLS parts &lt;2s CDN segment TTL 30s manifest TTL 0.5s no-cache, DVR rewind last 4h stored in S3 manifest extends backward viewer can rewind freely, multi-CDN failover primary CDN health check 5s fallback URL if error rate &gt;1% in 30s window)."
-          caption="Ingest pipeline (RTMP → transcode → LL-HLS packager → CDN push), viewer player ABR, chat fan-out via Redis pub/sub, reactions/polls, broadcaster dashboard, and DVR with multi-CDN failover"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Low-Latency HLS (LL-HLS) Protocol</h3>
-        <HighlightBlock as="p" tier="important">Standard HLS achieves low latency by reducing segment duration (e.g., 2-second segments instead of 10-second segments), but this creates a floor: a viewer joining a stream must wait for at least one full segment (2 seconds) to buffer before playback begins, and the manifest must be refreshed periodically to discover new segments (creating additional polling latency). LL-HLS (Apple's Low-Latency HLS extension) addresses both issues.</HighlightBlock>
-        <p>Partial segments: each full segment (2 seconds) is subdivided into partial segments (200ms each, 10 parts per segment). The manifest lists partial segments that have been written so far, even before the full segment is complete. A viewer can start playing 200ms of content instead of waiting 2 seconds. The content availability latency (broadcaster produces frame → CDN makes it available) drops from 2 seconds to 200ms.</p>
-        <HighlightBlock as="p" tier="important">Blocking playlist reload: instead of polling the manifest on a fixed interval (which adds polling delay), the player sends a conditional GET request: GET /manifest.m3u8?_HLS_msn=5&amp;_HLS_part=3 (requesting manifest version with segment 5, part 3). The CDN server holds this request open (long-polls) until segment 5, part 3 is available, then responds. The player immediately requests the next part: GET /manifest.m3u8?_HLS_msn=5&amp;_HLS_part=4. This eliminates polling delay—the player receives manifest updates as fast as new parts are written. Combined with partial segments, this achieves 1–2 second glass-to-glass latency.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">RTMP Ingest and Transcoding</h3>
-        <p>The broadcaster's OBS (or equivalent software) opens a persistent RTMP (Real-Time Messaging Protocol) connection to the ingest edge server closest to their geographic location. RTMP is an older protocol (originally Flash-based) but is the universal standard for streaming software integration—virtually all broadcasting tools support it. The ingest server receives the RTMP stream as a sequence of H.264 video frames and AAC audio frames.</p>
-        <p>Transcoding: the ingest server runs FFmpeg to transcode the input stream (which may be at any resolution/bitrate the broadcaster configured) into the platform's standard rendition ladder: 160p/200kbps, 360p/800kbps, 720p/2.5Mbps, 1080p/5Mbps. Each rendition is transcoded in a separate FFmpeg process (parallelized). The transcoded frames are fed to the LL-HLS packager, which writes partial segments every 200ms and seals full segments every 2 seconds. Each sealed segment is pushed to the CDN origin immediately.</p>
-        <HighlightBlock as="p" tier="important">WebRTC ingest: for browser-based broadcasting (screen sharing, webcam), RTMP is not available (browsers don't support RTMP). WebRTC is used instead: the browser sends a WebRTC stream to a WebRTC SFU (Selective Forwarding Unit) ingestion endpoint, which transcodes it to RTMP for the same ingest pipeline. WebRTC ingest enables sub-500ms latency for the ingest leg, though the LL-HLS delivery leg still adds 1–2 seconds. For interactive use cases where even LL-HLS latency is too high (e.g., live betting, co-watching), WebRTC can be used end-to-end (broadcaster → SFU → viewer browser WebRTC), achieving under 500ms glass-to-glass at the cost of reduced scalability (WebRTC SFU can support ~10,000 viewers per stream, versus CDN-based HLS which scales to millions).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Chat Architecture at Scale</h3>
-        <HighlightBlock as="p" tier="important">Chat is the most technically demanding component of a live streaming platform for large streams. At 100,000 concurrent viewers with each sending a chat message every 30 seconds on average, the platform processes 3,333 messages per second. Each message must be broadcast to all 100,000 viewers within 500ms. This fan-out problem—one write, 100,000 reads—is solved with Redis pub/sub and a chat server pod architecture.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Pod architecture: chat server pods each maintain WebSocket connections to 5,000 viewers. For 100,000 viewers, 20 pods are needed. Each pod subscribes to a Redis pub/sub channel for the stream (keyed by stream ID). When a viewer sends a message: (1) the viewer's pod validates the message (rate limit check, content moderation, length limit). (2) The pod publishes the validated message to the Redis channel. (3) All 20 pods receive the message from Redis and push it to their respective WebSocket connections. Total fan-out: 1 Redis publish → 20 pod receives → 20 × 5,000 WebSocket pushes = 100,000 deliveries. Redis pub/sub latency is under 1ms for intra-datacenter delivery, making the total fan-out latency dominated by network round-trip to viewers (typically under 100ms for viewers in the same region).</HighlightBlock>
-        <p>Heavy stream mitigation: for viral streams with 1,000+ messages per second, the WebSocket push rate per viewer would be 1,000 DOM updates per second—enough to make the browser unresponsive. The platform applies message sampling in heavy-stream mode: if the incoming message rate exceeds a threshold (e.g., 100 messages/second for a given stream), the server selects a random 10–20% of messages to broadcast and drops the rest. Viewers still see an active chat that represents the stream's atmosphere without being overwhelmed.</p>
-        <p>Chat rendering: the chat overlay uses a virtual list (only DOM nodes for visible messages, with others represented by placeholder height). As new messages arrive, they are prepended to the message array. The list auto-scrolls to the bottom to show new messages—unless the user has manually scrolled up, in which case auto-scroll is paused and a "new messages" button appears. When the user clicks it or scrolls back to the bottom, auto-scroll resumes.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Viewer Count with HyperLogLog</h3>
-        <p>Counting 100,000 concurrent viewers accurately using a per-viewer set (e.g., a Redis SET with one entry per viewer ID) would consume significant memory (100,000 entries × 8 bytes per viewer ID = 800 KB per stream), and for a platform with 1,000 concurrent streams, the total memory for viewer counting is 800 MB—a significant overhead. Redis HyperLogLog (HLL) provides approximate distinct count with ~1% error and a fixed 12 KB memory cost regardless of the number of viewers.</p>
-        <p>Implementation: when a viewer joins a stream, PFADD streamId:viewers viewerId adds the viewer to the HLL. A heartbeat mechanism: each viewer's browser sends a WebSocket ping every 30 seconds. If no heartbeat is received for 60 seconds, the viewer is considered disconnected and PFREM (or a TTL-based approach with periodic HLL rebuild) removes the viewer. PFCOUNT streamId:viewers returns the approximate viewer count. The count is updated in the broadcaster's dashboard and in the stream's viewer counter every 5 seconds.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Floating Emoji Reactions</h3>
-        <HighlightBlock as="p" tier="important">When a viewer clicks a reaction button, a WebSocket message is sent to the chat server with the emoji type. The server does not store reactions (they are ephemeral). It broadcasts the reaction event to all viewers. The receiving client's React component renders an emoji element positioned randomly in the bottom third of the video surface, animates it floating upward using CSS keyframe animation (@keyframes float: translateY(-100px), fadeOut opacity 0), and removes the DOM node after 1.5 seconds. To handle high reaction volumes (100 reactions per second on a viral stream), the client batches received reactions into 50ms windows and renders them as a burst (multiple emojis appearing simultaneously) rather than one at a time. This prevents DOM thrashing from 100 per-second updates.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">DVR and Time-Shifted Playback</h3>
-        <p>DVR is implemented by archiving HLS segments to S3 as they are sealed by the packager. The HLS manifest includes EXT-X-PROGRAM-DATE-TIME tags that mark the wall-clock time of each segment. The manifest is extended backward over time as segments are archived, allowing the manifest to represent the entire stream history as a seekable timeline. A viewer who wants to rewind receives a manifest whose HEAD is positioned at the requested time (now minus rewind amount). The player loads segments from S3 (not the live CDN edge) for historical content. S3 lifecycle rules delete segments after 4 hours (for DVR) or retain them for 90 days (for VOD, if the broadcaster enables full archive).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Broadcaster Dashboard</h3>
-        <HighlightBlock as="p" tier="important">The broadcaster's dashboard receives real-time stream health metrics via a dedicated WebSocket connection to the ingest server. Metrics include: current output bitrate (kbps), dropped frame percentage (frames the encoder could not send fast enough, indicating CPU bottleneck or network congestion), keyframe interval (IDR frames, important for ABR segment alignment), viewer count (from HLL), and chat message rate (messages per minute). Stream health is represented as a three-state indicator: green (bitrate above 80% of target, dropped frames under 1%), amber (bitrate 50–80% of target or dropped frames 1–5%), and red (stream offline or bitrate below 50% of target). When health degrades to amber or red, the dashboard shows a notification with diagnostic information ("Check your network connection" or "Your CPU usage is high—reduce resolution or bitrate").</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/live-streaming-platform-ui-latency.svg"
-          alt="Live streaming latency timeline showing LL-HLS partial segments: broadcaster encodes part 1/10 at t=0 200ms, part 2/10 at t=0.2, part 3/10 at t=0.4 building to full 2s segment; viewer sends blocking GET manifest blocked at CDN until next part ready, response part 3/10 URI fetch part buffer play, end-to-end latency ~1.4s 200ms encode 200ms CDN push 200ms manifest plus buffer. Latency comparison bar chart WebRTC &lt;500ms LL-HLS ~1-2s standard HLS 6-30s. Chat scale fan-out at 100k viewers: message → chat API → Redis pub/sub → chat pod 1 pod 2 pod N each pod handles 5k WebSocket connections 100k viewers = 20 pods, broadcast Redis pub → all pods → each pod pushes to 5k connections, message max 500 chars filter toxic before fan-out, heavy stream &gt;100 msg/s sample mode send 1 in N skip rest, rate 1 msg/500ms per user slow-mode override 1-30s, persistence last 1h in Cassandra append-only TTL 24h. Viewer buffer states IDLE offline → BUFFERING → PLAYING → REBUFFERING and recovery rebuffer detected &gt;0.5s buffer gap drop to 360p immediately fetch next part lowest quality fill buffer slowly step up, rebuffer ratio = rebuffer seconds / watch time target &lt;0.5%, TTFF target &lt;2s for live edge join. Stream health indicators HEALTHY amber DEGRADED red BROKEN. DVR segments archived S3 2s cadence manifest extended backward EXT-X-PROGRAM-DATE-TIME viewer seeks -30min manifest HEAD=now-30min S3 lifecycle 4h TTL live DVR 90-day VOD. Viewer join flow 1 GET /stream/:id/manifest redirect CDN 2 parse manifest select highest sustainable rendition 3 buffer 3 parts 600ms start playback TTFF &lt;2s 4 subscribe WebSocket room receive chat reactions viewer count."
-          caption="LL-HLS partial segment timeline (1.4s latency budget), chat fan-out architecture (Redis pub/sub → 20 pods → 100k viewers), buffer state machine with rebuffer recovery, stream health indicators, DVR architecture, and viewer join flow"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">LL-HLS versus WebRTC for low-latency delivery: LL-HLS scales to millions of viewers via CDN and achieves 1–2 second latency—sufficient for most interactive streaming. WebRTC achieves under 500ms but requires a dedicated SFU (Selective Forwarding Unit) that maintains a peer connection to each viewer, limiting scale to ~10,000 concurrent viewers per SFU instance. For most streaming platforms, LL-HLS is the correct choice for scale. WebRTC is reserved for high-stakes interactive applications (live auctions, interactive gaming) where the 1-second LL-HLS latency difference materially affects the product experience.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Chat persistence: chat messages for live streams are ephemeral in nature—viewers watching a replay rarely scroll through the original chat in real time. Persisting every message to a relational database at 3,000 messages per second would create significant write pressure. A time-series store (Apache Cassandra with a TTL of 24 hours for live chat, 90 days for VOD chat replay) handles the write throughput efficiently. For VOD replay, chat messages are replayed at the same relative timestamp as the original stream, creating the feeling of watching with the original audience.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Ingest redundancy: the broadcaster's connection is a single point of failure. If the ingest server goes down mid-stream, the stream ends abruptly. To mitigate this, broadcasters can configure two ingest destinations (primary and backup) in their streaming software. The platform detects a primary ingest failure and automatically promotes the backup ingest stream within 5 seconds. The viewer's player may stall briefly during the failover but will recover when the CDN manifests are updated with segments from the backup ingest.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A live streaming platform has two independently scaled systems: video delivery and interactive features. Video delivery uses RTMP ingest → FFmpeg transcoding to rendition ladder → LL-HLS packaging (200ms partial segments + blocking playlist reload) → CDN push delivery → HLS.js ABR player, achieving 1–2 second glass-to-glass latency at CDN scale. WebRTC is an alternative ingest and delivery path for under-500ms interactive use cases at lower scale. Interactive features (chat, reactions, viewer count, polls) use a WebSocket cluster with Redis pub/sub fan-out: each chat server pod handles 5,000 WebSocket connections; Redis pub/sub delivers messages to all pods for broadcast to their connections. Chat rate limiting (1 message/500ms per user), slow-mode control, and message sampling for high-volume streams prevent browser thrashing. Viewer count uses Redis HyperLogLog (12 KB, ~1% error). DVR archives segments to S3 with EXT-X-PROGRAM-DATE-TIME tags in the manifest, enabling time-shifted playback up to 4 hours back. The broadcaster dashboard receives real-time health metrics (bitrate, dropped frames, viewer count) via WebSocket from the ingest server. The defining architectural constraint is that video delivery and chat must be independently scaled—CDN handles video fan-out without per-viewer server connections; WebSocket pods handle chat fan-out without touching the video delivery path.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

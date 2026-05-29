@@ -7,108 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-frontend-for-a-no-code-low-code-builder",
-  title: "Design a Frontend for a No-Code / Low-Code Builder",
-  description:
-    "Architecture for a no-code / low-code builder: canvas rendering, drag-and-drop, component schema, live preview, formula engine, and extensibility for custom code.",
+  title: "Design a Frontend for a No-code/Low-code Builder",
+  description: "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance.",
   category: "high-level-design",
   subcategory: "platform-sdk-infra-systems",
   slug: "frontend-for-a-no-code-low-code-builder",
-  wordCount: 5500,
-  readingTime: 33,
-  lastUpdated: "2026-05-10",
-  tags: ["hld", "no-code", "low-code", "builder", "drag-and-drop", "formula-engine"],
-  relatedTopics: ["frontend-architecture-for-an-internal-developer-platform", "plugin-extension-marketplace-ui"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "platform", "sdk", "infrastructure", "governance", "observability"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Frontend for a No-code/Low-code Builder is a platform system, which means the product is not only the UI that users see but also the contract other teams, tenants, developers, plugins, SDKs, or automation depend on. A principal-ready design treats a no-code/low-code builder frontend as a versioned control plane with operational guarantees.",
+  "The design must define ownership boundaries, compatibility rules, tenant isolation, permission enforcement, rollout mechanics, observability, rollback, and support operations. Platform systems fail differently from normal product screens because a bad release can break many downstream teams or external customers at once.",
+  "The visible dashboard or SDK should be backed by durable state: configuration versions, release channels, manifests, audit logs, policy decisions, dependency graph, tenant scopes, and operational history. Derived views such as impact analysis, metrics, install status, and rollout health can lag if they are observable and repairable.",
+  "A staff/principal answer should make the platform contract explicit. Who can publish? Who can install? What is backward compatible? What happens when a plugin, SDK, flag, deployment, token, or tenant job misbehaves? How do teams roll back without corrupting customer state?",
+  "The design should also include governance. Platform features need approvals, blast-radius limits, staged rollout, auditability, and usage visibility because they frequently grant power to other teams or external developers."
+];
+const concepts = [
+  "The first concept is contract-first design. schema editor, component registry, and preview runtime should expose stable schemas, versioned APIs, documented lifecycle states, and compatibility guarantees. Hidden contracts are what make platform migrations painful.",
+  "The second concept is isolation. Tenants, projects, plugins, SDK integrations, build jobs, and admin actions should be scoped so a mistake or malicious actor cannot affect unrelated users. Isolation applies to data, permissions, compute, rollout, and telemetry.",
+  "The third concept is versioning and rollout. Platform artifacts should support draft, approved, staged, active, deprecated, and rolled-back states. The UI should show which version is used where and who owns it.",
+  "The fourth concept is operational feedback. A platform UI should not only let users change state; it should show health, lag, adoption, errors, blast radius, and rollback readiness before and after the change.",
+  "The fifth concept is permission and audit. Admin actions, SDK configuration, plugin install, feature rollout, tenant bulk jobs, and deployment changes should be authorized, recorded, reviewable, and reversible where possible.",
+  "The sixth concept is developer experience. Good platform systems reduce cognitive load with safe defaults, schema validation, preview environments, dry runs, examples, error explanations, and migration guidance."
+];
+const architecture = [
+  "The architecture contains schema editor, component registry, preview runtime, extension sandbox, publish pipeline. The control plane stores configuration, versions, ownership, approvals, and audit. The execution plane applies changes through SDKs, plugins, build systems, rollout engines, or tenant jobs. The observability plane measures impact and supports rollback.",
+  "Every change should have an identity: actor, target scope, version, policy decision, approval state, rollout percentage, dependency impact, and correlation ID. Without this metadata, support and incident response cannot reconstruct what happened.",
+  "The frontend should render lifecycle state explicitly: draft, validating, approved, staged, active, partially rolled out, blocked, deprecated, failed, or rolled back. Platform users need to understand whether a change is safe to proceed, not just whether a form submitted.",
+  "The system should support dry-run or preview. Before applying a flag, plugin install, tenant bulk job, deployment, SDK config, or component release, users should see affected projects, tenants, permissions, compatibility warnings, and estimated blast radius.",
+  "Rollback should be designed as a product path. Some state can be reverted directly; some requires compensating changes; some must be disabled at runtime while data cleanup happens asynchronously. The UI should make these differences visible.",
+  "Platform observability should connect user-visible changes to downstream symptoms: SDK errors, plugin crashes, build failures, tenant job failures, RUM regressions, permission denials, adoption metrics, and support tickets."
+];
+const tradeoffs = [
+  "Centralized platforms improve consistency, governance, and reuse, but they can become bottlenecks if every team waits for the platform team. Extensibility and self-service reduce bottlenecks but increase policy and compatibility risk.",
+  "Strict compatibility protects consumers but slows innovation. Fast-moving APIs or components let teams ship quickly but create migration debt. Mature platforms define support windows, deprecation workflows, and compatibility tests.",
+  "Runtime configuration gives fast rollback and experimentation, but it creates distributed state that can drift across SDK caches, edge nodes, tenants, and clients. Build-time configuration is simpler but slower to change during incidents.",
+  "Plugin and extension ecosystems increase platform value but introduce supply-chain, permission, performance, and trust risks. Sandboxing, manifest review, version pinning, and kill switches are not optional.",
+  "High-cardinality observability improves debugging but can become expensive and privacy-sensitive. Principal designs sample intelligently, aggregate by stable dimensions, and restrict raw event access.",
+  "Self-service bulk operations improve admin productivity but can create large blast radius. Dry runs, approvals, quotas, staged execution, pause/resume, and audit logs are the trade-off that makes self-service safe."
+];
+const practices = [
+  "Represent platform artifacts with explicit lifecycle state, owner, version, scope, dependencies, approval, rollout status, and audit history.",
+  "Build validation into authoring. Catch schema errors, permission violations, dependency breaks, accessibility regressions, privacy issues, and compatibility problems before publish or install.",
+  "Use staged rollout and blast-radius limits. Platform changes should support canary, tenant allowlists, percentage rollout, automatic stop on guardrail failures, and one-click disable where safe.",
+  "Keep execution idempotent. Deployments, plugin installs, SDK config updates, tenant bulk jobs, and flag changes should converge after retries rather than duplicate work.",
+  "Enforce least privilege. Extensions, support tools, admin dashboards, SDK keys, and workflow runners should receive narrow scoped permissions with audit trails.",
+  "Expose operational truth in the UI. Users should see queue state, rollout health, adoption, errors, stale clients, incompatible versions, and rollback options.",
+  "Design support tooling. Operators need to inspect which version, plugin, flag, token, deployment, or tenant job affected a customer without querying raw databases."
+];
+const pitfalls = [
+  "invalid schema usually means the platform lacks compatibility gates, staged rollout, or blast-radius controls. Platform failures multiply because many teams depend on one surface.",
+  "unsafe extension often comes from treating permissions or integration boundaries as documentation instead of enforceable runtime policy.",
+  "preview drift is a state-distribution problem. SDK caches, build artifacts, edge nodes, tenants, and clients may observe different versions unless the design tracks propagation and freshness.",
+  "publish rollback requires rollback and audit. Platform users should know whether they can disable, revert, compensate, or escalate the issue.",
+  "Another pitfall is measuring adoption without measuring harm. A platform can be widely used and still create latency, privacy, accessibility, compatibility, or support problems.",
+  "Teams also forget deprecation. Old SDKs, plugins, components, flags, and deployment settings remain in production long after the happy-path migration guide is written."
+];
+const useCases = [
+  "form builder requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "workflow builder requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "internal app builder requires versioned contracts, safe rollout, scoped permissions, observability, and a clear rollback path.",
+  "During a bad rollout, the system should identify affected tenants or projects, stop further rollout, disable the runtime path if possible, and preserve audit evidence.",
+  "During a compatibility break, owners should see consumers, version usage, failing checks, migration status, and deprecation deadlines.",
+  "During an abuse or supply-chain incident, the platform should revoke permissions, disable extensions or keys, notify affected owners, and support forensic review."
+];
+const questions = [
+  {
+    "question": "How would you design a no-code/low-code builder frontend end to end?",
+    "answer": "I would model it as a platform control plane plus execution plane. The control plane stores versions, ownership, permissions, approvals, rollout state, and audit history. The execution plane applies changes through SDKs, plugins, workflows, deployments, tenant jobs, or runtime config. The UI supports validation, preview, staged rollout, health monitoring, and rollback. Observability connects platform changes to downstream customer impact."
+  },
+  {
+    "question": "Why this architecture over a simple admin dashboard or SDK config page?",
+    "answer": "A simple dashboard can mutate state but cannot safely manage platform contracts, compatibility, blast radius, tenant isolation, approvals, or rollback. Platform systems need lifecycle and governance because one change can affect many downstream consumers. The additional control-plane complexity is justified by operational risk."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are invalid schema, unsafe extension, preview drift, publish rollback, plus stale clients, incompatible versions, high-cardinality telemetry, queue backlogs, cross-tenant leakage, support overload, and uncontrolled blast radius. Prevention requires versioning, validation, staged rollout, idempotent execution, scoped permissions, and observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative configuration, permissions, ownership, approvals, and audit entries need strong server-controlled consistency. Runtime propagation to SDKs, edge nodes, build systems, dashboards, and tenants is often eventually consistent, but it must expose version and freshness. Rollback should target both control-plane state and distributed runtime state."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with dry runs, staged rollout, automatic guardrails, pause/resume, and rollback controls. Abuse is handled through least privilege, sandboxing, review, and key/plugin revocation. Privacy requires scoped telemetry and data minimization. Cost is controlled through sampling, quotas, batch execution, and cardinality limits. Observability tracks rollout health, adoption, error rates, stale versions, queue lag, and customer impact."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would argue that platform surfaces are leverage points, so governance is not bureaucracy; it is blast-radius control. I would defend self-service only when paired with validation, approvals for high-risk changes, staged rollout, and rollback. I would also distinguish authoritative control-plane consistency from eventually consistent runtime propagation."
+  }
+];
+const references = [
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "W3C Web Components",
+    "href": "https://www.w3.org/TR/components-intro/"
+  },
+  {
+    "label": "OWASP Third Party JavaScript Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Third_Party_Javascript_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  },
+  {
+    "label": "Cloudflare Workers platform docs",
+    "href": "https://developers.cloudflare.com/workers/"
+  }
+];
 
 export default function FrontendForANoCodeLowCodeBuilderArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 2 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A no-code / low-code builder lets non-engineers (and optionally engineers) create functional applications by composing UI components on a visual canvas, connecting them to data sources, and expressing logic through visual programming constructs (formulas, event handlers, conditional visibility rules) rather than imperative code. Examples: Retool (low-code internal tools), Webflow (no-code website builder), Airtable (no-code database + views), Bubble (full-stack no-code). The builder must solve two distinct frontend problems simultaneously: the builder UI (the environment where users create and edit their apps) and the runtime UI (the environment where end users use the created apps).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The builder UI challenges: a drag-and-drop canvas that supports responsive layout, overlapping z-layers, nested containers, and pixel-precise or grid-snapped positioning; a formula engine that evaluates expressions binding UI components to data source values; a live preview that shows the runtime UI as users edit; undo/redo with operation granularity; and a component property panel for configuring selected components. The runtime UI challenges: rendering the app definition (a JSON schema) into functional UI, evaluating formula bindings, handling user interactions (button clicks, form submissions), and fetching/mutating data from connected data sources.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The platform targets building internal tools (dashboards, admin panels, data entry forms). The primary personas are developers who want to move fast without writing boilerplate, and non-engineers who can manage simple data workflows. The builder supports a fixed set of built-in components (table, form, button, chart, image, text, input). Custom component extensibility uses a code editor (TypeScript/React) for low-code users. The app definition is stored as a JSON document. Apps are deployed to a platform-hosted runtime URL or exported as a Next.js project.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-for-a-no-code-low-code-builder-architecture.svg" alt="Design a Frontend for a No-code/Low-code Builder architecture" caption="Architecture view: control plane, execution plane, permissions, versioning, and observability boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-for-a-no-code-low-code-builder-workflow.svg" alt="Design a Frontend for a No-code/Low-code Builder flow" caption="Flow view: authoring, validation, rollout, execution, health checks, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-for-a-no-code-low-code-builder-extensibility.svg" alt="Design a Frontend for a No-code/Low-code Builder operations" caption="Operations view: blast radius, stale versions, abuse controls, cost, privacy, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Visual canvas:</strong> Users drag components from a palette onto a canvas. Components can be resized, repositioned, nested in containers, and aligned using grid snapping or pixel positioning.</li>
-          <li><strong>Component configuration:</strong> Selecting a component opens a property panel showing all configurable properties. Properties accept literal values or formula expressions binding to data source values or other component states.</li>
-          <li><strong>Formula engine:</strong> A JavaScript-subset formula language (similar to spreadsheet formulas) binds component properties to dynamic values: table.data[0].name, button.disabled = form.loading, text.color = input.value === 'error' ? 'red' : 'black'.</li>
-          <li><strong>Data sources:</strong> Built-in connectors for REST APIs, GraphQL, PostgreSQL, MySQL, Google Sheets. Query results are available as data source objects in formulas.</li>
-          <li><strong>Live preview:</strong> A preview panel renders the runtime UI in real-time as the user edits, showing the app as end users will see it with real data.</li>
-          <li><strong>Undo/redo:</strong> All canvas edits are undoable (Ctrl+Z) with granularity at the individual action level (each drag, resize, property change is one undo step).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Canvas performance:</strong> Apps with 100 components on the canvas must render at 60fps during drag operations.</li>
-          <li><strong>Formula evaluation latency:</strong> Formula re-evaluation on user input must complete in under 16ms (one frame) for formulas with up to 50 bindings.</li>
-          <li><strong>App definition size:</strong> Apps with 200 components must have an app definition JSON under 500KB.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The builder has two co-running UIs: the builder canvas (the editing environment) and the preview iframe (the runtime environment). The app definition—a JSON document describing all components, their properties, layout, and data source bindings—is the shared state between them. The builder canvas edits the app definition; the preview iframe renders it. Changes to the app definition are transmitted to the preview iframe via postMessage; the runtime re-renders the changed components. The separation of builder and runtime into different JavaScript contexts (the preview runs in a sandboxed iframe) prevents the runtime's components from interfering with the builder's UI and vice versa.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-for-a-no-code-low-code-builder-architecture.svg"
-          alt="No-code builder architecture showing builder canvas (drag-and-drop, component palette, property panel, formula editor), app definition JSON (single source of truth, versioned), preview iframe (sandboxed runtime, renders app definition, evaluates formulas, fetches data sources), postMessage protocol (definition updates → runtime re-render; runtime events → builder selection sync), formula engine (AST parser, dependency graph, topological evaluation), and undo/redo stack (operation log with inverse operations)."
-          caption="Builder architecture: canvas edits app definition JSON → postMessage to preview iframe runtime, formula engine with dependency graph, operation log for undo/redo"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">App Definition Schema</h3>
-        <p>The app definition is a JSON document with three top-level sections: components (a flat map of componentId to component descriptor), layout (a tree structure defining the spatial arrangement and nesting of components), and dataSources (a map of dataSourceId to connector configuration and query definition). Each component descriptor has: id, type (table, button, input, chart), properties (a map of property name to either a literal value or a formula string), and style (position, size, z-index in the layout grid).</p>
-        <HighlightBlock as="p" tier="important">The flat component map (rather than a tree) is a deliberate design choice. Trees are natural for representing nested layouts but make certain operations expensive: finding all components of a type requires a depth-first traversal of the tree; moving a component from one parent to another requires mutations at two tree nodes. The flat map makes both operations O(1): looking up a component is a dictionary lookup; reparenting requires updating only the layout tree (not the component map). The layout tree stores componentId references, not component descriptors, so it is small and fast to traverse. This two-data-structure approach (flat map for component data, tree for layout) is used by Figma's design document model for the same reasons.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Versioning: each save of the app definition creates a new version in the version history, stored as a binary diff against the previous version (using the Myers diff algorithm on the JSON lines). This allows compact version storage (a small property change creates a small diff) and fast version viewing (apply diffs forward/backward from any checkpoint). The version history is used for undo/redo (in-session, in-memory), version history browsing (cross-session, database-backed), and collaborative editing (merging concurrent changes from multiple editors).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Canvas Drag-and-Drop and Layout</h3>
-        <HighlightBlock as="p" tier="important">The canvas uses a CSS grid layout for alignment: an invisible grid overlay with configurable cell size (default 8px) provides snap-to-grid alignment. During drag operations, the component being dragged is positioned absolutely using CSS transform: translate(x, y) (not top/left—transforms do not cause layout reflow and are GPU-accelerated). The snap calculation happens in the mousemove handler: the raw mouse coordinates are rounded to the nearest grid cell before being applied as the transform values. This produces a smooth snapping effect at 60fps because transform changes are handled by the compositor thread without triggering layout.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Nested containers: a component can be a container (a group that holds other components). Drag-and-drop into a container changes the component's parent in the layout tree. During a drag, the canvas detects hover over container components (by checking which container's bounding box contains the cursor) and highlights the target container. On drop, the component is reparented to the highlighted container. Container components clip their children (overflow: hidden) so children outside the container bounds are not visible.</HighlightBlock>
-        <p>Multi-select: users can select multiple components by drawing a selection rectangle (lasso select) or by Shift-clicking individual components. The selection rectangle is drawn as an SVG element overlaid on the canvas. All components whose bounding boxes intersect the selection rectangle are added to the selection set. Multi-selected components can be moved, resized, grouped, or deleted as a unit. The property panel shows only properties that are common to all selected component types when multiple components are selected.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Formula Engine</h3>
-        <p>The formula engine evaluates expressions that bind component properties to dynamic values. Formulas are strings that look like JavaScript expressions: &#123;&#123;table1.selectedRow.name&#125;&#125; in a text component's content property means "the name field of table1's currently selected row." The formula engine parses each formula into an AST, extracts the dependencies (which component states and data source fields the formula reads), and registers the formula as a subscriber to those dependencies.</p>
-        <HighlightBlock as="p" tier="important">Dependency graph: the formula engine maintains a directed dependency graph where edges represent "formula F reads from state S." When state S changes (a user interacts with a component, or a data source fetch returns new data), the formula engine performs a topological traversal of the dependency graph starting from S and re-evaluates all formulas that transitively depend on S, in topological order (so a formula that depends on another formula's output is evaluated after its dependency). This ensures consistent evaluation regardless of the order in which subscriptions fire and prevents infinite loops (topological sort detects cycles and reports them as formula errors).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Formula sandbox: formulas are evaluated in a sandboxed JavaScript execution context (a restricted eval or a custom interpreter) that has access only to the component state object and a set of allowed functions (math operations, string utilities, date formatting). The sandbox does not have access to window, document, fetch, or any global that could be used to make network requests, read cookies, or exfiltrate data. This sandbox is essential for user-generated formulas in a multi-tenant environment—a formula written by one user cannot affect other users' data or the platform's security.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Runtime Rendering in the Preview Iframe</h3>
-        <p>The preview iframe loads the runtime engine: a React application that reads the app definition (passed via postMessage from the builder) and renders it as functional UI. Each component type has a runtime renderer: the table type renders a data grid connected to its data source; the button type renders an HTML button with an onClick handler that triggers the configured action (run a query, navigate, set a component's state). The runtime renders the app definition recursively from the layout tree root.</p>
-        <p>Incremental updates: when the user edits a property in the builder, only the changed component's renderer is re-evaluated in the runtime, not the entire app. The builder sends a targeted update message (&#123;type: 'UPDATE_COMPONENT', componentId, property, value&#125;) to the runtime iframe. The runtime applies the update to its local copy of the app definition and triggers a React state update only for the affected component, using React's reconciliation to avoid full re-renders. For formula-bound properties, the formula engine in the runtime re-evaluates only the affected formula and any transitively dependent formulas.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Undo/Redo and Collaboration</h3>
-        <p>Undo/redo is implemented as an operation log: each canvas action (move component, resize, change property, add component, delete component) appends an operation to the log with the forward operation and its inverse. Undo applies the inverse of the last operation; redo applies the forward operation of the most recently undone step. The log is in-memory (cleared on page refresh) and bounded to the last 100 operations. Operations are designed to be composable: a "move component 20px to the right" operation has a clean inverse ("move component 20px to the left"), making the undo/redo implementation straightforward.</p>
-        <HighlightBlock as="p" tier="important">Collaborative editing: when multiple builders edit the same app simultaneously, changes from one builder must be merged with the other's in-progress edits. This is the same problem as the collaborative editor, and the solution is similar: operations are OT-transformed (for simple property changes, last-write-wins is sufficient; for structural changes like add/delete component, OT is needed to avoid conflicts). For most no-code builders, collaborative editing is a premium feature with limited concurrent editor counts (2–5 simultaneous editors), making simpler conflict resolution (optimistic last-write-wins with a "someone else made a change" notification and a refresh option) sufficient for the initial implementation.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/platform-sdk-infra-systems/frontend-for-a-no-code-low-code-builder-workflow.svg"
-          alt="No-code builder workflow showing app definition JSON as shared state, builder canvas → edit operation → operation log (undo/redo) → app definition update → postMessage to preview iframe, formula engine dependency graph (AST parse → dependency extraction → topological re-evaluation on state change), data source fetch (query execution on backend, results injected into formula context), and runtime iframe rendering (component type → renderer → React tree, incremental UPDATE_COMPONENT messages)."
-          caption="Builder workflow: edit → operation log → app definition → postMessage → runtime re-render, formula dependency graph topological evaluation, incremental component updates"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Sandboxed formula evaluation: a custom interpreter (evaluating the formula AST in JavaScript without calling eval) is safer than eval-in-iframe but more complex to implement and slower for complex expressions. A Web Worker-based sandbox (running eval in a Worker with no DOM access) is simpler to implement than a custom interpreter but still allows some dangerous operations (Workers can make fetch requests). The recommended approach: a custom interpreter for formulas (it can enforce arbitrary restrictions and is the industry standard for spreadsheet formula engines), with the Worker sandbox as a fallback for the escape hatch "run custom JavaScript" feature available to low-code users. The formula language should be intentionally limited—if users need arbitrary code, the escape hatch is there for that.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Canvas rendering approach: rendering the canvas in React (with CSS for layout) is the most familiar approach but has performance limits—React's reconciliation is not designed for 60fps drag operations over 100+ components. An alternative is a canvas-rendered UI (all components drawn to a 2D canvas), which is faster for large component counts but loses native browser interactions (text selection, accessibility, form inputs must all be custom-implemented). The hybrid approach used by Figma (DOM for interactive elements, canvas for decorative elements) provides the best of both: form inputs and text are native DOM elements (accessible, native behavior), while selection handles and alignment overlays are canvas-drawn (no DOM overhead). For a no-code builder, pure React with CSS transforms is sufficient for up to 100 components; beyond that, progressive rendering (only rendering visible components based on the canvas viewport) keeps performance acceptable.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Export versus hosted runtime: allowing users to export their app as a Next.js project (extracting the app definition into static React components) provides escape velocity—users who outgrow the no-code platform can take their work with them. However, exported apps immediately diverge from the platform's runtime (they no longer receive platform updates), and users cannot import the exported project back into the builder. The hosted runtime (apps always run on the platform) avoids divergence and allows the platform to update the runtime seamlessly, but creates vendor lock-in. Most commercial platforms offer export as a premium feature while emphasizing the hosted runtime for the majority of users.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A no-code / low-code builder frontend has two co-running UIs: the builder canvas (editing environment) and a sandboxed preview iframe (runtime environment), connected by the app definition JSON as shared state transmitted via postMessage. The app definition uses a flat component map (O(1) lookup) plus a separate layout tree (for nesting relationships), which separates component data from spatial structure. Canvas drag-and-drop uses CSS transform for 60fps GPU-accelerated movement with grid snap (8px cell rounding in the mousemove handler). The formula engine maintains a dependency graph (AST parse → dependency extraction), re-evaluating only affected formulas in topological order when component state changes. Formulas run in a custom interpreter sandbox (no fetch, no DOM, no globals) for security in a multi-tenant context. The runtime iframe renders the app definition recursively by component type; incremental UPDATE_COMPONENT messages trigger targeted React state updates (not full re-renders). Undo/redo uses an in-memory operation log with forward and inverse operations. The fundamental architectural decision is the builder-runtime separation via iframe: it isolates builder JavaScript from runtime JavaScript, prevents runtime component code from breaking the builder, and allows the runtime to be upgraded independently of the builder canvas.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

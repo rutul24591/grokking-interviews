@@ -1,1 +1,5 @@
-# Design a CI/CD dashboard (like GitHub Actions) — Example 3
+# CI CD Dashboard - Example 3
+
+Concrete developer platform edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

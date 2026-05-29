@@ -1,1 +1,5 @@
-# Design frontend for 1M+ concurrent users — Example 2
+# Frontend FOR 1M Concurrent Users - Example 2
+
+Concrete performance production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

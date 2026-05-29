@@ -9,13 +9,13 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-responsive-cross-device-architecture",
   title: "Design a Responsive Cross-Device Frontend Architecture",
   description:
-    "Architecture for a responsive cross-device frontend: fluid grid systems with CSS custom properties, container queries for component-level breakpoints, adaptive image delivery with srcset and art direction, device capability detection for progressive enhancement, touch vs pointer event normalization, viewport-relative typography with clamp(), responsive navigation patterns (hamburger to full nav), and performance budgets per device tier with resource hints for network-adaptive loading.",
+    "Principal-level design of a responsive frontend architecture across phones, tablets, desktops, foldables, and low-end devices using design tokens, container queries, adaptive media, input normalization, accessibility, and performance budgets.",
   category: "high-level-design",
   subcategory: "cross-platform-mobile-systems",
   slug: "responsive-cross-device-architecture",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
   tags: ["hld", "responsive-design", "cross-device", "container-queries", "adaptive-images", "progressive-enhancement", "touch-events", "performance-budget", "viewport"],
   relatedTopics: ["pwa-offline-sync", "web-react-native-shared-system"],
 };
@@ -24,73 +24,224 @@ export default function ResponsiveCrossDeviceArchitectureArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A responsive cross-device frontend architecture serves the same application across smartphones, tablets, laptops, desktops, smart TVs, and emerging form factors (foldable phones, ultra-wide monitors) without maintaining separate codebases. The goal is not just layout adaptation — it is delivering the optimal experience for each context: a mobile user on a 3G connection needs a lightweight, thumb-friendly interface; a desktop user on fiber needs an information-dense, mouse-optimized layout. These are not the same page resized — they are the same content delivered with context-aware presentation and performance characteristics.</HighlightBlock>
-        <p>The shift from media-query-based responsive design (adapting to the viewport size) to component-level responsiveness (adapting to the container a component lives in) is the defining architectural evolution. A card component that works in a sidebar column should reflow differently when placed in a full-width content area — the viewport width tells you nothing useful about the space available to the component. Container queries solve this by letting components respond to their own available space, enabling truly portable, context-independent components.</p>
-        <p><strong>Explicit scope:</strong> CSS architecture for responsiveness, adaptive image delivery, touch/pointer event handling, viewport typography, responsive navigation, and performance budgeting by device tier. Not in scope: React Native code sharing, server-side device detection middleware, or adaptive server-side rendering strategies.</p>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          A responsive cross-device frontend architecture delivers one product experience across phones, tablets, desktops, foldables, smart displays, embedded browsers, and assistive technologies without maintaining separate application codebases for every form factor. The goal is broader than resizing layouts. The architecture must adapt information density, navigation, input model, media quality, accessibility behavior, and performance cost to the user&apos;s current context.
+        </p>
+        <HighlightBlock as="p" tier="crucial">
+          Principal-level responsive design is a systems problem. It joins design tokens, component contracts, content modeling, rendering performance, asset delivery, accessibility, input semantics, observability, and organizational governance. A page that merely fits on mobile is not the same as an architecture that scales across product teams and device classes.
+        </HighlightBlock>
+        <p>
+          This design is important for marketplaces, dashboards, SaaS admin tools, banking portals, healthcare workflows, learning platforms, and media products where users frequently switch between devices. The same user may start on a phone, continue on a tablet, and finish on a desktop. The frontend should preserve task continuity while making the best use of the available screen, input precision, network quality, and device capability.
+        </p>
+        <p>
+          The architecture should avoid two extremes. One extreme is device-specific forks that duplicate routes, components, analytics, and accessibility behavior. The other is one fluid layout that ignores device capabilities and produces cramped mobile views or wasteful desktop views. The stronger approach is shared product semantics with adaptive presentation and delivery.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Fluid layout system:</strong> The layout uses a 12-column CSS grid with fluid gutters (using CSS clamp() for column gaps: clamp(1rem, 2vw, 2rem)). Components declare their column span using CSS custom properties (--col-span: 12 on mobile, --col-span: 6 on tablet, --col-span: 4 on desktop). The grid container uses container-type: inline-size so child components can use container queries. This separates layout responsibility: the grid manages column distribution; components manage their own internal layout via container queries on their nearest ancestor container. Page-level layout shifts are controlled by aspect-ratio on placeholder elements — images and embeds reserve their space before loading to prevent Cumulative Layout Shift (CLS).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Container query breakpoints:</strong> Components define their responsive behavior using @container queries rather than @media queries. A ProductCard component: @container (min-width: 300px) shows a horizontal layout (image left, text right); below 300px it shows a vertical stack. This makes ProductCard portable — it works correctly whether placed in a 3-column grid on desktop or a single-column feed on mobile, without any per-page CSS overrides. Container queries require the component's wrapper element to declare container-type: inline-size. Design token breakpoints are shared across components using CSS custom properties (--breakpoint-sm: 320px defined on :root).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Adaptive image delivery:</strong> Images use the srcset + sizes attributes for resolution switching: srcset="image-400.webp 400w, image-800.webp 800w, image-1200.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw". Art direction (serving different image crops for different aspect ratios) uses the &lt;picture&gt; element with &lt;source media="(max-width: 600px)" srcset="image-portrait.webp"&gt;. Images are served in WebP with AVIF offered first (AVIF is ~50% smaller than WebP but has lower browser support — the browser chooses the best format it supports). Image dimensions are known at build time and embedded in the HTML to prevent layout shifts.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Responsive navigation:</strong> Navigation adapts across three patterns: (1) mobile (&lt;768px): hamburger menu — a full-screen overlay drawer triggered by a &lt;button&gt; with aria-expanded and aria-controls pointing to the nav element; focus is trapped inside the drawer while open (using a focus trap utility); Escape closes it. (2) tablet (768px–1200px): a collapsible sidebar or icon-only nav with tooltips. (3) desktop (&gt;1200px): a full horizontal nav bar or persistent sidebar. The navigation component uses a single React component with state (isOpen, currentBreakpoint) — no separate MobileNav and DesktopNav components, which would require duplicate link lists and degrade accessibility (duplicate links in the DOM confuse screen readers).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Touch and pointer event normalization:</strong> Touch devices fire touchstart/touchmove/touchend events; pointer devices fire mouseover/mousedown/mouseup; modern devices fire Pointer Events API events (pointerdown, pointermove, pointerup) that unify both. The architecture uses Pointer Events exclusively (supported in all modern browsers) and sets touch-action: pan-y on scroll containers to prevent the browser from delaying touch events while waiting to determine if the user intends to scroll or interact. Hover states (CSS :hover) are only applied conditionally — on touch devices, a tapped element should not show a hover state that persists after the touch ends. Conditional hover: @media (hover: hover) and (pointer: fine) &#123; button:hover &#123; background: var(--hover-bg); &#125; &#125; — this targets only devices with a precision pointer (mouse) that has a true hover capability.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Viewport-relative typography:</strong> Font sizes use clamp() for fluid scaling: font-size: clamp(1rem, 0.5rem + 2vw, 1.5rem) — this scales linearly between 1rem at the minimum viewport width and 1.5rem at the maximum, with no abrupt jumps at breakpoints. Line length is controlled with ch units: max-width: 75ch on prose containers (75 characters is the optimal reading line length). Display headings use a larger clamp range (clamp(2rem, 4vw + 1rem, 4rem)) for dramatic scaling on large screens. All font-size values use rem (relative to the root font size, respecting user browser preferences) never px — overriding user font size preferences with fixed px sizes is an accessibility failure.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Performance budget by device tier:</strong> Three device tiers: low-end (CPU score &lt;4 on Android, 2G/3G connection), mid-range (average smartphone, 4G), high-end (flagship phone or desktop, WiFi/fiber). The budget: low-end — total JavaScript &lt;100KB gzipped, no animation, no web fonts (system font stack only), images at 50% quality; mid-range — JS &lt;200KB, reduced-motion animations, one web font; high-end — JS &lt;500KB, full animations, multiple fonts. Device tier is detected via the Network Information API (navigator.connection.effectiveType) and navigator.hardwareConcurrency. The React app lazy-loads feature modules based on tier: the animation library (Framer Motion, ~60KB) is only loaded on high-end devices.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Design tokens are the foundation. Primitive tokens describe raw values such as color scales and spacing increments. Semantic tokens describe intent such as primary text, critical action, page surface, or subtle border. Component tokens bind those semantics to a component&apos;s local parts. This layering lets themes, density modes, and brand adjustments happen without rewriting every component.
+        </p>
+        <p>
+          Container queries move responsiveness from the page to the component. A card should adapt to the space allocated by its parent, not to the global viewport. The same card might appear in a narrow sidebar, a two-column tablet grid, a dense desktop table-adjacent panel, or a full-width mobile feed. Component-level responsiveness makes design-system components portable across layouts.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Responsive architecture should distinguish viewport adaptation, container adaptation, capability adaptation, and preference adaptation. Viewport answers how much screen exists. Container answers how much space a component has. Capability answers whether the device supports hover, fine pointer, high bandwidth, or enough CPU. Preference answers what the user has requested, such as reduced motion, larger text, dark mode, or data saving.
+        </HighlightBlock>
+        <p>
+          Adaptive media delivery prevents the responsive layout from becoming a bandwidth problem. Images should be delivered in sizes and formats appropriate to the rendered slot, not to the largest possible desktop asset. Art direction may require different crops for portrait mobile, landscape tablet, and wide desktop. Known intrinsic dimensions and stable aspect ratios prevent layout shifts.
+        </p>
+        <p>
+          Input normalization is essential because viewport size does not reliably identify input type. A tablet may have a keyboard and trackpad. A laptop may have a touch screen. A phone may connect to an external display. The architecture should use pointer and hover capability queries, not mobile user-agent assumptions, and should keep keyboard and screen-reader interaction paths first-class.
+        </p>
+        <p>
+          Performance budgets must vary by device and connection, but user preference should override capability. A high-end device with data saver enabled should still receive reduced payload. A low-end device on fast Wi-Fi should not automatically receive heavy animation if CPU and memory cannot sustain it. Budgeting should consider JavaScript, CSS, images, fonts, hydration cost, main-thread work, and layout stability.
+        </p>
+        <p>
+          Content modeling is part of responsiveness. If the desktop design depends on eight columns of metadata and the mobile design hides six of them, the architecture needs a declared priority model rather than ad hoc CSS hiding. Each field should be classified as essential, supporting, contextual, or optional per workflow. That classification drives card summaries, detail panels, table column collapse, filter drawers, and accessible labels.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The responsive architecture is built on three pillars: (1) a CSS design token system that encodes breakpoints, spacing, typography scale, and color as custom properties — these tokens are the single source of truth consumed by both CSS and JavaScript; (2) a component model where each component is self-contained and responsive to its container (not the viewport) via container queries; and (3) a delivery pipeline that adapts the payload to the client's capabilities via resource hints, adaptive image selection, and conditional module loading.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The token system uses a tier-based scale: --space-1 through --space-12 (4px to 48px following a 4px grid), --font-size-xs through --font-size-4xl (using clamp() values), and --color-* semantic tokens that map to different palettes in light/dark mode. Components reference only semantic tokens (--color-text-primary, --space-4) never raw values (#333, 16px) — this ensures consistency and makes theming a token-layer change, not a component-layer change.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has five cooperating layers. The token layer defines design primitives and semantics. The component layer implements portable responsive components using container-aware contracts. The page composition layer allocates regions and content priority. The delivery layer selects assets and code by capability and preference. The observability layer measures real user experience across device classes, not only lab benchmarks.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/cross-platform-mobile-systems/responsive-cross-device-architecture.svg"
-          alt="Responsive cross-device frontend architecture: CSS token system (custom properties: --space-*, --font-size-* clamp(), --breakpoint-*; semantic color tokens; 12-col grid with clamp gutters; aspect-ratio placeholder → zero CLS), container queries (@container min-width vs @media; component declares container-type:inline-size; ProductCard horizontal 300px / vertical below; portable across contexts), adaptive images (srcset 400w/800w/1200w + sizes; picture art-direction portrait/landscape; AVIF first then WebP; known dimensions → no layout shift), touch/pointer normalization (Pointer Events API unifies touch+mouse; touch-action:pan-y; @media(hover:hover) and (pointer:fine) for true hover; no persistent hover on touch), performance tier (Network Information API effectiveType + hardwareConcurrency; low-end <100KB JS no animations system fonts; mid <200KB; high-end <500KB Framer Motion; lazy load tier-gated modules), responsive nav (single component 3 patterns: <768 hamburger drawer focus-trap Escape; 768-1200 icon sidebar; >1200 full nav; aria-expanded+controls; no duplicate DOM)."
-          caption="CSS token system (clamp() typography, 4px grid spacing, semantic colors), container queries (component-level breakpoints, portable across layouts), adaptive images (srcset+sizes+AVIF/WebP art-direction, aspect-ratio CLS prevention), Pointer Events API unification (touch-action, conditional hover), 3-tier performance budget (Network Info API + hardwareConcurrency → lazy-load tier-gated modules), single-component responsive nav (3 patterns, focus trap, aria-expanded)"
+          alt="Responsive cross-device frontend architecture with token system, layout grid, adaptive images, network capability detection, pointer events, performance tiers, and responsive navigation."
+          caption="Responsive architecture combines token governance, component-level responsiveness, adaptive assets, input capability handling, and performance budgets rather than treating responsiveness as CSS breakpoints only."
+        />
+        <p>
+          A request begins with server-rendered or statically served HTML that includes critical CSS, stable layout dimensions, and priority resource hints for the above-the-fold experience. The browser chooses image candidates based on rendered size and supported format. The app then hydrates or initializes interactive islands progressively. Expensive modules such as animation, data grids, maps, and charts should load only when the user&apos;s route, device capability, and preferences justify them.
+        </p>
+        <p>
+          Components should declare their own layout thresholds and density states. A data card might show a compact title-only view in a narrow container, add metadata in a medium container, and show inline actions in a wide container. A dashboard region might switch from stacked cards to a grid as its container grows. The page should not know every internal breakpoint of every component; it should allocate regions and let components adapt internally.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/cross-platform-mobile-systems/responsive-cross-device-architecture-component-flow.svg"
+          alt="Component responsiveness flow showing page regions, container size, component density states, content priority, and accessible interaction behavior."
+          caption="Container-aware components adapt based on allocated space and content priority, while accessibility semantics remain stable across visual presentations."
+        />
+        <p>
+          Navigation is a special case because it controls orientation, accessibility, and task efficiency. Mobile may use a drawer or bottom navigation. Tablet may use an icon rail or collapsible sidebar. Desktop may use a persistent sidebar or horizontal navigation. The underlying route model, link list, active state, permissions, and analytics should remain shared. Visual presentation can change, but the product should not maintain separate navigation truth for each device class.
+        </p>
+        <p>
+          Server rendering and hydration need their own device strategy. The server usually knows user agent and request headers, but not exact container size, pointer capability, or user-controlled zoom. The first render should therefore choose a conservative layout that avoids hydration mismatch and major layout shift. Client-side capability refinement can enhance density, load richer modules, or switch interaction affordances after hydration, but the server-rendered DOM should remain semantically correct and usable.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/cross-platform-mobile-systems/responsive-cross-device-architecture-performance.svg"
+          alt="Performance budget matrix for low-end, mid-range, and high-end devices with JavaScript, media, font, animation, and monitoring constraints."
+          caption="Device-tier budgets should limit JavaScript, media, fonts, and animation cost, with user preferences such as reduced motion and data saver treated as hard constraints."
         />
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">CSS Custom Property Token Architecture</h3>
-        <HighlightBlock as="p" tier="important">Design tokens are defined on :root as CSS custom properties. The token hierarchy: (1) primitive tokens (raw values: --color-blue-500: #3b82f6); (2) semantic tokens (purpose-named: --color-interactive-primary: var(--color-blue-500)); (3) component tokens (component-scoped: --button-bg: var(--color-interactive-primary)). Components reference only semantic or component tokens — never primitive tokens. This allows theming to work by re-mapping semantic tokens to different primitive values without touching component code. Dark mode is implemented by redefining semantic tokens under a [data-theme="dark"] selector (or @media (prefers-color-scheme: dark)) — the component code does not change.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Spacing tokens use a 4px grid: --space-1: 4px, --space-2: 8px, --space-3: 12px, --space-4: 16px, --space-6: 24px, --space-8: 32px, --space-12: 48px. Components use these tokens for margin, padding, and gap values. This ensures that all spatial relationships in the UI are multiples of 4px, creating visual rhythm. The grid gutter is --space-4 on mobile (16px), --space-6 on tablet (24px), --space-8 on desktop (32px) — these transitions are handled with container queries on the grid container, not global media queries.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Adaptive Loading Strategy</h3>
-        <HighlightBlock as="p" tier="important">Resource hints tell the browser about resources it will need soon: &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt; (for external fonts); &lt;link rel="preload" as="image" href="hero.webp" imagesrcset="hero-400.webp 400w, hero-800.webp 800w" imagesizes="100vw"&gt; (for the above-the-fold hero image). The preload for the hero image uses imagesrcset/imagesizes to match the srcset/sizes in the &lt;img&gt; tag — this ensures the browser preloads the same resolution it will actually use, not a mismatched size.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Network-adaptive loading: the Network Information API (navigator.connection) reports effectiveType (4g, 3g, 2g, slow-2g) and downlink (Mbps). On page load, a script reads these values and sets data attributes on &lt;html&gt;: &lt;html data-network="3g" data-cores="4"&gt;. CSS can then adapt: [data-network="2g"] .hero-video &#123; display: none; &#125; — hiding video autoplay on slow connections. JavaScript feature detection: if (navigator.connection?.effectiveType === '4g' &amp;&amp; navigator.hardwareConcurrency &gt;= 4) &#123; import('./animation-module') &#125; — conditionally loading the animation library only on capable devices.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Responsive Navigation Implementation</h3>
-        <HighlightBlock as="p" tier="important">The navigation component maintains three state values: isDrawerOpen (boolean, mobile only), activeItem (the current route), and a matchesBreakpoint function derived from useMediaQuery hooks. The component renders a single &lt;nav&gt; element with different internal structures shown/hidden via CSS (not React conditional rendering) — this ensures there is only one nav element in the DOM at all times, with all links present for screen readers regardless of the visual layout. Links that are visually hidden on a given breakpoint are hidden with visibility: hidden, not display: none or aria-hidden — they remain in the focus order but are not visible, maintaining semantic completeness.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Focus trap for mobile drawer: when the drawer opens, focus moves to the first interactive element inside the drawer (the close button). Tab key cycling is intercepted — when the last focusable element inside the drawer receives Tab, focus cycles back to the first (rather than escaping to the page behind the overlay). The overlay captures Escape keydown and closes the drawer. The backdrop (the dark overlay behind the drawer) captures pointer clicks and closes the drawer. When the drawer closes, focus returns to the hamburger button that triggered it (using a ref saved before opening).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Container Query Patterns for Portable Components</h3>
-        <p>Container query implementation pattern: every reusable component that needs to respond to its available space wraps its content in a container element with container-type: inline-size and a container name. The @container rule then applies styles based on the container's inline size (width for horizontal writing mode). Example: .product-card-wrapper &#123; container-type: inline-size; container-name: product-card; &#125; @container product-card (min-width: 320px) &#123; .product-card &#123; flex-direction: row; &#125; &#125;. The container element is the component's outermost div — it does not add visual structure, just measurement context.</p>
-        <HighlightBlock as="p" tier="important">Fallback for older browsers: container queries have broad support (Chrome 105+, Safari 16+, Firefox 110+) but some enterprise environments use older browsers. Progressive enhancement: the default (no container query) styles render the vertical layout (the simpler, mobile-first version). Container queries then enhance to the horizontal layout when space is available. This means zero layout breakage in browsers that don't support container queries — they simply see the mobile layout everywhere.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Container queries improve component portability, but they add design-system discipline. Teams need clear component boundaries, stable container wrappers, and testing across placement contexts. Media queries remain useful for page-level layout and global chrome. The trade-off is not container queries versus media queries; it is choosing the right scope for the decision. Page regions respond to viewport and route context. Components respond to their allocated container.
+        </p>
+        <p>
+          A single shared component can reduce duplication but can also become overloaded with too many visual modes. If a component supports every possible desktop, tablet, mobile, compact, dense, embedded, and marketing variant, it becomes hard to reason about and test. Principal-level architecture defines when to create variants: shared semantics and behavior should stay together, while substantially different workflows may deserve separate composed components.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          Adaptive delivery trades implementation complexity for user experience and cost control. Serving precise image sizes, deferring heavy modules, and honoring device preferences reduces bandwidth and improves Core Web Vitals, but it requires build tooling, CDN transformations, monitoring, and fallback behavior. Without governance, adaptive delivery can become inconsistent across teams.
+        </HighlightBlock>
+        <p>
+          Capability detection is more robust than user-agent detection, but it is still imperfect. Network Information API support varies. Hardware concurrency is a coarse signal. Viewport does not prove device class. Save-Data, reduced motion, color scheme, contrast, hover, pointer, and viewport should be treated as signals with priority rules, not as a single source of truth. The safest default is a functional mid-tier experience that progressively enhances.
+        </p>
+        <p>
+          Dense desktop layouts improve efficiency for expert users but can overwhelm casual users and screen magnification workflows. Mobile-first layouts improve simplicity but can waste desktop space and increase click depth. The product should tie density to task context, user role, and explicit preferences, not only screen width. Administrative tools and consumer marketing pages should not use the same density rules.
+        </p>
+        <p>
+          Responsive personalization can improve productivity but can harm predictability. Remembering a user&apos;s density, sidebar, table column, or split-pane preferences makes repeated work faster on the same device, but those preferences may be wrong on another screen size or after a role change. A robust design scopes preferences by route, device class, and sometimes organization policy, while keeping a reset path and sensible defaults.
+        </p>
+        <p>
+          Separate mobile and desktop codebases can move quickly for specialized experiences, but they duplicate accessibility fixes, analytics events, design tokens, state handling, and bug fixes. A unified architecture requires more upfront investment in component contracts and testing, but it scales better for long-lived products with many surfaces.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Container queries vs. media queries: media queries respond to the viewport; container queries respond to the component's container. The tradeoff: container queries require a wrapping container element with container-type declared — this adds a DOM node that serves no semantic purpose. For deeply nested components, the container must be declared at each level that needs to respond. This increases DOM complexity compared to media queries. The benefit — truly portable components — outweighs the cost for a design system used across many page layouts. For simple pages with a fixed layout, media queries remain appropriate.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Device-tier performance budgets: the Network Information API is not available in all browsers (notably, not in Safari as of 2026). The fallback: assume mid-range tier (the safest default — neither punishing capable devices by withholding features nor overloading low-end devices). User preference signals (Save-Data header, prefers-reduced-motion media query) are more reliable than hardware capability detection and should be treated as hard constraints, not hints — if the user has enabled data-saving mode, never load animations or high-resolution images regardless of detected hardware.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Establish a token governance model before scaling components. Tokens should describe semantic intent, include density and theme variants, and be reviewed as part of the design-system contract. Raw color, spacing, and font values should not spread across product components because they make responsiveness, theming, and accessibility changes expensive.
+        </p>
+        <p>
+          Use mobile-first and content-first defaults, then enhance. The baseline should be readable, keyboard accessible, and functional in narrow containers and older browsers. Wider containers can add metadata, side-by-side layout, persistent controls, and richer previews. This makes fallback behavior intentional rather than accidental.
+        </p>
+        <p>
+          Keep accessibility semantics stable while visuals change. Navigation should preserve route labels and active state. Drawers should manage focus and restore it on close. Icon-only modes need accessible names. Components should not duplicate interactive links in hidden desktop and mobile variants because duplicated DOM can confuse keyboard navigation and assistive technology if not handled carefully.
+        </p>
+        <p>
+          Design image and media pipelines as part of architecture. Generate multiple widths, support modern formats with fallback, preserve intrinsic dimensions, apply lazy loading below the fold, and avoid loading video or high-resolution media on constrained networks or data-saving preferences. Real-user monitoring should track image bytes and layout shift by viewport class.
+        </p>
+        <p>
+          Define performance budgets per route and device class. Budgets should include JavaScript transfer, parsed and executed JavaScript, CSS, fonts, image bytes, long tasks, hydration time, interaction latency, and layout shift. Heavy experiences should have explicit justification and should be lazy-loaded behind user intent or high-confidence capability checks.
+        </p>
+        <p>
+          Test the matrix that users actually occupy. That includes small phones, large phones, tablets, narrow desktop windows, high zoom, keyboard-only navigation, screen readers, reduced motion, data saver, right-to-left languages where relevant, and low-end Android devices. Responsive architecture fails most often in combinations, not in the happy-path viewport widths shown in design files.
+        </p>
+        <p>
+          Responsive architecture should be driven by capability and content priority, not only viewport width. A small phone, foldable, tablet, desktop, embedded browser, and TV can have different input modes, memory limits, network conditions, and accessibility needs. A principal-level design defines which content and interactions are essential, which can be deferred, and which require alternate flows rather than trying to fit the same desktop composition everywhere.
+        </p>
+        <p>
+          Server rendering and hydration strategy matter across devices. Sending a desktop-heavy layout to mobile and hiding it with CSS wastes bandwidth and can hurt Core Web Vitals. Sending device-specific markup can improve performance but risks cache fragmentation and hydration mismatch. A mature design uses responsive CSS for normal layout changes, server-side adaptation only for major content differences, and careful cache keys when user agent or client hints affect output.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A responsive cross-device frontend architecture requires: (1) CSS token system (primitive → semantic → component hierarchy, 4px grid spacing, clamp() fluid typography, :root custom properties for theming); (2) container queries (component-level breakpoints with container-type: inline-size, @container rules, progressive enhancement fallback to mobile-first default); (3) adaptive images (srcset+sizes for resolution switching, &lt;picture&gt; for art direction, AVIF→WebP format negotiation, aspect-ratio CLS prevention, preload resource hints with imagesrcset); (4) Pointer Events API unification (touch-action: pan-y, @media(hover: hover) conditional hover, no persistent touch hover); (5) 3-tier performance budget (Network Information API + hardwareConcurrency → conditional lazy import, data attributes on &lt;html&gt; for CSS adaptation, Save-Data as hard constraint); and (6) single-component responsive nav (CSS show/hide not React conditional rendering, focus trap for mobile drawer, aria-expanded + Escape handling). The central principle: responsiveness is not a layout concern — it is a performance, accessibility, and UX concern that requires decisions at every layer of the stack, from the network to the CSS to the interaction model.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is using viewport width as a proxy for everything. Width does not tell you whether the user has a mouse, touch, keyboard, screen reader, reduced motion preference, slow CPU, or constrained data plan. Overloading breakpoints with unrelated assumptions creates brittle experiences.
+        </p>
+        <p>
+          Another pitfall is duplicating mobile and desktop markup for convenience. Duplicate links, duplicate forms, and duplicate stateful controls can produce accessibility issues, analytics double-counting, hydration mismatches, and inconsistent bug fixes. If separate visual structures are necessary, shared data and behavior should still come from one source of truth.
+        </p>
+        <p>
+          Teams often optimize layout but ignore payload. A perfectly reflowed mobile page can still be unusable if it downloads desktop images, charting libraries, multiple font families, and unused admin modules. Responsiveness must include delivery and runtime cost, not just CSS.
+        </p>
+        <p>
+          Container queries can be misused as a replacement for product thinking. A component that hides critical information in narrow containers may harm task completion. Content priority rules should be explicit: what is essential, what can move behind disclosure, and what should disappear only when it is genuinely optional.
+        </p>
+        <p>
+          Testing only common breakpoints misses real failures. Users resize desktop windows, use browser zoom, run split-screen tablet modes, rotate devices, attach keyboards, and use foldables. The architecture should be resilient to continuous size changes, not only a few named breakpoints.
+        </p>
+        <p>
+          Teams often forget that responsive behavior includes state continuity. A user can rotate the device, resize a desktop window, move from mobile web to desktop, or open split-screen mode. Layout changes should not lose form state, scroll context, media position, or selected filters. Stable state ownership and responsive-safe component boundaries are part of the architecture.
+        </p>
+        <p>
+          Another pitfall is treating accessibility as a final pass. Touch targets, keyboard traversal, reduced motion, zoom, screen reader order, and focus restoration can all change across breakpoints. Responsive systems need test matrices that include input modality and assistive technology, not only screenshot width.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          SaaS admin tools need dense desktop workflows for operators while still supporting review, approval, and alert triage on mobile. A strong architecture lets tables become summaries, filters become drawers, and secondary columns become detail panels without changing the underlying route and permission model.
+        </p>
+        <p>
+          Commerce experiences need adaptive product cards, media, filters, and checkout flows. Mobile users need thumb-friendly filtering and fast images. Desktop users benefit from comparison density and richer media. The architecture must preserve product identity and analytics while adapting the presentation.
+        </p>
+        <p>
+          News and learning platforms need readable typography, stable image aspect ratios, offline-friendly assets where appropriate, and careful ad or recommendation placement across screen sizes. Layout shifts and heavy media directly affect engagement, accessibility, and revenue.
+        </p>
+        <p>
+          Enterprise dashboards need role-aware density. Executives may need summary cards on tablets, analysts may need large multi-panel desktop views, and field users may need compact mobile updates. Shared tokens and responsive components let the product support these modes without separate applications.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you architect responsiveness beyond basic media queries?</h3>
+        <p>
+          I would separate page-level layout, component-level adaptation, capability detection, and user preferences. Pages define regions and content priority. Components use container-aware rules to adapt to allocated space. Capability signals handle hover, pointer precision, network, and device constraints. Preferences such as reduced motion and data saver override enhancement. This avoids using viewport width as a proxy for every decision.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">2. When would you use container queries instead of media queries?</h3>
+        <p>
+          I would use container queries for reusable components whose layout depends on their allocated space, such as cards, panels, filters, and dashboard widgets. I would use media queries for global page structure, application chrome, and viewport-level concerns. Container queries improve portability, but they require disciplined component boundaries and testing across placements.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">3. How do you keep responsive navigation accessible?</h3>
+        <p>
+          I would keep one route model and one source of navigation truth, then adapt visual presentation by breakpoint and capability. Mobile drawers need proper button semantics, expanded state, focus movement into the drawer, focus trap while open, Escape and backdrop close behavior, and focus restoration. Icon-only modes need accessible names. I would avoid duplicated hidden navigation trees unless the accessibility and keyboard behavior is explicitly tested.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">4. How do you design adaptive images and media for performance?</h3>
+        <p>
+          I would generate multiple image widths and modern formats, serve candidates based on rendered slot size, use art direction for genuinely different crops, preserve intrinsic dimensions to avoid layout shift, lazy-load below-the-fold media, and preload only critical above-the-fold assets. I would monitor real-user image bytes, LCP, and CLS by device class because asset mistakes often dominate mobile performance.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">5. How would you define performance budgets across devices?</h3>
+        <p>
+          Budgets should include JavaScript transfer and execution, CSS, fonts, media bytes, long tasks, interaction latency, hydration time, and layout stability. Low-end devices should receive fewer scripts, less animation, smaller media, and system fonts where possible. Mid-tier devices get a balanced experience. High-end devices can progressively load richer interactions. Data saver and reduced motion should be hard constraints regardless of detected capability.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">6. What would you monitor after launching this architecture?</h3>
+        <p>
+          I would monitor Core Web Vitals, interaction latency, JavaScript execution time, image bytes, layout shift, font loading behavior, navigation errors, drawer accessibility issues from automated and manual testing, and conversion or task-completion metrics segmented by viewport, device memory where available, network quality, browser, input capability, and route. Responsive problems often appear only in specific combinations, so segmentation matters.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries" target="_blank" rel="noreferrer">MDN: CSS Container Queries</a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images" target="_blank" rel="noreferrer">MDN: Responsive Images</a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN: Pointer Events</a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/responsive-web-design-basics" target="_blank" rel="noreferrer">web.dev: Responsive Web Design Basics</a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/adaptive-serving-based-on-network-quality" target="_blank" rel="noreferrer">web.dev: Adaptive Serving Based on Network Quality</a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/fundamentals/accessibility-principles/" target="_blank" rel="noreferrer">W3C WAI: Accessibility Principles</a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

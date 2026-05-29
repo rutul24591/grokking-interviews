@@ -1,1 +1,5 @@
-# Design a file sharing & permission system — Example 2
+# File Sharing AND Permission System - Example 2
+
+Concrete cloud file storage production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

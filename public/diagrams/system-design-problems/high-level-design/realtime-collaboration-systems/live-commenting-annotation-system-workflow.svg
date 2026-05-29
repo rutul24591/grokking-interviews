@@ -1,62 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Workflow for annotation index, viewport scoped subscription, and thread lifecycle updates">
-  <title>Live Annotation Workflow</title>
-  <desc>Shows loading markers index, subscribing to visible threads, posting idempotently, and server-authoritative lifecycle transitions.</desc>
-  <style>
-    .bg { fill: #ffffff; }
-    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
-    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
-    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
-    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
-    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
-    .small { font-size: 14px; fill: #334155; }
-    .bold { font-weight: 700; }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #0b1220; }
-      .box { fill: #0f172a; stroke: #e5e7eb; }
-      .muted { fill: #0b1220; stroke: #64748b; }
-      .accent { fill: #06232a; stroke: #22d3ee; }
-      .arrow { stroke: #e5e7eb; }
-      .label { fill: #e5e7eb; }
-      .small { fill: #cbd5e1; }
-    }
-  </style>
-  <rect class="bg" x="0" y="0" width="1200" height="560" />
-
-  <rect class="box" x="60" y="70" width="330" height="150" />
-  <text class="label bold" x="90" y="115">Load marker index</text>
-  <text class="label small" x="90" y="145">lightweight anchor markers</text>
-  <text class="label small" x="90" y="170">render overlays</text>
-  <text class="label small" x="90" y="195">lazy load bodies</text>
-
-  <rect class="accent" x="440" y="70" width="350" height="150" />
-  <text class="label bold" x="470" y="115">Viewport subscribe</text>
-  <text class="label small" x="470" y="145">visible threads only</text>
-  <text class="label small" x="470" y="170">post idempotently</text>
-  <text class="label small" x="470" y="195">receive updates</text>
-
-  <rect class="box" x="840" y="70" width="300" height="150" />
-  <text class="label bold" x="870" y="115">Lifecycle updates</text>
-  <text class="label small" x="870" y="145">resolve/reopen versioned</text>
-  <text class="label small" x="870" y="170">moderation events</text>
-  <text class="label small" x="870" y="195">consistent state</text>
-
-  <path class="arrow" d="M390 145 L440 145" />
-  <path class="arrow" d="M790 145 L840 145" />
-
-  <rect class="muted" x="120" y="300" width="420" height="190" />
-  <text class="label bold" x="150" y="345">Anchoring changes</text>
-  <text class="label small" x="150" y="375">edits move anchors</text>
-  <text class="label small" x="150" y="400">mark “needs review”</text>
-  <text class="label small" x="150" y="425">allow re-anchoring</text>
-  <text class="label small" x="150" y="450">preserve trust</text>
-
-  <rect class="muted" x="600" y="300" width="480" height="190" />
-  <text class="label bold" x="630" y="345">Fallback</text>
-  <text class="label small" x="630" y="375">realtime down → poll visible</text>
-  <text class="label small" x="630" y="400">drafts preserved locally</text>
-  <text class="label small" x="630" y="425">policy removals retroactive</text>
-  <text class="label small" x="630" y="450">no full-page outage</text>
-
-  <path class="arrow" d="M990 220 C990 270 820 270 820 300" />
-  <path class="arrow" d="M540 395 L600 395" />
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Live Commenting Annotation System Workflow: route overlay</title>
+  <desc id="desc">Route, locality, and accuracy overlay for realtime collaboration systems.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Live Commenting Annotation System Workflow: route overlay</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Route, locality, and accuracy overlay for realtime collaboration systems.</text>
+  <rect x="70" y="120" width="820" height="342" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <path d="M112 394 C198 286, 276 328, 354 248 S510 160, 614 242 S748 356, 846 220" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/><path d="M118 178 C238 206, 330 138, 458 190 S668 226, 836 152" fill="none" stroke="#16a34a" stroke-width="3" stroke-dasharray="9 8"/>
+  <circle cx="152" cy="370" r="32" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7" opacity="0.95"/><text x="152" y="375" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cursor</text><circle cx="310" cy="300" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7" opacity="0.95"/><text x="310" y="305" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">CRDT</text><circle cx="468" cy="240" r="32" fill="#fef3c7" stroke="#d97706" stroke-width="1.7" opacity="0.95"/><text x="468" y="245" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">presence</text><circle cx="626" cy="230" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7" opacity="0.95"/><text x="626" y="235" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">merge</text><circle cx="784" cy="258" r="32" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7" opacity="0.95"/><text x="784" y="263" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">offline</text>
+  <rect x="220" y="424" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="284" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">awareness</text><rect x="390" y="424" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">conflict</text><rect x="560" y="424" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="624" y="444" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">snapshot</text>
 </svg>

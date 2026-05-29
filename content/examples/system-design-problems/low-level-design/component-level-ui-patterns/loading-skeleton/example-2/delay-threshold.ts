@@ -1,43 +1,89 @@
-/**
- * Delay Threshold — Conditional skeleton rendering based on fetch duration.
- *
- * If content loads in <200ms, showing a skeleton causes a perceptible flash.
- * If content takes >200ms, users expect feedback — show skeleton.
- */
+export type loadingSkeletonSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-import { useState, useEffect, useRef } from 'react';
+export type loadingSkeletonEvent = {
+  id: string;
+  topic: "loading-skeleton";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: loadingSkeletonSignal;
+};
 
-/**
- * Returns whether to show a loading skeleton based on how long loading has been in progress.
- * - < delayMs: return false (content likely loaded, skip skeleton)
- * - >= delayMs: return true (content taking time, show skeleton)
- * - >= maxMs: return true but also signal to show fallback "still loading" message
- */
-export function useLoadingThreshold(isLoading: boolean, delayMs = 200, maxMs = 3000) {
-  const [showSkeleton, setShowSkeleton] = useState(false);
-  const [showFallback, setShowFallback] = useState(false);
-  const startTimeRef = useRef<number | null>(null);
+export type loadingSkeletonDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
 
-  useEffect(() => {
-    if (isLoading) {
-      startTimeRef.current = Date.now();
-      setShowSkeleton(false);
-      setShowFallback(false);
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
 
-      const skeletonTimer = setTimeout(() => setShowSkeleton(true), delayMs);
-      const fallbackTimer = setTimeout(() => setShowFallback(true), maxMs);
+export function evaluateLoadingSkeletonEvent(event: loadingSkeletonEvent): loadingSkeletonDecision {
+  const reasons: string[] = [];
 
-      return () => {
-        clearTimeout(skeletonTimer);
-        clearTimeout(fallbackTimer);
-      };
-    }
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
 
-    startTimeRef.current = null;
-    setShowSkeleton(false);
-    setShowFallback(false);
-    return undefined;
-  }, [isLoading, delayMs, maxMs]);
+  let action: loadingSkeletonDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
 
-  return { showSkeleton, showFallback, elapsed: startTimeRef.current ? Date.now() - startTimeRef.current : 0 };
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Loading Skeleton",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
+}
+
+export function runLoadingSkeletonContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateLoadingSkeletonEvent({
+    id: "loading-skeleton-evt-1",
+    topic: "loading-skeleton",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
+
+  const guarded = evaluateLoadingSkeletonEvent({
+    id: "loading-skeleton-evt-late",
+    topic: "loading-skeleton",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

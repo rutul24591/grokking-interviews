@@ -1,127 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Inter, Segoe UI, Arial, sans-serif">
-  <defs>
-    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#1f2937"/>
-      <stop offset="100%" stop-color="#dc2626"/>
-    </linearGradient>
-    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/>
-    </marker>
-    <marker id="arr-b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#0891b2"/>
-    </marker>
-    <marker id="arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
-    </marker>
-    <marker id="arr-p" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/>
-    </marker>
-  </defs>
-
-  <rect width="900" height="560" fill="#fff5f5" rx="12"/>
-  <rect width="900" height="48" fill="url(#hdr)" rx="12"/>
-  <rect y="36" width="900" height="12" fill="url(#hdr)"/>
-  <text x="450" y="30" text-anchor="middle" fill="white" font-size="16" font-weight="700">Log Monitoring UI (Datadog/Kibana-like)</text>
-
-  <!-- ── ROW 1: Search Path ── -->
-  <text x="24" y="76" fill="#dc2626" font-size="11" font-weight="700">① SEARCH: LUCENE → ELASTICSEARCH DSL → RESULTS</text>
-
-  <rect x="20" y="84" width="195" height="80" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
-  <text x="117" y="103" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="600">Search Bar</text>
-  <text x="117" y="118" text-anchor="middle" fill="#374151" font-size="9">service:auth AND level:error</text>
-  <text x="117" y="131" text-anchor="middle" fill="#374151" font-size="9">field autocomplete on prefix</text>
-  <text x="117" y="144" text-anchor="middle" fill="#374151" font-size="9">timeRange: Last 15min / 1h / 4h</text>
-  <text x="117" y="157" text-anchor="middle" fill="#374151" font-size="9">history: localStorage last-20</text>
-
-  <line x1="217" y1="124" x2="258" y2="124" stroke="#dc2626" stroke-width="2" marker-end="url(#arr)"/>
-
-  <rect x="260" y="84" width="235" height="80" rx="8" fill="#fef9f0" stroke="#b45309" stroke-width="1.5"/>
-  <text x="377" y="103" text-anchor="middle" fill="#b45309" font-size="11" font-weight="600">Elasticsearch DSL</text>
-  <text x="377" y="118" text-anchor="middle" fill="#374151" font-size="9">filter: term{level:error} term{service:auth}</text>
-  <text x="377" y="131" text-anchor="middle" fill="#374151" font-size="9">must: multi_match{message:…}</text>
-  <text x="377" y="144" text-anchor="middle" fill="#374151" font-size="9">msearch: hits + date_histogram agg</text>
-  <text x="377" y="157" text-anchor="middle" fill="#374151" font-size="9">search_after cursor (not offset)</text>
-
-  <line x1="497" y1="124" x2="538" y2="124" stroke="#b45309" stroke-width="2" marker-end="url(#arr)"/>
-
-  <rect x="540" y="84" width="330" height="80" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="1.5"/>
-  <text x="705" y="103" text-anchor="middle" fill="#b45309" font-size="11" font-weight="600">Result: Hits + Histogram</text>
-  <text x="705" y="118" text-anchor="middle" fill="#374151" font-size="9">50 log hits (page 1) with next_cursor</text>
-  <text x="705" y="131" text-anchor="middle" fill="#374151" font-size="9">histogram: [{bucket:14:00, ERROR:12, WARN:3, INFO:89}]</text>
-  <text x="705" y="144" text-anchor="middle" fill="#374151" font-size="9">facets: level counts · service counts · host counts</text>
-  <text x="705" y="157" text-anchor="middle" fill="#374151" font-size="9">Cache: term filters (filter clause) · scored: must clause</text>
-
-  <!-- ── ROW 2: Virtual Scroll + Live Tail ── -->
-  <line x1="20" y1="180" x2="880" y2="180" stroke="#e5e7eb" stroke-width="1"/>
-  <text x="24" y="200" fill="#7c3aed" font-size="11" font-weight="700">② VIRTUAL SCROLL</text>
-  <text x="450" y="200" fill="#059669" font-size="11" font-weight="700">③ LIVE TAIL (KAFKA PATH)</text>
-
-  <!-- Virtual Scroll -->
-  <rect x="20" y="208" width="390" height="100" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
-  <text x="215" y="228" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="600">TanStack Virtualizer</text>
-  <text x="215" y="244" text-anchor="middle" fill="#374151" font-size="9">totalHeight = totalCount × estimatedRowHeight(56px)</text>
-  <text x="215" y="258" text-anchor="middle" fill="#374151" font-size="9">render only ~50 DOM nodes in viewport + 20 buffer</text>
-  <text x="215" y="272" text-anchor="middle" fill="#374151" font-size="9">scroll up → search_after next page → prepend rows</text>
-  <text x="215" y="286" text-anchor="middle" fill="#374151" font-size="9">variable height: measure after render → correct spacers</text>
-  <text x="215" y="300" text-anchor="middle" fill="#374151" font-size="9">row: timestamp | level-badge | service | message (2-line)</text>
-
-  <!-- Live Tail -->
-  <rect x="440" y="208" width="430" height="100" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
-  <text x="655" y="228" text-anchor="middle" fill="#059669" font-size="11" font-weight="600">Kafka Live Tail (pre-index)</text>
-  <text x="655" y="244" text-anchor="middle" fill="#374151" font-size="9">toggle → WebSocket subscribe {query, tenantId}</text>
-  <text x="655" y="258" text-anchor="middle" fill="#374151" font-size="9">Live Tail Svc: Kafka consumer → in-process Lucene filter</text>
-  <text x="655" y="272" text-anchor="middle" fill="#374151" font-size="9">batch 100ms → push JSON array to client WebSocket</text>
-  <text x="655" y="286" text-anchor="middle" fill="#374151" font-size="9">prepend batch → max 10K entries (drop oldest)</text>
-  <text x="655" y="300" text-anchor="middle" fill="#374151" font-size="9">NRT lag: ES 5s behind; live tail near-0s (Kafka tap)</text>
-
-  <!-- ── ROW 3: Histogram + Context ── -->
-  <line x1="20" y1="324" x2="880" y2="324" stroke="#e5e7eb" stroke-width="1"/>
-  <text x="24" y="344" fill="#0891b2" font-size="11" font-weight="700">④ HISTOGRAM DRILL-DOWN</text>
-  <text x="450" y="344" fill="#b45309" font-size="11" font-weight="700">⑤ CONTEXT EXPANSION + TRACE LINK</text>
-
-  <rect x="20" y="352" width="390" height="72" rx="8" fill="#f0f9ff" stroke="#0891b2" stroke-width="1.5"/>
-  <text x="215" y="372" text-anchor="middle" fill="#374151" font-size="9">Stacked bars: ERROR red / WARN yellow / INFO blue per 1min bucket</text>
-  <text x="215" y="386" text-anchor="middle" fill="#374151" font-size="9">Drag selection → zoom timeRange → re-search all components</text>
-  <text x="215" y="400" text-anchor="middle" fill="#374151" font-size="9">Click facet value → append AND service:auth to query</text>
-  <text x="215" y="414" text-anchor="middle" fill="#374151" font-size="9">"New errors" badge when live tail receives ERROR level</text>
-
-  <rect x="440" y="352" width="430" height="72" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="1.5"/>
-  <text x="655" y="372" text-anchor="middle" fill="#374151" font-size="9">GET /api/logs/{id}/context?before=50&amp;after=50</text>
-  <text x="655" y="386" text-anchor="middle" fill="#374151" font-size="9">before: ts&lt;=entry DESC LIMIT 50 · after: ts&gt;=entry ASC LIMIT 50</text>
-  <text x="655" y="400" text-anchor="middle" fill="#374151" font-size="9">entry highlighted yellow in slide-in panel</text>
-  <text x="655" y="414" text-anchor="middle" fill="#374151" font-size="9">trace_id field → "View Trace" button → deep-link APM</text>
-
-  <!-- Metrics bar -->
-  <rect x="14" y="444" width="872" height="102" rx="8" fill="#111827"/>
-  <text x="14" y="440" fill="#dc2626" font-size="10" font-weight="600">KEY NUMBERS</text>
-
-  <text x="90" y="468" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">Search (last 1h)</text>
-  <text x="90" y="486" text-anchor="middle" fill="white" font-size="14" font-weight="700">&lt;1s</text>
-  <text x="90" y="502" text-anchor="middle" fill="#94a3b8" font-size="9">ES warm index</text>
-  <text x="90" y="518" text-anchor="middle" fill="#6b7280" font-size="8">term filters cached</text>
-  <text x="90" y="532" text-anchor="middle" fill="#6b7280" font-size="8">must clause scored</text>
-
-  <text x="260" y="468" text-anchor="middle" fill="#fcd34d" font-size="10" font-weight="600">Hot Cache (15min)</text>
-  <text x="260" y="486" text-anchor="middle" fill="white" font-size="14" font-weight="700">&lt;300ms</text>
-  <text x="260" y="502" text-anchor="middle" fill="#94a3b8" font-size="9">recent index in memory</text>
-  <text x="260" y="518" text-anchor="middle" fill="#6b7280" font-size="8">1 index/day rotation</text>
-  <text x="260" y="532" text-anchor="middle" fill="#6b7280" font-size="8">30-day retention</text>
-
-  <text x="450" y="468" text-anchor="middle" fill="#ddd6fe" font-size="10" font-weight="600">Virtual Scroll</text>
-  <text x="450" y="486" text-anchor="middle" fill="white" font-size="14" font-weight="700">~50 DOM nodes</text>
-  <text x="450" y="502" text-anchor="middle" fill="#94a3b8" font-size="9">millions of log entries</text>
-  <text x="450" y="518" text-anchor="middle" fill="#6b7280" font-size="8">60fps smooth scrolling</text>
-  <text x="450" y="532" text-anchor="middle" fill="#6b7280" font-size="8">spacer height correction</text>
-
-  <text x="650" y="468" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="600">Live Tail Batch</text>
-  <text x="650" y="486" text-anchor="middle" fill="white" font-size="14" font-weight="700">100ms windows</text>
-  <text x="650" y="502" text-anchor="middle" fill="#94a3b8" font-size="9">max 100 rows/batch</text>
-  <text x="650" y="518" text-anchor="middle" fill="#6b7280" font-size="8">1 React setState/batch</text>
-  <text x="650" y="532" text-anchor="middle" fill="#6b7280" font-size="8">10K entry memory cap</text>
-
-  <text x="820" y="468" text-anchor="middle" fill="#fdba74" font-size="10" font-weight="600">Context Expand</text>
-  <text x="820" y="486" text-anchor="middle" fill="white" font-size="14" font-weight="700">±50 lines</text>
-  <text x="820" y="502" text-anchor="middle" fill="#94a3b8" font-size="9">before + after query</text>
-  <text x="820" y="518" text-anchor="middle" fill="#6b7280" font-size="8">entry highlighted yellow</text>
-  <text x="820" y="532" text-anchor="middle" fill="#6b7280" font-size="8">trace_id → APM deep-link</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Log Monitoring Ui: risk matrix</title>
+  <desc id="desc">Failure and ownership matrix for data heavy systems.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Log Monitoring Ui: risk matrix</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Failure and ownership matrix for data heavy systems.</text>
+  <rect x="70" y="118" width="820" height="354" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="136" cy="194" r="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><circle cx="136" cy="342" r="50" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="136" y="190" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">normal</text><text x="136" y="338" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">incident</text>
+  <path d="M188 206 C212 180, 222 174, 246 170" fill="none" stroke="#2563eb" stroke-width="3"/><path d="M188 330 C212 360, 222 372, 246 382" fill="none" stroke="#b91c1c" stroke-width="3" stroke-dasharray="8 7"/>
+  <path d="M226 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><text x="274" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">stream</text><path d="M358 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><text x="406" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">query</text><path d="M490 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="538" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">watermark</text><path d="M622 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="670" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text><path d="M226 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="274" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">lag</text><path d="M358 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="406" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">skew</text><path d="M490 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><text x="538" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">freshness</text><path d="M622 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><text x="670" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">export</text><path d="M226 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="274" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">stream</text><path d="M358 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="406" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">query</text><path d="M490 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="538" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">watermark</text><path d="M622 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="670" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text>
+  <path d="M258 450 C410 416, 586 472, 820 426" fill="none" stroke="#0f766e" stroke-width="4"/><text x="548" y="486" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="12">decision surface for blast radius, policy, and recovery ownership</text>
 </svg>

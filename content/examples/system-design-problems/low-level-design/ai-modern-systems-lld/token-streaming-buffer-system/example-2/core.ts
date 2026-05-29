@@ -1,13 +1,89 @@
-export function debounce<TArgs extends unknown[]>(fn: (...args: TArgs) => void, delayMs: number) {
-  let handle: ReturnType<typeof setTimeout> | null = null;
-  return (...args: TArgs) => {
-    if (handle) clearTimeout(handle);
-    handle = setTimeout(() => fn(...args), delayMs);
+export type tokenStreamingBufferSystemSignal = {
+  tokenLatencyMs: number;
+  citationCoverage: number;
+  retrievalConfidence: number;
+  policySeverity: number;
+};
+
+export type tokenStreamingBufferSystemEvent = {
+  id: string;
+  topic: "token-streaming-buffer-system";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: tokenStreamingBufferSystemSignal;
+};
+
+export type tokenStreamingBufferSystemDecision = {
+  accepted: boolean;
+  action: "abort-stale-stream" | "show-citation-warning" | "fallback-to-keyword-search" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Every answer must carry traceable source coverage and stop streaming when the request is superseded.";
+
+export function evaluateTokenStreamingBufferSystemEvent(event: tokenStreamingBufferSystemEvent): tokenStreamingBufferSystemDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.tokenLatencyMs > 2_000) reasons.push("tokenLatencyMs-outside-slo");
+  if (event.signal.retrievalConfidence > 0.2) reasons.push("retrievalConfidence-requires-guardrail");
+
+  let action: tokenStreamingBufferSystemDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "abort-stale-stream";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "show-citation-warning";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "fallback-to-keyword-search";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Token Streaming Buffer System",
+      "subcategory:ai-modern-systems-lld",
+      "entity:query session",
+      "state:retrieval context",
+      "operation:streamed answer",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
   };
 }
 
-export function jitterBackoffMs(attempt: number, baseMs = 250, maxMs = 10_000) {
-  const exp = Math.min(maxMs, baseMs * 2 ** Math.max(0, attempt - 1));
-  const jitter = Math.random() * exp * 0.2;
-  return Math.floor(exp + jitter);
+export function runTokenStreamingBufferSystemContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateTokenStreamingBufferSystemEvent({
+    id: "token-streaming-buffer-system-evt-1",
+    topic: "token-streaming-buffer-system",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { tokenLatencyMs: 180, citationCoverage: 0, retrievalConfidence: 0.01, policySeverity: 1 },
+  });
+
+  const guarded = evaluateTokenStreamingBufferSystemEvent({
+    id: "token-streaming-buffer-system-evt-late",
+    topic: "token-streaming-buffer-system",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { tokenLatencyMs: 2_700, citationCoverage: 3, retrievalConfidence: 0.34, policySeverity: 2 },
+  });
+
+  return { accepted, guarded };
 }

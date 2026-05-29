@@ -7,98 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-device-session-management-system",
-  title: "Design a Device / Session Management System",
-  description:
-    "Architecture for a device and session management system: device fingerprinting and registration, session token lifecycle (issuance, refresh, revocation), multi-device session listing and remote logout, concurrent session limits, suspicious login detection, trusted device workflows, session persistence strategies, and GDPR-compliant session data handling.",
+  title: "Design a Device Session Management System",
+  description: "Principal-level operational product system design covering permissions, workflow state, analytics correctness, privacy, auditability, and support recovery.",
   category: "high-level-design",
   subcategory: "other",
   slug: "device-session-management-system",
-  wordCount: 5100,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "auth", "session", "device", "security", "jwt", "revocation", "multi-device"],
-  relatedTopics: ["survey-form-analytics-system", "feature-usage-analytics-dashboard"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "operations", "dashboard", "privacy", "analytics", "support"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Device Session Management System is an operational product system where the UI represents sensitive workflow, customer state, analytics state, or security state. A principal-ready design treats a device session management system as a governed control surface, not a generic dashboard.",
+  "The design must define who can see what, who can change what, which data is authoritative, which views are projections, how actions are audited, and how operators recover from bad data or bad actions.",
+  "These systems often sit close to privacy, compliance, support, and business decision-making. A wrong metric, wrong support action, wrong session revocation, or wrong export can cause customer harm even if the UI looks correct.",
+  "A strong answer should cover lifecycle state, permissions, workflow ownership, data freshness, auditability, abuse prevention, cost, and observability. The dashboard should help users make safe decisions, not merely display tables.",
+  "Operational systems also need support reconstruction. When a customer disputes an action, a user reports a session, or a business metric changes, the system should show source data, transformations, actor decisions, and policy versions."
+];
+const concepts = [
+  "The first concept is authority versus projection. device registry, session store, and risk engine may feed the UI, but derived summaries should not be mistaken for source-of-truth state.",
+  "The second concept is scoped access. Support agents, analysts, admins, researchers, and customers should see different fields and actions. Field-level redaction and action-level authorization are often required.",
+  "The third concept is workflow state. Cases, sessions, metrics, surveys, exports, escalations, and revocations need explicit lifecycle states and audit trails.",
+  "The fourth concept is data quality. Operational dashboards must show freshness, sampling, confidence, known gaps, and delayed sources. Users should not make decisions from stale projections without knowing it.",
+  "The fifth concept is abuse and misuse. Internal tools are powerful. They need rate limits, approvals, break-glass controls, anomaly detection, and review for high-risk actions.",
+  "The sixth concept is observability. Track queue age, action success, stale data, export volume, permission denials, support overrides, metric freshness, and user-impacting errors."
+];
+const architecture = [
+  "The architecture contains device registry, session store, risk engine, revocation service, notification workflow. Source systems emit durable events or records. Processing builds read models and aggregates. The UI enforces permissions, shows workflow state, and records user actions. Audit and observability systems make decisions reviewable.",
+  "Every sensitive action should include actor, target, reason, policy version, correlation ID, before/after state where appropriate, and whether approval or break-glass was used.",
+  "Read models should be versioned and freshness-aware. A dashboard row should be able to explain its source timestamp and transformation pipeline so users know if they are seeing current state or delayed analytics.",
+  "The frontend should show explicit states: pending, stale, escalated, approved, revoked, exported, suppressed, anonymized, sampled, or failed. These states reduce unsafe manual interpretation.",
+  "Exports and bulk actions require stronger controls than ordinary reads. They should have scoped filters, preview, row count, approval, audit, retention, and revocation or expiration where possible.",
+  "Operations need replay, backfill, redaction, export disablement, action rollback or compensation, and support-visible history when something goes wrong."
+];
+const tradeoffs = [
+  "Centralized dashboards improve governance and consistency but can become bottlenecks for teams that need custom workflows. Extensible dashboards improve team autonomy but increase permission, privacy, and quality risk.",
+  "Real-time data improves operational response but increases cost and can create noisy, unstable metrics. Batch data is cheaper and more stable but can be too stale for support or security decisions.",
+  "Detailed views help experts resolve issues but can expose unnecessary personal data. Progressive disclosure and field-level permissions are better than one all-powerful screen.",
+  "Self-service exports and bulk actions reduce operational load but increase blast radius. Dry runs, approvals, quotas, and audit trails make self-service safer.",
+  "Sampling lowers analytics cost and privacy exposure but can mislead small segments. The UI should show when metrics are sampled, estimated, or below confidence thresholds.",
+  "Rollback is not always deletion. Support actions, survey exports, session revocations, and analytics corrections may require compensating actions and audit notes rather than silent reversal."
+];
+const practices = [
+  "Model lifecycle state explicitly and make it visible. Avoid ambiguous active, done, or resolved flags without transition history.",
+  "Use least privilege, field-level redaction, scoped actions, and approval for high-risk operations.",
+  "Show freshness and provenance. Users should know when data was collected, transformed, sampled, anonymized, or delayed.",
+  "Record audit logs for reads of sensitive data, exports, bulk actions, overrides, revocations, escalations, and support notes.",
+  "Design safe exports: purpose, scope, retention, recipient, expiration, and download audit should be part of the workflow.",
+  "Build repair tools for stuck workflows, bad aggregations, duplicate responses, stale sessions, and incorrect support actions.",
+  "Instrument both product and operator outcomes: queue age, resolution quality, false positives, metric trust, export volume, and customer-impacting mistakes."
+];
+const pitfalls = [
+  "token replay is usually a governance failure. The dashboard should not expose every field to every operator just because the backend has it.",
+  "ghost session often happens when workflow state and ownership are weak. Escalation, approval, and assignment should be explicit and observable.",
+  "slow logout causes bad decisions because users trust dashboards. Freshness, sampling, and source gaps should be visible.",
+  "false device trust requires audit and blast-radius controls. Powerful internal tools are abuse surfaces even when all users are employees.",
+  "Another pitfall is treating exports as harmless. Exports are often where privacy, compliance, and leakage risks concentrate.",
+  "Teams also forget that analytics and support data need deletion, retention, and redaction policies, not only technical storage."
+];
+const useCases = [
+  "account security settings needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "enterprise device control needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "streaming device management needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "During an incident, operators should see affected users, source freshness, action history, and safe remediation controls without gaining unnecessary data access.",
+  "During a privacy request, the system should identify derived records, exports, notes, and audit obligations rather than only deleting one primary row.",
+  "During a metric dispute, the dashboard should support drill-down to event definitions, sampling policy, identity stitching, and transformation version."
+];
+const questions = [
+  {
+    "question": "How would you design a device session management system end to end?",
+    "answer": "I would model authoritative source records, read-optimized projections, scoped permissions, workflow state, audit logs, and operational repair paths. The UI shows provenance, freshness, and allowed actions. Sensitive reads, exports, bulk operations, and overrides are audited. Background pipelines build aggregates, while support tools let operators repair or explain bad state."
+  },
+  {
+    "question": "Why this architecture over a simple dashboard on top of database tables?",
+    "answer": "A simple dashboard exposes data but does not encode permissions, workflow, provenance, audit, privacy, freshness, or safe actions. Operational systems need a governed control plane because users make decisions that affect customers, security, or business metrics."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are token replay, ghost session, slow logout, false device trust, plus stale aggregates, high-cardinality cost, export abuse, permission drift, queue backlogs, and support overload. Prevention requires scoped access, lifecycle state, freshness indicators, audit, sampling strategy, and operational repair tools."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative customer, session, workflow, support, and consent state needs server-controlled consistency. Analytics aggregates, dashboards, survey summaries, and derived timelines can be eventually consistent if they show freshness and provenance. Sensitive actions should not rely solely on stale read models."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through replay, backfill, repair queues, redaction, and compensating actions. Rollback may be action reversal or an audited correction. Abuse is controlled with least privilege, approvals, quotas, and anomaly detection. Privacy uses minimization, redaction, retention, and export controls. Cost is controlled by sampling and aggregate design. Observability tracks freshness, workflow lag, action errors, export volume, and permission denials."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate source truth from dashboards and argue that operational users need provenance and scoped action controls. I would defend eventual consistency for aggregates, but not for high-risk support or security actions. I would also defend audit and approvals because internal tools have real blast radius."
+  }
+];
+const references = [
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  },
+  {
+    "label": "NIST Privacy Framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  }
+];
 
 export default function DeviceSessionManagementSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A device and session management system handles the full lifecycle of user authentication state across devices: how sessions are created on login, how they are maintained across requests (token refresh), how they are listed and displayed to the user ("You're logged in on 3 devices"), and how they are revoked on logout or security events ("Log out of all devices"). It is the layer that makes a user's authenticated state a managed, auditable, revocable entity rather than an untracked JWT that lives until it expires.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The core tension is between stateless JWTs (fast, no server-side lookup required on each request) and stateful session management (revocable, auditable, supports "logout everywhere"). Pure stateless JWTs cannot be revoked before expiry—once issued, a token granting access remains valid until its exp claim passes. This is a security risk if a user's device is stolen or account is compromised: the attacker retains access for the full JWT lifetime (typically 15 minutes to 1 hour). The solution is a hybrid: short-lived access tokens (JWTs, 15-minute lifetime) paired with long-lived refresh tokens (stored server-side, revocable). Revocation of the refresh token prevents the attacker from obtaining new access tokens, effectively revoking the session within 15 minutes (the maximum remaining lifetime of the current access token).</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Session lifecycle (issuance, refresh, revocation), device registry, multi-device management UI, and suspicious login detection. Not in scope: full authentication (handled by the auth service), biometric authentication flows, or hardware security keys.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/device-session-management-system.svg" alt="Design a Device Session Management System architecture" caption="Architecture view: source systems, projections, permissions, workflow, audit, and operations." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/device-session-management-system-flow.svg" alt="Design a Device Session Management System flow" caption="Flow view: intake, validation, decision, action, audit, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/device-session-management-system-operations.svg" alt="Design a Device Session Management System operations" caption="Operations view: freshness, privacy, export controls, repair tools, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Session issuance:</strong> On successful authentication, issue an access token (JWT, 15-minute expiry) and a refresh token (opaque 256-bit random string, 30-day expiry). The refresh token is stored server-side (associated with userId, deviceId, session metadata). The access token is returned in the response body; the refresh token is set as an HttpOnly, Secure, SameSite=Strict cookie.</li>
-          <li><strong>Session refresh:</strong> When the access token expires, the client calls POST /auth/refresh with the refresh token (from cookie). The server validates the refresh token (not expired, not revoked, not rotated away), issues a new access token and optionally rotates the refresh token (refresh token rotation), and returns the new tokens.</li>
-          <HighlightBlock as="li" tier="important"><strong>Device registry:</strong> Each login creates or updates a device record: deviceId (fingerprint-based or user-agent + IP hash), device name (inferred from user agent: "Chrome on macOS"), last active timestamp, IP address, geo location (reverse geocoded from IP), and session status (active/revoked).</HighlightBlock>
-          <li><strong>Multi-device management:</strong> Users can view all active sessions ("Devices" settings page), see device name, last active time, and location for each, and revoke any individual session or all sessions except the current one ("Log out of all other devices").</li>
-          <HighlightBlock as="li" tier="important"><strong>Concurrent session limits:</strong> Configurable maximum concurrent sessions per user (default: 5 devices). When the limit is reached, the oldest session is automatically revoked to make room for the new login.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Suspicious login detection:</strong> Flag logins from a new device in an unusual location (country not seen in past 90 days), logins from a known Tor exit node or datacenter IP, and rapid successive logins from geographically impossible locations ("impossible travel": two logins within 1 hour from cities 5000km apart). Flagged logins trigger an email notification to the user and optionally require email verification before the session is fully activated.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Token refresh latency:</strong> POST /auth/refresh must complete within 50ms at P99 (Redis lookup of refresh token, no database query on hot path).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Revocation propagation:</strong> After a session is revoked, subsequent access token validations must reflect the revocation. Since access tokens are JWTs (verified locally without a server lookup), revocation of the refresh token takes effect at the next refresh attempt (within 15 minutes). For immediate revocation (e.g., account compromise), a short-lived revocation list (Redis Set) can be checked on each API request at the cost of one Redis GET per request.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Durability:</strong> Refresh tokens must survive a single node failure. Session data is written to PostgreSQL (durable) and cached in Redis (fast path). A Redis failure degrades to PostgreSQL fallback, not data loss.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The system has four components. The Session Service owns the session and device lifecycle (create, refresh, revoke, list). The Token Service generates and validates JWTs (stateless, using RSA-256 private key for signing, public key for verification—public key distributed to all API services for local verification without calling the Token Service on each request). The Device Registry stores device fingerprints and metadata. The Suspicious Login Detector analyzes each new login event against historical patterns. Redis serves as the fast path for refresh token validation and the revocation list. PostgreSQL is the durable store for sessions, devices, and audit logs.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/other/device-session-management-system.svg"
-          alt="Device session management system architecture showing session issuance flow (user login auth service → Session Service create session record PostgreSQL + Redis refresh token TTL 30d → Token Service sign JWT RS256 15min expiry → response access token body + refresh token HttpOnly Secure cookie), token refresh flow (client POST /auth/refresh cookie → Session Service validate refresh token Redis O(1) lookup not expired not revoked → rotate refresh token old→new Redis atomic swap → Token Service new JWT → response new access token + rotated refresh cookie; Redis miss → PostgreSQL fallback), device registry (deviceId fingerprint UA+IP hash; device record name inferred UA Chrome macOS; last active IP geo location session status active/revoked; max 5 concurrent sessions oldest auto-revoked on overflow), session revocation (user revoke single session → delete Redis key + mark revoked PostgreSQL; revoke all other devices → batch delete Redis keys; immediate revocation list Redis Set checked on each API request for compromised accounts; normal revocation effective at next refresh ≤15min), suspicious login detector (new device fingerprint first seen; impossible travel two logins >5000km apart <1h; Tor exit node IP list; datacenter IP CIDR block list → risk score LOW/MEDIUM/HIGH; HIGH → email verification required before session active; all flagged logins → email notification to user), multi-device management UI (settings page device list name location last active revoke button; current device highlighted; log out all other devices button; session audit log IP timestamp action), token validation (API gateway verify JWT RS256 public key local no network call; check revocation list Redis Set O(1) only for HIGH risk sessions; invalid → 401 client retries with refresh)."
-          caption="Session issuance (JWT 15min + refresh token HttpOnly cookie), token refresh with rotation (Redis fast path → PostgreSQL fallback), device registry with concurrent session limits, revocation (immediate list for compromised accounts, normal ≤15min refresh cycle), suspicious login detection (impossible travel, Tor/datacenter IPs, new device), and multi-device management UI"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Refresh Token Storage and Rotation</h3>
-        <HighlightBlock as="p" tier="important">Refresh tokens are 256-bit cryptographically random strings (generated via crypto.getRandomValues or equivalent). They are never stored in plaintext—only a SHA-256 hash of the token is stored in Redis and PostgreSQL. The client sends the raw token; the server hashes it before lookup. This ensures that if the Redis or PostgreSQL database is compromised, the attacker cannot use the stored hashes to forge refresh tokens.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Redis schema: SET session:{"{hash(refreshToken)}"} → {"{userId, deviceId, sessionId, expiresAt}"} with a TTL matching the token&apos;s expiry (30 days). PostgreSQL schema: sessions table (session_id UUID PK, user_id, device_id, refresh_token_hash CHAR(64), created_at, expires_at, revoked_at, last_used_at, ip_address, user_agent). Refresh token rotation: on each successful refresh, the old token is immediately revoked (marked in Redis with a 15-minute tombstone TTL, the maximum remaining access token lifetime) and a new token is issued. The 15-minute tombstone prevents a &quot;stolen refresh token&quot; attack where an attacker uses the old token before the legitimate user has a chance to revoke it. If the attacker uses the old token (which was already rotated), the system detects the reuse (token was rotated, not expired) and immediately revokes all sessions for that user, treating refresh token reuse as a sign of token theft.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Device Fingerprinting</h3>
-        <HighlightBlock as="p" tier="important">A device fingerprint is a stable identifier for a user's device that persists across sessions. Fingerprint components (in order of stability): (1) A device UUID stored in localStorage (most stable, but cleared if the user clears browser storage). (2) A fingerprint computed from user agent + screen resolution + timezone + installed fonts hash (stable across sessions but shared with other users with identical hardware/software). (3) IP address + user agent hash (least stable—IP changes with network changes, but useful as a fallback). The fingerprint is computed client-side by the auth SDK and sent with the login request. Server-side, the fingerprint is associated with the user's device record on first use and recognized on subsequent logins. On mobile apps, the device fingerprint uses the platform's device ID (iOS identifierForVendor, Android Android ID).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Device naming: the user agent string is parsed to produce a human-readable device name. Parser rules: if user agent contains "iPhone" → "iPhone"; if contains "Android" → "Android"; if contains "Windows" → "Chrome on Windows" (with browser name extracted separately). Device names are editable by the user ("Work Laptop", "Home Desktop") and stored in the device record. Edited names take precedence over inferred names.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Suspicious Login Detection</h3>
-        <HighlightBlock as="p" tier="important">Each new login event is evaluated by the risk scoring engine. Signals and their weights: new device (device fingerprint not seen in this user's device history): +30 risk points; new country (country not in this user's login history for 90 days): +20 points; Tor exit node IP (checked against a daily-updated Tor exit node list maintained by the Tor Project): +50 points; datacenter/VPS IP (checked against commercial IP intelligence databases like MaxMind): +20 points; impossible travel (previous login within 1 hour from a location &gt;5000km away, computed using Haversine distance on lat/lon from IP geolocation): +60 points; concurrent login from different country (another active session from a different country exists): +25 points.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Risk thresholds: 0–30 = LOW (proceed normally), 31–60 = MEDIUM (send notification email, proceed), 61+ = HIGH (require email OTP verification before session is fully activated). A HIGH-risk login creates a "pending" session; the access token is not issued until the user verifies the email OTP. The pending session expires after 10 minutes if unverified. This prevents a compromised password from immediately granting access if the attacker is logging in from an unusual location—the attacker would also need access to the user's email to complete verification.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Concurrent Session Limits and Eviction</h3>
-        <HighlightBlock as="p" tier="crucial">The maximum concurrent sessions per user is enforced at login time. Before creating a new session, the Session Service queries the count of active (non-revoked, non-expired) sessions for the user. If count ≥ max_sessions, the oldest session (by last_used_at ASC) is revoked to make room. The eviction is atomic: the old session's Redis key is deleted and the new session's Redis key is created in the same Lua script (Redis transaction), preventing a race where two concurrent logins from different devices both find count = max - 1 and both succeed, creating max + 1 sessions. After eviction, the user on the evicted device will discover their session is gone at the next token refresh attempt (which will return 401), causing them to be redirected to the login page with a message "You were signed out because your account was accessed from a new device."</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Immediate Revocation for Compromised Accounts</h3>
-        <HighlightBlock as="p" tier="crucial">Standard session revocation (revoking the refresh token) only prevents new access tokens from being issued. The current access token remains valid for up to 15 minutes. For compromised accounts where 15 minutes is too long, the system maintains a user-level revocation list in Redis: SET user_revoked:{"{userId}"} → {"{revokedAt timestamp}"} with a TTL of 15 minutes (the maximum access token lifetime). Every API request includes a middleware check: if the user_revoked key exists and revokedAt &gt; the token&apos;s iat (issued at), the token is rejected. This check is a single Redis GET per request, adding under 1ms of latency. After 15 minutes, the revocation key expires and normal JWT validation resumes (all existing tokens from before the revocation have expired; new tokens can only be issued with a new refresh token, which requires a new login). This mechanism is triggered by: user-initiated &quot;log out of all devices&quot;, admin-initiated account lock, and automatic lockout on detected account compromise.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Session Audit Log and GDPR</h3>
-        <HighlightBlock as="p" tier="important">Every session event (created, refreshed, revoked, suspicious flag) is written to a session_events table in PostgreSQL: (event_id UUID, session_id, user_id, event_type, ip_address, user_agent, timestamp, metadata JSONB). The audit log is presented to users in the session management UI as a timeline of login and logout events. This transparency is both a security feature (users can identify unfamiliar logins) and a trust feature (users see proof that the platform tracks access). GDPR: on account deletion request, all session records and audit log entries for the userId are deleted within 24 hours. Active sessions are revoked immediately (immediate revocation list). The deletion is cascading (device records, session events, refresh token hashes all deleted). Device fingerprints linked to only this user are also deleted; fingerprints linked to multiple users (which would only occur in shared device scenarios) are anonymized by removing the userId association.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">JWT access token lifetime: shorter lifetimes (5 minutes) reduce the window for access token theft but increase token refresh frequency (every 5 minutes instead of 15). For a user with 10 open browser tabs, each tab refreshes independently, creating 10× the refresh traffic. The 15-minute access token lifetime is a pragmatic balance: it is short enough to limit theft exposure while not creating excessive refresh overhead. Access tokens stored in memory (not localStorage or cookies) have even shorter practical lifetimes because they are cleared on tab close—in-memory storage trades persistence for security.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Refresh token rotation versus sliding expiry: refresh token rotation (issue a new token on each refresh) is more secure—it limits the window for offline brute-force attacks on stolen tokens and detects token reuse. Sliding expiry (extend the TTL on each use without issuing a new token) is simpler (no client-side token storage update needed) but leaves the same token active indefinitely as long as it is used regularly, increasing the impact of theft. The standard recommendation is refresh token rotation with reuse detection.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Redis as session cache versus source of truth: using Redis as the primary session lookup (with PostgreSQL as the durable backup) introduces a consistency gap—if a session is revoked in PostgreSQL but the Redis key is not yet expired, the session remains valid from the cache's perspective. The gap is bounded by the Redis TTL (which matches the session expiry), but intermediate revocations (user revokes a session via the UI) must explicitly delete the Redis key, not just mark the PostgreSQL record as revoked. This dual-write (Redis delete + PostgreSQL update) must be atomic from the application's perspective, which is achieved by writing the revocation to PostgreSQL first (the durable store) and then deleting the Redis key—accepting that a very narrow race window (Redis key not yet deleted) could allow one additional successful refresh before the key expires or is proactively cleaned up by a background process.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A device and session management system uses a hybrid token architecture: short-lived JWTs (15 minutes, RS256-signed, locally verified) for stateless API authentication, paired with long-lived refresh tokens (30 days, SHA-256 hashed, stored in Redis + PostgreSQL) for session continuity and revocability. Refresh token rotation on each use enables reuse detection (token reused = compromised → revoke all sessions). Device fingerprinting (localStorage UUID → UA+screen hash → IP+UA hash fallback) associates sessions with named devices for the multi-device management UI. Concurrent session limits (max 5) use Lua-script atomic eviction (oldest session revoked on overflow). Suspicious login scoring (+30 new device, +60 impossible travel, +50 Tor IP) gates HIGH-risk sessions behind email OTP verification before issuing tokens. Immediate revocation uses a 15-minute TTL Redis key (user_revoked:{"{userId}"}) checked on every API request for compromised-account scenarios, adding &lt;1ms per request. GDPR deletion cascades across sessions, audit log, device registry, and refresh token hashes within 24 hours. The defining design constraint: stateless access tokens cannot be revoked before expiry—the hybrid refresh token architecture bounds the revocation gap to the access token lifetime (15 minutes) without adding per-request database lookups to the hot path.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

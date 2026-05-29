@@ -1,58 +1,89 @@
-/**
- * Color History with LRU Eviction — Tracks recently used colors.
- *
- * Interview edge case: User selects 20 different colors. The history panel should
- * show only the last 10, with the most recently used at the front. When a color
- * is re-selected, it should move to the front (MRU behavior).
- */
+export type colorPickerSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-const MAX_HISTORY = 10;
+export type colorPickerEvent = {
+  id: string;
+  topic: "color-picker";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: colorPickerSignal;
+};
 
-/**
- * Manages a color history with LRU eviction and MRU reordering.
- */
-export class ColorHistory {
-  private colors: string[] = [];
+export type colorPickerDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
 
-  /**
-   * Adds a color to history. If already present, moves it to front.
-   */
-  add(hexColor: string): void {
-    const normalized = hexColor.toLowerCase();
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
 
-    // Remove if already present (MRU reordering)
-    const existingIndex = this.colors.indexOf(normalized);
-    if (existingIndex !== -1) {
-      this.colors.splice(existingIndex, 1);
-    }
+export function evaluateColorPickerEvent(event: colorPickerEvent): colorPickerDecision {
+  const reasons: string[] = [];
 
-    // Add to front
-    this.colors.unshift(normalized);
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
 
-    // Evict oldest if over capacity
-    if (this.colors.length > MAX_HISTORY) {
-      this.colors.pop();
-    }
-  }
+  let action: colorPickerDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
 
-  /**
-   * Returns the color history (most recent first).
-   */
-  getColors(): string[] {
-    return [...this.colors];
-  }
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Color Picker",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
+}
 
-  /**
-   * Checks if a color is in history.
-   */
-  has(hexColor: string): boolean {
-    return this.colors.includes(hexColor.toLowerCase());
-  }
+export function runColorPickerContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateColorPickerEvent({
+    id: "color-picker-evt-1",
+    topic: "color-picker",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  /**
-   * Clears all history.
-   */
-  clear(): void {
-    this.colors = [];
-  }
+  const guarded = evaluateColorPickerEvent({
+    id: "color-picker-evt-late",
+    topic: "color-picker",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
+
+  return { accepted, guarded };
 }

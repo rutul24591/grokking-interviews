@@ -1,1 +1,5 @@
-# Design a maps exploration UI (like Google Maps) — Example 2
+# Maps Exploration UI - Example 2
+
+Concrete geospatial production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

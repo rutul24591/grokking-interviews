@@ -1,1 +1,5 @@
-# Design a data export/report generation system — Example 3
+# Data Export Report Generation System - Example 3
+
+Concrete data movement edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

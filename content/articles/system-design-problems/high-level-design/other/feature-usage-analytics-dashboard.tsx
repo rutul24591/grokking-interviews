@@ -8,96 +8,140 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-feature-usage-analytics-dashboard",
   title: "Design a Feature Usage Analytics Dashboard",
-  description:
-    "Architecture for a product analytics / feature usage dashboard: client-side event SDK with batching and sampling, server-side event ingestion pipeline, funnel analysis, retention cohort computation, A/B experiment metric tracking, session replay event storage, feature flag usage correlation, privacy-safe anonymization, and real-time and batch analytics serving.",
+  description: "Principal-level operational product system design covering permissions, workflow state, analytics correctness, privacy, auditability, and support recovery.",
   category: "high-level-design",
   subcategory: "other",
   slug: "feature-usage-analytics-dashboard",
-  wordCount: 5200,
-  readingTime: 32,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "analytics", "product-analytics", "funnel", "retention", "cohort", "event-pipeline"],
-  relatedTopics: ["survey-form-analytics-system", "customer-support-dashboard"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "operations", "dashboard", "privacy", "analytics", "support"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Feature Usage Analytics Dashboard is an operational product system where the UI represents sensitive workflow, customer state, analytics state, or security state. A principal-ready design treats a feature usage analytics dashboard as a governed control surface, not a generic dashboard.",
+  "The design must define who can see what, who can change what, which data is authoritative, which views are projections, how actions are audited, and how operators recover from bad data or bad actions.",
+  "These systems often sit close to privacy, compliance, support, and business decision-making. A wrong metric, wrong support action, wrong session revocation, or wrong export can cause customer harm even if the UI looks correct.",
+  "A strong answer should cover lifecycle state, permissions, workflow ownership, data freshness, auditability, abuse prevention, cost, and observability. The dashboard should help users make safe decisions, not merely display tables.",
+  "Operational systems also need support reconstruction. When a customer disputes an action, a user reports a session, or a business metric changes, the system should show source data, transformations, actor decisions, and policy versions."
+];
+const concepts = [
+  "The first concept is authority versus projection. event collector, identity mapper, and metric store may feed the UI, but derived summaries should not be mistaken for source-of-truth state.",
+  "The second concept is scoped access. Support agents, analysts, admins, researchers, and customers should see different fields and actions. Field-level redaction and action-level authorization are often required.",
+  "The third concept is workflow state. Cases, sessions, metrics, surveys, exports, escalations, and revocations need explicit lifecycle states and audit trails.",
+  "The fourth concept is data quality. Operational dashboards must show freshness, sampling, confidence, known gaps, and delayed sources. Users should not make decisions from stale projections without knowing it.",
+  "The fifth concept is abuse and misuse. Internal tools are powerful. They need rate limits, approvals, break-glass controls, anomaly detection, and review for high-risk actions.",
+  "The sixth concept is observability. Track queue age, action success, stale data, export volume, permission denials, support overrides, metric freshness, and user-impacting errors."
+];
+const architecture = [
+  "The architecture contains event collector, identity mapper, metric store, segmentation engine, owner workflow. Source systems emit durable events or records. Processing builds read models and aggregates. The UI enforces permissions, shows workflow state, and records user actions. Audit and observability systems make decisions reviewable.",
+  "Every sensitive action should include actor, target, reason, policy version, correlation ID, before/after state where appropriate, and whether approval or break-glass was used.",
+  "Read models should be versioned and freshness-aware. A dashboard row should be able to explain its source timestamp and transformation pipeline so users know if they are seeing current state or delayed analytics.",
+  "The frontend should show explicit states: pending, stale, escalated, approved, revoked, exported, suppressed, anonymized, sampled, or failed. These states reduce unsafe manual interpretation.",
+  "Exports and bulk actions require stronger controls than ordinary reads. They should have scoped filters, preview, row count, approval, audit, retention, and revocation or expiration where possible.",
+  "Operations need replay, backfill, redaction, export disablement, action rollback or compensation, and support-visible history when something goes wrong."
+];
+const tradeoffs = [
+  "Centralized dashboards improve governance and consistency but can become bottlenecks for teams that need custom workflows. Extensible dashboards improve team autonomy but increase permission, privacy, and quality risk.",
+  "Real-time data improves operational response but increases cost and can create noisy, unstable metrics. Batch data is cheaper and more stable but can be too stale for support or security decisions.",
+  "Detailed views help experts resolve issues but can expose unnecessary personal data. Progressive disclosure and field-level permissions are better than one all-powerful screen.",
+  "Self-service exports and bulk actions reduce operational load but increase blast radius. Dry runs, approvals, quotas, and audit trails make self-service safer.",
+  "Sampling lowers analytics cost and privacy exposure but can mislead small segments. The UI should show when metrics are sampled, estimated, or below confidence thresholds.",
+  "Rollback is not always deletion. Support actions, survey exports, session revocations, and analytics corrections may require compensating actions and audit notes rather than silent reversal."
+];
+const practices = [
+  "Model lifecycle state explicitly and make it visible. Avoid ambiguous active, done, or resolved flags without transition history.",
+  "Use least privilege, field-level redaction, scoped actions, and approval for high-risk operations.",
+  "Show freshness and provenance. Users should know when data was collected, transformed, sampled, anonymized, or delayed.",
+  "Record audit logs for reads of sensitive data, exports, bulk actions, overrides, revocations, escalations, and support notes.",
+  "Design safe exports: purpose, scope, retention, recipient, expiration, and download audit should be part of the workflow.",
+  "Build repair tools for stuck workflows, bad aggregations, duplicate responses, stale sessions, and incorrect support actions.",
+  "Instrument both product and operator outcomes: queue age, resolution quality, false positives, metric trust, export volume, and customer-impacting mistakes."
+];
+const pitfalls = [
+  "PII in events is usually a governance failure. The dashboard should not expose every field to every operator just because the backend has it.",
+  "metric drift often happens when workflow state and ownership are weak. Escalation, approval, and assignment should be explicit and observable.",
+  "sampling bias causes bad decisions because users trust dashboards. Freshness, sampling, and source gaps should be visible.",
+  "high-cardinality cost requires audit and blast-radius controls. Powerful internal tools are abuse surfaces even when all users are employees.",
+  "Another pitfall is treating exports as harmless. Exports are often where privacy, compliance, and leakage risks concentrate.",
+  "Teams also forget that analytics and support data need deletion, retention, and redaction policies, not only technical storage."
+];
+const useCases = [
+  "product adoption dashboard needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "enterprise usage reporting needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "feature retirement analysis needs scoped access, source-of-truth clarity, workflow state, auditability, and operational recovery.",
+  "During an incident, operators should see affected users, source freshness, action history, and safe remediation controls without gaining unnecessary data access.",
+  "During a privacy request, the system should identify derived records, exports, notes, and audit obligations rather than only deleting one primary row.",
+  "During a metric dispute, the dashboard should support drill-down to event definitions, sampling policy, identity stitching, and transformation version."
+];
+const questions = [
+  {
+    "question": "How would you design a feature usage analytics dashboard end to end?",
+    "answer": "I would model authoritative source records, read-optimized projections, scoped permissions, workflow state, audit logs, and operational repair paths. The UI shows provenance, freshness, and allowed actions. Sensitive reads, exports, bulk operations, and overrides are audited. Background pipelines build aggregates, while support tools let operators repair or explain bad state."
+  },
+  {
+    "question": "Why this architecture over a simple dashboard on top of database tables?",
+    "answer": "A simple dashboard exposes data but does not encode permissions, workflow, provenance, audit, privacy, freshness, or safe actions. Operational systems need a governed control plane because users make decisions that affect customers, security, or business metrics."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are PII in events, metric drift, sampling bias, high-cardinality cost, plus stale aggregates, high-cardinality cost, export abuse, permission drift, queue backlogs, and support overload. Prevention requires scoped access, lifecycle state, freshness indicators, audit, sampling strategy, and operational repair tools."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative customer, session, workflow, support, and consent state needs server-controlled consistency. Analytics aggregates, dashboards, survey summaries, and derived timelines can be eventually consistent if they show freshness and provenance. Sensitive actions should not rely solely on stale read models."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through replay, backfill, repair queues, redaction, and compensating actions. Rollback may be action reversal or an audited correction. Abuse is controlled with least privilege, approvals, quotas, and anomaly detection. Privacy uses minimization, redaction, retention, and export controls. Cost is controlled by sampling and aggregate design. Observability tracks freshness, workflow lag, action errors, export volume, and permission denials."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate source truth from dashboards and argue that operational users need provenance and scoped action controls. I would defend eventual consistency for aggregates, but not for high-risk support or security actions. I would also defend audit and approvals because internal tools have real blast radius."
+  }
+];
+const references = [
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  },
+  {
+    "label": "NIST Privacy Framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OpenTelemetry documentation",
+    "href": "https://opentelemetry.io/docs/"
+  },
+  {
+    "label": "WCAG accessibility standards",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  }
+];
 
 export default function FeatureUsageAnalyticsDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A feature usage analytics dashboard (think Mixpanel, Amplitude, or PostHog) answers the question: how are users actually using our product? It is distinct from infrastructure monitoring (latency, error rates) and business intelligence (revenue, conversion attribution). Product analytics focuses on user behavior: which features are adopted, where users drop off in onboarding flows, which cohorts retain, and whether a feature experiment improved the target metric. The data volume is large (billions of events per day for mature products), the queries are complex (funnel analysis, cohort retention, arbitrary event sequence matching), and the consumers are non-technical (product managers who need answers in seconds, not analysts who can run SQL queries).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The fundamental challenge: event data is append-only and arrives out of order (mobile clients batch events and flush when they regain network connectivity, so a click event from 3 hours ago may arrive now). Queries over this data require joining billions of events by userId and ordering by timestamp, which is expensive in traditional row-oriented databases. Analytics systems solve this by using columnar storage (ClickHouse, BigQuery, Redshift) that physically co-locates all values of the same column, making full-table scans over specific columns (like event_type or timestamp) dramatically faster.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Event ingestion, funnel analysis, retention cohorts, and feature flag correlation. Not in scope: session replay video (event coordinates only), revenue attribution, or ML-based anomaly detection.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/feature-usage-analytics-dashboard.svg" alt="Design a Feature Usage Analytics Dashboard architecture" caption="Architecture view: source systems, projections, permissions, workflow, audit, and operations." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/feature-usage-analytics-dashboard-flow.svg" alt="Design a Feature Usage Analytics Dashboard flow" caption="Flow view: intake, validation, decision, action, audit, and recovery." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/other/feature-usage-analytics-dashboard-operations.svg" alt="Design a Feature Usage Analytics Dashboard operations" caption="Operations view: freshness, privacy, export controls, repair tools, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Event tracking SDK:</strong> Client-side JavaScript SDK that tracks page views, custom events (track("feature_clicked", {"{"} featureId, userId {"}"})), and user identity (identify(userId, traits)). SDK batches events and flushes every 10 seconds or when 50 events accumulate. Supports auto-capture of clicks and page views without manual instrumentation.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Funnel analysis:</strong> Define a funnel as an ordered sequence of events (e.g., "Signed Up" → "Onboarding Step 1" → "Onboarding Step 2" → "First Feature Used"). Compute conversion rate between each step, average time between steps, and drop-off at each step. Funnels can be filtered by user property (e.g., plan=Pro) and segmented by breakdown dimension (e.g., breakdown by country).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Retention cohorts:</strong> Cohort analysis: among users who first performed event A in week W, what fraction returned to perform event B in week W+1, W+2, W+N? Standard retention (N-day return rate) and feature-specific retention (return to use feature X).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Feature flag correlation:</strong> For each feature flag (A/B experiment), show the distribution of usage metrics (event count, funnel conversion, retention) between flag-on and flag-off groups, enabling product managers to measure experiment impact without writing SQL.</HighlightBlock>
-          <li><strong>Real-time dashboard:</strong> Live event count, active users in the last 5 minutes, and hourly event volume trend updating in near-real-time (within 60 seconds of event receipt).</li>
-          <HighlightBlock as="li" tier="important"><strong>Privacy controls:</strong> PII stripping at ingestion (email addresses, phone numbers, credit card patterns detected by regex and removed). User-level anonymization: the ability to delete all events for a specific userId (GDPR erasure) within 24 hours.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Ingestion throughput:</strong> Handle 100K events/second at peak (large SaaS product with millions of DAU). Events must not be dropped under spike load.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Query latency:</strong> Funnel and retention queries must complete within 10 seconds for datasets up to 1 billion events. Real-time dashboard metrics within 2 seconds.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Durability:</strong> Events must be durable once acknowledged at ingestion. An acknowledged event must survive a single datacenter failure.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The system has three layers. The collection layer: the client SDK sends batched events to the Event Ingestion API, which validates, strips PII, and writes to Kafka. The processing layer: a Flink streaming pipeline consumes from Kafka, enriches events (joins with user profile data to add user properties like plan, country, cohort), and writes to two stores—ClickHouse (long-term columnar store for all analytical queries) and Redis (short-term aggregations for real-time dashboard). A nightly Spark batch job computes retention cohorts and writes pre-aggregated cohort tables. The serving layer: the Analytics Query API reads from ClickHouse for funnel/retention queries and from Redis for real-time metrics, serving the dashboard frontend via REST. Queries that take longer than 10 seconds are run as async jobs and results are pushed to the dashboard when complete.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/other/feature-usage-analytics-dashboard.svg"
-          alt="Feature usage analytics dashboard architecture showing event collection layer (JavaScript SDK auto-capture + manual track() identify() → batch 10s/50 events → Event Ingestion API POST /events validate schema → PII stripper regex email phone CC patterns → Kafka events topic 100K ev/s), processing layer (Flink streaming consumer → event enrichment join user profiles plan country cohort feature flags → ClickHouse events table columnar partitioned by date userId → Redis real-time aggregations DAU active-5min hourly volume TTL 5min; nightly Spark batch job cohort computation retention matrix N-day return rates → ClickHouse cohort_aggregates table), serving layer (Analytics Query API → funnel queries ClickHouse ordered event sequences conversion rates avg time-between-steps drop-off; retention cohort queries pre-aggregated cohort tables; real-time metrics Redis <2s; async long queries job queue results push SSE when complete; feature flag correlation split events by flag variant compare funnel/retention control vs treatment), dashboard UI (funnel visualization step conversion rates drop-off percentages breakdown by dimension; retention heatmap cohort weeks N-day return %; feature flag experiment results; live counter DAU active users event volume; query builder event sequence filter user property breakdown), privacy (PII stripping at ingestion GDPR erasure userId delete all events ClickHouse mutation within 24h; sampling high-volume low-value events 1-in-10 to reduce storage; data retention configurable 12-24 months)."
-          caption="Event collection (SDK batching → PII stripping → Kafka), Flink enrichment → ClickHouse + Redis, funnel queries (ordered event sequences with conversion and drop-off), retention cohort computation (Spark nightly), feature flag correlation (control vs treatment), real-time dashboard (Redis), and privacy controls (PII stripping, GDPR erasure)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Event SDK and Ingestion</h3>
-        <HighlightBlock as="p" tier="important">The JavaScript SDK exposes three primary methods: page() (auto-called on route changes), track(eventName, properties), and identify(userId, traits). Events are queued in an in-memory buffer (max 50 events) and flushed every 10 seconds or when the buffer is full, whichever comes first. On page unload, navigator.sendBeacon flushes remaining events (non-blocking, survives tab close). Each event carries: eventName, timestamp (client-side ISO 8601), anonymousId (a UUID generated and persisted in localStorage for anonymous users), userId (set after identify() is called), sessionId (a UUID reset after 30 minutes of inactivity), properties (arbitrary key-value pairs), and context (SDK version, page URL, referrer, user agent, screen dimensions).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Ingestion API: the single POST /v1/events endpoint accepts a batch of up to 1000 events. Validation: schema check (required fields present, eventName is a non-empty string, timestamp is a valid ISO 8601 date not more than 72 hours in the past—events older than 72 hours are rejected to prevent backfill abuse). PII detection: a regex scanner checks string values against patterns for email addresses (RFC 5322), US phone numbers, and credit card numbers (Luhn-valid 13–19 digit strings). Detected PII is replaced with [PII_REMOVED] before the event is written to Kafka. The Kafka write uses a hash partition key (userId or anonymousId) to ensure all events for a user land on the same partition, preserving local ordering for that user without a global sort.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">ClickHouse Schema and Partitioning</h3>
-        <HighlightBlock as="p" tier="important">The primary ClickHouse table uses the MergeTree engine family: CREATE TABLE events (event_date Date, event_ts DateTime, project_id UUID, user_id String, anonymous_id String, session_id String, event_name LowCardinality(String), properties String, context String) ENGINE = ReplicatedMergeTree('/clickhouse/tables/events', {"'{replica}'"}) PARTITION BY toYYYYMM(event_date) ORDER BY (project_id, user_id, event_ts). Partitioning by month allows dropping old partitions for data retention without full-table deletions. Ordering by (project_id, user_id, event_ts) means all events for a given user within a project are physically co-located on disk, enabling fast user-level sequence queries (funnel analysis needs to sort each user&apos;s events by timestamp, this ordering makes that O(1) disk seek per user).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">LowCardinality encoding for event_name dramatically reduces storage and speeds up GROUP BY queries (event names are high-frequency strings with low cardinality—typically 50–200 distinct event names per product). Properties and context are stored as String (JSON) rather than a Map type for flexibility; ClickHouse's JSON functions (JSONExtractString, JSONExtractInt) allow querying nested properties without schema changes when new properties are added.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Funnel Query Design</h3>
-        <HighlightBlock as="p" tier="important">Funnel analysis is the most complex query type. The challenge: given an ordered sequence of N events, find all users who performed all N events in order within a defined time window (e.g., 7 days), and count conversions at each step. Naive approach (N separate subqueries joined on userId) is O(N²) and extremely slow for large event tables. ClickHouse's windowFunnel function solves this efficiently: SELECT countIf(level &gt;= 1) AS step1, countIf(level &gt;= 2) AS step2, countIf(level &gt;= 3) AS step3 FROM (SELECT userId, windowFunnel(604800)(event_ts, event_name = 'Signed Up', event_name = 'Feature Viewed', event_name = 'Feature Used') AS level FROM events WHERE project_id = X AND event_date BETWEEN '2026-04-01' AND '2026-05-01' GROUP BY userId). The windowFunnel function processes each user's time-sorted events in a single pass and returns the deepest funnel step reached within the 7-day window. This query runs in 2–5 seconds for 1 billion events on a properly partitioned ClickHouse cluster.</HighlightBlock>
-        <p>Funnel breakdown: adding a breakdown dimension (e.g., by country) requires adding a GROUP BY to the outer query: GROUP BY JSONExtractString(properties, 'country'). This increases query time proportionally to the number of distinct breakdown values. For high-cardinality breakdowns (&gt;100 distinct values), the dashboard limits to top-10 by event volume to avoid 10-second+ queries.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Retention Cohort Computation</h3>
-        <HighlightBlock as="p" tier="important">Retention cohorts are computed by the nightly Spark batch job (not ClickHouse, because cohort computation requires a self-join on the events table that is expensive even in ClickHouse at billion-row scale). Spark algorithm: (1) Identify the cohort entry event for each user (the first occurrence of event A in the cohort period). (2) For each user in the cohort, find all subsequent occurrences of event B. (3) For each (user, cohort_week, return_week) tuple, mark as retained. (4) Aggregate: for each cohort_week, count users retained at each N-day interval. Results are written to ClickHouse's cohort_aggregates table: (project_id, cohort_week, n_day, users_in_cohort, users_retained). Dashboard cohort queries read from this pre-aggregated table in under 100ms.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Feature Flag Correlation</h3>
-        <HighlightBlock as="p" tier="important">Feature flag assignments are tracked as a special event: feature_flag_called(flagKey, variant, userId, timestamp). This event is ingested through the same pipeline as all other events and stored in ClickHouse. To compute experiment impact on a funnel: the funnel query is extended with a JOIN on feature_flag_called to segment users into control/treatment groups. The resulting funnel comparison table shows conversion rates for each variant side by side. Statistical significance is computed by the serving layer (Fisher's exact test for small samples, z-test for proportions for large samples) and displayed as a confidence level on the dashboard. This approach makes feature flag correlation a query-time operation rather than requiring a separate experiment analytics system—the same event pipeline and ClickHouse table serves both product analytics and experiment measurement.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Sampling and Data Retention</h3>
-        <HighlightBlock as="p" tier="important">High-frequency, low-analytical-value events (e.g., scroll events, mouse move events, page visibility changes) are sampled at 1-in-10 at the ingestion API before writing to Kafka. The sampling decision is deterministic (based on userId hash modulo 10) so that all sampled events for a given user are consistent—either all their scroll events are sampled or none are. This prevents biased session-level analysis. Sampled events have a sample_rate property added by the ingestion layer; query results that include sampled events divide counts by the sample rate to produce unbiased estimates. Data retention: events older than the configured retention window (12 or 24 months, per plan) are dropped by deleting the corresponding ClickHouse monthly partitions. This is O(1) regardless of partition size (partition deletion is a metadata operation).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Client-side versus server-side event tracking: client-side tracking (SDK in the browser) is affected by ad blockers (estimated 25–40% of desktop web traffic blocks analytics scripts), bot traffic (crawlers may execute JavaScript and fire events), and inaccurate timestamps (client clock skew). Server-side tracking (application code sends events directly to the ingestion API) eliminates all three problems but requires instrumentation in every server-side endpoint and cannot capture UI-specific events (hover, scroll, focus). The industry best practice is dual tracking: server-side for conversion events (signup, purchase, feature activation) where accuracy is critical, and client-side for UI engagement events (feature viewed, button clicked) where 25% loss to ad blockers is acceptable because it is uniform across all users and does not bias relative comparisons.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Streaming versus batch for funnel queries: running funnel queries in real time against raw event streams (Flink over Kafka) would give zero-latency results but requires maintaining per-user event state in streaming memory (extremely expensive at billions of events). Streaming is only practical for simple aggregations (event counts, active user counts). Complex relational queries (funnel, cohort, arbitrary sequence) require batch or columnar storage. ClickHouse's strength is making batch queries feel near-real-time—funnel queries that would take hours in PostgreSQL complete in seconds in ClickHouse. The trade-off is query latency of 2–10 seconds rather than sub-second, which is acceptable for product analytics (PMs do not need millisecond query response).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A feature usage analytics dashboard processes event data through three layers. Collection: the JavaScript SDK batches events (10s/50 events), strips PII at the ingestion API (regex patterns for email/phone/CC), and publishes to Kafka with userId-hash partitioning for ordering guarantees. Processing: a Flink streaming pipeline enriches events with user properties and writes to ClickHouse (MergeTree partitioned by month, ordered by project+userId+timestamp for co-located user event reads) and Redis (real-time aggregations with 5-minute TTL). A nightly Spark job pre-computes retention cohort matrices. Serving: funnel queries use ClickHouse's windowFunnel function (single-pass per user, 2–5s for 1B events); retention queries read pre-aggregated cohort tables (&lt;100ms); real-time metrics read from Redis (&lt;2s). Feature flag correlation is a query-time operation (JOIN feature_flag_called events with funnel events) rather than a separate system. Sampling (1-in-10 for high-frequency events, deterministic by userId) and monthly partition drops for retention keep storage costs bounded. The defining constraint: the event ingestion path must be isolated from the query path—a slow dashboard query must never drop events. Kafka's durable buffer between ingestion and ClickHouse writes is the key decoupling mechanism.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

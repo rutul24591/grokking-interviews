@@ -7,116 +7,146 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-canvas-webgl-design-tool",
-  title: "Design a Canvas/WebGL-Based Design Tool",
-  description:
-    "Architecture for a browser-based vector design tool (Figma-style): WebGL render loop with geometry batching and Bezier tessellation, infinite canvas with camera transform and viewport culling (R-tree), scene graph (Document → Frame → Group → Node), Bezier pen tool with cubic curve math, CRDT collaboration (Y.js) with awareness-based remote cursors, component/instance system, and SVG/PNG/PDF export.",
+  title: "Design a Canvas/WebGL Design Tool",
+  description: "Principal-level media-rich system design covering scene graph editing, GPU rendering, asset loading, undo history, collaboration, memory pressure, and export.",
   category: "high-level-design",
   subcategory: "media-rich-content-systems",
   slug: "canvas-webgl-design-tool",
-  wordCount: 5100,
-  readingTime: 31,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "webgl", "canvas", "figma", "crdt", "vector", "scene-graph", "bezier", "collaboration"],
-  relatedTopics: ["content-creation-studio", "rich-text-editor"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "media", "frontend", "performance", "reliability"],
+  relatedTopics: [],
 };
 
-export default function CanvasWebGLDesignToolArticle() {
+const definition = [
+  "Design a Canvas/WebGL Design Tool is a media-rich product system, not just a visual component. It must coordinate browser capabilities, large binary assets, local editing state, background jobs, CDN or storage behavior, permissions, abuse policy, and user-facing recovery. The main challenge is that media work is expensive: bytes are large, decoding is CPU-intensive, rendering can block interaction, and failures are often visible immediately.",
+  "The goal is to design a Canvas and WebGL design tool around scene graph editing, GPU rendering, asset loading, undo history, collaboration, memory pressure, and export. A principal-ready answer should explain the client runtime, backend control plane, asynchronous processing, storage and CDN strategy, consistency model, failure handling, cost controls, and observability.",
+  "Media systems differ from ordinary CRUD systems because derived artifacts are first-class. Thumbnails, transcripts, waveforms, previews, tiles, manifests, captions, encodes, annotations, and exports are projections. They can lag or be regenerated, while original assets, permissions, and user edits need stronger durability.",
+  "The product should define which state must survive refresh, which can be recomputed, which is private, which can be cached publicly, and which requires moderation or entitlement checks. Without this classification, media systems leak private assets, lose drafts, overrun device memory, or create inconsistent playback and editing experiences.",
+  "A staff/principal answer should also cover operational ownership. Playback teams own QoE and buffer behavior; creation teams own draft recovery and export correctness; platform teams own storage, CDN, transcoding, and abuse controls; product teams decide when to degrade rich media to simpler experiences."
+];
+const concepts = [
+  "The first concept is asset lifecycle. Raw uploads, derived previews, published artifacts, and deleted or redacted versions have different durability, cacheability, and privacy rules. scene graph and GPU renderer should never be treated as one generic blob path.",
+  "The second concept is bounded client resources. Media-rich pages must manage memory, GPU, CPU, and network budgets. Large canvases, long documents, video buffers, waveforms, and image grids need virtualization, eviction, and adaptive quality.",
+  "The third concept is asynchronous processing. Many operations cannot complete during the request: transcoding, scanning, rendering, exporting, OCR, waveform generation, and moderation. The UI needs job state, retry, cancellation where safe, and clear user messaging.",
+  "The fourth concept is consistency. Original assets and permissions are authoritative. Derived media and previews can be eventually consistent, but must carry version identifiers so stale thumbnails, captions, annotations, or manifests do not appear as current truth.",
+  "The fifth concept is abuse and safety. Media can contain malware, copyrighted material, unsafe content, personal data, or policy-violating streams. Scanning, moderation, rate limits, reporting, and takedown propagation are part of the system design, not add-ons.",
+  "The sixth concept is observability. Track startup time, decode time, render frame drops, upload retry rate, processing queue age, export success, CDN hit ratio, moderation delay, permission-denied rate, and client memory pressure."
+];
+const architecture = [
+  "The recommended architecture has five surfaces: scene graph, GPU renderer, asset cache, undo log, collab channel. The client owns responsive interaction and local recovery. The API layer owns permissions, idempotency, and job creation. The processing plane owns expensive asynchronous work. Storage and CDN own asset distribution. Observability ties user symptoms to asset version, job ID, route, release, and device cohort.",
+  "A user action should create durable intent before expensive processing begins. Uploads create sessions and chunk manifests. Edits update a draft log or document model. Playback records manifest and entitlement state. Exports create jobs with immutable input versions. This lets the system retry safely after browser refresh, worker failure, or regional outage.",
+  "Derived artifacts should be keyed by source version and transformation parameters. If a video is re-encoded, a PDF is redacted, or a design file changes, old previews must not be confused with new ones. CDN invalidation should be precise and, where possible, replaced by versioned URLs.",
+  "The client should render progressive states: placeholder, partial preview, processing, ready, failed, retryable, permission blocked, or policy blocked. These states are product semantics, not generic spinners. They tell users whether to wait, retry, change input, or contact support.",
+  "The system should separate interactive paths from batch-heavy paths. Playback controls, editing cursor, annotation placement, and draft typing need low latency. Transcoding, full export, OCR, deep scanning, and global indexing can run asynchronously with backpressure.",
+  "The diagrams show architecture, flow, and operations: the architecture view explains ownership boundaries, the flow view explains user intent through processing and delivery, and the operations view explains queue pressure, recovery, moderation, and QoE control loops."
+];
+const tradeoffs = [
+  "Client-heavy processing can feel instant and reduce server cost, but it is limited by device capability, browser support, battery, and memory. Server-heavy processing is more predictable and easier to moderate, but adds queue latency and infrastructure cost. Mature systems usually use a hybrid.",
+  "Eagerly generating every derivative gives fast later reads but wastes compute for assets that are never viewed. Lazy generation saves cost but can make first access slow. Principal designs choose by product criticality: thumbnails and safety scans are often eager; rare export formats can be lazy.",
+  "Public CDN caching is excellent for published media but dangerous for private, permissioned, or recently revoked assets. Permissioned media needs signed URLs, short TTLs, versioned keys, and takedown propagation. The cache key is a security boundary.",
+  "Optimistic editing improves flow, but edits need durable logs, conflict resolution, and recovery. For collaborative or offline editing, the design must choose OT, CRDT, server-authoritative locking, or merge-on-save based on the shape of the document and expected collaboration intensity.",
+  "High visual fidelity competes with performance. A player can drop quality to avoid rebuffering; an editor can lower preview resolution while keeping export fidelity; a PDF viewer can render visible pages first. The product should make these trade-offs intentionally.",
+  "Moderation before publication reduces user harm but slows creator workflows. Moderation after publication improves speed but can amplify abuse. Risk-based gating is usually better than one rule for every asset.",
+  "Observability itself has cost and privacy risk. Capture event class, performance timings, asset IDs, and job IDs, but avoid logging raw document content, private annotations, media URLs with secrets, or user-entered text."
+];
+const practices = [
+  "Model media as a lifecycle with immutable source versions, derived artifact versions, processing jobs, permission state, and deletion or redaction state. Make every derived object traceable to the source version that produced it.",
+  "Use resumable upload and idempotent job creation. Browser crashes, mobile backgrounding, network loss, and worker retries should converge on one upload or processing job rather than duplicate assets.",
+  "Keep interactive paths small. Use virtualization, bounded buffers, progressive decoding, idle work, worker threads where appropriate, and adaptive quality for constrained devices.",
+  "Design explicit states for processing and failure. Users should know whether an asset is uploading, scanning, processing, ready, blocked, expired, or failed permanently. Support should see the same state with job history.",
+  "Protect permissions at every derived surface: original file, thumbnail, transcript, annotation, search result, share preview, CDN URL, export, and notification. Derived media is often where privacy leaks happen.",
+  "Build operational dashboards around user symptoms: playback startup, rebuffer, export queue age, upload resume success, annotation conflict rate, frame drops, failed processing jobs, and moderation SLA.",
+  "Provide rollback controls for codecs, rendering engines, export workers, feature flags, and CDN publication. Media regressions can be severe because old clients and assets remain in circulation."
+];
+const pitfalls = [
+  "A common pitfall is treating media as static files. In production, media has permissions, versions, processing state, cache state, moderation state, and support history.",
+  "texture leaks becomes visible quickly because media UX has little tolerance for pauses, jumps, or lost work. The design needs either prevention or honest recovery.",
+  "frame drops is often caused by mixing interactive and batch work in one path. Expensive jobs should not block low-latency controls unless the product absolutely requires it.",
+  "lost edits needs explicit ownership and retry semantics. If a job can fail after the user leaves, there must be notification, retry, support visibility, or compensating state.",
+  "merge conflicts should be considered during design, not after launch. Media products are natural abuse targets because images, video, documents, and streams can carry harmful or sensitive content.",
+  "Another pitfall is missing cost governance. Transcoding, rendering, OCR, storage replication, CDN egress, and telemetry can dominate cost if the system eagerly processes every variant without demand signals."
+];
+const useCases = [
+  "Figma-like design tool exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Whiteboard with complex shapes exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "Browser-based 3D configurator exercises the same principal design themes: durable intent, derived artifact lifecycle, client resource limits, permission enforcement, and operational recovery.",
+  "An interviewer may push on device constraints. A strong answer explains how the UI adapts quality, bounds memory, uses background work carefully, and preserves the primary task when CPU or GPU is constrained.",
+  "An interviewer may push on privacy. The answer should explain signed URLs, derived artifact permissions, local cache clearing, redaction propagation, and avoiding sensitive telemetry.",
+  "An interviewer may push on incidents. The answer should cover queue backlog, worker rollback, CDN purge or versioning, disabled formats, degraded preview, and support-visible job history."
+];
+const questions = [
+  {
+    "question": "How would you design a Canvas and WebGL design tool end to end?",
+    "answer": "I would model the media lifecycle first: source asset or document state, derived artifacts, permissions, processing jobs, client presentation, and operational telemetry. The client handles responsive interaction and local recovery, APIs enforce permission and idempotency, workers perform expensive processing, storage and CDN serve versioned artifacts, and observability links user symptoms back to asset version and job ID."
+  },
+  {
+    "question": "Why choose this architecture over a simpler upload-and-display design?",
+    "answer": "A simple upload-and-display design ignores derived artifacts, processing failures, permissions, moderation, cache invalidation, and device limits. It works for prototypes but fails when assets are large, private, collaborative, or safety-sensitive. The layered architecture adds complexity, but it isolates expensive work, makes retries safe, and gives operators control during incidents."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are texture leaks, frame drops, lost edits, merge conflicts. Scale also exposes CDN egress cost, processing queue backlog, hot assets, cache stampedes, memory pressure, long-tail device issues, and moderation delay. The prevention strategy is versioned artifacts, backpressure, adaptive quality, bounded client memory, queue observability, and remote rollback controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Original assets, permissions, and durable user edits need strong ownership and versioning. Derived media such as thumbnails, transcripts, previews, indexes, and exports can be eventually consistent, but must carry source version IDs and visible processing state. Collaborative editing may require CRDT, OT, or server-authoritative conflict resolution depending on the data model."
+  },
+  {
+    "question": "How do you handle failure, privacy, cost, and observability?",
+    "answer": "Failures are handled through resumable uploads, idempotent jobs, retryable processing, clear user states, and support-visible job history. Privacy requires permission checks on every derived surface, signed URLs, redaction propagation, and careful local storage. Cost is controlled through demand-aware derivative generation, cache hit targets, storage lifecycle policy, and telemetry sampling. Observability tracks QoE, queue age, job failures, cache behavior, and client resource pressure."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate interactive latency from batch processing, original truth from derived artifacts, and public assets from permissioned assets. Then I would explain which parts are optimized for immediacy, which are optimized for correctness, and which degrade during load or device pressure. That makes the trade-off defensible rather than generic."
+  }
+];
+const references = [
+  {
+    "label": "MDN: Media Source Extensions",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API"
+  },
+  {
+    "label": "MDN: WebCodecs API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API"
+  },
+  {
+    "label": "W3C: Media Source Extensions",
+    "href": "https://www.w3.org/TR/media-source-2/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "WebRTC specifications",
+    "href": "https://www.w3.org/TR/webrtc/"
+  },
+  {
+    "label": "Ink and Switch: local-first software",
+    "href": "https://www.inkandswitch.com/local-first/"
+  }
+];
+
+export default function CanvasWebglDesignToolArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A browser-based vector design tool (Figma, Sketch Web, Penpot) must sustain 60–120 fps rendering of scenes with thousands of vector shapes, while supporting real-time collaborative editing by multiple users simultaneously. The two core technical constraints are: vector rendering performance and collaborative state synchronization. Vector rendering: the browser's Canvas 2D API is adequate for simple scenes (under 200 shapes) but becomes a bottleneck for complex design files with thousands of shapes, gradients, effects, and text elements. WebGL, which renders geometry directly on the GPU, can sustain orders-of-magnitude higher throughput by reducing CPU-GPU data transfer through geometry batching and eliminating per-shape JavaScript overhead. Collaborative state: unlike a text editor where operations are a stream of insertions and deletions at character positions, design objects are independent entities in a scene graph—moving frame A has no effect on the position of frame B. This independence makes CRDTs (Conflict-free Replicated Data Types) a natural fit: two users editing different properties of the same object can merge changes without conflict, using last-write-wins per property.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The infinite canvas model—a pan-and-zoomable coordinate space with no fixed edges—requires a camera transform system that converts between world coordinates (the design's logical coordinate system) and screen coordinates (the browser's pixel space). All object positions are stored in world coordinates; the GPU applies the camera transform at render time, meaning pan and zoom operations require only a uniform update in the shader—no geometry recalculation.</HighlightBlock>
-        <p><strong>Explicit assumptions:</strong> The rendering engine uses WebGL for vector shape rendering and Canvas 2D for text (browser text rendering is complex enough that reimplementing it in WebGL is impractical). Collaboration uses Y.js (a CRDT library), synchronized over WebSocket. The document model is a scene graph (Document → Pages → Frames → Groups → Nodes). Export uses Canvas for raster output and a custom SVG serializer for vector output.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/canvas-webgl-design-tool-architecture.svg" alt="Design a Canvas/WebGL Design Tool architecture" caption="Architecture view: media lifecycle, client runtime, processing plane, storage, CDN, and control boundaries." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/canvas-webgl-design-tool-rendering.svg" alt="Design a Canvas/WebGL Design Tool flow" caption="Flow view: user intent, rendering or processing progression, fallback, and recovery states." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/canvas-webgl-design-tool-operations.svg" alt="Design a Canvas/WebGL Design Tool operations" caption="Operations view: queue pressure, permission enforcement, moderation, QoE, rollback, and support visibility." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Vector shapes:</strong> Rectangle, ellipse, line, polygon, and Bezier path (pen tool). Each shape has fill (solid, gradient, image), stroke (color, weight, dash), opacity, and blend mode.</li>
-          <li><strong>Infinite canvas:</strong> Pan (space + drag), pinch-zoom, and scroll-to-zoom with pivot zoom (zooms toward cursor position). Minimum zoom: 1%. Maximum zoom: 6400%.</li>
-          <li><strong>Layers and frames:</strong> Document tree with pages, frames (artboards), groups, and individual nodes. Frames define export boundaries. Groups are non-rendering containers for logical organization.</li>
-          <li><strong>Component system:</strong> A component is a master node template. Instances reference the component and can override individual properties (fill, text content). Editing the master propagates to all instances (except overridden properties).</li>
-          <li><strong>Real-time collaboration:</strong> Multiple users can edit simultaneously. Each user's cursor and selection are visible to all others (colored by user identity). Changes are applied and visible to all editors within 300ms P95.</li>
-          <li><strong>Export:</strong> Export frames as SVG (lossless vector), PNG (at 1×/2×/3×/4× scale), and PDF. Export design tokens (color, typography, spacing values) as CSS variables or JSON.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Render performance:</strong> 1,000 vector shapes must render within 8ms per frame (120fps capable) on a mid-range device.</li>
-          <li><strong>Pan/zoom:</strong> Pan and zoom must operate within 4ms (a pure GPU transform update, no geometry recalculation).</li>
-          <li><strong>Collaboration latency:</strong> A shape move must be visible to collaborators within 300ms P95.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The tool has three subsystems. The rendering subsystem: a WebGL context running a requestAnimationFrame loop, fed by the scene graph. On each frame, visible nodes (culled by viewport bounds) are tessellated to triangle geometry, batched into shared VBOs (Vertex Buffer Objects) by shader type, and rendered in as few draw calls as possible. Text nodes are rendered to off-screen Canvas 2D elements and uploaded as WebGL textures. The interaction subsystem: pointer events (pointerdown, pointermove, pointerup) are routed to the active tool (select, pen, rect, text). The tool updates the scene graph, which marks the affected nodes dirty and triggers a re-render. Hit testing uses an R-tree spatial index for bounding-box lookup followed by geometric precision tests (point-in-polygon, distance-to-path). The collaboration subsystem: the scene graph is backed by Y.js shared types (YMap per node, YArray for children lists). All mutations go through the Y.js API, which automatically propagates changes to collaborators via a WebSocket provider. The Y.js awareness protocol provides real-time cursor/selection state.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/canvas-webgl-design-tool-architecture.svg"
-          alt="Canvas WebGL design tool architecture showing GPU render loop (scene graph frame layer group node → culling skip off-viewport nodes → transform GPU matrix multiply GPU → batch draw calls geometry buffers GPU → fragment shader fill stroke effects → selection overlay handles guides snap → display swap buffers), scene graph model (document tree Document → Frame → Frame with children Rect Text; node properties id type x y w h rotation fill stroke opacity blendMode children constraints componentId), vector tools and hit testing (Bezier pen tool click add anchor point corner click+drag add smooth anchor control handles, Bezier curve P(t) = (1-t)³P0 + 3(1-t)²tP1 + 3(1-t)t²P2 + t³P3, path encoded as SVG d string for storage rendered via WebGL tessellation; hit testing spatial index R-tree rtree.js O(log n) bounding-box lookup precision test point-in-polygon complex paths winding rule click walk R-tree top-down return topmost overlapping node; snapping alignment smart guides snap to edges centers baselines other objects within 4px grid snap configurable px grid pixel snap round coords integers), real-time collaboration CRDT (why CRDT not OT for design: design objects independent no positional coupling CRDT merges last-write-wins per property Y.js Map no server transform step scales to thousands of editors; Y.js shared types YMap per node x y w h fill CRDT map YArray ordered list of node IDs in each frame YText for text content within text nodes awareness for cursor selection presence; conflict resolution concurrent move last-write-wins Lamport timestamp concurrent delete+edit delete wins prevent ghost objects), export formats SVG serialize scene graph nodes to SVG elements lossless vector PNG flatten to Canvas toBlob target resolution DPR PDF canvas.toDataURL jsPDF CSS variables design tokens JSON, component system master node template with overridable properties instance reference to component plus property overrides sparse delta edit master all instances update except overridden props, performance targets render frame &lt;8ms pan zoom &lt;4ms GPU transform 1000 nodes collab &lt;16ms R-tree plus CRDT merge."
-          caption="WebGL render loop (scene graph → culling → GPU batching → fragment shader), scene graph model, Bezier pen tool, R-tree hit testing, CRDT collaboration (Y.js), component system, and export formats"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">WebGL Render Loop and Geometry Batching</h3>
-        <HighlightBlock as="p" tier="important">The render loop runs via requestAnimationFrame. Each frame: (1) Compute the current viewport bounds in world coordinates (camera transform inverse). (2) Query the R-tree for all nodes whose bounding boxes intersect the viewport. (3) Group the visible nodes by shader type (solid fill, gradient fill, image fill, stroke only). (4) For each group, tessellate the shapes to triangles (if not cached) and upload the vertex data to a single VBO. (5) Issue one draw call per group with the VBO bound and the camera transform set as a uniform. (6) Render the selection overlay (handles, guides, snap lines) as a final Canvas 2D pass on top of the WebGL output.</HighlightBlock>
-        <p>Batching reduces GPU draw calls from O(n) (one per shape) to O(shader types) (typically 4–6). A document with 1,000 shapes may have 4 unique shader combinations, resulting in 4 draw calls instead of 1,000. This is the primary mechanism for WebGL's performance advantage over Canvas 2D.</p>
-        <HighlightBlock as="p" tier="important">Dirty tracking: when a node changes (e.g., its fill color is updated), it is marked dirty. The render loop checks dirty flags before re-tessellating. If only the fill color changes (not the shape geometry), only the color uniform is updated—no retessellation is needed. If the geometry changes (path control points moved, dimensions changed), the node's tessellation cache is invalidated and rebuilt on the next frame.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Bezier Path Tessellation</h3>
-        <HighlightBlock as="p" tier="important">WebGL renders triangle primitives—it has no native support for curves. Bezier paths must be converted to a sequence of line segments (tessellated) that approximates the curve closely enough to appear smooth at the current zoom level. The tessellation algorithm uses adaptive subdivision: a cubic Bezier segment P(t) = (1−t)³P0 + 3(1−t)²tP1 + 3(1−t)t²P2 + t³P3 is recursively split at t=0.5 until each resulting line segment's deviation from the true curve (measured as the distance from the midpoint of the chord to the midpoint of the curve) is less than a threshold (0.5 pixels at the current zoom level). At zoom level 1.0 (100%), a typical Bezier segment requires 8–16 subdivisions. At zoom level 10.0 (1000%), the same segment requires 25–40 subdivisions (more segments needed because the curve is larger on screen).</HighlightBlock>
-        <p>Fill tessellation: the resulting polyline (the tessellated boundary of the closed path) is triangulated using the earcut algorithm, which produces a triangle fan covering the interior of the path. For paths with holes (a donut shape), earcut handles the hole by connecting the outer and inner boundaries with a bridge edge. Stroke tessellation: the polyline is expanded by strokeWidth/2 on each side to produce a quad strip (each segment of the polyline becomes a rectangle), with mitered or rounded joins at corners. The quad strip is decomposed into triangles.</p>
-        <HighlightBlock as="p" tier="important">Tessellation caching: tessellated geometry is cached in a Map keyed by nodeId + zoomLevel (rounded to the nearest power of 2). On zoom change, the tessellation for the new zoom level is fetched from the cache if available, or computed and stored. The cache is bounded to prevent memory growth (LRU eviction when the cache exceeds 200 entries).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Infinite Canvas and Camera Transform</h3>
-        <p>The infinite canvas uses a camera with three parameters: x (pan offset X), y (pan offset Y), and zoom (scale factor). All design objects are positioned in world coordinates; the camera converts world coordinates to screen coordinates: screenX = worldX × zoom + camera.x; screenY = worldY × zoom + camera.y. The inverse converts screen coordinates (from mouse events) to world coordinates: worldX = (screenX − camera.x) / zoom; worldY = (screenY − camera.y) / zoom.</p>
-        <HighlightBlock as="p" tier="important">In WebGL, the camera transform is applied as a uniform matrix in the vertex shader: gl_Position = cameraMatrix * vec4(position, 0, 1). Updating the camera uniform costs a single gl.uniformMatrix3fv call per frame—no vertex data is re-uploaded, no geometry is recalculated. This is why pan and zoom are O(1) GPU operations, regardless of scene complexity.</HighlightBlock>
-        <p>Pivot zoom: when the user pinches or scrolls to zoom, the zoom must appear to expand from the cursor position (not from the origin). The pivot zoom formula: camera.x = cursor.x − (cursor.x − camera.x) × (newZoom / oldZoom); camera.y = cursor.y − (cursor.y − camera.y) × (newZoom / oldZoom). This keeps the world point under the cursor stationary on screen as zoom changes.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">CRDT Collaboration with Y.js</h3>
-        <p>Y.js provides CRDT data structures (YMap, YArray, YText) that can be modified concurrently by multiple clients and merged automatically without conflicts. The scene graph is represented as Y.js shared types: one YMap per node (containing the node's properties: x, y, width, height, fill, etc.), and one YArray per node's children list (containing child node IDs in order). All mutations to the scene graph go through Y.js: moving a node is ymap.set("x", newX)—Y.js records this as a CRDT operation and propagates it to all connected clients.</p>
-        <HighlightBlock as="p" tier="important">Conflict resolution: for most design properties (position, size, fill color), the conflict resolution strategy is last-write-wins by Lamport timestamp. If two users move the same shape simultaneously, the one whose operation has the higher timestamp wins. Figma's approach is more nuanced: the last user to interact with an object "wins" that object, providing intuitive visual feedback (you can see who has the object selected). For deletions, Y.js uses the "delete wins" strategy: if one user deletes a node while another user is editing it, the deletion takes effect. This prevents ghost objects (references to nodes that no longer exist).</HighlightBlock>
-        <p>Y.js awareness: in addition to the document state, Y.js provides an awareness protocol for ephemeral state (cursor positions, selections, user identity). Each client broadcasts its cursor position (in world coordinates) and current selection (list of selected node IDs) every 100ms. Other clients receive these broadcasts and render the remote user's cursor as a colored dot with a name label, and highlight the selected nodes with the remote user's color. The awareness state is not persisted—it is lost when a client disconnects.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Component and Instance System</h3>
-        <p>A component is a master node in the scene graph with a special "isComponent" flag. When a component is instantiated (Ctrl+D on the component, or "Create instance"), a new node is created with type "instance" and a componentId reference to the master component. The instance node initially has no own properties—all its visual properties are inherited from the master component. When the user overrides a property on the instance (e.g., changes the fill color), that property is added to the instance's own YMap. The rendering system resolves properties by looking first in the instance's own properties, then falling back to the master component's properties (prototype-style inheritance).</p>
-        <p>When the master component is edited (shape resized, fill color changed), the change propagates automatically to all instances because instances inherit from the master. Overridden properties in instances are not affected (since the instance's own property takes precedence). Resetting an instance override (right-click → Reset property) removes the property from the instance's YMap, restoring inheritance from the master.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Hit Testing with R-Tree</h3>
-        <p>Hit testing determines which node was clicked when the user clicks on the canvas. Naive O(n) hit testing (checking every node against the click point) is too slow for large documents. The R-tree (a spatial index) reduces lookup to O(log n): all node bounding boxes are indexed in the R-tree, and a point query returns only the nodes whose bounding boxes contain the clicked point. For shapes with complex paths (where the click might be inside the bounding box but outside the actual path), a secondary precision test is performed: point-in-polygon using the winding rule for filled paths, or distance-to-path for strokes.</p>
-        <p>When a node changes position or size, the R-tree is updated (remove old entry, insert new entry). R-tree updates are O(log n). For batch operations (moving a group of 100 nodes), all R-tree updates are batched into a single transaction to avoid intermediate inconsistent states.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Export</h3>
-        <HighlightBlock as="p" tier="important">SVG export serializes the scene graph to SVG markup. Each node type has a corresponding SVG element (rect → &lt;rect&gt;, ellipse → &lt;ellipse&gt;, Bezier path → &lt;path d="..."&gt;, text → &lt;text&gt;). The SVG viewBox is set to the frame's bounding box. Gradients are exported as &lt;linearGradient&gt; or &lt;radialGradient&gt; elements referenced by the shape's fill. The resulting SVG string is a Blob downloaded via the anchor.click() pattern. PNG export flattens the scene graph to a Canvas 2D context (scaling to the target resolution) and calls canvas.toBlob("image/png"). The Canvas 2D rendering path is simpler than the WebGL path but produces the same visual output for most shapes. Text is rendered natively via Canvas 2D's fillText API. PDF export uses jsPDF, which provides an API similar to Canvas 2D and produces a PDF document from the same rendering calls.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/media-rich-content-systems/canvas-webgl-design-tool-rendering.svg"
-          alt="WebGL design tool rendering details showing infinite canvas camera transform (camera state camera = {x: offsetX, y: offsetY, zoom: scale} persisted per user per document; worldToScreen x y = {sx: x * zoom + camera.x, sy: y * zoom + camera.y}; screenToWorld sx sy = {x: (sx - camera.x) / zoom, y: (sy - camera.y) / zoom}; pan onPointerMove space+drag camera.x += dx camera.y += dy no scene re-render needed update camera uniform in GPU shader transforms apply per-vertex; zoom pivot camera.x = cursor.x - (cursor.x - camera.x) * (newZoom / oldZoom) camera.y = cursor.y - (cursor.y - camera.y) * (newZoom / oldZoom); viewport culling viewportBounds world space = {x: -camera.x/zoom y: -camera.y/zoom w: canvasWidth/zoom h: canvasHeight/zoom} skip nodes whose AABB does not intersect viewportBounds R-tree query). WebGL batching and vector tessellation (geometry batching: problem 1 draw call per shape = 1000 shapes → 1000 draw calls GPU starved, solution batch same-shader shapes into single VBO, per vertex x y r g b a shapeId GPU shader reads fill from uniform array, 1 draw call per batch grouped by shader 10-100x fewer GPU state changes; Bezier path tessellation: WebGL renders triangles not curves Bezier must be tessellated to polyline, adaptive subdivision recursively split Bezier until each segment &lt; 0.5px, fill earcut algorithm triangulate polygon triangle fan, stroke expand polyline by strokeWidth/2 on each side triangle strip, GPU anti-alias render at 2x then downsample MSAA or FXAA shader; zoom-dependent detail: zoom &lt; 0.1 render simplified bounding box avoid sub-pixel detail, zoom 0.1-1.0 normal tessellation medium quality, zoom &gt; 1.0 high-quality tessellation 0.1px threshold, re-tessellate on zoom change threshold-based only if zoom changes by 2x). Undo redo with CRDT: Y.js UndoManager tracks local mutations only Ctrl+Z revert own ops not collaborators CRDT undo is merge-safe won't corrupt collab state. Presence remote cursors: Y.js awareness each client broadcasts cursor position + selection, cursor rendered in world-space transforms with camera, user avatar + name label follows cursor color per user deterministic hash. Keyboard shortcuts: V=select F=frame R=rect T=text P=pen I=image Ctrl+Z=undo Ctrl+G=group Space+drag=pan Ctrl+scroll=zoom Ctrl+0=fit Ctrl+1=100% Ctrl+D=duplicate. Multiplayer follow: click collaborator avatar camera follows their viewport."
-          caption="Infinite canvas camera transform (pan/zoom as GPU uniform update, pivot zoom formula, viewport culling via R-tree), WebGL geometry batching (1 draw call per shader group), Bezier adaptive tessellation (earcut fill, strip stroke), CRDT undo manager, awareness cursors, and keyboard shortcuts"
-        />
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">WebGL versus Canvas 2D: Canvas 2D is significantly simpler to implement for vector rendering—the API directly supports bezier paths (ctx.bezierCurveTo), fills, strokes, and text without any tessellation or shader programming. For files with under 500 shapes, Canvas 2D achieves 60fps on modern hardware. The overhead of WebGL (tessellation, VBO management, shader compilation) is justified only when the scene complexity exceeds what Canvas 2D can sustain at 60fps. A practical approach: start with Canvas 2D and introduce WebGL when profiling reveals it as the bottleneck. Figma uses a custom WebGL renderer for scene content and Canvas 2D for the UI overlay (toolbars, handles, guides).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">CRDT versus OT for design tools: OT (Operational Transform) requires a central server to linearize concurrent operations and compute transforms, creating a bottleneck for high-frequency collaborative changes (like live cursor movement during drag). CRDT (Y.js) allows peer-to-peer merging without server coordination—clients can exchange updates directly or through a relay server that does not need to understand the data model. For a design tool where properties are independent (moving object A is independent of moving object B), CRDT's last-write-wins per property is correct by construction. The main limitation: CRDT undo is per-user (you can only undo your own operations, not a collaborator's), which is the expected behavior for most collaborative design workflows.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Text rendering: WebGL cannot render typographic text with subpixel antialiasing, complex script shaping (Arabic, Devanagari), or font-level features (ligatures, kerning). Delegating text rendering to Canvas 2D (which uses the browser's native font renderer) is the pragmatic choice, at the cost of a synchronization step: text nodes are rendered to an OffscreenCanvas and uploaded as a WebGL texture. The texture must be re-rendered on font load, text change, or zoom change (to maintain crisp text at the current resolution). An alternative is SDF (Signed Distance Field) text rendering, which renders font glyphs as distance fields and uses a WebGL shader to reconstruct the sharp glyph boundary at any zoom level—used by Mapbox GL and Figma for GPU-accelerated text that scales without re-rendering.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A canvas/WebGL design tool uses a GPU render loop that maintains 60–120fps for scenes with thousands of shapes. The key optimizations: geometry batching (group same-shader shapes into single VBOs → 4–6 draw calls instead of 1,000); adaptive Bezier tessellation (subdivide until segment error &lt;0.5px, cache by nodeId + zoom level); and viewport culling via R-tree (skip off-screen nodes before tessellation). The infinite canvas uses a camera transform (x, y, zoom) applied as a GPU uniform—pan and zoom cost one gl.uniformMatrix3fv call regardless of scene size. The scene graph is backed by Y.js CRDT shared types (YMap per node, YArray for children): all mutations go through Y.js and are automatically propagated to collaborators. Conflict resolution is last-write-wins per property (Lamport timestamp), with delete-wins for deletions. The Y.js awareness protocol broadcasts cursor positions and selections (100ms interval) for real-time presence. The component/instance system uses prototype inheritance: instances inherit unoverridden properties from the master component's YMap. Hit testing uses an R-tree for O(log n) bounding-box lookup, with earcut-based polygon hit testing for precision. Export serializes the scene graph to SVG (lossless), PNG (Canvas 2D toBlob at target DPR), or PDF (jsPDF). The defining constraint: all scene graph mutations must go through Y.js—no direct state mutation—because CRDT correctness depends on every change being a CRDT operation that can be merged with concurrent operations from collaborators.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

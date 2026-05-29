@@ -7,95 +7,145 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-secure-token-session-handling",
-  title: "Design a Secure Token & Session Handling System",
-  description:
-    "Architecture for a secure token and session handling system: token storage strategies (in-memory access token vs. HttpOnly cookie vs. localStorage tradeoffs), JWT anatomy and signature validation, CSRF protection via the double-submit cookie pattern and SameSite cookie attribute, XSS-resistant token storage, refresh token rotation with family revocation for replay attack prevention, session fixation prevention on privilege escalation, silent refresh via hidden iframe or service worker, token binding to device fingerprint, and logout that invalidates all layers of the token chain.",
+  title: "Design Secure Token and Session Handling",
+  description: "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability.",
   category: "high-level-design",
   subcategory: "security-auth-privacy-systems",
   slug: "secure-token-session-handling",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "jwt", "refresh-token", "csrf", "xss", "session-fixation", "token-rotation", "silent-refresh", "httponly-cookie", "token-revocation"],
-  relatedTopics: ["authentication-system", "account-security-dashboard"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "security", "auth", "privacy", "policy", "audit"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design Secure Token and Session Handling is a high-stakes product system because mistakes create account takeover, data exposure, compliance violations, or permanent loss of user trust. A principal-ready design treats secure token and session handling as a trust boundary, not as a form or settings page.",
+  "The design must cover identity proof, authorization, session lifecycle, consent or policy state, auditability, abuse resistance, operational controls, and user recovery. The visible UI is only one part of the system; the harder work is making sure every backend and derived surface obeys the same security decision.",
+  "A good answer starts by naming assets and attackers. Assets include accounts, tokens, permissions, private data, consent records, audit logs, recovery channels, and administrative power. Attackers include credential stuffers, malicious insiders, compromised devices, automation, phishing kits, and confused legitimate users.",
+  "Security systems also have product trade-offs. Strong controls reduce risk but can lock out real users, add friction, increase support cost, and create accessibility issues. Weak controls improve conversion but increase abuse and breach risk. Principal-level design explains where the system steps up friction and where it preserves usability.",
+  "The design should assume incidents happen. Tokens leak, permissions are misconfigured, consent pipelines lag, and users lose devices. The architecture must support revocation, rollback, audit reconstruction, customer support, and forensics without exposing more sensitive data."
+];
+const concepts = [
+  "The first concept is explicit trust boundary modeling. token issuer, session store, and refresh rotation must define who can make a decision, what evidence they use, and how that decision is propagated to downstream systems.",
+  "The second concept is least privilege. Users, services, admin roles, tokens, and support tools should receive the minimum permission needed for the task, scoped by resource, tenant, action, device, time, and risk.",
+  "The third concept is lifecycle state. Credentials, sessions, roles, consent records, devices, recovery methods, and audit entries are not static. They are created, verified, rotated, expired, revoked, reviewed, and sometimes legally retained.",
+  "The fourth concept is consistency. Security decisions need stronger consistency than ordinary personalization. A revoked session, removed permission, deleted consent, or blocked account should stop taking effect quickly across API, UI, notification, search, export, and background job surfaces.",
+  "The fifth concept is abuse-aware UX. Attackers exploit error messages, retry behavior, recovery flows, and notification fatigue. The UI should help legitimate users recover while avoiding enumeration, social engineering, or repeated prompt attacks.",
+  "The sixth concept is privacy-safe observability. Security systems need detailed audit and telemetry, but logs must not contain passwords, raw tokens, full secrets, unnecessary personal data, or sensitive consent payloads."
+];
+const architecture = [
+  "The architecture has five major planes: token issuer, session store, refresh rotation, revocation service, device registry. The request path asks for a decision; the policy or risk plane evaluates context; the state plane persists durable records; the enforcement plane applies the decision consistently; and the audit plane records enough evidence for review and incident response.",
+  "Every sensitive action should carry actor, resource, tenant, device, session, risk score, policy version, and correlation ID. This context lets the system explain why a decision happened and lets operators find all affected records during an incident.",
+  "The frontend should avoid becoming the source of truth. It can explain choices, collect user intent, and show recovery state, but the backend must enforce authorization, consent, token validity, and session state. Hiding a button is not access control.",
+  "Security state should be versioned. Policy versions, consent versions, role graph versions, token key versions, and session risk versions help the system reason about stale decisions and roll back bad changes.",
+  "The system should support emergency controls: revoke all sessions for a user or tenant, disable a risky recovery method, roll back a bad permission template, pause a consent sync, or force step-up authentication for a suspicious cohort.",
+  "The diagrams for this article should be read as architecture, flow, and operations views: decision boundary, user journey, and incident/recovery control loop."
+];
+const tradeoffs = [
+  "Centralized policy evaluation gives consistent decisions and auditability, but it can become a latency or availability dependency. Distributed checks are faster locally but harder to audit and easier to make inconsistent. Mature systems centralize policy definitions while caching short-lived decisions safely at enforcement points.",
+  "Short-lived tokens limit replay damage but increase refresh traffic and can degrade UX during network or provider issues. Long-lived sessions improve usability but increase risk after device compromise. A defensible design uses short access tokens, rotated refresh tokens, device binding where appropriate, and risk-based step-up.",
+  "Strict security prompts reduce abuse but can train users to approve blindly. Step-up authentication should be risk-based and explain why it appears, not triggered on every sensitive action without context.",
+  "Fail-closed is safer for sensitive operations but can create outages for legitimate users if a policy service fails. Fail-open improves availability but can expose data. The answer should classify operations: viewing public content may degrade open; admin actions, private data, payment, and permission changes should fail closed or require cached proof.",
+  "Detailed audit logs improve forensics but create privacy and retention risks. Logs should be immutable enough for trust, minimized enough for privacy, and governed by access controls and retention policy.",
+  "Automation reduces support cost but can worsen lockout or consent mistakes at scale. Human review is slower but necessary for high-impact recovery, break-glass access, and disputed security events."
+];
+const practices = [
+  "Model every sensitive flow as a state machine with explicit transitions, expiry, revocation, and audit entries. Avoid ambiguous booleans such as active or verified without transition history.",
+  "Use defense in depth. UI gating, API authorization, database row filters, service-to-service authorization, and audit monitoring should all reinforce the same policy instead of relying on one layer.",
+  "Protect recovery flows as strongly as login flows. Email change, phone change, password reset, backup code regeneration, device removal, and account deletion are attacker targets.",
+  "Use idempotency and replay protection for security actions. Repeated clicks or retries should not create duplicate recovery tokens, conflicting consent records, or inconsistent role assignments.",
+  "Segment security telemetry by actor type, tenant, resource class, risk score, geography, device, and release. Watch for spikes in denial rate, challenge rate, recovery attempts, permission changes, token refresh failures, and consent sync lag.",
+  "Build support and forensic tooling from the start. Operators need safe views of decision history, policy versions, device history, token family state, consent lineage, and admin actions without exposing secrets.",
+  "Exercise incident playbooks. Test mass token revocation, compromised admin role rollback, consent propagation delay, policy misconfiguration, suspicious login spikes, and third-party identity provider outage."
+];
+const pitfalls = [
+  "token replay is usually a sign that the design treats security as a single endpoint instead of a control loop with detection, throttling, challenge, and recovery.",
+  "stolen refresh token often comes from UX that optimizes completion over risk explanation. Users need enough context to make safe decisions without exposing sensitive signals to attackers.",
+  "slow revocation can happen when error messages, policy caches, or derived surfaces reveal information that the primary API intended to hide.",
+  "cross-device logout drift requires explicit audit and rollback controls. Emergency access and recovery paths are necessary, but they are also high-risk and must be observable.",
+  "Another pitfall is logging secrets for debugging. Tokens, reset links, passwords, consent payloads, and private resource names should not appear in client logs, server logs, or analytics beacons.",
+  "Teams also underestimate eventual consistency. If a permission is revoked but search exports, notifications, cached pages, or background jobs still use old access, the system has a security bug even if the main API is correct."
+];
+const useCases = [
+  "web session requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "mobile session requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "admin console session requires the system to balance usability, security, auditability, and recovery rather than applying one static rule to every user.",
+  "During a suspected account takeover, the system should revoke risky sessions, preserve forensic evidence, notify the user safely, require step-up authentication, and avoid leaking attacker-controlled details.",
+  "During a policy misconfiguration, operators should identify affected resources, roll back the policy version, invalidate cached decisions, and audit which actions occurred under the bad policy.",
+  "During a privacy request or consent change, downstream systems should receive durable events and report completion or exceptions. A settings UI update alone is not enough."
+];
+const questions = [
+  {
+    "question": "How would you design secure token and session handling end to end?",
+    "answer": "I would start with assets, actors, trust boundaries, and attacker capabilities. Then I would design the decision path around token issuer, session store, refresh rotation, revocation service, device registry. The frontend collects intent and shows safe recovery state, but backend enforcement owns policy. Durable state includes decision evidence, policy version, token or consent lineage, and audit logs. Operations require revocation, rollback, support visibility, anomaly detection, and incident playbooks."
+  },
+  {
+    "question": "Why this architecture over UI-only gating or scattered checks?",
+    "answer": "UI-only gating is not security, and scattered checks drift across teams. Central policy definitions with enforcement at APIs and data boundaries give consistency and auditability. The trade-off is latency and availability risk, so enforcement points may cache short-lived decisions with policy versions and fail-closed for sensitive actions."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are token replay, stolen refresh token, slow revocation, cross-device logout drift, plus policy cache drift, support overload, token refresh storms, audit-log volume, cross-tenant leaks, and delayed revocation. Prevention requires rate limits, lifecycle state, policy versioning, immutable audit, risk scoring, and operational controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Security and privacy decisions need stronger consistency than ordinary product preferences. Revocation, permission removal, account restriction, and consent withdrawal should propagate quickly to APIs, caches, exports, notifications, and background jobs. Some audit aggregation and risk scoring can be eventually consistent, but enforcement should not depend on stale derived summaries."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with safe default policy, cached proof where appropriate, step-up flows, support-visible state, and emergency revocation. Rollback uses policy version rollback, key rotation, token family invalidation, and cache invalidation. Abuse is controlled with rate limits, risk scoring, and recovery hardening. Privacy requires minimization in logs and telemetry. Cost is managed through sampling and tiered audit retention. Observability tracks decision rates, denial rates, challenge rates, revocation lag, and suspicious activity."
+  },
+  {
+    "question": "How do you defend the trade-offs under interviewer pressure?",
+    "answer": "I would classify operations by sensitivity and failure mode. Public or low-risk reads can degrade, but admin actions, private data, identity changes, permission changes, and token issuance need strong enforcement. I would defend extra complexity because the cost of a privacy or account-takeover incident is higher than the cost of central policy, audit, and rollback infrastructure."
+  }
+];
+const references = [
+  {
+    "label": "OWASP Authentication Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+  },
+  {
+    "label": "OWASP Session Management Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+  },
+  {
+    "label": "NIST SP 800-63 Digital Identity Guidelines",
+    "href": "https://pages.nist.gov/800-63-3/"
+  },
+  {
+    "label": "OAuth 2.0 Security Best Current Practice",
+    "href": "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "GDPR text and guidance",
+    "href": "https://gdpr.eu/"
+  }
+];
 
 export default function SecureTokenSessionHandlingArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Token and session handling is the connective tissue of every authenticated web application. The goal: prove to every API request that the caller is who they claim to be, without re-authenticating on every call. The challenge: tokens must be accessible to your JavaScript code to attach to API requests, yet invisible to attacker-injected scripts. These two requirements are in direct tension — and every token storage decision is a tradeoff between developer convenience and attack surface.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The two dominant attack vectors: XSS (Cross-Site Scripting) — attacker injects script into your page and reads tokens from localStorage or JavaScript memory; and CSRF (Cross-Site Request Forgery) — attacker tricks the user's browser into making a request to your API using the user's cookies, without the attacker needing to read the token. HttpOnly cookies defeat XSS (JS cannot read them) but are vulnerable to CSRF. In-memory tokens defeat CSRF (not automatically sent by the browser) but are vulnerable to XSS and are lost on page refresh. There is no single option that eliminates both attack vectors — the secure-by-default architecture uses both, strategically.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Token storage strategies and their security tradeoffs, JWT validation, CSRF protection, refresh token rotation, session fixation prevention, and secure logout. Not in scope: OAuth 2.0 authorization flows (covered in the authentication system article), backend token store implementation, or hardware security keys.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/secure-token-session-handling.svg" alt="Design Secure Token and Session Handling architecture" caption="Architecture view: trust boundary, policy decision, enforcement point, state store, and audit/control plane." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/secure-token-session-handling-flow.svg" alt="Design Secure Token and Session Handling flow" caption="Flow view: user intent, risk decision, policy enforcement, user recovery, and incident response." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/secure-token-session-handling-operations.svg" alt="Design Secure Token and Session Handling operations" caption="Operations view: revocation, rollback, suspicious activity, privacy propagation, and forensic auditability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Token storage strategy:</strong> The access token (short-lived, 15 minutes) is stored in JavaScript memory (a module-level variable, not window, localStorage, or sessionStorage). This means it is not accessible to injected scripts (they would need to intercept the assignment, which is harder) and not sent automatically by the browser. The refresh token (long-lived, 30 days) is stored in an HttpOnly, Secure, SameSite=Strict cookie — invisible to all JavaScript, including attacker-injected scripts. On page load, the app performs a silent refresh (a POST to /auth/refresh using the HttpOnly cookie) to obtain a fresh access token into memory. This is the only call that uses the cookie automatically.</li>
-          <li><strong>CSRF protection:</strong> Because the refresh endpoint uses a cookie automatically sent by the browser, it is the primary CSRF target. Protection: the double-submit cookie pattern — on login, the server sets a csrf-token cookie (non-HttpOnly, readable by JavaScript) containing a random value. Every state-changing request that uses the session cookie also sends the X-CSRF-Token header with the same value (read from the csrf-token cookie). The server compares the header value to the cookie value. An attacker's page cannot read the csrf-token cookie (SameSite=Strict prevents cross-site cookie sending, and even if the cookie were sent, the attacker's page cannot read it due to SOP) and therefore cannot set the matching header. SameSite=Strict on the refresh cookie alone provides strong CSRF protection for modern browsers; the double-submit adds defense in depth for edge cases.</li>
-          <li><strong>Refresh token rotation with family revocation:</strong> Every time the refresh token is used, the server issues a new refresh token and invalidates the old one (token rotation). If an attacker steals a refresh token and uses it after the legitimate client already used it, the server detects the reuse (a token from the same family was already invalidated), immediately revokes the entire token family, and forces re-authentication. This is the "refresh token family" pattern — all tokens issued in the same authentication session share a familyId, and reuse of any revoked family member invalidates all active tokens in that family.</li>
-          <li><strong>Session fixation prevention:</strong> On privilege escalation (login, sudo mode, MFA completion), the server issues a new session ID / new token family. If the user was previously in an unauthenticated or lower-privilege session (e.g., cart session on an e-commerce site), that session ID is not promoted to the authenticated session — a new session is created. This prevents an attacker from pre-setting a session ID (via a malicious link) that they later highjack after the user logs in with it.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Silent refresh performance:</strong> The in-memory access token expires in 15 minutes. Silent refresh must complete before the token expires to avoid API request failures. Implementation: schedule the refresh 60 seconds before expiry (the exp claim in the JWT indicates when it expires). The refresh is performed in the background without user-visible loading states. If the refresh fails (network error), the request is queued and retried after reconnection. If the refresh fails due to an invalid refresh token (401 from the refresh endpoint), the user is redirected to the login page — the session has expired.</li>
-          <li><strong>XSS resilience for in-memory tokens:</strong> Storing the access token in a JavaScript module variable does not fully prevent XSS theft — a script injected into the same origin can call the module's exported functions to perform API requests. True XSS resilience requires: (1) strict Content Security Policy (CSP) that blocks inline scripts and limits script sources to your own domain; (2) Subresource Integrity (SRI) on third-party scripts; (3) output encoding to prevent XSS injection in the first place. The token storage strategy reduces the attack surface but cannot substitute for input/output sanitization and CSP.</li>
-          <li><strong>Secure logout:</strong> Logout must invalidate all layers: (1) clear the in-memory access token (set the module variable to null); (2) call POST /auth/logout with the refresh token family ID — the server revokes all tokens in the family in the token store; (3) the server clears the HttpOnly refresh cookie via Set-Cookie with Max-Age=0; (4) clear the csrf-token cookie client-side (document.cookie = "csrf-token=; Max-Age=0; path=/"). Full logout also clears any cached API responses (React Query or SWR cache invalidation) to prevent stale data from appearing after re-login by another user on a shared device.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The token lifecycle has three layers that must be kept in sync: (1) the in-memory access token (fast, used for API requests, lost on refresh/tab close); (2) the HttpOnly refresh token cookie (persistent, used only to renew access tokens, invisible to JS); and (3) the server-side token store (Redis, authoritative — what tokens are currently valid). The client is always a consumer of the server's authoritative state. A token that looks valid to the client (unexpired JWT signature) can be revoked server-side — the server checks the token store on every request (or more commonly, only on the /auth/refresh endpoint for stateless JWT verification on API calls).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The key architectural decision: access tokens are verified stateless (JWT signature + exp claim checked by each API server without a token store lookup — fast, scalable). Refresh tokens are verified stateful (each use hits the Redis token store — necessary to detect replay attacks). This two-tier verification gives you the scalability of stateless JWT for the high-frequency API calls while maintaining revocation capability for the low-frequency refresh operation.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/security-auth-privacy-systems/secure-token-session-handling.svg"
-          alt="Secure token and session handling system: token storage layers (in-memory access token 15min: not in localStorage/sessionStorage, invisible to injected scripts after assignment; HttpOnly refresh cookie 30d: Secure+SameSite=Strict, JS-invisible; csrf-token cookie non-HttpOnly: double-submit CSRF protection; server Redis token store: authoritative, revocation), silent refresh flow (schedule refresh 60s before exp claim; POST /auth/refresh via HttpOnly cookie; new AT→memory + new RT cookie + rotate familyId; if 401→redirect /login; if network error→queue+retry), CSRF double-submit (X-CSRF-Token header = csrf-token cookie value; server verifies match; attacker cannot read SameSite=Strict cookie; defense in depth over SameSite alone), refresh token family revocation (every use: old RT revoked + new RT issued; server detects reuse of revoked token → revoke entire family → force re-auth; familyId links all tokens in session), session fixation prevention (on login/MFA complete: new session ID issued; old unauthenticated session never promoted; prevents pre-set session hijack), secure logout (clear AT from memory + POST /auth/logout revokes family in Redis + Set-Cookie Max-Age=0 clears RT cookie + clear CSRF cookie + React Query cache invalidation), XSS resilience (CSP blocks inline scripts; SRI on third-party; module variable vs window reduces scope; output encoding primary defense)."
-          caption="In-memory access token + HttpOnly refresh cookie (two-layer storage, defense-in-depth), CSRF double-submit cookie pattern (X-CSRF-Token header vs cookie value), refresh token family revocation (reuse detection → full family invalidation), session fixation prevention (new session on privilege escalation), silent refresh (60s before exp), secure logout (memory + Redis + cookie clear + cache invalidation)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">JWT Anatomy and Client-Side Validation</h3>
-        <HighlightBlock as="p" tier="important">A JWT has three parts: header (algorithm, token type), payload (claims), and signature. The payload contains: sub (subject — user ID), iat (issued at), exp (expiry — Unix timestamp), jti (JWT ID — unique token identifier for revocation), and custom claims (userId, email, roles, region). The client should decode and use the payload for UI decisions (displaying username, checking token expiry for silent refresh scheduling) but must never trust the payload for security decisions without the server validating the signature. The client parses the JWT payload using atob(token.split('.')[1]) — no library needed. The exp claim is used to schedule silent refresh: setTimeout(() =&gt; silentRefresh(), (exp * 1000 - Date.now() - 60000)).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Client-side JWT validation is not a security boundary — it is a UX optimization (checking if a token is locally expired before making a doomed API call). The server must always validate the JWT signature and claims on every authenticated API request. The server uses the public key (for RS256 asymmetric signing) or the shared secret (for HS256 symmetric — less secure, avoid in distributed systems) to verify the signature. RS256 is preferred: the signing key stays on the auth server, API servers only need the public key for verification. If the auth server's private key is compromised, only the auth server is at risk — not all API servers.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Silent Refresh Implementation</h3>
-        <HighlightBlock as="p" tier="important">Silent refresh is the mechanism that renews the in-memory access token without user interaction. Implementation patterns: (1) Scheduled timer: on receiving a new access token, schedule a refresh 60 seconds before exp. Cancel the previous timer when a new token arrives (to prevent multiple concurrent refreshes). (2) Interceptor-based: the API request interceptor checks if the access token is expired or within 60 seconds of expiry before every request. If so, it triggers a refresh and queues the pending request until the refresh completes. Use a single promise for the in-flight refresh — multiple simultaneous API calls should not trigger multiple refresh requests (implement as a singleton promise that all callers await).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The refresh endpoint: POST /auth/refresh. The request: no body needed — the HttpOnly refresh token cookie is sent automatically. The response: new access token in the response body (JSON) and a new refresh token cookie (Set-Cookie: refresh-token=...; HttpOnly; Secure; SameSite=Strict; Max-Age=2592000; Path=/auth/refresh). Setting Path=/auth/refresh restricts the refresh cookie to only the /auth/refresh endpoint — the browser does not send it to other API paths, minimizing its exposure.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">CSRF Protection in Depth</h3>
-        <HighlightBlock as="p" tier="important">The double-submit cookie pattern: on login, the server generates a random CSRF token (32 bytes, hex-encoded), stores it server-side (in the session record), sets it as a non-HttpOnly cookie (csrf-token: SameSite=Lax, not HttpOnly — must be readable by JS), and returns it in the login response body. The client stores this in memory and includes it as the X-CSRF-Token header on every state-changing request (POST, PUT, PATCH, DELETE). The server validates that the header value matches the cookie value and the stored session value.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">SameSite=Strict on the refresh token cookie provides strong CSRF protection independently: the browser will not send the cookie on any cross-site request. SameSite=Lax (the default on modern browsers) covers top-level GET navigation but not cross-site POST — the refresh cookie should be Strict to prevent cross-site refresh token use. The double-submit pattern adds a second layer for the edge cases: legacy browsers without SameSite support, same-site attacks (a subdomain compromise can set cookies for the parent domain), and subdomain takeover attacks.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Token Revocation and Logout Architecture</h3>
-        <HighlightBlock as="p" tier="crucial">Stateless JWTs cannot be revoked before expiry without server-side state. The tradeoff: access tokens have a short TTL (15 minutes) — revocation is not worth the complexity for access tokens; just let them expire. Refresh tokens must be revocable — they are long-lived (30 days) and represent a persistent session that the user expects to be able to terminate. The refresh token store (Redis) is the revocation list: each entry is keyed by jti (JWT ID) with a value of &#123;status: "valid" | "revoked", familyId, userId&#125; and TTL equal to the token's expiry. On revocation: SET rt:&#123;jti&#125; "revoked" KEEPTTL — marks as revoked without changing the TTL (so the key auto-expires when the token would have expired anyway, saving cleanup work). On every refresh request: GET rt:&#123;jti&#125; → if "revoked", return 401 (also revoke the entire family: SCAN for rt:* where familyId matches and SET all to "revoked").</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Logout flow: (1) client clears in-memory access token; (2) client sends POST /auth/logout with the current refresh token's jti (or the server extracts it from the cookie); (3) server marks the jti as revoked in Redis and revokes the entire family; (4) server responds with Set-Cookie: refresh-token=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/auth/refresh (clearing the cookie); (5) client clears the csrf-token cookie (document.cookie = "csrf-token=; SameSite=Lax; Max-Age=0; path=/"); (6) client calls queryClient.clear() (React Query) or SWR's mutate with empty data to clear all cached API responses. Step 6 prevents a second user who logs in on the same device from seeing cached data from the previous session.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Token Binding and Device Fingerprinting</h3>
-        <HighlightBlock as="p" tier="important">Token binding associates a token with a specific client device, making a stolen token useless on a different device. Implementation: on login, the server includes a device fingerprint claim in the refresh token (deviceHash: SHA-256 of OS + screen resolution + timezone + language — stable but not user-identifiable). On each refresh, the server verifies that the deviceHash in the submitted refresh token matches the fingerprint of the current request. A stolen refresh token submitted from a different device will have a mismatched deviceHash and be rejected with 401.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The limitation: device fingerprints are not perfectly stable (browser updates, privacy settings changes) and not unique across users (multiple users on similar devices have similar fingerprints). Use deviceHash as an anomaly signal (log mismatches for fraud detection) rather than a hard-fail — a mismatch triggers a step-up authentication challenge rather than an immediate lockout. This balances security with usability for legitimate cases (user changed their browser settings).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">In-memory tokens vs. localStorage: localStorage is the most common token storage mistake. Storing access tokens in localStorage makes them readable by any JavaScript on the page — a single XSS vulnerability anywhere on the site compromises all users' tokens indefinitely (the tokens stay in localStorage until manually cleared). In-memory tokens are cleared on page refresh, which is annoying for development but forces the app to rely on the refresh token (HttpOnly cookie) to re-establish the session on each page load. The 300ms silent refresh on page load is an acceptable UX cost for XSS resilience. sessionStorage is slightly better than localStorage (cleared on tab close) but still accessible to XSS — not acceptable for access tokens.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Access token TTL tradeoff: shorter TTL (15 minutes) means faster revocation without server-side state (a revoked user's access token expires quickly), but more frequent silent refreshes (increasing server load and the attack surface on the refresh endpoint). Longer TTL (1 hour) reduces server load but means a compromised access token remains valid longer after the user logs out or the account is compromised. For most applications, 15 minutes is the right balance — it limits damage from a compromised token to a quarter-hour window, which is acceptable given that the token requires a current session to be obtained in the first place.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A secure token and session handling system requires: (1) two-layer token storage (in-memory access token 15min + HttpOnly Secure SameSite=Strict refresh cookie 30d — defeats XSS for refresh tokens, defeats CSRF for access token requests); (2) CSRF double-submit cookie (X-CSRF-Token header = csrf-token cookie value, server validates match — defense in depth over SameSite alone); (3) refresh token rotation with family revocation (every use issues a new token + revokes the old; reuse of revoked token triggers full family invalidation); (4) stateless JWT access token verification (RS256 signature + exp claim, no Redis lookup on every API call) with stateful refresh token verification (Redis check on every /auth/refresh call); (5) session fixation prevention (new session ID on login/MFA completion, never promote pre-existing session); (6) silent refresh (scheduled 60s before exp, singleton promise to prevent concurrent refreshes, interceptor-based queueing); and (7) secure logout (memory clear + Redis family revocation + Max-Age=0 cookie clear + query cache invalidation). The core principle: never store sensitive tokens where JavaScript can read them; use the platform's security primitives (HttpOnly cookies, SameSite, CSP) to enforce the boundary between trusted and untrusted code.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

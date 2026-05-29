@@ -7,89 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-learning-platform-course-progress",
-  title: "Design a Learning Platform (Course + Progress Tracking)",
-  description:
-    "Architecture for an online learning platform: course content delivery with video streaming (adaptive bitrate HLS), progress tracking with per-lesson completion events and resume playback, interactive exercises with automated grading, certificate issuance on course completion, learning path recommendations, cohort-based discussion forums, offline download with DRM-protected content, instructor dashboard with student engagement analytics, and spaced repetition review system for retention.",
+  title: "Design a Learning Platform Course Progress System",
+  description: "Principal-level knowledge and content system design covering lifecycle, indexing, ranking, moderation, trust, progress, rollback, and observability.",
   category: "high-level-design",
   subcategory: "knowledge-content-systems",
   slug: "learning-platform-course-progress",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "learning-platform", "video-streaming", "progress-tracking", "hls", "drm", "certificate", "spaced-repetition"],
-  relatedTopics: ["medium-like-article-platform", "qa-system-stackoverflow"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "knowledge", "content", "search", "moderation", "ranking"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Learning Platform Course Progress System is a knowledge product system where content quality, authorship, discovery, trust, moderation, and user progress matter as much as rendering pages. A principal-ready answer treats a learning platform progress system as a lifecycle for knowledge objects, not as a CRUD site.",
+  "Knowledge objects have versions, authors, visibility, quality signals, policy state, search representation, recommendation features, and sometimes learning or reputation effects. Derived views can lag, but users must understand which content is current, trusted, and accessible.",
+  "The design should cover creation, editing, publishing, indexing, ranking, moderation, feedback, analytics, and operational recovery. The hardest problems are usually trust and freshness: bad content can spread, good content can become stale, and search or recommendation systems can keep showing old projections.",
+  "A staff/principal interview answer should also separate community/product policy from infrastructure. The system must support policy decisions such as takedown, duplicate closure, accepted answer change, certificate revocation, or paid-content access without hardcoding them into one UI path.",
+  "Operationally, knowledge systems need support tooling to reconstruct why a user saw content, why progress changed, why an answer ranked highly, or why a piece of content was removed."
+];
+const concepts = [
+  "The first concept is content lifecycle. Draft, submitted, published, edited, archived, deleted, blocked, and appealed states need explicit transitions and audit history.",
+  "The second concept is derived discovery. recommendation engine and recommendation surfaces should use versioned content, policy state, and quality signals. Search results that ignore takedowns or stale versions create trust failures.",
+  "The third concept is quality and reputation. Votes, reads, completions, comments, reports, editor picks, author reputation, and freshness can influence ranking, but each signal can be gamed or biased.",
+  "The fourth concept is consistency. Authoritative content state, access control, paid entitlement, takedown decisions, and course completion records need stronger consistency than search index, feed ranking, or analytics projections.",
+  "The fifth concept is moderation and governance. Community reports, automated classifiers, editorial workflows, plagiarism checks, duplicate detection, and appeals should produce durable policy decisions.",
+  "The sixth concept is observability. Track publishing failures, indexing lag, ranking experiments, moderation queue age, stale-content reports, progress drift, fraud signals, and search zero-result rates."
+];
+const architecture = [
+  "The architecture contains course catalog, lesson state, progress ledger, recommendation engine, certificate workflow. The write path records durable content or learning events. The processing path builds derived artifacts: rendered pages, snippets, search documents, recommendation features, progress summaries, and moderation queues. The read path serves personalized or permissioned views.",
+  "Content writes should be versioned. Edits should not silently mutate search, notifications, certificates, or historical audit views without a version decision. Versioning also supports rollback after bad edits, spam waves, or rendering regressions.",
+  "Indexing should be asynchronous but observable. Each content version should know whether it is indexed, searchable, recommended, blocked, or stale. Users and operators need different levels of this state.",
+  "Ranking should combine relevance, quality, freshness, personalization, safety, and policy. Principal designs avoid optimizing a single metric such as click-through because it can reward clickbait, outdated answers, or low-quality learning paths.",
+  "The frontend should expose trustworthy state: draft saved, published, under review, blocked, stale, completed, in progress, certificate pending, or access restricted. These states are product semantics, not generic loading spinners.",
+  "Operational controls should include index rebuild, content rollback, moderation override, feature-flagged ranking, duplicate merge, progress repair, and certificate revocation with audit trail."
+];
+const tradeoffs = [
+  "Synchronous indexing gives fast search freshness but slows writes and couples publishing to search availability. Asynchronous indexing improves write reliability but creates lag. The answer should include index status, freshness metrics, and fallback behavior for newly published content.",
+  "Open contribution increases knowledge growth but increases spam, plagiarism, misinformation, and moderation load. Curated contribution improves quality but slows content coverage and may centralize bias.",
+  "Personalized recommendations improve engagement and learning continuity, but they can hide high-quality canonical content or trap users in narrow paths. Ranking needs diversity, freshness, and explicit user controls.",
+  "Strong consistency for progress or paid access protects trust and compliance. Eventual consistency is acceptable for read counts, recommendation features, and analytics. Accepted answers, certificate issuance, and entitlement checks need durable server confirmation.",
+  "Community moderation scales better than staff-only review but can be brigaded or biased. Automated moderation is fast but error-prone. Mature systems combine reputation weighting, classifier triage, staff escalation, and appeals.",
+  "Detailed author and learner analytics help improve content but create privacy risk. Telemetry should avoid exposing private reading behavior unnecessarily and should respect consent and enterprise policy."
+];
+const practices = [
+  "Represent content, answer, lesson, progress, and certificate state with explicit lifecycle transitions and audit history.",
+  "Make derived artifacts version-aware: rendered HTML, snippets, search documents, recommendation features, notifications, and certificates should point to the content or progress version that produced them.",
+  "Track indexing and recommendation lag as product metrics. Users do not care that a queue is delayed; they care that published content is missing or stale.",
+  "Use abuse controls for posting, voting, reporting, progress completion, and certificate issuance. Reputation and rate limits should protect both content quality and platform integrity.",
+  "Build moderation and support views with evidence, actor history, policy version, appeal state, and safe redaction of private data.",
+  "Design rollback. Bad content, bad ranking, bad certificate logic, or bad search indexing needs a reversible operational path.",
+  "Measure quality beyond engagement: helpfulness, accepted-answer freshness, completion validity, report rate, stale reports, and long-term retention."
+];
+const pitfalls = [
+  "progress drift becomes a platform problem when ranking or recommendations amplify it. The architecture needs prevention, detection, demotion, removal, and appeal.",
+  "cheating often reflects missing governance in content identity. Duplicate detection, canonicalization, merge workflows, and redirect policy are core system behavior.",
+  "offline sync conflict happens when derived projections are treated as secondary. Search, feeds, notifications, and certificates can all expose stale or unsafe state.",
+  "certificate fraud is dangerous because users make decisions based on trust. Knowledge systems should show freshness, policy state, and authoritative source where needed.",
+  "Another pitfall is allowing analytics to drive ranking without integrity checks. Clicks and completions can be noisy, fraudulent, or biased toward shallow content.",
+  "Teams also forget accessibility and internationalization. Knowledge systems often contain long-form text, code, captions, transcripts, and learning flows that must work for diverse users."
+];
+const useCases = [
+  "online course player needs durable content state, quality signals, search or recommendation projection, and policy-aware visibility.",
+  "enterprise training portal needs durable content state, quality signals, search or recommendation projection, and policy-aware visibility.",
+  "exam preparation path needs durable content state, quality signals, search or recommendation projection, and policy-aware visibility.",
+  "During a spam attack, the platform should throttle creation, demote suspicious content, pause recommendation of risky items, and preserve review evidence.",
+  "During an indexing incident, newly published content should still be accessible by direct URL, while search freshness dashboards and rebuild controls guide recovery.",
+  "During a policy dispute, the system should preserve versions, reports, reviewer actions, and appeal history so the decision can be audited."
+];
+const questions = [
+  {
+    "question": "How would you design a learning platform progress system end to end?",
+    "answer": "I would model knowledge objects with versioned lifecycle state, authorship, visibility, quality signals, and policy state. Writes create durable records and events. Processing builds rendered pages, search documents, recommendations, summaries, and moderation queues. Reads use surface-specific projections with access control. Operations include index rebuild, rollback, moderation override, progress repair, and audit views."
+  },
+  {
+    "question": "Why this architecture over a simple CMS or CRUD model?",
+    "answer": "A simple CRUD model cannot explain search freshness, ranking, moderation, version rollback, paid or private access, reputation, or learning progress. Knowledge products rely on derived surfaces, so the architecture must make those surfaces observable and version-aware."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are progress drift, cheating, offline sync conflict, certificate fraud, plus spam waves, ranking manipulation, search lag, moderation backlog, cache stampedes, and stale recommendations. Prevention requires lifecycle state, abuse controls, async processing with lag metrics, quality signals, and operational rollback."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Authoritative content state, permissions, paid access, takedowns, accepted answers, and certificate issuance need strong server-controlled consistency. Search indexes, recommendations, read counts, and analytics can be eventually consistent if they carry version and freshness signals."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with direct URL access, index rebuilds, queue retry, content rollback, and support-visible state. Abuse is controlled with rate limits, reputation, classifiers, reports, and moderation. Privacy requires careful analytics and entitlement checks. Cost is controlled by incremental indexing, cache policy, and sampled telemetry. Observability tracks indexing lag, search quality, moderation SLA, progress drift, and ranking experiments."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate authoritative knowledge state from derived discovery views. I would defend asynchronous indexing because it protects write reliability, but I would pair it with freshness metrics and direct access. I would defend mixed moderation because community, automation, and staff review each solve different parts of the scale-quality trade-off."
+  }
+];
+const references = [
+  {
+    "label": "Elasticsearch guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "Google Search Central documentation",
+    "href": "https://developers.google.com/search/docs"
+  },
+  {
+    "label": "Stack Overflow Engineering blog",
+    "href": "https://stackoverflow.blog/engineering/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "W3C Web Content Accessibility Guidelines",
+    "href": "https://www.w3.org/WAI/standards-guidelines/wcag/"
+  }
+];
 
 export default function LearningPlatformCourseProgressArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An online learning platform like Coursera or Udemy has two distinct user roles with opposing priorities: learners (who want frictionless content access, progress persistence, and motivation mechanisms) and instructors (who want student engagement analytics, content management tools, and revenue visibility). The platform's value proposition is structured learning — not just video hosting, but curriculum sequencing, progress tracking, and achievement signals (certificates) that are recognized by employers.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The hardest technical problems: (1) video delivery at scale — course videos are the largest bandwidth consumption; adaptive bitrate HLS streaming ensures learners on slow connections still complete lessons; (2) progress tracking reliability — a learner who watches 45 minutes of a video and loses connectivity must resume exactly where they left off; (3) DRM for content protection — instructors' paid courses must be protected from screen recording and unauthorized redistribution; and (4) offline access — mobile learners frequently study on planes and subways, requiring reliable offline download with DRM-protected playback.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Video streaming with HLS, progress tracking and resume, interactive exercises with grading, certificate issuance, learning path recommendation, cohort discussion forums, offline download, and instructor analytics. Not in scope: live streaming / webinars, payment processing, or enterprise SSO integrations.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/learning-platform-course-progress.svg" alt="Design a Learning Platform Course Progress System architecture" caption="Architecture view: content lifecycle, indexing, ranking, moderation, policy, and read surfaces." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/learning-platform-course-progress-flow.svg" alt="Design a Learning Platform Course Progress System flow" caption="Flow view: creation, processing, discovery, feedback, moderation, and rollback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/learning-platform-course-progress-operations.svg" alt="Design a Learning Platform Course Progress System operations" caption="Operations view: index lag, quality signals, abuse controls, policy decisions, and support reconstruction." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Video streaming with adaptive bitrate (HLS):</strong> Course videos are uploaded by instructors via a resumable multipart upload (S3 multipart upload with presigned URLs, resuming from the last uploaded part on network failure). After upload, a transcoding pipeline (AWS Elemental MediaConvert or FFmpeg workers) generates HLS manifests with multiple quality renditions: 360p (500 Kbps), 540p (1.5 Mbps), 720p (3 Mbps), 1080p (5 Mbps). The HLS manifest (master.m3u8) and segment files (.ts) are stored in S3 and served via CloudFront. The video player (HLS.js or native HLS on iOS/Safari) automatically selects the quality tier based on the learner's measured bandwidth. Subtitles and transcripts are generated automatically (Whisper API) and stored as VTT files alongside the HLS segments.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Progress tracking and resume playback:</strong> Every 10 seconds during video playback, the player sends a heartbeat: POST /api/progress &#123;lessonId, position: 142.5, duration: 3600&#125;. The position is written to a progress record (userId, lessonId, lastPosition, completedAt). On lesson load, the player fetches GET /api/progress?lessonId=&#123;id&#125; and seeks to lastPosition. A lesson is marked "completed" when the learner has watched &gt;90% of the video (position &gt; duration × 0.9) — this threshold prevents marking lessons complete due to accidental seeks to the end. Progress events are written to both the database (for persistence) and a Redis sorted set (for the instructor's real-time engagement dashboard, where the score is the timestamp).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Interactive exercises with automated grading:</strong> Courses include quizzes (multiple choice, true/false), coding exercises (browser-based code execution via Pyodide for Python or a sandboxed Judge0 API for compiled languages), and peer-reviewed assignments. Multiple-choice grading is instant (client-side for immediate feedback, then confirmed server-side). Coding exercises are submitted to the judge service: the learner's code + test cases run in an isolated sandbox (2-second CPU timeout, 64MB memory limit, no network access). The judge returns: pass/fail per test case, execution time, memory usage. Peer reviews (for open-ended assignments) use a rubric-based evaluation form — each submission is reviewed by 3 peers, and the final grade is the median of the 3 peer scores.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Certificate issuance on course completion:</strong> A course is "completed" when all required lessons are marked complete and all graded assignments pass the minimum score threshold (configured per course, e.g., 70%). On completion, the certificate pipeline: (1) generates a unique certificate ID (UUID); (2) renders a PDF certificate (Puppeteer rendering an HTML template with the learner's name, course title, completion date, and a QR code linking to the verification URL); (3) stores the PDF in S3 and the certificate record in PostgreSQL; (4) sends a completion email with the PDF attached; (5) makes the certificate publicly verifiable at /certificates/&#123;certificateId&#125; (no login required — employers can verify). Certificates are tamper-evident: the verification URL resolves to the authoritative record in the database, not just the PDF.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>DRM and content protection:</strong> Paid course videos are protected with DRM (Widevine for Chrome/Android, FairPlay for iOS/Safari, PlayReady for Edge/Windows). The HLS manifests for DRM-protected content include a license server URL. When the player encounters a DRM-protected segment, it requests a license from the license server (POST /api/drm/license), which validates the learner's entitlement (has the learner enrolled in this course?) and returns a decryption key. The key is ephemeral (1-hour TTL) — the player must re-request a license after expiry. This prevents indefinite offline playback: a learner's DRM license expires after 48 hours of offline access, requiring reconnection to the license server to extend.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Offline download for mobile:</strong> Enrolled learners can download lessons for offline viewing. The download manager (in the mobile app) downloads the HLS video segments to local storage (HLS progressive download — download segments in order, play segments as they complete). A downloaded lesson is stored as: &#123;lessonId, localPath, downloadedAt, expiresAt: 48hrs&#125;. The app enforces the 48-hour DRM expiry by checking the expiresAt timestamp before starting offline playback. Downloaded content quota: 10 lessons per device to prevent full course extraction. Downloaded segments are encrypted at rest using the device's secure enclave key.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Spaced repetition review system:</strong> After completing a lesson, learners are shown a set of flashcard-style review questions (derived from the lesson's quiz questions). The review system uses the SM-2 spaced repetition algorithm: each card has a review interval (initially 1 day) and an ease factor (initially 2.5). After each review, the interval is updated based on the learner's rating (1=fail, 2=hard, 3=good, 4=easy): fail resets to 1 day; good multiplies the interval by the ease factor. The next review date is stored per card per user. A daily notification prompts learners to review their due cards. The spaced repetition system is a retention mechanism — it increases certificate completion rates by reinforcing material after lessons are finished.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Instructor analytics dashboard:</strong> Instructors see per-lesson engagement metrics: average completion rate (% of enrolled learners who completed the lesson), average watch time (minutes watched / lesson duration), drop-off chart (% of learners who dropped off at each 10% of the video), and quiz pass rates. At the course level: total enrollments, completion rate, average rating, and revenue (if paid). The drop-off chart reveals specific segments where learners disengage — instructors use this to identify confusing explanations or pacing issues. Analytics are computed from the progress heartbeat events (aggregated nightly by a batch job for historical data, and from Redis for last-24-hour near-real-time data).</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The platform has three primary backends: the content service (course metadata, lesson content, curriculum structure), the progress service (progress heartbeats, completion tracking, certificate issuance), and the media service (video upload, transcoding pipeline, HLS delivery, DRM license serving). These communicate via a shared PostgreSQL database and an event bus (Kafka) for cross-service events (e.g., "lesson completed" → triggers spaced repetition card creation and checks course completion).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Video delivery is entirely CDN-based: the media service writes HLS segments to S3, CloudFront serves them globally, and the platform never proxies video bytes through origin servers. The DRM license server is the only video-related component that requires origin processing (to validate entitlement). The web frontend is Next.js with SSR for course pages (personalized — shows learner's progress) and ISR for the course catalog (revalidated when course metadata changes).</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/knowledge-content-systems/learning-platform-course-progress.svg"
-          alt="Learning platform architecture: instructor video upload via S3 multipart presigned URL → FFmpeg transcoding → HLS manifests (360p/720p/1080p) served via CloudFront CDN; DRM license server validates enrollment and returns ephemeral 1-hour key; learner progress heartbeat every 10s → PostgreSQL + Redis; course completion check via Kafka event → certificate pipeline (Puppeteer PDF + QR code + email); spaced repetition SM-2 algorithm with daily review notifications; instructor analytics from aggregated progress events (nightly batch + Redis near-real-time); cohort discussion forum with thread moderation."
-          caption="HLS adaptive bitrate (360p–1080p, Whisper transcript), DRM license (Widevine/FairPlay, 1hr TTL, 48hr offline), progress heartbeat (10s, PostgreSQL + Redis), course completion → Puppeteer certificate (QR + email), spaced repetition SM-2, instructor drop-off chart (10% buckets)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Video Transcoding Pipeline</h3>
-        <HighlightBlock as="p" tier="crucial">Instructor uploads a video via a multipart presigned URL flow: (1) POST /api/upload/init returns &#123;uploadId, presignedUrls: [url1, url2, ...]&#125; — one presigned URL per 50MB chunk; (2) the client uploads chunks in parallel (navigator.serviceWorker or a background fetch, resumable on failure); (3) after all chunks are uploaded, POST /api/upload/complete &#123;uploadId, etags&#125; triggers S3 CompleteMultipartUpload. A Kafka event triggers the transcoding worker: it launches an FFmpeg job (or MediaConvert job) to transcode the source video into 4 HLS rendition streams + generate the master manifest + extract keyframes for the thumbnail strip. The transcoding job emits progress events (0%, 25%, 50%, 75%, 100%) that the instructor's upload UI polls (SSE stream at /api/upload/&#123;id&#125;/progress). On completion, the lesson record is updated with the HLS manifest URL and the lesson becomes available to enrolled learners.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Progress Heartbeat and Reliability</h3>
-        <HighlightBlock as="p" tier="crucial">The 10-second heartbeat is the most frequent write in the system. At 100K concurrent learners, this is 10K writes/second — not trivial. The progress service handles this load via: (1) write batching — the API server buffers heartbeats in memory (or Redis) for 5 seconds and bulk-inserts the batch to PostgreSQL (one INSERT per 5-second batch per user, not per heartbeat); (2) UPSERT semantics — INSERT INTO progress (userId, lessonId, lastPosition, updatedAt) VALUES (...) ON CONFLICT (userId, lessonId) DO UPDATE SET lastPosition = EXCLUDED.lastPosition, updatedAt = EXCLUDED.updatedAt — atomic update, no read-before-write; (3) async write to the instructor's real-time Redis dashboard — a Kafka consumer aggregates heartbeat events and updates Redis counters asynchronously, so the write path is not blocked by the analytics write.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Offline heartbeat buffering: on mobile, when the learner goes offline mid-lesson, the app buffers heartbeats in IndexedDB. On reconnection, the buffered heartbeats are flushed in order. The server accepts out-of-order heartbeats (taking the maximum position seen for a lesson, not the last-received) — this handles cases where heartbeats arrive out of order after network recovery.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Cohort Discussion Forums</h3>
-        <HighlightBlock as="p" tier="important">Each course has a cohort forum — a threaded discussion board where learners can post questions and instructors (or TAs) can respond. The forum is structured per-lesson (a discussion thread attached to each lesson) and per-course (a general forum). Forum posts use the same Markdown editor as the article platform. Timestamps on discussion posts are shown as relative to the lesson video position ("Posted at 12:34 in the video") — learners watching at 12:34 see a notification that there's a discussion at this point in the video. The forum is moderated by the instructor and designated TAs. Instructors can pin posts (FAQ answers) and mark posts as "instructor answered" (similar to the Q&A platform's "accepted answer" mechanism).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Learning Path Recommendation</h3>
-        <HighlightBlock as="p" tier="important">After completing a course, the platform recommends the next course in a curated learning path (e.g., "You completed Python Basics — next: Python for Data Science"). Learning paths are curated by the platform team (not ML-generated) for structured sequences (beginner → intermediate → advanced). Supplementary recommendations (courses outside the path) are ML-generated: a collaborative filtering model (matrix factorization on the enrollment matrix — users who enrolled in course A also enrolled in course B) produces course recommendations ranked by predicted rating. The recommendation model runs nightly, and the output (top-10 recommended course IDs per user) is stored in Redis. The "recommended for you" section on the home page reads from Redis with a CDN-cacheable API response (the same recommendations for the same user for up to 30 minutes).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">HLS vs. DASH: HLS (HTTP Live Streaming) has native support in iOS/Safari and is the industry standard for learning platforms targeting mobile learners. DASH (Dynamic Adaptive Streaming over HTTP) offers better codec flexibility (VP9, AV1) for bandwidth savings, but lacks native iOS support, requiring the Shaka player library. For a learning platform where iOS learners are a significant segment, HLS is the safer default. A hybrid approach — HLS primary, DASH for platforms with native support — can reduce CDN egress costs for learners on modern Android/Chrome but adds transcoding complexity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Certificate fraud: PDF certificates can be forged (edited in a PDF editor). The QR code + public verification URL is the authoritative verification mechanism — employers are instructed to verify via the URL, not the PDF. The platform's brand value depends on the certificate being unforgeable at the verification layer, even if the PDF itself can be visually replicated. Some platforms (Credly, Accredible) use cryptographically signed Open Badges (JSON-LD) as the portable credential format — this is the emerging standard for verified digital credentials in the industry.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A learning platform requires: (1) video upload (S3 multipart presigned URL, resumable) → FFmpeg transcoding → HLS manifests (360p/720p/1080p, Whisper VTT transcript) served via CloudFront; (2) DRM (Widevine/FairPlay/PlayReady, 1-hour ephemeral license key, 48-hour offline TTL); (3) progress heartbeat (10s interval, UPSERT, 10K writes/sec via batching + Redis buffer, offline IndexedDB buffering with max-position reconciliation); (4) course completion check via Kafka event → Puppeteer PDF certificate (QR code + public verification URL, tamper-evident via database record); (5) interactive exercises (instant multiple-choice, Judge0 sandboxed code execution 2s/64MB, peer review rubric median); (6) spaced repetition SM-2 (per-card interval + ease factor, daily review notification, improves retention); (7) instructor analytics (completion rate, average watch time, 10% drop-off chart, quiz pass rate — nightly batch + Redis near-real-time); (8) cohort forum (threaded Markdown discussion, video-position timestamps, TA moderation, instructor-answered pin); and (9) learning path recommendation (curated paths + collaborative filtering nightly, Redis top-10 per user, 30-min CDN cache). Core principle: progress persistence is a trust contract with the learner — if resume playback fails or completion is not recorded, the learner loses faith in the platform and churns.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

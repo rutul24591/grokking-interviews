@@ -1,15 +1,20 @@
-function buildRequestKey(input) {
-  return JSON.stringify(input);
+function buildResponseCacheKey(config) {
+  return [
+    config.testCaseId,
+    config.model,
+    config.modelVersion,
+    `temp:${config.temperature}`,
+    `max:${config.maxTokens}`,
+    `prompt:${config.systemPromptHash}`,
+  ].join('|');
 }
 
-function jitterBackoffMs(attempt, baseMs, maxMs) {
-  const exp = Math.min(maxMs, baseMs * 2 ** Math.max(0, attempt - 1));
-  const jitter = Math.random() * exp * 0.2;
-  return Math.floor(exp + jitter);
+function reserveProviderBudget(providerBudget, estimatedTokens) {
+  const remainingTokens = providerBudget.tokensPerMinute - providerBudget.reservedTokens;
+  if (estimatedTokens > remainingTokens) {
+    return { ok: false, retryAfterMs: 60_000, remainingTokens };
+  }
+  return { ok: true, remainingTokens: remainingTokens - estimatedTokens };
 }
 
-function applyRetryPolicy({ attempt, baseMs, maxMs }) {
-  return { delayMs: jitterBackoffMs(attempt, baseMs, maxMs) };
-}
-
-module.exports = { buildRequestKey, applyRetryPolicy };
+module.exports = { buildResponseCacheKey, reserveProviderBudget };

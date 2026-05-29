@@ -1,1 +1,5 @@
-# Design an API playground (like Postman) — Example 3
+# API Playground - Example 3
+
+Concrete developer platform edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

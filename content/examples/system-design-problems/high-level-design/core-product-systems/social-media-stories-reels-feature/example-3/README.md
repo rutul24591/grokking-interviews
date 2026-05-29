@@ -1,1 +1,5 @@
-# Design a social media stories/reels feature — Example 3
+# Social Media Stories Reels Feature - Example 3
+
+Concrete core product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

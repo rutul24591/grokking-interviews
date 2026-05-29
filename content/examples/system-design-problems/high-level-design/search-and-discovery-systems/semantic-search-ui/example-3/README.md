@@ -1,1 +1,5 @@
-# Design a semantic search UI (AI-powered) — Example 3
+# Semantic Search UI - Example 3
+
+Concrete search discovery edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

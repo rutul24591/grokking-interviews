@@ -1,1 +1,5 @@
-# Design a subscription billing frontend — Example 3
+# Subscription Billing Frontend - Example 3
+
+Concrete operational product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

@@ -1,1 +1,5 @@
-# Design cross-device user settings sync — Example 3
+# Cross Device User Settings Sync - Example 3
+
+Concrete core product edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

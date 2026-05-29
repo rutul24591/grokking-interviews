@@ -1,1 +1,5 @@
-# Design an ads analytics dashboard — Example 2
+# ADS Analytics Dashboard - Example 2
+
+Concrete monetization production workflow example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

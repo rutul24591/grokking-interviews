@@ -1,116 +1,13 @@
-<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-  <rect width="900" height="520" fill="#f3f1f8"/>
-  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Feature Rollout &amp; Experimentation System — Flag Lifecycle</text>
-
-  <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
-    </marker>
-    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
-    </marker>
-    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
-    </marker>
-    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
-    </marker>
-  </defs>
-
-  <!-- Actors: 5 boxes evenly spaced -->
-  <rect x="20" y="65" width="115" height="40" rx="8" fill="#6d5bd0"/>
-  <text x="77" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Browser SDK</text>
-  <text x="77" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">in-memory store</text>
-
-  <rect x="200" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
-  <text x="257" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Flag Service</text>
-  <text x="257" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">config + eval API</text>
-
-  <rect x="390" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
-  <text x="447" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Edge KV Store</text>
-  <text x="447" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">CDN-replicated</text>
-
-  <rect x="580" y="65" width="115" height="40" rx="8" fill="#d97843"/>
-  <text x="637" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">SSE Stream</text>
-  <text x="637" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">flag_updated events</text>
-
-  <rect x="770" y="65" width="110" height="40" rx="8" fill="#be123c"/>
-  <text x="825" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Monitoring</text>
-  <text x="825" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">Datadog / Prom</text>
-
-  <!-- Lifelines -->
-  <line x1="77"  y1="105" x2="77"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="257" y1="105" x2="257" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="447" y1="105" x2="447" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="637" y1="105" x2="637" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="825" y1="105" x2="825" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
-
-  <!-- SECTION 1: SDK Bootstrap -->
-  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
-  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · SDK BOOTSTRAP — GET /api/flags?context={userId,country,plan} → evaluated flat object → O(1) in-memory reads</text>
-
-  <line x1="77" y1="150" x2="432" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-g)"/>
-  <text x="254" y="144" text-anchor="middle" font-size="9" fill="#374151">GET /api/flags?context=... (edge worker intercept)</text>
-
-  <line x1="432" y1="164" x2="242" y2="164" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="337" y="158" text-anchor="middle" font-size="9" fill="#374151">KV read &lt;1ms → evaluate all flags locally</text>
-
-  <line x1="242" y1="180" x2="92" y2="180" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
-  <text x="167" y="174" text-anchor="middle" font-size="9" fill="#374151">{flagKey: true/false, ...} → localStorage fallback</text>
-
-  <!-- SECTION 2: Kill Switch -->
-  <rect x="8" y="198" width="884" height="14" rx="3" fill="#e05252" opacity="0.18"/>
-  <text x="450" y="209" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">2 · KILL SWITCH — single click → enabled=false → SSE broadcast → audit logged; recovery requires confirmation</text>
-
-  <line x1="257" y1="228" x2="622" y2="228" stroke="#e05252" stroke-width="1.5" marker-end="url(#arr-r)"/>
-  <text x="440" y="222" text-anchor="middle" font-size="9" fill="#374151">flag.enabled=false → publish flag_updated event</text>
-
-  <line x1="622" y1="242" x2="92" y2="242" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
-  <text x="357" y="236" text-anchor="middle" font-size="9" fill="#374151">SSE push to all connected SDK instances (&lt;30s)</text>
-
-  <!-- Kill switch info box -->
-  <rect x="20" y="254" width="320" height="32" rx="6" fill="#fff" stroke="#e05252" stroke-width="1"/>
-  <text x="180" y="268" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Kill: no confirmation required — speed critical</text>
-  <text x="180" y="282" text-anchor="middle" font-size="9" fill="#374151">Re-enable: confirmation step to prevent accidental recovery</text>
-
-  <!-- SECTION 3: SSE Propagation -->
-  <rect x="8" y="296" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
-  <text x="450" y="307" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">3 · SSE PROPAGATION — EventSource /api/flags/stream; flag_updated event → apply to in-memory store immediately</text>
-
-  <line x1="77" y1="326" x2="622" y2="326" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-o)"/>
-  <text x="349" y="320" text-anchor="middle" font-size="9" fill="#374151">EventSource: GET /api/flags/stream (persistent connection)</text>
-
-  <line x1="622" y1="340" x2="92" y2="340" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
-  <text x="357" y="334" text-anchor="middle" font-size="9" fill="#374151">flag_updated: {key, enabled, rolloutPct} → update in-memory</text>
-
-  <line x1="77" y1="356" x2="242" y2="356" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
-  <text x="160" y="350" text-anchor="middle" font-size="9" fill="#374151">fallback: poll every 5 min (background setInterval)</text>
-
-  <!-- SECTION 4: Progressive Rollout + Auto-Rollback -->
-  <rect x="8" y="374" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
-  <text x="450" y="385" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">4 · PROGRESSIVE ROLLOUT — 1%→10%→50%→100%; auto-pause on error spike; cron advances stage after hold duration</text>
-
-  <line x1="257" y1="404" x2="810" y2="404" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
-  <text x="533" y="398" text-anchor="middle" font-size="9" fill="#374151">poll Datadog/Prom every 60s: treatment vs control error rate</text>
-
-  <line x1="810" y1="418" x2="272" y2="418" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-r)"/>
-  <text x="541" y="412" text-anchor="middle" font-size="9" fill="#374151">error spike (&gt;1pp, p&lt;0.05) → set rolloutPct=0, PagerDuty alert</text>
-
-  <!-- Rollout stages box -->
-  <rect x="350" y="428" width="400" height="42" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
-  <text x="550" y="444" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Rollout: 1% → hold 30min → 10% → hold → 50% → hold → 100%</text>
-  <text x="550" y="458" text-anchor="middle" font-size="9" fill="#374151">hash(userId+flagKey)%100 — deterministic, same user = same bucket</text>
-
-  <!-- Footer metrics -->
-  <rect x="8" y="476" width="884" height="36" rx="6" fill="#1a1822"/>
-  <text x="90" y="492" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Bootstrap</text>
-  <text x="90" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">~15ms edge</text>
-  <text x="250" y="492" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">KV Sync</text>
-  <text x="250" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">every 30s</text>
-  <text x="450" y="492" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">SSE Propagation</text>
-  <text x="450" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&lt;30s to all clients</text>
-  <text x="650" y="492" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Rollback Trigger</text>
-  <text x="650" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">error +1pp p&lt;0.05</text>
-  <text x="820" y="492" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Poll Fallback</text>
-  <text x="820" y="506" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">5 min</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Feature Rollout Experimentation System: risk matrix</title>
+  <desc id="desc">Failure and ownership matrix for experimentation growth systems.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Feature Rollout Experimentation System: risk matrix</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Failure and ownership matrix for experimentation growth systems.</text>
+  <rect x="70" y="118" width="820" height="354" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="136" cy="194" r="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><circle cx="136" cy="342" r="50" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+  <text x="136" y="190" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">normal</text><text x="136" y="338" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">incident</text>
+  <path d="M188 206 C212 180, 222 174, 246 170" fill="none" stroke="#2563eb" stroke-width="3"/><path d="M188 330 C212 360, 222 372, 246 382" fill="none" stroke="#b91c1c" stroke-width="3" stroke-dasharray="8 7"/>
+  <path d="M226 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><text x="274" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cohort</text><path d="M358 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><text x="406" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">metric</text><path d="M490 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="538" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">guardrail</text><path d="M622 144 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="670" y="173" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">rollout</text><path d="M226 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="274" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">bias</text><path d="M358 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="406" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">sample</text><path d="M490 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><text x="538" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">holdout</text><path d="M622 232 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><text x="670" y="261" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">stop</text><path d="M226 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/><text x="274" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cohort</text><path d="M358 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fae8ff" stroke="#9333ea" stroke-width="1.5"/><text x="406" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">metric</text><path d="M490 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/><text x="538" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">guardrail</text><path d="M622 320 l48 -27 l48 27 l0 54 l-48 27 l-48 -27 Z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/><text x="670" y="349" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">rollout</text>
+  <path d="M258 450 C410 416, 586 472, 820 426" fill="none" stroke="#0f766e" stroke-width="4"/><text x="548" y="486" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="12">decision surface for blast radius, policy, and recovery ownership</text>
 </svg>

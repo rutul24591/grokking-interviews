@@ -1,1 +1,5 @@
-# Design priority-based notification delivery UI — Example 3
+# Priority Based Notification Delivery UI - Example 3
+
+Concrete notification delivery edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

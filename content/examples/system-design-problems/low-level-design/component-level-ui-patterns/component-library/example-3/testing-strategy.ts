@@ -1,72 +1,90 @@
-/**
- * Component Library — Staff-Level Visual Regression Testing Pipeline.
- *
- * Staff differentiator: Automated screenshot testing with Chromatic/Percy,
- * component-level accessibility auditing with axe-core, and bundle size
- * regression detection in CI.
- */
-
-/**
- * Test configuration for visual regression testing.
- * Captures screenshots at multiple viewports and themes.
- */
-export const visualRegressionConfig = {
-  viewports: [
-    { name: 'mobile', width: 375, height: 667 },
-    { name: 'tablet', width: 768, height: 1024 },
-    { name: 'desktop', width: 1440, height: 900 },
-    { name: 'wide', width: 1920, height: 1080 },
-  ],
-  themes: ['light', 'dark'],
-  // Components to test
-  components: [
-    'Button', 'Input', 'Select', 'Modal', 'Tooltip', 'Accordion',
-    'Table', 'Pagination', 'Avatar', 'Badge', 'Card',
-  ],
+export type componentLibraryRuntimeState = {
+  topic: "component-library";
+  mounted: boolean;
+  lastSuccessfulVersion: number;
+  pendingVersion: number;
+  lastInteractionAtMs: number;
+  lastRecoveryAtMs?: number;
+  signal: {
+    frameCostMs: number;
+    focusDrift: number;
+    layoutShiftPx: number;
+    pointerCancelCount: number;
+  };
 };
 
-/**
- * Automated accessibility audit for all components.
- * Runs axe-core against each component variant.
- */
-export async function runAccessibilityAudit(
-  container: HTMLElement,
-): Promise<{ violations: any[]; passes: any[]; incomplete: any[] }> {
-  if (typeof window === 'undefined' || !(window as any).axe) {
-    return { violations: [], passes: [], incomplete: [] };
-  }
+export type componentLibraryRecoveryPlan = {
+  mode: "continue" | "degrade" | "block-and-recover";
+  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
+  actions: Array<"restore-focus" | "clamp-layout" | "defer-expensive-work" | "emit-telemetry" | "keep-current-state">;
+  evidence: string[];
+};
 
-  const results = await (window as any).axe.run(container, {
-    runOnly: {
-      type: 'tag',
-      values: ['wcag2a', 'wcag2aa', 'wcag21aa'],
-    },
-  });
-
-  return {
-    violations: results.violations,
-    passes: results.passes,
-    incomplete: results.incomplete,
-  };
+function minutes(ms: number) {
+  return Math.round(ms / 60_000);
 }
 
-/**
- * Bundle size regression detection.
- * Compares current bundle size against baseline and fails CI if it exceeds threshold.
- */
-export function checkBundleSize(
-  currentSize: number,
-  baselineSize: number,
-  maxIncreasePercent: number = 5,
-): { passed: boolean; currentKB: number; baselineKB: number; increasePercent: number } {
-  const currentKB = currentSize / 1024;
-  const baselineKB = baselineSize / 1024;
-  const increasePercent = ((currentSize - baselineSize) / baselineSize) * 100;
+export function planComponentLibraryRecovery(
+  state: componentLibraryRuntimeState,
+  nowMs: number,
+): componentLibraryRecoveryPlan {
+  const evidence: string[] = [];
+  const actions: componentLibraryRecoveryPlan["actions"] = ["emit-telemetry"];
+  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
+  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+
+  if (!state.mounted) evidence.push("component-unmounted-before-completion");
+  if (versionGap > 1) evidence.push("multiple-versions-pending");
+  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
+  if (state.signal.frameCostMs > 2_000) evidence.push("frameCostMs-breached");
+  if (state.signal.focusDrift > 0) evidence.push("focusDrift-requires-operator-attention");
+  if (state.signal.layoutShiftPx > 0.2) evidence.push("layoutShiftPx-unsafe-for-silent-commit");
+
+  if (!state.mounted) {
+    actions.push("restore-focus");
+    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  }
+
+  if (versionGap > 1 || state.signal.layoutShiftPx > 0.2) {
+    actions.push("clamp-layout", "defer-expensive-work");
+    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  }
+
+  actions.push("keep-current-state");
+  return { mode: "continue", userVisibleState: "current", actions, evidence };
+}
+
+export function runComponentLibraryEdgeCaseScenario() {
+  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
+  const normal = planComponentLibraryRecovery(
+    {
+      topic: "component-library",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 22,
+      lastInteractionAtMs: nowMs - 90_000,
+      signal: { frameCostMs: 160, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 0 },
+    },
+    nowMs,
+  );
+
+  const failure = planComponentLibraryRecovery(
+    {
+      topic: "component-library",
+      mounted: true,
+      lastSuccessfulVersion: 21,
+      pendingVersion: 25,
+      lastInteractionAtMs: nowMs - 18 * 60_000,
+      signal: { frameCostMs: 2_900, focusDrift: 2, layoutShiftPx: 0.42, pointerCancelCount: 4 },
+    },
+    nowMs,
+  );
 
   return {
-    passed: increasePercent <= maxIncreasePercent,
-    currentKB,
-    baselineKB,
-    increasePercent,
+    topic: "Component Library",
+    subcategory: "component-level-ui-patterns",
+    invariant: "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.",
+    normal,
+    failure,
   };
 }

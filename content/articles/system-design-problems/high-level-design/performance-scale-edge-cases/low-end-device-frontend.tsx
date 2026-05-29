@@ -7,87 +7,231 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-low-end-device-frontend",
-  title: "Design Frontend for Low-End Devices (India Scale)",
-  description:
-    "Architecture for a frontend optimized for low-end Android devices on 2G/3G networks: aggressive bundle splitting and lazy loading, WebP image serving with JPEG fallback, skeleton screens over spinners, server-side rendering to reduce JS parse time, adaptive serving based on Network Information API, critical CSS inlining, resource hints (preconnect/prefetch), lite mode detection, and feature detection over user-agent sniffing.",
+  title: "Design a Frontend for Low-End Devices",
+  description: "Principal-level frontend architecture for low-end devices covering CPU, memory, GPU, bundle budgets, adaptive rendering, caching, and failure containment.",
   category: "high-level-design",
   subcategory: "performance-scale-edge-cases",
   slug: "low-end-device-frontend",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "performance", "low-end-device", "india-scale", "2g", "bundle-size", "adaptive-serving", "lite-mode"],
-  relatedTopics: ["high-latency-network-optimized-ui", "progressive-hydration-system"],
+  wordCount: 3600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: [
+  "hld",
+  "frontend",
+  "low-end-devices",
+  "performance",
+  "memory"
+],
+  relatedTopics: [
+  "high-latency-network-optimized-ui",
+  "graceful-degradation-system"
+],
 };
+
+const definition = [
+  "Design a Frontend for Low-End Devices is not a narrow rendering problem. It is a production system design problem where the frontend, edge, backend-for-frontend, platform APIs, observability, and product policy must work together for users run the product on devices with slow CPUs, limited memory, weak GPUs, old browsers, and aggressive background eviction. A principal-ready answer starts by defining the user promise: what remains usable, what is allowed to be stale, what must be confirmed by the server, and what should be disabled before the product harms trust.",
+  "The main goal is to keep the core task usable under CPU, memory, and rendering constraints rather than only optimizing network latency. The design should avoid the common trap of optimizing only average page load. Interviewers expect you to reason about p95 and p99 users, regional cohorts, low-end devices, dependency failures, and operational behavior during incident conditions.",
+  "This topic sits at the boundary between product experience and distributed systems. The browser is not a passive renderer; it caches, schedules, retries, batches, predicts, persists state, and emits telemetry. Those client decisions can either protect the backend or multiply load during an outage.",
+  "The scope should explicitly name what is in and out. In scope are route architecture, data loading, client scheduling, dependency handling, fallback behavior, observability, release guardrails, and user-facing recovery. Out of scope are rewriting every backend service or assuming unlimited network and device capability.",
+  "A principal-level answer should also define decision ownership. Product owns which experiences can degrade. Platform owns shared performance budgets and observability contracts. Feature teams own route-level regressions. Operations owns incident playbooks and rollback controls. Without ownership, performance systems become dashboards that nobody acts on."
+];
+const concepts = [
+  "The first core concept is an explicit user journey budget. For a low-end-device frontend, define budgets for startup, first useful content, first reliable interaction, bytes per route, request count, retry count, and background work. These budgets need route-level owners because a global average lets important cohorts fail quietly.",
+  "The second concept is criticality tiering. Not every request, widget, script, metric, or personalization call deserves the same priority. Critical path work supports navigation, authentication, visible content, and correctness-sensitive actions. Secondary work supports recommendations, analytics, decorations, previews, and speculative prefetch.",
+  "The third concept is client-side scheduling. The client should prioritize visible work, cancel obsolete requests, limit concurrency, pause nonessential background work, and avoid retry storms. Scheduling becomes especially important when large bundles block parse and compile.",
+  "The fourth concept is correctness classification. Some experiences can be optimistic or stale, while others require authoritative confirmation. The client should treat local caches as hints. Important state changes must be reconciled with the server when the app resumes because low-end devices are more likely to suspend, kill, or partially persist app state.",
+  "The fifth concept is operational observability. A production design needs RUM, synthetic checks, edge metrics, API metrics, client error reports, long-task data, cache hit ratio, and release correlation. Metrics should be segmented by route, region, device class, network class, browser, and experiment variant.",
+  "The sixth concept is progressive enhancement. The system should deliver a useful baseline first, then layer richer behavior when device, network, dependency, and permission state allow it. This is different from graceful failure after a rich app breaks; it is designing the baseline as a first-class product."
+];
+const architecture = [
+  "The recommended architecture contains five cooperating layers: capability detection, adaptive bundle loader, memory-aware cache, render scheduler, crash and long-task telemetry. The exact technology choices vary, but the responsibility boundaries should be clear. The edge handles cacheable and regional concerns, the BFF shapes route payloads, the client schedules work and preserves local state, and telemetry closes the feedback loop.",
+  "Requests should be grouped by route intent instead of by backend ownership. The browser should not make a sequence of dependent calls when a BFF or edge function can compose a page-specific response with stable latency and caching semantics. This reduces round trips and gives the platform one place to apply request budgets, timeouts, and fallback policy.",
+  "The client should maintain a small runtime policy engine. It reads device and network hints, route priority, user intent, feature flags, and dependency health. Based on that policy it chooses image quality, prefetch aggressiveness, hydration priority, polling interval, cache strategy, and which widgets to defer.",
+  "State should be split into durable server state, durable local intent, ephemeral UI state, and derived presentation state. Durable local intent matters when users act during degraded conditions. Ephemeral UI state should not be treated as truth after refresh or reconnect.",
+  "The observability flow should correlate route render, data load, user interaction, dependency calls, cache behavior, errors, and release version. When a regression appears, engineers should know whether it came from a bundle change, third-party tag, CDN miss, backend latency, hydration error, feature flag, or experiment.",
+  "The diagrams for this article should be read as architecture, flow, and operations views. The architecture diagram explains ownership boundaries. The flow diagram explains user-visible progression and fallback. The operations diagram explains how the system is observed, controlled, and recovered during abnormal conditions."
+];
+const tradeoffs = [
+  "The first major trade-off is same app for all devices versus single adaptive app with strict budgets and feature gates. Direct client access can be simple for small teams, but it creates route waterfalls, exposes backend shape to the browser, and makes fallback behavior inconsistent. A route-focused BFF adds another service tier, but it centralizes payload shaping, cache policy, and dependency control.",
+  "separate lightweight app can be attractive because it improves first paint and cacheability. The downside is that not all interactions become safe or fast just because the first HTML arrived quickly. You still need hydration or client logic, state reconciliation, and a plan for dynamic user-specific data.",
+  "Aggressive caching improves latency and availability but creates correctness risk. Public static assets and editorial content can be cached heavily. User-specific data, entitlement checks, privacy-sensitive responses, and mutable transaction state require careful cache keys, short TTLs, or server confirmation.",
+  "Optimistic UI improves perceived responsiveness but increases rollback complexity. It is appropriate for reversible actions such as toggling a view preference or drafting local text. It is unsafe for payment, permission, inventory, identity, deletion, and security-sensitive actions unless the UI clearly represents a pending state.",
+  "Prefetching improves next-step latency but consumes bandwidth, battery, memory, and backend capacity. The principal answer should recommend intent-based prefetch, cohort-aware limits, data-saver respect, and cancellation when intent changes.",
+  "Feature shedding protects the core journey but can damage product metrics or user trust if it is invisible. Degraded states should be explicit enough that users understand what happened, while avoiding noisy technical errors.",
+  "Cost deserves a first-class trade-off. Every extra script, beacon, retry, cache miss, and speculative request becomes meaningful at scale. A principal design should defend a cost budget, not only a latency target."
+];
+const practices = [
+  "Create route-level performance and resilience budgets. Budgets should include bytes, JavaScript execution, API calls, round trips, cache hit ratio, timeout rate, long tasks, and user interaction latency. Route owners should review budget changes during code review and release planning.",
+  "Define a dependency criticality matrix. For each dependency, document whether it blocks rendering, blocks interaction, can use cached data, can fail open, can fail closed, or can be bypassed. This turns outage behavior from improvisation into design.",
+  "Use idempotency and explicit pending states for writes. If the browser retries or the user refreshes, the backend should converge on one logical action. The UI should poll or subscribe to authoritative status rather than asking users to repeat dangerous actions.",
+  "Use progressive loading and bounded resource use. Virtualize large lists, lazy-load below-fold widgets, cap memory caches, reduce image quality for constrained cohorts, and pause nonessential work while the user is interacting.",
+  "Instrument the client as a production component. Track route timing, interaction timing, long tasks, hydration or render failures, cache state, retry count, timeout class, dependency health, and release version. Sample responsibly, but keep enough attribution to debug.",
+  "Build rollback controls. Feature flags, remote config, kill switches, CDN invalidation, third-party script disablement, and route-level fallback switches should be available before an incident. These controls need audit logging and blast-radius limits.",
+  "Exercise degraded modes continuously. Synthetic tests and game days should verify that fallback paths still work, because rarely used fallback code often rots faster than the primary path."
+];
+const pitfalls = [
+  "A common pitfall is optimizing a lab metric while real users continue to fail. Lab tools are useful, but principal interviews expect field measurement segmented by real cohorts.",
+  "Another pitfall is moving complexity to the client without operational controls. Client schedulers, local stores, and prefetchers can create backend load, stale data, or privacy issues if they are not governed.",
+  "unbounded lists exhaust memory. This is not a reason to avoid the technique entirely; it is a reason to bound it, observe it, and disable it remotely when it harms the system.",
+  "animations trigger layout and GPU pressure. A strong design identifies which actions need rollback, which need confirmation, and which should be blocked during degraded conditions.",
+  "background tabs lose state. Ambiguity is especially dangerous because users may repeat an action, support may not see the same state, and backend teams may reconcile the wrong records.",
+  "Many designs forget support and operations. If a user reports a failed journey, support should see route, device, network cohort, dependency health, client state, server state, and recent release context without asking engineering to query raw logs."
+];
+const useCases = [
+  "Messaging app on low-RAM Android devices is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Marketplace search with thousands of cards is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "Video or short-form feed with constrained battery and GPU is a concrete use case where the design must choose between perceived speed, correctness, and degraded behavior rather than applying one generic loading pattern.",
+  "A principal interviewer may ask you to handle a regional outage, a third-party script regression, an API latency spike, a client memory leak, or a sudden traffic surge. In each case, answer with the control loop: detect, isolate, degrade, communicate, recover, and prevent recurrence.",
+  "For consumer products, the biggest risk is usually silent trust erosion: taps do nothing, pages jump, data appears stale, or users repeat actions. For enterprise products, auditability and support reconstruction often matter as much as the immediate UI behavior.",
+  "For regulated or financial workflows, the product should prefer truthful pending states over optimistic success. Users can tolerate a slower confirmed action better than a fast lie that later becomes a support incident."
+];
+const questions = [
+  {
+    "question": "How would you design a low-end-device frontend end to end?",
+    "answer": "I would start by defining the user journey and classifying each operation by criticality. Then I would place cacheable/static work at the CDN or edge, shape route payloads through a BFF, let the client scheduler prioritize visible and user-initiated work, and use local state only where correctness allows it. I would add RUM segmented by route, region, device, and network cohort, plus remote controls for feature shedding and rollback. The design is end to end because it covers request path, client runtime, backend dependencies, fallback behavior, observability, and operations."
+  },
+  {
+    "question": "Why choose this architecture over a simpler client-only design?",
+    "answer": "A client-only design is simpler initially, but it exposes every backend dependency to the browser, creates request waterfalls, and makes fallback policy inconsistent across teams. The proposed architecture adds a BFF or edge composition layer so the product can control payload shape, timeouts, cache behavior, and dependency degradation centrally. The trade-off is another operational tier, but that tier pays for itself when users run the product on devices with slow CPUs, limited memory, weak GPUs, old browsers, and aggressive background eviction."
+  },
+  {
+    "question": "What breaks at scale and how do you prevent it?",
+    "answer": "The likely failures are large bundles block parse and compile; unbounded lists exhaust memory; animations trigger layout and GPU pressure; background tabs lose state. Prevention requires budgets, backpressure, cancellation, bounded prefetch, idempotent writes, dependency health signals, route-level ownership, and remote kill switches. At scale, small client inefficiencies become infrastructure incidents, so the frontend must be treated as a traffic-shaping system."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "The client should treat local caches as hints. Important state changes must be reconciled with the server when the app resumes because low-end devices are more likely to suspend, kill, or partially persist app state. The important interview move is to classify state rather than claim everything is strongly consistent or eventually consistent. Cached reads, derived widgets, analytics, and noncritical counters can usually be stale. Security, entitlement, financial, inventory, and destructive actions require authoritative confirmation and reconciliation."
+  },
+  {
+    "question": "How do you handle failure, rollback, privacy, cost, and observability?",
+    "answer": "When CPU or memory budgets are exceeded, the UI should reduce animation, lower image quality, disable expensive previews, virtualize lists, and preserve the primary transaction path. Rollback relies on flags, config, CDN invalidation, third-party disablement, and safe fallback routes. Privacy requires data minimization in cache keys, logs, telemetry, and local storage. Cost is controlled through request budgets, sampling, cache hit targets, payload limits, and disabled speculation for constrained cohorts. Observability must connect client symptoms to release, route, dependency, device, network, and region."
+  },
+  {
+    "question": "How would you defend the trade-offs under interviewer pressure?",
+    "answer": "I would explicitly separate correctness-critical paths from experience-enhancing paths. Then I would explain why the architecture spends complexity on the former and sheds or simplifies the latter during stress. If challenged on complexity, I would point to the failure modes: ambiguous writes, retry storms, privacy leaks, hidden regressions, and poor p99 cohorts. The design is justified when those risks are more expensive than the added platform layer."
+  }
+];
+const references = [
+  {
+    "label": "web.dev: Core Web Vitals",
+    "href": "https://web.dev/vitals/"
+  },
+  {
+    "label": "web.dev: Interaction to Next Paint",
+    "href": "https://web.dev/inp/"
+  },
+  {
+    "label": "MDN: Service Worker API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+  },
+  {
+    "label": "MDN: Network Information API",
+    "href": "https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "Cloudflare: CDN and edge learning center",
+    "href": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+  },
+  {
+    "label": "React documentation: server rendering APIs",
+    "href": "https://react.dev/reference/react-dom/server"
+  }
+];
 
 export default function LowEndDeviceFrontendArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Designing for "India scale" means targeting the median Android device — a ₹8,000–12,000 (~$100–150) phone with a Snapdragon 450 or MediaTek Helio P35 processor, 3GB of RAM, 32GB of storage, and a 2G or early 3G connection (effective bandwidth of 50–200 Kbps, latency of 300–600ms). This is not an edge case — it is the primary user for billions of people in India, Southeast Asia, Sub-Saharan Africa, and Latin America. A JavaScript bundle that takes 200ms to parse on a MacBook Pro may take 4–6 seconds to parse on a Snapdragon 450 because the CPU is 20× slower at V8 script evaluation.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The fundamental constraint is that JavaScript is the most expensive resource on low-end devices — not because of download time (though that matters too on 2G), but because of parse and execution time. A 1MB JS bundle requires the browser to download, decompress, tokenize, parse, compile, and execute the JavaScript — each step consuming scarce CPU cycles. On a low-end device, this can block the main thread for 10–15 seconds, rendering the page completely unresponsive. The solution requires minimizing JavaScript fundamentally (not just compressing it) by using server-rendering, code splitting, and deferring non-critical scripts.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Bundle optimization, adaptive serving, image delivery, skeleton screens, and critical path rendering. Not in scope: backend infrastructure optimization or native app development.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>
+        {definition.slice(1).map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Performance targets:</strong> Time-to-Interactive (TTI) under 5 seconds on a 3G connection with a Moto G4-class device. First Contentful Paint (FCP) under 2 seconds. Total JavaScript under 100KB gzipped for the initial page load (remaining JS loaded on demand).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Adaptive serving:</strong> Detect network quality via the Network Information API (navigator.connection.effectiveType: "2g" | "3g" | "4g") and serve different asset variants: on 2G, serve text-only mode (no images, minimal CSS); on 3G, serve WebP images at 50% quality; on 4G+, serve full-quality assets. Device memory detection (navigator.deviceMemory) enables memory-appropriate rendering (reduce animation complexity on &lt;1GB devices).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Image delivery:</strong> All images served as WebP with JPEG fallback using &lt;picture&gt; elements. Responsive images with srcset serving appropriate resolutions (320w, 480w, 640w). Lazy loading all below-the-fold images (loading="lazy"). Hero images served at 50% quality JPEG on mobile (imperceptible quality loss, 60% file size reduction).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Offline capability:</strong> Service worker caches the app shell and critical assets after first load. Subsequent visits load from cache, even on no network. Stale content is served from cache with a background fetch for updates.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Bundle size:</strong> Initial JS bundle &lt;100KB gzipped. Total JS (all chunks) &lt;500KB gzipped. Per-route chunks &lt;30KB. Remove all polyfills for modern browser features that low-end Android devices support natively (most 2019+ Android devices support ES2017+).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Critical CSS:</strong> Inline the critical CSS (above-the-fold styles, ~14KB) in the &lt;head&gt; to eliminate the render-blocking CSS request. Remaining CSS loaded asynchronously with &lt;link rel="preload" as="style" onload="this.rel='stylesheet'"&gt;.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Resource hints:</strong> &lt;link rel="preconnect"&gt; for CDN and API origins to pre-establish TCP connections during DNS lookup. &lt;link rel="prefetch"&gt; for likely-next-page resources during idle time.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        {concepts.map((item, index) => index === 3 ? (
+          <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The architecture differentiates between the initial page load (where the goal is maximum server-side rendering to minimize client-side JS execution) and subsequent navigations (where service-worker-cached assets eliminate network round trips). The server detects the client's capabilities via request headers (Save-Data: on, Downlink via the Client Hints ECT header) and serves different asset variants: a "lite" build with minimal CSS and no images for Save-Data mode, a "standard" build for 3G, and a "full" build for 4G+. The CDN (Cloudflare) caches each variant separately by Vary: ECT, Save-Data. The JS bundle is aggressively split: the critical path (router, above-fold component) is the only JS that blocks render; everything else is lazy-loaded when needed.</HighlightBlock>
-      </section>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
 
-      <section>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/low-end-device-frontend.svg"
-          alt="Low-end device frontend architecture: adaptive serving (request headers: Save-Data:on, ECT:2g; server selects build variant: lite=no-images+minimal-CSS; standard=WebP+50%Q; full=all features; CDN Vary: ECT,Save-Data — separate cache entry per variant), bundle strategy (initial bundle &lt;100KB gzip: router+critical-component only; route chunks: lazy import() on navigation; third-party: defer all analytics/chat to after TTI; polyfill elimination: target ES2017+ only; tree shaking dead code; Brotli compression CDN), critical rendering path (inline critical CSS ~14KB in head; async non-critical CSS: link rel=preload as=style onload=rel=stylesheet; preconnect CDN + API origins; resource hints: prefetch next-page chunk during idle), image delivery (picture element: source type=image/webp srcset 320w 480w; img src=JPEG fallback; loading=lazy below fold; hero: 50% quality JPEG on 3G saves 60% bytes; serve via Cloudflare Polish auto-WebP), service worker (install: cache app shell + critical fonts + homepage JSON; fetch: cache-first for assets; stale-while-revalidate for API; offline fallback page if no cache; update: background fetch on next visit), skeleton screens (render HTML skeleton immediately from SSR; no spinners — skeleton CSS-animated placeholders match layout; content swap: when data arrives replace skeleton with real content — no layout shift)."
-          caption="Adaptive serving (Vary: ECT,Save-Data variant caching), aggressive bundle splitting (&lt;100KB initial gzip), critical CSS inlining, async non-critical CSS, resource hints (preconnect/prefetch), WebP/srcset/lazy image delivery, service worker (cache-first + stale-while-revalidate), and skeleton screens over spinners"
+          alt="Design a Frontend for Low-End Devices architecture"
+          caption="Architecture view: ownership boundaries, control-plane decisions, and runtime paths for a low-end-device frontend."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/low-end-device-frontend-flow.svg"
+          alt="Design a Frontend for Low-End Devices flow"
+          caption="Flow view: user-visible progression, fallback behavior, and degraded-state recovery."
+        />
+
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/performance-scale-edge-cases/low-end-device-frontend-operations.svg"
+          alt="Design a Frontend for Low-End Devices operations"
+          caption="Operations view: observability, rollback, cost controls, privacy boundaries, and incident response."
         />
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Bundle Size Optimization</h3>
-        <HighlightBlock as="p" tier="important">The single most impactful optimization for low-end devices is reducing JavaScript. The target: initial JS bundle under 100KB gzipped (approximately 300KB uncompressed — the amount a low-end browser can parse in under 2 seconds). Strategies: (1) Route-based code splitting: each page gets its own chunk, loaded only when the route is visited. The home page chunk does not include the profile editor code. (2) Component lazy loading: heavy components (image gallery, rich text editor, video player) are loaded on-demand via dynamic import(), showing a skeleton in the meantime. (3) Third-party script deferral: analytics, chat widgets, and A/B testing scripts are loaded after the main thread is idle (using requestIdleCallback or a 3-second setTimeout), so they do not block TTI. (4) Polyfill elimination: most Android devices from 2019+ support ES2017 natively. Removing polyfills for Array.flat(), Object.entries(), Promise, fetch, and IntersectionObserver saves 15–30KB. Use @babel/preset-env with browserslist targets matching the actual user base.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Brotli compression reduces bundle sizes by 20–30% compared to gzip. Brotli-compressed files are served to clients that include Accept-Encoding: br (all modern browsers). The CDN (Cloudflare) applies Brotli compression at the edge, so origin servers serve uncompressed files and the CDN handles compression with cached compressed responses. This offloads CPU compression from origin servers.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Adaptive Image Serving</h3>
-        <HighlightBlock as="p" tier="important">The &lt;picture&gt; element provides format and resolution switching without JavaScript. For a product image: &lt;picture&gt;&lt;source type="image/webp" srcset="img-320.webp 320w, img-640.webp 640w" sizes="(max-width: 480px) 320px, 640px"&gt;&lt;img src="img-640.jpg" loading="lazy" decoding="async" alt="Product"&gt;&lt;/picture&gt;. The browser selects WebP if supported, falls back to JPEG if not. The srcset with sizes causes the browser to select the appropriate resolution based on the device's display width and pixel density — a 360px wide screen gets the 320w WebP, not the full 640w image. On 2G (detected server-side via Client Hints), images are omitted entirely from the initial HTML (replaced with colored placeholder divs) and loaded lazily after the page is interactive.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Critical Rendering Path</h3>
-        <HighlightBlock as="p" tier="crucial">The critical rendering path for above-the-fold content must complete in under 2 seconds on 3G (600ms network latency + 1.4 seconds for content). Every render-blocking resource in the &lt;head&gt; adds to this budget. Strategy: (1) Inline critical CSS (above-the-fold styles only, extracted by PurgeCSS + Critical) directly in the &lt;head&gt; — eliminates the render-blocking CSS request. (2) Load remaining CSS asynchronously: &lt;link rel="preload" as="style" href="styles.css" onload="this.rel='stylesheet'"&gt;. (3) All non-critical scripts use defer or async attributes. (4) Preconnect to CDN and API origins: &lt;link rel="preconnect" href="https://cdn.example.com" crossorigin&gt; — establishes TCP + TLS handshake during DNS lookup, saving 200–500ms on first resource fetch. (5) The HTML sent from the server includes the above-the-fold content (rendered server-side) so the user sees real content at FCP, not a blank page waiting for JS.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Service Worker and Offline Strategy</h3>
-        <HighlightBlock as="p" tier="important">After the first visit, a service worker takes over all network requests for assets. Cache strategy per resource type: (1) App shell (HTML, CSS, core JS): Cache-first — serve from cache immediately, no network. (2) API responses: Stale-while-revalidate — serve cached response immediately, fetch update in background. (3) Images: Cache-first with fallback to network, cache response if successful. (4) Offline page: If a navigation request fails (no network, no cache), serve a pre-cached offline.html page that explains the situation and provides a "try again" button.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">On 2G connections, the service worker's stale-while-revalidate strategy is particularly valuable: the user sees last-known content instantly (from cache) while the network slowly fetches the update. Without the service worker, the user on 2G would stare at a spinner for 5–10 seconds before seeing anything. The difference between "instant stale content" and "5-second spinner" is the difference between an app feeling usable and feeling broken.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        {tradeoffs.map((item, index) => index === 0 ? (
+          <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock>
+        ) : (
+          <p key={item}>{item}</p>
+        ))}
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">SSR vs. CSR for low-end devices: CSR (client-side rendering) requires downloading, parsing, and executing JavaScript before any content is visible. On a low-end device, this can mean 10+ seconds to First Contentful Paint. SSR sends pre-rendered HTML from the server — the user sees content immediately as the HTML streams in, before any JavaScript executes. For low-end devices, SSR is strongly preferred for the initial page load. The trade-off: SSR requires server infrastructure and increases server costs. For high-traffic applications serving low-end device users, the improved user retention from faster TTI typically justifies the SSR server cost.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Feature detection vs. user-agent sniffing: User-agent strings are unreliable (spoofed, outdated, ambiguous) and do not reflect actual device capabilities. Feature detection uses JavaScript APIs to check capabilities directly: if (navigator.connection) to check Network Information API support; if (navigator.deviceMemory &lt; 1) for low-memory detection. For server-side detection, Client Hints (Accept-CH: ECT, Device-Memory, Viewport-Width request headers) provide structured device capability data from the browser to the server — more reliable than User-Agent parsing.</HighlightBlock>
+        <h2>Best practices</h2>
+        {practices.map((item) => <p key={item}>{item}</p>)}
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A frontend optimized for low-end devices (India scale) targets TTI &lt;5s on 3G with Moto G4-class devices through four primary strategies: (1) JavaScript minimization (initial bundle &lt;100KB gzip via route splitting, component lazy loading, third-party deferral after TTI, polyfill elimination for ES2017+ targets, Brotli compression); (2) adaptive serving (ECT + Save-Data Client Hints → server selects lite/standard/full build variant; CDN Vary header caches per variant); (3) critical rendering path (inline critical CSS ~14KB, async non-critical CSS via preload/onload, preconnect for CDN/API origins, SSR for above-fold content); and (4) service worker (cache-first app shell, stale-while-revalidate API, offline fallback page). Skeleton screens (CSS-animated placeholders from SSR) replace spinners, eliminating the perception of blank loading time. The defining insight: JavaScript parse/execute time, not download time, is the primary bottleneck on low-end devices — the fastest JavaScript is the JavaScript you never ship.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        {pitfalls.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        {useCases.map((item) => <p key={item}>{item}</p>)}
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        {questions.map((item) => (
+          <div key={item.question} className="mb-6">
+            <h3 className="mb-2 text-lg font-semibold">{item.question}</h3>
+            <p>{item.answer}</p>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6">
+          {references.map((item) => (
+            <li key={item.href}>
+              <a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
     </ArticleLayout>
   );

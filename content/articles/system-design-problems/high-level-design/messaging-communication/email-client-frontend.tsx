@@ -7,89 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-email-client-frontend",
-  title: "Design Email Client (Gmail-like)",
-  description:
-    "Architecture for a Gmail-like email client frontend: IMAP/JMAP synchronization with delta sync, virtual scroll for inbox with thousands of messages, rich text compose with autosave drafts to IndexedDB, thread grouping and label management, full-text search with Elasticsearch query syntax, attachment upload with resumable multipart, undo-send with 5-second cancel window, spam filtering feedback loop, keyboard shortcut system, and offline inbox access via service worker.",
+  title: "Design an Email Client Frontend",
+  description: "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability.",
   category: "high-level-design",
   subcategory: "messaging-communication",
   slug: "email-client-frontend",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "email", "gmail", "jmap", "virtual-scroll", "drafts", "full-text-search", "thread-view", "undo-send"],
-  relatedTopics: ["whatsapp-slack-frontend", "threaded-messaging-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "messaging", "realtime", "notifications", "privacy", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design an Email Client Frontend is a communication system where correctness is user-visible: people notice missing messages, wrong unread counts, late notifications, broken drafts, and privacy leaks immediately. A principal-ready design treats an email client frontend as a distributed event and state synchronization problem, not simply a list of messages.",
+  "The design must define message identity, ordering, delivery acknowledgement, read state, presence, offline behavior, notification policy, abuse controls, and recovery after reconnect. Different surfaces can be eventually consistent, but user intent and privacy-sensitive state need stronger guarantees.",
+  "Communication systems also sit at the boundary between realtime UX and durable history. The UI should feel live, but messages, edits, deletes, receipts, and moderation decisions must survive refresh, device changes, network loss, and replay.",
+  "A staff/principal answer should name what is authoritative: message append log, conversation membership, consent or preference policy, delivery receipt, read state, and moderation state. Derived views such as inbox rows, snippets, unread counts, search results, and push notifications can lag if they are observable and repairable.",
+  "The system must be abuse-aware. Spam, phishing, harassment, notification bombing, large-room fanout, and provider outages are expected operating conditions, not rare edge cases."
+];
+const concepts = [
+  "The first concept is message identity and ordering. Every message or communication event needs a stable ID, conversation or recipient scope, sender, timestamp, sequence or logical clock, edit/delete state, and idempotency key.",
+  "The second concept is delivery semantics. Sent, accepted, delivered, read, failed, suppressed, and moderated are different states. Collapsing them into delivered creates incorrect UI and support confusion.",
+  "The third concept is multi-device synchronization. mailbox sync, threading engine, and composer draft must converge after offline use, app restart, token refresh, and reconnect.",
+  "The fourth concept is privacy and membership. Conversation membership, blocks, consent, retention, legal hold, and channel policy must be enforced across message history, notifications, search, exports, and previews.",
+  "The fifth concept is fanout and backpressure. Large rooms, high-volume channels, notification storms, and provider retries can overload clients and backend queues unless traffic is shaped by priority and recipient state.",
+  "The sixth concept is observability. Track send success, delivery lag, unread drift, websocket reconnects, push receipt latency, provider failures, moderation actions, search indexing lag, and duplicate suppression."
+];
+const architecture = [
+  "The architecture has mailbox sync, threading engine, search index, composer draft, spam/phishing guard. The write path accepts user intent and appends durable events. The realtime path streams events to online clients. Projection workers build inboxes, unread counts, snippets, search documents, notifications, and analytics. Policy services enforce membership, consent, mute state, and moderation.",
+  "Clients should maintain a local event cache and pending operation queue. This allows instant local rendering for pending sends while preserving authoritative reconciliation when the server accepts, rejects, edits, redacts, or reorders events.",
+  "Ordering should be scoped. A global total order is unnecessary and expensive. Conversations or channels need stable ordering semantics, and cross-channel inbox projections can use per-conversation latest-event time plus tie-breakers.",
+  "Read state and delivery receipts should be modeled separately. Read state is often per-user per-conversation and may be eventually consistent across devices. Delivery receipt may depend on device connectivity, provider acknowledgement, or policy suppression.",
+  "The frontend should show truthful states: sending, sent, delivered, read, failed retryable, failed permanent, hidden by policy, deleted, edited, or blocked. These states reduce support issues and prevent dangerous duplicate user actions.",
+  "Operations need controls to disable a provider, mute a noisy event type, replay a projection, rebuild search, quarantine spam, revoke a compromised sender, and inspect a message timeline with privacy-safe audit trails."
+];
+const tradeoffs = [
+  "WebSockets or persistent connections give low-latency delivery but require connection management, backpressure, auth refresh, and fallback to polling. Polling is simpler but increases latency and cost at scale.",
+  "Server-authoritative ordering prevents inconsistent history but can make local sends appear to move after acknowledgement. Local optimistic ordering feels responsive but needs reconciliation and visible pending states.",
+  "Push notifications improve re-engagement but can leak private content on locked screens, violate user preferences, or amplify spam. Notification payloads should be minimized and policy-checked.",
+  "Storing full local history improves offline UX but creates privacy, storage, and deletion challenges. A principal design caches only what is needed, encrypts where appropriate, and clears data on logout or device distrust.",
+  "End-to-end encryption protects content privacy but limits server-side search, moderation, and support visibility. Systems must decide where encryption applies and how metadata, abuse reports, and recovery work.",
+  "Strongly consistent unread counts are expensive and often unnecessary. Users tolerate slight unread drift if it converges quickly, but message loss, privacy leaks, and duplicate sends are not acceptable."
+];
+const practices = [
+  "Use idempotency for send, edit, delete, mark-read, and notification creation. Retries from mobile devices and provider callbacks should converge on one logical event.",
+  "Model conversation membership and consent as policy inputs for every surface: message fetch, push, email, search, preview, export, and support view.",
+  "Keep pending local state visibly distinct from accepted server state. Users should know when a message or notification action is not yet durable.",
+  "Use backpressure for realtime streams. Drop or coalesce low-value typing, presence, and read events before dropping durable messages.",
+  "Build projection repair paths. Inbox rows, unread counts, search indexes, and digest summaries should be rebuildable from the authoritative event log.",
+  "Create abuse controls for spam senders, phishing links, notification floods, and toxic threads. Moderation state should propagate to clients and notifications quickly.",
+  "Instrument device cohorts separately. Messaging bugs often appear only on reconnect, app backgrounding, low battery, stale tokens, or older clients."
+];
+const pitfalls = [
+  "sync lag is usually caused by unclear ordering or reconciliation semantics. The design needs scoped sequence, idempotency, and client reconciliation.",
+  "duplicate messages undermines user trust because communication UIs become task lists. Unread/read state should be observable, repairable, and separated from delivery.",
+  "phishing exposure happens when privacy policy is enforced in the main view but not in notifications, previews, search, or exports.",
+  "large mailbox search should be expected for large rooms, provider retries, or viral notifications. Backpressure and throttling must be first-class.",
+  "Another pitfall is treating push, email, websocket, and inbox as independent products. Users perceive them as one communication system, so policy and state must converge.",
+  "Teams also forget retention and legal hold. Delete for user, delete for everyone, archive, export, and legal retention require explicit semantics."
+];
+const useCases = [
+  "personal inbox requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "enterprise mailbox requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "offline email compose requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "During provider outage, the hub should fail over channels where allowed, queue retryable messages, suppress duplicates, and show delivery uncertainty clearly.",
+  "During abuse spike, the system should throttle senders, reduce notification fanout, scan links, quarantine suspicious threads, and preserve review evidence.",
+  "During reconnect, the client should fetch missed events from a cursor, reconcile local pending operations, update read state, and avoid replaying already accepted actions."
+];
+const questions = [
+  {
+    "question": "How would you design an email client frontend end to end?",
+    "answer": "I would design an authoritative event log for durable communication events, realtime gateways for online delivery, projection workers for inboxes and unread counts, policy services for membership and consent, and client local state for pending operations and offline recovery. The frontend shows truthful delivery states while the backend owns ordering, idempotency, and enforcement."
+  },
+  {
+    "question": "Why this architecture over direct client-to-client messaging or a simple notifications table?",
+    "answer": "Direct client-to-client messaging cannot provide durable history, moderation, multi-device sync, search, retention, or support reconstruction. A simple notifications table cannot represent delivery, read state, retries, provider acknowledgements, and policy suppression. The event-log plus projection model adds complexity but makes the system repairable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are sync lag, duplicate messages, phishing exposure, large mailbox search, plus reconnect storms, websocket fanout, unread drift, provider rate limits, spam waves, and projection lag. Prevention requires scoped ordering, backpressure, idempotency, projection repair, provider abstraction, and abuse controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Message append, membership, deletion/redaction, and consent policy need strong server control. Inbox rows, unread counts, search indexes, push delivery receipts, and presence can be eventually consistent if they converge and expose uncertainty. Read state usually accepts eventual consistency across devices."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with reconnect cursors, retry queues, provider failover, local pending state, and projection rebuilds. Rollback uses feature flags, provider disablement, and event replay. Abuse is controlled through rate limits, link scanning, reputation, and moderation. Privacy requires minimizing notification payloads and enforcing membership everywhere. Cost is controlled by coalescing presence/read events, batching, and sampling telemetry. Observability tracks send lag, delivery lag, reconnects, unread drift, provider errors, and moderation actions."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate durable message truth from derived communication surfaces. I would defend eventual unread counts but not eventual privacy enforcement. I would defend websocket complexity for realtime UX while keeping polling fallback. I would also acknowledge that E2EE, search, moderation, and support visibility create real trade-offs that must be product-specific."
+  }
+];
+const references = [
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Slack engineering blog",
+    "href": "https://slack.engineering/"
+  },
+  {
+    "label": "RFC 5322 Internet Message Format",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5322"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  }
+];
 
 export default function EmailClientFrontendArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An email client frontend like Gmail manages a fundamentally different data model from a chat application: messages are grouped into threads, each thread has labels (not channels), the inbox can contain hundreds of thousands of messages, and message bodies can be complex HTML with embedded images and attachments. Gmail serves 1.8 billion users with inboxes ranging from empty to 15GB of archived messages. The UI must provide instant search across all historical email, smooth scrolling through thousands of inbox rows, and a rich compose experience — all while maintaining offline access and syncing efficiently when connectivity is restored.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The key challenges are different from chat: email is pull-based (the client polls or streams deltas from the server, not a persistent connection per message), bodies are large and expensive to fetch for every scroll (inbox shows only headers), and compose is a long-form interaction that must survive browser crashes (drafts autosaved every 10 seconds). The undo-send window (Gmail's "Undo" button that appears for 5 seconds after sending) requires delaying actual SMTP delivery — the message is queued server-side for 5 seconds before being sent.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Inbox synchronization, thread view, compose with autosave drafts, full-text search, attachment handling, and undo-send. Not in scope: SMTP/IMAP server implementation, spam filtering algorithms, or native mobile email client design.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/email-client-frontend.svg" alt="Design an Email Client Frontend architecture" caption="Architecture view: durable event log, realtime gateway, projections, policy, and client sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/email-client-frontend-flow.svg" alt="Design an Email Client Frontend flow" caption="Flow view: send, acknowledge, deliver, read, moderate, notify, and recover." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/email-client-frontend-operations.svg" alt="Design an Email Client Frontend operations" caption="Operations view: fanout, reconnect, provider health, abuse controls, privacy, and projection repair." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Inbox synchronization:</strong> The inbox reflects the server state within 30 seconds without user action. New emails arrive via server-sent events (SSE) or WebSocket push notifications with email metadata (subject, sender, snippet, timestamp, unread flag). Full message bodies are fetched on-demand when the user opens a thread. The JMAP protocol provides delta sync — the client sends its current state token and receives only changes since the last sync, not the full inbox.</HighlightBlock>
-          <li><strong>Thread view:</strong> Emails in the same conversation (matching Message-ID / In-Reply-To headers) are grouped into a thread. The thread view shows collapsed summaries of read messages and the expanded latest message. Clicking a collapsed summary expands it. Thread grouping is computed on the server and cached; the client renders the pre-grouped thread structure.</li>
-          <li><strong>Compose and drafts:</strong> The compose window is a rich text editor (Tiptap or Quill) that autosaves to IndexedDB every 10 seconds and on every close/navigate. Drafts are synced to the server every 30 seconds (not on every keystroke — too expensive). If the browser crashes, the draft is recovered from IndexedDB on next open. Attachments are uploaded immediately on selection (parallel multipart upload) and referenced by a server-assigned attachment ID in the draft.</li>
-          <HighlightBlock as="li" tier="important"><strong>Full-text search:</strong> Search queries the backend (Elasticsearch) and returns matching threads with highlighted snippets. Search results appear within 500ms of the query. As-you-type suggestion (subject/sender autocomplete) uses a separate lightweight endpoint with a 300ms debounce. Advanced search syntax (from:, to:, subject:, after:, before:, has:attachment) is parsed client-side and translated to Elasticsearch DSL.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Performance:</strong> Inbox list renders at 60fps with virtual scrolling (TanStack Virtual). Initial inbox load (first 50 thread headers) completes in under 1 second. Opening a thread fetches the full body in under 500ms (body is typically 10–100KB). Compose opens instantly (no network request required to start composing).</li>
-          <HighlightBlock as="li" tier="important"><strong>Offline access:</strong> The last 100 thread headers and the 10 most recently opened full thread bodies are cached in IndexedDB via the service worker. While offline, the user can read cached threads and compose new emails (queued in IndexedDB, sent on reconnection). Search is unavailable offline (displayed as "Search requires an internet connection").</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Undo send:</strong> After clicking Send, a toast notification with "Undo" appears for 5 seconds. Clicking Undo cancels the send. The message is held in a server-side queue (status: pending) for 5 seconds before SMTP delivery. If the client cancels within 5 seconds (DELETE /api/outbox/&#123;messageId&#125;), the message is discarded. After 5 seconds, the message transitions to status: delivered.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture separates inbox metadata from message bodies. The Inbox Layer (thread list, unread counts, labels) is synchronized via JMAP delta sync — lightweight state tokens, small payloads, fast updates. The Body Layer (full message HTML, attachments) is fetched on-demand per thread open — lazy loading prevents downloading 1.8GB of email on login. The Compose Layer is entirely local until sent — the rich text editor writes to IndexedDB, syncs to server in background, and the attachment uploader runs independently. The Search Layer is a stateless query against the backend search cluster — search results are not cached locally (stale search results are misleading). The Sync Engine coordinates these layers: it listens to SSE push events for new email notifications, manages the JMAP state token, and handles reconnection gap-fill.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/messaging-communication/email-client-frontend.svg"
-          alt="Gmail-like email client frontend: inbox sync (SSE push: new email metadata; JMAP delta: GET /jmap?sinceState=tok123 → only changes; state token updated; thread headers in IndexedDB; 50 headers/page virtual scroll; body fetch on-demand: GET /messages/{id}/body lazy), thread view (thread grouping by Message-ID/In-Reply-To pre-computed server-side; render collapsed read messages + expanded latest; click to expand; inline image: Content-ID replaced with data URL; quote collapsing: long quoted text → Show more), compose + drafts (Tiptap rich text editor; autosave IndexedDB every 10s; server sync every 30s; crash recovery from IDB on reopen; attachment: upload multipart immediately → server returns attachmentId; reference by ID in draft body), undo send (Send clicked → POST /api/outbox status=pending; 5s countdown toast 'Undo'; Undo → DELETE /api/outbox/{id} → discarded; no Undo → SMTP delivery after 5s; server-side delay queue), full-text search (Elasticsearch DSL; 300ms debounce as-you-type; client-side parse: from: to: subject: after: → query DSL; highlight snippets in results; search unavailable offline → graceful message)."
-          caption="JMAP delta sync (state token, only changed threads), SSE push for new email metadata, virtual scroll inbox, on-demand body fetch, Tiptap autosave to IndexedDB (10s local, 30s server), attachment pre-upload with ID reference, undo-send 5s server queue, Elasticsearch full-text search with client-side query DSL parse"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">JMAP Delta Synchronization</h3>
-        <HighlightBlock as="p" tier="important">JMAP (JSON Meta Application Protocol, RFC 8620) is an email protocol designed for efficient client-server sync. Unlike IMAP (which requires the client to poll for every change and download full message metadata), JMAP provides a state token per mailbox. The client sends its current state token with each sync request: POST /api/jmap with body &#123;"using": ["urn:ietf:params:jmap:mail"], "methodCalls": [["Email/changes", &#123;"sinceState": "current_token"&#125;, "0"]]&#125;. The server returns only the IDs of emails that have been created, updated, or destroyed since that state token, plus a new state token. The client fetches the full metadata for changed emails in a follow-up call. This means a sync round trip typically transfers a few hundred bytes (a list of changed IDs) rather than the full inbox.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The state token is stored in IndexedDB alongside the thread headers. On page load, the client reads the cached state token, performs a delta sync to catch up from the last session, and then establishes an SSE connection for real-time push notifications of new emails. New email notifications via SSE contain only the thread ID — the client fetches the thread header via JMAP in a background call and inserts it into the inbox list.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Virtual Scroll Inbox</h3>
-        <HighlightBlock as="p" tier="important">The inbox thread list uses TanStack Virtual with a fixed row height (72px per thread row). For an inbox with 50,000 threads, only ~15 rows are in the DOM at any time. The virtualizer maintains a top spacer div (height = rowHeight × firstRenderedIndex) and a bottom spacer div (height = rowHeight × (totalCount - lastRenderedIndex)) to maintain the correct scroll container height. Thread rows show: sender avatar (first letter, cached as canvas-drawn data URL), sender name, subject, snippet (first 100 characters of body), timestamp, and unread/label badges.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Infinite scroll: when the user scrolls within 200px of the bottom of the loaded thread list, a fetch is triggered for the next 50 threads (GET /api/threads?offset=50&amp;limit=50). The new threads are appended to the Zustand thread list and the virtualizer re-renders. The total count (for the spacer calculation) is returned with the first page response and does not change during the session unless emails are deleted or labels change.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Rich Text Compose and Autosave</h3>
-        <HighlightBlock as="p" tier="important">The compose window uses Tiptap (ProseMirror-based) with extensions for bold, italic, link, inline image, and mention. The editor's content is serialized as HTML (for email compatibility) and stored in IndexedDB every 10 seconds via a setInterval. The draft record in IndexedDB has the structure: &#123;id, to, cc, subject, htmlBody, attachmentIds, updatedAt&#125;. On every compose close or page navigate, a final save is triggered synchronously before the component unmounts (using the beforeunload event and a synchronous IndexedDB write via idb-keyval). When the compose window reopens, the draft is restored from IndexedDB instantly without a network request.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Attachments are uploaded immediately when the user selects files (not waiting for Send). The upload uses the multipart/form-data endpoint (POST /api/attachments) with a progress indicator. Large attachments (&gt;10MB) use resumable upload: the server assigns an upload URL and the client sends 1MB chunks, reporting progress per chunk. If the upload is interrupted, it resumes from the last acknowledged chunk. The server returns an attachmentId that is embedded in the draft's HTML body as a data attribute — on Send, the server resolves these IDs into email attachment parts.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Keyboard Shortcut System</h3>
-        <HighlightBlock as="p" tier="important">Gmail's keyboard shortcuts (e: archive, r: reply, f: forward, j/k: navigate, #: delete) are a defining power-user feature. The shortcut system is a global event listener (document.addEventListener("keydown")) that: (1) checks if the user is in a text input or compose window — if so, shortcuts are disabled (to avoid archiving an email when the user types "e" in the search box); (2) matches the key to a shortcut registry (a Map of key → action); (3) dispatches the action to the appropriate store method. Shortcuts are configurable per user (stored in user preferences). A shortcut help overlay (? key) shows the full shortcut list with the same sheet animation as Gmail's keyboard shortcut help modal.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Thread view grouping on client vs. server: grouping emails into threads by Message-ID / In-Reply-To can be done client-side (after fetching all message headers) or server-side (the server returns pre-grouped threads). Client-side grouping requires downloading all message headers before the inbox is interactive — for 50,000 emails, this is impractical. Server-side grouping is the correct approach: the server maintains thread state, and the client receives pre-grouped thread objects. The trade-off: the server must maintain a thread index and update it as new messages arrive, which is additional server complexity. Gmail's server-side threading has been refined over 20 years and handles edge cases (re-threading when a reply arrives late, de-threading when the subject line changes significantly).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">HTML email rendering security: email HTML is untrusted user content — rendering it naively in an iframe allows phishing (display a fake login form), tracking (1x1 pixel images that report open events), and CSS injection (the email's styles leak into the parent page). Gmail renders email bodies in a sandboxed iframe with: sandbox="allow-same-origin" to prevent script execution; a CSS sanitizer that strips external style sheet links; image blocking by default (user must click "Display images" to load external images); and a Content Security Policy that prevents form submissions to external URLs. These protections are non-negotiable for an email client.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A Gmail-like email client is built on four systems: (1) JMAP delta sync (state token → only changed IDs returned per sync, SSE push for real-time new email notification, thread headers in IndexedDB, body fetched on-demand); (2) virtual scroll inbox (TanStack Virtual fixed 72px rows, ~15 DOM nodes, infinite scroll at 200px-from-bottom, total count spacer); (3) compose with autosave (Tiptap ProseMirror, 10s IndexedDB autosave, 30s server sync, beforeunload final save, resumable multipart attachment upload with progress, attachmentId reference in draft HTML); and (4) undo send (Send → server status=pending → 5s client toast → DELETE to cancel → SMTP delivery after timeout). Email HTML is rendered in a sandboxed iframe with image blocking and CSS sanitization. Search queries Elasticsearch with client-side DSL parse for advanced operators. The core constraint: email bodies are too large and numerous to prefetch — every architectural decision must be evaluated against the cost of fetching on-demand vs. the benefit of instant access.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

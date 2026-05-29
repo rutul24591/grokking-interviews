@@ -1,1 +1,5 @@
-# Design an ads delivery & targeting UI — Example 3
+# ADS Delivery AND Targeting UI - Example 3
+
+Concrete monetization edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

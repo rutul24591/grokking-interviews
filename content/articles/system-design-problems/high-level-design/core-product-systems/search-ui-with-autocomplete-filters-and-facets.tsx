@@ -13,9 +13,9 @@ export const metadata: ArticleMetadata = {
   category: "high-level-design",
   subcategory: "core-product-systems",
   slug: "search-ui-with-autocomplete-filters-and-facets",
-  wordCount: 5500,
-  readingTime: 33,
-  lastUpdated: "2026-05-10",
+  wordCount: 6200,
+  readingTime: 38,
+  lastUpdated: "2026-05-20",
   tags: ["hld", "search", "autocomplete", "facets", "elasticsearch", "url-state"],
   relatedTopics: ["rate-limited-autocomplete", "audit-log-viewer-ui"],
 };
@@ -24,96 +24,376 @@ export default function SearchUIArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <p>Search is the primary navigation mechanism in content-heavy applications. A user searching for "running shoes under $100 in size 10" is expressing a structured intent that the search UI must decompose into a full-text query ("running shoes"), numeric filters (price &lt; 100), and attribute filters (size = 10)—and then surface the results in a way that allows iterative refinement. This is not a simple text box; it is a multi-dimensional query builder wrapped in a conversational interface.</p>
-        <p>The two core challenges are query composition and result relevance. Query composition is the UI problem: how does the user express their intent? Autocomplete (suggesting completions as they type), filter chips (applying discrete constraints), and facets (showing the distribution of results by attribute) each solve a piece of this problem. Result relevance is the backend problem: given the composed query, how does the system rank results? Elasticsearch's BM25 relevance scoring handles full-text relevance, but facet-filtered results require the scoring to be combined with filter logic without degrading to a sequential scan.</p>
-        <p><strong>Explicit assumptions:</strong> The product catalog has 10–100 million items. Elasticsearch is the search backend. Autocomplete suggestions are served from a separate endpoint backed by a prefix-indexed suggestion corpus (not the full Elasticsearch query). URL query parameters are the source of truth for filter state (bookmarkable, shareable). The search UI is the primary entry point for product discovery, so search latency directly impacts conversion.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="crucial">
+          A search UI with autocomplete, filters, and facets lets users express intent, refine large result sets, and
+          understand what is available. It appears in commerce, documents, media libraries, marketplaces, observability
+          products, admin tools, and knowledge bases. The frontend is not just an input box; it is a stateful query
+          builder connected to relevance ranking, aggregation counts, URL state, analytics, and accessibility.
+        </HighlightBlock>
+        <p>
+          Assume a catalog of 10 to 100 million items, a primary search backend such as Elasticsearch or OpenSearch, a
+          separate low-latency suggestion path, server-side faceting, typo tolerance, cursor pagination, and search
+          state encoded in the URL. Autocomplete should feel instant, submitted search should return the first page and
+          facet counts within hundreds of milliseconds, and every filter change should preserve shareable state.
+        </p>
+        <p>
+          In senior and principal interviews, the main distinction is between search UX and search serving. Strong
+          answers discuss request cancellation, debouncing, stale response protection, query construction, facet count
+          semantics, relevance boosting, zero-result recovery, pagination, observability, and URL-driven state.
+        </p>
+        <p>
+          Principal-level answers should also treat search as a feedback system. Query logs, no-result queries,
+          reformulations, facet usage, impressions, clicks, conversion, and abandonment all feed relevance tuning. The
+          UI should capture these events with request ids and ranking context so search teams can diagnose whether
+          failures came from matching, ranking, inventory, filters, latency, or presentation.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Autocomplete:</strong> As the user types, show up to 8 suggestions combining popular queries, product names, and category names. Suggestions appear within 100ms of the last keystroke.</li>
-          <li><strong>Full-text search:</strong> Search across product title, description, brand, and attributes. Typo-tolerance for common misspellings.</li>
-          <li><strong>Faceted filtering:</strong> Dynamic facets showing available attribute values (Brand, Category, Size, Color, Price range) with result counts for each value. Selecting a facet value updates results and refines other facets.</li>
-          <li><strong>Price range filter:</strong> Range slider or min/max input. Updates in real-time (debounced query on slider drag).</li>
-          <li><strong>Sort:</strong> Relevance, price (asc/desc), rating, newest. Sort persists when filters change.</li>
-          <li><strong>URL state:</strong> All search parameters (query, filters, sort, page) encoded in the URL. Sharing the URL reproduces the exact search state.</li>
-          <li><strong>Pagination:</strong> Cursor-based pagination for large result sets. "Load more" button or infinite scroll.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Autocomplete latency:</strong> P99 &lt; 100ms. Served from a warm, in-memory prefix index (not a full Elasticsearch query per keystroke).</li>
-          <li><strong>Search latency:</strong> P99 &lt; 500ms for the initial results page. Facet counts and results returned in a single response (not separate requests).</li>
-          <li><strong>Relevance:</strong> The first result for a brand-name query should be the brand's flagship product, not a random item that mentions the brand name in its description.</li>
-          <li><strong>Scale:</strong> Handle 10,000 concurrent search sessions without degradation. Elasticsearch shard configuration and caching strategy must be tuned for this load.</li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Two Query Paths</h3>
+        <p>
+          Autocomplete and submitted search should be separate paths. Autocomplete handles partial input and returns a
+          small suggestion list from a prefix index, popularity table, or search suggest API. Submitted search executes
+          the full query with filters, sorts, aggregations, pagination, and relevance logic. Combining both paths into
+          one heavy search request per keystroke creates avoidable latency and backend load.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Facets and Filters</h3>
+        <p>
+          Filters constrain results; facets explain available refinements and counts. A selected brand filter should
+          filter the result list, but the brand facet itself may need counts that let the user switch to another brand.
+          This creates subtle query-construction requirements: per-facet count context can differ from the final result
+          context.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">URL as Search State</h3>
+        <p>
+          Query text, selected filters, sort, page cursor, and view mode should be encoded in the URL. This makes search
+          bookmarkable, shareable, restorable on reload, and compatible with browser back/forward. The URL should be a
+          canonical representation, not a lossy copy of local component state.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Relevance and Recovery</h3>
+        <p>
+          Search relevance combines text matching, field boosts, freshness, popularity, personalization, inventory,
+          quality, and business rules. When results are empty or poor, the system should attempt typo tolerance,
+          synonyms, relaxed filters, related queries, or category suggestions while clearly explaining what changed.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The search system has two distinct query paths. The autocomplete path handles keystroke-by-keystroke suggestions: the client sends the partial query to the Suggest API, which queries a prefix-indexed Redis sorted set or an Elasticsearch suggest endpoint, and returns results in under 50ms. The search path handles the submitted query: the client sends the full query plus all active filters to the Search API, which builds an Elasticsearch bool query combining the full-text match clause with the filter clauses, executes aggregations for facet counts, and returns results plus facet data in a single response.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The URL is the single source of truth for search state. The frontend reads the search state from the URL on mount, renders accordingly, and updates the URL (via history.pushState, no page reload) whenever the state changes. This makes every search state bookmarkable and shareable. Deep linking works natively: sending a URL with ?q=running+shoes&brand=Nike&size=10&sort=price-asc reproduces the exact filtered search state.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/search-ui-with-autocomplete-filters-and-facets-architecture.svg"
-          alt="Search UI architecture showing two query paths: autocomplete path (keystroke → debounce → Suggest API → Redis prefix index → suggestions dropdown) and search path (submit → Search API → Elasticsearch bool query with filter clauses and aggregations → results + facet counts). URL state management, facet panel, result list, and pagination components shown."
-          caption="Search architecture: separate autocomplete and search paths, Elasticsearch faceted aggregations, URL-driven state management"
+          alt="Search UI architecture with separate autocomplete and submitted search paths, URL state, facet panel, search API, suggestion API, Elasticsearch, Redis prefix index, result list, and pagination"
+          caption="Architecture: autocomplete stays lightweight, submitted search builds full relevance and facet queries, and URL state drives the UI."
         />
+        <p>
+          The client owns query composition and state transitions. The search box emits debounced autocomplete requests
+          for partial text. Selecting a suggestion or pressing Enter updates the URL and triggers the submitted search
+          path. Filter changes, sort changes, and pagination also update the URL first, then fetch results for the new
+          canonical state.
+        </p>
+        <p>
+          The Suggest API reads from a precomputed suggestion corpus built from search logs, item names, categories,
+          synonyms, and editorial boosts. The Search API translates URL state into a backend query: full-text matching
+          across fields, filter clauses for attributes, range filters, sort rules, aggregation requests for facets, and
+          pagination cursor or search-after values.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/core-product-systems/search-ui-with-autocomplete-filters-and-facets-workflow.svg"
+          alt="Search workflow showing keystroke debounce, request cancellation, suggestion selection, URL update, search API request, results and facets response, and analytics logging"
+          caption="Workflow: debounce partial input, cancel stale autocomplete requests, update URL for committed state, fetch results and facets together, and log impressions."
+        />
+        <p>
+          The response should return results, facets, total estimate, cursor, applied filters, warnings, spelling
+          correction, relaxation details, and request identifiers. The client renders filter chips, facet counts, result
+          cards, loading states, and no-results recovery. Analytics logs impressions and interactions with the query
+          version so relevance teams can tune ranking and suggestion quality.
+        </p>
+        <p>
+          Stale response protection is mandatory. If the user types quickly or changes filters while prior requests are
+          in flight, the UI should cancel old requests when possible and ignore late responses whose request id no
+          longer matches the canonical URL state. Otherwise older search results can overwrite newer state and create
+          confusing or incorrect facets.
+        </p>
+        <p>
+          Permission and availability filtering should happen before snippets, counts, and suggestions leave the
+          backend. In enterprise search, even a facet count can reveal that a confidential document exists. In commerce,
+          availability, region, seller eligibility, and compliance restrictions may remove results that match text
+          relevance. The UI should not display a result, suggestion, or count unless the current viewer is allowed to
+          know it exists.
+        </p>
+        <p>
+          Index freshness needs a product contract. New documents, deleted listings, changed prices, and permission
+          revocations have different freshness requirements. A stale product description is annoying; a deleted
+          private document appearing in search is a security incident. The search API should expose freshness warnings
+          or fallback behavior when the index is behind for critical mutation types.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Autocomplete Architecture</h3>
-        <HighlightBlock as="p" tier="important">Autocomplete must be fast—under 100ms end-to-end—which rules out a full Elasticsearch query per keystroke at any meaningful scale. The suggestion corpus is a precomputed set of (query text, score, type) tuples, where score reflects historical query frequency and click-through rate, and type distinguishes between search queries, product names, and categories. This corpus is indexed into a Redis sorted set keyed by prefix: every prefix of every suggestion is a key, with the suggestions as members sorted by score. A query for "run" performs ZREVRANGEBYSCORE prefix:run 0 +inf LIMIT 0 8, returning the top 8 suggestions by score.</HighlightBlock>
-        <p>The suggestion corpus is rebuilt nightly from search logs (extracting the most popular queries from the past 30 days) and from the product catalog (indexing product names and category names as suggestions). New products and trending queries are reflected in the next nightly rebuild; autocomplete does not need real-time updates because the suggestions are popularity-based, not real-time. The corpus build is a batch job (Spark or a simple Python script) that writes the new Redis sorted sets and performs an atomic rename to swap old and new data with zero downtime.</p>
-        <HighlightBlock as="p" tier="important">The client debounces autocomplete requests to 150ms after the last keystroke. This means a user typing "running" at normal speed generates 1–2 autocomplete requests (not 7, one per character). The debounce timer is reset on each keystroke. The autocomplete dropdown is dismissed when the user submits the search (presses Enter or clicks a suggestion) and when they click outside the input. Each keystroke cancels the previous in-flight autocomplete request (using AbortController) to prevent a fast typer from seeing suggestions for an earlier partial query after a later request has already returned.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Elasticsearch Query Construction</h3>
-        <HighlightBlock as="p" tier="important">The Search API translates the URL parameters into an Elasticsearch bool query. The must clause contains the full-text match (multi_match across title, description, brand, with title having 3× boost). The filter clause (does not affect relevance score, cached by Elasticsearch for performance) contains all active filter conditions: term filters for discrete values (brand, category, size), range filters for price and rating. Filtering in the filter context rather than the must context means Elasticsearch can cache the filter results independently of the text query—a user filtering by Brand: Nike reuses the cached Nike filter across all queries, dramatically reducing per-query computation.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Facet counts are computed via Elasticsearch aggregations in the same request as the results. A terms aggregation on the brand field returns all distinct brands in the current filtered result set along with their document counts. A range aggregation on price returns count by price bucket. This single round-trip (results + all facet counts in one Elasticsearch query) is what makes faceted search feel responsive. Splitting into separate requests for results and facets would double the latency and introduce count inconsistencies between the two responses.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The critical nuance: when the user applies a Brand filter (Brand: Nike), the facet counts for all other facets (Category, Size, Price) should reflect the filtered result set (only Nike products). But the Brand facet itself should show counts for all brands in the unfiltered result set—otherwise the user cannot see that there are other brands available to switch to. This requires a global aggregation (computed without the brand filter) for the brand facet, alongside filtered aggregations for all other facets. Elasticsearch supports this via filter aggregations: post_filter applies the user's selected filters to the result documents but not to the top-level aggregations, then filter aggregations scope each facet's counts to the appropriate filter context.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">URL State Management</h3>
-        <p>The search state is serialized into URL query parameters: ?q=running+shoes&brand=Nike&brand=Adidas&size=10&priceMin=50&priceMax=150&sort=price-asc&page=2. Multi-value filters (multiple brands selected) use repeated parameter names. The frontend parses these on mount using the URLSearchParams API and initializes the search state. When state changes (filter added or removed, sort changed, next page loaded), the URL is updated via history.pushState(), which does not trigger a page reload but adds a browser history entry, enabling the back button to correctly navigate back to the previous search state.</p>
-        <HighlightBlock as="p" tier="important">URL state management must handle invalid parameters gracefully. If the URL contains ?size=99 for a product catalog that has no size 99 items, the search executes with size=99 and returns zero results for the size facet, showing an "invalid filter" message. The filter is not silently dropped (which would confuse the user who shared a link expecting specific filters) but is displayed as an inactive filter chip with an error state: "Size 99 (no results available)." The user can remove the filter and continue searching.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Facet Panel UX</h3>
-        <HighlightBlock as="p" tier="important">The facet panel displays each filterable attribute as a group of checkboxes with result counts. Counts update every time the search executes with a new filter. Selecting a facet value executes a new search immediately (not a "Apply filters" button): the URL is updated, the new search fires, and results and updated facet counts return within 500ms. This instant-feedback model (used by Amazon, Zalando, ASOS) is consistently shown in conversion research to outperform "select multiple filters, click Apply."</HighlightBlock>
-        <p>Long facet lists (e.g., 50 available brands) show the top 5–8 values with a "Show more" expander. The visible values are the most popular in the current result set (highest count). Showing more values expands the list in-place, not in a modal or new page. The search box within the facet panel (for facet search: "type to filter brands") is useful for long facet lists and does not trigger a new search—it filters the displayed facet values client-side against the already-fetched facet count list.</p>
-        <HighlightBlock as="p" tier="important">Price range filtering uses a dual-thumb range slider. The slider's drag events update the URL (via pushState, with a 300ms debounce so rapid dragging doesn't fire a search per pixel). A text input alongside the slider shows the current min/max and allows precise entry. The search fires on slider release or on input blur/Enter, not on every slider tick. This matches the behavior of Booking.com and Airbnb's price filters, which feel responsive without hammering the search backend on every drag increment.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Relevance Tuning and Boosting</h3>
-        <p>Default BM25 relevance ranks by term frequency, which works well for informational queries but poorly for navigational and transactional queries in e-commerce. A user searching "Nike Air Max 90" expects the exact product as the first result, not a blog post that happens to mention all three terms. The Search API applies function score boosting on top of text relevance: products with higher historical click-through rate from search (a signal that users found them relevant) get a relevance boost; exact title match gets a higher boost than partial title match; in-stock products are boosted above out-of-stock products; products with higher rating get a small boost. These boosts are configured as weights in the Elasticsearch function_score query and are tuned through offline A/B analysis of click-through rate versus result position.</p>
-        <p>Typo tolerance is handled by Elasticsearch's fuzziness parameter on the multi_match query. fuzziness: AUTO applies 0 edits for 1–2 character terms (too short to fuzzy match sensibly), 1 edit for 3–5 character terms, and 2 edits for longer terms. This corrects "Nikee" to "Nike" and "runnig" to "running" without generating false matches for short terms. Synonym handling (sneakers → shoes, trainer → running shoe) is configured as a synonym filter in the Elasticsearch index settings, so a search for "sneakers" matches documents that contain "shoes" without the user needing to know the indexing terminology.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">No-Results and Partial-Match Handling</h3>
-        <p>When a search returns zero results, the UI should not show an empty state and stop. The search service applies a cascade: first, try the exact query with all filters. If zero results, try the query without the most recently applied filter and show "No results found with [filter]. Showing results for [query] without this filter." If still zero results, try the query with fuzziness increased and synonyms expanded. If still zero results, suggest related searches or popular products in the category the user was browsing. The cascade logic is server-side; the client receives either results or a structured no-results response with alternative suggestions.</p>
-      </section>
-
-      <section>
+        <h2>Trade offs &amp; Comparison</h2>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/search-ui-with-autocomplete-filters-and-facets-performance.svg"
-          alt="Search performance architecture showing Elasticsearch filter context caching for facets, post_filter for result-only filtering, function_score relevance boosting layers, prefix-indexed Redis autocomplete corpus, request deduplication and AbortController for in-flight cancellation, and URL state serialization for deep linking"
-          caption="Search performance: filter context caching, post_filter for facet independence, function_score boosting, Redis autocomplete, and URL-driven deep linking"
+          alt="Search performance trade-offs showing Redis autocomplete, Elasticsearch filter cache, post filter, function score, request cancellation, URL state, and facet aggregation"
+          caption="Performance trade-offs: prefix suggestions, filter-context caching, facet aggregation semantics, stale request handling, and relevance boosts."
         />
+        <p>
+          Client-side filtering feels instant for small datasets, but it is incorrect for large catalogs because the
+          client only has a page or subset of results. Server-side filtering is required for correct result sets,
+          accurate counts, ranking, pagination, and policy filtering. The frontend can optimistically update selected
+          chips, but the authoritative results and facets must come from the server.
+        </p>
+        <p>
+          Elasticsearch/OpenSearch gives deep control over mappings, analyzers, relevance, aggregations, and cost, but
+          requires tuning. Managed search services can offer excellent defaults for autocomplete and facets with less
+          operational burden, but cost and custom ranking constraints can become limiting at high query volume.
+        </p>
+        <p>
+          Exact facet counts can be expensive at very large scale. Approximate counts are often acceptable for product
+          discovery but not for compliance or financial reporting. Interview answers should state whether counts are
+          exact, approximate, cached, or sampled, and what the UI promises to users.
+        </p>
+        <p>
+          Personalization improves relevance, but it can make search feel inconsistent and harder to debug. The design
+          should preserve a clear base relevance layer, log personalization features, and provide explainable ranking
+          signals for internal debugging. For regulated or enterprise search, personalization may need to be disabled or
+          constrained by policy.
+        </p>
+        <p>
+          Immediate filter application improves discovery speed, but every filter click can trigger a backend query.
+          Debounce noisy controls such as sliders, batch rapid changes where appropriate, and cancel stale requests.
+          Do not delay simple checkbox filters behind an Apply button unless the domain has very expensive queries.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Principal-level decision frame</h3>
+        <p>
+          The central decision is which parts of search must be exact and which can be approximate. Product discovery
+          can often tolerate approximate total counts, sampled facets, and relaxed spell correction. Legal discovery,
+          audit search, and permissioned document search may require exact filtering, strict authorization before
+          snippets, and no leakage through facet counts. A principal answer should state the product's correctness
+          contract before choosing Elasticsearch-style approximations or managed search shortcuts.
+        </p>
+        <p>
+          Relevance work should be treated as an operating loop, not a one-time query design. Query logs, no-result
+          rates, click position, refinements, filter removals, conversion, and manual judgments feed relevance tuning.
+          The UI and API should preserve request identifiers, query rewrites, relaxation decisions, and experiment
+          versions so relevance regressions can be explained. Without that observability, search quality becomes a
+          collection of subjective complaints instead of a debuggable system.
+        </p>
+        <p>
+          Query personalization has a privacy trade-off. Personalization can improve ranking by using role, locale,
+          prior clicks, purchase history, or team context, but it can also make results hard to explain and create
+          filter bubbles. A principal design provides a base ranking path, logs personalization features for debugging,
+          supports opt-out or policy-off modes, and avoids using sensitive attributes unless the product has a clear
+          reason and governance model.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Client-side filter application versus server-side: some search UIs apply filters client-side on already-fetched results for instant feedback, then re-query the server for the full filtered result set. This gives the illusion of instant filtering but shows incorrect facet counts until the server responds. At scale, this approach is acceptable only for small result sets (&lt;1000 items) where the client can load all results upfront. For large catalogs (millions of products), every filter change must be a server round-trip to get correct counts and the correct full result set—client-side filtering only ever produces a subset of the true results.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Elasticsearch versus Algolia: Algolia is a managed search service with excellent autocomplete, typo tolerance, and faceting out of the box, at significantly higher cost per query. Self-hosted Elasticsearch requires tuning (shard sizing, index mappings, relevance configuration) but has no per-query cost. For large query volumes (hundreds of millions of searches per month), the cost difference becomes significant. Algolia is the right choice for getting production search quality quickly; Elasticsearch is the right choice for long-term at scale operation with a team capable of tuning it.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Facet count accuracy: Elasticsearch aggregations on large indices can return approximate facet counts when the index has many shards (the shard-level top-N aggregation truncates before merging, losing some counts). For product catalogs with tens of millions of items across many shards, the facet counts shown in the UI may be off by small amounts. This is acceptable for display purposes but should be documented. For applications where exact counts are required (compliance reporting, financial data), Elasticsearch is not the right tool—a traditional relational database with aggregation queries (slower but exact) is more appropriate.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Treat URL parsing and serialization as a typed boundary. Multi-value filters, numeric ranges, sort, cursor,
+          and query text should round-trip consistently. Invalid URL parameters should be visible or safely ignored
+          according to product semantics, not silently corrupt state.
+        </p>
+        <p>
+          Use debouncing, request cancellation, and response versioning for autocomplete. A slow response for an older
+          prefix must not overwrite suggestions for a newer prefix. Cache recent prefixes locally for short periods and
+          rate-limit abusive or automated typing patterns.
+        </p>
+        <p>
+          Return results and facet counts in one response where possible. Splitting them into separate requests can
+          create inconsistent UI states and double latency. If the system must split them, include shared query version
+          identifiers so the frontend can reject mismatched data.
+        </p>
+        <p>
+          Invest in zero-result recovery. Try spelling correction, synonyms, relaxing the last filter, related searches,
+          and popular items from the inferred category. Explain the recovery path so users understand whether they are
+          seeing exact results or relaxed alternatives.
+        </p>
+        <p>
+          Instrument search carefully: query latency, suggestion latency, abandonment, no-result rate, zero-result
+          recovery usage, facet click-through, filter removal, result click position, conversion, backend timeout, and
+          stale response rejection.
+        </p>
+        <p>
+          Treat relevance configuration as versioned production data. Analyzer changes, synonym updates, field boosts,
+          personalization weights, and relaxation rules should be rolled out with shadow evaluation or limited cohorts.
+          A bad synonym file or boost rule can silently degrade millions of queries, so the system should support
+          rollback, query replay, and segment-level monitoring before broad release.
+        </p>
+        <p>
+          Make search explainable for internal operators. The user-facing UI can stay simple, but support and relevance
+          teams need a diagnostic view showing parsed query, applied filters, spelling correction, synonym expansion,
+          ranking features, permission filters, backend shard timing, and cache status. This shortens the path from
+          "search is bad" to a concrete fix.
+        </p>
+        <p>
+          Search relevance needs a controlled experimentation loop. Query suggestions, ranking features, facet ordering, typo correction, and personalization all affect user trust. The system should support offline evaluation sets, online A/B tests, guardrail metrics, and rollback for ranking changes. Principal-level answers should explain how a bad ranking model or synonym expansion is detected before it silently degrades revenue, safety, or support workflows.
+        </p>
+        <p>
+          Permission filtering must happen before counts, snippets, and suggestions are exposed. A result item is not the only leakage path; autocomplete can reveal private names, facet counts can reveal hidden records, and snippets can expose fields the user cannot open. The query layer should apply authorization to every search-derived surface, and cache keys must include effective permission scope.
+        </p>
+        <p>
+          Index freshness should be part of the product contract. Newly created documents, removed products, permission changes, and inventory updates may not appear instantly in every shard or suggestion index. The UI and diagnostics should distinguish indexing lag from no-result behavior, and critical permission revocations should have a faster invalidation path than ordinary relevance updates.
+        </p>
+        <p>
+          Facet semantics should be documented and consistent. Counts can represent the current filtered result, the result set with that facet removed, or the global corpus. Each choice is valid for different products, but mixing them across facets makes the UI impossible to reason about and undermines user trust.
+        </p>
+        <p>
+          Search analytics should respect privacy. Raw queries can contain names, secrets, account ids, or health and financial information. The system should redact, aggregate, and retain query logs according to data classification while still preserving enough signal for relevance tuning.
+        </p>
+        <p>
+          Operational dashboards should track query latency, zero-result rate, click success, reformulation rate, index lag, and permission-filter drop rate by segment.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A production search UI with autocomplete, filters, and facets separates the autocomplete path (150ms debounce → Suggest API → Redis prefix index → suggestions) from the search path (submit → Search API → Elasticsearch bool query with filter clauses and aggregations → results + facet counts). URL query parameters are the single source of truth for search state (bookmarkable, shareable, back-button compatible). Facet filtering uses Elasticsearch's post_filter and filter aggregations to show correct per-facet counts independently of other selected facets. Relevance tuning combines BM25 text relevance with function_score boosting for click-through rate, exact title match, stock status, and rating. Autocomplete is served from a pre-built Redis prefix index (not live Elasticsearch queries) with nightly corpus rebuilds from search logs and the product catalog. The zero-results cascade (retry without most recent filter → increase fuzziness → suggest alternatives) ensures the user always receives some useful response.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common mistake is firing a full search request on every keystroke. This increases backend load, creates
+          flickering UI, and returns expensive results users never inspect. Partial input should use the lightweight
+          suggestion path.
+        </p>
+        <p>
+          Another pitfall is letting local state diverge from the URL. Back button, reload, shared links, and analytics
+          become unreliable. The URL should be the committed state, while local state can hold transient typing and
+          loading details.
+        </p>
+        <p>
+          Facet counts are often implemented incorrectly. Counts should match clear semantics: current result set,
+          result set excluding the facet's own filter, or global corpus. Ambiguous counts confuse users and make
+          debugging difficult.
+        </p>
+        <p>
+          Ignoring stale autocomplete responses creates a poor experience: suggestions for an older prefix can appear
+          after the user has typed more characters. Use cancellation and monotonic request identifiers.
+        </p>
+        <p>
+          Finally, no-result pages should not dead-end. They should preserve the query, show active filters, provide
+          recovery suggestions, and make it easy to remove the most restrictive filter.
+        </p>
+        <p>
+          A deeper pitfall is leaking restricted information through search metadata. Even if result documents are
+          permission-filtered, facet counts, autocomplete suggestions, spelling corrections, and snippets can reveal
+          the existence of private records. Permissioned search must filter all derived metadata, not only the final
+          result list.
+        </p>
+        <p>
+          Teams often optimize only for head queries and ignore tail behavior. A large product has misspellings, legacy names, SKU aliases, error codes, acronyms, and language-specific terms. Without query analytics, zero-result tracking, synonym governance, and curated redirects, the search UI feels impressive in demos but fails real users who are trying to recover from old terminology or incomplete memory.
+        </p>
+        <p>
+          Another pitfall is letting personalization make search unexplainable. Personalized ranking can improve click-through, but it can also hide canonical results, create unfair exposure, and make support reproduction difficult. A mature design offers debuggable ranking reasons, tenant-level controls, and fallback neutral ranking for regulated or enterprise search.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          E-commerce search uses autocomplete, facets, inventory-aware ranking, price ranges, promotions, and
+          conversion analytics. Facet correctness and relevance directly affect revenue.
+        </p>
+        <p>
+          Document and knowledge-base search prioritizes permissions, freshness, exact title matches, snippets,
+          synonym expansion, and source filters. Results must not leak counts for documents the user cannot access.
+        </p>
+        <p>
+          Observability and admin search often filter logs, traces, users, audits, or transactions. These domains need
+          precise URL state, time ranges, saved views, and exactness around security and compliance filters.
+        </p>
+        <p>
+          Marketplace and travel search combine text, geo, availability, price, ratings, personalization, sponsored
+          placements, and dynamic inventory, so ranking and filtering must account for rapidly changing supply.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          Why separate autocomplete from submitted search?
+        </h3>
+        <p>
+          Autocomplete is latency-sensitive and works on partial input, so it should use a small suggestion corpus and
+          return a few options quickly. Submitted search needs full relevance, filters, aggregations, pagination, and
+          analytics. Combining them makes every keystroke an expensive full search and creates avoidable backend load.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How should facet counts work when a facet is already selected?
+        </h3>
+        <p>
+          The semantics must be explicit. Usually other facets reflect the currently filtered result set, while the
+          selected facet group may show counts excluding its own filter so the user can switch values. The backend can
+          compute this with per-facet aggregation contexts rather than one naive aggregation over the final result set.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you make search state shareable and back-button friendly?
+        </h3>
+        <p>
+          Encode committed state in the URL: query, filters, ranges, sort, cursor, and view options. Parse the URL on
+          mount, update it on committed changes, and use browser history intentionally. Keep transient input state
+          separate so typing in the box does not commit a search until the user submits or selects a suggestion.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you prevent stale autocomplete results?
+        </h3>
+        <p>
+          Debounce keystrokes, cancel in-flight requests when the prefix changes, and attach a monotonic request
+          version to responses. The UI should only render suggestions for the latest known prefix. Short-lived prefix
+          caching can improve responsiveness without sacrificing correctness.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          What should happen when a search returns no results?
+        </h3>
+        <p>
+          Preserve the user's query and filters, then offer structured recovery: remove or relax the most recent
+          filter, apply spelling correction, expand synonyms, suggest related queries, or show popular items from the
+          inferred category. The UI should explain whether displayed alternatives are exact or relaxed.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">
+          How do you tune relevance?
+        </h3>
+        <p>
+          Start with field boosts and analyzers, then add business and behavioral signals such as exact title match,
+          popularity, freshness, stock status, ratings, personalization, and click-through from previous searches.
+          Evaluate with offline judgments and online experiments, while watching no-result rate, conversion, latency,
+          and long-tail quality.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html" target="_blank" rel="noreferrer">
+              Elasticsearch: Boolean query
+            </a>
+            , combining query and filter clauses.
+          </li>
+          <li>
+            <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html" target="_blank" rel="noreferrer">
+              Elasticsearch: Aggregations
+            </a>
+            , facet and count computation.
+          </li>
+          <li>
+            <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html" target="_blank" rel="noreferrer">
+              Elasticsearch: Function score query
+            </a>
+            , relevance boosting with business and behavioral signals.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams" target="_blank" rel="noreferrer">
+              MDN: URLSearchParams
+            </a>
+            , URL query state parsing and serialization.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">
+              MDN: AbortController
+            </a>
+            , canceling stale autocomplete and search requests.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

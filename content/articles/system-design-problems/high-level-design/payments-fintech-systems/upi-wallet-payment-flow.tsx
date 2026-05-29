@@ -7,84 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-upi-wallet-payment-flow",
-  title: "Design a UPI / Wallet Payment Flow (India-Specific Scale)",
-  description:
-    "Architecture for a UPI and digital wallet payment flow at India-scale: UPI collect flow vs. UPI intent flow, VPA (Virtual Payment Address) resolution and validation, UPI PIN entry via a PCI-compliant SDK, NPCI switch integration and response handling, wallet top-up via net banking and UPI, wallet balance management with distributed ledger, P2P and P2M payment flows, payment link generation and deep link handling, failure recovery and refund automation, and scale considerations for 300M daily transactions.",
+  title: "Design a UPI/Wallet Payment Flow",
+  description: "Principal-level payments and fintech system design covering idempotency, ledger correctness, reconciliation, provider failures, fraud, privacy, compliance, and operations.",
   category: "high-level-design",
   subcategory: "payments-fintech-systems",
   slug: "upi-wallet-payment-flow",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "upi", "wallet", "npci", "india-payments", "p2p", "p2m", "vpa"],
-  relatedTopics: ["payment-gateway-integration-ui", "transaction-history-reconciliation-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "payments", "fintech", "ledger", "fraud", "reconciliation"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a UPI/Wallet Payment Flow is a correctness-critical financial system. A principal-ready answer treats a UPI and wallet payment flow as an audited state machine around money movement, risk, reconciliation, and user trust, not as a payment button or table UI.",
+  "The design must separate user-facing status from authoritative financial truth. Providers, banks, wallets, ledgers, risk systems, and webhooks can disagree temporarily. The UI should help users and operators understand pending, succeeded, failed, reversed, disputed, and reconciled states without creating duplicate actions.",
+  "Financial systems require idempotency, durable state transitions, auditability, privacy, compliance, fraud controls, and operational repair. Ambiguous outcomes are normal: a provider times out after charging, a bank callback arrives late, a webhook retries, or a user closes the browser after authorization.",
+  "The architecture should define what is authoritative. The product ledger should be the internal source of financial truth, provider status is external evidence, and analytics dashboards are derived views. Reconciliation exists because these sources can drift.",
+  "A staff/principal answer should explain failure handling, rollback limits, and support tooling. Money movement is often irreversible or externally controlled, so rollback may mean compensating transactions, refunds, holds, disputes, or manual review rather than deleting state."
+];
+const concepts = [
+  "The first concept is payment intent. payment intent captures actor, amount, currency, merchant, idempotency key, risk context, provider, expiry, and state before external payment work begins.",
+  "The second concept is ledger correctness. ledger entry should use append-only entries or clearly audited state transitions. Mutable balances without event history are not defensible in a principal interview.",
+  "The third concept is idempotency across boundaries. User retries, browser refreshes, provider retries, bank callbacks, and webhook replay must converge on one logical payment, refund, or risk decision.",
+  "The fourth concept is reconciliation. Provider statements, bank settlement files, internal ledger entries, refunds, chargebacks, and adjustments need scheduled comparison and exception workflows.",
+  "The fifth concept is risk and compliance. Fraud scoring, velocity checks, sanctions or policy rules, PCI boundaries, PII minimization, and audit trails are product architecture concerns.",
+  "The sixth concept is observability. Track authorization rate, pending duration, webhook lag, provider error rate, duplicate suppression, reconciliation breaks, refund latency, chargeback rate, fraud precision, and manual review SLA."
+];
+const architecture = [
+  "The architecture contains payment intent, bank/wallet rail, status poller, ledger entry, receipt service. The user starts an intent. The payment or risk adapter calls external rails. The ledger records internal state. Webhook or callback processors update evidence. Reconciliation compares internal and external truth. The UI renders state and safe next actions.",
+  "Every externally visible operation should be idempotent. Create payment, confirm, cancel, refund, retry, risk decision, and manual adjustment all need stable keys and persisted outcomes. The user should not be asked to pay again when the backend is merely uncertain.",
+  "The frontend should show truthful financial states: pending authorization, requires action, processing, succeeded, failed retryable, failed permanent, refunded, disputed, under review, or reconciled. Generic spinners create duplicate payments and support tickets.",
+  "Risk decisions should be asynchronous when needed. Low-risk payments can proceed immediately; medium-risk payments may require step-up or 3DS; high-risk cases can be held for review. The UI should preserve the user's intent and explain the next step safely.",
+  "Reconciliation and support tools are part of the architecture. Operators need to inspect intent, provider request, provider response, webhook history, ledger entries, settlement status, refund state, dispute state, and user-visible notifications.",
+  "Security boundaries matter. Card data should stay with provider-hosted fields or tokenization. Sensitive financial metadata should be redacted from logs, analytics, support views, and client-side telemetry."
+];
+const tradeoffs = [
+  "Synchronous confirmation gives a clean UX but fails when external rails are slow or ambiguous. Asynchronous confirmation is operationally safer but requires pending states, polling, notifications, and support visibility.",
+  "Provider abstraction reduces vendor lock-in and centralizes idempotency, webhooks, and error mapping. The downside is that providers differ in subtle state semantics, so the abstraction must not erase important differences.",
+  "Failing closed protects money and compliance but can reduce conversion during provider issues. Failing open is rarely acceptable for financial correctness. A mature system degrades noncritical analytics or recommendations, but not ledger writes or risk enforcement.",
+  "Aggressive fraud blocking reduces losses but increases false positives and user friction. Risk-based review, step-up authentication, and appeal workflows are better than one global threshold.",
+  "Real-time reconciliation improves operational awareness but costs more and can create noise from transient provider delays. Batch reconciliation is cheaper but detects issues later. Critical rails may need both.",
+  "Detailed financial logs help forensics but create privacy and compliance risk. Logs should capture identifiers, state, and evidence references without raw card data, secrets, or excessive personal data."
+];
+const practices = [
+  "Model payment, refund, adjustment, dispute, and risk review as explicit state machines with immutable transition history.",
+  "Use deterministic idempotency keys and store outcomes for the provider retry window. Duplicate callback and retry handling should be boring and testable.",
+  "Make the ledger append-only or audit-preserving. Corrections should be compensating entries, not silent mutation.",
+  "Verify webhooks and callbacks. Treat external provider events as evidence that must be authenticated, ordered, deduplicated, and reconciled.",
+  "Separate PCI and sensitive data boundaries. Use hosted fields or tokenization; never log raw PAN, CVV, payment secrets, wallet tokens, or full bank identifiers.",
+  "Build operator workflows for ambiguous payments, stuck pending states, refund failures, reconciliation breaks, chargebacks, and fraud review.",
+  "Instrument by provider, rail, region, currency, app version, risk bucket, and payment method. Average success rate hides rail-specific incidents."
+];
+const pitfalls = [
+  "pending ambiguity is the classic fintech failure. It happens when retries are not idempotent or when browser callbacks are treated as the only completion path.",
+  "bank outage should not create duplicate payment attempts. The UI should show pending or uncertain state and rely on authoritative polling or webhook reconciliation.",
+  "duplicate callback needs explicit state handling. Authentication, provider action, or risk review can pause the payment without losing the user intent.",
+  "user retry occurs when callbacks and retries are not deduped against stable intent and provider identifiers.",
+  "Another pitfall is building transaction history directly from provider events. Users and finance teams need the internal ledger view plus reconciliation status, not raw provider status alone.",
+  "Teams also forget support and compliance. If support cannot reconstruct a transaction safely, engineering becomes the manual reconciliation system."
+];
+const useCases = [
+  "UPI collect request requires idempotent intent, external rail handling, ledger correctness, risk controls, user-visible status, and reconciliation.",
+  "wallet top-up requires idempotent intent, external rail handling, ledger correctness, risk controls, user-visible status, and reconciliation.",
+  "merchant QR payment requires idempotent intent, external rail handling, ledger correctness, risk controls, user-visible status, and reconciliation.",
+  "During provider outage, the system should stop unsafe retries, preserve pending intent, show truthful status, route to fallback rails if configured, and reconcile late callbacks.",
+  "During fraud spike, the system should raise risk thresholds, route cases to review, step up authentication, and monitor false-positive impact.",
+  "During reconciliation breaks, finance operations should see the ledger entry, provider evidence, settlement file, adjustment history, and recommended next action."
+];
+const questions = [
+  {
+    "question": "How would you design a UPI and wallet payment flow end to end?",
+    "answer": "I would create a durable intent, call external rails through provider adapters, persist ledger-impacting state with idempotency, process verified webhooks/callbacks, reconcile provider and internal records, and expose safe user/operator states. The UI never assumes success from a browser callback alone. Support and finance operations can inspect intent, provider evidence, ledger entries, and reconciliation status."
+  },
+  {
+    "question": "Why this architecture over calling the provider directly from the UI?",
+    "answer": "Direct provider calls from the UI cannot safely own idempotency, risk checks, ledger writes, webhook verification, reconciliation, or support history. Provider-hosted fields are useful for PCI scope, but financial state transitions need backend ownership and auditability."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are pending ambiguity, bank outage, duplicate callback, user retry, plus webhook storms, provider-specific outages, reconciliation backlog, chargeback spikes, fraud adaptation, and support overload. Prevention requires idempotency, state machines, provider isolation, append-only ledger, reconciliation workflows, and rail-specific observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Ledger-impacting state needs strong internal consistency and audited transitions. External provider state can be eventually consistent and must be reconciled. User-visible history can lag slightly if it exposes pending/reconciliation state. Analytics and dashboards are derived and should not be treated as financial truth."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with pending states, polling, verified webhooks, retries with idempotency, and reconciliation. Rollback often means refund, reversal, compensating entry, or manual adjustment. Abuse is controlled with risk scoring, velocity rules, step-up, and review. Privacy requires tokenization, redacted logs, and restricted support views. Cost is controlled by provider routing, batching, and review thresholds. Observability tracks authorization, pending, webhook, reconciliation, refund, and fraud metrics."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend backend-owned state and idempotency because duplicate or lost money movement is unacceptable. I would accept asynchronous pending UX because external rails are not always synchronous. I would explain that fintech rollback is compensating action, not deletion, and that the ledger is more important than a perfectly smooth UI."
+  }
+];
+const references = [
+  {
+    "label": "Stripe documentation: PaymentIntents",
+    "href": "https://docs.stripe.com/payments/payment-intents"
+  },
+  {
+    "label": "PCI Security Standards Council",
+    "href": "https://www.pcisecuritystandards.org/"
+  },
+  {
+    "label": "RBI UPI product statistics and resources",
+    "href": "https://www.npci.org.in/what-we-do/upi/product-statistics"
+  },
+  {
+    "label": "OWASP Authentication Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function UpiWalletPaymentFlowArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">UPI (Unified Payments Interface) is India's real-time payment rail operated by NPCI (National Payments Corporation of India). It processes over 10 billion transactions per month, with peaks during festivals and salary credit days exceeding 500 transactions per second per bank. A UPI-based payment app (like PhonePe, Google Pay, or Paytm) is both a consumer app and a regulated financial system — it must meet NPCI's technical specifications, RBI's security guidelines, and India's data localization requirements (all payment data must be stored on servers in India).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The key distinction from card payments: UPI payments are bank-to-bank transfers authenticated by the user's UPI PIN (a 4 or 6-digit PIN set with their bank, known only to the user). The money moves directly between bank accounts in real time — there is no intermediary holding the money (unlike a wallet top-up flow). The UPI app (third-party app or TPAP) is a facilitator — it initiates the payment on behalf of the user's bank but never holds the money. This creates a unique architecture: the app must integrate with the user's bank's UPI systems via the NPCI switch, handling bank-specific quirks, downtime, and error codes.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> UPI collect and intent flows, VPA resolution, NPCI switch integration, wallet top-up and balance management, P2P and P2M flows, payment links, failure recovery, and scale design. Not in scope: UPI autopay (recurring), credit on UPI, or cross-border UPI payments.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/upi-wallet-payment-flow.svg" alt="Design a UPI/Wallet Payment Flow architecture" caption="Architecture view: intent, provider adapter, risk, ledger, webhook, reconciliation, and support surfaces." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/upi-wallet-payment-flow-flow.svg" alt="Design a UPI/Wallet Payment Flow flow" caption="Flow view: create intent, authorize, handle pending, process callback, write ledger, reconcile, and notify." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/upi-wallet-payment-flow-operations.svg" alt="Design a UPI/Wallet Payment Flow operations" caption="Operations view: provider failures, fraud review, reconciliation breaks, refunds, disputes, and auditability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>UPI collect vs. intent flow:</strong> Two UPI payment initiation patterns: (1) Collect flow — the payee app sends a collect request to the payer's VPA (Virtual Payment Address). The payer sees a notification "John is requesting ₹500" and approves by entering their UPI PIN. Used for P2P payments. (2) Intent flow — the payer app generates a UPI payment URI (upi://pay?pa=merchant@bank&pn=MerchantName&am=500&cu=INR&tr=TxnRef) and deep-links to the user's preferred UPI app. The UPI app opens, pre-filled with the payment details, and the user enters their PIN. Used for P2M (peer-to-merchant) payments — the merchant generates the intent link. Intent flow works without the payer having the payee's VPA in their contact list.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>VPA resolution and validation:</strong> Before initiating a payment, the payer's app resolves the payee's VPA to a name (to confirm the right person is being paid). VPA resolution: POST to NPCI's VPA lookup API (via the bank's UPI system) returns &#123;name, maskedAccountNumber, bankName&#125;. This name is shown to the user: "Paying to: Ravi Kumar (HDFC Bank)." VPA validation: VPAs follow the format username@bankhandle (e.g., ravi@hdfcbank, merchant@oksbi). The app validates the format client-side before making the API call. If the VPA does not exist (bank returns error code "VPA not found"), the app shows: "UPI ID not found. Please check and try again." The resolution API is rate-limited (max 5 lookups per minute per device) to prevent enumeration attacks.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>NPCI switch integration and response handling:</strong> UPI payments flow through the NPCI switch: payer's UPI app → payer's bank → NPCI switch → payee's bank. The merchant's payment system receives the payment confirmation via a callback from NPCI (or the bank's UPI SDK). The callback contains: transaction reference ID, amount, payer VPA, payee VPA, and status (SUCCESS/FAILURE/PENDING). PENDING status means the debit from the payer has happened but the credit to the payee is not yet confirmed — this occurs during bank system downtime. PENDING must not be treated as SUCCESS — the merchant must wait for the NPCI callback or query the transaction status (GET /upi/v2/transactions/&#123;txnRef&#125;) periodically until it resolves. Standard SLA: UPI transactions resolve within 30 seconds; transactions pending beyond 30 minutes are automatically reversed by NPCI.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Wallet top-up and distributed balance management:</strong> A digital wallet (Paytm Wallet, PhonePe Wallet) holds a prepaid balance in a PPI (Prepaid Payment Instrument) license regulated by RBI. Top-up methods: UPI (user pays from bank account to wallet via UPI P2M), net banking (bank redirect + callback), and credit/debit card. The wallet balance is stored in a ledger: each top-up is a credit entry, each payment is a debit entry. The ledger uses double-entry bookkeeping: every transaction has a debit and a credit side, ensuring balance is always conserved. The balance is computed as: SELECT SUM(amount) FROM ledger WHERE account_id = ? and type = 'credit' minus SELECT SUM(amount) FROM ledger WHERE account_id = ? AND type = 'debit'. This is not done on every balance read — a materialized balance (cached in Redis, updated on every ledger write) serves read requests. Distributed ledger writes: for concurrent payment requests, an optimistic lock prevents overdraft: UPDATE wallet SET balance = balance - ? WHERE id = ? AND balance &gt;= ? (the WHERE clause checks the balance before deducting — if two concurrent debits are attempted and the balance is only sufficient for one, the second fails the WHERE check and returns 0 rows affected).</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Payment link generation and deep link handling:</strong> Merchants generate payment links (https://pay.app.com/p/&#123;shortId&#125;) that are shareable via WhatsApp, SMS, or email. The short link resolves to a page that detects the user's device: on mobile with the app installed, it deep-links to the app's payment screen (using App Links / Universal Links). On mobile without the app, it opens the payment page in the browser (showing UPI intent options — a list of installed UPI apps detected via navigator.userAgent + WebAuthn availability heuristics or a native app query). On desktop, it shows a QR code (UPI QR code encoding the payment URI) for the user to scan with their mobile UPI app. Dynamic links (Firebase Dynamic Links or Branch.io) handle the app-not-installed case: they route to the Play Store / App Store and pass the payment context as a deferred deep link to the app on first launch.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Failure recovery and automatic refunds:</strong> UPI transaction failures fall into three categories: (1) technical failure — debit happened but credit failed (bank timeout mid-transaction). NPCI's auto-reversal process debits the payee's bank and credits back the payer automatically within 30 minutes. The merchant must check the transaction status before dispatching orders. (2) business failure — payment succeeded but the merchant's order system failed (database down after payment). Idempotent order creation (same payment reference ID → same order ID) ensures replay of the order creation webhook doesn't create duplicate orders. (3) user cancellation — payment intent created but user cancels. No refund needed (no debit occurred). Refund API: for failed P2M transactions where reversal has not occurred within 1 hour, the merchant initiates a refund via the payment gateway's refund API (which calls NPCI's credit API to push funds back to the payer's account).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Scale: 300M daily transactions at India peak:</strong> India's UPI peak is heavily concentrated — 40% of daily volume occurs in a 4-hour window (6–10 PM, during prime-time shopping and salary-credit-day payments). The system must handle 50,000–80,000 TPS at peak while maintaining &lt;500ms P99 latency for payment initiation. Architecture decisions at this scale: (1) database sharding by user ID — each shard handles a subset of users' ledgers; (2) Redis for hot balance reads (99% of balance checks hit Redis, only cache misses hit the DB); (3) asynchronous event processing — payment status updates fan out via Kafka to downstream systems (order management, analytics, fraud detection) without blocking the payment confirmation response; (4) circuit breakers on bank API calls — if HDFC Bank's UPI system returns 50% errors for 30 seconds, the circuit breaker opens and the app shows "HDFC Bank is temporarily unavailable. Please try a different bank or payment method." (5) regional deployment — app servers in Mumbai, Delhi, and Chennai to reduce latency for the geographically distributed user base.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The UPI payment flow has four systems: the consumer app (React Native, handles UPI intent generation and VPA input), the merchant's payment backend (initiates collect requests, receives NPCI callbacks, manages order state), the bank's UPI system (payer's bank, processes the debit, communicates with NPCI), and NPCI's switch (routes transactions between banks, enforces transaction limits, handles reversals). The merchant's system integrates with NPCI via a bank's UPI SDK (the merchant cannot connect to NPCI directly — they connect through a payment service provider like Razorpay, PayU, or their acquiring bank's UPI APIs).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">For the wallet component: the wallet service has a separate ledger database (sharded PostgreSQL or a financial-grade distributed database like TigerBeetle). The wallet service exposes APIs to the payment backend: debit (wallet payment), credit (top-up, refund), and balance. The wallet service guarantees exactly-once semantics for debits: each debit request carries a unique idempotency key (the payment reference ID), and the ledger checks for duplicate keys before processing.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/upi-wallet-payment-flow.svg"
-          alt="UPI/wallet payment flow: UPI intent URI (upi://pay?pa=merchant@bank&am=500) deep-linked to user's UPI app; VPA resolution via NPCI lookup (returns name + masked account); NPCI switch routes payer bank → payee bank; payment status: SUCCESS/FAILURE/PENDING (PENDING auto-reversed at 30min by NPCI); wallet ledger double-entry bookkeeping with optimistic lock (balance >= debit check); Redis materialized balance cache; Kafka fan-out for order management and fraud; circuit breaker on bank API (50% errors → open); 50K–80K TPS at India peak."
-          caption="UPI intent/collect flows, VPA resolution (NPCI lookup), NPCI switch routing, PENDING auto-reversal (30min), wallet double-entry ledger, optimistic lock (balance &gt;= debit), Redis balance cache, Kafka fan-out, circuit breaker per bank, 50K–80K TPS peak"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">UPI PIN Security and PCI Compliance</h3>
-        <HighlightBlock as="p" tier="important">The UPI PIN is the user's bank authentication secret — it must never be visible to the UPI app (only the bank's keyboard can handle PIN entry). NPCI mandates: UPI PIN entry must use the bank's secure keyboard SDK (a custom keyboard provided by the bank or NPCI's UPI SDK) that renders in a secure overlay. The overlay is a separate process from the app — the PIN keystrokes are not accessible to the app's JavaScript or native code. The PIN is encrypted end-to-end within the SDK before being transmitted to the bank. From the app's perspective, PIN entry is a black box: the user taps "Pay → Enter PIN" → a secure overlay appears → user enters PIN → overlay dismisses → the SDK returns a signed transaction token to the app (not the PIN itself). This design ensures even a compromised app cannot extract the user's UPI PIN.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Idempotent Transaction Processing</h3>
-        <HighlightBlock as="p" tier="crucial">At 50,000 TPS, network retries are frequent. Every payment write operation (ledger debit, order creation, transaction record insert) must be idempotent. The idempotency mechanism: before writing, query for an existing record with the same transaction reference ID (the NPCI-assigned TxnRef or the merchant's internal payment ID). If found, return the existing result. If not, write and return. This check-then-write is atomic via a database unique constraint on the transaction reference column — a duplicate insert returns a unique constraint violation, which is caught and handled as "already processed." The unique constraint enforces idempotency even under concurrent retries without requiring a distributed lock.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">KYC Limits and RBI Compliance</h3>
-        <HighlightBlock as="p" tier="important">RBI mandates transaction limits based on the user's KYC (Know Your Customer) status. Minimum KYC (mobile-verified): UPI limit ₹1 lakh per day, wallet balance ₹10,000. Full KYC (Aadhaar + PAN verified): UPI limit ₹1 lakh per transaction, ₹2 lakh per day, wallet balance ₹2 lakh. The payment system enforces these limits at the server: before processing a payment, check the user's daily accumulated amount (computed from the ledger) against their KYC tier limit. If exceeded: reject with "Daily limit reached. Complete KYC to increase your limit." KYC verification is integrated with the Aadhaar e-KYC API (UIDAI) for instant digital verification. The KYC status and limits are cached in Redis for fast limit checks — recomputed and invalidated when the user completes KYC or at midnight (limit reset).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Real-time settlement vs. T+1 settlement: UPI payments settle in real time (funds move instantly). This is ideal for consumers but creates reconciliation complexity for merchants who receive thousands of UPI payments — they must reconcile each transaction individually with their bank statement. Bulk settlement files (provided by NPCI and the acquiring bank) help, but real-time reconciliation (matching payment callbacks to orders in real-time via the transaction reference) is more reliable and reduces the settlement lag. The reconciliation system is a critical backend component covered in the Transaction History & Reconciliation article.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Wallet vs. UPI for P2M: for merchant payments, UPI is preferred over wallet by regulators and users (no top-up friction, money moves directly from bank). Wallet payments are preferred when the merchant offers cashback or rewards funded from the wallet balance (e.g., Paytm cashback). The app should offer both, with UPI as the default and wallet as a secondary option when the user has balance. This reduces top-up friction for new users while preserving wallet engagement for loyal users.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A UPI/wallet payment system requires: (1) UPI intent flow (upi:// URI → deep-link → user's UPI app) for P2M and collect flow (server-initiated collect request → payer notification) for P2P; (2) VPA resolution (NPCI lookup → name + masked account display, rate-limited 5/min/device); (3) NPCI switch integration via acquiring bank/PSP SDK (SUCCESS/FAILURE/PENDING, PENDING must not be treated as SUCCESS, auto-reversal at 30min by NPCI); (4) UPI PIN via bank's secure keyboard SDK (separate process, PIN never visible to app, returns signed token); (5) wallet double-entry ledger (materialized Redis balance, optimistic lock UPDATE WHERE balance &gt;= debit, idempotency via unique constraint on txnRef); (6) Kafka fan-out for order management, fraud, and analytics (decoupled from payment response path); (7) circuit breaker per bank (50% error threshold, 30s window, open = show bank-specific unavailable message); (8) KYC limit enforcement (Redis cached, midnight reset, Aadhaar e-KYC for upgrade); (9) payment link (shortlink → device detect → deep link / QR / browser intent); and (10) scale: sharded DB by userId, Redis hot-path, regional deployment, 50K–80K TPS at peak. The regulatory invariant: UPI PIN must be processed by the bank's secure keyboard only — the app must be architecturally incapable of intercepting or storing the PIN.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

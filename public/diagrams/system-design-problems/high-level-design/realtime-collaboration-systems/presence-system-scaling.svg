@@ -1,58 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Presence scaling and graceful degradation with scoped subscriptions and load shedding">
-  <title>Presence Scaling and Degradation</title>
-  <desc>Shows scoped subscriptions, coalescing, TTL store, and degradation path that sheds ephemeral signals before core presence state.</desc>
-  <style>
-    .bg { fill: #ffffff; }
-    .box { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
-    .muted { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2; rx: 14; }
-    .accent { fill: #ecfeff; stroke: #0891b2; stroke-width: 2; rx: 14; }
-    .warn { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; }
-    .arrow { stroke: #1f2937; stroke-width: 2.5; fill: none; }
-    .label { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #0f172a; font-size: 18px; }
-    .small { font-size: 14px; fill: #334155; }
-    .bold { font-weight: 700; }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #0b1220; }
-      .box { fill: #0f172a; stroke: #e5e7eb; }
-      .muted { fill: #0b1220; stroke: #64748b; }
-      .accent { fill: #06232a; stroke: #22d3ee; }
-      .warn { fill: #2a140a; stroke: #fb923c; }
-      .arrow { stroke: #e5e7eb; }
-      .label { fill: #e5e7eb; }
-      .small { fill: #cbd5e1; }
-    }
-  </style>
-  <rect class="bg" x="0" y="0" width="1200" height="640" />
-
-  <rect class="box" x="60" y="80" width="330" height="150" />
-  <text class="label bold" x="90" y="125">Clients</text>
-  <text class="label small" x="90" y="155">heartbeats (adaptive cadence)</text>
-  <text class="label small" x="90" y="180">typing (bounded rate)</text>
-  <text class="label small" x="90" y="205">subscribe to scoped sets</text>
-
-  <rect class="accent" x="440" y="60" width="320" height="190" />
-  <text class="label bold" x="470" y="105">Presence service</text>
-  <text class="label small" x="470" y="135">TTL store for sessions</text>
-  <text class="label small" x="470" y="160">aggregate per user</text>
-  <text class="label small" x="470" y="185">enforce privacy rules</text>
-
-  <rect class="muted" x="810" y="60" width="330" height="190" />
-  <text class="label bold" x="840" y="105">Fanout layer</text>
-  <text class="label small" x="840" y="135">room scoped subscriptions</text>
-  <text class="label small" x="840" y="160">friends/workspace (coarse)</text>
-  <text class="label small" x="840" y="185">coalesce + batch updates</text>
-
-  <path class="arrow" d="M390 155 L440 155" />
-  <path class="arrow" d="M760 155 L810 155" />
-
-  <rect class="box" x="60" y="300" width="1080" height="140" />
-  <text class="label bold" x="90" y="345">Scaling levers</text>
-  <text class="label small" x="90" y="375">reduce frequency (adaptive heartbeats), coalesce updates, cap subscription sizes, prefer coarse global states</text>
-  <text class="label small" x="90" y="400">do not broadcast globally; always scope by relationship or room membership</text>
-
-  <rect class="warn" x="60" y="470" width="1080" height="130" />
-  <text class="label bold" x="90" y="515">Degradation path</text>
-  <text class="label small" x="90" y="545">shed ephemeral typing/cursor signals first, then reduce update rate, then fall back to last-seen only</text>
-  <text class="label small" x="90" y="570">never block messaging or editing on presence availability</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Presence System Scaling: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Presence System Scaling: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">cursor</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">realtime collaboration systems</text>
+  <path d="M480 286 C566.6630822650743 291.90403804067563, 637.5692404819533 306.83778132003164, 707 309" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="707" cy="309" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="707" y="314" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">CRDT</text><path d="M480 286 C510.09777261265884 317.9495491067209, 534.723222932107 398.763114494309, 570 425" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="570" cy="425" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="570" y="430" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">presence</text><path d="M480 286 C423.43469034758454 312.04551106604526, 377.1539824501537 377.92533317427734, 332 413" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="332" cy="413" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="332" y="418" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">merge</text><path d="M480 286 C393.3369177349257 280.09596195932437, 322.4307595180467 265.16221867996836, 220 263" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="220" cy="263" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="220" y="268" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">offline</text><path d="M480 286 C449.9022273873411 254.0504508932791, 425.2767770678929 173.23688550569102, 401 147" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="401" cy="147" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="401" y="152" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">awareness</text><path d="M480 286 C536.5653096524154 259.95448893395474, 582.8460175498462 194.07466682572263, 650 159" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="650" cy="159" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="650" y="164" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">conflict</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>
-

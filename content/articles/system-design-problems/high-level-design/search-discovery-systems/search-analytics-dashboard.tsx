@@ -8,90 +8,144 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-search-analytics-dashboard",
   title: "Design a Search Analytics Dashboard",
-  description:
-    "Architecture for a search analytics dashboard: query volume trends, zero-result rate monitoring, top queries and trending queries, click-through rate by position, search session funnel (query → click → conversion), query clustering for topic analysis, no-click search rate (featured snippet saturation), failed search detection, search exit rate by query category, and real-time anomaly alerting for search quality degradation.",
+  description: "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability.",
   category: "high-level-design",
   subcategory: "search-discovery-systems",
   slug: "search-analytics-dashboard",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-11",
-  tags: ["hld", "search-analytics", "query-analysis", "ctr", "zero-results", "funnel", "anomaly-detection"],
-  relatedTopics: ["search-ranking-experimentation-ui", "google-like-search-frontend"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "search", "ranking", "discovery", "indexing", "experimentation"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Search Analytics Dashboard is a discovery system where user intent, index freshness, ranking quality, result presentation, and feedback loops all shape whether users find the right thing. A principal-ready answer treats a search analytics dashboard as a full search product, not as a text box backed by an index.",
+  "The visible UI is only the final step in a larger pipeline: content ingestion, indexing, query understanding, retrieval, ranking, filtering, presentation, analytics, and continuous quality improvement. If any part drifts, users see irrelevant results, stale content, empty states, or unsafe recommendations.",
+  "Search and discovery systems are also adversarial. Sellers, creators, spammers, and internal teams may try to game ranking signals. The architecture should include spam controls, policy filters, quality metrics, and explainability for operators.",
+  "The design should define which state is authoritative. Indexed documents, ranking features, facet counts, suggestions, recommendations, and analytics are projections. Permissions, takedowns, privacy policy, inventory availability, and safety decisions need stronger enforcement.",
+  "A staff/principal answer should be able to defend latency, relevance, freshness, privacy, cost, and experimentation trade-offs under pressure. Search is not only about returning results quickly; it is about returning the right results safely and measurably."
+];
+const concepts = [
+  "The first concept is query understanding. The system should handle spelling, synonyms, entity detection, intent classification, natural language, filters, personalization, and query rewriting without hiding how much confidence it has.",
+  "The second concept is retrieval strategy. sessionizer, zero-result analyzer, and quality metrics may use lexical retrieval, vector retrieval, structured filters, popularity priors, freshness boosts, or hybrid retrieval depending on the product.",
+  "The third concept is ranking. Ranking combines relevance, quality, freshness, personalization, safety, diversity, availability, and business constraints. A principal design avoids optimizing only clicks because clicks can reward spam, clickbait, or shallow results.",
+  "The fourth concept is freshness and consistency. Search indexes, suggestions, facet counts, embeddings, analytics, and recommendations can lag. Takedowns, permissions, private data, inventory state, and safety blocks need fast invalidation or query-time enforcement.",
+  "The fifth concept is feedback. Explicit feedback, clicks, dwell time, reformulations, no-click sessions, hides, reports, purchases, completions, and abandonment all provide quality signals. These signals must be protected from fraud and bias.",
+  "The sixth concept is observability. Track query latency, suggestion latency, zero-result rate, reformulation rate, click position, long-click rate, facet usage, index lag, permission-filter drops, freshness distribution, and ranking experiment guardrails."
+];
+const architecture = [
+  "The architecture contains query logs, sessionizer, zero-result analyzer, quality metrics, owner workflow. The ingestion path normalizes documents or items and builds indexes. The query path parses user intent, retrieves candidates, ranks them, applies policy and permissions, and renders results. The feedback path records behavior for analytics, quality review, and controlled ranking updates.",
+  "Indexing should be version-aware. A document, video, product, or answer should know which content version produced its search document, embedding, snippet, thumbnail, and facet values. This is essential for rollback, takedown propagation, and explaining stale results.",
+  "The query serving path should be layered. A fast suggestion path handles prefix and recent queries. A retrieval path returns candidate IDs. A ranking path scores candidates. A policy path enforces permissions, safety, consent, inventory, and regional restrictions. A rendering path builds snippets, highlights, facets, and empty-state guidance.",
+  "The frontend should preserve query state in URLs or route state where appropriate, but the backend should own interpretation. Filters, facets, sort order, pagination cursor, personalization mode, and experiment assignment should be explicit and reproducible for support and debugging.",
+  "Result presentation matters. The UI should show why results match when possible, make filters reversible, avoid hiding zero-result recovery options, and handle partial failures such as missing facets or delayed recommendations without losing the primary result list.",
+  "Operations need controls for index rebuild, ranking rollback, synonym rollback, suggestion blacklist, spam demotion, model rollback, experiment stop, cache purge, and privacy takedown verification."
+];
+const tradeoffs = [
+  "Lexical search is predictable and strong for exact terms, IDs, error codes, and names. Semantic search handles intent and paraphrase better, but can return surprising matches and is harder to explain. Hybrid retrieval is often the most defensible production choice.",
+  "Query-time permission filtering is safer but can be expensive and may reduce candidate quality after ranking. Index-time filtering is faster but risks stale permissions. Sensitive systems usually combine indexed permission fields with query-time enforcement for high-risk data.",
+  "Fresh indexes improve trust but cost more in ingestion, indexing throughput, and cache churn. Batch indexing is cheaper and simpler but creates visible lag. The right answer depends on whether users expect real-time discovery.",
+  "Personalization improves relevance but creates privacy and filter-bubble concerns. Anonymous or generic ranking is more explainable but can be less useful. A strong design supports user controls, privacy modes, and unbiased evaluation sets.",
+  "Facet counts and aggregations improve exploration but can be expensive over large datasets and misleading under approximate counts. The UI should distinguish exact, approximate, delayed, or unavailable aggregations when it matters.",
+  "Experimentation improves ranking quality but can harm users if guardrails are weak. Search experiments need relevance metrics, latency, zero-result rate, complaint/report rate, revenue or conversion, diversity, and fairness guardrails."
+];
+const practices = [
+  "Define relevance and quality metrics before choosing infrastructure. A fast search system with poor relevance is not successful; a relevant search system with unacceptable latency is also not successful.",
+  "Keep search documents and ranking features versioned. Store source ID, source version, index version, embedding version, policy version, and freshness timestamp where possible.",
+  "Use stable pagination cursors. Offset pagination becomes incorrect when ranking changes, new content arrives, or policy filters remove results between pages.",
+  "Protect sensitive queries and logs. Query text can contain names, secrets, health data, customer IDs, or legal terms. Redact, sample, aggregate, and restrict access to raw logs.",
+  "Build quality review tools. Search teams need query replay, side-by-side ranking comparison, bad-result labeling, zero-result review, synonym management, and rollback controls.",
+  "Handle empty and low-confidence states intentionally. Suggest spelling fixes, broader filters, related categories, popular results, saved searches, or escalation depending on product context.",
+  "Separate online serving from offline training and evaluation. Production ranking should be reproducible and rollback-safe even if model training or analytics pipelines are delayed."
+];
+const pitfalls = [
+  "PII in queries is usually caused by optimizing one path while ignoring the full discovery loop. Suggestions, results, facets, and recommendations must share policy and freshness assumptions.",
+  "metric misread becomes a trust issue when ranking rewards behavior without integrity checks. Search systems need spam, abuse, and business-rule guardrails.",
+  "sampling bias happens when indexes and derived projections are treated as secondary. Users experience stale search as product incorrectness, not infrastructure lag.",
+  "stale dashboards is dangerous because search can expose private or unsafe content through snippets, suggestions, facets, caches, and analytics dashboards.",
+  "Another pitfall is measuring only click-through rate. Clicks can increase when results are ambiguous, sensational, or low quality. Use long-clicks, reformulation, task completion, reports, and satisfaction signals.",
+  "Teams also forget supportability. Operators should be able to answer why a result appeared, why it ranked where it did, what filters applied, and which experiment or model was active."
+];
+const useCases = [
+  "search quality review requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "product discovery analytics requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "support search operations requires query understanding, retrieval, ranking, filtering, presentation, and feedback to work as one system rather than separate widgets.",
+  "During an indexing incident, the product should continue serving existing results, show freshness where appropriate, pause risky ranking changes, and provide index lag dashboards and rebuild controls.",
+  "During a spam or abuse incident, the system should demote suspicious documents, blacklist harmful suggestions, throttle abusive actors, and preserve review evidence.",
+  "During a ranking experiment regression, teams should stop the experiment, replay affected queries, compare side-by-side results, and roll back the ranking or feature version safely."
+];
+const questions = [
+  {
+    "question": "How would you design a search analytics dashboard end to end?",
+    "answer": "I would design ingestion, indexing, query understanding, retrieval, ranking, policy enforcement, result rendering, and feedback loops as separate but observable stages. The frontend owns query state and presentation, while the backend owns interpretation, candidate retrieval, ranking, and permission enforcement. Operations need index rebuilds, ranking rollback, query replay, spam controls, and quality dashboards."
+  },
+  {
+    "question": "Why this architecture over a simple indexed keyword search?",
+    "answer": "Keyword search alone is predictable but insufficient for intent, personalization, facets, semantic matching, ranking experiments, policy enforcement, and quality learning. The layered architecture adds complexity, but it lets the system tune relevance, freshness, safety, and latency independently."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are PII in queries, metric misread, sampling bias, stale dashboards, plus cache stampedes, index lag, high-cardinality facets, hot queries, ranking drift, spam manipulation, privacy leaks in logs, and experiment regressions. Prevention requires versioned indexes, stable cursors, guardrail metrics, query sampling, cache strategy, and operational rollback."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Search indexes, suggestions, embeddings, facet counts, recommendations, and analytics can be eventually consistent if freshness is tracked. Permissions, takedowns, private data, safety filters, inventory availability, and paid access need strong query-time enforcement or fast invalidation. The design should classify each projection explicitly."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled through stale-but-safe results, index rebuild, ranking rollback, degraded facets, and query replay. Abuse is controlled through spam scoring, suggestion blacklists, rate limits, and moderation. Privacy requires query log minimization and permission-safe snippets. Cost is controlled through caching, tiered indexes, approximate aggregations, and sampling. Observability tracks latency, freshness, zero-result rate, reformulation, guardrails, and quality labels."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate exact retrieval, semantic intent, ranking, policy, and presentation. I would defend hybrid retrieval because it handles both exact and fuzzy intent. I would defend eventual index consistency for normal discovery, but not for privacy or takedown enforcement. I would also explain how guardrails prevent ranking optimizations from harming trust."
+  }
+];
+const references = [
+  {
+    "label": "Elasticsearch relevance and query guide",
+    "href": "https://www.elastic.co/guide/index.html"
+  },
+  {
+    "label": "Lucene scoring documentation",
+    "href": "https://lucene.apache.org/core/"
+  },
+  {
+    "label": "Google Search quality documentation",
+    "href": "https://developers.google.com/search/docs"
+  },
+  {
+    "label": "Nielsen Norman Group: search usability",
+    "href": "https://www.nngroup.com/topic/search/"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "NIST privacy framework",
+    "href": "https://www.nist.gov/privacy-framework"
+  }
+];
 
 export default function SearchAnalyticsDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 3 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A search analytics dashboard answers the operational question: "How well is our search working?" It surfaces metrics that help search engineers identify quality problems (high zero-result rate for specific query categories), product managers understand search behavior (what users are searching for, what they find, what makes them leave), and executives track high-level health (query volume trends, search-to-conversion funnel). Unlike a general analytics dashboard, a search analytics dashboard has domain-specific concerns: position bias (clicks on position 1 are not evidence of relevance), query-level granularity (aggregate metrics hide failures at the query level), and the zero-result problem (users who find nothing are a clear sign of catalog or indexing gaps).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The data volume challenge is substantial: a large search system may process 100 million queries per day, each generating click events, session events, and user behavior signals. Computing query-level metrics over this volume in real time requires a streaming pipeline (Kafka → ClickHouse or BigQuery) and pre-aggregated materialized views for common time ranges. The anomaly detection requirement adds real-time complexity: zero-result rate spikes (caused by indexing failures, query parsing bugs, or sudden changes in user query patterns) must be detected and alerted within minutes, before they affect a significant portion of the user base.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Query volume trends, zero-result rate, CTR by position, search session funnel, query clustering, and anomaly alerting. Not in scope: the search indexing pipeline monitoring, A/B experiment metrics (covered in the experimentation UI), or user-level search history.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-analytics-dashboard.svg" alt="Design a Search Analytics Dashboard architecture" caption="Architecture view: ingestion, query understanding, retrieval, ranking, policy, rendering, and feedback loops." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-analytics-dashboard-flow.svg" alt="Design a Search Analytics Dashboard flow" caption="Flow view: query lifecycle, candidate retrieval, ranking, filtering, result presentation, and quality feedback." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-analytics-dashboard-operations.svg" alt="Design a Search Analytics Dashboard operations" caption="Operations view: index freshness, ranking rollback, spam controls, privacy-safe logs, and search quality observability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Query volume trends:</strong> Time-series chart showing queries per hour/day/week, segmented by query category (product search, navigational, informational, transactional), device type, and geography. Overlay events (deployments, ranking changes, external events) on the chart for correlation. Detect anomalies (volume spikes or drops &gt;20% from baseline).</li>
-          <li><strong>Zero-result analysis:</strong> Percentage of queries with zero results over time. Top zero-result queries (most frequently searched queries that return no results), grouped by category. Drill-down: which terms trigger zero results (often brand names, model numbers, or typos not in the index).</li>
-          <li><strong>Click-through rate by position:</strong> CTR for each SERP position (1–10) across all queries. Position bias curve (CTR vs. position, typically a steep power law). CTR trends over time: a CTR drop at position 1 may indicate ranking degradation or SERP layout changes. Per-query-category CTR breakdown.</li>
-          <li><strong>Search session funnel:</strong> Funnel visualization: Sessions with search → Sessions with at least 1 click → Sessions that reached a product/article page → Sessions that converted (purchase, signup, etc.). Drop-off at each step identifies where search is failing. Segment by query category to identify which query types have the worst conversion.</li>
-          <li><strong>Query clustering and trending:</strong> Group similar queries into topic clusters (using embedding similarity or Jaccard overlap on query tokens). Show cluster size and growth trends. Surface newly trending queries (queries with rapidly increasing volume in the last hour compared to the same hour last week).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Dashboard latency:</strong> Pre-aggregated metrics (hourly/daily) load within 2 seconds. Real-time metrics (last 15 minutes) load within 5 seconds from the streaming store.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Alert latency:</strong> Zero-result rate anomaly alerts fire within 5 minutes of the anomaly starting. Alert channels: email, Slack, and PagerDuty for critical alerts.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Data freshness:</strong> Dashboard metrics are at most 5 minutes stale for real-time metrics and 1 hour stale for historical aggregates.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The search analytics pipeline has two paths. The real-time path: the SERP emits query and click events to a Kafka topic (search.events). A Flink or Kafka Streams job consumes these events and writes per-minute aggregates (query count, click count, zero-result count) to ClickHouse. The dashboard reads the real-time ClickHouse tables for metrics in the last 15 minutes. The batch path: a nightly aggregation job computes richer metrics (query clustering, session funnel, CTR by position) over the full day's data and writes to a set of pre-aggregated tables in ClickHouse. These pre-aggregated tables power the historical charts and trend analysis. The anomaly detection system is a separate streaming job that runs every minute, comparing the last-minute metrics to a rolling baseline (same minute last week ± 2 standard deviations) and fires alerts when metrics exceed thresholds.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/search-discovery-systems/search-analytics-dashboard.svg"
-          alt="Search analytics dashboard architecture showing event pipeline (SERP: emit query_event {queryId query userId sessionId timestamp deviceType queryCategory zeroResult resultCount} + click_event {queryId position docId sessionId dwellTimeMs}; Kafka search.events topic; Flink job: 1-min tumbling window → aggregate {minute queryCount clickCount zeroResultCount} → ClickHouse search_metrics_realtime), query volume dashboard (time selector: 15min 1h 24h 7d 30d; ClickHouse query: SELECT time bucket(1h ts) count(*) FROM search_metrics WHERE time &gt; now-period; Recharts line chart overlaid; segment toggle: device type geography category; event overlay: deployment markers on timeline; anomaly highlight: red band when &gt;20% deviation from baseline), zero-result analysis (zero_result_rate = zeroResultCount/queryCount; top zero queries: SELECT query count(*) WHERE zeroResult=true GROUP BY query ORDER BY count DESC LIMIT 100; categorize by term type: brand name product-code typo; trend: 7-day zero-result rate line chart; drill-down: query → results returned → gap analysis), CTR by position chart (join query_events + click_events on queryId; CTR[pos] = clicks at position n / impressions at position n; bar chart positions 1-10; position bias curve; period-over-period comparison: this week vs last week; per-category CTR: product queries vs navigational), session funnel (session stitching: group events by sessionId; funnel stages: searches WITH_SEARCH / AT_LEAST_1_CLICK / REACHED_PRODUCT_PAGE / CONVERTED; bar chart with drop-off percentages; segment by query category; identify worst-converting query types), query clustering (offline job nightly: vectorize top 10K queries with embedding model; k-means clustering k=50; cluster label: most common query in cluster; cluster size + 7-day trend; emerging clusters: new queries not in previous clusters; trending: volume growth rate last 24h vs prior 24h), anomaly detection (Flink alerting job: per-minute zero_result_rate → compare to rolling_baseline_rate ± 2σ; threshold breached → POST /api/alerts {metric:zero_result_rate value:0.23 baseline:0.08 severity:critical}; PagerDuty API → on-call page; Slack webhook → #search-oncall channel; dashboard: alert history timeline with acknowledged dismissed)."
-          caption="Kafka search events (query + click) → Flink 1-min aggregates → ClickHouse, query volume time-series (bucket query, anomaly highlight bands), zero-result top queries (GROUP BY + gap analysis), CTR-by-position bar chart (join query+click events), session funnel (sessionId stitching, per-category drop-off), nightly query clustering (k-means on embeddings, emerging cluster detection), and Flink anomaly alerting (rolling baseline ±2σ, PagerDuty + Slack)"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Event Schema and Pipeline</h3>
-        <HighlightBlock as="p" tier="important">The SERP emits two primary event types. A query_event is emitted on each search: {`{ queryId (UUID), query (string), userId (if logged in), sessionId, timestamp, deviceType, queryCategory, zeroResult (boolean), resultCount, experimentBucket }`}. A click_event is emitted on each result click: {`{ queryId, position, docId, sessionId, timestamp, dwellTimeMs (measured when user leaves the page via visibilitychange event) }`}. These events are published to a Kafka topic (search.events) using the browser's Beacon API (navigator.sendBeacon('/api/events', payload)) to ensure events are sent even when the user navigates away immediately after clicking.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The Flink streaming job consumes from search.events and computes 1-minute tumbling window aggregates: for each minute, the total query count, click count, zero-result count, and a map of &#123;queryId: position_clicked&#125; are written to ClickHouse. The ClickHouse schema is optimized for time-series queries: the search_metrics_realtime table is partitioned by day, sorted by (timestamp, queryCategory), and uses the ReplacingMergeTree engine for idempotent inserts. The Flink job also emits session-level events: when a session ends (30-minute inactivity timeout), a session_summary event is emitted with the session's query count, click count, and conversion flag, which is consumed by the funnel aggregation job.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">CTR by Position and Position Bias Analysis</h3>
-        <HighlightBlock as="p" tier="important">CTR by position is computed by joining query events with click events on queryId and grouping by position: CTR[position] = COUNT(click_events WHERE position=N) / COUNT(query_events). This produces the position bias curve — typically a steep power law where position 1 receives 30–40% CTR and position 10 receives 2–3% CTR. The position bias curve is itself a useful diagnostic: a flatter-than-expected curve may indicate SERP features (featured snippets, carousels) that redirect attention away from organic results; a steeper curve may indicate that only the first result is satisfying users' needs (a sign of strong navigational queries dominating the query mix).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Period-over-period CTR comparison: the dashboard overlays the current week's CTR curve with the previous week's. A significant drop in CTR at position 1 (while position 2–10 are stable) may indicate that the top-ranked result is now less relevant (a ranking regression). A drop across all positions may indicate a SERP layout change (a new rich snippet at the top pushing organic results down) or an external factor (a news event that satisfies user intent without requiring a click). The dashboard allows engineers to annotate these drops with explanations, building institutional knowledge about what causes CTR changes.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Zero-Result Analysis and Gap Detection</h3>
-        <HighlightBlock as="p" tier="important">Zero-result queries (queries where the search returns no results) represent catalog gaps or query understanding failures. The zero-result dashboard shows: the overall zero-result rate trend (target: &lt;5%), the top 100 zero-result queries by volume (most frequently searched terms with no results), and a categorization of zero-result query types. Categorization: some zero-result queries are brand names not in the catalog (catalog gap — the item should be added), some are typos (query understanding failure — spell correction should catch these), and some are out-of-scope queries (users searching for things the platform doesn't support, e.g., searching for a restaurant on a software documentation site).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Gap detection: for zero-result queries that are brand names or product model numbers, an automated gap detection job compares the query terms against the product catalog and flags categories where many high-volume queries have no matching products. These gaps are surfaced as a prioritized list ("Electronics &gt; Phones: 23 high-volume queries with zero results, estimated 50K monthly missed sessions") for catalog expansion decisions. The gap list is exported as a CSV for the merchandising team to act on.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Anomaly Detection and Alerting</h3>
-        <HighlightBlock as="p" tier="important">The anomaly detection system is a Flink job that runs every minute. For each metric (zero-result rate, query volume, CTR at position 1), it compares the current value to a rolling baseline computed as the exponential moving average (EMA) of the same metric at the same time of day for the past 7 days. The alerting threshold is: if the current value exceeds baseline ± 2 standard deviations, an alert is triggered. The alert severity is determined by the magnitude of deviation: &gt;2σ = Warning (Slack notification), &gt;3σ = Critical (PagerDuty page). Alert deduplication: if an alert fires every minute for 10 minutes, only the first and last alerts are sent (not 10 identical Slack messages).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The dashboard's alert history timeline shows all alerts from the last 30 days with their timestamps, severity, metric value vs. baseline, and status (Active / Acknowledged / Resolved). Engineers can annotate alerts with root cause (e.g., "Caused by deployment at 14:32 that changed query normalization") to build a learning database of past incidents. Alert silence windows allow engineers to suppress alerts during planned maintenance (e.g., "suppress zero-result alerts from 2am to 3am during index rebuild").</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Pre-aggregated tables versus ad-hoc queries: pre-aggregated tables (computing hourly metrics nightly and storing in summary tables) allow fast dashboard loads (&lt;2 seconds) but limit the granularity of analysis — if the pre-aggregation bucketed by hour, you cannot drill down to the minute. Ad-hoc queries against the raw event data allow arbitrary granularity but may take minutes for historical queries over billions of events. The solution: pre-aggregate at multiple granularities (minute for the last 24 hours, hour for the last 30 days, day for the last year) and route queries to the appropriate table. ClickHouse's Materialized Views make multi-granularity pre-aggregation efficient — the views are updated incrementally as new data arrives.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Session stitching accuracy: session stitching (grouping events by sessionId) depends on consistent sessionId assignment. Browser-side sessionIds (stored in sessionStorage) are accurate for single-tab usage but fail for multi-tab scenarios (each tab has a separate session) and for users who clear cookies between sessions. Server-side session stitching (grouping events within a time window by userId + device fingerprint) is more robust but computationally expensive and raises privacy concerns. The dashboard should display session-level metrics with the caveat that session boundaries are approximate, particularly for anonymous users.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A search analytics dashboard is built on a two-path pipeline: real-time (SERP Beacon API → Kafka → Flink 1-min aggregates → ClickHouse) for sub-5-minute freshness, and batch (nightly aggregation → pre-computed summary tables) for historical trend analysis. Key metrics: query volume time-series (with deployment overlay markers and ±20% anomaly highlight bands), zero-result rate trend with top-100 zero-result query drill-down and catalog gap detection, CTR-by-position curve (power law shape analysis, period-over-period comparison), session funnel (sessionId stitching, per-category drop-off rates), and query clustering (nightly k-means on embeddings, emerging cluster detection). Anomaly alerting uses Flink EMA baseline comparison (±2σ Warning, ±3σ Critical) with PagerDuty and Slack integration, alert deduplication, and silence windows for planned maintenance. The core operational principle: a search system should be able to detect its own quality degradation within 5 minutes — the anomaly detection system is the early warning infrastructure that prevents small indexing failures or ranking regressions from becoming hours-long user-facing incidents.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

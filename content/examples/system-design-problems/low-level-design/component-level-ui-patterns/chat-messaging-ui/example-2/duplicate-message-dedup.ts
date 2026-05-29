@@ -1,39 +1,89 @@
-/**
- * Chat/Messaging — Edge Case: Duplicate Message Detection and Deduplication.
- *
- * When WebSocket reconnects, the server may resend messages already received.
- * Detect duplicates by message ID and filter them out.
- */
+export type chatMessagingUiSignal = {
+  frameCostMs: number;
+  focusDrift: number;
+  layoutShiftPx: number;
+  pointerCancelCount: number;
+};
 
-export function deduplicateMessages(
-  existing: Array<{ id: string; content: string; timestamp: number }>,
-  incoming: Array<{ id: string; content: string; timestamp: number }>,
-): Array<{ id: string; content: string; timestamp: number }> {
-  const existingIds = new Set(existing.map((m) => m.id));
-  const newMessages = incoming.filter((m) => !existingIds.has(m.id));
-  return [...existing, ...newMessages].sort((a, b) => a.timestamp - b.timestamp);
+export type chatMessagingUiEvent = {
+  id: string;
+  topic: "chat-messaging-ui";
+  actorId: string;
+  sequence: number;
+  receivedAtMs: number;
+  expectedVersion: number;
+  currentVersion: number;
+  payloadSize: number;
+  signal: chatMessagingUiSignal;
+};
+
+export type chatMessagingUiDecision = {
+  accepted: boolean;
+  action: "restore-focus" | "clamp-layout" | "defer-expensive-work" | "commit";
+  nextVersion: number;
+  reasons: string[];
+  audit: string[];
+};
+
+const topicInvariant = "Keyboard, pointer, and assistive-technology paths must converge on the same committed state.";
+
+export function evaluateChatMessagingUiEvent(event: chatMessagingUiEvent): chatMessagingUiDecision {
+  const reasons: string[] = [];
+
+  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
+  if (event.sequence <= 0) reasons.push("invalid-sequence");
+  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (event.signal.frameCostMs > 2_000) reasons.push("frameCostMs-outside-slo");
+  if (event.signal.layoutShiftPx > 0.2) reasons.push("layoutShiftPx-requires-guardrail");
+
+  let action: chatMessagingUiDecision["action"] = "commit";
+  if (reasons.includes("version-mismatch")) action = "restore-focus";
+  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "clamp-layout";
+  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "defer-expensive-work";
+
+  return {
+    accepted: reasons.length === 0,
+    action,
+    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
+    reasons,
+    audit: [
+      "topic:Chat Messaging UI",
+      "subcategory:component-level-ui-patterns",
+      "entity:interactive widget event",
+      "state:focus and layout state",
+      "operation:user interaction commit",
+      "invariant:" + topicInvariant,
+      "actor:" + event.actorId,
+      "event:" + event.id,
+    ],
+  };
 }
 
-/**
- * Detects gaps in message sequence (missing messages between known IDs).
- */
-export function detectMessageGaps(
-  messages: Array<{ id: string; sequenceNumber: number }>,
-  expectedTotal: number,
-): { hasGaps: boolean; missingSequences: number[] } {
-  if (messages.length === 0) return { hasGaps: true, missingSequences: [] };
+export function runChatMessagingUiContractScenario() {
+  const base = Date.parse("2026-05-29T09:00:00.000Z");
+  const accepted = evaluateChatMessagingUiEvent({
+    id: "chat-messaging-ui-evt-1",
+    topic: "chat-messaging-ui",
+    actorId: "user-42",
+    sequence: 7,
+    receivedAtMs: base,
+    expectedVersion: 12,
+    currentVersion: 12,
+    payloadSize: 18_500,
+    signal: { frameCostMs: 180, focusDrift: 0, layoutShiftPx: 0.01, pointerCancelCount: 1 },
+  });
 
-  const sequences = messages.map((m) => m.sequenceNumber).sort((a, b) => a - b);
-  const missing: number[] = [];
+  const guarded = evaluateChatMessagingUiEvent({
+    id: "chat-messaging-ui-evt-late",
+    topic: "chat-messaging-ui",
+    actorId: "user-42",
+    sequence: 8,
+    receivedAtMs: base + 4_000,
+    expectedVersion: 12,
+    currentVersion: 14,
+    payloadSize: 310_000,
+    signal: { frameCostMs: 2_700, focusDrift: 3, layoutShiftPx: 0.34, pointerCancelCount: 2 },
+  });
 
-  for (let i = 1; i < sequences.length; i++) {
-    const expected = sequences[i - 1] + 1;
-    if (sequences[i] !== expected) {
-      for (let j = expected; j < sequences[i]; j++) {
-        missing.push(j);
-      }
-    }
-  }
-
-  return { hasGaps: missing.length > 0, missingSequences: missing };
+  return { accepted, guarded };
 }

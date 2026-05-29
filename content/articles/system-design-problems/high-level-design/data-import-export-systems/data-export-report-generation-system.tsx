@@ -8,14 +8,14 @@ const metadata = {
   id: "article-hld-data-export-report-generation-system",
   title: "Design a Data Export / Report Generation System",
   description:
-    "Staff-level design of an async data export pipeline: cursor-paginated reads from OLAP/replicas, S3 multipart streaming render (CSV/Excel/PDF/Parquet), presigned download URLs, scheduled report cron, and delivery semantics.",
+    "Principal-level design of an async export and report-generation pipeline with governed requests, cursor reads, streaming renderers, object storage delivery, scheduled jobs, and audit controls.",
   category: "high-level-design",
   subcategory: "data-import-export-systems",
   slug: "data-export-report-generation-system",
-  wordCount: 5000,
-  readingTime: 18,
-  lastUpdated: "2026-05-14",
-  readTime: "18 min read",
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
+  readTime: "32 min read",
   difficulty: "Advanced",
   tags: ["Export Pipeline", "S3 Multipart", "OLAP", "Cursor Pagination", "Presigned URL"],
 };
@@ -24,492 +24,251 @@ export default function DataExportReportGenerationSystem() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          A data export system sounds simple on the surface: the user picks a
-          filter, presses Export, and receives a file. The engineering challenges
-          emerge at scale. A naïve implementation queries the primary database
-          synchronously, holds the entire result set in memory, serialises it to
-          CSV, and returns it as a large HTTP response. This breaks in multiple
-          ways: the query holds a long-lived transaction lock on the primary DB,
-          the API server runs out of memory for result sets beyond a few thousand
-          rows, the HTTP connection times out for large exports, and the file is
-          gone the moment the response is delivered (no retry).
-        </HighlightBlock>
-        <p>Clarify scope with the interviewer:</p>
-        <ul>
-          <li>
-            <strong>Output formats:</strong> CSV, Excel (.xlsx), PDF, Parquet?
-            Each has a different renderer and file-size profile.
-          </li>
-          <li>
-            <strong>Dataset size:</strong> Thousands of rows (dashboard widget
-            export) vs. millions of rows (full-table dump)?
-          </li>
-          <li>
-            <strong>Latency:</strong> Synchronous (client waits &lt;5 s) for small
-            exports, async job for anything larger?
-          </li>
-          <li>
-            <strong>Scheduling:</strong> One-off on demand, or recurring (daily /
-            weekly reports sent by email)?
-          </li>
-          <li>
-            <strong>Security:</strong> Who can export what data? Is the export
-            tenant-scoped? Are PII fields masked or redacted?
-          </li>
-          <li>
-            <strong>File retention:</strong> How long is the download link valid?
-            How long is the file kept in storage?
-          </li>
-        </ul>
+        <h2>Definition &amp; Context</h2>
         <p>
-          For this design: CSV / Excel / Parquet output; up to 10 M rows per
-          export; async job for anything &gt;1,000 rows; scheduled recurring
-          exports via cron; presigned S3 download links valid 15 minutes; 7-day
-          S3 lifecycle retention; tenant-scoped with PII masking rules.
+          A data export and report-generation system lets users create CSV, Excel, PDF, Parquet, or scheduled reports from filtered product data. It is used for finance reports, customer exports, compliance evidence, analytics extracts, operational snapshots, and scheduled executive reporting.
+        </p>
+        <HighlightBlock as="p" tier="crucial">
+          Large exports should be asynchronous jobs, not long HTTP responses. The API should accept export intent, validate permissions, enqueue work, stream output to durable storage, and return a secure download link when the file is ready.
+        </HighlightBlock>
+        <p>
+          Exports are high-risk because they move data out of the application boundary. A design that focuses only on file generation misses the main concerns: permission recheck, row-level security, masking, quotas, audit trails, download expiration, scheduled delivery, and operational cost.
+        </p>
+        <p>
+          Interviewers usually probe how to avoid primary database load, how to stream huge results without memory blowups, how to handle failed jobs, how to secure downloads, and how to support scheduled recurring reports without bypassing current permissions.
         </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3>Functional</h3>
-        <ul>
-          <li>
-            Client submits export parameters (report type, filters, column list,
-            format) and receives a <code>jobId</code> immediately (HTTP 202).
-          </li>
-          <li>
-            Worker fetches data from a read replica or OLAP store, renders to the
-            requested format, and streams the result to S3 using multipart upload.
-          </li>
-          <li>
-            Client polls or subscribes via SSE for job status (% rows fetched).
-          </li>
-          <li>
-            On completion the client receives a presigned S3 URL (15-minute TTL)
-            for direct download, and an email with the link.
-          </li>
-          <li>
-            Recurring exports are triggered by a cron scheduler and re-use the
-            same job pipeline.
-          </li>
-          <li>Files are deleted after 7 days via S3 lifecycle policy.</li>
-        </ul>
-        <h3>Non-functional</h3>
-        <ul>
-          <li>
-            <strong>Throughput:</strong> 100 K rows / minute per worker;
-            10 M-row export completes in &lt;100 minutes.
-          </li>
-          <li>
-            <strong>Memory:</strong> O(1) — worker memory is bounded by page size
-            (10 K rows), not export size.
-          </li>
-          <li>
-            <strong>Source isolation:</strong> Queries target read replicas or
-            OLAP stores, never the primary write database.
-          </li>
-          <li>
-            <strong>Reliability:</strong> Failed export jobs are retried up to 3
-            times from the last flushed S3 part.
-          </li>
-          <li>
-            <strong>Security:</strong> Presigned URL binds to the requesting
-            tenant; ownership verified before URL generation.
-          </li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          An export request captures report type, filters, selected columns, format, requester, tenant, permission context, and delivery mode. The request is validated immediately, but execution happens in workers. The API returns a job id and status endpoint quickly.
+        </p>
+        <p>
+          The data reader should page through results using cursor pagination, source-specific streaming, or warehouse export primitives. It should avoid loading the whole result set into memory. For OLTP systems, exports should read from replicas or analytical stores rather than the primary transactional database.
+        </p>
+        <HighlightBlock as="p" tier="important">
+          The renderer should stream output. CSV and JSONL are naturally streamable. Parquet can be written in row groups. Excel is harder because workbook structures can be memory-heavy. PDF report generation is a separate rendering path that usually uses dashboard snapshots or server-side HTML rendering.
+        </HighlightBlock>
+        <p>
+          Object storage is the delivery boundary. Workers write generated files to storage, then the API creates short-lived signed download URLs after rechecking access. The file can survive browser refreshes, worker retries, and email delivery.
+        </p>
+        <p>
+          Scheduled reports store a report template and schedule, not a static permission grant. At each scheduled run, the system should re-resolve permissions, row-level security, recipients, filters, and masking policies. A user losing access should stop receiving future reports.
+        </p>
+        <p>
+          Audit logs are mandatory for sensitive exports. Record who requested the export, which tenant, which filters, selected columns, row counts, masking policy, generated file, download events, recipients, and expiration.
+        </p>
+        <p>
+          A principal-level export design distinguishes report generation from data extraction. Data extraction answers what rows are allowed for this actor at this point in time. Report generation answers how those rows should be transformed, aggregated, formatted, and delivered. Mixing the two leads to brittle systems where a PDF renderer has to understand authorization or where a query service has to understand page layout. Strong designs create a permissioned snapshot or cursor plan first, then pass a bounded, auditable dataset into format-specific renderers.
+        </p>
+        <p>
+          Exports also have product semantics. A financial statement may need point-in-time repeatability, exact totals, and legal retention. A dashboard CSV may tolerate slightly stale warehouse data. A customer support export may need masking and reason codes. These semantics should be captured in the export job definition rather than buried in renderer-specific code.
+        </p>
+        <p>
+          Data classification is part of export intent. The same user may be allowed to view a dashboard but not download raw underlying rows; a support engineer may be allowed to export a single customer&apos;s audit history but not all customers in a segment. Export jobs should record dataset classification, selected columns, masking policy, legal basis or business reason when required, and whether the result leaves the tenant boundary through email or external storage.
+        </p>
+        <p>
+          Report templates need versioning. A scheduled board report, regulatory export, or finance reconciliation file may need to reproduce the exact column order, filters, formulas, and layout used at a previous date. If template changes overwrite old definitions in place, historical reports become impossible to explain. The design should version templates and link each generated file to the template version and data snapshot used.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Design</h2>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has five planes. The request plane validates export intent and creates jobs. The queue plane schedules work and handles retries. The execution plane reads data and renders files. The delivery plane stores files and issues signed URLs or emails. The governance plane enforces permissions, masking, quotas, retention, and audit.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/data-import-export-systems/data-export-report-generation-system.svg"
-          alt="Data Export / Report Generation System sequence diagram"
-          caption="Async job → cursor-paginated OLAP query → streaming S3 multipart render → presigned delivery"
+          alt="Data export and report generation architecture with API, job queue, workers, cursor reads, renderers, object storage, signed URLs, scheduled reports, and audit."
+          caption="Data export is an asynchronous governed pipeline: validate request, enqueue work, stream data through a renderer, write to storage, and deliver through expiring links or schedules."
         />
-        <p>The pipeline has four stages:</p>
-        <ol>
-          <HighlightBlock as="li" tier="important">
-            <strong>Job creation:</strong> The Export API validates the request,
-            estimates row count to enforce quotas, creates a job record, enqueues
-            to a worker queue, and returns HTTP 202 with the jobId.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Data fetch:</strong> An Export Worker opens a server-side
-            cursor on the read replica, fetching pages of 10,000 rows. Each page
-            is streamed into a format renderer without buffering the full result.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Streaming write:</strong> The renderer flushes to an S3
-            multipart upload every 5 MB (one S3 part). The cursor loop continues
-            until the DB returns zero rows, at which point the worker calls S3
-            CompleteMultipartUpload.
-          </HighlightBlock>
-          <li>
-            <strong>Delivery:</strong> The API generates a presigned S3 URL on
-            demand. An email is sent on job completion. Scheduled exports run
-            through the identical pipeline triggered by a cron service.
-          </li>
-        </ol>
+        <p>
+          The user submits an export request. The API validates permission, format, selected columns, filter scope, expected size, and quota. It records an export job and enqueues a message. The worker claims the job, resolves a snapshot of the query and policy, then streams rows from the chosen data source.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-import-export-systems/data-export-streaming-flow.svg"
+          alt="Export streaming flow with cursor reads, batch processing, format renderer, multipart object storage upload, progress events, and retry-safe job state."
+          caption="Streaming exports keep memory bounded by reading pages, rendering chunks, uploading parts, and checkpointing progress instead of materializing the full file."
+        />
+        <p>
+          Progress is emitted after meaningful checkpoints such as rows read, bytes written, parts uploaded, or render stage completed. On success, the worker marks the job ready and records file metadata. On failure, it records error class, retryability, and safe diagnostic information. Users can poll the job status or subscribe to progress events.
+        </p>
+        <p>
+          Download is a separate permissioned action. When a user requests the file, the API verifies that the user can still access the export, then issues a short-lived signed URL or streams the object through an authenticated proxy. For scheduled email delivery, the system sends links with expiration rather than attaching huge files when possible.
+        </p>
+        <p>
+          Large exports should be generated through streaming pipelines rather than loading all rows into application memory. The query layer emits pages or partitions, the transformation layer applies masking and formatting incrementally, and the renderer writes chunks to temporary storage. The job coordinator tracks checkpoints so a worker failure restarts from the last safe partition rather than beginning the entire export again.
+        </p>
+        <p>
+          For repeatability, some export types need an explicit snapshot contract. A compliance report should be reproducible from a recorded data version, warehouse partition, or query timestamp. An operational CSV may be allowed to reflect latest data at execution time. The export job should record which consistency model it used because support, finance, and auditors will ask why a regenerated report differs from the original.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/data-import-export-systems/data-export-scheduled-delivery.svg"
+          alt="Scheduled report delivery with cron scheduler, permission recheck, template execution, report rendering, recipients, signed links, and audit trail."
+          caption="Scheduled reports re-enter the same export pipeline and recheck permissions at run time, preventing stale schedules from bypassing access controls."
+        />
+        <p>
+          Privacy and legal workflows often attach to exports. A subject access request, retention export, or audit evidence package may require approval, immutable tracking, customer-specific scoping, and deletion after a policy-defined window. The export system should support approval gates and case identifiers without special one-off scripts. This is a common principal-interview gap: candidates design the file pipeline but not the governance workflow around the file.
+        </p>
+        <p>
+          Delivery should be policy-driven. Some exports are safe to deliver through a short-lived link in the application. Others require password-protected archives, secure mailbox delivery, customer-managed storage destinations, watermarking, or no email delivery at all. The architecture should let product and compliance teams define delivery rules by data classification and tenant policy rather than embedding delivery behavior in each report type.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3>Export Job Creation</h3>
+        <h2>Trade offs &amp; Comparison</h2>
         <p>
-          The client calls <code>POST /exports</code> with:
+          Direct synchronous download is simple for small exports and should remain available for bounded result sets. It becomes unreliable for large exports because of timeouts, memory pressure, and retry limitations. Async export adds operational complexity but supports large data, progress, retries, and durable delivery.
         </p>
-        <ul>
-          <li>
-            <code>reportType</code> — a named report template (e.g.,{" "}
-            <code>orders_by_date</code>, <code>user_activity</code>) or a custom
-            query builder spec.
-          </li>
-          <li>
-            <code>filters</code> — date ranges, status enums, tenant-scoped IDs.
-          </li>
-          <li>
-            <code>columns</code> — ordered list of fields to include; unlisted
-            fields are excluded (including PII fields unless the caller has
-            explicit permission).
-          </li>
-          <li>
-            <code>format</code> — <code>csv</code>, <code>xlsx</code>,{" "}
-            <code>parquet</code>.
-          </li>
-        </ul>
-        <p>The API server:</p>
-        <ol>
-          <li>
-            Authorises the request: the caller must own the tenantId and have the{" "}
-            <code>exports:create</code> permission. PII columns are cross-checked
-            against a field-level permissions table.
-          </li>
-          <li>
-            Estimates row count by running a <code>SELECT COUNT(*)</code> with the
-            same filters on the OLAP store (cheap because OLAP maintains
-            pre-aggregated statistics). Rejects if estimated count exceeds the
-            tenant&rsquo;s export quota (default: 10 M rows / day).
-          </li>
-          <li>
-            Creates a job record: <code>status=queued</code>,{" "}
-            <code>estimatedRows</code>, <code>format</code>,{" "}
-            <code>requestedBy</code>, <code>createdAt</code>.
-          </li>
-          <li>
-            Enqueues a message to the export worker queue containing the jobId and
-            a serialised query spec.
-          </li>
-          <li>
-            Returns HTTP 202 <code>&#123;"jobId":"...","statusUrl":"/exports/...&#125;</code>.
-          </li>
-        </ol>
-
-        <h3>Read Source: Read Replica vs. OLAP</h3>
+        <p>
+          CSV is universal and streamable but loses type information and formatting. Excel is user-friendly but has row limits and higher renderer memory risk. Parquet is efficient for analytical reuse but less accessible to business users. PDF is good for presentation snapshots but poor for downstream data analysis.
+        </p>
         <HighlightBlock as="p" tier="important">
-          Small exports (&lt;500 K rows, &lt;10 filters) run against the
-          PostgreSQL read replica. Large or complex exports (window functions, many
-          joins, aggregations) target a dedicated OLAP store (e.g., ClickHouse,
-          BigQuery, Redshift). The routing decision is made at job creation time
-          based on the report type's metadata configuration.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Using a read replica / OLAP instead of the primary write database is
-          non-negotiable: a 10 M-row scan with a long-held cursor would block
-          autovacuum, autanalyze, and replication on a primary under write load.
-          The replica adds at most a few seconds of replication lag, which is
-          acceptable for export use cases.
-        </HighlightBlock>
-
-        <h3>Cursor-Paginated Query</h3>
-        <HighlightBlock as="p" tier="important">
-          The worker issues a keyset-paginated query rather than OFFSET-based
-          pagination. OFFSET becomes progressively slower as the offset grows
-          because the DB must scan and discard all preceding rows. Keyset
-          pagination is O(log n) per page:
-        </HighlightBlock>
-        <ul>
-          <li>
-            First page:{" "}
-            <code>SELECT … WHERE tenant_id=$1 AND created_at &gt;= $2 ORDER BY id LIMIT 10000</code>
-          </li>
-          <li>
-            Subsequent pages:{" "}
-            <code>SELECT … WHERE tenant_id=$1 AND created_at &gt;= $2 AND id &gt; &#123;lastId&#125; ORDER BY id LIMIT 10000</code>
-          </li>
-        </ul>
-        <HighlightBlock as="p" tier="important">
-          The cursor value (<code>lastId</code>) is the max ID from the last page.
-          The worker stores the cursor in the job record after every page flush so
-          that retries can resume mid-export.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          For PostgreSQL the worker can also use a server-side cursor (
-          <code>DECLARE my_cursor CURSOR FOR SELECT …; FETCH 10000 FROM my_cursor</code>
-          ) within a single transaction, which avoids re-running the query
-          predicate per page. The trade-off: the transaction holds a snapshot for
-          its duration, which prevents autovacuum from reclaiming dead tuples
-          generated during the export. For very long exports (&gt;30 minutes)
-          keyset pagination is safer.
-        </HighlightBlock>
-
-        <h3>Streaming Format Renderers</h3>
-        <p>
-          Each page of rows flows through a format-specific renderer:
-        </p>
-        <ul>
-          <HighlightBlock as="li" tier="important">
-            <strong>CSV:</strong> Rows are serialised line-by-line. The renderer
-            writes directly to a stream backed by the S3 multipart upload buffer.
-            No intermediate file is created. Header row is written on the first
-            page only.
-          </HighlightBlock>
-          <li>
-            <strong>Excel (.xlsx):</strong> ExcelJS streaming writer appends rows
-            to an in-progress worksheet backed by the same S3 stream. The XLSX
-            format requires a ZIP container, so ExcelJS buffers the current sheet
-            XML chunk (not the full workbook) per page. Excel is limited to ~1 M
-            rows per sheet; for larger exports the worker creates multiple sheets
-            or rejects the format in favour of CSV.
-          </li>
-          <li>
-            <strong>Parquet:</strong> Apache Arrow / parquet-wasm writer appends
-            row groups (default 100 K rows = one row group). Parquet is the most
-            space-efficient format (columnar + Snappy compression) and ideal for
-            data-warehouse consumers.
-          </li>
-        </ul>
-        <p>
-          The renderer flushes to S3 when its internal buffer exceeds 5 MB. This
-          creates one S3 part per flush. S3 multipart upload requires a minimum
-          part size of 5 MB (except the last part), so this aligns perfectly.
-        </p>
-
-        <h3>S3 Multipart Upload Lifecycle</h3>
-        <HighlightBlock as="p" tier="important">
-          The worker initiates a multipart upload at job start, receiving an
-          <code>uploadId</code>. It stores the uploadId in the job record. For
-          each 5 MB flush the worker calls <code>UploadPart</code> and records the{" "}
-          <code>PartNumber</code> and <code>ETag</code> in the job&rsquo;s part
-          manifest (stored in Redis or the job record as a JSON array). On
-          completion it calls <code>CompleteMultipartUpload</code> with the full
-          part manifest.
+          Exporting raw rows is more sensitive than exporting chart images or aggregated reports. The product should apply stricter permissions, masking, quotas, and audit controls to raw data exports.
         </HighlightBlock>
         <p>
-          If the worker crashes after uploading some parts, it resumes by:
-        </p>
-        <ol>
-          <li>Reading the last cursor value and part manifest from the job record.</li>
-          <li>
-            Re-initiating the same uploadId (or starting a new multipart upload if
-            the uploadId expired—S3 TTL is 7 days).
-          </li>
-          <li>
-            If reusing the uploadId: re-uploading only the parts after the last
-            flushed part by re-querying from the stored cursor.
-          </li>
-          <li>Completing the upload after all parts are re-uploaded.</li>
-        </ol>
-
-        <h3>Job Status and SSE Progress</h3>
-        <p>
-          The worker publishes progress events to a Redis channel{" "}
-          <code>export:&#123;jobId&#125;</code> after every page commit. Each
-          event contains:
-        </p>
-        <ul>
-          <li>
-            <code>fetchedRows</code> — cumulative rows read from DB so far.
-          </li>
-          <li>
-            <code>estimatedRows</code> — from the job record (approximate).
-          </li>
-          <li>
-            <code>s3PartsUploaded</code> — number of S3 parts completed.
-          </li>
-        </ul>
-        <HighlightBlock as="p" tier="important">
-          The Export API subscribes to the channel and forwards events to SSE
-          clients connected to{" "}
-          <code>GET /exports/&#123;jobId&#125;/events</code>. A 60-second
-          Last-Event-ID replay buffer handles reconnects.
-        </HighlightBlock>
-
-        <h3>Download and Presigned URL</h3>
-        <HighlightBlock as="p" tier="important">
-          On job completion the worker stores the S3 key in{" "}
-          <code>jobs.s3_key</code> and sets <code>status=ready</code>. The client
-          calls <code>GET /exports/&#123;jobId&#125;/download</code>. The API
-          server verifies that the requesting user owns the job (or has admin
-          access), then calls S3{" "}
-          <code>GeneratePresignedUrl(GetObject, TTL=15m)</code> and returns an
-          HTTP 302 redirect to the presigned URL.
-        </HighlightBlock>
-        <p>
-          The 15-minute TTL is intentionally short to prevent link sharing and to
-          limit exposure if the link leaks. If the user needs more download
-          attempts, they simply call the download endpoint again to get a fresh
-          presigned URL (the S3 object is still live for 7 days).
+          Reading from replicas protects the primary database but can return stale data. Reading from warehouses scales better for large exports but may not include the newest writes. The UI should show export freshness and source clearly when users rely on reports for decisions.
         </p>
         <p>
-          For very large files (&gt;1 GB) the client should use an HTTP client
-          that supports range requests so the download can be resumed if the
-          connection drops. The presigned URL supports this natively (S3 allows{" "}
-          <code>Range</code> headers on presigned GET URLs).
+          Signed URLs are efficient and cheap but can be forwarded unless scoped carefully and expired quickly. Authenticated proxy downloads provide stronger access checks at download time but consume application bandwidth.
         </p>
-
-        <h3>Scheduled Exports (Cron Pipeline)</h3>
         <p>
-          Recurring reports (daily sales summary, weekly active users) are
-          configured as schedule definitions stored in a{" "}
-          <code>scheduled_exports</code> table:
+          Scheduled reports improve operational workflows but create governance risk. The system must recheck recipient permissions and data scope on every run, and it must stop schedules owned by disabled users or removed roles.
         </p>
-        <ul>
-          <li>
-            <code>cron_expression</code> — standard cron (e.g.,{" "}
-            <code>0 8 * * 1</code> = Monday 08:00 UTC).
-          </li>
-          <li>
-            <code>report_template_id</code> — references a report type with
-            pre-defined filters, columns, and format.
-          </li>
-          <li>
-            <code>delivery</code> — email list or webhook URL for delivery.
-          </li>
-        </ul>
-        <HighlightBlock as="p" tier="important">
-          A cron service (Kubernetes CronJob or a scheduler embedded in the
-          orchestrator) evaluates due schedules every minute. For each due
-          schedule it issues a <code>POST /exports</code> with the template
-          parameters, creating a normal async export job. The delivery config is
-          attached to the job so the notification service knows where to send the
-          finished file link.
-        </HighlightBlock>
         <p>
-          This design means scheduled exports have identical reliability and
-          monitoring characteristics as on-demand exports—there is no separate
-          code path to maintain.
+          Download authorization has a subtle trade-off. Embedding all authorization in a signed URL is fast, but a leaked URL may remain valid until expiry. Re-checking permission through an application endpoint on every download is safer, but adds latency and operational dependency. For sensitive exports, short-lived signed URLs minted only after an application permission check are a reasonable balance.
         </p>
-
-        <h3>PII Masking</h3>
-        <HighlightBlock as="p" tier="important">
-          Field-level permissions are configured per report type. When the worker
-          generates the SELECT query, it applies masking transformations at the
-          DB query level rather than in application code:
-        </HighlightBlock>
-        <ul>
-          <li>
-            <code>email</code> → <code>CONCAT(LEFT(email, 2), '***@', SPLIT_PART(email, '@', 2))</code>
-          </li>
-          <li>
-            <code>phone</code> → <code>CONCAT('***-***-', RIGHT(phone, 4))</code>
-          </li>
-          <li>
-            Entirely restricted columns are omitted from the SELECT list rather
-            than returned and masked in application code (defence in depth: the
-            raw value never leaves the DB).
-          </li>
-        </ul>
-
-        <h3>Quota and Rate Limiting</h3>
         <p>
-          Tenants are limited by:
+          Precomputing reports improves latency and reduces database load, but it can leak stale or unauthorized data if permissions or data visibility change after the report is generated. On-demand generation is fresher and safer but more expensive. Mature systems support both: precompute common aggregate reports with freshness labels, and generate sensitive user-scoped exports on demand.
         </p>
-        <ul>
-          <HighlightBlock as="li" tier="important">
-            <strong>Concurrency:</strong> Maximum 2 simultaneous export jobs per
-            tenant. Excess requests receive HTTP 429 with a{" "}
-            <code>Retry-After</code> header.
-          </HighlightBlock>
-          <li>
-            <strong>Daily row quota:</strong> Redis counter incremented at job
-            creation based on estimated row count. Resets at midnight UTC. Exact
-            row count is reconciled post-completion.
-          </li>
-          <li>
-            <strong>File size:</strong> S3 object size limit checked post-upload;
-            jobs that produce &gt;5 GB are terminated and the user is directed to
-            use Parquet format or narrow the filter range.
-          </li>
-        </ul>
+        <p>
+          Renderer choice changes correctness risk. CSV output is mostly about escaping, delimiter safety, and formula injection prevention. Excel output needs sheet limits, cell typing, formatting, and protection against formulas that execute when opened. PDF output needs layout fidelity, pagination, fonts, and accessibility. Treating every format as a thin serialization target underestimates the operational work of making reports trustworthy.
+        </p>
+        <p>
+          Snapshot isolation has a cost trade-off. Strong repeatability may require database snapshots, warehouse time travel, materialized intermediate tables, or object-storage manifests. Those choices cost storage and can delay generation, but they give support and auditors a stable answer. For exploratory exports, latest-available data with a freshness label may be enough. The interview answer should tie consistency level to report purpose.
+        </p>
+        <p>
+          Approval workflows also trade speed for control. A sales manager may expect immediate exports, while compliance may require manager approval for high-volume personal-data exports. A mature system applies approval only when risk justifies it, based on row count, selected columns, recipient domain, data classification, and actor role. Blanket approval requirements make the product unusable; no approvals make sensitive exfiltration too easy.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Alternatives</h2>
-        <h3>Synchronous Small-File Exports</h3>
-        <HighlightBlock as="p" tier="important">
-          For exports under 1,000 rows (e.g., a filtered dashboard widget with
-          visible rows) a synchronous response (direct file attachment) is
-          acceptable and simpler for the client. The two approaches can coexist:
-          the API checks <code>estimatedRows &lt;= 1000</code> and, if true, runs
-          the query inline and returns a streaming HTTP response with{" "}
-          <code>Content-Disposition: attachment</code>. The async pipeline is
-          used only for larger exports. This avoids creating job records and
-          polling complexity for the majority of export interactions.
-        </HighlightBlock>
-
-        <h3>Pre-rendered Cached Reports vs. On-demand</h3>
-        <HighlightBlock as="p" tier="important">
-          For popular recurring reports (e.g., the same daily summary queried by
-          every user), pre-rendering the report once and caching the S3 object
-          eliminates redundant DB queries. The trade-off: pre-rendered reports are
-          point-in-time snapshots that may be stale. The cache key must incorporate
-          all filter parameters and the report generation timestamp. For
-          tenant-specific reports with unique filters, pre-rendering is rarely
-          beneficial.
-        </HighlightBlock>
-
-        <h3>OFFSET Pagination vs. Keyset Pagination</h3>
-        <HighlightBlock as="p" tier="important">
-          OFFSET pagination is easy to implement but slow at large offsets:
-          fetching page 10,000 at 10 K rows/page means skipping 100 M rows. For
-          a 10 M-row export this is catastrophic. Keyset pagination using a
-          monotonically increasing ID has O(log n) cost per page (index seek).
-          The constraint: the data must be sortable by a stable key, and the
-          export cannot interleave inserts between pages (which is acceptable for
-          exports that represent a point-in-time snapshot).
-        </HighlightBlock>
-
-        <h3>Excel vs. CSV for Large Exports</h3>
-        <HighlightBlock as="p" tier="important">
-          Excel has a hard row limit of 1,048,576 rows per sheet. For exports
-          beyond this, either split across multiple sheets (complex, confusing for
-          users) or reject Excel and suggest CSV or Parquet. Parquet is superior
-          for analytics consumers (BI tools, data lakes) but not human-readable.
-          CSV is universally compatible and trivially resumable. The best default
-          for large bulk exports is CSV or Parquet; Excel should be limited to
-          &lt;500 K rows.
-        </HighlightBlock>
-
-        <h3>Spark for Massive Exports</h3>
-        <HighlightBlock as="p" tier="important">
-          For exports &gt;100 M rows the single-worker streaming approach with a
-          cursor becomes a bottleneck (hours). Apache Spark can partition the
-          source table by ID range and generate Parquet part files in parallel
-          across many executors. The resulting Parquet dataset can be zipped or
-          provided as a manifest of S3 part URIs. The trade-off: Spark cluster
-          startup overhead (~2–5 minutes) makes it impractical for interactive
-          exports; it is appropriate only for large scheduled data dumps.
-        </HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Cap synchronous exports and route larger requests to async jobs. Make the threshold explicit and based on estimated rows, file size, format, and source cost.
+        </p>
+        <p>
+          Stream both input rows and output bytes. Use cursor reads, warehouse export APIs, or server-side cursors where appropriate, and write files incrementally to storage.
+        </p>
+        <p>
+          Treat generated files as sensitive artifacts. Apply expiration by default, encrypt at rest, scope storage paths by tenant, tag files with data classification, and capture access audit records. If exports include personal data, the system should support deletion workflows and retention policies that align with privacy commitments.
+        </p>
+        <p>
+          Apply permission, row-level-security, and masking policies at request time and execution time. Scheduled reports and delayed jobs should not rely only on the requester&apos;s original access.
+        </p>
+        <p>
+          Use quotas. Limit concurrent exports per tenant, rows per export, scheduled report frequency, retained files, and download count. Exports are easy to abuse accidentally.
+        </p>
+        <p>
+          Make progress and failure actionable. Show queued, running, rendering, uploading, ready, failed, expired, or cancelled states, along with safe error categories rather than internal stack traces.
+        </p>
+        <p>
+          Retain files for a bounded time and clean them automatically. Sensitive exports should have short retention and download expiration by default.
+        </p>
+        <p>
+          Defend against spreadsheet injection. Any field that begins with formula-like prefixes should be escaped or neutralized for CSV and Excel exports unless the product explicitly supports formulas. This matters in system design interviews because exports often cross from a web application into desktop tools where the threat model changes.
+        </p>
+        <p>
+          Make exported files self-describing. Include generated-at time, data freshness, filters, tenant or account scope, column definitions, masking status, report template version, and job id where the format supports it. This metadata reduces support ambiguity when a file is forwarded, compared, or re-opened weeks later.
+        </p>
+        <p>
+          Use separate capacity controls for interactive and scheduled exports. A large nightly scheduled report should not starve an administrator trying to export a small urgent CSV. Queues can be partitioned by tenant, priority, data source, and report class, with admission control before expensive warehouse queries begin.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">
-          A scalable data export system is built on three principles: never block
-          the primary write path, never buffer the full result set in memory, and
-          never lose partially-completed work. The design achieves this through
-          async job processing, cursor-paginated reads from read replicas or OLAP
-          stores, streaming S3 multipart upload with per-page checkpointing, and
-          presigned URL delivery with short TTLs. Scheduled exports are first-class
-          citizens that re-use the same pipeline, eliminating dual code paths.
-          At staff level, the interview insight is that export systems impose
-          unique read pressure—a single large export can pin a DB connection for
-          hours—so isolating exports to dedicated read infrastructure is
-          architecturally mandatory, not a nice-to-have optimisation.
-        </HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is querying the primary database with a long-running export. This can affect normal product traffic. Large exports should use replicas, warehouses, snapshots, or read-optimized stores.
+        </p>
+        <p>
+          Another pitfall is building the entire file in memory. This fails for large files and creates unpredictable memory pressure. Renderers should stream.
+        </p>
+        <p>
+          Scheduled reports can become permission bypasses if recipient access is not rechecked on every run. Access changes must affect future deliveries.
+        </p>
+        <p>
+          Presigned URLs with long lifetimes increase leakage risk. Use short expirations, audit download events, and prefer authenticated proxy downloads for highly sensitive data.
+        </p>
+        <p>
+          Export systems often forget cancellation. Users should be able to cancel queued or running jobs where the worker can stop safely.
+        </p>
+        <p>
+          Another pitfall is treating scheduled report recipients as static strings. Recipients can lose access, leave the company, change roles, or point to distribution lists with unknown membership. The scheduler should resolve and validate recipient authorization at each run, not only when the schedule is created.
+        </p>
+        <p>
+          Teams also overlook downstream copies. Once a file is generated, it may be downloaded, emailed, attached to tickets, or uploaded to external storage. The export system cannot fully control every copy, but it can reduce risk through short retention, watermarking, audit trails, classification labels, and least-privilege delivery choices.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Finance teams export monthly revenue, invoices, payments, and reconciliation reports. These require correctness, repeatability, audit, and clear freshness.
+        </p>
+        <p>
+          Customer success teams export account usage, health scores, renewal data, and support history. Row-level security and recipient control matter because these datasets are customer-sensitive.
+        </p>
+        <p>
+          Data teams export analytical datasets to object storage in columnar formats for downstream processing. Parquet and partitioned output are useful here.
+        </p>
+        <p>
+          Compliance teams generate evidence packages and scheduled reports. These require immutable job history, masking policies, retention limits, and traceable delivery.
+        </p>
+        <p>
+          Customer-facing SaaS products use exports as a trust feature. Enterprise customers expect admins to export audit logs, access reviews, billing records, and configuration snapshots. Those exports must be permissioned, repeatable, and auditable because customers may use them for their own compliance evidence.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you design large exports without timing out?</h3>
+        <p>
+          I would accept the request, validate permissions and size, create a durable job, enqueue it, and let workers stream rows from a read-optimized source into a format renderer. The renderer writes incrementally to object storage. The user tracks progress and downloads through a short-lived signed link when ready.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">2. How do you keep memory bounded?</h3>
+        <p>
+          Use cursor or streaming reads and write output incrementally. CSV and JSONL can flush rows continuously. Parquet writes row groups. Large uploads to object storage should use multipart upload. Avoid accumulating all rows or the full file in application memory.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">3. How do you secure exports?</h3>
+        <p>
+          Reuse the same permission and row-level-security logic as the UI, apply column masking, enforce quotas, audit request and download events, use short-lived download links, and recheck access when the file is downloaded or delivered. Scheduled reports must recheck access on every run.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">4. How would you support scheduled reports?</h3>
+        <p>
+          Store a schedule, report template, filters, recipients, owner, and delivery policy. A scheduler creates normal export jobs at due times. The job revalidates permissions and recipient scope, generates the file, sends expiring links, and records audit events. Disabled owners or unauthorized recipients stop future delivery.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">5. What failures should the job model represent?</h3>
+        <p>
+          The model should distinguish queued, running, rendering, uploading, ready, cancelled, expired, retrying, failed retryable, and failed permanent. It should record safe error categories, retry count, worker heartbeat, and enough progress to avoid confusing users.
+        </p>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">6. What would you monitor?</h3>
+        <p>
+          Monitor queue age, export duration, rows per second, renderer errors, object-storage upload failures, file size, download success, scheduled delivery failures, quota rejections, source query latency, retry rate, and sensitive export volume by tenant and actor.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html" target="_blank" rel="noreferrer">AWS S3: Multipart Upload Overview</a></li>
+          <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html" target="_blank" rel="noreferrer">AWS S3: Sharing Objects with Presigned URLs</a></li>
+          <li><a href="https://arrow.apache.org/docs/" target="_blank" rel="noreferrer">Apache Arrow Documentation</a></li>
+          <li><a href="https://parquet.apache.org/docs/" target="_blank" rel="noreferrer">Apache Parquet Documentation</a></li>
+          <li><a href="https://pptr.dev/" target="_blank" rel="noreferrer">Puppeteer Documentation</a></li>
+          <li><a href="https://cloud.google.com/bigquery/docs/exporting-data" target="_blank" rel="noreferrer">BigQuery: Exporting Data</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

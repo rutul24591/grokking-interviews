@@ -1,1 +1,5 @@
-# Design a location-based recommendation system — Example 3
+# Location Based Recommendation System - Example 3
+
+Concrete geospatial edge-case recovery example.
+
+Inspect `core.ts` for topic-specific entities, telemetry, validation, and operational behavior.

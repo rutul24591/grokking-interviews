@@ -9,14 +9,14 @@ export const metadata: ArticleMetadata = {
   id: "article-hld-cicd-dashboard",
   title: "Design a CI/CD Dashboard (like GitHub Actions)",
   description:
-    "Architecture for a CI/CD dashboard like GitHub Actions: pipeline run list with real-time status streaming via SSE, live log tail with ANSI color rendering and virtual scroll, DAG visualization of job dependencies, artifact download links, flaky test detection with historical pass-rate charts, branch and PR-scoped pipeline views, re-run and cancel actions with optimistic UI, deployment approval gates with audit log, and notification routing for pipeline failures.",
+    "Principal-level architecture for CI/CD dashboards covering run state, live logs, DAG visualization, artifacts, approvals, flaky test intelligence, auditability, and operational scale.",
   category: "high-level-design",
   subcategory: "developer-experience-systems",
   slug: "cicd-dashboard",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "cicd", "github-actions", "pipeline", "sse", "dag", "live-logs", "deployment-gates", "flaky-tests"],
+  wordCount: 5600,
+  readingTime: 32,
+  lastUpdated: "2026-05-22",
+  tags: ["hld", "cicd", "github-actions", "pipeline", "developer-tools"],
   relatedTopics: ["api-playground", "developer-documentation-system"],
 };
 
@@ -24,74 +24,192 @@ export default function CicdDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A CI/CD dashboard is a real-time observability and control plane for automated software delivery pipelines. GitHub Actions, GitLab CI, CircleCI, and Jenkins all solve the same core problem: give developers instant, contextual feedback on whether their code change broke anything, and where in the pipeline it broke. The dashboard surfaces pipeline runs triggered by commits and pull requests, shows the status and logs of each job, and provides controls to re-run failed jobs or cancel in-progress runs.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The defining technical challenge: pipeline runs produce a continuous, potentially high-volume stream of log output across many parallel jobs. The dashboard must render live log output (streamed in real-time as jobs execute) without blocking the browser's rendering thread, handle thousands of lines of ANSI-colored text efficiently, and allow the user to navigate between jobs and pipeline runs without losing their scroll position. This requires a combination of server-sent events (SSE) for efficient one-way streaming, virtual scrolling for large log files, and careful state management to persist viewed positions across navigation.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Pipeline run list, real-time log streaming, job DAG visualization, artifact management, flaky test detection UI, and deployment approval gates. Not in scope: the CI/CD execution engine itself, build agent provisioning, or secret management infrastructure.</p>
+        <h2>Definition &amp; Context</h2>
+        <HighlightBlock as="p" tier="important">
+          A CI/CD dashboard is the control plane and observability surface for software delivery. It shows pipeline runs, job dependency graphs, live logs, test results, artifacts, deployment approvals, and actions such as cancel, retry, and rerun failed jobs. GitHub Actions, GitLab CI, Buildkite, CircleCI, and Jenkins Blue Ocean are representative systems. For principal interviews, the design must cover event streaming, large log handling, permissioned mutations, audit trails, and how the dashboard remains trustworthy when many teams depend on it for production releases.
+        </HighlightBlock>
+        <p>
+          The dashboard is not the build executor itself, but it is often the interface through which developers decide whether a change is safe. That means stale state, missing logs, ambiguous failures, or unsafe approval controls can delay incident recovery or allow a bad deployment. The system should be treated as a high-read, event-driven application with a few high-risk write actions.
+        </p>
       </section>
 
       <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Pipeline run list:</strong> A repository's pipeline runs are listed in reverse chronological order with: commit SHA (first 7 chars with a link to the commit), branch/PR context (branch name or "PR #123" badge), trigger (push, pull_request, manual), status badge (queued/running/success/failure/cancelled — color-coded), duration, and triggered-by (actor avatar and name). The list auto-updates via SSE — when a new run starts or an existing run changes status, the list updates without a page reload. Runs are filterable by branch, status, and trigger type. Each row is a link to the run detail page.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Job DAG visualization:</strong> A pipeline run is composed of jobs with dependency relationships (job B depends on job A). The job dependency graph is rendered as a left-to-right DAG. Each job node shows: job name, status icon, duration. Edges between nodes represent needs relationships. Parallel jobs at the same topological level are shown side-by-side. Clicking a job node navigates to that job's log view. The DAG is rendered with SVG (no canvas — SVG allows accessibility and linking). Layout is computed using a simple topological sort + column assignment algorithm on the client.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Live log streaming:</strong> Each job produces log output streamed line-by-line via SSE (GET /api/runs/&#123;runId&#125;/jobs/&#123;jobId&#125;/logs as an EventSource). Log lines contain: timestamp, step name, text content, ANSI escape codes for color. The ANSI codes are converted to styled spans client-side using a lightweight parser (ansi-to-html). Logs are rendered in a virtual scroll list — only the visible lines are in the DOM. On job completion, the SSE connection closes and the full log is available as a static download.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Re-run and cancel actions:</strong> A "Re-run all jobs" button and "Re-run failed jobs only" button on the run detail page. Clicking either opens a confirmation modal with the re-run scope and estimated queue time. On confirm: POST /api/runs/&#123;runId&#125;/rerun &#123;scope: "failed" | "all"&#125;. The UI optimistically shows the new run as "Queued" in the run list and navigates to the new run's detail page. "Cancel" on an in-progress run: DELETE /api/runs/&#123;runId&#125; — the UI optimistically shows the run as "Cancelling" and waits for the SSE status update to transition to "Cancelled".</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Log rendering performance:</strong> A single job may produce 100,000+ log lines (build logs, test output). Rendering all lines in the DOM would freeze the browser. Virtual scrolling (using TanStack Virtual or a custom implementation) renders only the ~40 visible lines at any time. The virtual scroll maintains a fixed-height container with total height = lineCount × lineHeight, and translates the visible window. Append-only log updates: new lines are appended to an array; the virtual list re-renders the visible window on each append. Auto-scroll to bottom is enabled by default; if the user scrolls up, auto-scroll is paused (user is reviewing older output).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Flaky test detection:</strong> A test is considered flaky if it fails in some runs and passes in others on the same commit SHA or branch. The dashboard shows a "Flaky tests" tab on the run detail page listing tests that have a &lt;95% pass rate over the last 30 runs. Each flaky test shows: test name, pass rate histogram (sparkline), last failure timestamp, and a "Mark as known flaky" action (which excludes it from blocking the pipeline). The pass rate data is pre-computed server-side on a daily cron — the UI fetches GET /api/repos/&#123;repoId&#125;/flaky-tests and renders the pre-computed data.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Deployment approval gates:</strong> A pipeline stage marked as "requires approval" (deploy to production) is blocked until an authorized approver (a user in the "deployers" group) clicks "Approve" or "Reject." The approval UI shows: the diff since the last deployment (commit range), the approver group, and a comment field. POST /api/runs/&#123;runId&#125;/approve &#123;decision: "approve" | "reject", comment&#125;. The approval action is audit-logged (approver, timestamp, comment, diff summary). The pipeline SSE stream updates the gate status from "waiting" to "approved/rejected" in real-time for all viewers of the run.</HighlightBlock>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          The core data model contains pipeline runs, jobs, steps, log chunks, artifacts, checks, deployment environments, approval gates, and actors. Runs and jobs are state machines. Events such as queued, started, step completed, log appended, artifact uploaded, gate waiting, approved, failed, cancelled, and retried are appended by the CI backend and projected into read models for the UI. This event-first model lets the dashboard recover from reconnects by replaying changes from a known cursor.
+        </p>
+        <p>
+          Logs are the highest-volume data path. A single job can produce hundreds of thousands of lines, and a popular repository can have many concurrent viewers during a broken main branch. Logs need chunking, compression, virtualized rendering, search, retention policy, and resume support. The UI must avoid placing every line into React state, and the backend must avoid fanning every byte independently to every viewer when a shared stream can be multiplexed.
+        </p>
+        <p>
+          Mutating actions are safety-critical. Cancel, rerun, approve deployment, reject deployment, mark flaky, and download restricted artifacts all need authorization, idempotency, optimistic UI with reconciliation, and audit logs. A principal-level answer should distinguish read freshness from write correctness: read streams can tolerate brief lag; approval writes cannot tolerate ambiguous ownership or missing audit context.
+        </p>
+        <p>
+          The dashboard also needs multiple views over the same event stream. A developer wants one failing job, the owning step, and a searchable log. A release manager wants environment gates, commit range, approvals, and artifact provenance. A platform team wants fleet-level signals such as queue time, cache hit rate, runner saturation, flaky test rate, and cost by repository. Designing only the run-detail page misses the broader system: CI/CD dashboards become operational control planes once hundreds of teams rely on them for production movement.
+        </p>
+        <p>
+          State freshness has to be explicit. The run list can show eventual updates and reconnect banners. Log tailing can tolerate a missed chunk if replay by cursor works. Deployment approval state must come from committed server state, not local optimism. Artifact downloads need authorization at the moment the signed URL is minted because artifacts often contain binaries, reports, screenshots, or environment-specific metadata. These distinctions make the answer feel principal-level rather than a generic real-time dashboard answer.
+        </p>
       </section>
 
       <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The CI/CD dashboard is an event-driven read interface backed by an append-only event store. Pipeline runs are state machines (queued → running → success/failure/cancelled). Each state transition is an event. The API serves current state (synthesized from events) for initial page load, and then the frontend subscribes to the SSE stream for incremental updates. This event-sourcing pattern ensures the UI never misses a state transition — it catches up from the last known event on reconnect, not from a fresh full-load.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Log streaming is the highest-throughput path: a busy build can produce 10MB/min of log output. SSE is preferred over WebSockets for log streaming because logs are strictly one-way (server to client) and SSE's built-in reconnection and Last-Event-ID resumption make it simpler than WebSocket for this use case. For very large logs (jobs with 1M+ lines), the client switches to polling-based pagination (GET /api/logs?after=lineId) rather than SSE, to avoid buffering the entire log stream in memory.</HighlightBlock>
-      </section>
-
-      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The initial page load reads a paginated run list and the selected run snapshot. The client then subscribes to a server-sent event stream or WebSocket channel keyed by repository and run. Events update the run list, DAG status, gate state, and log cursors. Logs are stored separately as append-only chunks in object storage or a log service, while run metadata is served from a low-latency read model. This separation prevents large log traffic from slowing normal dashboard navigation.
+        </p>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/developer-experience-systems/cicd-dashboard.svg"
-          alt="CI/CD dashboard system: pipeline run list (GET /api/runs → reverse chronological; SSE EventSource /api/runs/events → status updates; filter by branch/status/trigger; commit SHA + actor avatar + duration + status badge), job DAG (topological sort + column assignment client-side; SVG nodes per job; status icon overlay; click node → navigate log view; edges = needs relationships), live log streaming (SSE EventSource /api/runs/{runId}/jobs/{jobId}/logs; ANSI→styled spans; TanStack Virtual fixed-height container; auto-scroll to bottom; user scrolls up → pause auto-scroll; job complete → close SSE → static download link), re-run and cancel (POST /api/runs/{runId}/rerun {scope}; optimistic 'Queued' in list; navigate to new run; DELETE /api/runs/{runId} → 'Cancelling' optimistic → SSE 'cancelled'), deployment gate (stage waiting → show diff + approver group + comment; POST /api/runs/{runId}/approve; SSE gate_update → all viewers see approved/rejected; audit log: approver+timestamp+comment), flaky tests (GET /api/repos/{repoId}/flaky-tests; pass rate histogram sparkline; <95% over 30 runs; 'Mark known flaky' POST)."
-          caption="Pipeline run list (SSE real-time updates, filter by branch/status), job DAG (SVG topological layout, click to job logs), live log SSE stream (ANSI→spans, TanStack Virtual 100K+ lines, auto-scroll pause on user scroll-up), re-run/cancel optimistic UI, deployment approval gate (diff + audit log, SSE propagation to all viewers), flaky test detection (30-run histogram)"
+          alt="CI/CD dashboard high level architecture"
+          caption="Run metadata, job DAG, live logs, artifacts, flaky test data, and approval controls are projected from append-only pipeline events."
         />
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/developer-experience-systems/cicd-log-streaming-flow.svg"
+          alt="CI/CD live log streaming flow"
+          caption="Live logs are chunked, compressed, resumable, and rendered through a virtualized client view rather than a full DOM tree."
+        />
+        <ArticleImage
+          src="/diagrams/system-design-problems/high-level-design/developer-experience-systems/cicd-approval-audit-flow.svg"
+          alt="CI/CD approval and audit flow"
+          caption="Deployment approvals require permission checks, idempotent decisions, audit records, and real-time propagation to every run viewer."
+        />
+        <p>
+          For log streaming, server-sent events are often enough because the flow is mostly server-to-client and reconnect support is built in. WebSockets become attractive when the same connection also carries interactive terminal input, agent control, or multi-channel multiplexing. In either case, the client should resume from a cursor rather than replaying the full log on reconnect.
+        </p>
+        <p>
+          The run event store should be append-only, while UI read models are replaceable projections. This allows the dashboard to rebuild corrupted summaries, replay missing transitions, and prove what happened during an audit. Log chunks should be stored separately from run state because they have different retention, volume, and access patterns. A failed job may need logs retained for months for compliance, while a successful ephemeral preview build may only need short retention. The architecture should let retention policy vary by repository, branch protection, and environment criticality.
+        </p>
+        <p>
+          A principal-ready design should also account for multi-tenant fairness. One repository with verbose logs or thousands of matrix jobs should not starve status updates for other teams. The event fanout layer needs per-repository quotas, backpressure, lossy counters for non-critical live metrics, and prioritized delivery for state transitions such as failed, waiting for approval, canceled, and deployed. Logs can lag briefly; a production approval or failed deployment transition should not.
+        </p>
+        <p>
+          The dashboard should make pipeline causality visible. A failed deployment may depend on a failing test, a missing artifact, a blocked approval, an exhausted runner pool, or an external secret provider outage. A principal-level UI correlates run events with runner allocation, cache restore, dependency download, artifact upload, environment lock, and approval state. This lets users distinguish a product regression from platform capacity exhaustion without opening five separate tools.
+        </p>
+        <p>
+          Release environments need stronger modeling than ordinary jobs. Production, staging, preview, and ephemeral test environments have different approval rules, concurrency locks, rollback semantics, and audit requirements. The dashboard should show which environment is locked, which run owns the lock, which commit is currently deployed, which run is waiting, and whether a rerun will reuse or replace prior artifacts. Without this model, users can accidentally deploy an older commit or approve a run whose artifact no longer matches the reviewed source.
+        </p>
+        <p>
+          Artifact provenance is part of the dashboard contract. A release manager should see which source commit, workflow definition, runner image, dependency lockfile, signing key, SBOM, and artifact digest produced a deployable output. If the workflow is rerun after approval, the dashboard must show whether the deploy still points to the reviewed artifact or a newly generated artifact. Principal-level candidates should call out this distinction because many CI/CD failures are not test failures; they are failures to prove what exactly reached production.
+        </p>
+        <p>
+          Runner isolation should be visible enough for operators to reason about risk. Hosted shared runners, self-hosted runners, privileged deployment runners, and ephemeral sandbox runners have different trust models. The dashboard should show runner label, pool health, isolation level, queue age, and policy restrictions without exposing sensitive host details. When a job is blocked by runner policy or capacity, users should see that directly instead of reading through raw logs.
+        </p>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Pipeline Run List and Real-Time Updates</h3>
-        <HighlightBlock as="p" tier="important">The run list page loads the initial run list via GET /api/repos/&#123;repoId&#125;/runs?limit=25 (paginated, reverse-chron). It immediately opens an EventSource connection to GET /api/repos/&#123;repoId&#125;/runs/events. The server sends SSE events of two types: (1) run_created &#123;run: RunSummary&#125; — a new run appeared (prepend to list); (2) run_updated &#123;runId, status, duration&#125; — an existing run changed status (update in-place by ID). The run list is stored in Zustand (or React state) as a Map keyed by runId for O(1) updates. On SSE reconnect, the client sends Last-Event-ID to resume from the last event — no full reload needed.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Status badge colors: queued → grey, running → blue with a spinner, success → green, failure → red, cancelled → grey-strikethrough. The running spinner is a CSS animation (not JS-driven) so it does not contribute to JavaScript runtime. The duration for in-progress runs is computed client-side (Date.now() - run.startedAt in a setInterval) rather than streamed from the server — a small difference in precision that saves significant server fan-out for the duration field.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Job DAG Layout and SVG Rendering</h3>
-        <HighlightBlock as="p" tier="important">The job DAG layout algorithm: (1) topological sort to determine an ordering that respects all needs edges; (2) assign each job a column (longest path from the source — this gives the earliest column where a job can appear); (3) assign rows (within a column, jobs are stacked vertically). The layout is a pure function of the jobs array and needs relationships — it is computed in a useMemo and re-runs only when jobs are added or their status changes. SVG is chosen over canvas for the DAG because: SVG nodes are focusable (keyboard navigation), SVG elements can have href attributes (linking to job log views), and SVG is easy to animate (CSS transitions on status color changes).</HighlightBlock>
-        <p>Each job node is a &lt;rect&gt; with a foreign element or &lt;text&gt; for the label. Status is shown via a colored &lt;circle&gt; icon in the top-right corner of each node. Running jobs have a pulsing circle (CSS animation keyframes). The edge between jobs is an SVG &lt;path&gt; with a cubic Bézier curve (C command) — smooth curves look cleaner than straight lines when jobs overlap vertically. Edge color: grey for not-yet-started dependencies, green for completed dependencies, red for failed dependencies.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Live Log Streaming with Virtual Scroll</h3>
-        <HighlightBlock as="p" tier="important">The log view component maintains a lines array (ref, not state — to avoid re-rendering on every append). On each SSE message event, the line is parsed (step name, timestamp, ANSI codes) and pushed to the ref array. A throttled state update (every 100ms via requestAnimationFrame) signals the virtual list to re-render with the new line count. This batching avoids calling setState() 1000 times/second on a fast build, which would cause jank.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">ANSI code parsing: a lightweight regex-based parser maps escape codes to CSS classes (e.g., ESC[32m → class="ansi-green", ESC[1m → class="ansi-bold"). The parser maintains a running state (current foreground color, background color, bold, italic) across lines — ANSI codes can span log lines in some CI environments. The parsed output is a React element array (dangerouslySetInnerHTML is not used — each ANSI segment is a &lt;span&gt; with a className). This avoids XSS from crafted ANSI sequences embedding HTML.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Virtual scroll mechanics: the container is a fixed-height &lt;div&gt; with overflow: auto. Total height = lineCount × LINE_HEIGHT (fixed at 20px for monospace). A positioner &lt;div&gt; inside has height = total height. The visible rows are absolutely positioned using transform: translateY(startIndex * LINE_HEIGHT). On scroll, the visible window [startIndex, endIndex] is recomputed and only those lines are rendered. The overscan (10 extra lines above and below) ensures smooth scrolling without blank flicker.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Deployment Approval Gate</h3>
-        <HighlightBlock as="p" tier="important">The approval gate UI shows a "Waiting for approval" interstitial in the DAG between the build stage and the deploy stage. The interstitial contains: the approver group ("Production Deployers — 3 members"), the commit range since last deploy ("42 commits since last deploy to production"), a diff summary (files changed, insertions, deletions), and an expandable commit list. The approval form: a textarea for the approval comment (required) and "Approve" / "Reject" buttons. The buttons are disabled for non-approvers (the usePermission hook checks the "deploy:approve:production" permission).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Approval submission: POST /api/runs/&#123;runId&#125;/gates/&#123;gateId&#125;/approve &#123;decision, comment&#125;. The server: (1) validates the approver is in the required group; (2) writes the approval record to the audit log; (3) emits a gate_updated SSE event to all run viewers. All users viewing the run see the gate transition from "waiting" to "approved" in real-time — the DAG node changes color, the pipeline continues to the deploy stage. The audit log entry (approver, timestamp, commit range, comment) is shown in a collapsible "Approval history" section below the gate node in the DAG.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Server-sent events are simpler for one-way status and log updates, work through most enterprise proxies, and support automatic reconnect with a last-event cursor. WebSockets support bidirectional interaction and custom multiplexing, but they require more lifecycle handling and backpressure design. Polling is easy to operate, but it wastes capacity and increases perceived latency for fast pipelines. A good design often uses normal APIs for snapshots, SSE for status and log tailing, and separate artifact download URLs for large immutable outputs.
+        </p>
+        <p>
+          Rendering the DAG on the client keeps the backend simple and supports responsive interactions, but very large DAGs can become visually unusable. Server-computed layout gives stable coordinates and can cache expensive graph layout, but it couples presentation to backend logic. For typical CI graphs, client topological layout is sufficient; for enterprise release trains with hundreds of jobs, precomputed layout plus clustering by stage is more usable.
+        </p>
+        <p>
+          Storing logs in a searchable log platform gives powerful debugging, retention controls, and cross-run queries, but it can be expensive and may expose sensitive build output to broader observability tools. Object storage chunks are cheaper and simple for replay, but weaker for search. Mature systems often use object storage as the source of record and index selected metadata or redacted log excerpts for search.
+        </p>
+        <p>
+          A second major trade-off is fail-open versus fail-closed release gating. If the dashboard cannot reach the approval service, a fail-open system may let emergency releases continue but weakens compliance. A fail-closed system protects production but can block incident mitigation. Most organizations choose fail-closed for production deploy gates, with a documented break-glass path that requires stronger audit evidence, short-lived elevated permission, and post-incident review. That policy belongs in the system design because UI availability and release safety are coupled.
+        </p>
+        <p>
+          Flaky test quarantine also has a product trade-off. Automatically quarantining flaky tests improves developer throughput but can hide real regressions. Keeping every flaky test blocking protects quality but destroys trust in CI. A mature design uses thresholds, owners, expiration dates, and criticality: a flaky visual test for an admin-only page may be quarantined quickly, while a flaky payment test should page an owner and remain release-blocking until triaged.
+        </p>
+        <p>
+          Artifact handling has a separate trust trade-off. Build logs are usually text-heavy and broadly visible to repository contributors, while artifacts may contain binaries, screenshots with customer-like data, SBOMs, signing metadata, or deployable packages. The dashboard should not treat artifact URLs as ordinary static links. It should check authorization at download time, show scanning or provenance status, and distinguish preview artifacts from release artifacts that can reach production.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">SSE vs. WebSocket for log streaming: SSE is simpler for unidirectional streaming (built-in reconnection, Last-Event-ID, native browser support via EventSource). WebSocket would be needed if the client needs to send messages to the server during log streaming (e.g., interactive terminal sessions for debugging). For read-only log tailing, SSE is the right choice. The limitation: SSE connections count against HTTP/1.1's 6 connections-per-origin limit. On HTTP/2, this is not a concern (multiplexed). Ensure the log streaming endpoint is served over HTTP/2, or use a single SSE multiplexer (one SSE connection per run, with all job logs multiplexed into it with a jobId field).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">DAG layout complexity: for most CI pipelines, the DAG is small (5–20 jobs) and the simple topological sort + column assignment is sufficient. For complex pipelines with many parallel stages (50+ jobs), a proper hierarchical layout algorithm (Sugiyama/layered graph drawing) would produce cleaner layouts. The tradeoff: Sugiyama layout is complex to implement correctly and a well-known library (dagre-d3) adds ~50KB gzipped. For most CI dashboards, the simple layout is adequate and the complexity of a full layout engine is not justified.</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Keep run state event-driven and make clients cursor-aware. Use virtualized log rendering, pause auto-scroll when users scroll upward, preserve scroll position per job, and expose log search without forcing a full browser download. Model approvals as durable decisions with actor, permission basis, environment, commit range, comment, timestamp, and resulting pipeline transition.
+        </p>
+        <p>
+          Separate high-frequency visual updates from durable writes. It is acceptable for a duration counter to update locally, but it is not acceptable for a deployment gate to look approved before the server commits the audit event. For reruns and cancels, show optimistic pending state, then reconcile from the stream. For artifacts, use signed URLs with short expiration and authorization checks at issuance time.
+        </p>
+        <p>
+          Build the dashboard with degradation modes. If live streaming is unavailable, the run detail page should fall back to snapshot polling and static log chunk reads. If flaky-test analytics is delayed, it should show data freshness rather than hiding the panel. If artifact scanning is still pending, downloads can be marked unavailable or restricted according to policy. These degraded states are common in real CI systems and are exactly where interviewers test operational maturity.
+        </p>
+        <p>
+          Make release-critical actions boring and explicit. Approval, cancellation, and rerun controls should show the target environment, commit SHA, workflow attempt, actor, and expected consequence before submission. Retrying a failed job is different from rerunning an entire workflow because cached artifacts, generated credentials, and approval gates may change. The UI should reflect those semantics so operators do not accidentally create a new deployment path while trying to recover an old one.
+        </p>
+        <p>
+          Build operational views for platform owners, not only repository users. Platform teams need runner saturation, queue age by label, cache hit rate, secret-provider latency, artifact-store errors, log-ingestion lag, and cost attribution by organization. These signals explain why many pipelines are slow or failing at once. A principal interview answer should include this fleet view because CI/CD dashboards become shared infrastructure as soon as hundreds of repositories rely on them.
+        </p>
+        <p>
+          Support incident-mode navigation. During a broken main branch or failed production deploy, users should land directly on failed or blocked nodes, recent deploy attempts, changed files, responsible owners, rollback candidates, and related incidents. The dashboard should suppress decorative success detail and emphasize the critical path. This is a different experience from normal pull-request debugging and is often what separates mature CI/CD products from build-log viewers.
+        </p>
+        <p>
+          Treat secrets and environment variables as invisible dependencies. A job can fail because a secret expired, an environment was rotated, or a scoped token lost permission. The dashboard should not reveal secret values, but it can show secret version age, rotation event timing, permission-denied classifications, and owner links. That gives developers a safe path to diagnosis without leaking sensitive configuration.
+        </p>
+        <p>
+          Connect CI health to ownership and investment decisions. A dashboard should expose the slowest workflows, highest-cost matrix jobs, noisiest flakes, most frequently retried deployment gates, and repositories with poor cache behavior. Those aggregate signals help platform teams fund improvements and help product teams understand the cost of their pipeline design. Without this layer, the dashboard helps individual developers debug but fails as a principal-level operating system for engineering delivery.
+        </p>
+        <p>
+          Preserve audit evidence even when UI projections are rebuilt. The source-of-record event log should retain approvals, reruns, cancellations, artifact publication, environment locks, and policy overrides. Derived read models can be regenerated, but audit events must remain immutable and queryable by repository, actor, environment, commit, and time window. This matters for regulated organizations and for post-incident reconstruction.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A CI/CD dashboard requires: (1) pipeline run list with SSE real-time updates (run_created + run_updated events, Last-Event-ID resumption, O(1) Map update by runId); (2) job DAG in SVG (topological sort + column assignment, Bézier edge curves, status color animations, keyboard-navigable nodes); (3) live log streaming via SSE (lines ref + 100ms rAF batched state update, ANSI→span CSS class parser, TanStack Virtual fixed-height scroll, auto-scroll pause on user interaction); (4) re-run/cancel with optimistic UI (POST /rerun → optimistic "Queued", DELETE → optimistic "Cancelling", SSE confirms final state); (5) deployment approval gate (approver group check, commit range diff, audit log, SSE gate_updated to all viewers); and (6) flaky test detection (server-side pre-computed pass rate, client renders sparkline histograms, "Mark known flaky" exclusion action). The central constraint: all high-frequency updates (log lines, status changes) must be pushed server-to-client via SSE to avoid polling overhead, with the UI optimized to handle append-only data without re-rendering the full list on every update.</HighlightBlock>
+        <h2>Common Pitfalls</h2>
+        <p>
+          A common pitfall is treating logs as normal UI text. Large logs need streaming, chunking, virtual scrolling, and memory caps. Another pitfall is showing current run state by repeatedly polling broad run summaries; this creates unnecessary load and still misses fast transitions. Teams also often under-design approval gates, forgetting re-authentication, environment-specific permissions, separation of duties, and audit evidence required by regulated organizations.
+        </p>
+        <p>
+          Flaky test features can also become misleading if they only show a label without statistical context. A test that failed once in thirty runs is different from a test that fails one out of three attempts. The UI should show sample size, recent trend, owner, affected branches, and whether the failure is quarantined, ignored, or still release-blocking.
+        </p>
+        <p>
+          A serious pitfall is letting rerun semantics become ambiguous. Rerunning a failed job, rerunning all failed jobs, and rerunning the whole workflow can produce different artifacts, use different secrets, re-enter approval gates, and deploy different code if branch references moved. The dashboard must show attempt number, commit SHA, artifact identity, and gate reuse policy so users do not confuse a diagnostic retry with a release action.
+        </p>
+        <p>
+          Teams also under-design the failure mode where CI infrastructure is degraded during an incident. If live streams, artifact service, or approval service are partially down, the dashboard should show degraded state and safe fallback actions. Silent partial failure is worse than a hard outage because operators may approve or retry based on incomplete evidence.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Developer teams use CI dashboards to debug pull request failures, release managers use them to approve staged deployments, and incident commanders use them to confirm rollback or hotfix progress. Platform teams use aggregate views to find slow pipelines, expensive jobs, flake hotspots, and teams that need help improving build health.
+        </p>
+        <p>
+          In large organizations, the same dashboard becomes a compliance artifact. It must answer who approved production, what commit was deployed, which checks passed, which artifacts were produced, and how long the gate waited. That changes the design from a convenience UI into an operational record.
+        </p>
+        <p>
+          Platform engineering organizations use aggregate CI/CD dashboards to plan capacity and reliability work. Queue-age trends reveal runner shortages, cache misses reveal dependency or build-system problems, and recurring approval delays reveal process bottlenecks. The principal-level design should include this fleet view because delivery reliability is a shared platform outcome, not only a per-pipeline debugging problem.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you stream live logs at scale?</h3>
+        <p>
+          I would store logs as append-only chunks with monotonically increasing cursors, stream new chunks over SSE or WebSocket, and let clients resume from the last seen cursor. The browser would keep chunks outside hot React state, render visible lines through virtualization, and batch updates. The backend would compress chunks, enforce retention, redact known secrets, and provide static chunk fetch for replay so a reconnect does not require the stream service to replay everything from memory.
+        </p>
+        <h3>How would you design deployment approval gates?</h3>
+        <p>
+          I would model an approval gate as a stateful resource tied to an environment and commit range. The approve or reject action checks permissions, separation-of-duties rules, gate freshness, and idempotency key. It writes an audit record before unblocking the pipeline and emits a state event to all viewers. The UI should not rely only on optimistic state; it should show pending until the committed gate event arrives.
+        </p>
+        <h3>Would you use polling, SSE, or WebSockets?</h3>
+        <p>
+          I would use normal APIs for initial snapshots, SSE for most run status and log tailing because the flow is server-to-client and reconnect semantics are useful, and WebSockets only if the product needs bidirectional interaction such as terminal sessions or agent control. Polling remains useful for low-frequency aggregate pages, but not for live run details.
+        </p>
+        <h3>How do you keep the dashboard usable for very large pipelines?</h3>
+        <p>
+          I would cluster jobs by stage, provide search and filtering, collapse successful groups by default, virtualize long lists, and show a compact critical path view. For DAG layout, I would use client layout for normal pipelines and precomputed or library-assisted layout for very large graphs. The UI should guide users to failed, blocked, and waiting nodes first rather than forcing them to inspect the whole graph.
+        </p>
+        <h3>How would you prove what artifact was deployed?</h3>
+        <p>
+          I would make artifact identity explicit in the run model. The dashboard should show source commit, workflow attempt, runner image, artifact digest, signing status, SBOM link, provenance attestation, approval event, and deployment environment. Deployment actions should reference immutable artifact IDs, not moving branch names. If a workflow is rerun after approval, the UI should clearly show whether a new artifact was produced and whether it requires fresh approval. This creates an auditable chain from source to production.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li>GitHub Actions documentation: workflow runs, logs, artifacts, and environments.</li>
+          <li>GitLab CI/CD documentation: pipelines, jobs, artifacts, and environments.</li>
+          <li>MDN Web Docs: Server-sent events and WebSocket APIs.</li>
+          <li>OpenTelemetry semantic conventions for CI/CD observability.</li>
+          <li>NIST guidance on audit logging and change control for production systems.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

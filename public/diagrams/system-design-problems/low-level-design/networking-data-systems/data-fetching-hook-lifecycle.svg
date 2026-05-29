@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
   <!-- Title -->
   <text x="600" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
-    Data Fetching Hook Lifecycle & State Machine
+    Data Fetching Hook Lifecycle &amp; State Machine
   </text>
 
   <!-- State Machine Section -->

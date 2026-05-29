@@ -42,7 +42,7 @@ export default function AiPromptManagementUiArticle() {
         caption="Prompt management architecture: template library, version control, evaluation gates, A/B deployment, and cost observability"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h2>Definition &amp; Context</h2>
       <p>
         Prompt management complexity scales with team size and system complexity:
       </p>
@@ -71,7 +71,11 @@ export default function AiPromptManagementUiArticle() {
         tool.
       </HighlightBlock>
 
-      <h2>Template Library and Variable Schema</h2>
+      <h2>Core Concepts</h2>
+      <p>The core concepts are prompt templates, variable schemas, version history, evaluation gates, approval workflow, environment promotion, cost observability, dependency management, and rollback. These concepts define the production contract for AI prompt management UI: what the UI can promise, what the backend must enforce, and what operators need to observe when the feature behaves unexpectedly.</p>
+      <p>For principal-level interviews, frame this as a product system rather than a model demo. The answer should cover ownership, permissions, safety, rollback, quality measurement, degraded behavior, and cost control in addition to the visible interaction.</p>
+
+      <h2>Architecture &amp; Flow</h2>
       <p>
         A prompt template is a parameterized text with named variables that are substituted
         at runtime. The variable schema defines each variable's name, type (string, number,
@@ -97,7 +101,7 @@ export default function AiPromptManagementUiArticle() {
         copied into 20 prompts and then updated in 18 of them.
       </p>
 
-      <h2>Version History and Diff View</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Version History and Diff View</h3>
       <p>
         Every prompt edit creates a new immutable version. Versions are never edited in
         place — this is the Git commit model applied to prompts. The version record contains:
@@ -124,7 +128,7 @@ export default function AiPromptManagementUiArticle() {
         audit integrity and make the history unreliable as a debugging tool.
       </HighlightBlock>
 
-      <h2>Evaluation Suite and Quality Gates</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Evaluation Suite and Quality Gates</h3>
       <p>
         Each prompt version must pass an evaluation suite before it can be marked as
         deployable. The evaluation suite consists of test cases: (input variables, expected
@@ -160,7 +164,7 @@ export default function AiPromptManagementUiArticle() {
         has encountered.
       </HighlightBlock>
 
-      <h2>A/B Deployment: Champion/Challenger Pattern</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">A/B Deployment: Champion/Challenger Pattern</h3>
       <p>
         When a new prompt version passes evaluation, it can be deployed to a fraction
         of production traffic in a champion/challenger experiment. The champion is the
@@ -195,7 +199,7 @@ export default function AiPromptManagementUiArticle() {
         the CDN's configuration propagation time).
       </p>
 
-      <h2>Cost and Token Observability</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Cost and Token Observability</h3>
       <p>
         Prompt changes affect token consumption, which directly affects cost. A prompt
         that adds 200 tokens to the system message raises cost by 200 tokens per
@@ -221,7 +225,7 @@ export default function AiPromptManagementUiArticle() {
         decisions between quality and cost.
       </HighlightBlock>
 
-      <h2>Integration with CI/CD</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Integration with CI/CD</h3>
       <p>
         Prompt management should integrate with the engineering team's existing CI/CD
         pipeline. Prompt versions stored in the management system can be exported as
@@ -238,34 +242,7 @@ export default function AiPromptManagementUiArticle() {
         the commit that updated the prompt file, redeploy).
       </p>
 
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you handle prompts that have different behavior depending on model version?</h3>
-      <p>
-        Prompts are model-specific: a prompt optimized for GPT-4 may produce different
-        behavior on Claude or a fine-tuned model. The prompt version record includes a
-        target_model field. When the model is updated (provider upgrades from gpt-4 to
-        gpt-4-turbo), the evaluation suite is re-run against the new model version —
-        even if the prompt text hasn't changed. A model update that degrades evaluation
-        scores triggers an investigation: either the prompt needs adaptation for the new
-        model, or the model change should be rolled back. Never upgrade models without
-        re-evaluating all affected prompts.
-      </p>
-
-      <h3>Q: How would you implement prompt access control for a team with multiple AI products?</h3>
-      <p>
-        RBAC with three tiers: viewers (can read prompt content and evaluation results),
-        editors (can create new versions and run evaluations), and deployers (can promote
-        versions to production and manage A/B experiments). Prompt ownership is assigned
-        to a team or individual. Viewers, editors, and deployers are configured per prompt
-        (not just per system) — a user may be an editor for their team's prompts but
-        a viewer for other teams'. Deployment to production requires both evaluation
-        approval and a deployer-role approval action (similar to the two-person rule
-        for production deployments). Audit log records every read, edit, evaluation,
-        and deployment action with the actor and timestamp.
-      </p>
-
-      <h2>Prompt Caching and Cost Optimization</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Prompt Caching and Cost Optimization</h3>
       <p>
         System prompt tokens are billed on every API call. For a 2,000-token system prompt
         at $0.01 per 1K tokens and 1 million daily requests, that is $20,000 per day
@@ -306,7 +283,7 @@ export default function AiPromptManagementUiArticle() {
         performance.
       </p>
 
-      <h2>Cross-Environment Promotion</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Cross-Environment Promotion</h3>
       <p>
         A mature prompt management system mirrors the software deployment model: prompts
         move through a sequence of environments (development, staging, production) with
@@ -348,7 +325,7 @@ export default function AiPromptManagementUiArticle() {
         evaluation results may not transfer."
       </p>
 
-      <h2>Prompt Dependency Resolution</h2>
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Prompt Dependency Resolution</h3>
       <p>
         Complex AI systems have prompts that depend on other prompts. A customer support
         system might have a routing prompt (determines which specialist agent handles the
@@ -377,6 +354,88 @@ export default function AiPromptManagementUiArticle() {
         pinning state visible: green nodes are on the latest version, yellow nodes are
         pinned to older versions, and red nodes are pinned to versions that have been
         deprecated.
+      </p>
+
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-prompt-management-ui-versioning.svg"
+        alt="Prompt versioning and deployment lifecycle showing immutable versions, diffs, evaluation gates, environment promotion, champion challenger deployment, rollback, dependency pins, and audit log"
+        caption="Prompt lifecycle: immutable versions, evaluation gates, dependency pins, environment promotion, traffic routing, and rollback must stay linked."
+      />
+
+      <h3 className="mt-6 mb-3 text-lg font-semibold">Registry Control Plane, Ownership, and Blast Radius</h3>
+      <p>
+        A principal-level prompt management system is a registry and release-control
+        plane, not a shared text editor. Every production prompt needs an owner, risk
+        tier, allowed model families, tool dependencies, expected output schema, runtime
+        consumers, and rollback owner. These fields let the platform answer operational
+        questions quickly: who can approve a prompt that sends external emails, which
+        workflows depend on a shared safety fragment, and which prompts must be retested
+        when a model provider changes function-calling behavior.
+      </p>
+      <p>
+        Access control should separate authoring, approval, and production promotion.
+        A product engineer can draft a prompt, but a high-risk prompt that triggers tools
+        or handles regulated data should require approval from the owning team and the
+        platform policy group. Runtime services should pin immutable prompt versions
+        instead of reading "latest" dynamically. Dynamic latest pointers make rollback
+        unpredictable because two requests in the same incident window may execute
+        different prompt versions.
+      </p>
+      <p>
+        Prompt caches introduce their own blast radius. If rendered prompts are cached
+        by prompt ID only, a rollback can keep serving stale rendered instructions. Cache
+        keys need prompt version, dependency versions, model ID, tool schema version, and
+        environment. A rollback should invalidate affected rendered prompts and tool
+        schemas together; otherwise a prompt can be reverted while still paired with a
+        newer incompatible tool definition.
+      </p>
+      <ArticleImage
+        src="/diagrams/system-design-problems/high-level-design/ai-modern-systems/ai-prompt-management-ui-control-plane.svg"
+        alt="Prompt registry control plane showing authoring, quality gates, promotion, runtime pinning, RBAC review, dependency graph, and rollback controls"
+        caption="Registry control plane: ownership, RBAC, quality evidence, dependency graph, runtime pinning, cache purge, and rollback controls."
+      />
+
+      <h2>Trade offs &amp; Comparison</h2>
+      <p>The core trade-off is capability versus control. Rich AI experiences improve user productivity, but they add uncertainty, cost, latency, data-access risk, and operational complexity. A principal-ready design explains which paths are authoritative, which paths are best-effort, and how the system degrades when retrieval, model execution, policy checks, or tool calls fail.</p>
+      <p>The design should also compare build-versus-buy boundaries. Provider APIs, vector stores, evaluation tools, moderation classifiers, and orchestration frameworks can accelerate delivery, but the product still owns permission enforcement, user trust, auditability, rollback, and quality measurement.</p>
+
+      <h2>Best practices</h2>
+      <p>Use explicit contracts between UI, orchestration, model, retrieval, policy, and tool layers. Persist durable state, keep correlation IDs across model and tool calls, separate user-visible confidence from internal scores, and make failed or degraded states visible. Treat prompts, policies, retrieval settings, and model versions as production configuration with owners and rollback.</p>
+      <p>Measure quality continuously with offline evaluation sets, production feedback, latency and cost telemetry, safety outcomes, and incident reviews. Principal-level systems do not rely on subjective demos to decide whether an AI feature is working.</p>
+
+      <h2>Common Pitfalls</h2>
+      <p>Common pitfalls include letting the model decide authorization, hiding uncertainty, storing sensitive context unnecessarily, treating provider streaming formats as frontend contracts, and shipping without replayable traces. Another frequent issue is optimizing for impressive answers while neglecting source evidence, policy enforcement, and operator visibility.</p>
+      <p>Teams also underestimate lifecycle problems: model behavior changes, documents are deleted, prompts drift, evaluation sets go stale, and users discover adversarial inputs. The architecture needs ongoing governance, not only launch-time safeguards.</p>
+
+      <h2>Real-world use cases</h2>
+      <p>These patterns apply to enterprise copilots, knowledge assistants, developer tools, moderation systems, model-evaluation platforms, support automation, document Q&A, search products, and workflow automation. In each case, the AI surface becomes a governance and reliability surface as soon as users depend on it for real decisions.</p>
+      <p>For staff and principal interviews, connect the design to rollout safety, tenant isolation, incident response, data access, cost controls, and measurable quality improvement. That is what separates a feature explanation from a system design answer.</p>
+
+      <h2>Common interview question with detailed answer</h2>
+
+      <h3>Q: How do you handle prompts that have different behavior depending on model version?</h3>
+      <p>
+        Prompts are model-specific: a prompt optimized for GPT-4 may produce different
+        behavior on Claude or a fine-tuned model. The prompt version record includes a
+        target_model field. When the model is updated (provider upgrades from gpt-4 to
+        gpt-4-turbo), the evaluation suite is re-run against the new model version —
+        even if the prompt text hasn't changed. A model update that degrades evaluation
+        scores triggers an investigation: either the prompt needs adaptation for the new
+        model, or the model change should be rolled back. Never upgrade models without
+        re-evaluating all affected prompts.
+      </p>
+
+      <h3>Q: How would you implement prompt access control for a team with multiple AI products?</h3>
+      <p>
+        RBAC with three tiers: viewers (can read prompt content and evaluation results),
+        editors (can create new versions and run evaluations), and deployers (can promote
+        versions to production and manage A/B experiments). Prompt ownership is assigned
+        to a team or individual. Viewers, editors, and deployers are configured per prompt
+        (not just per system) — a user may be an editor for their team's prompts but
+        a viewer for other teams'. Deployment to production requires both evaluation
+        approval and a deployer-role approval action (similar to the two-person rule
+        for production deployments). Audit log records every read, edit, evaluation,
+        and deployment action with the actor and timestamp.
       </p>
 
       <h3>Q: How do you prevent prompt bloat where prompts accumulate instructions over time and become unmanageable?</h3>
@@ -421,6 +480,44 @@ export default function AiPromptManagementUiArticle() {
         Anthropic and OpenAI both provide a pixel-to-token conversion rule) to give
         accurate cost estimates.
       </p>
+
+      <h2>References</h2>
+      <p>
+        Prompt management borrows from configuration management, software release
+        engineering, experimentation, and model evaluation. Useful references include
+        OpenFeature-style flag governance for controlled rollout, statistical experiment
+        design for champion/challenger deployment, OpenTelemetry for cost and quality
+        observability, and provider documentation for prompt caching, tool schemas, and
+        token accounting. The most important interview point is that prompts are production
+        artifacts: they require versioning, tests, approval, rollback, and auditability.
+      </p>
+      <ul>
+        <li>
+          <a href="https://openfeature.dev/" target="_blank" rel="noreferrer">
+            OpenFeature specification
+          </a>
+        </li>
+        <li>
+          <a href="https://opentelemetry.io/docs/" target="_blank" rel="noreferrer">
+            OpenTelemetry documentation
+          </a>
+        </li>
+        <li>
+          <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noreferrer">
+            Anthropic prompt caching documentation
+          </a>
+        </li>
+        <li>
+          <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">
+            OpenAI function calling and tool schema documentation
+          </a>
+        </li>
+        <li>
+          <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noreferrer">
+            NIST AI Risk Management Framework
+          </a>
+        </li>
+      </ul>
     </ArticleLayout>
   );
 }

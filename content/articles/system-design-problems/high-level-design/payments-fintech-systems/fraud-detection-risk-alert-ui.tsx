@@ -7,86 +7,141 @@ import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-hld-fraud-detection-risk-alert-ui",
-  title: "Design a Fraud Detection / Risk Alert UI",
-  description:
-    "Architecture for a payment fraud detection and risk alert system: real-time transaction scoring pipeline (rule engine + ML model, sub-100ms decision), velocity checks (card/device/IP rate limiting), device fingerprinting and behavioral biometrics, step-up authentication for high-risk transactions (OTP, biometric), analyst review queue with case management, model feature engineering (transaction graph, merchant category, time-of-day patterns), feedback loop for false positive reduction, risk score explanation for declined transactions, and chargeback prediction to proactively flag disputes.",
+  title: "Design a Fraud Detection and Risk Alert UI",
+  description: "Principal-level payments and fintech system design covering idempotency, ledger correctness, reconciliation, provider failures, fraud, privacy, compliance, and operations.",
   category: "high-level-design",
   subcategory: "payments-fintech-systems",
   slug: "fraud-detection-risk-alert-ui",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-14",
-  tags: ["hld", "fraud-detection", "risk-scoring", "velocity-checks", "device-fingerprint", "ml-scoring", "step-up-auth", "chargeback"],
-  relatedTopics: ["transaction-history-reconciliation-ui", "payment-gateway-integration-ui"],
+  wordCount: 3500,
+  readingTime: 21,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "payments", "fintech", "ledger", "fraud", "reconciliation"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Fraud Detection and Risk Alert UI is a correctness-critical financial system. A principal-ready answer treats a fraud detection and risk alert UI as an audited state machine around money movement, risk, reconciliation, and user trust, not as a payment button or table UI.",
+  "The design must separate user-facing status from authoritative financial truth. Providers, banks, wallets, ledgers, risk systems, and webhooks can disagree temporarily. The UI should help users and operators understand pending, succeeded, failed, reversed, disputed, and reconciled states without creating duplicate actions.",
+  "Financial systems require idempotency, durable state transitions, auditability, privacy, compliance, fraud controls, and operational repair. Ambiguous outcomes are normal: a provider times out after charging, a bank callback arrives late, a webhook retries, or a user closes the browser after authorization.",
+  "The architecture should define what is authoritative. The product ledger should be the internal source of financial truth, provider status is external evidence, and analytics dashboards are derived views. Reconciliation exists because these sources can drift.",
+  "A staff/principal answer should explain failure handling, rollback limits, and support tooling. Money movement is often irreversible or externally controlled, so rollback may mean compensating transactions, refunds, holds, disputes, or manual review rather than deleting state."
+];
+const concepts = [
+  "The first concept is payment intent. risk scorer captures actor, amount, currency, merchant, idempotency key, risk context, provider, expiry, and state before external payment work begins.",
+  "The second concept is ledger correctness. decision workflow should use append-only entries or clearly audited state transitions. Mutable balances without event history are not defensible in a principal interview.",
+  "The third concept is idempotency across boundaries. User retries, browser refreshes, provider retries, bank callbacks, and webhook replay must converge on one logical payment, refund, or risk decision.",
+  "The fourth concept is reconciliation. Provider statements, bank settlement files, internal ledger entries, refunds, chargebacks, and adjustments need scheduled comparison and exception workflows.",
+  "The fifth concept is risk and compliance. Fraud scoring, velocity checks, sanctions or policy rules, PCI boundaries, PII minimization, and audit trails are product architecture concerns.",
+  "The sixth concept is observability. Track authorization rate, pending duration, webhook lag, provider error rate, duplicate suppression, reconciliation breaks, refund latency, chargeback rate, fraud precision, and manual review SLA."
+];
+const architecture = [
+  "The architecture contains risk scorer, case queue, evidence graph, decision workflow, feedback loop. The user starts an intent. The payment or risk adapter calls external rails. The ledger records internal state. Webhook or callback processors update evidence. Reconciliation compares internal and external truth. The UI renders state and safe next actions.",
+  "Every externally visible operation should be idempotent. Create payment, confirm, cancel, refund, retry, risk decision, and manual adjustment all need stable keys and persisted outcomes. The user should not be asked to pay again when the backend is merely uncertain.",
+  "The frontend should show truthful financial states: pending authorization, requires action, processing, succeeded, failed retryable, failed permanent, refunded, disputed, under review, or reconciled. Generic spinners create duplicate payments and support tickets.",
+  "Risk decisions should be asynchronous when needed. Low-risk payments can proceed immediately; medium-risk payments may require step-up or 3DS; high-risk cases can be held for review. The UI should preserve the user's intent and explain the next step safely.",
+  "Reconciliation and support tools are part of the architecture. Operators need to inspect intent, provider request, provider response, webhook history, ledger entries, settlement status, refund state, dispute state, and user-visible notifications.",
+  "Security boundaries matter. Card data should stay with provider-hosted fields or tokenization. Sensitive financial metadata should be redacted from logs, analytics, support views, and client-side telemetry."
+];
+const tradeoffs = [
+  "Synchronous confirmation gives a clean UX but fails when external rails are slow or ambiguous. Asynchronous confirmation is operationally safer but requires pending states, polling, notifications, and support visibility.",
+  "Provider abstraction reduces vendor lock-in and centralizes idempotency, webhooks, and error mapping. The downside is that providers differ in subtle state semantics, so the abstraction must not erase important differences.",
+  "Failing closed protects money and compliance but can reduce conversion during provider issues. Failing open is rarely acceptable for financial correctness. A mature system degrades noncritical analytics or recommendations, but not ledger writes or risk enforcement.",
+  "Aggressive fraud blocking reduces losses but increases false positives and user friction. Risk-based review, step-up authentication, and appeal workflows are better than one global threshold.",
+  "Real-time reconciliation improves operational awareness but costs more and can create noise from transient provider delays. Batch reconciliation is cheaper but detects issues later. Critical rails may need both.",
+  "Detailed financial logs help forensics but create privacy and compliance risk. Logs should capture identifiers, state, and evidence references without raw card data, secrets, or excessive personal data."
+];
+const practices = [
+  "Model payment, refund, adjustment, dispute, and risk review as explicit state machines with immutable transition history.",
+  "Use deterministic idempotency keys and store outcomes for the provider retry window. Duplicate callback and retry handling should be boring and testable.",
+  "Make the ledger append-only or audit-preserving. Corrections should be compensating entries, not silent mutation.",
+  "Verify webhooks and callbacks. Treat external provider events as evidence that must be authenticated, ordered, deduplicated, and reconciled.",
+  "Separate PCI and sensitive data boundaries. Use hosted fields or tokenization; never log raw PAN, CVV, payment secrets, wallet tokens, or full bank identifiers.",
+  "Build operator workflows for ambiguous payments, stuck pending states, refund failures, reconciliation breaks, chargebacks, and fraud review.",
+  "Instrument by provider, rail, region, currency, app version, risk bucket, and payment method. Average success rate hides rail-specific incidents."
+];
+const pitfalls = [
+  "false positives is the classic fintech failure. It happens when retries are not idempotent or when browser callbacks are treated as the only completion path.",
+  "alert fatigue should not create duplicate payment attempts. The UI should show pending or uncertain state and rely on authoritative polling or webhook reconciliation.",
+  "model drift needs explicit state handling. Authentication, provider action, or risk review can pause the payment without losing the user intent.",
+  "fraud ring adaptation occurs when callbacks and retries are not deduped against stable intent and provider identifiers.",
+  "Another pitfall is building transaction history directly from provider events. Users and finance teams need the internal ledger view plus reconciliation status, not raw provider status alone.",
+  "Teams also forget support and compliance. If support cannot reconstruct a transaction safely, engineering becomes the manual reconciliation system."
+];
+const useCases = [
+  "risk analyst console requires idempotent intent, external rail handling, ledger correctness, risk controls, user-visible status, and reconciliation.",
+  "account takeover alert requires idempotent intent, external rail handling, ledger correctness, risk controls, user-visible status, and reconciliation.",
+  "payment review queue requires idempotent intent, external rail handling, ledger correctness, risk controls, user-visible status, and reconciliation.",
+  "During provider outage, the system should stop unsafe retries, preserve pending intent, show truthful status, route to fallback rails if configured, and reconcile late callbacks.",
+  "During fraud spike, the system should raise risk thresholds, route cases to review, step up authentication, and monitor false-positive impact.",
+  "During reconciliation breaks, finance operations should see the ledger entry, provider evidence, settlement file, adjustment history, and recommended next action."
+];
+const questions = [
+  {
+    "question": "How would you design a fraud detection and risk alert UI end to end?",
+    "answer": "I would create a durable intent, call external rails through provider adapters, persist ledger-impacting state with idempotency, process verified webhooks/callbacks, reconcile provider and internal records, and expose safe user/operator states. The UI never assumes success from a browser callback alone. Support and finance operations can inspect intent, provider evidence, ledger entries, and reconciliation status."
+  },
+  {
+    "question": "Why this architecture over calling the provider directly from the UI?",
+    "answer": "Direct provider calls from the UI cannot safely own idempotency, risk checks, ledger writes, webhook verification, reconciliation, or support history. Provider-hosted fields are useful for PCI scope, but financial state transitions need backend ownership and auditability."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are false positives, alert fatigue, model drift, fraud ring adaptation, plus webhook storms, provider-specific outages, reconciliation backlog, chargeback spikes, fraud adaptation, and support overload. Prevention requires idempotency, state machines, provider isolation, append-only ledger, reconciliation workflows, and rail-specific observability."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Ledger-impacting state needs strong internal consistency and audited transitions. External provider state can be eventually consistent and must be reconciled. User-visible history can lag slightly if it exposes pending/reconciliation state. Analytics and dashboards are derived and should not be treated as financial truth."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with pending states, polling, verified webhooks, retries with idempotency, and reconciliation. Rollback often means refund, reversal, compensating entry, or manual adjustment. Abuse is controlled with risk scoring, velocity rules, step-up, and review. Privacy requires tokenization, redacted logs, and restricted support views. Cost is controlled by provider routing, batching, and review thresholds. Observability tracks authorization, pending, webhook, reconciliation, refund, and fraud metrics."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would defend backend-owned state and idempotency because duplicate or lost money movement is unacceptable. I would accept asynchronous pending UX because external rails are not always synchronous. I would explain that fintech rollback is compensating action, not deletion, and that the ledger is more important than a perfectly smooth UI."
+  }
+];
+const references = [
+  {
+    "label": "Stripe documentation: PaymentIntents",
+    "href": "https://docs.stripe.com/payments/payment-intents"
+  },
+  {
+    "label": "PCI Security Standards Council",
+    "href": "https://www.pcisecuritystandards.org/"
+  },
+  {
+    "label": "RBI UPI product statistics and resources",
+    "href": "https://www.npci.org.in/what-we-do/upi/product-statistics"
+  },
+  {
+    "label": "OWASP Authentication Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  }
+];
 
 export default function FraudDetectionRiskAlertUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A fraud detection system must make a real-time decision (allow, challenge, or block) for every transaction within the payment's latency budget — typically &lt;100ms before the payment request is forwarded to the bank. Too many false positives (legitimate transactions blocked) reduce conversion rate and frustrate good customers. Too many false negatives (fraudulent transactions allowed) cause financial losses and chargebacks. The system must optimize the tradeoff between fraud loss rate and false positive rate, and this tradeoff is different for different risk tolerances (a crypto exchange tolerates less fraud than a grocery store).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The system has two components: the real-time scoring engine (makes the allow/challenge/block decision for each transaction in &lt;100ms) and the analyst review dashboard (shows flagged transactions, case management, model retraining feedback). The real-time engine is a pipeline: rule engine (fast, deterministic checks) → ML model (slower but more accurate) → decision. The analyst dashboard is an internal tool for the fraud operations team — it shows the fraud alert queue, case details, investigation tools, and model performance metrics.</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Real-time scoring pipeline (rules + ML), velocity checks, device fingerprinting, step-up authentication, analyst review queue, feedback loop, risk score explanation, and chargeback prediction. Not in scope: AML (anti-money laundering) compliance, KYC verification, or account takeover prevention (a related but separate system).</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/fraud-detection-risk-alert-ui.svg" alt="Design a Fraud Detection and Risk Alert UI architecture" caption="Architecture view: intent, provider adapter, risk, ledger, webhook, reconciliation, and support surfaces." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/fraud-detection-risk-alert-ui-flow.svg" alt="Design a Fraud Detection and Risk Alert UI flow" caption="Flow view: create intent, authorize, handle pending, process callback, write ledger, reconcile, and notify." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/fraud-detection-risk-alert-ui-operations.svg" alt="Design a Fraud Detection and Risk Alert UI operations" caption="Operations view: provider failures, fraud review, reconciliation breaks, refunds, disputes, and auditability." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Real-time transaction scoring pipeline:</strong> Every payment request goes through the fraud scoring pipeline before being forwarded to the payment processor. The pipeline has two stages: (1) Rule engine (10ms budget): deterministic rules checked in priority order — is this card on the block list? Is the transaction amount above the user's typical 99th percentile spend? Is the device ID associated with a known fraud ring? Is the IP on a Tor exit node or VPN? Rules that match immediately return a decision (block for severe rules, challenge for medium rules). (2) ML model (50ms budget): if no rule triggers a block/challenge, the transaction's feature vector is computed and scored by the fraud model. The model outputs a probability of fraud (0.0–1.0). Score &gt;0.8 → block, 0.4–0.8 → challenge (step-up authentication), &lt;0.4 → allow. The total pipeline latency target is &lt;100ms including the ML inference.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Velocity checks:</strong> Velocity rules detect abnormal transaction frequency, which is a strong fraud signal. Checks tracked in Redis (sliding window counters): card velocity (max 5 transactions per card per 10 minutes), device velocity (max 10 transactions from the same device per hour), IP velocity (max 20 transactions from the same IP per hour), merchant velocity (max 3 transactions to the same merchant in 5 minutes from the same card), and amount escalation (3 transactions of escalating amounts on the same card in 30 minutes — a testing pattern). Each counter is a Redis INCR with an EXPIRE set to the window duration. A counter exceeding its limit triggers a "velocity exceeded" rule, which contributes to the risk score (partial trigger → challenge; multiple velocity limits exceeded → block).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Device fingerprinting and behavioral biometrics:</strong> Device fingerprinting collects browser/device signals to identify the device: screen resolution, color depth, timezone, installed fonts (via canvas fingerprint), WebGL renderer, audio fingerprint, hardware concurrency, and touch support. The fingerprint is a hash of these signals — the same device produces the same fingerprint consistently across sessions (even after clearing cookies). A new device fingerprint associated with a known user's card is a risk signal — "This card is being used from a new device." Behavioral biometrics: typing rhythm (time between keystrokes during card number entry), mouse movement patterns, and touch pressure/angle (on mobile) are collected during checkout. Abnormal patterns (robotic key timing suggesting automation, or dramatically different typing rhythm from the user's historical pattern) increase the risk score.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Step-up authentication for high-risk transactions:</strong> When the risk score is in the challenge range (0.4–0.8), the system triggers step-up authentication instead of outright blocking: (1) OTP via SMS or email ("We detected an unusual payment. Enter the OTP sent to your registered phone to proceed."); (2) biometric verification (FaceID or fingerprint on mobile, via WebAuthn); (3) 3DS2 bank authentication (for card payments). The step-up challenge result is fed back into the fraud pipeline: if the OTP is verified, the risk score is reduced and the payment proceeds. If OTP verification fails or times out, the transaction is blocked. The step-up challenge is invisible for legitimate users (they recognize the OTP as a normal security measure) but blocks automated fraud bots that cannot complete the challenge.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Analyst review queue and case management:</strong> Transactions with scores in the manual review range (e.g., 0.6–0.8 during model uncertainty periods) are placed in an analyst review queue. The review UI shows: transaction details (amount, merchant, card last 4, device fingerprint), the risk score and top contributing features ("High risk: new device + unusual amount + Tor exit node"), the user's transaction history (30-day chart showing spending patterns), and similar past fraud cases. Actions: approve (allow the transaction), decline (block it), and escalate (send to senior analyst). Approved transactions that later result in chargebacks are flagged as "confirmed fraud" and used as training labels for model retraining. The queue is prioritized by fraud score (higher score = higher priority) and age (older cases surface before expiry).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>ML model features and retraining:</strong> The fraud model is a gradient boosting model (XGBoost or LightGBM) trained on labeled transaction data (fraud = 1, legitimate = 0). Key features: transaction amount (absolute and relative to user's historical average), time since last transaction from this card, time since card was added to the account, merchant category code (MCC), country of transaction vs. user's home country, device risk score (from fingerprint freshness and fingerprint reputation), velocity features (transactions in last 1hr/24hr/7d), and graph features (is this card connected to known fraudulent accounts via shared device or IP?). The model is retrained weekly on new labeled data (analyst verdicts + chargeback outcomes). The retrained model is deployed via a feature flag: shadow mode first (scores both old and new model, compares decisions without acting on the new model's output), then gradual rollout (10% of traffic → 100%).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Risk score explanation for declined transactions:</strong> When a transaction is declined, the user sees a reason (in compliant phrasing — regulations limit what can be disclosed, and revealing exact fraud signals would allow fraudsters to evade them). User-facing message: "This transaction could not be completed for security reasons. If you believe this is an error, please contact support." Internal message (shown to support agents): the top 3 risk factors with their contribution to the score: "New device (contributes 0.35), IP on blocked list (contributes 0.28), amount exceeds 99th percentile (contributes 0.15)." The explanation is generated using Shapley values (SHAP) — a model-agnostic explanation technique that attributes the model's output to individual features. SHAP values are pre-computed for each scored transaction and stored for up to 90 days.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Chargeback prediction:</strong> A separate model predicts whether an approved transaction will result in a chargeback within 90 days (based on historical chargeback patterns). High chargeback probability transactions are flagged for proactive outreach: "We noticed your recent purchase at MerchantX may have an issue. If you didn't make this purchase, please report it now." Early reporting prevents chargebacks (which cost the merchant ~$25 in chargeback fees and potential card brand penalties) by converting them to direct disputes resolved before the chargeback deadline. The chargeback prediction model runs asynchronously (not in the real-time scoring pipeline) — it processes approved transactions in a batch job 5 minutes after approval.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="important">The fraud detection system has three planes: the real-time scoring plane (in the payment request path, &lt;100ms budget), the async enrichment plane (runs after approval/block decision, computes additional signals for analyst review and model retraining), and the model management plane (feature engineering, training, evaluation, and deployment). The real-time scoring plane: payment request arrives → feature extraction (from the request payload + Redis cached velocity counters + device fingerprint lookup) → rule engine evaluation → if no block → ML model inference (pre-loaded in memory as a serialized ONNX model) → decision → response to payment service.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The analyst review queue is populated by a Kafka consumer that reads from the fraud_decisions topic (decisions from the real-time pipeline). Transactions with challenge or manual_review decisions are inserted into the review queue database (PostgreSQL). The analyst dashboard reads from this database. Analyst verdicts are written back to the fraud_verdicts Kafka topic, consumed by the model retraining pipeline.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/payments-fintech-systems/fraud-detection-risk-alert-ui.svg"
-          alt="Fraud detection system: payment request → rule engine (10ms: block list, velocity, Tor IP) → ML model (50ms: XGBoost feature vector, score 0-1) → decision (allow &lt;0.4, challenge 0.4-0.8, block &gt;0.8); velocity checks in Redis sliding window (card 5/10min, IP 20/hr); device fingerprint (canvas+WebGL+audio hash, new device = risk signal); step-up auth on challenge (OTP/biometric/3DS2); Kafka fan-out: manual review queue + chargeback prediction batch; analyst review UI (SHAP top-3 features, approve/decline/escalate); weekly model retrain with analyst verdicts + chargeback labels; shadow mode → gradual rollout."
-          caption="Rule engine 10ms + ML 50ms = &lt;100ms total, Redis velocity counters (sliding window), device fingerprint hash, step-up OTP/biometric on 0.4–0.8 score, SHAP feature attribution, weekly retrain with shadow mode, chargeback prediction batch 5min post-approval"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Feature Extraction Pipeline</h3>
-        <HighlightBlock as="p" tier="crucial">Feature extraction must complete in &lt;40ms to leave budget for the rule engine and ML model. Features are extracted from three sources: (1) the transaction payload (instant, no I/O): amount, currency, merchant MCC, card BIN (first 6 digits, used to look up card country and card type from a pre-loaded BIN database in memory); (2) Redis velocity counters (1–5ms I/O): card velocity, IP velocity, device velocity, merchant velocity — all from pre-incremented Redis INCR counters; (3) user profile cache (1–5ms I/O): user's historical average transaction amount, 99th percentile amount, days since account creation, number of saved payment methods — cached in Redis and refreshed daily. The feature vector is assembled from all three sources and passed to the rule engine.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Graph features (is this card connected to known fraudulent accounts?) are not computed in real-time (graph traversal is expensive). Instead, a daily batch job computes a "fraud affinity score" for each card and device ID based on their connections in the transaction graph (two accounts share a device ID → are connected; connected accounts with fraud labels → elevated affinity score). This score is precomputed and cached in Redis, included as a feature in the real-time feature vector without requiring graph traversal at query time.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Rule Engine Priority and Maintenance</h3>
-        <HighlightBlock as="p" tier="important">The rule engine executes rules in priority order — higher-priority rules short-circuit evaluation. Rule tiers: tier 1 (hardcoded, always execute first): card on blocklist, device ID on blocklist, transaction amount exceeds absolute maximum (&#36;10,000 for unverified accounts); tier 2 (configurable by fraud ops team via the admin dashboard): velocity limits, country block list, BIN country mismatch; tier 3 (experimental, A/B tested): new signals under evaluation by the data science team. Rules are stored in a database and cached in memory (refreshed every 60 seconds). Fraud ops can add, modify, and disable rules via the admin dashboard without code deployment. Rule changes are logged to the audit trail with the rule definition, the operator who made the change, and the reason.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">False Positive Reduction and Model Calibration</h3>
-        <HighlightBlock as="p" tier="important">False positives (legitimate transactions blocked) are tracked via two signals: (1) user complaints — when a user calls support and successfully disputes a block, the transaction is marked as a false positive; (2) step-up success rate — for transactions that triggered step-up authentication, the fraction that successfully completed step-up and were legitimate (not subsequently charged back) indicates the step-up threshold accuracy. If step-up success rate is &gt;95% (most challenged transactions are legitimate), the challenge threshold is too low — raise it. If step-up success rate is &lt;80%, the threshold is too high — lower it. This feedback loop calibrates the model thresholds using operational metrics, not just model accuracy metrics on the training set.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Rule engine vs. pure ML: rule-based systems are interpretable (a human can explain exactly why a transaction was blocked), fast (no model inference), and predictable (the same input always produces the same output). But rules don't generalize — fraud patterns evolve, and rules must be manually updated. ML models learn complex patterns automatically but are opaque (why did the model score this transaction 0.85?). The right architecture is hybrid: rules for the most severe, well-understood fraud patterns (stolen card BIN, known fraud device) and ML for the nuanced scoring. Rules also provide a safety net when the ML model has low confidence — if the model is out-of-distribution (transaction type not seen during training), a conservative rule can block the transaction while the model would have given a 0.5 score.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Latency vs. accuracy: more features improve model accuracy but increase feature extraction time. The &lt;100ms budget is the hard constraint. Features that require additional I/O (external API calls, complex graph queries) cannot be included in the real-time pipeline unless they can be precomputed and cached. Features with high predictive power but high latency (e.g., real-time device reputation lookup from a third-party API) must be either precomputed or batched and applied to the next transaction from the same device — accepting that the first transaction from a new device has less feature coverage.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A fraud detection system requires: (1) real-time scoring pipeline (&lt;100ms: rule engine 10ms → ML inference 50ms → decision; allow &lt;0.4, challenge 0.4–0.8, block &gt;0.8); (2) velocity checks (Redis INCR sliding window: card 5/10min, IP 20/hr, device 10/hr, merchant 3/5min per card); (3) device fingerprinting (canvas + WebGL + audio hash, new device = risk signal, behavioral biometrics keystroke timing); (4) step-up authentication (OTP/biometric/3DS2 on challenge, OTP verified → score reduced, fail/timeout → block); (5) analyst review queue (SHAP top-3 feature attribution, approve/decline/escalate, prioritized by score and age); (6) ML model (XGBoost/LightGBM, features: amount relative to history, velocity, MCC, country mismatch, device risk, precomputed graph affinity); (7) model deployment (weekly retrain with analyst verdicts + chargeback labels, shadow mode → 10% rollout → 100%); (8) chargeback prediction (async batch 5min post-approval, proactive user outreach); (9) SHAP feature attribution (pre-computed per scored transaction, 90-day retention, shown to support agents not end-users); and (10) false positive calibration (step-up success rate feedback loop, threshold adjustment based on operational metrics). The core design principle: fraud detection is an adversarial system — assume fraudsters will probe the rules and adapt; use model-based scoring for generalization and rules for the known-bad patterns that are too severe to risk a false negative.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }

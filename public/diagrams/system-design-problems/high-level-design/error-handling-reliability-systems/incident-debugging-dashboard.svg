@@ -1,117 +1,14 @@
-<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
-  <rect width="900" height="520" fill="#f0f4ff"/>
-  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Incident / Debugging Dashboard — Detect, Triage &amp; Resolve</text>
-
-  <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
-    </marker>
-    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
-    </marker>
-    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
-    </marker>
-    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#e05252"/>
-    </marker>
-  </defs>
-
-  <!-- Actors -->
-  <rect x="20" y="65" width="110" height="40" rx="8" fill="#6d5bd0"/>
-  <text x="75" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Signal Sources</text>
-  <text x="75" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">errors / metrics / logs</text>
-
-  <rect x="198" y="65" width="115" height="40" rx="8" fill="#2563eb"/>
-  <text x="255" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Ingestion Layer</text>
-  <text x="255" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">Kafka / collector</text>
-
-  <rect x="388" y="65" width="115" height="40" rx="8" fill="#2f9d74"/>
-  <text x="445" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Incident Store</text>
-  <text x="445" y="98" text-anchor="middle" font-size="10" fill="#d1fae5">TSDB + search index</text>
-
-  <rect x="578" y="65" width="115" height="40" rx="8" fill="#d97843"/>
-  <text x="635" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Alert Engine</text>
-  <text x="635" y="98" text-anchor="middle" font-size="10" fill="#fef3c7">threshold + ML anomaly</text>
-
-  <rect x="768" y="65" width="112" height="40" rx="8" fill="#be123c"/>
-  <text x="824" y="83" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Dashboard / On-call</text>
-  <text x="824" y="98" text-anchor="middle" font-size="10" fill="#fecdd3">Grafana + PagerDuty</text>
-
-  <!-- Lifelines -->
-  <line x1="75"  y1="105" x2="75"  y2="490" stroke="#c4bde8" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="255" y1="105" x2="255" y2="490" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="445" y1="105" x2="445" y2="490" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="635" y1="105" x2="635" y2="490" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <line x1="824" y1="105" x2="824" y2="490" stroke="#fca5a5" stroke-width="1.5" stroke-dasharray="5,4"/>
-
-  <!-- SECTION 1: Signal ingestion -->
-  <rect x="8" y="118" width="884" height="14" rx="3" fill="#6d5bd0" opacity="0.15"/>
-  <text x="450" y="129" text-anchor="middle" font-size="9" font-weight="bold" fill="#4c1d95">1 · INGEST — clients emit errors (Sentry SDK), metrics (Prometheus), and structured logs (JSON → Kafka); enriched with traceId, deployVersion, userId, region</text>
-
-  <line x1="75" y1="150" x2="240" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="157" y="144" text-anchor="middle" font-size="9" fill="#374151">error events + metrics + structured logs → Kafka topics</text>
-
-  <rect x="178" y="155" width="155" height="20" rx="5" fill="#2563eb"/>
-  <text x="255" y="169" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">enrich: traceId, buildSha, region, userId</text>
-
-  <line x1="240" y1="178" x2="430" y2="178" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-g)"/>
-  <text x="335" y="172" text-anchor="middle" font-size="9" fill="#374151">write to TSDB (metrics) + search index (errors/logs)</text>
-
-  <!-- SECTION 2: Grouping + correlation -->
-  <rect x="8" y="192" width="884" height="14" rx="3" fill="#2f9d74" opacity="0.18"/>
-  <text x="450" y="203" text-anchor="middle" font-size="9" font-weight="bold" fill="#065f46">2 · CORRELATE — group errors by fingerprint (stack hash); correlate with deployment events and feature flags; link traceId across logs + metrics + errors</text>
-
-  <line x1="430" y1="222" x2="430" y2="222" stroke="#2f9d74" stroke-width="1"/>
-  <rect x="350" y="224" width="190" height="20" rx="5" fill="#2f9d74"/>
-  <text x="445" y="238" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">fingerprint → group; link deploy event; flag correlation</text>
-
-  <line x1="430" y1="248" x2="620" y2="248" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-o)"/>
-  <text x="525" y="242" text-anchor="middle" font-size="9" fill="#374151">compute: error_rate[5m], p99_latency, aff_users count</text>
-
-  <line x1="430" y1="262" x2="90" y2="262" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
-  <text x="260" y="256" text-anchor="middle" font-size="9" fill="#374151">dashboard: issue list with affected_users, first_seen, deploy_link</text>
-
-  <!-- SECTION 3: Alert + triage -->
-  <rect x="8" y="276" width="884" height="14" rx="3" fill="#d97843" opacity="0.18"/>
-  <text x="450" y="287" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400e">3 · ALERT — static threshold: error_rate &gt; 1% → warning; ML anomaly: 3σ spike vs 7-day baseline → critical page; auto-attach runbook + session replay links</text>
-
-  <line x1="620" y1="306" x2="620" y2="306" stroke="#d97843" stroke-width="1"/>
-  <rect x="540" y="308" width="190" height="20" rx="5" fill="#d97843"/>
-  <text x="635" y="322" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">evaluate PromQL rules + ML model every 30s</text>
-
-  <line x1="620" y1="332" x2="809" y2="332" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-r)"/>
-  <text x="714" y="326" text-anchor="middle" font-size="9" fill="#374151">PagerDuty: severity, runbook URL, affected endpoints</text>
-
-  <line x1="620" y1="346" x2="90" y2="346" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-g)"/>
-  <text x="355" y="340" text-anchor="middle" font-size="9" fill="#374151">status page update: "Investigating elevated error rate"</text>
-
-  <!-- SECTION 4: Drill-down + postmortem -->
-  <rect x="8" y="360" width="884" height="14" rx="3" fill="#be123c" opacity="0.12"/>
-  <text x="450" y="371" text-anchor="middle" font-size="9" font-weight="bold" fill="#9f1239">4 · RESOLVE — on-call drills: session replay, distributed trace, log search by traceId; trigger rollback or feature-flag kill-switch; postmortem auto-drafted on resolve</text>
-
-  <line x1="809" y1="390" x2="430" y2="390" stroke="#be123c" stroke-width="1.5" marker-end="url(#arr-g)"/>
-  <text x="619" y="384" text-anchor="middle" font-size="9" fill="#374151">drill: click issue → session replay + full trace waterfall</text>
-
-  <line x1="430" y1="404" x2="240" y2="404" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="335" y="398" text-anchor="middle" font-size="9" fill="#374151">operator: toggle feature flag / trigger rollback</text>
-
-  <line x1="240" y1="418" x2="620" y2="418" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-o)"/>
-  <text x="430" y="412" text-anchor="middle" font-size="9" fill="#374151">mark incident resolved; auto-draft postmortem with timeline</text>
-
-  <line x1="620" y1="434" x2="809" y2="434" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-r)"/>
-  <text x="714" y="428" text-anchor="middle" font-size="9" fill="#374151">PagerDuty resolve; status page: "Resolved"</text>
-
-  <!-- Footer -->
-  <rect x="8" y="458" width="884" height="36" rx="6" fill="#1a1822"/>
-  <text x="90" y="474" text-anchor="middle" font-size="9" fill="#c4b5fd" font-weight="600">Alert Latency</text>
-  <text x="90" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">&lt;60s detection</text>
-  <text x="255" y="474" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Grouping</text>
-  <text x="255" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">stack fingerprint</text>
-  <text x="450" y="474" text-anchor="middle" font-size="9" fill="#6ee7b7" font-weight="600">Anomaly</text>
-  <text x="450" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">3σ vs 7-day baseline</text>
-  <text x="645" y="474" text-anchor="middle" font-size="9" fill="#fcd34d" font-weight="600">Correlation</text>
-  <text x="645" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">traceId across all signals</text>
-  <text x="820" y="474" text-anchor="middle" font-size="9" fill="#fca5a5" font-weight="600">Postmortem</text>
-  <text x="820" y="488" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">auto-drafted on resolve</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Incident Debugging Dashboard: decision orbit</title>
+  <desc id="desc">Radial map highlights ownership, runtime signals, and failure boundaries.</desc>
+  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Incident Debugging Dashboard: decision orbit</text>
+  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Radial map highlights ownership, runtime signals, and failure boundaries.</text>
+  <rect x="72" y="118" width="816" height="348" rx="28" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <circle cx="480" cy="286" r="62" fill="#ffffff" stroke="#0f172a" stroke-width="2.4"/>
+  <path d="M446 288 C460 238, 504 236, 520 286 C508 330, 460 330, 446 288 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="480" y="282" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">error</text>
+  <text x="480" y="303" text-anchor="middle" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="11">error handling reliability systems</text>
+  <path d="M480 286 C565.001472713438 294.7998475334857, 634.5481322062509 317.0582854123025, 702 320" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/><circle cx="702" cy="320" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="702" y="325" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">retry</text><path d="M480 286 C502.7760759690218 318.8414780938283, 521.4110472164033 401.9110991546882, 548 429" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><circle cx="548" cy="429" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="548" y="434" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">circuit</text><path d="M480 286 C417.7746032555838 310.04163056034264, 366.8629150101524 370.8528137423857, 317 403" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/><circle cx="317" cy="403" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="317" y="408" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">fallback</text><path d="M480 286 C394.99852728656197 277.2001524665143, 325.45186779374905 254.94171458769756, 225 252" fill="none" stroke="#9333ea" stroke-width="3" stroke-linecap="round"/><circle cx="225" cy="252" r="30" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="225" y="257" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">blast</text><path d="M480 286 C457.2239240309782 253.15852190617167, 438.5889527835967 170.0889008453118, 420 143" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/><circle cx="420" cy="143" r="35" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="420" y="148" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">budget</text><path d="M480 286 C542.2253967444161 261.95836943965736, 593.1370849898476 201.1471862576143, 667 169" fill="none" stroke="#0369a1" stroke-width="3" stroke-linecap="round"/><circle cx="667" cy="169" r="40" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.7"/><text x="667" y="174" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">owner</text>
+  <path d="M130 438 C276 394, 386 472, 510 426 S710 392, 840 444" fill="none" stroke="#0f766e" stroke-width="4"/><path d="M130 466 C306 506, 460 432, 610 478 S760 502, 840 456" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/>
 </svg>

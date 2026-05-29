@@ -8,89 +8,140 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-hld-threaded-messaging-system",
   title: "Design a Threaded Messaging System",
-  description:
-    "Architecture for a threaded messaging system like Slack threads or Discourse: parent message with reply thread, nested reply rendering with indent levels, unread reply counts per thread, thread participant tracking, cross-thread quoting and deep-linking, infinite scroll within thread reply list, real-time reply arrival via WebSocket, thread subscription and notification management, and thread search with context highlighting.",
+  description: "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability.",
   category: "high-level-design",
   subcategory: "messaging-communication",
   slug: "threaded-messaging-system",
-  wordCount: 5000,
-  readingTime: 30,
-  lastUpdated: "2026-05-12",
-  tags: ["hld", "threading", "replies", "slack-threads", "nested-messages", "unread-counts", "deep-linking"],
-  relatedTopics: ["whatsapp-slack-frontend", "notification-inbox-system"],
+  wordCount: 3400,
+  readingTime: 20,
+  lastUpdated: "2026-05-29",
+  tags: ["hld", "messaging", "realtime", "notifications", "privacy", "sync"],
+  relatedTopics: [],
 };
+
+const definition = [
+  "Design a Threaded Messaging System is a communication system where correctness is user-visible: people notice missing messages, wrong unread counts, late notifications, broken drafts, and privacy leaks immediately. A principal-ready design treats a threaded messaging system as a distributed event and state synchronization problem, not simply a list of messages.",
+  "The design must define message identity, ordering, delivery acknowledgement, read state, presence, offline behavior, notification policy, abuse controls, and recovery after reconnect. Different surfaces can be eventually consistent, but user intent and privacy-sensitive state need stronger guarantees.",
+  "Communication systems also sit at the boundary between realtime UX and durable history. The UI should feel live, but messages, edits, deletes, receipts, and moderation decisions must survive refresh, device changes, network loss, and replay.",
+  "A staff/principal answer should name what is authoritative: message append log, conversation membership, consent or preference policy, delivery receipt, read state, and moderation state. Derived views such as inbox rows, snippets, unread counts, search results, and push notifications can lag if they are observable and repairable.",
+  "The system must be abuse-aware. Spam, phishing, harassment, notification bombing, large-room fanout, and provider outages are expected operating conditions, not rare edge cases."
+];
+const concepts = [
+  "The first concept is message identity and ordering. Every message or communication event needs a stable ID, conversation or recipient scope, sender, timestamp, sequence or logical clock, edit/delete state, and idempotency key.",
+  "The second concept is delivery semantics. Sent, accepted, delivered, read, failed, suppressed, and moderated are different states. Collapsing them into delivered creates incorrect UI and support confusion.",
+  "The third concept is multi-device synchronization. thread graph, reply composer, and moderation service must converge after offline use, app restart, token refresh, and reconnect.",
+  "The fourth concept is privacy and membership. Conversation membership, blocks, consent, retention, legal hold, and channel policy must be enforced across message history, notifications, search, exports, and previews.",
+  "The fifth concept is fanout and backpressure. Large rooms, high-volume channels, notification storms, and provider retries can overload clients and backend queues unless traffic is shaped by priority and recipient state.",
+  "The sixth concept is observability. Track send success, delivery lag, unread drift, websocket reconnects, push receipt latency, provider failures, moderation actions, search indexing lag, and duplicate suppression."
+];
+const architecture = [
+  "The architecture has thread graph, reply composer, message timeline, moderation service, search index. The write path accepts user intent and appends durable events. The realtime path streams events to online clients. Projection workers build inboxes, unread counts, snippets, search documents, notifications, and analytics. Policy services enforce membership, consent, mute state, and moderation.",
+  "Clients should maintain a local event cache and pending operation queue. This allows instant local rendering for pending sends while preserving authoritative reconciliation when the server accepts, rejects, edits, redacts, or reorders events.",
+  "Ordering should be scoped. A global total order is unnecessary and expensive. Conversations or channels need stable ordering semantics, and cross-channel inbox projections can use per-conversation latest-event time plus tie-breakers.",
+  "Read state and delivery receipts should be modeled separately. Read state is often per-user per-conversation and may be eventually consistent across devices. Delivery receipt may depend on device connectivity, provider acknowledgement, or policy suppression.",
+  "The frontend should show truthful states: sending, sent, delivered, read, failed retryable, failed permanent, hidden by policy, deleted, edited, or blocked. These states reduce support issues and prevent dangerous duplicate user actions.",
+  "Operations need controls to disable a provider, mute a noisy event type, replay a projection, rebuild search, quarantine spam, revoke a compromised sender, and inspect a message timeline with privacy-safe audit trails."
+];
+const tradeoffs = [
+  "WebSockets or persistent connections give low-latency delivery but require connection management, backpressure, auth refresh, and fallback to polling. Polling is simpler but increases latency and cost at scale.",
+  "Server-authoritative ordering prevents inconsistent history but can make local sends appear to move after acknowledgement. Local optimistic ordering feels responsive but needs reconciliation and visible pending states.",
+  "Push notifications improve re-engagement but can leak private content on locked screens, violate user preferences, or amplify spam. Notification payloads should be minimized and policy-checked.",
+  "Storing full local history improves offline UX but creates privacy, storage, and deletion challenges. A principal design caches only what is needed, encrypts where appropriate, and clears data on logout or device distrust.",
+  "End-to-end encryption protects content privacy but limits server-side search, moderation, and support visibility. Systems must decide where encryption applies and how metadata, abuse reports, and recovery work.",
+  "Strongly consistent unread counts are expensive and often unnecessary. Users tolerate slight unread drift if it converges quickly, but message loss, privacy leaks, and duplicate sends are not acceptable."
+];
+const practices = [
+  "Use idempotency for send, edit, delete, mark-read, and notification creation. Retries from mobile devices and provider callbacks should converge on one logical event.",
+  "Model conversation membership and consent as policy inputs for every surface: message fetch, push, email, search, preview, export, and support view.",
+  "Keep pending local state visibly distinct from accepted server state. Users should know when a message or notification action is not yet durable.",
+  "Use backpressure for realtime streams. Drop or coalesce low-value typing, presence, and read events before dropping durable messages.",
+  "Build projection repair paths. Inbox rows, unread counts, search indexes, and digest summaries should be rebuildable from the authoritative event log.",
+  "Create abuse controls for spam senders, phishing links, notification floods, and toxic threads. Moderation state should propagate to clients and notifications quickly.",
+  "Instrument device cohorts separately. Messaging bugs often appear only on reconnect, app backgrounding, low battery, stale tokens, or older clients."
+];
+const pitfalls = [
+  "reply misplacement is usually caused by unclear ordering or reconciliation semantics. The design needs scoped sequence, idempotency, and client reconciliation.",
+  "edit races undermines user trust because communication UIs become task lists. Unread/read state should be observable, repairable, and separated from delivery.",
+  "toxic threads happens when privacy policy is enforced in the main view but not in notifications, previews, search, or exports.",
+  "backfill gaps should be expected for large rooms, provider retries, or viral notifications. Backpressure and throttling must be first-class.",
+  "Another pitfall is treating push, email, websocket, and inbox as independent products. Users perceive them as one communication system, so policy and state must converge.",
+  "Teams also forget retention and legal hold. Delete for user, delete for everyone, archive, export, and legal retention require explicit semantics."
+];
+const useCases = [
+  "comment threads requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "support conversation requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "incident discussion thread requires durable event history, local responsiveness, policy enforcement, and eventually consistent projections that can be repaired.",
+  "During provider outage, the hub should fail over channels where allowed, queue retryable messages, suppress duplicates, and show delivery uncertainty clearly.",
+  "During abuse spike, the system should throttle senders, reduce notification fanout, scan links, quarantine suspicious threads, and preserve review evidence.",
+  "During reconnect, the client should fetch missed events from a cursor, reconcile local pending operations, update read state, and avoid replaying already accepted actions."
+];
+const questions = [
+  {
+    "question": "How would you design a threaded messaging system end to end?",
+    "answer": "I would design an authoritative event log for durable communication events, realtime gateways for online delivery, projection workers for inboxes and unread counts, policy services for membership and consent, and client local state for pending operations and offline recovery. The frontend shows truthful delivery states while the backend owns ordering, idempotency, and enforcement."
+  },
+  {
+    "question": "Why this architecture over direct client-to-client messaging or a simple notifications table?",
+    "answer": "Direct client-to-client messaging cannot provide durable history, moderation, multi-device sync, search, retention, or support reconstruction. A simple notifications table cannot represent delivery, read state, retries, provider acknowledgements, and policy suppression. The event-log plus projection model adds complexity but makes the system repairable."
+  },
+  {
+    "question": "What breaks at scale?",
+    "answer": "The main failures are reply misplacement, edit races, toxic threads, backfill gaps, plus reconnect storms, websocket fanout, unread drift, provider rate limits, spam waves, and projection lag. Prevention requires scoped ordering, backpressure, idempotency, projection repair, provider abstraction, and abuse controls."
+  },
+  {
+    "question": "What consistency model applies?",
+    "answer": "Message append, membership, deletion/redaction, and consent policy need strong server control. Inbox rows, unread counts, search indexes, push delivery receipts, and presence can be eventually consistent if they converge and expose uncertainty. Read state usually accepts eventual consistency across devices."
+  },
+  {
+    "question": "How do you handle failure, rollback, abuse, privacy, cost, and observability?",
+    "answer": "Failures are handled with reconnect cursors, retry queues, provider failover, local pending state, and projection rebuilds. Rollback uses feature flags, provider disablement, and event replay. Abuse is controlled through rate limits, link scanning, reputation, and moderation. Privacy requires minimizing notification payloads and enforcing membership everywhere. Cost is controlled by coalescing presence/read events, batching, and sampling telemetry. Observability tracks send lag, delivery lag, reconnects, unread drift, provider errors, and moderation actions."
+  },
+  {
+    "question": "How do you defend trade-offs under interviewer pressure?",
+    "answer": "I would separate durable message truth from derived communication surfaces. I would defend eventual unread counts but not eventual privacy enforcement. I would defend websocket complexity for realtime UX while keeping polling fallback. I would also acknowledge that E2EE, search, moderation, and support visibility create real trade-offs that must be product-specific."
+  }
+];
+const references = [
+  {
+    "label": "Matrix specification",
+    "href": "https://spec.matrix.org/"
+  },
+  {
+    "label": "Slack engineering blog",
+    "href": "https://slack.engineering/"
+  },
+  {
+    "label": "RFC 5322 Internet Message Format",
+    "href": "https://datatracker.ietf.org/doc/html/rfc5322"
+  },
+  {
+    "label": "Google SRE Workbook",
+    "href": "https://sre.google/workbook/table-of-contents/"
+  },
+  {
+    "label": "OWASP Logging Cheat Sheet",
+    "href": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+  }
+];
 
 export default function ThreadedMessagingSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="important">{definition[0]}</HighlightBlock>{definition.slice(1).map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Core Concepts</h2>{concepts.map((item, index) => index === 1 ? <HighlightBlock as="p" tier="crucial" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A threaded messaging system allows users to reply to a specific message, creating a hierarchical conversation tree. Slack's threads, GitHub's pull request comment threads, and Discourse forum topics all implement this pattern. The core challenge is UI: how do you render a conversation tree that can be dozens of levels deep, has real-time updates arriving at any node, and must provide clear visual hierarchy without becoming incomprehensible? Slack's solution — a "parent message + reply count" in the main channel, with a side panel or inline expansion for replies — is the dominant pattern because it keeps the main channel uncluttered while still showing thread activity.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The data model complexity: a message has a parentId (null if it is a root message, set to the parent message ID if it is a reply). The thread is all messages with the same root ancestor. Displaying unread counts per thread requires the client to know the last-read position per thread, not just per channel. Cross-device sync of the last-read position is a non-trivial distributed systems problem (which device's read position is authoritative when the user has multiple devices?)</HighlightBlock>
-        <p><strong>Explicit scope:</strong> Thread data model, thread rendering (collapsed/expanded), unread thread counts, real-time reply arrival, and thread subscription. Not in scope: moderation tools, thread archiving, or search-across-all-threads implementation.</p>
+        <h2>Architecture &amp; Flow</h2>
+        {architecture.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/threaded-messaging-system.svg" alt="Design a Threaded Messaging System architecture" caption="Architecture view: durable event log, realtime gateway, projections, policy, and client sync." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/threaded-messaging-system-flow.svg" alt="Design a Threaded Messaging System flow" caption="Flow view: send, acknowledge, deliver, read, moderate, notify, and recover." />
+        <ArticleImage src="/diagrams/system-design-problems/high-level-design/messaging-communication/threaded-messaging-system-operations.svg" alt="Design a Threaded Messaging System operations" caption="Operations view: fanout, reconnect, provider health, abuse controls, privacy, and projection repair." />
       </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Thread structure:</strong> A root message in the channel timeline shows a reply count badge ("3 replies") and a timestamp of the most recent reply. Clicking the badge opens the thread panel (right sidebar in Slack's style). The thread panel shows all replies in chronological order with infinite scroll for long threads. Each reply can itself be replied to (nested threads up to configurable depth — Slack limits to 1 level of nesting; Discourse allows unlimited nesting).</li>
-          <li><strong>Unread tracking:</strong> Each thread has an independent last-read cursor per user. Opening a thread marks all visible replies as read (setting the lastReadReplyId for that thread). Threads with unread replies are highlighted in the channel timeline with a bold reply count. The left sidebar shows a "Threads" section with all threads the user has participated in or subscribed to, ordered by most recent unread.</li>
-          <li><strong>Real-time updates:</strong> New replies arrive via WebSocket and are appended to the thread panel if it is open, or increment the reply count badge if the panel is closed. A new reply to a thread the user is subscribed to triggers a notification. Typing indicators appear in the thread panel when another participant is typing a reply.</li>
-          <li><strong>Thread subscription:</strong> Users are auto-subscribed to a thread when they post a reply. Manual subscribe/unsubscribe is available. Subscription drives notification delivery — subscribed thread replies trigger a push notification and appear in the notification inbox.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Performance:</strong> The thread panel opens within 300ms of click (first 20 replies loaded from cache or fetched in one request). Thread reply list virtualizes rendering for threads with &gt;100 replies. New replies appended without layout shift.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Consistency:</strong> Unread counts must be consistent across devices within 10 seconds. The last-read cursor is synced to the server on thread panel open/close and periodically (every 30s). On a second device, the thread's unread state updates when the server pushes a cursor_updated event via WebSocket.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Deep linking:</strong> Each thread reply has a unique URL (e.g., /channels/general?thread=msg-123&amp;reply=msg-456). Opening this URL scrolls the channel timeline to the parent message, opens the thread panel, and scrolls the thread panel to the specific reply, highlighting it briefly (CSS animation).</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Architecture</h2>
-        <HighlightBlock as="p" tier="crucial">The architecture separates channel timeline state from thread state. The Channel Timeline Store (Zustand) holds root messages and their thread metadata (reply count, last reply timestamp, last reply author, unread flag). When a new reply arrives via WebSocket for a channel message, only the thread metadata in the timeline is updated — the full reply is stored in a separate Thread Store keyed by threadId. The Thread Panel is a lazy-loaded component that reads from the Thread Store for the active threadId. This separation means that 1,000 threads in a channel do not all load their replies — replies are loaded only when the thread panel is opened for that thread.</HighlightBlock>
-      </section>
-
-      <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/high-level-design/messaging-communication/threaded-messaging-system.svg"
-          alt="Threaded messaging system: data model (message: &#123;id, channelId, parentId, rootId, body, authorId, createdAt&#125;; rootId=null for root messages; rootId=parentMessage.id for replies; thread: &#123;rootMessageId, replyCount, lastReplyAt, lastReplyAuthor, participants[]&#125;), thread panel (click reply badge → open panel; fetch GET /threads/{rootId}/replies?limit=20; virtual scroll for 100+ replies; typing indicator: TYPING in thread context; new reply via WS: append to list; panel close → update lastReadReplyId cursor), unread tracking (per-user per-thread cursor: {threadId, lastReadReplyId, updatedAt}; channel timeline: root message bold if unread replies exist; Threads sidebar: list threads with unread sorted by lastReplyAt; cursor sync: server on panel open/close + every 30s; cross-device: WS cursor_updated event), thread subscription (auto-subscribe on reply; manual toggle; subscribed → WS event → push notification; unsubscribe → no more notifications; subscription list in Threads sidebar), deep linking (URL: /channels/{ch}?thread={rootId}&reply={replyId}; on load: scroll timeline to root message; open thread panel; scroll panel to reply; CSS highlight animation 2s)."
-          caption="Thread data model (parentId + rootId per message), lazy thread panel (fetch 20 replies on open, virtual scroll), per-user per-thread last-read cursor (sync server + cross-device WS event), auto-subscribe on reply, push notification for subscribed threads, deep-link URL → scroll+highlight specific reply"
-        />
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Thread Data Model and API</h3>
-        <HighlightBlock as="p" tier="important">Each message in the database has three key fields: parentId (the direct parent, null for root messages), rootId (the root of the thread, null for root messages — denormalized from the parentId chain for O(1) thread lookup), and threadId (same as rootId, used as the key for thread-level queries). The Thread object is a materialized aggregate: &#123;rootMessageId, channelId, replyCount, lastReplyAt, lastReplyAuthor, participantIds, isResolved&#125;. This aggregate is maintained by the server via triggers or event handlers — every new reply increments the Thread's replyCount and updates lastReplyAt atomically. The client receives Thread objects in channel sync responses and does not need to count replies client-side.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Thread replies API: GET /api/threads/&#123;rootId&#125;/replies?cursor=&#123;lastId&#125;&amp;limit=20. Keyset pagination by reply ID (monotonic creation order). The response includes replies with their content and metadata, and a nextCursor for pagination. When the thread panel is opened for the first time, the first 20 replies are fetched. Subsequent scroll triggers fetch the next page. All fetched replies are stored in the Thread Store keyed by threadId — closing and re-opening the panel re-uses cached replies and fetches only newer replies (since lastId).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Unread Count Management</h3>
-        <HighlightBlock as="p" tier="important">Unread counts are stored server-side as a per-user per-thread cursor: the ID of the last reply the user has "seen" (the reply visible in the thread panel at the time the panel was last closed). When the user opens a thread panel, all currently visible replies are marked as read by sending a PATCH /api/threads/&#123;rootId&#125;/cursor &#123;lastReadReplyId: "reply-xyz"&#125;. The server updates the cursor and broadcasts a cursor_updated WebSocket event to all the user's connected clients (for cross-device sync).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The channel timeline shows a thread as "unread" when any reply exists with a createdAt newer than the user's cursor for that thread. This comparison is done client-side: the Zustand store holds &#123;threadId: lastReadReplyId&#125; for all threads the user has opened. When a new reply WebSocket event arrives, the store checks: is this reply's ID newer than the lastReadReplyId for this thread? If yes, mark the root message's thread badge as unread. This avoids a server request per new reply just to determine unread status.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Nested Thread Rendering</h3>
-        <HighlightBlock as="p" tier="important">For systems that support multiple nesting levels (Discourse, GitHub PR reviews), the rendering challenge is indentation and collapse. A reply at depth 1 is indented 24px. A reply at depth 2 is indented 48px. Maximum depth is enforced (configurable, e.g., 5 levels). Deeply nested threads use a "collapse thread" mechanism: a single-click on the parent reply collapses all its descendants, showing a summary "X hidden replies" that re-expands on click. This is implemented with a collapsed Set in React state — a message's children are not rendered if the message ID is in the collapsed Set.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">For Slack-style 1-level threading (no nested replies), the UI is simpler: the thread panel shows a flat list of replies, all at the same indentation. Quoting (referencing another message within a reply) provides cross-thread context without deep nesting. The quote renders as a styled blockquote with a link back to the original message.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Thread Search and Deep Linking</h3>
-        <HighlightBlock as="p" tier="important">Searching within a thread (the thread panel has a search icon) queries GET /api/threads/&#123;rootId&#125;/replies/search?q=&#123;query&#125; and returns matching replies with highlighted snippets. Results are shown in a mini-result list above the reply composer; clicking a result scrolls the virtual list to that reply. Cross-thread search (finding any thread that contains a phrase) queries the main search cluster and returns thread results with the matching reply highlighted in context.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Deep linking to a specific reply: the URL encodes both the threadId (for opening the thread panel) and the replyId (for scrolling to the specific reply). On page load, the router parses these parameters, fetches the channel timeline up to the root message, opens the thread panel for that thread, fetches replies until the target replyId is loaded (may require multiple pagination requests), and then calls scrollToItem on the virtualizer. The target reply is highlighted with a CSS keyframe animation (background flashes amber → transparent over 2 seconds) to draw the user's attention.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Side panel vs. inline thread expansion: Slack uses a right-side panel that pushes the channel timeline left (reducing its width). Discourse and GitHub use inline expansion — the thread expands in-place within the timeline, pushing subsequent messages down. The side panel keeps the channel timeline full-width but requires switching between the timeline and the thread panel. Inline expansion preserves context (the original message stays visible alongside its replies) but adds visual noise to the channel. The side panel pattern is better for channels with high message volume (replies don't fragment the timeline); inline expansion is better for low-volume, long-form discussion (forums, code review).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Real-time reply count updates vs. polling: receiving a WebSocket event for every new reply in every channel the user is in is the most accurate approach — unread counts are always current. But it requires the server to maintain a WebSocket subscription per channel per user, which at 1M users × 100 channels = 100M subscriptions. Many systems use a hybrid: WebSocket events for channels the user has open, and polling (every 30s) for channels in the background. The unread count may lag by 30 seconds for background channels, which is acceptable for most use cases.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">A threaded messaging system is built on: (1) thread data model (parentId + rootId per message, materialized Thread aggregate with replyCount + lastReplyAt maintained server-side, O(1) thread lookup by rootId); (2) lazy thread panel (open → fetch 20 replies with keyset pagination, virtual scroll for 100+ replies, append new replies from WS without layout shift, close → update lastReadReplyId cursor); (3) unread count tracking (per-user per-thread cursor, client-side unread check comparing cursor vs. new reply ID, server PATCH on panel close, cross-device WS cursor_updated event); (4) auto-subscribe on reply (subscription drives push notification + Threads sidebar); and (5) deep linking (URL with threadId + replyId → sequential fetch + scrollToItem + CSS highlight animation). The defining tension: threading adds information hierarchy but also UI complexity — the design must prevent threads from making the conversation harder to follow rather than easier.</HighlightBlock>
-      </section>
+      <section><h2>Trade offs &amp; Comparison</h2>{tradeoffs.map((item, index) => index === 0 ? <HighlightBlock as="p" tier="important" key={item}>{item}</HighlightBlock> : <p key={item}>{item}</p>)}</section>
+      <section><h2>Best practices</h2>{practices.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common Pitfalls</h2>{pitfalls.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Real-world use cases</h2>{useCases.map((item) => <p key={item}>{item}</p>)}</section>
+      <section><h2>Common interview question with detailed answer</h2>{questions.map((item) => <div key={item.question} className="mb-6"><h3 className="mb-2 text-lg font-semibold">{item.question}</h3><p>{item.answer}</p></div>)}</section>
+      <section><h2>References</h2><ul className="list-disc space-y-2 pl-6">{references.map((item) => <li key={item.href}><a href={item.href} target="_blank" rel="noreferrer" className="text-blue-600 underline dark:text-blue-400">{item.label}</a></li>)}</ul></section>
     </ArticleLayout>
   );
 }
